@@ -1,0 +1,24 @@
+#
+# This is the file describing options for REVOCAP_PrePost makefile.
+#
+
+#
+# for debug
+# 
+#export DEBUGFLAG = -D_DEBUG=3 # debug message enable even if in loop
+#export DEBUGFLAG = -D_DEBUG
+export DEBUGFLAG = -DNDEBUG
+
+### for OpenCASCADE
+
+#OPENCASCADEFLAG = -DOPENCASCADE -DHAVE_CONFIG_H -DHAVE_FSTREAM -DHAVE_IOSTREAM -DHAVE_LIMITS_H
+#export OPENCASCADEFLAG
+
+### for OpenGLEW
+
+EXTENSIONLIB = -DREVOCAP_SUPPORT_GLEW
+export EXTENSIONLIB
+
+### for Dump Container
+#EXTENSIONLIB += -DREVOCAP_DUMP_CONTAINER
+

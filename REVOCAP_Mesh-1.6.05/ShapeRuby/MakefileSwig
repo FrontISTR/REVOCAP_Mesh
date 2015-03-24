@@ -1,0 +1,24 @@
+include ../OPTIONS
+include ../MakefileConfig.in
+
+INTERFACES := $(wildcard *.i)
+
+LIBDIR = ../lib
+DYNAMIC_LIB = RevocapShape.$(DYNAMIC_EXT)
+STATIC_LIB = libRcapShape.a
+
+.PHONY: RubyInterface
+
+RubyInterface : RevocapShape_wrap.cxx
+
+RevocapShape_wrap.cxx : $(INTERFACES) $(LIBDIR)/$(ARCH)/$(STATIC_LIB)
+	@echo $(INTERFACES)
+	$(SWIG) -c++ -ruby $(OPENCASCADEFLAG) -DREVOCAP_RUBY_SUPPORT RevocapShape.i
+
+Makefile : extconf.rb
+	$(RUBY) extconf.rb
+
+install : $(LIBDIR)/$(ARCH)/$(DYNAMIC_LIB)
+
+$(LIBDIR)/$(ARCH)/$(DYNAMIC_LIB) : $(DYNAMIC_LIB)
+	cp $(DYNAMIC_LIB) $(LIBDIR)/$(ARCH)

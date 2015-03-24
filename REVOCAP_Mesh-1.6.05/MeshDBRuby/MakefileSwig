@@ -1,0 +1,24 @@
+include ../OPTIONS
+include ../MakefileConfig.in
+
+INTERFACES := $(wildcard *.i)
+
+LIBDIR = ../lib
+DYNAMIC_LIB = RevocapMesh.$(DYNAMIC_EXT)
+STATIC_LIB = libRcapMeshDB.a
+
+.PHONY: RubyInterface
+
+RubyInterface : Revocap_wrap.cxx
+
+Revocap_wrap.cxx : $(INTERFACES) $(LIBDIR)/$(ARCH)/$(STATIC_LIB)
+	@echo $(INTERFACES)
+	$(SWIG) -c++ -ruby -DREVOCAP_SUPPORT_RUBY Revocap.i
+
+Makefile : extconf.rb
+	$(RUBY) extconf.rb
+
+install : $(LIBDIR)/$(ARCH)/$(DYNAMIC_LIB)
+
+$(LIBDIR)/$(ARCH)/$(DYNAMIC_LIB) : $(DYNAMIC_LIB)
+	cp $(DYNAMIC_LIB) $(LIBDIR)/$(ARCH)

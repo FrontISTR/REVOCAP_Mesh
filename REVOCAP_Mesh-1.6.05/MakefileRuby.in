@@ -1,0 +1,70 @@
+RUBY = ruby
+export RUBY
+
+ifeq ($(ARCH),i686-darwin10)
+	DYNAMIC_EXT = bundle
+else
+	DYNAMIC_EXT = so
+endif
+export DYNAMIC_EXT
+
+MeshDBRuby: $(LIBDIR)/$(ARCH)/RevocapMesh.$(DYNAMIC_EXT)
+
+$(LIBDIR)/$(ARCH)/RevocapMesh.$(DYNAMIC_EXT): Common Geometry Matrix MeshDB
+	$(MAKE) RubyInterface -C MeshDBRuby -f MakefileSwig
+	$(MAKE) Makefile -C MeshDBRuby -f MakefileSwig
+	$(MAKE) -C MeshDBRuby
+	$(MAKE) install -C MeshDBRuby -f MakefileSwig
+
+MeshGenRuby: $(LIBDIR)/$(ARCH)/RevocapMeshGen.$(DYNAMIC_EXT)
+
+$(LIBDIR)/$(ARCH)/RevocapMeshGen.$(DYNAMIC_EXT): MeshGen
+	$(MAKE) RubyInterface -C MeshGenRuby -f MakefileSwig
+	$(MAKE) Makefile -C MeshGenRuby -f MakefileSwig
+	$(MAKE) -C MeshGenRuby
+	$(MAKE) install -C MeshGenRuby -f MakefileSwig
+
+MeshGLRuby: $(LIBDIR)/$(ARCH)/RevocapGL.$(DYNAMIC_EXT)
+
+$(LIBDIR)/$(ARCH)/RevocapGL.$(DYNAMIC_EXT): MeshGL
+	$(MAKE) RubyInterface -C MeshGLRuby -f MakefileSwig
+	$(MAKE) Makefile -C MeshGLRuby -f MakefileSwig
+	$(MAKE) -C MeshGLRuby
+	$(MAKE) install -C MeshGLRuby -f MakefileSwig
+
+RevocapIORuby: $(LIBDIR)/$(ARCH)/RevocapIO.$(DYNAMIC_EXT)
+
+$(LIBDIR)/$(ARCH)/RevocapIO.$(DYNAMIC_EXT): RevocapIO
+	$(MAKE) RubyInterface -C RevocapIORuby -f MakefileSwig
+	$(MAKE) Makefile -C RevocapIORuby -f MakefileSwig
+	$(MAKE) -C RevocapIORuby
+	$(MAKE) install -C RevocapIORuby -f MakefileSwig
+
+ShapeRuby: $(LIBDIR)/$(ARCH)/RevocapShape.$(DYNAMIC_EXT)
+
+$(LIBDIR)/$(ARCH)/RevocapShape.$(DYNAMIC_EXT): Shape
+	$(MAKE) RubyInterface -C ShapeRuby -f MakefileSwig
+	$(MAKE) Makefile -C ShapeRuby -f MakefileSwig
+	$(MAKE) -C ShapeRuby
+	$(MAKE) install -C ShapeRuby -f MakefileSwig
+
+RubyExtension: MeshDBRuby RevocapIORuby MeshGLRuby MeshGenRuby ShapeRuby
+
+.PHONY: MeshDBRuby MeshGenRuby MeshGLRuby RevocapIORuby ShapeRuby
+
+RubyUnitTest: RubyExtension
+	cp $(LIBDIR)/$(ARCH)/*.so .
+	$(RUBY) test/unit_test.rb
+
+RubyClean:
+	$(RM) MeshDBRuby/Makefile
+	$(RM) MeshDBRuby/*.cxx
+	$(RM) MeshGenRuby/Makefile
+	$(RM) MeshGenRuby/*.cxx
+	$(RM) MeshGLRuby/Makefile
+	$(RM) MeshGLRuby/*.cxx
+	$(RM) RevocapIORuby/Makefile
+	$(RM) RevocapIORuby/*.cxx
+	$(RM) ShapeRuby/Makefile
+	$(RM) ShapeRuby/*.cxx
+	$(RM) $(LIBDIR)/$(ARCH)/Revocap*.$(DYNAMIC_EXT)
