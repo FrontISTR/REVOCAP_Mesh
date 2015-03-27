@@ -35,8 +35,8 @@ kmb::NetgenIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
 		return -1;
 	}else{
 		
-		int i;
-		int j;
+		unsigned int i;
+		unsigned int j;
 		FILE *fp;
 		unsigned int elementCount=0;
 		unsigned int nodeCount=0;
@@ -46,11 +46,10 @@ kmb::NetgenIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
 			return -1;
 		}
 
-			char st[4096];
+			char st[1024];
 			while( fgets( st, sizeof(st), fp ) != NULL ){
 				fpos_t fpos;
 				fgetpos(fp, &fpos);
-				char buf[4096];
 
 				if ( (st[0] == '#') || ( (st[0] == '!') && (st[1] == '!') ) ) continue;
 				
@@ -58,7 +57,6 @@ kmb::NetgenIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
 					if( fgets( st, sizeof(st), fp ) ){
 						sscanf(st, "%d", &elementCount );
 						mesh->beginElement(elementCount);
-						int j;
 						kmb::nodeIdType nodeTable[20];
 						std::fill( nodeTable, nodeTable+20, kmb::nullNodeId );
 						for(j=0;j<elementCount;++j){
@@ -86,12 +84,9 @@ kmb::NetgenIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
 					if( fgets( st, sizeof(st), fp ) ){
 						sscanf(st, "%d", &nodeCount );
 						mesh->beginNode(nodeCount);
-						int j;
 						double vx=0.0,vy=0.0,vz=0.0;
 						for(j=0;j<nodeCount;++j){
 							fgets( st, sizeof(st), fp );
-							int mat;
-							int array_num;
 							sscanf(st, "%lf %lf %lf", &vx,&vy,&vz);
 							mesh->addNode(vx,vy,vz);
 						}	
