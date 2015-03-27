@@ -31,16 +31,19 @@
 int
 kmb::NetgenIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
 {
-			int i;
-			int j;
-		  FILE *fp;
+	if( mesh == NULL ){
+		return -1;
+	}else{
+		
+		int i;
+		int j;
+		FILE *fp;
 		unsigned int elementCount=0;
 		unsigned int nodeCount=0;
 
 
 		if ((fp = fopen(filename, "r")) == NULL) {
-			printf("file open error!!\n");
-			exit(EXIT_FAILURE);	/* (3)エラーの場合は通常、異常終了する */
+			return -1;
 		}
 
 			char st[4096];
@@ -98,10 +101,7 @@ kmb::NetgenIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
 						
 			}
 		fclose(fp);
-
-	
-	
-	
+	}
 	
 	return 0;
 }
