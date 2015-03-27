@@ -3,7 +3,6 @@
 # please edit OPTIONS file for the environmental information and macros.
 
 include OPTIONS
-include MakefileRuby.in
 include MakefileConfig.in
 
 export ARCH
@@ -12,6 +11,11 @@ export CXXFLAG
 export DATE = $(shell date +%Y%m%d)
 LIBDIR = lib
 
+clib: Common Matrix Geometry MeshDB MeshGen MeshGL RevocapIO Shape
+
+
+
+include MakefileRuby.in
 
 Common: $(LIBDIR)/$(ARCH) $(LIBDIR)/$(ARCH)/libRcapCommon.a
 
@@ -53,7 +57,7 @@ Shape: MeshDB $(LIBDIR)/$(ARCH)/libRcapShape.a
 $(LIBDIR)/$(ARCH)/libRcapShape.a: force
 	cd Shape && $(MAKE) static
 
-.PHONY: clean Common Geometry MeshDB MeshGen MeshGL RevocapIO Shape
+.PHONY: clean Common Geometry MeshDB MeshGen MeshGL RevocapIO Shape clib
 clean:
 	cd Common && $(MAKE) clean
 	cd Matrix && $(MAKE) clean
