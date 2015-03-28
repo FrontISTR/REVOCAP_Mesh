@@ -58,7 +58,6 @@ namespace kmb{
 #include "RevocapIO/kmbMicroAVSIO.h"
 #include "RevocapIO/kmbSTLIO.h"
 #include "RevocapIO/kmbRevocapNeutralIO.h"
-#include "RevocapIO/kmbVtkIO.h"
 %}
 
 %include "../MeshDB/kmbTypes.h"
@@ -194,8 +193,10 @@ MicroAVS の UCD 形式の読み書き
     MicroAVS UCD 形式の filename を mesh に読み込む
 --- loadPostFromFile(filename,mesh)
     MicroAVS UCD 形式の filename の計算結果データだけを mesh に読み込む
+--- saveToFile_V8(filename,mesh)
+    mesh の内容を MicroAVS UCD Ver.8 形式で filename に出力する
 --- saveToFile(filename,mesh)
-    mesh の内容を MicroAVS UCD 形式で mesh に出力する(未実装)
+    mesh の内容を MicroAVS UCD 形式で filename に出力する
 --- setReadAsVector3(flag)
     ファイルを読み込むときに3つしか計算結果がない時に自動的にベクトル値で格納する
 =end
@@ -219,5 +220,3 @@ REVOCAP_PrePost の YAML 形式ニュートラルファイルの読み書き
 %include "../RevocapIO/kmbRevocapNeutralIO.h"
 
 %include "../RevocapIO/kmbSTLIO.h"
-
-%include "../RevocapIO/kmbVtkIO.h"

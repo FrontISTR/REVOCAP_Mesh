@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
-# Class Name : Geometry                                                #
+# Class Name : Common                                                  #
 #                                                                      #
 #                                Written by                            #
 #                                           K. Tokunaga 2012/03/23     #

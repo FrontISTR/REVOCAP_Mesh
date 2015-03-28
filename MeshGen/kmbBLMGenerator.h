@@ -62,8 +62,14 @@ public:
 
 
 
+
+
+
+
+
 	kmb::bodyIdType extrude(kmb::bodyIdType &boundaryId);
 	kmb::bodyIdType intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId);
+	kmb::bodyIdType intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId);
 
 
 
@@ -72,6 +78,7 @@ public:
 
 	kmb::bodyIdType extrudeFromData(const char* faceGroup);
 	kmb::bodyIdType intrudeFromData(const char* faceGroup);
+	kmb::bodyIdType intrudeBFromData(const char* faceGroup);
 
 
 
@@ -120,6 +127,7 @@ protected:
 private:
 	mutable std::map< std::pair<kmb::nodeIdType,kmb::nodeIdType>, kmb::nodeIdType* > layerNodes;
 	void clearLayerNodes(void);
+
 
 	std::map< kmb::nodeIdType, kmb::nodeIdType > nodeMapper;
 	kmb::nodeIdType getDuplicatedNodeId(kmb::nodeIdType nodeId);

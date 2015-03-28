@@ -29,11 +29,16 @@ kmb::FaceBucketArea::FaceBucketArea(void)
 , faceGroup(NULL)
 , bodyId(kmb::Body::nullBodyId)
 , displace(NULL)
+, faceArea(NULL)
 {
 }
 
 kmb::FaceBucketArea::~FaceBucketArea(void)
 {
+	if( faceArea ){
+		delete faceArea;
+		faceArea = NULL;
+	}
 }
 
 void
@@ -47,6 +52,11 @@ kmb::FaceBucketArea::setContainer(const kmb::MeshData* mesh,const kmb::DataBindi
 	if( displace ){
 		this->displace = displace;
 	}
+	if( faceArea ){
+		delete faceArea;
+		faceArea = NULL;
+	}
+	faceArea = kmb::DataBindings::createDataBindings(kmb::DataBindings::FaceVariable,kmb::PhysicalValue::Scalar,"");
 }
 
 void
@@ -98,11 +108,14 @@ int
 kmb::FaceBucketArea::appendAll(void)
 {
 	int count = 0;
+	double totalArea = 0.0;
+	double totalFaceArea = 0.0;
 	kmb::Face f;
 	kmb::BoundingBox bbox;
 	kmb::BoxRegion box;
 	kmb::nodeIdType n0, n1, n2, n3;
 	kmb::Point3D q0, q1, q2, q3;
+	double a;
 	double v0[3], v1[3], v2[3], v3[3];
 	kmb::bodyIdType bodyId = faceGroup->getTargetBodyId();
 	kmb::DataBindings::const_iterator fIter = faceGroup->begin();
@@ -146,9 +159,13 @@ kmb::FaceBucketArea::appendAll(void)
 										++count;
 										insert( i,j,k, std::pair<kmb::Face,double>(f,area) );
 									}
+									totalArea += area;
 								}
 							}
 						}
+						a = kmb::Point3D::area(q0,q1,q2);
+						faceArea->setPhysicalValue(f,&a);
+						totalFaceArea += a;
 					}
 					break;
 				case kmb::QUAD:
@@ -191,9 +208,13 @@ kmb::FaceBucketArea::appendAll(void)
 										++count;
 										insert( i,j,k, std::pair<kmb::Face,double>(f,area) );
 									}
+									totalArea += area;
 								}
 							}
 						}
+						a = kmb::Point3D::area(q0,q1,q2) + kmb::Point3D::area(q0,q2,q3);
+						faceArea->setPhysicalValue(f,&a);
+						totalFaceArea += a;
 					}
 					break;
 				default:
@@ -203,6 +224,7 @@ kmb::FaceBucketArea::appendAll(void)
 		}
 		++fIter;
 	}
+	std::cout << "REVOCAP FaceBucketArea count = "<< count << ", total bucket area = " << totalArea << ", total face area = " << totalFaceArea << std::endl;
 	return count;
 }
 
@@ -450,7 +472,14 @@ kmb::FaceBucketArea::appendSubBucket(int i0,int i1,int j0,int j1,int k0,int k1,c
 	}
 }
 
-
+double kmb::FaceBucketArea::getArea(kmb::Face f) const
+{
+	double area=0.0;
+	if( faceArea ){
+		faceArea->getPhysicalValue(f,&area);
+	}
+	return area;
+}
 
 bool
 kmb::FaceBucketArea::getNearestInBucket(const kmb::Point3D& pt,int i,int j,int k,double &dist,kmb::Face &f) const

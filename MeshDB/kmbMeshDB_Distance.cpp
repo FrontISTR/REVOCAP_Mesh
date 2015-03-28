@@ -27,11 +27,14 @@
 #include <cfloat>
 
 #include "MeshDB/kmbMeshDB.h"
-#include "MeshDB/kmbSegment.h"
-#include "MeshDB/kmbTriangle.h"
 #include "Common/kmbCalculator.h"
 #include "Geometry/kmbGeometry3D.h"
+#include "Geometry/kmbBucket.h"
+#include "Geometry/kmbBoundingBox.h"
+#include "MeshDB/kmbSegment.h"
+#include "MeshDB/kmbTriangle.h"
 #include "MeshDB/kmbElementContainer.h"
+#include "MeshDB/kmbMeshOperation.h"
 
 double
 kmb::MeshDB::getDistance(kmb::nodeIdType nodeId0, kmb::nodeIdType nodeId1) const
@@ -39,7 +42,7 @@ kmb::MeshDB::getDistance(kmb::nodeIdType nodeId0, kmb::nodeIdType nodeId1) const
 	if( this->node3Ds ){
 		kmb::Point3D p0, p1;
 		double d = this->node3Ds->distanceSq(nodeId0,nodeId1);
-		if( d >= 0.0 ){
+		if( d < DBL_MAX ){
 			return sqrt(d);
 		}
 	}
@@ -49,28 +52,10 @@ kmb::MeshDB::getDistance(kmb::nodeIdType nodeId0, kmb::nodeIdType nodeId1) const
 
 
 double
-kmb::MeshDB::getNearestNodeInBody(double x,double y,double z,kmb::bodyIdType bodyID,kmb::nodeIdType& nearestId) const
+kmb::MeshDB::getNearestNodeInBody(double x,double y,double z,kmb::bodyIdType bodyId,kmb::nodeIdType& nearestId) const
 {
-	kmb::Minimizer minimizer;
-	kmb::Node node;
-	const kmb::ElementContainer* body = this->getBodyPtr(bodyID);
-	if( body != NULL && this->node3Ds != NULL ){
-		ElementContainer::const_iterator eIter = body->begin();
-		while( eIter != body->end() )
-		{
-			const int len = eIter.getNodeCount();
-			for(int i=0;i<len;++i){
-				const kmb::nodeIdType nodeId = eIter.getCellId(i);
-				if( this->getNode( nodeId, node ) ){
-					if( minimizer.update( node.distanceSq(x,y,z) ) ){
-						nearestId = nodeId;
-					}
-				}
-			}
-			++eIter;
-		}
-	}
-	return sqrt( minimizer.getMin() );
+	Point3D pt(x,y,z);
+	return getNearestNodeInBody(pt,bodyId,nearestId);
 }
 
 double
@@ -150,4 +135,12 @@ kmb::MeshDB::getDistanceToElement(double x,double y,double z,kmb::elementIdType 
 {
 	kmb::ElementContainer::const_iterator eIter = this->findElement(elementId,bodyId);
 	return sqrt( this->evaluator->getDistanceSq(eIter,x,y,z) );
+}
+
+size_t kmb::MeshDB::uniteNodes(double thresh)
+{
+	if( meshOperation == NULL ){
+		meshOperation = new kmb::MeshOperation(this);
+	}
+	return meshOperation->uniteNodes(thresh);
 }

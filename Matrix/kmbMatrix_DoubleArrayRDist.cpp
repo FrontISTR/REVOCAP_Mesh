@@ -65,6 +65,8 @@ int kmb::Matrix_DoubleArrayRDist::init(int _rowSize, int _colSize)
 		int r = _rowSize / paraSize;
 		if( this->rowSize != _rowSize || this->colSize != _colSize || m ==NULL ){
 			clear();
+			this->rowSize = _rowSize;
+			this->colSize = _colSize;
 			if( _rowSize == r*paraSize ){
 				localRowSize = r;
 				localInitRow = r * localRank;

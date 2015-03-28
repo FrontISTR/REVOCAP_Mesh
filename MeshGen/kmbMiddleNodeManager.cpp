@@ -263,7 +263,7 @@ kmb::MiddleNodeManager::getDividedNode5(kmb::nodeIdType n0,kmb::nodeIdType n1,km
 }
 
 kmb::nodeIdType
-kmb::MiddleNodeManager::getDividedNodePyrmid2c(int index,kmb::nodeIdType center,kmb::ElementBase &elem,kmb::elementIdType elemId)
+kmb::MiddleNodeManager::getDividedNodePyrmid2c(int index,kmb::nodeIdType center,const kmb::ElementBase &elem,kmb::elementIdType elemId)
 {
 	if( points == NULL ){
 		return kmb::nullNodeId;
@@ -308,7 +308,7 @@ kmb::MiddleNodeManager::appendMiddleNode( kmb::nodeIdType middle, kmb::nodeIdTyp
 }
 
 kmb::nodeIdType
-kmb::MiddleNodeManager::getCenterNode(kmb::ElementBase &elem,kmb::elementIdType elementId)
+kmb::MiddleNodeManager::getCenterNode(const kmb::ElementBase &elem,kmb::elementIdType elementId)
 {
 	if( points == NULL ){
 		return kmb::nullNodeId;
@@ -469,7 +469,7 @@ kmb::MiddleNodeManager::getCenterNode(kmb::ElementBase &elem,kmb::elementIdType 
 }
 
 kmb::nodeIdType
-kmb::MiddleNodeManager::getCenterNode(kmb::ElementBase &elem,int faceIndex, kmb::elementIdType elementId)
+kmb::MiddleNodeManager::getCenterNode(const kmb::ElementBase &elem,int faceIndex, kmb::elementIdType elementId)
 {
 	if( points == NULL ){
 		return kmb::nullNodeId;
@@ -559,8 +559,54 @@ kmb::MiddleNodeManager::getCenterNode(kmb::ElementBase &elem,int faceIndex, kmb:
 	return kmb::nullNodeId;
 }
 
+kmb::nodeIdType kmb::MiddleNodeManager::getCenterNode4(kmb::nodeIdType n0,kmb::nodeIdType n1,kmb::nodeIdType n2,kmb::nodeIdType n3,kmb::elementIdType elementId)
+{
+	if( points == NULL ){
+		return kmb::nullNodeId;
+	}
+	kmb::nodeIdType minId = n0;
+	kmb::nodeIdType diagonalId = n2;
+	if( minId > n1 ){ minId = n1; diagonalId = n3; }
+	if( minId > n2 ){ minId = n2; diagonalId = n0; }
+	if( minId > n3 ){ minId = n3; diagonalId = n1; }
+	kmb::nodeIdType middleNodeId = this->isDivided(minId,diagonalId);
+	if( middleNodeId != kmb::nullNodeId ){
+		return middleNodeId;
+	}
+	middleNodeId = createMiddleNode4( n0, n1, n2, n3 );
+	if( middleNodeId != kmb::nullNodeId ){
+		appendMiddleNode( middleNodeId, minId,diagonalId, elementId );
+	}
+	return middleNodeId;
+}
+
+kmb::nodeIdType kmb::MiddleNodeManager::getCenterNode8(kmb::nodeIdType n0,kmb::nodeIdType n1,kmb::nodeIdType n2,kmb::nodeIdType n3,kmb::nodeIdType n4,kmb::nodeIdType n5,kmb::nodeIdType n6,kmb::nodeIdType n7,kmb::elementIdType elementId)
+{
+	if( points == NULL ){
+		return kmb::nullNodeId;
+	}
+	kmb::nodeIdType minId = n0;
+	kmb::nodeIdType diagonalId = n6;
+	if( minId > n1 ){ minId = n1; diagonalId = n7; }
+	if( minId > n2 ){ minId = n2; diagonalId = n4; }
+	if( minId > n3 ){ minId = n3; diagonalId = n5; }
+	if( minId > n4 ){ minId = n4; diagonalId = n2; }
+	if( minId > n5 ){ minId = n5; diagonalId = n3; }
+	if( minId > n6 ){ minId = n6; diagonalId = n0; }
+	if( minId > n7 ){ minId = n7; diagonalId = n1; }
+	kmb::nodeIdType middleNodeId = this->isDivided(minId,diagonalId);
+	if( middleNodeId != kmb::nullNodeId ){
+		return middleNodeId;
+	}
+	middleNodeId = createMiddleNode8( n0, n1, n2, n3, n4, n5, n6, n7 );
+	if( middleNodeId != kmb::nullNodeId ){
+		appendMiddleNode( middleNodeId, minId,diagonalId, elementId );
+	}
+	return middleNodeId;
+}
+
 kmb::nodeIdType
-kmb::MiddleNodeManager::getCenterNode2(kmb::ElementBase &elem,kmb::elementIdType elementId)
+kmb::MiddleNodeManager::getCenterNode2(const kmb::ElementBase &elem,kmb::elementIdType elementId)
 {
 	if( points == NULL ){
 		return kmb::nullNodeId;
@@ -650,7 +696,7 @@ kmb::MiddleNodeManager::getCenterNode2(kmb::ElementBase &elem,kmb::elementIdType
 }
 
 kmb::nodeIdType
-kmb::MiddleNodeManager::getCenterNode2(kmb::ElementBase &elem,int faceIndex,kmb::elementIdType elementId)
+kmb::MiddleNodeManager::getCenterNode2(const kmb::ElementBase &elem,int faceIndex,kmb::elementIdType elementId)
 {
 	if( points == NULL ){
 		return kmb::nullNodeId;

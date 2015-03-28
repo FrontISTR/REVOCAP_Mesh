@@ -47,6 +47,7 @@ SurfaceOperation ƒNƒ‰ƒX‚ğ—p‚¢‚é‚ÆA‚»‚ê‚¼‚ê‚É‘Î‚µ‚ÄŠp“x‚Å•ªŠ„‚·‚é‚±‚Æ‚à‰Â”\‚Å‚ ‚
 ((<getBoundary>))
 ((<getBoundaryFace>))
 ((<getBoundaryComponents>))
+((<getInterfaceBoundary>))
 ((<clear>))
 
 =end
@@ -81,7 +82,7 @@ public:
 --- setReverseMode(mode)
     ‹«ŠE’Šo‚Ì‚É— •Ô‚Á‚Ä‚¢‚é—v‘f‚ğ‹–‚·ê‡‚Í true ‚ğİ’è‚·‚éB
 --- getReverseMode
-    ‹«ŠE’Šo‚Ì‚É— •Ô‚Á‚Ä‚¢‚é—v‘f‚ğ‹–‚·‚©“®‚©‚ğo—Í‚·‚éB
+    ‹«ŠE’Šo‚Ì‚É— •Ô‚Á‚Ä‚¢‚é—v‘f‚ğ‹–‚·‚©‚Ç‚¤‚©‚ğo—Í‚·‚éB
 =end
 ------------------------------------------------------------------------------*/
 	void setReverseMode(bool mode);
@@ -128,12 +129,14 @@ public:
 	‚±‚Ì‚Æ‚«‚ÍAbodyId0 ‚Æ bodyId1 ‚Å•\‚³‚ê‚é‚Q‚ÂƒƒbƒVƒ…‚Ì‹«ŠE–Ê‚Í
 	boundaryId0 boundaryId1 ‚É‚ÍŠÜ‚Ü‚È‚¢B
 	getBoundary ‚Ìˆø”‚ğÈ—ª‚µ‚½ê‡‚Í‚·‚×‚Ä‚Ì Body ‚ÉŠÜ‚Ü‚ê‚é—v‘f‚É‚Â‚¢‚Ä‹«ŠE–Ê‚ğ’Šo‚·‚éB
+--- getInterfaceBoundary(bodyId)
 --- getBoundaryComponents(bodyId)
 	‹«ŠE‚ğ’Šo‚µ‚Ä˜AŒ‹¬•ª‚É•ª‚¯‚Ä MeshDB ‚ÉŠi”[‚µA‚»‚Ì BodyId ‚Ì Array ‚ğ•Ô‚·B
 =end
 ------------------------------------------------------------------------------*/
 	kmb::bodyIdType getBoundary(kmb::bodyIdType bodyId);
 	kmb::bodyIdType getBoundary(void);
+	kmb::bodyIdType getInterfaceBoundary(kmb::bodyIdType bodyId);
 %extend{
 	VALUE getBoundaryComponents(kmb::bodyIdType bodyId){
 		kmb::bodyIdType* boundIds = NULL;

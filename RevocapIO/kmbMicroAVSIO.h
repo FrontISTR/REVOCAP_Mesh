@@ -13,6 +13,12 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 
+
+
+
+
+
+
 #pragma once
 
 #include "MeshDB/kmbTypes.h"
@@ -21,6 +27,7 @@
 namespace kmb{
 
 class MeshData;
+class StructuredGrid;
 
 class MicroAVSIO
 {
@@ -55,13 +62,22 @@ protected:
 	int readData(std::ifstream &input,kmb::MeshData* mesh);
 
 	void getDataName(std::string &line);
+#ifndef REVOCAP_SUPPORT_RUBY
+
+	int readCoord(int n,std::string filename,std::string filetype,int skip,int offset,int stride,kmb::StructuredGrid* grid);
+	int readVariable(std::string label,int n,std::string filename,std::string filetype,int skip,int offset,int stride,kmb::StructuredGrid* grid);
+#endif
 public:
 	MicroAVSIO(void);
 	virtual ~MicroAVSIO(void);
 	int loadFromFile(const char* filename,kmb::MeshData* mesh);
+#ifndef REVOCAP_SUPPORT_RUBY
+	int loadFromFile(const char* filename,kmb::StructuredGrid* grid);
+#endif
 
 	int loadPostFromFile(const char* filename,kmb::MeshData* mesh);
 	int saveToFile(const char* filename,kmb::MeshData* mesh);
+	int saveToFile_V8(const char* filename,kmb::MeshData* mesh);
 
 	void setReadAsVector3( bool flag );
 

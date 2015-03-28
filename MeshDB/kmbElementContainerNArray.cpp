@@ -293,6 +293,12 @@ kmb::nodeIdType& kmb::ElementContainerNArray::operator()(kmb::elementIdType elem
 	return nodeTable[ncount*(elementId-offsetId)+localId];
 }
 
+void kmb::ElementContainerNArray::commit(kmb::elementIdType elementId)
+{
+	this->typeCounter[ etype ] = elementId-offsetId + 1;
+	index = elementId-offsetId + 1;
+}
+
 
 
 kmb::ElementContainerNArray::_iteratorNA::_iteratorNA(void)

@@ -81,6 +81,7 @@ Ruby Œ¾Œê‚©‚çg‚¤‚½‚ß‚É‚ÍAŠg’£ƒ‰ƒCƒuƒ‰ƒŠ RevocapMesh.so ‚ğ Ruby ‚Ìƒ[ƒhƒpƒX‚É‚
 ((<eachNodeIdOfBody>))
 ((<eachNodeIdInRegion>))
 ((<nodeIdDefragmentation>))
+((<uniteNodes>))
 ((<replaceNodeId>))
 ((<convertAllNodes>))
 ((<translateAllNodes>))
@@ -622,6 +623,14 @@ MeshData ‚Å’è‹`‚³‚ê‚Ä‚¢‚éƒƒ\ƒbƒh‚Íœ‚­
 		void nodeIdDefragmentation(nodeIdType initId=0);
 /**--------------------------------------------------------------------------
 =begin
+--- uniteNodes(double thresh)
+	è‡’l‚ğ—^‚¦‚ÄA‚»‚Ì’lˆÈ‰º‚Éß“_‚ª‹ß‚¢ê‡‚Íß“_”Ô†‚ª‹ß‚¢‚à‚Ì‚Å’u‚«Š·‚¦‚éB
+	‚±‚±‚Å‚Í’u‚«Š·‚¦‚ç‚ê‚Ä•s—v‚É‚È‚Á‚½ß“_‚ğíœ‚µ‚È‚¢B
+=end
+---------------------------------------------------------------------------*/
+		size_t kmb::MeshDB::uniteNodes(double thresh);
+/**--------------------------------------------------------------------------
+=begin
 --- replaceNodeId(oldId,newId)
 	’¸“_Id‚ğ’u‚«Š·‚¦‚éB
 	QÆ‚µ‚Ä‚¢‚é—v‘f‚â•¨——Ê‚ª‚ ‚ê‚Î©“®“I‚É•ÏŠ·‚·‚éB
@@ -766,8 +775,6 @@ RevocapMesh ‚Å‚ÌŞ—¿‘®«ƒf[ƒ^‚ÌŠÇ—•û–@
 
 /**---------------------------------------------------------------------------
 =begin
---- duplicateNodeIdOfBody(bodyId,coupleName=nil)
-
 --- replaceNodeIdOfElement(bodyId,elementId,oldNodeId,newNodeId)
 	—v‘fId elementId ‚Ì—v‘f‚Ìß“_”z—ñ‚Ì oldNodeId ‚ğ
 	newNodeId ‚É’u‚«Š·‚¦‚éB
@@ -783,7 +790,6 @@ RevocapMesh ‚Å‚ÌŞ—¿‘®«ƒf[ƒ^‚ÌŠÇ—•û–@
 --- replaceNodeIdOfBody(bodyId,coupleName)
 =end
 -----------------------------------------------------------------------------*/
-	int duplicateNodeIdOfBody(kmb::bodyIdType bodyId,const char* coupleName=NULL);
 	int replaceNodeIdOfBody(kmb::bodyIdType bodyId,const char* coupleName);
 
 	bool replaceNodeIdOfElement(kmb::bodyIdType bodyId,kmb::elementIdType elementId,kmb::nodeIdType oldNodeId,kmb::nodeIdType newNodeId);
@@ -1021,6 +1027,12 @@ RevocapMesh ‚Å‚ÌŞ—¿‘®«ƒf[ƒ^‚ÌŠÇ—•û–@
 	kmb::nodeIdType getCornerNodeIdOfSurface(kmb::bodyIdType bodyId,kmb::Vector3D dir) const;
 	kmb::nodeIdType getCornerNodeIdOfFaceGroup(const char* faceGroup,kmb::Vector3D dir) const;
 
+/**---------------------------------------------------------------------------
+=begin
+--- countCommonNode(bodyId0,bodyId1)
+	bodyId0 ‚Æ bodyId1 ‚Ì—Ìˆæ‚É‹¤’Ê‚Ìß“_‚ÌŒÂ”‚ğ’²‚×‚éB
+-----------------------------------------------------------------------------*/
+	size_t countCommonNode(kmb::bodyIdType bodyId0,kmb::bodyIdType bodyId1) const;
 
 /**---------------------------------------------------------------------------
 =begin
@@ -2063,7 +2075,7 @@ MeshDB‚Ì‹ß–Tˆ—‚Å‚Í
 	 "MinJacobian" ElementVariable Scalar
 =end
 ---------------------------------------------------------------------------*/
-	bool calcMeshProperty(const char* name,kmb::bodyIdType bodyId=-1);
+	double calcMeshProperty(const char* name,kmb::bodyIdType bodyId=-1);
 
 /*------------------------------------------------------------------------------
 test $ ruby -e "require 'RevocapMesh'; RevocapMesh::MeshDB::test();"

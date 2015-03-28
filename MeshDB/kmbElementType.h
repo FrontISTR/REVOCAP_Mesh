@@ -43,7 +43,13 @@ enum elementType{
 	MIXED,
 	OTHERTYPE,
 	QUAD = QUADRILATERAL,
-	QUAD2 = QUADRILATERAL2
+	QUAD2 = QUADRILATERAL2,
+	kTriangle = TRIANGLE,
+	kQuadrilateral = QUADRILATERAL,
+	kTetrahedron = TETRAHEDRON,
+	kHexahedron = HEXAHEDRON,
+	kPyramid = PYRAMID,
+	kPrism = WEDGE
 };
 
 }

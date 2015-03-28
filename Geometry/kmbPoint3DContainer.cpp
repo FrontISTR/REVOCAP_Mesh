@@ -392,7 +392,7 @@ kmb::Point3DContainer::distanceSq( kmb::nodeIdType n0, kmb::nodeIdType n1 ) cons
 	{
 		return p0.distanceSq(p1);
 	}
-	return -1.0;
+	return DBL_MAX;
 }
 
 double
@@ -470,6 +470,16 @@ kmb::Point3DContainer::iterator::setPoint(kmb::Point3D &point) const
 {
 	if( _it != NULL ){
 		return _it->setPoint( point );
+	}else{
+		return false;
+	}
+}
+
+bool
+kmb::Point3DContainer::iterator::setXYZ(double x,double y,double z) const
+{
+	if( _it != NULL ){
+		return _it->setXYZ(x,y,z);
 	}else{
 		return false;
 	}

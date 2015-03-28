@@ -416,8 +416,7 @@ kmb::Vector2D::angle2(const Vector2D &v0,const Vector2D &v1)
 	return ANGLE2(c,s);
 }
 
-double
-kmb::Vector2D::abs(const double v[2])
+double kmb::Vector2D::abs(const double v[2])
 {
 	return sqrt( v[0]*v[0] + v[1]*v[1] );
 }

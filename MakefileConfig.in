@@ -4,16 +4,15 @@
 # If Ruby is installed in your system, please give RUBY_PLATFORM to ARCH variable.
 # Otherwise ARCH variable should be a platform string (ex, i686-linux, etc)
 
-############################################################
-# for PC-Cluster linux GNU Compilers                       #
-# -fPIC is the option denoting Position Independent Code   #
-############################################################
+######################################
+# for Desktop PC linux GNU Compilers #
+######################################
 
-ARCH = x86_64-linux
+ARCH = $(shell ruby -e 'puts RUBY_PLATFORM')
 CC = gcc
 CFLAGS = -O -Wall $(DEBUGFLAG)
 CXX = g++
-CXXFLAGS = -O -Wall -fPIC $(DEBUGFLAG)
+CXXFLAGS = -O -Wall -fPIC $(DEBUGFLAG) $(EXTENSIONLIB) -I/opt/local/include
 F90 = gfortran
 FFLAGS = -Wall $(DEBUGFLAG)
 AR = ar

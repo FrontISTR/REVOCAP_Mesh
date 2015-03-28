@@ -30,13 +30,14 @@
 #endif
 
 /* double 値の発散チェック */
-/* #include <cmath> が必要 */
 
+#include <cmath>
 #if defined _MSC_VER
 #define isfinite(x) _finite(x)
+#elif defined isfinite
+/* 既に定義されている */
 #else
-#include <cmath>
-#define isfinite(x) !std::isnan(x)
+#define isfinite(x) ((fabs(x) <= DBL_MAX))
 #endif
 
 /* サイズの定義 */

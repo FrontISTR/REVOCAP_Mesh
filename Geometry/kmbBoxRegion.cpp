@@ -95,6 +95,11 @@ kmb::BoxRegion::setMinMax(double x0,double y0,double z0,double x1,double y1,doub
 	}
 }
 
+void kmb::BoxRegion::setMinMax(kmb::Point3D& minPoint,kmb::Point3D& maxPoint)
+{
+	setMinMax(minPoint.x(),minPoint.y(),minPoint.z(),maxPoint.x(),maxPoint.y(),maxPoint.z());
+}
+
 void
 kmb::BoxRegion::getCenter(kmb::Point3D& center) const
 {
@@ -140,6 +145,36 @@ kmb::BoxRegion::maxZ(void) const
 	return this->maxPoint.z();
 }
 
+void kmb::BoxRegion::minX(double x)
+{
+	minPoint.x(x);
+}
+
+void kmb::BoxRegion::minY(double y)
+{
+	minPoint.y(y);
+}
+
+void kmb::BoxRegion::minZ(double z)
+{
+	minPoint.z(z);
+}
+
+void kmb::BoxRegion::maxX(double x)
+{
+	maxPoint.x(x);
+}
+
+void kmb::BoxRegion::maxY(double y)
+{
+	maxPoint.y(y);
+}
+
+void kmb::BoxRegion::maxZ(double z)
+{
+	maxPoint.z(z);
+}
+
 double
 kmb::BoxRegion::centerX(void) const
 {
@@ -177,7 +212,7 @@ kmb::BoxRegion::rangeZ(void) const
 }
 
 double
-kmb::BoxRegion::maxRange(void) const
+kmb::BoxRegion::range(void) const
 {
 	return kmb::Maximizer::getMax( rangeX(), rangeY(), rangeZ() );
 }
@@ -194,14 +229,12 @@ kmb::BoxRegion::diameterSq(void) const
 	return maxPoint.distanceSq( minPoint );
 }
 
-const kmb::Point3D&
-kmb::BoxRegion::getMin(void) const
+const kmb::Point3D& kmb::BoxRegion::getMin(void) const
 {
 	return this->minPoint;
 }
 
-const kmb::Point3D&
-kmb::BoxRegion::getMax(void) const
+const kmb::Point3D& kmb::BoxRegion::getMax(void) const
 {
 	return this->maxPoint;
 }
@@ -387,7 +420,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 	}
 	int countX(0), countY(0), countZ(0);
 	double d = 0.0;
-	double localThres = thres * this->maxRange();
+	double localThres = thres * this->range();
 	kmb::Matrix3x3 mat;
 	kmb::Vector3D v;
 	kmb::Vector3D t;
@@ -906,6 +939,7 @@ kmb::BoxRegion::intersectArea(const kmb::Point3D &a,const kmb::Point3D &b,const 
 double
 kmb::BoxRegion::intersectArea_minx(const kmb::Point3D &p0,const kmb::Point3D &p1,const kmb::Point3D &p2) const
 {
+
 	kmb::Point3D p3, p4;
 	switch( kmb::PlaneYZ::getIntersectionTriangle( minX(), p0, p1, p2, p3, p4 ) )
 	{
@@ -1241,6 +1275,13 @@ kmb::BoxRegion::expand(double ratio)
 		maxPoint.z( 0.5*(1+ratio)*maxz + 0.5*(1-ratio)*minz );
 		minPoint.z( 0.5*(1-ratio)*maxz + 0.5*(1+ratio)*minz );
 	}
+}
+
+void
+kmb::BoxRegion::translate(double x,double y,double z)
+{
+	minPoint.addCoordinate(x,y,z);
+	maxPoint.addCoordinate(x,y,z);
 }
 
 void

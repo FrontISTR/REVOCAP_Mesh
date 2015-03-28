@@ -88,6 +88,7 @@ public:
 
 	kmb::nodeIdType operator()(kmb::elementIdType elementId,kmb::idType localId) const;
 	kmb::nodeIdType& operator()(kmb::elementIdType elementId,kmb::idType localId);
+	void commit(kmb::elementIdType elementId);
 };
 
 }

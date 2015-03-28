@@ -25,3 +25,5 @@ LIBS = -lstdc++
 RM = rm -f
 DOXYGEN = doxygen
 TAR = tar
+RUBY = ruby
+SWIG = swig

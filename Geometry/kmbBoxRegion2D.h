@@ -47,10 +47,16 @@ public:
 	double minY(void) const;
 	double maxX(void) const;
 	double maxY(void) const;
+	void minX(double x);
+	void minY(double y);
+	void maxX(double x);
+	void maxY(double y);
 	double centerX(void) const;
 	double centerY(void) const;
 	double rangeX(void) const;
 	double rangeY(void) const;
+
+	double range(void) const;
 	double diameter(void) const;
 	const Point2D& getMin(void) const;
 	const Point2D& getMax(void) const;
@@ -67,6 +73,7 @@ public:
 
 	void expand(double x,double y);
 	void expand(double ratio);
+	void translate(double x,double y);
 
 
 	void crossOnLine(const kmb::Point2D& origin, const kmb::Vector2D& dir, double &min_t, double &max_t) const;

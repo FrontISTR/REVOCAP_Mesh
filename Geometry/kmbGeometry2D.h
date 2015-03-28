@@ -158,7 +158,7 @@ public:
 	static double sin(const Vector2D &v0,const Vector2D &v1);
 	static double angle(const Vector2D &v0,const Vector2D &v1);
 	static double angle2(const Vector2D &v0,const Vector2D &v1);
-	static double abs(const double v[3]);
+	static double abs(const double v[2]);
 };
 
 

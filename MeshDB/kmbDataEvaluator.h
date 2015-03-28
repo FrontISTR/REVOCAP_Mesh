@@ -25,6 +25,13 @@ class DataBindings;
 class PhysicalValue;
 class ElementContainer;
 
+class MinMaxInfo : public MinMaxWithId<kmb::idType>
+{
+public:
+	MinMaxInfo(void) : MinMaxWithId<kmb::idType>(){};
+	virtual ~MinMaxInfo(void){};
+};
+
 class DataEvaluator
 {
 public:

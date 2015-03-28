@@ -165,27 +165,7 @@ kmb::Point3D::getFootOfPerpendicular( const Point3D &origin, const Vector3D &u, 
 	}
 	return false;
 }
-/*
-double
-kmb::Point3D::distanceSqToTriangle(const Point3D& a,const Point3D& b,const Point3D& c) const
-{
-	kmb::Vector3D ab(b,a);
-	kmb::Vector3D ac(c,a);
-	double t0=0.0, t1=0.0;
-	if( getFootOfPerpendicular( a, ab, ac, t0, t1 ) &&
-		t0 > 0 && t1 > 0 && t0 + t1 < 1 )
-	{
 
-		return this->distanceSq( a + ab.scalar(t0) + ac.scalar(t1) );
-	}else{
-
-		double da = this->distanceSqToSegment(b,c);
-		double db = this->distanceSqToSegment(c,a);
-		double dc = this->distanceSqToSegment(a,b);
-		return kmb::Minimizer::getMin(da,db,dc);
-	}
-}
-*/
 double
 kmb::Point3D::distanceSqToTriangle(const Point3D& a,const Point3D& b,const Point3D& c,double *t) const
 {
@@ -265,6 +245,17 @@ kmb::Point3D::proportionalPoint(const Point3D& other,double t) const
 		(1.0-t)*this->z() + t*other.z());
 }
 
+#ifndef REVOCAP_SUPPORT_RUBY
+kmb::Point3D kmb::Point3D::dividingPoint(const Point3D& a,const Point3D& b,double m,double n)
+{
+	return a.dividingPoint(b,m,n);
+}
+
+kmb::Point3D kmb::Point3D::proportionalPoint(const Point3D& a,const Point3D& b,double t)
+{
+	return a.proportionalPoint(b,t);
+}
+
 double
 kmb::Point3D::distance(const Point3D& a,const Point3D& b)
 {
@@ -276,6 +267,7 @@ kmb::Point3D::distanceSq(const Point3D& a,const Point3D& b)
 {
 	return a.distanceSq(b);
 }
+#endif
 
 
 double
@@ -373,12 +365,25 @@ kmb::Point3D::calcMinorCoordinate
 	coordinate[3] = -kmb::Vector3D::triple(xa,xb,xc) / 6.0;
 }
 
-
 kmb::Vector3D
 kmb::Point3D::calcNormalVector( const kmb::Point3D& a, const kmb::Point3D& b, const kmb::Point3D& c )
 {
 	kmb::Vector3D v1(a,b);
 	kmb::Vector3D v2(a,c);
+	kmb::Vector3D v = v1 % v2;
+	v.normalize();
+	return v;
+}
+
+
+
+
+
+kmb::Vector3D
+kmb::Point3D::calcNormalVector( const kmb::Point3D& a, const kmb::Point3D& b, const kmb::Point3D& c, const kmb::Point3D& d )
+{
+	kmb::Vector3D v1(a,c);
+	kmb::Vector3D v2(b,d);
 	kmb::Vector3D v = v1 % v2;
 	v.normalize();
 	return v;

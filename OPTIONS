@@ -6,7 +6,7 @@
 # for debug
 # 
 #export DEBUGFLAG = -D_DEBUG=3 # debug message enable even if in loop
-#export DEBUGFLAG = -D_DEBUG
+#export DEBUGFLAG = -D_DEBUG -g
 export DEBUGFLAG = -DNDEBUG
 
 ### for OpenCASCADE
@@ -16,9 +16,9 @@ export DEBUGFLAG = -DNDEBUG
 
 ### for OpenGLEW
 
-EXTENSIONLIB = -DREVOCAP_SUPPORT_GLEW
-export EXTENSIONLIB
+EXTENSIONLIB += -DREVOCAP_SUPPORT_GLEW
 
 ### for Dump Container
 #EXTENSIONLIB += -DREVOCAP_DUMP_CONTAINER
 
+export EXTENSIONLIB

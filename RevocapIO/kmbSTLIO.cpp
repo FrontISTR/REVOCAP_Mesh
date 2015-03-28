@@ -41,7 +41,7 @@ kmb::STLIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
 	default:
 		break;
 	}
-	return 0;
+	return -1;
 }
 
 int
@@ -119,7 +119,7 @@ kmb::STLIO::loadFromAsciiFile(const char* filename,kmb::MeshData* mesh)
 	int index = 0;
 	double x,y,z,dist;
 	kmb::nodeIdType nodes[3] = {kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId};
-	kmb::nodeIdType nearestId = kmb::nullNodeId;
+	kmb::nodeIdType nearestId;
 	mesh->beginNode();
 	mesh->beginElement();
 	nodeOctree.setContainer(mesh->getNodes());

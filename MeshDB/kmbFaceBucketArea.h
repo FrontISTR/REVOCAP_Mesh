@@ -31,6 +31,7 @@ protected:
 	const kmb::DataBindings* faceGroup;
 	kmb::bodyIdType bodyId;
 	const kmb::DataBindings* displace;
+	kmb::DataBindings* faceArea;
 public:
 	FaceBucketArea(void);
 	virtual ~FaceBucketArea(void);
@@ -38,6 +39,7 @@ public:
 	void setAutoBucketSize(void);
 	int appendAll(void);
 	bool getNearest(double x,double y,double z,double &dist,kmb::Face &f) const;
+	double getArea(kmb::Face f) const;
 protected:
 
 	bool getNearestInBucket(const kmb::Point3D& pt,int i,int j,int k,double &dist,kmb::Face &f) const;

@@ -8,6 +8,8 @@ else
 endif
 export DYNAMIC_EXT
 
+.PHONY: RubyExtension MeshDBRuby MeshGenRuby MeshGLRuby RevocapIORuby ShapeRuby RubyUnitTest RubyClean
+
 MeshDBRuby: $(LIBDIR)/$(ARCH)/RevocapMesh.$(DYNAMIC_EXT)
 
 $(LIBDIR)/$(ARCH)/RevocapMesh.$(DYNAMIC_EXT): Common Geometry Matrix MeshDB
@@ -49,8 +51,6 @@ $(LIBDIR)/$(ARCH)/RevocapShape.$(DYNAMIC_EXT): Shape
 	$(MAKE) install -C ShapeRuby -f MakefileSwig
 
 RubyExtension: MeshDBRuby RevocapIORuby MeshGLRuby MeshGenRuby ShapeRuby
-
-.PHONY: MeshDBRuby MeshGenRuby MeshGLRuby RevocapIORuby ShapeRuby
 
 RubyUnitTest: RubyExtension
 	cp $(LIBDIR)/$(ARCH)/*.so .

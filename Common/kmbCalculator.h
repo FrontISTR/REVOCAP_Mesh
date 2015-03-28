@@ -84,7 +84,7 @@ protected:
 	T maxId;
 public:
 	MinMaxWithId(void)
-		: minValue(DBL_MAX), maxValue(-DBL_MAX), minId(), maxId()
+		: minValue(DBL_MAX), maxValue(-DBL_MAX), minId(-1), maxId(-1)
 	{
 	}
 	virtual ~MinMaxWithId(void){};
@@ -92,6 +92,13 @@ public:
 	double getMax(void) const{ return maxValue; }
 	T getMinId(void) const{ return minId; }
 	T getMaxId(void) const{ return maxId; }
+	MinMaxWithId<T>& operator=(const MinMaxWithId<T> &other){
+		this->minId = other.minId;
+		this->maxId = other.maxId;
+		this->minValue = other.minValue;
+		this->maxValue = other.maxValue;
+		return *this;
+	}
 	void initialize(void)
 	{
 		minValue = DBL_MAX;

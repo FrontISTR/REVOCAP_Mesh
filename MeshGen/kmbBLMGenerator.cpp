@@ -253,6 +253,7 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 	mesh->endElement();
 
 
+
 	kmb::ElementContainer::iterator eIter = parentBody->begin();
 	while( !eIter.isFinished() ){
 		int len = eIter.getNodeCount();
@@ -266,10 +267,12 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 	}
 
 
+
 	kmb::ElementContainer* outerBoundaryBody = mesh->getBodyPtr( outerBoundaryId );
 	if( outerBoundaryBody == NULL ){
 		return false;
 	}
+
 
 
 
@@ -309,6 +312,129 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 
 		kmb::Point3D point = node + normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), nodeId );
+		++nIter;
+	}
+	neighborInfo.clear();
+
+
+	kmb::bodyIdType layerId = this->mesh->beginElement( boundBody->getCount() * this->layerNum );
+	{
+		kmb::ElementContainer::iterator bIter = outerBoundaryBody->begin();
+		while( !bIter.isFinished() ){
+			int len = bIter.getNodeCount();
+			for(int i=0;i<len;++i){
+				orgNodeTable[i] = bIter[i];
+			}
+			appendLayerElements( bIter.getType(), orgNodeTable, true );
+			++bIter;
+		}
+	}
+	this->mesh->endElement();
+
+
+	clearLayerNodes();
+
+	boundaryId = outerBoundaryId;
+	return layerId;
+}
+
+kmb::bodyIdType
+kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
+{
+
+
+
+
+
+
+
+	kmb::ElementContainer* boundBody = mesh->getBodyPtr( boundaryId );
+	if( boundBody == NULL ){
+		return false;
+	}
+	kmb::ElementContainer* parentBody = mesh->getBodyPtr( parentId );
+	if( parentBody == NULL ){
+		return false;
+	}
+	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
+
+
+
+	kmb::nodeIdType orgNodeTable[8];
+	kmb::nodeIdType nodeTable[8];
+	kmb::bodyIdType outerBoundaryId = mesh->beginElement( boundBody->getCount() );
+	kmb::ElementContainer::iterator bIter = boundBody->begin();
+	while( !bIter.isFinished() ){
+		int num = bIter.getNodeCount();
+		for(int i=0;i<num;++i){
+			orgNodeTable[i] = bIter[i];
+			nodeTable[i] = getDuplicatedNodeId( bIter[i] );
+		}
+		mesh->addElement( bIter.getType(), orgNodeTable );
+		for(int i=0;i<num;++i){
+			bIter.setCellId(i,nodeTable[i]);
+		}
+		++bIter;
+	}
+	mesh->endElement();
+
+
+	kmb::ElementContainer::iterator eIter = parentBody->begin();
+	while( !eIter.isFinished() ){
+		int len = eIter.getNodeCount();
+		for(int i=0;i<len;++i){
+			std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( eIter[i] );
+			if( nIter != nodeMapper.end() ){
+				eIter.setCellId( i, nIter->second );
+			}
+		}
+		++eIter;
+	}
+
+
+	kmb::ElementContainer* outerBoundaryBody = mesh->getBodyPtr( outerBoundaryId );
+	if( outerBoundaryBody == NULL ){
+		return false;
+	}
+
+
+
+	kmb::NodeNeighborInfo neighborInfo;
+	neighborInfo.appendCoboundary( outerBoundaryBody );
+
+
+
+
+
+
+	kmb::Node node;
+	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
+	while( nIter != nodeMapper.end() )
+	{
+		kmb::nodeIdType nodeId = nIter->first;
+		kmb::nodeIdType dupnodeId = nIter->second;
+
+		kmb::Vector3D normVect(0.0,0.0,0.0);
+		kmb::Vector3D v;
+		kmb::NodeNeighbor::iterator neiIter = neighborInfo.beginIteratorAt( nodeId );
+		kmb::NodeNeighbor::iterator neiEnd = neighborInfo.endIteratorAt( nodeId );
+		while( neiIter != neiEnd )
+		{
+			kmb::elementIdType eId = neiIter->second;
+			kmb::ElementContainer::iterator element = outerBoundaryBody->find( eId );
+			if( !element.isFinished() &&
+				evaluator.getNormalVector( element, v ) )
+			{
+				normVect += v;
+			}
+			++neiIter;
+		}
+		normVect.normalize();
+		this->mesh->getNode(dupnodeId,node);
+
+
+		kmb::Point3D point = node - normVect.scalar(layerThick[layerNum-1]);
+		mesh->updateNode( point.x(), point.y(), point.z(), dupnodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
@@ -543,6 +669,119 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 		faceData->clear();
 		kmb::nodeIdType orgNodeTable[8];
 		kmb::ElementContainer::iterator eIter = boundaryBody.begin();
+		while( !eIter.isFinished() ){
+			int len = eIter.getNodeCount();
+			for(int i=0;i<len;++i){
+				orgNodeTable[i] = eIter[i];
+			}
+			kmb::Face outerFace = appendLayerElements( eIter.getType(), orgNodeTable, true );
+			faceData->addId( outerFace );
+			++eIter;
+		}
+	}
+	this->mesh->endElement();
+	faceData->setTargetBodyId( layerId );
+
+
+	clearLayerNodes();
+	return layerId;
+}
+
+kmb::bodyIdType
+kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
+{
+
+	kmb::DataBindings* faceData = mesh->getDataBindingsPtr(faceGroup);
+	if( faceData == NULL || faceData->getBindingMode() != kmb::DataBindings::FaceGroup ){
+		return kmb::Body::nullBodyId;
+	}
+	kmb::ElementContainer* parentBody = mesh->getBodyPtr( faceData->getTargetBodyId() );
+	if( parentBody == NULL ){
+		return kmb::Body::nullBodyId;
+	}
+
+
+
+	kmb::ElementContainerMap outerBoundaryBody;
+	kmb::DataBindings::iterator fIter = faceData->begin();
+	kmb::nodeIdType nodes[8];
+	while( !fIter.isFinished() ){
+		kmb::Face f;
+		if( fIter.getFace(f) ){
+			int localId = static_cast<int>( f.getLocalFaceId() );
+			kmb::ElementContainer::iterator eIter = parentBody->find( f.getElementId() );
+			if( !eIter.isFinished() ){
+				int bnum = eIter.getBoundaryNodeCount(localId);
+				for(int i=0;i<bnum;++i){
+					nodes[i] = eIter.getBoundaryCellId(localId,i);
+					getDuplicatedNodeId( nodes[i] );
+				}
+				outerBoundaryBody.addElement( eIter.getBoundaryType(localId), nodes );
+			}
+		}
+		++fIter;
+	}
+
+
+	kmb::ElementContainer::iterator eIter = parentBody->begin();
+	while( !eIter.isFinished() ){
+		int len = eIter.getNodeCount();
+		for(int i=0;i<len;++i){
+			std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( eIter[i] );
+			if( nIter != nodeMapper.end() ){
+				eIter.setCellId( i, nIter->second );
+			}
+		}
+		++eIter;
+	}
+
+
+	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
+
+
+	kmb::NodeNeighborInfo neighborInfo;
+	neighborInfo.appendCoboundary( &outerBoundaryBody );
+
+
+
+	kmb::Node node;
+	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
+	while( nIter != nodeMapper.end() )
+	{
+		kmb::nodeIdType nodeId = nIter->first;
+		kmb::nodeIdType dupnodeId = nIter->second;
+
+		kmb::Vector3D normVect(0.0,0.0,0.0);
+		kmb::Vector3D v;
+		kmb::NodeNeighbor::iterator neiIter = neighborInfo.beginIteratorAt( dupnodeId );
+		kmb::NodeNeighbor::iterator neiEnd = neighborInfo.endIteratorAt( dupnodeId );
+		while( neiIter != neiEnd )
+		{
+			kmb::elementIdType eId = neiIter->second;
+			kmb::ElementContainer::iterator element = outerBoundaryBody.find( eId );
+			if( !element.isFinished() &&
+				evaluator.getNormalVector( element, v ) )
+			{
+				normVect += v;
+			}
+			++neiIter;
+		}
+		normVect.normalize();
+		this->mesh->getNode(dupnodeId,node);
+
+
+		kmb::Point3D point = node - normVect.scalar(layerThick[layerNum-1]);
+		mesh->updateNode( point.x(), point.y(), point.z(), dupnodeId );
+		++nIter;
+	}
+	neighborInfo.clear();
+
+
+	kmb::bodyIdType layerId = this->mesh->beginElement( faceData->getIdCount() * this->layerNum );
+	{
+		faceData->clear();
+		kmb::nodeIdType orgNodeTable[8];
+		kmb::ElementContainer::iterator eIter = outerBoundaryBody.begin();
 		while( !eIter.isFinished() ){
 			int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){

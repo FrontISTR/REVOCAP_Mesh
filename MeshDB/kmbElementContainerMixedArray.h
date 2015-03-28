@@ -100,8 +100,10 @@ public:
 
 
 
+
 	kmb::nodeIdType operator()(kmb::elementIdType elementId,kmb::idType localId) const;
 	kmb::nodeIdType& operator()(kmb::elementIdType elementId,kmb::idType localId);
+	void commit(kmb::elementIdType elementId);
 private:
 	static size_t getRequiredNodeTableSize(const size_t typeCounter[kmb::ELEMENT_TYPE_NUM]);
 	static size_t getRequiredElementSize(const size_t typeCounter[kmb::ELEMENT_TYPE_NUM]);

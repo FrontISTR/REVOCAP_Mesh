@@ -1064,6 +1064,60 @@ kmb::MeshGL::drawFaceGroupVector(const char* faceName,const char* vectorName, do
 	}
 }
 
+void kmb::MeshGL::drawField(const char* vectorName, double arrowSize, kmb::ColorMap* colorMap)
+{
+	const kmb::DataBindings* data = NULL;
+	if( mesh != NULL && colorMap != NULL &&
+		(data = mesh->getDataBindingsPtr( vectorName )) != NULL &&
+		data->getBindingMode() == kmb::DataBindings::NodeVariable &&
+		data->getValueType() == kmb::PhysicalValue::Vector3 )
+	{
+		::glPushAttrib( GL_ENABLE_BIT );
+		::glEnable( GL_COLOR_MATERIAL );
+		double val[3] = {0.0,0.0,0.0};
+		double x=0.0,y=0.0,z=0.0;
+		kmb::DataBindings::const_iterator vIter = data->begin();
+		while( !vIter.isFinished() ){
+			if( mesh->getNodeXYZ( vIter.getId(), x, y, z ) && vIter.getValue( val ) ){
+				drawArrow( x, y, z, val[0], val[1], val[2], arrowSize, colorMap );
+			}
+			++vIter;
+		}
+		::glPopAttrib();
+		::glFlush();
+	}
+}
+
+void kmb::MeshGL::drawSurfaceField(kmb::bodyIdType bodyId,const char* vectorName, double arrowSize, kmb::ColorMap* colorMap)
+{
+	const kmb::Body* body = NULL;
+	const kmb::DataBindings* data = NULL;
+	if( mesh != NULL && colorMap != NULL &&
+		(body = mesh->getBodyPtr(bodyId)) != NULL &&
+		body->isUniqueDim(2) &&
+		(data = mesh->getDataBindingsPtr( vectorName )) != NULL &&
+		data->getBindingMode() == kmb::DataBindings::NodeVariable &&
+		data->getValueType() == kmb::PhysicalValue::Vector3 )
+	{
+		::glPushAttrib( GL_ENABLE_BIT );
+		::glEnable( GL_COLOR_MATERIAL );
+		std::set<kmb::nodeIdType> nodeIds;
+		body->getNodesOfBody( nodeIds );
+		double val[3] = {0.0,0.0,0.0};
+		double x=0.0,y=0.0,z=0.0;
+		std::set<kmb::nodeIdType>::iterator nIter = nodeIds.begin();
+		while( nIter != nodeIds.end() ){
+			kmb::nodeIdType nodeId = *nIter;
+			if( mesh->getNodeXYZ( nodeId, x, y, z ) && data->getPhysicalValue( nodeId, val ) ){
+				drawArrow( x, y, z, val[0], val[1], val[2], arrowSize, colorMap );
+			}
+			++nIter;
+		}
+		::glPopAttrib();
+		::glFlush();
+	}
+}
+
 void
 kmb::MeshGL::getDeformFaceGroupBoundingBox(kmb::BoundingBox& bbox,const char* faceName, const char* displacement, double factor) const
 {
@@ -1825,6 +1879,30 @@ kmb::MeshGL::calcPerpendicular(double v0,double v1,double v2,kmb::Vector3D &norm
 	return mag;
 }
 
+double kmb::MeshGL::calcFrame(double v0,double v1,double v2,kmb::Vector3D &normal0,kmb::Vector3D &normal1)
+{
+	double mag = v0*v0 + v1*v1 + v2*v2;
+
+
+	if( v2 == 0.0 || mag == 0.0 ){
+		normal0.setCoordinate(0.0,0.0,1.0);
+		normal1.setCoordinate(0.0,-1.0,0.0);
+	}else if( v2*v2 / mag <= 0.5 ){
+		normal0.setCoordinate(-v0*v2,-v1*v2,mag-v2*v2);
+		normal0.normalize();
+	}else{
+		normal0.setCoordinate(mag-v0*v0,-v0*v1,-v0*v2);
+		normal0.normalize();
+	}
+	normal1.setCoordinate(
+		v1*normal0.z() - v2*normal0.y(),
+		v2*normal0.x() - v0*normal0.z(),
+		v0*normal0.y() - v1*normal0.x()
+	);
+	normal1.normalize();
+	return mag;
+}
+
 void
 kmb::MeshGL::drawVectorMark(kmb::Point3D& point,kmb::Vector3D& vec)
 {
@@ -2085,6 +2163,49 @@ kmb::MeshGL::drawVector(double x,double y,double z,double v0,double v1,double v2
 }
 
 void
+kmb::MeshGL::drawArrow(double x,double y,double z,double v0,double v1,double v2,double arrowSize,kmb::ColorMap* colorMap)
+{
+	Vector3D normal0,normal1;
+	double mag = this->calcFrame(v0,v1,v2,normal0,normal1);
+	if( mag < arrowSize * 1.0e-6 ){
+		return;
+	}
+	double d = sqrt( mag );
+	float rgb[3] = {0.0,0.0,0.0};
+	colorMap->getRGB( d, rgb );
+	::glColor3fv( rgb );
+	v0 /= d;
+	v1 /= d;
+	v2 /= d;
+	::glBegin( GL_TRIANGLES );
+	::glVertex3d(
+			x+arrowSize*(v0*0.5),
+			y+arrowSize*(v1*0.5),
+			z+arrowSize*(v2*0.5));
+	::glVertex3d(
+			x+arrowSize*(-v0*0.5+0.125*normal0.x()),
+			y+arrowSize*(-v1*0.5+0.125*normal0.y()),
+			z+arrowSize*(-v2*0.5+0.125*normal0.z()));
+	::glVertex3d(
+			x+arrowSize*(-v0*0.5-0.125*normal0.x()),
+			y+arrowSize*(-v1*0.5-0.125*normal0.y()),
+			z+arrowSize*(-v2*0.5-0.125*normal0.z()));
+	::glVertex3d(
+			x+arrowSize*(v0*0.5),
+			y+arrowSize*(v1*0.5),
+			z+arrowSize*(v2*0.5));
+	::glVertex3d(
+			x+arrowSize*(-v0*0.5+0.125*normal1.x()),
+			y+arrowSize*(-v1*0.5+0.125*normal1.y()),
+			z+arrowSize*(-v2*0.5+0.125*normal1.z()));
+	::glVertex3d(
+			x+arrowSize*(-v0*0.5-0.125*normal1.x()),
+			y+arrowSize*(-v1*0.5-0.125*normal1.y()),
+			z+arrowSize*(-v2*0.5-0.125*normal1.z()));
+	::glEnd();
+}
+
+void
 kmb::MeshGL::drawElementEdge(kmb::ElementBase& element)
 {
 	const int len = element.getEdgeCount();
@@ -2123,4 +2244,3 @@ kmb::MeshGL::drawFaceEdge(kmb::ElementBase& element,int index)
 	::glEnd();
 	::glFlush();
 }
-

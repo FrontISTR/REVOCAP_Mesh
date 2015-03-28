@@ -546,10 +546,12 @@ Body と呼ぶ。以下の beginElement から endElement までの間に addElement で
 /**--------------------------------------------------------------------------
 =begin
 --- getDimension(bodyId)
+--- getDimension()
 	要素グループの次元（表面メッシュなら2、体積メッシュなら3）
 =end
 ---------------------------------------------------------------------------*/
 	int getDimension(kmb::bodyIdType bodyId) const;
+	int getDimension(void) const;
 
 /**--------------------------------------------------------------------------
 =begin

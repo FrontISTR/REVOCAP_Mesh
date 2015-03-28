@@ -1,8 +1,8 @@
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 =begin
-Linux/Windows ‹¤’Ê‚ÌŠg’£ƒ‰ƒCƒuƒ‰ƒŠì¬ƒXƒNƒŠƒvƒg extconf.rb
+Linux/Windows å…±é€šã®æ‹¡å¼µãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½œæˆã‚¹ã‚¯ãƒªãƒ—ãƒˆ extconf.rb
 
-Linux ŠÂ‹«‚Ìê‡Aldd RevocapGL.so ‚ÅŠm”FI
+Linux ç’°å¢ƒã®å ´åˆã€ldd RevocapGL.so ã§ç¢ºèªï¼
 =end
 
 require 'mkmf'
@@ -37,4 +37,4 @@ $libs = append_library($libs, 'RcapGeometry')
 $libs = append_library($libs, 'RcapMeshDB')
 $libs = append_library($libs, 'RcapIO')
 dir_config( "#{modulename}", "..","../lib/#{arch}")
-create_makefile("#{modulename}")    # interface ƒtƒ@ƒCƒ‹‚Å’è‹`‚µ‚½ module –¼‚ğ‘‚­
+create_makefile("#{modulename}")    # interface ãƒ•ã‚¡ã‚¤ãƒ«ã§å®šç¾©ã—ãŸ module åã‚’æ›¸ã

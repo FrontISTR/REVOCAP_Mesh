@@ -104,6 +104,12 @@ public:
 	Array 値である。
 	例：blm.generate( mesh,0 ) => [1,2]
 	このとき BodyId 1 は外部表面メッシュの要素グループIdで BodyId 2 が三角柱要素による境界層の要素グループIdである。
+--- intrudeB(mesh,parentId,bodyId)
+	mesh の bodyId で与えられる表面メッシュに対して境界層メッシュを生成する。
+	戻り値は境界層の外部表面メッシュのBodyIdと境界層メッシュのBodyIdを要素に持つ
+	Array 値である。
+	例：blm.generate( mesh,0 ) => [1,2]
+	このとき BodyId 1 は外部表面メッシュの要素グループIdで BodyId 2 が三角柱要素による境界層の要素グループIdである。
 =end
 ---------------------------------------------------------------------------*/
 %extend{
@@ -122,6 +128,16 @@ public:
 		kmb::bodyIdType layerId;
 		kmb::bodyIdType boundaryId = bodyId;
 		layerId = self->intrude(parentId,boundaryId);
+		VALUE ary = rb_ary_new();
+		rb_ary_store(ary,0,INT2FIX(boundaryId));
+		rb_ary_store(ary,1,INT2FIX(layerId));
+		return ary;
+	}
+	VALUE intrudeB(MeshData* mesh,kmb::bodyIdType parentId,kmb::bodyIdType bodyId){
+		self->setMesh(mesh);
+		kmb::bodyIdType layerId;
+		kmb::bodyIdType boundaryId = bodyId;
+		layerId = self->intrudeB(parentId,boundaryId);
 		VALUE ary = rb_ary_new();
 		rb_ary_store(ary,0,INT2FIX(boundaryId));
 		rb_ary_store(ary,1,INT2FIX(layerId));

@@ -69,6 +69,7 @@ OpenGL で高速に描画するためのクラスである。
 ((<drawIntersection>))
 ((<drawIntersectionContour>))
 ((<drawVector>))
+((<drawField>))
 ((<drawSurfaceVector>))
 ((<drawFaceGroupVector>))
 ((<drawMarking>))
@@ -369,9 +370,17 @@ public:
 	vectorName で与えられる NodeVariable モードの Vector3 値の物理量に対して、
 	長さが factor 倍の矢印でベクトル表示する。
 	色は colorMap で与える。
+---drawField(vector,size,colorMap)
+	vectorName で与えられる NodeVariable モードの Vector3 値の物理量に対して、
+	長さ size 一定の矢印でベクトル表示する。
+	色は colorMap で与える。
 ---drawSurfaceVector(bodyId,vector,factor,colormap)
 	vectorName で与えられる NodeVariable モードの Vector3 値の物理量に対して、
 	bodyId で与えられた面上の節点について、長さが factor 倍の矢印でベクトル表示する。
+	色は colorMap で与える。
+---drawSurfaceField(bodyId,vector,size,colormap)
+	vectorName で与えられる NodeVariable モードの Vector3 値の物理量に対して、
+	bodyId で与えられた面上の節点について、長さが size 一定の矢印でベクトル表示する。
 	色は colorMap で与える。
 ---drawFaceGroupVector(faceName,vectorName,factor,colorMap)
 	vectorName で与えられる NodeVariable モードの Vector3 値の物理量に対して、
@@ -380,7 +389,9 @@ public:
 =end
 ---------------------------------------------------------------------------*/
 	void drawVector(const char* vectorName, double factor, kmb::ColorMap* colorMap);
+	void drawField(const char* vectorName, double arrowSize, kmb::ColorMap* colorMap);
 	void drawSurfaceVector(kmb::bodyIdType bodyId,const char* vectorName, double factor, kmb::ColorMap* colorMap);
+	void drawSurfaceField(kmb::bodyIdType bodyId,const char* vectorName, double arrowSize, kmb::ColorMap* colorMap);
 	void drawFaceGroupVector(const char* faceName,const char* vectorName, double factor, kmb::ColorMap* colorMap);
 /**--------------------------------------------------------------------------
 =begin
@@ -401,12 +412,15 @@ public:
 	ただし Tetrahedron のみ
 ---drawSectionVector(bodyId,plane,vectorName,factor,colorMap)
 	節点値の vectorName の値で colorMap に従い factor 倍のベクトル表示をする。
+---drawSectionField(bodyId,plane,vectorName,size,colorMap)
+	節点値の vectorName の値で colorMap に従い、長さ size 一定のベクトル表示をする。
 =end
 ---------------------------------------------------------------------------*/
 	void drawSection(kmb::bodyIdType bodyId,kmb::Plane* plane);
 	void drawSectionNodeContour(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
 	void drawSectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
 	void drawSectionVector(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* vectorName, double factor, kmb::ColorMap* colorMap);
+	void drawSectionField(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* vectorName, double arrowSize, kmb::ColorMap* colorMap);
 /**--------------------------------------------------------------------------
 =begin
 --- drawTrajectory(vectorVal,x,y,z,delta,step,colorMap,tolerance=0.0)
@@ -414,6 +428,14 @@ public:
 =end
 ---------------------------------------------------------------------------*/
 	int drawTrajectory(const char* vectorVal,double x,double y,double z,double delta,int step, kmb::ColorMap* colorMap, double tolerance=0.0);
+
+/**--------------------------------------------------------------------------
+=begin
+--- volumeRendering(physicalVal,colorMap,repeatLevel,numParticle,volCorrect=true,comp=-1)
+	ボリュームレンダリング（テスト用）
+=end
+---------------------------------------------------------------------------*/
+	void volumeRendering(const char* physicalValue, kmb::ColorMap* colorMap,int repeatLevel,int numParticle,bool volCorrect=true,int comp=-1);
 
 /**--------------------------------------------------------------------------
 =begin

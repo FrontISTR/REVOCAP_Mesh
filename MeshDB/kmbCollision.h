@@ -68,7 +68,12 @@ public:
 		NOT_COLLIDE = -1,
 		TOPOLOGICAL_CONTACT = 0,
 		GEOMETRICAL_CONTACT = 1,
-		DETECT = 2
+		DETECT = 2,
+		kCollisionError = -2,
+		kNotCollision = -1,
+		kTopologicalContact = 0,
+		kGeometricalContact = 1,
+		kCollision = 2
 	};
 	static const char* collisionTypeString( collisionType ctype );
 
@@ -108,19 +113,18 @@ public:
 	double getNearestFace(kmb::ElementBase& q0,const char* fg,kmb::Face &nearestFace,int &index) const;
 
 
-	double distanceSqSegSeg(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0,kmb::Point3D& q1,double &t1, double &t2) const;
-	double distanceSqSegTri(kmb::Point3D& p0,kmb::Point3D& p1,
-		kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2,
-		double &s,double t[2]) const;
-	double distanceSqTriTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& p2,
-		kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2,
-		double s[2],double t[2]) const;
+
+	static double testSegSeg(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0,kmb::Point3D& q1,double &t1, double &t2);
+	static double testSegTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2,double &s,double t[2]);
+	static double testTriTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& p2,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2,double s[2],double t[2]);
 
 
-	collisionType detectTriTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& p2,
-		kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2) const;
-	collisionType detectSegTri(kmb::Point3D& p0,kmb::Point3D& p1,
-		kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2) const;
+
+	static collisionType detectSegTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2);
+	static collisionType detectTriTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& p2,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2);
+
+	static collisionType detectSegTri2(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2);
+	static collisionType detectTriTri2(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& p2,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2);
 };
 
 }

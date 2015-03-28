@@ -29,6 +29,7 @@ namespace kmb{
 class ElementContainer;
 class Point3DContainer;
 class Matrix4x4;
+class DataBindings;
 
 class TriangleBucketArea : public Bucket< std::pair<kmb::elementIdType,double> >
 {
@@ -36,6 +37,7 @@ private:
 	const kmb::Point3DContainer* points;
 	const kmb::ElementContainer* elements;
 	const kmb::Matrix4x4* coordMatrix;
+	kmb::DataBindings* elemArea;
 public:
 	TriangleBucketArea(void);
 	TriangleBucketArea(const kmb::BoxRegion &box,int xnum,int ynum,int znum);
@@ -47,6 +49,7 @@ public:
 	int appendAll(void);
 
 	bool getNearest(double x,double y,double z,double &dist,kmb::elementIdType &tri) const;
+	double getArea(kmb::elementIdType elemId) const;
 protected:
 
 

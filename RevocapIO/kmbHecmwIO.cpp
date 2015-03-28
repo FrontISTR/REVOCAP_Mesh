@@ -57,6 +57,10 @@
  #endif
 #endif
 
+int kmb::HecmwIO::tetRmap[] = {3,2,0,1};
+int kmb::HecmwIO::wedRmap[] = {0,1,2,3,4};
+int kmb::HecmwIO::hexRmap[] = {0,1,2,3,4,5};
+int kmb::HecmwIO::pyrRmap[] = {4,0,1,2,3};
 
 kmb::HecmwIO::HecmwIO(kmb::nodeIdType offsetNodeId,kmb::elementIdType offsetElementId)
 : offsetNodeId(0)
@@ -350,7 +354,6 @@ kmb::HecmwIO::readSection( std::ifstream &input, std::string &line, kmb::MeshDat
 		}
 		std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
 		std::string matname = kmb::RevocapIOUtils::getValue( line, "MATERIAL" );
-
 		if( name.size() > 0 ){
 
 			int index = getEgrpInfoIndex( name );
@@ -456,7 +459,6 @@ kmb::HecmwIO::readMaterial( std::ifstream &input, std::string &line, kmb::MeshDa
 			int subitem = 0;
 			ss >> subitem;
 
-
 			if( subitem == 0 ){
 				subitem = 1;
 			}
@@ -470,7 +472,6 @@ kmb::HecmwIO::readMaterial( std::ifstream &input, std::string &line, kmb::MeshDa
 				tokenizer >> value;
 
 				tokenizer >> comma;
-
 				switch(this->soltype)
 				{
 					case kmb::HecmwIO::STATIC:
@@ -566,22 +567,22 @@ kmb::HecmwIO::readEGroup( std::ifstream &input, std::string &line, kmb::MeshData
 				kmb::elementIdType elementId = kmb::Element::nullElementId;
 				kmb::nodeIdType* nodeTable = new kmb::nodeIdType[ kmb::Element::MAX_NODE_COUNT ];
 				kmb::elementType etype = kmb::UNKNOWNTYPE;
-				while( !input.eof() ){
-					std::getline( input, line );
+				std::istringstream tokenLine;
+				std::istringstream tokenDecimal;
+				std::string decimal;
+				while( std::getline( input, line ) ){
 					if( line.find("!") == 0 ){
 						break;
-					}else{
-						std::istringstream tokenizer(line);
-						while( !tokenizer.eof() ){
-							tokenizer >> elementId;
-
-							if( tokenizer.get() != ',' ){
-								tokenizer.unget();
-							}
-							kmb::ElementContainer::iterator eIter = parentBody->find( elementId - this->offsetElementId );
-							if( eIter.getElement( etype, nodeTable ) ){
-								body->addElement( etype, nodeTable, elementId - this->offsetElementId );
-							}
+					}
+					tokenLine.str(line);
+					tokenLine.clear();
+					while( std::getline( tokenLine, decimal, ',') ){
+						tokenDecimal.str(decimal);
+						tokenDecimal.clear();
+						tokenDecimal >> elementId;
+						kmb::ElementContainer::iterator eIter = parentBody->find( elementId - this->offsetElementId );
+						if( eIter.getElement( etype, nodeTable ) ){
+							body->addElement( etype, nodeTable, elementId - this->offsetElementId );
 						}
 						parentBody->deleteElement( elementId - this->offsetElementId );
 					}
@@ -598,20 +599,20 @@ kmb::HecmwIO::readEGroup( std::ifstream &input, std::string &line, kmb::MeshData
 
 			if( data ){
 				kmb::elementIdType elementId = kmb::Element::nullElementId;
-				while( !input.eof() ){
-					std::getline( input, line );
+				std::istringstream tokenLine;
+				std::istringstream tokenDecimal;
+				std::string decimal;
+				while( std::getline( input, line ) ){
 					if( line.find("!") == 0 ){
 						break;
-					}else{
-						std::istringstream tokenizer(line);
-						while( !tokenizer.eof() ){
-							tokenizer >> elementId;
-
-							if( tokenizer.get() != ',' ){
-								tokenizer.unget();
-							}
-							data->addId( elementId - this->offsetElementId );
-						}
+					}
+					tokenLine.str(line);
+					tokenLine.clear();
+					while( std::getline( tokenLine, decimal, ',') ){
+						tokenDecimal.str(decimal);
+						tokenDecimal.clear();
+						tokenDecimal >> elementId;
+						data->addId( elementId - this->offsetElementId );
 					}
 				}
 			}else{
@@ -648,40 +649,42 @@ kmb::HecmwIO::readNGroup( std::ifstream &input, std::string &line, kmb::MeshData
 
 
 		if( data ){
-			kmb::nodeIdType nodeId = kmb::nullNodeId;
-			kmb::nodeIdType nodeId0 = kmb::nullNodeId;
-			kmb::nodeIdType nodeId1 = kmb::nullNodeId;
-			int interval = 1;
-			while( !input.eof() ){
-				std::getline( input, line );
-				if( line.find("!") == 0 ){
-					break;
-				}else{
-					std::istringstream tokenizer(line);
-					if( generateFlag ){
-						tokenizer >> nodeId0;
-						if( tokenizer.get() != ',' ){
-							tokenizer.unget();
-						}
-						tokenizer >> nodeId1;
-						if( tokenizer.get() != ',' ){
-							tokenizer.unget();
-						}
-						tokenizer >> interval;
-						for( nodeId = nodeId0; nodeId <= nodeId1; nodeId += interval ){
-							data->addId( nodeId - this->offsetNodeId );
-							++count;
-						}
-					}else{
-						while( !tokenizer.eof() ){
-							tokenizer >> nodeId;
-
-							if( tokenizer.get() != ',' ){
-								tokenizer.unget();
-							}
-							data->addId( nodeId - this->offsetNodeId );
-							++count;
-						}
+			if( generateFlag ){
+				std::istringstream tokenLine;
+				kmb::nodeIdType nodeId = kmb::nullNodeId;
+				kmb::nodeIdType nodeId0 = kmb::nullNodeId;
+				kmb::nodeIdType nodeId1 = kmb::nullNodeId;
+				int interval = 1;
+				char comma;
+				while( std::getline( input, line ) ){
+					if( line.find("!") == 0 ){
+						break;
+					}
+					tokenLine.str(line);
+					tokenLine.clear();
+					tokenLine >> nodeId0 >> comma >> nodeId1 >> comma >> interval;
+					for( nodeId = nodeId0; nodeId <= nodeId1; nodeId += interval ){
+						data->addId( nodeId - this->offsetNodeId );
+						++count;
+					}
+				}
+			}else{
+				std::istringstream tokenLine;
+				std::istringstream tokenDecimal;
+				std::string decimal;
+				kmb::nodeIdType nodeId = kmb::nullNodeId;
+				while( std::getline( input, line ) ){
+					if( line.find("!") == 0 ){
+						break;
+					}
+					tokenLine.str(line);
+					tokenLine.clear();
+					while( std::getline( tokenLine, decimal, ',') ){
+						tokenDecimal.str(decimal);
+						tokenDecimal.clear();
+						tokenDecimal >> nodeId;
+						data->addId( nodeId - this->offsetNodeId );
+						++count;
 					}
 				}
 			}
@@ -709,9 +712,6 @@ kmb::HecmwIO::readSGroup( std::ifstream &input, std::string &line, kmb::MeshData
 			}
 		}
 	}else{
-		int tetFmap[] = {3,2,0,1};
-		int wedFmap[] = {0,1,2,3,4};
-		int hexFmap[] = {0,1,2,3,4,5};
 		std::string name = kmb::RevocapIOUtils::getValue( line, "SGRP" );
 		kmb::DataBindings* data = mesh->getDataBindingsPtr( name.c_str() );
 		if( data == NULL && dataFlag ){
@@ -720,52 +720,55 @@ kmb::HecmwIO::readSGroup( std::ifstream &input, std::string &line, kmb::MeshData
 		if( data ){
 			kmb::elementIdType elementId = kmb::Element::nullElementId;
 			kmb::idType localId = kmb::nullId;
-			char comma;
 			kmb::Face f;
-			while( !input.eof() ){
-				std::getline( input, line );
+			std::istringstream tokenLine;
+			std::istringstream tokenDecimal;
+			std::string decimal;
+			while( std::getline( input, line ) ){
 				if( line.find("!") == 0 ){
 					break;
-				}else{
-					std::istringstream tokenizer(line);
-					while( !tokenizer.eof() ){
-						tokenizer >> elementId >> comma >> localId;
+				}
+				tokenLine.str(line);
+				tokenLine.clear();
+				while( !tokenLine.eof() ){
+					std::getline( tokenLine, decimal, ',');
+					tokenDecimal.str(decimal);
+					tokenDecimal.clear();
+					tokenDecimal >> elementId;
+					std::getline( tokenLine, decimal, ',');
+					tokenDecimal.str(decimal);
+					tokenDecimal.clear();
+					tokenDecimal >> localId;
+					kmb::ElementContainer::const_iterator eIter = mesh->findElement( elementId - this->offsetElementId );
+					switch( eIter.getType() )
+					{
+					case kmb::TETRAHEDRON:
+					case kmb::TETRAHEDRON2:
+						f.setId( elementId - this->offsetElementId, tetRmap[ localId-1 ] );
+						data->addId( f );
+						++count;
+						break;
+					case kmb::WEDGE:
+					case kmb::WEDGE2:
+						f.setId( elementId - this->offsetElementId, wedRmap[ localId-1 ] );
+						data->addId( f );
+						++count;
+						break;
+					case kmb::HEXAHEDRON:
+					case kmb::HEXAHEDRON2:
+						f.setId( elementId - this->offsetElementId, hexRmap[ localId-1 ] );
+						data->addId( f );
+						++count;
+						break;
+					case kmb::PYRAMID:
+					case kmb::PYRAMID2:
+						f.setId( elementId - this->offsetElementId, pyrRmap[ localId-1 ] );
+						data->addId( f );
+						++count;
+						break;
+					default:
 
-						if( tokenizer.get() != ',' ){
-							tokenizer.unget();
-						}
-						tokenizer >> localId;
-
-						if( tokenizer.get() != ',' ){
-							tokenizer.unget();
-						}
-						kmb::ElementContainer::const_iterator eIter = mesh->findElement( elementId - this->offsetElementId );
-						if( eIter.isFinished() ){
-							eIter = mesh->findElement( elementId - this->offsetElementId );
-						}
-						switch( eIter.getType() )
-						{
-						case kmb::TETRAHEDRON:
-						case kmb::TETRAHEDRON2:
-							f.setId( elementId - this->offsetElementId, tetFmap[ localId-1 ] );
-							data->addId( f );
-							++count;
-							break;
-						case kmb::WEDGE:
-						case kmb::WEDGE2:
-							f.setId( elementId - this->offsetElementId, wedFmap[ localId-1 ] );
-							data->addId( f );
-							++count;
-							break;
-						case kmb::HEXAHEDRON:
-						case kmb::HEXAHEDRON2:
-							f.setId( elementId - this->offsetElementId, hexFmap[ localId-1 ] );
-							data->addId( f );
-							++count;
-							break;
-						default:
-							break;
-						}
+						break;
 					}
 				}
 			}
@@ -2156,7 +2159,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 			while( egIter != egEnd ){
 				if( dataFlag )
 				{
-					if( egIter->second->getBindingMode() == kmb::DataBindings::ElementGroup ){
+					if( egIter->second->getBindingMode() == kmb::DataBindings::ElementGroup && egIter->second->getIdCount() > 0 ){
 						output << "!EGROUP, EGRP=" << egIter->first << std::endl;
 						kmb::DataBindings::const_iterator eIter = egIter->second->begin();
 						while( !eIter.isFinished() ){
@@ -2180,7 +2183,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 					ngIter->second->getSpecType() == "CFLUX" ||
 					ngIter->second->getSpecType() == "TEMPERATURE" )
 				{
-					if( ngIter->second->getBindingMode() == kmb::DataBindings::NodeGroup ){
+					if( ngIter->second->getBindingMode() == kmb::DataBindings::NodeGroup && ngIter->second->getIdCount() > 0 ){
 						output << "!NGROUP, NGRP=" << ngIter->first << std::endl;
 						kmb::DataBindings::const_iterator ndIter = ngIter->second->begin();
 						while( !ndIter.isFinished() ){
@@ -2208,7 +2211,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 
 					sgIter->second->getSpecType() == "COUPLING" )
 				{
-					if( sgIter->second->getBindingMode() == kmb::DataBindings::FaceGroup ){
+					if( sgIter->second->getBindingMode() == kmb::DataBindings::FaceGroup && sgIter->second->getIdCount() > 0 ){
 						output << "!SGROUP, SGRP=" << sgIter->first << std::endl;
 						kmb::DataBindings::const_iterator fIter = sgIter->second->begin();
 						while( !fIter.isFinished() ){
@@ -3259,11 +3262,6 @@ kmb::HecmwIO::appendFooterToFile(const char* filename) const
 	output.close();
 	return 0;
 }
-
-int kmb::HecmwIO::tetRmap[] = {3,2,0,1};
-int kmb::HecmwIO::wedRmap[] = {0,1,2,3,4};
-int kmb::HecmwIO::hexRmap[] = {0,1,2,3,4,5};
-int kmb::HecmwIO::pyrRmap[] = {4,0,1,2,3};
 
 int
 kmb::HecmwIO::correctLocalFaceId( kmb::MeshData* mesh, const char* faceName, const char* stype )

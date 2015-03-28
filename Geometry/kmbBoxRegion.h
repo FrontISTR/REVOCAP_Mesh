@@ -49,19 +49,27 @@ public:
 	BoxRegion& operator=(const BoxRegion &other);
 
 	void setMinMax(double x0,double y0,double z0,double x1,double y1,double z1);
+	void setMinMax(kmb::Point3D& minPoint,kmb::Point3D& maxPoint);
 	double minX(void) const;
 	double minY(void) const;
 	double minZ(void) const;
 	double maxX(void) const;
 	double maxY(void) const;
 	double maxZ(void) const;
+	void minX(double x);
+	void minY(double y);
+	void minZ(double z);
+	void maxX(double x);
+	void maxY(double y);
+	void maxZ(double z);
 	double centerX(void) const;
 	double centerY(void) const;
 	double centerZ(void) const;
 	double rangeX(void) const;
 	double rangeY(void) const;
 	double rangeZ(void) const;
-	double maxRange(void) const;
+
+	double range(void) const;
 	double diameter(void) const;
 	double diameterSq(void) const;
 	const Point3D& getMin(void) const;
@@ -80,6 +88,8 @@ public:
 
 	void expand(double x,double y,double z);
 	void expand(double ratio);
+
+	void translate(double x,double y,double z);
 
 	void setRange(double rangeX,double rangeY,double rangeZ);
 

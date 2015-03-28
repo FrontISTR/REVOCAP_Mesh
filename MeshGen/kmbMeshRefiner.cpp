@@ -436,7 +436,7 @@ kmb::MeshRefiner::refineBody(const kmb::ElementContainer* orgBody, kmb::ElementC
 
 
 void
-kmb::MeshRefiner::refineSegment( kmb::elementIdType elementId, kmb::ElementBase &segment, kmb::ElementContainer* refinedBody )
+kmb::MeshRefiner::refineSegment( kmb::elementIdType elementId, const kmb::ElementBase &segment, kmb::ElementContainer* refinedBody )
 {
 	kmb::nodeIdType nodeTable[2];
 	kmb::elementIdType e[2] = {
@@ -488,7 +488,7 @@ kmb::MeshRefiner::refineSegment( kmb::elementIdType elementId, kmb::ElementBase 
 
 
 void
-kmb::MeshRefiner::refineSegment2( kmb::elementIdType elementId, kmb::ElementBase &segment2, kmb::ElementContainer* refinedBody )
+kmb::MeshRefiner::refineSegment2( kmb::elementIdType elementId, const kmb::ElementBase &segment2, kmb::ElementContainer* refinedBody )
 {
 	kmb::nodeIdType nodeTable[3];
 	kmb::elementIdType e[2] = {
@@ -555,7 +555,7 @@ kmb::MeshRefiner::refineSegment2( kmb::elementIdType elementId, kmb::ElementBase
 
 
 void
-kmb::MeshRefiner::refineTriangle( kmb::elementIdType elementId, kmb::ElementBase &triangle, kmb::ElementContainer* refinedBody )
+kmb::MeshRefiner::refineTriangle( kmb::elementIdType elementId, const kmb::ElementBase &triangle, kmb::ElementContainer* refinedBody )
 {
 	kmb::nodeIdType nodeTable[3];
 	kmb::elementIdType e[4] = {
@@ -654,7 +654,7 @@ kmb::MeshRefiner::refineTriangle( kmb::elementIdType elementId, kmb::ElementBase
 
 
 void
-kmb::MeshRefiner::refineTriangle2( kmb::elementIdType elementId, kmb::ElementBase &triangle2, kmb::ElementContainer* refinedBody )
+kmb::MeshRefiner::refineTriangle2( kmb::elementIdType elementId, const kmb::ElementBase &triangle2, kmb::ElementContainer* refinedBody )
 {
 	kmb::nodeIdType nodeTable[6];
 	kmb::elementIdType e[4] = {
@@ -800,7 +800,7 @@ kmb::MeshRefiner::refineTriangle2( kmb::elementIdType elementId, kmb::ElementBas
 
 
 void
-kmb::MeshRefiner::refineQuad( kmb::elementIdType elementId, kmb::ElementBase &quad, kmb::ElementContainer* refinedBody )
+kmb::MeshRefiner::refineQuad( kmb::elementIdType elementId, const kmb::ElementBase &quad, kmb::ElementContainer* refinedBody )
 {
 	kmb::nodeIdType nodeTable[4];
 	kmb::elementIdType e[4] = {
@@ -908,7 +908,7 @@ kmb::MeshRefiner::refineQuad( kmb::elementIdType elementId, kmb::ElementBase &qu
 
 
 void
-kmb::MeshRefiner::refineQuad2( kmb::elementIdType elementId, kmb::ElementBase &quad2, kmb::ElementContainer* refinedBody )
+kmb::MeshRefiner::refineQuad2( kmb::elementIdType elementId, const kmb::ElementBase &quad2, kmb::ElementContainer* refinedBody )
 {
 	kmb::nodeIdType nodeTable[8];
 	kmb::elementIdType e[4] = {
@@ -1096,7 +1096,7 @@ kmb::MeshRefiner::refineQuad2( kmb::elementIdType elementId, kmb::ElementBase &q
 
 
 void
-kmb::MeshRefiner::refineTetrahedron( kmb::elementIdType elementId, kmb::ElementBase &tetra, kmb::ElementContainer* refinedBody )
+kmb::MeshRefiner::refineTetrahedron( kmb::elementIdType elementId, const kmb::ElementBase &tetra, kmb::ElementContainer* refinedBody )
 {
 	kmb::elementIdType e[4] = {
 		kmb::Element::nullElementId,
@@ -1145,9 +1145,9 @@ kmb::MeshRefiner::refineTetrahedron( kmb::elementIdType elementId, kmb::ElementB
 
 
 
-		double d01_23 = distanceSqBetweenNodes( n01, n23 );
-		double d02_13 = distanceSqBetweenNodes( n02, n13 );
-		double d03_12 = distanceSqBetweenNodes( n03, n12 );
+		double d01_23 = mesh->getNodes()->distanceSq( n01, n23 );
+		double d02_13 = mesh->getNodes()->distanceSq( n02, n13 );
+		double d03_12 = mesh->getNodes()->distanceSq( n03, n12 );
 		if( d03_12 <= d01_23 && d03_12 <= d02_13 ){
 
 
@@ -1296,7 +1296,7 @@ kmb::MeshRefiner::refineTetrahedron( kmb::elementIdType elementId, kmb::ElementB
 
 
 void
-kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, kmb::ElementBase &tetra2, kmb::ElementContainer* refinedBody )
+kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::ElementBase &tetra2, kmb::ElementContainer* refinedBody )
 {
 	kmb::elementIdType e[4] = {
 		kmb::Element::nullElementId,
@@ -1450,9 +1450,9 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, kmb::Element
 
 
 
-		double d4_7 = distanceSqBetweenNodes( tetra2.getCellId(4), tetra2.getCellId(7) );
-		double d5_8 = distanceSqBetweenNodes( tetra2.getCellId(5), tetra2.getCellId(8) );
-		double d6_9 = distanceSqBetweenNodes( tetra2.getCellId(6), tetra2.getCellId(9) );
+		double d4_7 = mesh->getNodes()->distanceSq( tetra2[4], tetra2[7] );
+		double d5_8 = mesh->getNodes()->distanceSq( tetra2[5], tetra2[8] );
+		double d6_9 = mesh->getNodes()->distanceSq( tetra2[6], tetra2[9] );
 		if( d4_7 <= d5_8 && d4_7 <= d6_9 ){
 
 			n47 = middleMan->getDividedNode( tetra2.getCellId(4), tetra2.getCellId(7) );
@@ -1717,7 +1717,7 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, kmb::Element
 
 
 void
-kmb::MeshRefiner::refineHexahedron( kmb::elementIdType elementId, kmb::ElementBase &hexa, kmb::ElementContainer* refinedBody )
+kmb::MeshRefiner::refineHexahedron( kmb::elementIdType elementId, const kmb::ElementBase &hexa, kmb::ElementContainer* refinedBody )
 {
 	kmb::elementIdType e[8] = {
 		kmb::Element::nullElementId,
@@ -1912,7 +1912,7 @@ kmb::MeshRefiner::refineHexahedron( kmb::elementIdType elementId, kmb::ElementBa
 
 
 void
-kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, kmb::ElementBase &hexa2, kmb::ElementContainer* refinedBody )
+kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, const kmb::ElementBase &hexa2, kmb::ElementContainer* refinedBody )
 {
 	kmb::elementIdType e[8] = {
 		kmb::Element::nullElementId,
@@ -2466,7 +2466,7 @@ kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, kmb::ElementB
 
 
 void
-kmb::MeshRefiner::refineWedge( kmb::elementIdType elementId, kmb::ElementBase &wedge, kmb::ElementContainer* refinedBody )
+kmb::MeshRefiner::refineWedge( kmb::elementIdType elementId, const kmb::ElementBase &wedge, kmb::ElementContainer* refinedBody )
 {
 	kmb::elementIdType e[8] = {
 		kmb::Element::nullElementId,
@@ -2635,7 +2635,7 @@ kmb::MeshRefiner::refineWedge( kmb::elementIdType elementId, kmb::ElementBase &w
 
 
 void
-kmb::MeshRefiner::refineWedge2( kmb::elementIdType elementId, kmb::ElementBase &wedge2, kmb::ElementContainer* refinedBody )
+kmb::MeshRefiner::refineWedge2( kmb::elementIdType elementId, const kmb::ElementBase &wedge2, kmb::ElementContainer* refinedBody )
 {
 	kmb::elementIdType e[8] = {
 		kmb::Element::nullElementId,
@@ -3046,7 +3046,7 @@ kmb::MeshRefiner::refineWedge2( kmb::elementIdType elementId, kmb::ElementBase &
 
 
 void
-kmb::MeshRefiner::refinePyramid( kmb::elementIdType elementId, kmb::ElementBase &pyramid, kmb::ElementContainer* refinedBody )
+kmb::MeshRefiner::refinePyramid( kmb::elementIdType elementId, const kmb::ElementBase &pyramid, kmb::ElementContainer* refinedBody )
 {
 	kmb::elementIdType e[10] = {
 		kmb::Element::nullElementId,
@@ -3229,7 +3229,7 @@ kmb::MeshRefiner::refinePyramid( kmb::elementIdType elementId, kmb::ElementBase 
 
 
 void
-kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, kmb::ElementBase &pyramid2, kmb::ElementContainer* refinedBody )
+kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, const kmb::ElementBase &pyramid2, kmb::ElementContainer* refinedBody )
 {
 	kmb::elementIdType e[10] = {
 		kmb::Element::nullElementId,
@@ -3688,16 +3688,6 @@ kmb::MeshRefiner::getMiddle(kmb::ElementBase &element) const
 	return middle;
 }
 
-double
-kmb::MeshRefiner::distanceSqBetweenNodes( kmb::nodeIdType n0, kmb::nodeIdType n1 )
-{
-	kmb::Point3D p0, p1;
-	if( mesh->getNode(n0, p0), mesh->getNode(n1, p1) ){
-		return p0.distanceSq(p1);
-	}
-	return DBL_MAX;
-}
-
 bool
 kmb::MeshRefiner::nodeGroupUpdate( kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::nodeIdType n01, const kmb::DataBindings* originalData, kmb::DataBindings* refinedData)
 {
@@ -3716,7 +3706,7 @@ kmb::MeshRefiner::nodeGroupUpdate( kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::
 }
 
 bool
-kmb::MeshRefiner::nodeGroupUpdate( kmb::ElementBase &elem, kmb::nodeIdType centerId, const kmb::DataBindings* originalData, kmb::DataBindings* refinedData)
+kmb::MeshRefiner::nodeGroupUpdate( const kmb::ElementBase &elem, kmb::nodeIdType centerId, const kmb::DataBindings* originalData, kmb::DataBindings* refinedData)
 {
 	if( originalData==NULL || refinedData==NULL || centerId == kmb::nullNodeId){
 		return false;
@@ -3739,7 +3729,7 @@ kmb::MeshRefiner::nodeGroupUpdate( kmb::ElementBase &elem, kmb::nodeIdType cente
 }
 
 bool
-kmb::MeshRefiner::nodeGroupUpdate( kmb::ElementBase &elem, int faceIndex, kmb::nodeIdType centerId, const kmb::DataBindings* originalData, kmb::DataBindings* refinedData)
+kmb::MeshRefiner::nodeGroupUpdate( const kmb::ElementBase &elem, int faceIndex, kmb::nodeIdType centerId, const kmb::DataBindings* originalData, kmb::DataBindings* refinedData)
 {
 	if( originalData==NULL || refinedData==NULL || centerId == kmb::nullNodeId ){
 		return false;
@@ -3802,7 +3792,7 @@ kmb::MeshRefiner::nodeVariableUpdate( kmb::nodeIdType n0, kmb::nodeIdType n1, km
 }
 
 bool
-kmb::MeshRefiner::nodeVariableUpdate( kmb::ElementBase &elem, kmb::nodeIdType centerId, const kmb::DataBindings* originalData, kmb::DataBindings* refinedData)
+kmb::MeshRefiner::nodeVariableUpdate( const kmb::ElementBase &elem, kmb::nodeIdType centerId, const kmb::DataBindings* originalData, kmb::DataBindings* refinedData)
 {
 	if( originalData==NULL || refinedData==NULL || centerId == kmb::nullNodeId ){
 		return false;
@@ -3847,7 +3837,7 @@ kmb::MeshRefiner::nodeVariableUpdate( kmb::ElementBase &elem, kmb::nodeIdType ce
 }
 
 bool
-kmb::MeshRefiner::nodeVariableUpdate( kmb::ElementBase &elem, int faceIndex, kmb::nodeIdType centerId, const kmb::DataBindings* originalData, kmb::DataBindings* refinedData)
+kmb::MeshRefiner::nodeVariableUpdate( const kmb::ElementBase &elem, int faceIndex, kmb::nodeIdType centerId, const kmb::DataBindings* originalData, kmb::DataBindings* refinedData)
 {
 	if( originalData==NULL || refinedData==NULL || centerId == kmb::nullNodeId ){
 		return false;

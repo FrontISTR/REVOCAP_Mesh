@@ -660,6 +660,21 @@ kmb::MeshGL::drawInterpolatedVector(kmb::Node& n0,kmb::Node& n1,double t0, doubl
 	::glFlush();
 }
 
+void kmb::MeshGL::drawInterpolatedField(kmb::Node& n0,kmb::Node& n1,double t0, double t1,double v0[3], double v1[3],double arrowSize,kmb::ColorMap* colorMap)
+{
+
+	unsigned int flag = 0;
+	if( t0 > 0 ) flag |= 0x01;
+	if( t1 > 0 ) flag |= 0x02;
+	if( flag == 0x00 || flag == 0x03 ){
+		return;
+	}
+	kmb::Node m;
+	double u[3]={0.0,0.0,0.0};
+	getMiddleNodeVector( n0, n1, t0, t1, v0, v1, m, u );
+	drawArrow( m.x(), m.y(), m.z(), u[0], u[1], u[2], arrowSize, colorMap );
+	::glFlush();
+}
 
 void
 kmb::MeshGL::drawIsosurface
@@ -713,8 +728,7 @@ kmb::MeshGL::drawIsosurface
 	}
 }
 
-void
-kmb::MeshGL::drawSection(kmb::bodyIdType bodyId,kmb::Plane* plane)
+void kmb::MeshGL::drawSection(kmb::bodyIdType bodyId,kmb::Plane* plane)
 {
 	const kmb::Body* body = NULL;
 	if( mesh != NULL &&
@@ -1045,9 +1059,7 @@ kmb::MeshGL::drawSectionNodeContour
 	}
 }
 
-void
-kmb::MeshGL::drawSectionContour
-(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* physicalValue, kmb::ColorMap* colorMap, int comp )
+void kmb::MeshGL::drawSectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* physicalValue, kmb::ColorMap* colorMap, int comp )
 {
 	const kmb::DataBindings* data = NULL;
 	const kmb::Body* body = NULL;
@@ -1059,6 +1071,12 @@ kmb::MeshGL::drawSectionContour
 	{
 		::glPushAttrib( GL_ENABLE_BIT );
 		::glEnable( GL_COLOR_MATERIAL );
+		kmb::nodeIdType tetras[6][4];
+		for(int i=0;i<6;++i){
+			for(int j=0;j<4;++j){
+				tetras[i][j] = kmb::nullNodeId;
+			}
+		}
 		if( data->getValueType() == kmb::PhysicalValue::Scalar ){
 			kmb::Node n0, n1, n2, n3;
 			double v = 0.0;
@@ -1084,6 +1102,21 @@ kmb::MeshGL::drawSectionContour
 						}
 						break;
 					default:
+						{
+							int len = eIter.divideIntoTetrahedrons( tetras );
+							for(int i=0;i<len;++i){
+								if( mesh->getNode( tetras[i][0], n0 )
+									&& mesh->getNode( tetras[i][1], n1 )
+									&& mesh->getNode( tetras[i][2], n2 )
+									&& mesh->getNode( tetras[i][3], n3 ) )
+								{
+									colorMap->setGLColor( v );
+									drawSectionTetrahedron(
+										n0, n1, n2, n3,
+										plane->evaluate(n0), plane->evaluate(n1), plane->evaluate(n2), plane->evaluate(n3) );
+								}
+							}
+						}
 						break;
 					}
 				}
@@ -1114,6 +1147,21 @@ kmb::MeshGL::drawSectionContour
 						}
 						break;
 					default:
+						{
+							int len = eIter.divideIntoTetrahedrons( tetras );
+							for(int i=0;i<len;++i){
+								if( mesh->getNode( tetras[i][0], n0 )
+									&& mesh->getNode( tetras[i][1], n1 )
+									&& mesh->getNode( tetras[i][2], n2 )
+									&& mesh->getNode( tetras[i][3], n3 ) )
+								{
+									colorMap->setGLColor( kmb::Vector3D::abs(v) );
+									drawSectionTetrahedron(
+										n0, n1, n2, n3,
+										plane->evaluate(n0), plane->evaluate(n1), plane->evaluate(n2), plane->evaluate(n3) );
+								}
+							}
+						}
 						break;
 					}
 				}
@@ -1144,6 +1192,21 @@ kmb::MeshGL::drawSectionContour
 						}
 						break;
 					default:
+						{
+							int len = eIter.divideIntoTetrahedrons( tetras );
+							for(int i=0;i<len;++i){
+								if( mesh->getNode( tetras[i][0], n0 )
+									&& mesh->getNode( tetras[i][1], n1 )
+									&& mesh->getNode( tetras[i][2], n2 )
+									&& mesh->getNode( tetras[i][3], n3 ) )
+								{
+									colorMap->setGLColor( v[comp] );
+									drawSectionTetrahedron(
+										n0, n1, n2, n3,
+										plane->evaluate(n0), plane->evaluate(n1), plane->evaluate(n2), plane->evaluate(n3) );
+								}
+							}
+						}
 						break;
 					}
 				}
@@ -1166,11 +1229,7 @@ kmb::MeshGL::drawSectionContour
 								mesh->getNode( eIter.getCellId(2), n2 ) &&
 								mesh->getNode( eIter.getCellId(3), n3 ) )
 							{
-								if( comp == -1 ){
-									colorMap->setGLColor( v[comp] );
-								}else if(0 <= comp && comp < 3){
-									colorMap->setGLColor( v[comp] );
-								}
+								colorMap->setGLColor( v[comp] );
 								drawSectionTetrahedron(
 									n0, n1, n2, n3,
 									plane->evaluate(n0), plane->evaluate(n1), plane->evaluate(n2), plane->evaluate(n3) );
@@ -1178,6 +1237,21 @@ kmb::MeshGL::drawSectionContour
 						}
 						break;
 					default:
+						{
+							int len = eIter.divideIntoTetrahedrons( tetras );
+							for(int i=0;i<len;++i){
+								if( mesh->getNode( tetras[i][0], n0 )
+									&& mesh->getNode( tetras[i][1], n1 )
+									&& mesh->getNode( tetras[i][2], n2 )
+									&& mesh->getNode( tetras[i][3], n3 ) )
+								{
+									colorMap->setGLColor( v[comp] );
+									drawSectionTetrahedron(
+										n0, n1, n2, n3,
+										plane->evaluate(n0), plane->evaluate(n1), plane->evaluate(n2), plane->evaluate(n3) );
+								}
+							}
+						}
 						break;
 					}
 				}
@@ -1188,9 +1262,6 @@ kmb::MeshGL::drawSectionContour
 		::glFlush();
 	}
 }
-
-
-
 
 void
 kmb::MeshGL::drawSectionVector(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* vectorName, double factor, kmb::ColorMap* colorMap)
@@ -1232,6 +1303,55 @@ kmb::MeshGL::drawSectionVector(kmb::bodyIdType bodyId,kmb::Plane* plane,const ch
 					{
 						nodePairs.insert( pair );
 						drawInterpolatedVector(n0,n1,plane->evaluate(n0),plane->evaluate(n1),v0,v1,factor,colorMap);
+					}
+				}
+			}
+			++eIter;
+		}
+		::glPopAttrib();
+		::glFlush();
+	}
+}
+
+void kmb::MeshGL::drawSectionField(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* vectorName, double arrowSize, kmb::ColorMap* colorMap)
+{
+	const kmb::DataBindings* data = NULL;
+	const kmb::Body* body = NULL;
+	if( mesh != NULL &&
+		(body = mesh->getBodyPtr(bodyId)) != NULL &&
+		body->isUniqueDim(3) && plane != NULL && colorMap != NULL &&
+		(data = mesh->getDataBindingsPtr( vectorName )) != NULL &&
+		data->getBindingMode() == kmb::DataBindings::NodeVariable &&
+		data->getValueType() == kmb::PhysicalValue::Vector3 )
+	{
+		::glPushAttrib( GL_ENABLE_BIT );
+		::glEnable( GL_COLOR_MATERIAL );
+
+
+		std::set< std::pair<kmb::nodeIdType,kmb::nodeIdType> > nodePairs;
+		kmb::Node n0, n1;
+		double v0[3], v1[3];
+		kmb::ElementContainer::const_iterator eIter = body->begin();
+		while( !eIter.isFinished() )
+		{
+			int edgeCount = eIter.getEdgeCount();
+			for(int i =0;i< edgeCount;++i){
+				kmb::nodeIdType nodeId0 = eIter.getEdgeCellId(i,0);
+				kmb::nodeIdType nodeId1 = eIter.getEdgeCellId(i,1);
+				if( nodeId0 > nodeId1 ){
+					kmb::nodeIdType tmp = nodeId0;
+					nodeId0 = nodeId1;
+					nodeId1 = tmp;
+				}
+				std::pair<kmb::nodeIdType,kmb::nodeIdType> pair = std::pair<kmb::nodeIdType,kmb::nodeIdType>(nodeId0,nodeId1);
+				if( nodePairs.find( pair ) == nodePairs.end() ){
+					if( mesh->getNode( nodeId0, n0 ) &&
+						mesh->getNode( nodeId1, n1 ) &&
+						data->getPhysicalValue( nodeId0, v0 ) &&
+						data->getPhysicalValue( nodeId1, v1 ) )
+					{
+						nodePairs.insert( pair );
+						drawInterpolatedField(n0,n1,plane->evaluate(n0),plane->evaluate(n1),v0,v1,arrowSize,colorMap);
 					}
 				}
 			}

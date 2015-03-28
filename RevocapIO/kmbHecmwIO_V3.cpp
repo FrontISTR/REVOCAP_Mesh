@@ -132,20 +132,20 @@ kmb::HecmwIO::loadFromMW3File(const char* filename,MeshData* mesh) const
 				}
 				if( data ){
 					kmb::elementIdType elementId = kmb::Element::nullElementId;
-					while( !input.eof() ){
-						std::getline( input, line );
+					std::istringstream tokenLine;
+					std::istringstream tokenDecimal;
+					std::string decimal;
+					while( std::getline( input, line ) ){
 						if( line.find("!") == 0 ){
 							break;
-						}else{
-							std::istringstream tokenizer(line);
-							while( !tokenizer.eof() ){
-								tokenizer >> elementId;
-
-								if( tokenizer.get() != ',' ){
-									tokenizer.unget();
-								}
-								data->addId( elementId - this->offsetElementId );
-							}
+						}
+						tokenLine.str(line);
+						tokenLine.clear();
+						while( std::getline( tokenLine, decimal, ',') ){
+							tokenDecimal.str(decimal);
+							tokenDecimal.clear();
+							tokenDecimal >> elementId;
+							data->addId( elementId - this->offsetElementId );
 						}
 					}
 				}else{
@@ -159,20 +159,20 @@ kmb::HecmwIO::loadFromMW3File(const char* filename,MeshData* mesh) const
 				}
 				if( data ){
 					kmb::nodeIdType nodeId = kmb::nullNodeId;
-					while( !input.eof() ){
-						std::getline( input, line );
+					std::istringstream tokenLine;
+					std::istringstream tokenDecimal;
+					std::string decimal;
+					while( std::getline( input, line ) ){
 						if( line.find("!") == 0 ){
 							break;
-						}else{
-							std::istringstream tokenizer(line);
-							while( !tokenizer.eof() ){
-								tokenizer >> nodeId;
-
-								if( tokenizer.get() != ',' ){
-									tokenizer.unget();
-								}
-								data->addId( nodeId - this->offsetNodeId );
-							}
+						}
+						tokenLine.str(line);
+						tokenLine.clear();
+						while( std::getline( tokenLine, decimal, ',') ){
+							tokenDecimal.str(decimal);
+							tokenDecimal.clear();
+							tokenDecimal >> nodeId;
+							data->addId( nodeId - this->offsetNodeId );
 						}
 					}
 				}else{
@@ -188,49 +188,50 @@ kmb::HecmwIO::loadFromMW3File(const char* filename,MeshData* mesh) const
 					kmb::elementIdType elementId = kmb::Element::nullElementId;
 					kmb::idType localId = kmb::nullId;
 					kmb::Face f;
-					while( !input.eof() ){
-						std::getline( input, line );
+					std::istringstream tokenLine;
+					std::istringstream tokenDecimal;
+					std::string decimal;
+					while( std::getline( input, line ) ){
 						if( line.find("!") == 0 ){
 							break;
-						}else{
-							std::istringstream tokenizer(line);
-							while( !tokenizer.eof() ){
-								tokenizer >> elementId >> comma >> localId;
+						}
+						tokenLine.str(line);
+						tokenLine.clear();
+						while( !tokenLine.eof() ){
+							std::getline( tokenLine, decimal, ',');
+							tokenDecimal.str(decimal);
+							tokenDecimal.clear();
+							tokenDecimal >> elementId;
+							std::getline( tokenLine, decimal, ',');
+							tokenDecimal.str(decimal);
+							tokenDecimal.clear();
+							tokenDecimal >> localId;
+							kmb::ElementContainer::const_iterator eIter = mesh->findElement( elementId - this->offsetElementId );
+							switch( eIter.getType() )
+							{
+							case kmb::TETRAHEDRON:
+							case kmb::TETRAHEDRON2:
+								f.setId( elementId - this->offsetElementId, tetRmap[ localId-1 ] );
+								data->addId( f );
+								break;
+							case kmb::WEDGE:
+							case kmb::WEDGE2:
+								f.setId( elementId - this->offsetElementId, wedRmap[ localId-1 ] );
+								data->addId( f );
+								break;
+							case kmb::HEXAHEDRON:
+							case kmb::HEXAHEDRON2:
+								f.setId( elementId - this->offsetElementId, hexRmap[ localId-1 ] );
+								data->addId( f );
+								break;
+							case kmb::PYRAMID:
+							case kmb::PYRAMID2:
+								f.setId( elementId - this->offsetElementId, pyrRmap[ localId-1 ] );
+								data->addId( f );
+								break;
+							default:
 
-								if( tokenizer.get() != ',' ){
-									tokenizer.unget();
-								}
-								tokenizer >> localId;
-
-								if( tokenizer.get() != ',' ){
-									tokenizer.unget();
-								}
-								kmb::ElementContainer::const_iterator eIter = mesh->findElement( elementId - this->offsetElementId );
-								switch( eIter.getType() )
-								{
-								case kmb::TETRAHEDRON:
-								case kmb::TETRAHEDRON2:
-									f.setId( elementId - this->offsetElementId, tetRmap[ localId-1 ] );
-									data->addId( f );
-									break;
-								case kmb::WEDGE:
-								case kmb::WEDGE2:
-									f.setId( elementId - this->offsetElementId, wedRmap[ localId-1 ] );
-									data->addId( f );
-									break;
-								case kmb::HEXAHEDRON:
-								case kmb::HEXAHEDRON2:
-									f.setId( elementId - this->offsetElementId, hexRmap[ localId-1 ] );
-									data->addId( f );
-									break;
-								case kmb::PYRAMID:
-								case kmb::PYRAMID2:
-									f.setId( elementId - this->offsetElementId, pyrRmap[ localId-1 ] );
-									data->addId( f );
-									break;
-								default:
-									break;
-								}
+								break;
 							}
 						}
 					}

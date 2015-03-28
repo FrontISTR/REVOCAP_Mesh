@@ -97,6 +97,26 @@ kmb::BoxRegion2D::maxY(void) const
 	return this->maxPoint.y();
 }
 
+void kmb::BoxRegion2D::minX(double x)
+{
+	minPoint.x(x);
+}
+
+void kmb::BoxRegion2D::minY(double y)
+{
+	minPoint.y(y);
+}
+
+void kmb::BoxRegion2D::maxX(double x)
+{
+	maxPoint.x(x);
+}
+
+void kmb::BoxRegion2D::maxY(double y)
+{
+	maxPoint.y(y);
+}
+
 double
 kmb::BoxRegion2D::centerX(void) const
 {
@@ -119,6 +139,17 @@ double
 kmb::BoxRegion2D::rangeY(void) const
 {
 	return this->maxPoint.y() - this->minPoint.y();
+}
+
+double kmb::BoxRegion2D::range(void) const
+{
+	double rx = rangeX();
+	double ry = rangeY();
+	if( rx > ry ){
+		return rx;
+	}else{
+		return ry;
+	}
 }
 
 double
@@ -276,6 +307,13 @@ kmb::BoxRegion2D::expand(double ratio)
 		maxPoint.y( 0.5*(1+ratio)*maxy + 0.5*(1-ratio)*miny );
 		minPoint.y( 0.5*(1-ratio)*maxy + 0.5*(1+ratio)*miny );
 	}
+}
+
+void
+kmb::BoxRegion2D::translate(double x,double y)
+{
+	this->maxPoint.addCoordinate(x,y);
+	this->minPoint.addCoordinate(x,y);
 }
 
 void

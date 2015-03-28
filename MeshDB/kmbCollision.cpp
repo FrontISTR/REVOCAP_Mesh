@@ -13,10 +13,11 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 #include <cmath>
+#include "Common/kmbCalculator.h"
+#include "Common/kmbTolerance.h"
 #include "Geometry/kmbPoint3DContainer.h"
 #include "Geometry/kmbGeometry3D.h"
 #include "Geometry/kmbGeometry4D.h"
-#include "Common/kmbCalculator.h"
 #include "MeshDB/kmbCollision.h"
 #include "MeshDB/kmbMeshData.h"
 #include "MeshDB/kmbTriangle.h"
@@ -126,55 +127,6 @@ kmb::Collision::distanceSqPtTri(kmb::nodeIdType nodeId,kmb::ElementBase& tri,dou
 }
 
 double
-kmb::Collision::distanceSqSegSeg(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0,kmb::Point3D& q1,double &t1, double &t2) const
-{
-
-
-	kmb::Vector3D u0(p0,q0);
-	kmb::Vector3D u1(p1,p0);
-	kmb::Vector3D u2(q0,q1);
-	kmb::Matrix2x2 mat(
-		u1*u1, u1*u2,
-		u2*u1, u2*u2);
-	kmb::Vector2D v(-(u1*u0),-(u2*u0));
-	kmb::Vector2D* t = mat.solve(v);
-	if( t &&
-		0.0 < t->x() && t->x() < 1.0 &&
-		0.0 < t->y() && t->y() < 1.0 )
-	{
-
-		t1 = t->x();
-		t2 = t->y();
-		delete t;
-		return (u0 + u1.scalar(t1) + u2.scalar(t2)).lengthSq();
-	}else{
-
-		kmb::Minimizer min;
-		double tmp=0.0;
-		if( min.update( p0.distanceSqToSegment( q0, q1, tmp ) ) ){
-			t1 = 0.0;
-			t2 = tmp;
-		}
-		if( min.update( p1.distanceSqToSegment( q0, q1, tmp ) ) ){
-			t1 = 1.0;
-			t2 = tmp;
-		}
-		if( min.update( q0.distanceSqToSegment( p0, p1, tmp ) ) ){
-			t1 = tmp;
-			t2 = 0.0;
-		}
-		if( min.update( q1.distanceSqToSegment( p0, p1, tmp ) ) ){
-			t1 = tmp;
-			t2 = 1.0;
-		}
-		if( t ){
-			delete t;
-		}
-		return min.getMin();
-	}
-}
-
-double
 kmb::Collision::distanceSqSegSeg(kmb::nodeIdType a0,kmb::nodeIdType a1,kmb::nodeIdType b0,kmb::nodeIdType b1,double &t1, double &t2) const
 {
 	kmb::Point3D p0,p1,q0,q1;
@@ -184,7 +136,7 @@ kmb::Collision::distanceSqSegSeg(kmb::nodeIdType a0,kmb::nodeIdType a1,kmb::node
 		points->getPoint( b0, q0 ) &&
 		points->getPoint( b1, q1 ) )
 	{
-		return distanceSqSegSeg(p0,p1,q0,q1,t1,t2);
+		return kmb::Collision::testSegSeg(p0,p1,q0,q1,t1,t2);
 	}
 	return DBL_MAX;
 }
@@ -199,7 +151,7 @@ kmb::Collision::distanceSqSegSeg(kmb::ElementBase& seg0,kmb::ElementBase& seg1,d
 		points->getPoint( seg1[0], q0 ) &&
 		points->getPoint( seg1[1], q1 ) )
 	{
-		return distanceSqSegSeg(p0,p1,q0,q1,t1,t2);
+		return kmb::Collision::testSegSeg(p0,p1,q0,q1,t1,t2);
 	}
 	return DBL_MAX;
 }
@@ -218,6 +170,7 @@ kmb::Collision::distanceSegSeg(kmb::ElementBase& seg0,kmb::ElementBase& seg1) co
 	return sqrt( distanceSqSegSeg(seg0,seg1,s,t) );
 }
 
+/*
 double
 kmb::Collision::distanceSqSegTri(kmb::Point3D& p0,kmb::Point3D& p1,
 	kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2,
@@ -264,17 +217,17 @@ kmb::Collision::distanceSqSegTri(kmb::Point3D& p0,kmb::Point3D& p1,
 		}
 
 		double ss0,ss1;
-		if( min.update( distanceSqSegSeg( p0, p1, q0, q1, ss0, ss1 ) ) ){
+		if( min.update( kmb::Collision::testSegSeg( p0, p1, q0, q1, ss0, ss1 ) ) ){
 			s = ss0;
 			t[0] = ss1;
 			t[1] = 0.0;
 		}
-		if( min.update( distanceSqSegSeg( p0, p1, q1, q2, ss0, ss1 ) ) ){
+		if( min.update( kmb::Collision::testSegSeg( p0, p1, q1, q2, ss0, ss1 ) ) ){
 			s = ss0;
 			t[0] = 1.0 - ss1;
 			t[1] = ss1;
 		}
-		if( min.update( distanceSqSegSeg( p0, p1, q0, q2, ss0, ss1 ) ) ){
+		if( min.update( kmb::Collision::testSegSeg( p0, p1, q0, q2, ss0, ss1 ) ) ){
 			s = ss0;
 			t[0] = 0.0;
 			t[1] = ss1;
@@ -285,6 +238,7 @@ kmb::Collision::distanceSqSegTri(kmb::Point3D& p0,kmb::Point3D& p1,
 		return min.getMin();
 	}
 }
+*/
 
 double
 kmb::Collision::distanceSqSegTri(kmb::nodeIdType a0,kmb::nodeIdType a1,kmb::ElementBase& tri,double &s,double t[2]) const
@@ -297,7 +251,7 @@ kmb::Collision::distanceSqSegTri(kmb::nodeIdType a0,kmb::nodeIdType a1,kmb::Elem
 		points->getPoint( tri.getCellId(1), q1 ) &&
 		points->getPoint( tri.getCellId(2), q2 ) )
 	{
-		return distanceSqSegTri( p0, p1, q0, q1, q2, s, t );
+		return kmb::Collision::testSegTri( p0, p1, q0, q1, q2, s, t );
 	}
 	return DBL_MAX;
 }
@@ -309,7 +263,7 @@ kmb::Collision::distanceSegTri(kmb::nodeIdType a0,kmb::nodeIdType a1,kmb::Elemen
 	double s[2] = {0.0,0.0};
 	return sqrt( distanceSqSegTri( a0, a1, tri, t, s ) );
 }
-
+/*
 double
 kmb::Collision::distanceSqTriTri(
 	kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& p2,
@@ -354,37 +308,37 @@ kmb::Collision::distanceSqTriTri(
 
 		double ss = 0.0;
 		double tt[2] = {0.0, 0.0};
-		if( min.update( distanceSqSegTri( p0, p1, q0, q1, q2, ss, tt ) ) ){
+		if( min.update( kmb::Collision::testSegTri( p0, p1, q0, q1, q2, ss, tt ) ) ){
 			s[0] = ss;
 			s[1] = 0.0;
 			t[0] = tt[0];
 			t[1] = tt[1];
 		}
-		if( min.update( distanceSqSegTri( p1, p2, q0, q1, q2, ss, tt ) ) ){
+		if( min.update( kmb::Collision::testSegTri( p1, p2, q0, q1, q2, ss, tt ) ) ){
 			s[0] = 1.0-ss;
 			s[1] = ss;
 			t[0] = tt[0];
 			t[1] = tt[1];
 		}
-		if( min.update( distanceSqSegTri( p0, p2, q0, q1, q2, ss, tt ) ) ){
+		if( min.update( kmb::Collision::testSegTri( p0, p2, q0, q1, q2, ss, tt ) ) ){
 			s[0] = 0.0;
 			s[1] = ss;
 			t[0] = tt[0];
 			t[1] = tt[1];
 		}
-		if( min.update( distanceSqSegTri( q0, q1, p0, p1, p2, ss, tt ) ) ){
+		if( min.update( kmb::Collision::testSegTri( q0, q1, p0, p1, p2, ss, tt ) ) ){
 			s[0] = tt[0];
 			s[1] = tt[1];
 			t[0] = ss;
 			t[1] = 0.0;
 		}
-		if( min.update( distanceSqSegTri( q1, q2, p0, p1, p2, ss, tt ) ) ){
+		if( min.update( kmb::Collision::testSegTri( q1, q2, p0, p1, p2, ss, tt ) ) ){
 			s[0] = tt[0];
 			s[1] = tt[1];
 			t[0] = 1.0-ss;
 			t[1] = ss;
 		}
-		if( min.update( distanceSqSegTri( q0, q2, p0, p1, p2, ss, tt ) ) ){
+		if( min.update( kmb::Collision::testSegTri( q0, q2, p0, p1, p2, ss, tt ) ) ){
 			s[0] = tt[0];
 			s[1] = tt[1];
 			t[0] = 0.0;
@@ -396,6 +350,8 @@ kmb::Collision::distanceSqTriTri(
 		return min.getMin();
 
 }
+*/
+
 
 double
 kmb::Collision::distanceSqTriTri(kmb::ElementBase& tri0,kmb::ElementBase& tri1,double s[2],double t[2]) const
@@ -409,7 +365,7 @@ kmb::Collision::distanceSqTriTri(kmb::ElementBase& tri0,kmb::ElementBase& tri1,d
 		points->getPoint( tri1.getCellId(1), q1 ) &&
 		points->getPoint( tri1.getCellId(2), q2 ) )
 	{
-		return distanceSqTriTri( p0, p1, p2, q0, q1, q2, s, t );
+		return kmb::Collision::testTriTri( p0, p1, p2, q0, q1, q2, s, t );
 	}
 	return DBL_MAX;
 }

@@ -28,6 +28,7 @@
 #include "MeshDB/kmbMeshDB.h"
 #include "MeshDB/kmbElementContainer.h"
 #include "MeshDB/kmbTetrahedron.h"
+#include "MeshDB/kmbMeshOperation.h"
 #include "MeshDB/kmbMatching.h"
 #include "MeshDB/kmbPolygonPartitioner.h"
 
@@ -63,54 +64,12 @@ kmb::MeshDB::getSurroundingElements(nodeIdType nodeId,std::vector<elementIdType>
 
 
 void
-kmb::MeshDB::triangulation(kmb::bodyIdType bodyID)
+kmb::MeshDB::triangulation(kmb::bodyIdType bodyId)
 {
-	kmb::ElementContainer* body = this->getBodyPtr(bodyID);
-	if( body != NULL ){
-
-
-		std::vector<kmb::elementIdType> elementIDs;
-
-		kmb::ElementContainer::iterator eIter = body->begin();
-		while( eIter != body->end() ){
-			elementIDs.push_back( eIter.getId() );
-			++eIter;
-		}
-
-		kmb::nodeIdType triangles[2][3];
-		kmb::nodeIdType tetrahedrons[6][4];
-
-		std::vector<kmb::elementIdType>::iterator p = elementIDs.begin();
-		while(p != elementIDs.end())
-		{
-			kmb::elementIdType elementID = (*p);
-			kmb::ElementContainer::iterator e = this->findElement(elementID,bodyID);
-			if( !e.isFinished() && e.getDimension() == 2){
-				const int num = e.divideIntoTriangles( triangles );
-
-				if( num > 1 )
-				{
-					for(int i=0;i<num;++i)
-					{
-						this->insertElement( bodyID, kmb::TRIANGLE, triangles[i] );
-					}
-					body->deleteElement(elementID);
-				}
-			}else if( !e.isFinished() && e.getDimension() == 3 ){
-				const int num = e.divideIntoTetrahedrons(tetrahedrons);
-
-				if( num > 1 )
-				{
-					for(int i=0;i<num;++i)
-					{
-						this->insertElement( bodyID, kmb::TETRAHEDRON, tetrahedrons[i] );
-					}
-					body->deleteElement(elementID);
-				}
-			}
-			++p;
-		}
+	if( meshOperation == NULL ){
+		meshOperation = new kmb::MeshOperation(this);
 	}
+	this->meshOperation->triangulation(bodyId);
 }
 
 

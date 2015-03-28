@@ -309,5 +309,15 @@ public:
 	void idDefragment(nodeIdType initId, std::map< nodeIdType, nodeIdType >& idmap);
 };
 
+
+class Point2DContainerDirectAccessable : public Point2DContainer{
+public:
+	virtual double operator()(kmb::nodeIdType nodeId,int index) const = 0;
+	virtual double& operator()(kmb::nodeIdType nodeId,int index) = 0;
+
+
+	virtual void commit(kmb::nodeIdType nodeId) = 0;
+};
+
 }
 

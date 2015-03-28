@@ -28,6 +28,7 @@ public:
 		return "ScalarValueBindings";
 	};
 	virtual void clear(void);
+	void clear(double v);
 	virtual bool setPhysicalValue(kmb::idType id,kmb::PhysicalValue* val);
 	virtual bool setPhysicalValue(kmb::idType id,double* val);
 	virtual bool setValue(kmb::idType id, double value,int index=0);

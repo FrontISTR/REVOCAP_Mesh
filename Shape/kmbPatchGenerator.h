@@ -28,6 +28,7 @@ private:
 	double incremental;
 	double tolerance;
 	double modelDiameter;
+	bool relative;
 public:
 	PatchGenerator(void);
 	virtual ~PatchGenerator(void);
@@ -54,6 +55,9 @@ public:
 	 */
 	void setTolerance(double d);
 	double getTolerance(void) const;
+
+	void setRelative(bool f);
+	bool getRelative(void) const;
 };
 
 }

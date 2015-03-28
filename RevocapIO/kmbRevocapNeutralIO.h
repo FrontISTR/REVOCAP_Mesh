@@ -98,6 +98,7 @@ protected:
 		}
 		return -1;
 	}
+	int writeData(std::ofstream &output,kmb::MeshData* mesh,const char* name,const char*stype=NULL);
 };
 
 }

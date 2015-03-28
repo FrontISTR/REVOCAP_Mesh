@@ -140,6 +140,10 @@ public:
 	void drawVector(const char* vectorName, double factor, kmb::ColorMap* colorMap);
 	void drawSurfaceVector(kmb::bodyIdType bodyId,const char* vectorName, double factor, kmb::ColorMap* colorMap);
 	void drawFaceGroupVector(const char* faceName,const char* vectorName, double factor, kmb::ColorMap* colorMap);
+
+	void drawField(const char* vectorName, double arrowSize, kmb::ColorMap* colorMap);
+	void drawSurfaceField(kmb::bodyIdType bodyId,const char* vectorName, double arrowSize, kmb::ColorMap* colorMap);
+
 	void drawIsosurface(kmb::bodyIdType bodyId, const char* nodeValue, double val);
 
 
@@ -149,6 +153,7 @@ public:
 
 	void drawSectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
 	void drawSectionVector(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* vectorName, double factor, kmb::ColorMap* colorMap);
+	void drawSectionField(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* vectorName, double arrowSize, kmb::ColorMap* colorMap);
 
 	void drawIntersection(kmb::bodyIdType bodyId,kmb::Plane* plane);
 
@@ -158,6 +163,8 @@ public:
 	void getDeformXYZFaceGroupBoundingBox(kmb::BoundingBox& bbox,const char* faceName, const char* displacementX, const char* displacementY, const char* displacementZ, double factor) const;
 
 	int drawTrajectory(const char* vectorVal,double x,double y,double z,double delta,int step, kmb::ColorMap* colorMap, double tolerance=0.0);
+
+	void volumeRendering(const char* physicalValue, kmb::ColorMap* colorMap,int repeatLevel,int numParticle,bool volCorrect=true,int comp=-1);
 
 	/**
 	 * condName : data ‚Ì–¼‘O
@@ -219,6 +226,8 @@ private:
 	void drawElementEdge(kmb::ElementBase& element);
 	void drawFaceEdge(kmb::ElementBase& element,int index);
 	void drawVector(double x,double y,double z,double v0,double v1,double v2,double factor,kmb::ColorMap* colorMap);
+
+	void drawArrow(double x,double y,double z,double v0,double v1,double v2,double arrowSize,kmb::ColorMap* colorMap);
 
 	void drawTriangle
 		(double x0,double y0,double z0,
@@ -300,10 +309,13 @@ private:
 		double v0, double v1, double v2, double v3,
 		kmb::ColorMap* colorMap);
 	void drawInterpolatedVector(kmb::Node& n0,kmb::Node& n1,double t0, double t1,double v0[3], double v1[3],double factor,kmb::ColorMap* colorMap);
+	void drawInterpolatedField(kmb::Node& n0,kmb::Node& n1,double t0, double t1,double v0[3], double v1[3],double arrowSize,kmb::ColorMap* colorMap);
 
 
 
 	double calcPerpendicular(double v0,double v1,double v2,kmb::Vector3D &normal);
+
+	double calcFrame(double v0,double v1,double v2,kmb::Vector3D &normal0,kmb::Vector3D &normal1);
 
 	double getMeanLengthVector
 		( kmb::PhysicalValue* val0,

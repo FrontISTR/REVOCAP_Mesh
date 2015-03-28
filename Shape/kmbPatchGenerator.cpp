@@ -43,6 +43,7 @@ kmb::PatchGenerator::PatchGenerator(void)
 , incremental(0.002)
 , tolerance(1.0e-5)
 , modelDiameter(-1.0)
+, relative(true)
 {
 }
 
@@ -86,6 +87,16 @@ kmb::PatchGenerator::getTolerance(void) const
 	return tolerance;
 }
 
+void kmb::PatchGenerator::setRelative(bool f)
+{
+	this->relative = f;
+}
+
+bool kmb::PatchGenerator::getRelative(void) const
+{
+	return this->relative;
+}
+
 bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 {
 	if( shape.getShape().IsNull() ){
@@ -94,7 +105,7 @@ bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 
 
 	if( modelDiameter < 0.0 ){
-		modelDiameter = shape.getBoundingBox().maxRange();
+		modelDiameter = shape.getBoundingBox().range();
 	}
 
 	if( mesh.getNodes() == NULL ){
@@ -110,7 +121,11 @@ bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 	kmb::OctreePoint3D octree;
 	octree.setContainer( mesh.getNodes() );
 
-	BRepMesh::Mesh( shape.getShape(), static_cast<Standard_Real>( incremental*modelDiameter ) );
+	if( relative ){
+		BRepMesh::Mesh( shape.getShape(), static_cast<Standard_Real>( incremental*modelDiameter ) );
+	}else{
+		BRepMesh::Mesh( shape.getShape(), static_cast<Standard_Real>( incremental ) );
+	}
 
 
 	TopExp_Explorer exFace;
@@ -130,11 +145,11 @@ bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 
 			ShapeAnalysis_ShapeContents anaContents;
 			anaContents.Perform(face);
-			if(anaContents.ModifyTrimmed3dMode()){
+			if( anaContents.ModifyTrimmed3dMode() ){
 				std::cout << " modify trimmed mode " << std::endl;
 			}
 
-			if( !BRepTools::Triangulation(face, static_cast<Standard_Real>( deflection*modelDiameter ) ) ){
+			if( !BRepTools::Triangulation(face, static_cast<Standard_Real>( relative ? deflection*modelDiameter : deflection ) ) ){
 				std::cout << "BRepTools false!" << endl;
 				continue;
 			}

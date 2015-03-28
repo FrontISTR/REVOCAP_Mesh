@@ -111,4 +111,5 @@ namespace kmb{
 %include "Matching.i"
 %include "PatchOperation.i"
 %include "SurfaceOperation.i"
+%include "MeshOperation.i"
 %include "PolygonPartitioner.i"

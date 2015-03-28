@@ -79,11 +79,12 @@ kmb::RevocapIOUtils::readOneLine(std::istream &input, std::string &str)
 	return input;
 }
 
+
 std::istringstream& kmb::RevocapIOUtils::skipComma(std::istringstream &tokenizer)
 {
 	while( tokenizer.good() ){
 		int ch = tokenizer.get();
-		if( ch != ',' && ch != ' ' ){
+		if( ch != ',' && ch != ' ' && ch != '\t' ){
 			tokenizer.unget();
 			break;
 		}

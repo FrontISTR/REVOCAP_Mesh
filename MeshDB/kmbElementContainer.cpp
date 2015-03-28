@@ -336,6 +336,32 @@ kmb::ElementContainer::getMinPoint(kmb::Point3D& pt) const
 	pt.z( boundingBox.getMin().z() );
 }
 
+int kmb::ElementContainer::replaceNodeId(kmb::nodeIdType oldNodeId,kmb::nodeIdType newNodeId)
+{
+	int count = 0;
+	kmb::ElementContainer::iterator eIter = this->begin();
+	while( !eIter.isFinished() )
+	{
+		if( eIter.replaceNodeId(oldNodeId,newNodeId) ){
+			++count;
+		}
+		++eIter;
+	}
+	return count;
+}
+
+int kmb::ElementContainer::replaceNodeId(std::map<kmb::nodeIdType,kmb::nodeIdType>& nodeMapper)
+{
+	int count = 0;
+	kmb::ElementContainer::iterator eIter = begin();
+	while( eIter != end() )
+	{
+		count += eIter.replaceNodeId(nodeMapper);
+		++eIter;
+	}
+	return count;
+}
+
 const kmb::BoundingBox&
 kmb::ElementContainer::getBoundingBox(void) const
 {

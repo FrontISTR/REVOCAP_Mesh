@@ -87,6 +87,7 @@ public:
 	Point3D dividingPoint(const Point3D& other,double m,double n) const;
 
 
+
 	Point3D proportionalPoint(const Point3D& other,double t) const;
 
 
@@ -100,7 +101,6 @@ public:
 	double distanceSqToSegment(const Point3D& a,const Point3D& b,double& t) const;
 	double distanceToSegment(const Point3D& a,const Point3D& b) const;
 
-
 	double distanceSqToTriangle(const Point3D& a,const Point3D& b,const Point3D& c,double* t=NULL) const;
 	double distanceToTriangle(const Point3D& a,const Point3D& b,const Point3D& c) const;
 
@@ -108,8 +108,10 @@ public:
 	bool getFootOfPerpendicular( const Point3D &origin, const Vector3D &u, const Vector3D &v, double &a, double &b) const;
 
 
-
 #ifndef REVOCAP_SUPPORT_RUBY
+	static Point3D dividingPoint(const Point3D& a,const Point3D& b,double m,double n);
+	static Point3D proportionalPoint(const Point3D& a,const Point3D& b,double t);
+
 	static double distance(const Point3D& a,const Point3D& b);
 	static double distanceSq(const Point3D& a,const Point3D& b);
 #endif
@@ -132,6 +134,7 @@ public:
 	static void calcMinorCoordinate( const kmb::Point3D& a, const kmb::Point3D& b, const kmb::Point3D& c, const kmb::Point3D& d, const kmb::Point3D& x, double coordinate[4]);
 
 	static Vector3D calcNormalVector( const kmb::Point3D& a, const kmb::Point3D& b, const kmb::Point3D& c );
+	static Vector3D calcNormalVector( const kmb::Point3D& a, const kmb::Point3D& b, const kmb::Point3D& c, const kmb::Point3D& d );
 	static Vector3D calcNormalVector(
 		const double x0, const double y0, const double z0,
 		const double x1, const double y1, const double z1,

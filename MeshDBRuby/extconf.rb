@@ -8,6 +8,7 @@ Linux 環境の場合、ldd RevocapMesh.so で確認！
 =end
 
 require 'mkmf'
+require 'fileutils'
 
 modulename = " RevocapMesh"
 
@@ -15,23 +16,26 @@ puts "extconf for #{modulename} #{RUBY_PLATFORM} #{RUBY_VERSION}"
 
 case RUBY_PLATFORM
 when "i486-linux", "x86_64-linux", "x86_64-linux-gnu", "i686-linux"
-	if !File.exist?( File.join('..','lib',RUBY_PLATFORM) )
-		Dir.mkdir( File.join('..','lib',RUBY_PLATFORM) )
-	end
+	FileUtils.mkdir_p File.join('..','lib',RUBY_PLATFORM)
+#	if !File.exist?( File.join('..','lib',RUBY_PLATFORM) )
+#		Dir.mkdir( File.join('..','lib',RUBY_PLATFORM) )
+#	end
 	CONFIG['LDSHARED'] = 'g++ -shared -s'
 	arch = RUBY_PLATFORM
 when "i386-cygwin"
-	if !File.exist?( File.join('..','lib',RUBY_PLATFORM) )
-		Dir.mkdir( File.join('..','lib',RUBY_PLATFORM) )
-	end
+	FileUtils.mkdir_p File.join('..','lib',RUBY_PLATFORM)
+#	if !File.exist?( File.join('..','lib',RUBY_PLATFORM) )
+#		Dir.mkdir( File.join('..','lib',RUBY_PLATFORM) )
+#	end
 	CONFIG['CC'] = 'gcc-4'
 	CONFIG['CXX'] = 'g++-4'
 	CONFIG['LDSHARED'] = 'g++-4 -shared -s'
 	arch = RUBY_PLATFORM
 else
-	if !File.exist?( File.join('..','lib',RUBY_PLATFORM) )
-		Dir.mkdir( File.join('..','lib',RUBY_PLATFORM) )
-	end
+	FileUtils.mkdir_p File.join('..','lib',RUBY_PLATFORM)
+#	if !File.exist?( File.join('..','lib',RUBY_PLATFORM) )
+#		Dir.mkdir( File.join('..','lib',RUBY_PLATFORM) )
+#	end
 	arch = RUBY_PLATFORM
 end
 

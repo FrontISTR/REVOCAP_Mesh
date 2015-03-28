@@ -103,13 +103,13 @@ kmb::ElementBase::getType(std::string str)
 		return kmb::TRIANGLE;
 	else if(str == "TRIANGLE2" || str == "TRI2")
 		return kmb::TRIANGLE2;
-	else if(str == "QUAD" || str == "QUADRILATERAL")
+	else if(str == "QUADRILATERAL" || str == "QUAD")
 		return kmb::QUAD;
-	else if(str == "QUAD2" || str == "QUADRILATERAL2")
+	else if(str == "QUADRILATERAL2" || str == "QUAD2")
 		return kmb::QUAD2;
-	else if(str == "TETRAHEDRON")
+	else if(str == "TETRAHEDRON" || str == "TETRA")
 		return kmb::TETRAHEDRON;
-	else if(str == "TETRAHEDRON2")
+	else if(str == "TETRAHEDRON2" || str == "TETRA2")
 		return kmb::TETRAHEDRON2;
 	else if(str == "PYRAMID")
 		return kmb::PYRAMID;
@@ -119,9 +119,9 @@ kmb::ElementBase::getType(std::string str)
 		return kmb::WEDGE;
 	else if(str == "WEDGE2")
 		return kmb::WEDGE2;
-	else if(str == "HEXAHEDRON")
+	else if(str == "HEXAHEDRON" || str == "HEXA")
 		return kmb::HEXAHEDRON;
-	else if(str == "HEXAHEDRON2")
+	else if(str == "HEXAHEDRON2" || str == "HEXA2")
 		return kmb::HEXAHEDRON2;
 	else if(str == "QUAD_INTERFACE")
 		return kmb::QUADRILATERAL_INTERFACE;

@@ -165,3 +165,14 @@ kmb::Line3D::getDirection(void) const
 	return this->direction;
 }
 
+double kmb::Line3D::distanceSq(const kmb::Point3D &pt) const
+{
+	kmb::Vector3D a(pt,base);
+	double t = direction * a;
+	return ( a - direction.scalar(t) ).lengthSq();
+}
+
+double kmb::Line3D::distance(const kmb::Point3D &pt) const
+{
+	return sqrt( distanceSq(pt) );
+}

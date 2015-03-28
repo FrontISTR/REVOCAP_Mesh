@@ -40,7 +40,7 @@ $libs = append_library($libs, 'RcapMatrix')
 $libs = append_library($libs, 'RcapGeometry')
 $libs = append_library($libs, 'RcapMeshDB')
 $libs = append_library($libs, 'RcapMeshGL')
-#$libs = append_library($libs, 'GLEW')
+$libs = append_library($libs, 'GLEW')
 
 dir_config( "#{modulename}", "..","../lib/#{arch}")
 create_makefile("#{modulename}")    # interface ファイルで定義した module 名を書く

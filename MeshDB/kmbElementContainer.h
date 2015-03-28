@@ -30,6 +30,7 @@
 #include "Geometry/kmbPoint3DContainer.h"
 #include "Geometry/kmbFramedPlane.h"
 #include <set>
+#include <map>
 #include <string>
 
 #include "MeshDB/kmbTypes.h"
@@ -92,6 +93,10 @@ public:
 	void getMinPoint(kmb::Point3D& pt) const;
 	const kmb::BoundingBox& getBoundingBox(void) const;
 	void setBoundingBox(const kmb::Point3D& max,const kmb::Point3D& min);
+
+
+	int replaceNodeId(kmb::nodeIdType oldNodeId,kmb::nodeIdType newNodeId);
+	int replaceNodeId(std::map<kmb::nodeIdType,kmb::nodeIdType>& nodeMapper);
 public:
 	class _iterator
 	{
@@ -211,6 +216,9 @@ public:
 	virtual kmb::elementType getElementType(kmb::elementIdType elementId) const = 0;
 	virtual kmb::nodeIdType operator()(kmb::elementIdType elementId,kmb::idType localId) const = 0;
 	virtual kmb::nodeIdType& operator()(kmb::elementIdType elementId,kmb::idType localId) = 0;
+
+
+	virtual void commit(kmb::elementIdType elementId) = 0;
 };
 
 

@@ -76,6 +76,8 @@ public:
 	static Line3D* createFromPoints(const kmb::Point3D &p,const kmb::Point3D &q);
 	static Line3D* createFromBaseDirection(const kmb::Point3D &base,const kmb::Vector3D &direction);
 	kmb::Vector3D getDirection(void) const;
+	double distance(const kmb::Point3D &pt) const;
+	double distanceSq(const kmb::Point3D &pt) const;
 };
 
 }

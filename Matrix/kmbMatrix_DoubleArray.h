@@ -100,6 +100,8 @@ public:
 	virtual double& operator()(int i,int j);
 	virtual const double& operator()(int i,int j) const;
 	virtual ColumnVector_DoubleArray& operator=(const ColumnVector_DoubleArray& other);
+	double* getPtr(void);
+	const double* getPtr(void) const;
 protected:
 	void clear(void);
 };
@@ -125,6 +127,8 @@ public:
 	virtual double& operator()(int i,int j);
 	virtual const double& operator()(int i,int j) const;
 	virtual RowVector_DoubleArray& operator=(const RowVector_DoubleArray& other);
+	double* getPtr(void);
+	const double* getPtr(void) const;
 protected:
 	void clear(void);
 };

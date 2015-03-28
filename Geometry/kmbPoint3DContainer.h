@@ -269,5 +269,15 @@ protected:
 	};
 };
 
+
+class Point3DContainerDirectAccessable : public Point3DContainer{
+public:
+	virtual double operator()(kmb::nodeIdType nodeId,int index) const = 0;
+	virtual double& operator()(kmb::nodeIdType nodeId,int index) = 0;
+
+
+	virtual void commit(kmb::nodeIdType nodeId) = 0;
+};
+
 }
 

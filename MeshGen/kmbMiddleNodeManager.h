@@ -86,11 +86,14 @@ public:
 
 
 
-	kmb::nodeIdType getCenterNode(kmb::ElementBase &elem,kmb::elementIdType elementId);
-	kmb::nodeIdType getCenterNode(kmb::ElementBase &elem,int faceIndex,kmb::elementIdType elementId);
+	kmb::nodeIdType getCenterNode(const kmb::ElementBase &elem,kmb::elementIdType elementId);
+	kmb::nodeIdType getCenterNode(const kmb::ElementBase &elem,int faceIndex,kmb::elementIdType elementId);
 
-	kmb::nodeIdType getCenterNode2(kmb::ElementBase &elem,kmb::elementIdType elementId);
-	kmb::nodeIdType getCenterNode2(kmb::ElementBase &elem,int faceIndex,kmb::elementIdType elementId);
+	kmb::nodeIdType getCenterNode4(kmb::nodeIdType n0,kmb::nodeIdType n1,kmb::nodeIdType n2,kmb::nodeIdType n3,kmb::elementIdType elementId);
+	kmb::nodeIdType getCenterNode8(kmb::nodeIdType n0,kmb::nodeIdType n1,kmb::nodeIdType n2,kmb::nodeIdType n3,kmb::nodeIdType n4,kmb::nodeIdType n5,kmb::nodeIdType n6,kmb::nodeIdType n7,kmb::elementIdType elementId);
+
+	kmb::nodeIdType getCenterNode2(const kmb::ElementBase &elem,kmb::elementIdType elementId);
+	kmb::nodeIdType getCenterNode2(const kmb::ElementBase &elem,int faceIndex,kmb::elementIdType elementId);
 
 
 	kmb::nodeIdType isDivided(kmb::nodeIdType a,kmb::nodeIdType b) const;
@@ -111,7 +114,7 @@ public:
 
 
 
-	kmb::nodeIdType getDividedNodePyrmid2c(int index,kmb::nodeIdType center,kmb::ElementBase &elem,kmb::elementIdType elemId=kmb::Element::nullElementId);
+	kmb::nodeIdType getDividedNodePyrmid2c(int index,kmb::nodeIdType center,const kmb::ElementBase &elem,kmb::elementIdType elemId=kmb::Element::nullElementId);
 
 
 

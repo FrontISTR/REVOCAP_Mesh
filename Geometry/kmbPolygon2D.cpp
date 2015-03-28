@@ -132,6 +132,7 @@ kmb::Polygon2D::intersect( kmb::Point2D &point ) const
 		}
 	}
 
+
 	if( fabs(angle+2*PI) < 0.1 ){
 		return kmb::Region::INSIDE;
 	}else{

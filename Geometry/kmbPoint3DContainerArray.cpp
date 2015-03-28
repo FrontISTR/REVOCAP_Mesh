@@ -27,7 +27,8 @@
 const char* kmb::Point3DContainerArray::CONTAINER_TYPE = "double_array";
 
 kmb::Point3DContainerArray::Point3DContainerArray(void)
-: pointArray(NULL)
+: kmb::Point3DContainerDirectAccessable()
+, pointArray(NULL)
 , index(0)
 , size(0)
 {
@@ -159,6 +160,14 @@ kmb::Point3DContainerArray::deletePoint(nodeIdType id)
 		return true;
 	}else{
 		return false;
+	}
+}
+
+void kmb::Point3DContainerArray::commit(kmb::nodeIdType nodeId)
+{
+	index = nodeId+1;
+	for(int i=0;i<index;i++){
+		boundBox.update( pointArray[3*i+0], pointArray[3*i+1], pointArray[3*i+2] );
 	}
 }
 

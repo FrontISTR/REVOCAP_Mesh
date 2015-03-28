@@ -48,10 +48,12 @@ RevocapVisual Ç…Ç®ÇØÇÈ FXRuby Ç≈ÇÃ OpenGL ÇÃï`âÊÇçÇë¨âªÇ∑ÇÈñ⁄ìIÇ≈çÏÇÁÇÍÇΩ
 ---------------------------------------------------------------*/
 %module RevocapGL
 
+#ifndef VERSION
 namespace kmb{
 #define VERSION "RevocapGL version 1.6.03 (2013/3/8)"
 #define COPYRIGHT "IIS, The University of Tokyo CISS, Large Scale Assembly, Structural Correspondence, Multi Dynamics Simulator"
 }
+#endif
 
 %{
 #ifdef _MSC_VER

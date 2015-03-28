@@ -61,6 +61,12 @@ kmb::ScalarValueBindings::~ScalarValueBindings(void)
 void
 kmb::ScalarValueBindings::clear(void)
 {
+	clear(0.0);
+}
+
+void kmb::ScalarValueBindings::clear(double v)
+{
+	std::fill(values,values+size,v);
 }
 
 bool

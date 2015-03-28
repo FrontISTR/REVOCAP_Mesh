@@ -30,6 +30,7 @@
 #include "MeshDB/kmbDataBindings.h"
 #include "MeshDB/kmbElementContainer.h"
 #include "MeshDB/kmbNodeMapperBindings.h"
+#include "MeshDB/kmbMeshOperation.h"
 
 #include <map>
 #include <cstring>
@@ -45,7 +46,9 @@ kmb::MeshDB::nodeIdDefragmentation(nodeIdType initId)
 {
 	if( node3Ds == NULL ||
 		strcmp( node3Ds->getContainerType(), kmb::Point3DContainerMap::CONTAINER_TYPE ) != 0 )
+	{
 		return;
+	}
 
 
 	this->neighborInfo.clear();
@@ -198,52 +201,6 @@ kmb::MeshDB::reverseElement(kmb::elementIdType elementID,kmb::bodyIdType bodyID)
 	return elem.reverse();
 }
 
-int
-kmb::MeshDB::duplicateNodeIdOfBody(kmb::bodyIdType bodyId,const char* coupleName)
-{
-	int count = 0;
-	kmb::nodeIdType orgNodeId = kmb::nullNodeId;
-	kmb::nodeIdType newNodeId = kmb::nullNodeId;
-	long l;
-	kmb::ElementContainer* body = this->getBodyPtr(bodyId);
-	kmb::Point3DContainer* points = this->getNodes();
-	kmb::DataBindings* data = NULL;
-	if( body && points ){
-		if( coupleName ){
-			data = this->getDataBindingsPtr(coupleName);
-			if( data == NULL ){
-				data = new kmb::NodeMapperBindings<kmb::nodeIdType>();
-				this->setDataBindingsPtr(coupleName,data);
-			}
-		}else{
-			data = new kmb::NodeMapperBindings<kmb::nodeIdType>();
-		}
-		kmb::ElementContainer::iterator eIter = body->begin();
-		while( !eIter.isFinished() ){
-			int len = eIter.getNodeCount();
-			for(int i=0;i<len;++i){
-				orgNodeId = eIter[i];
-				if( !data->hasId( orgNodeId ) ){
-					++count;
-					newNodeId = points->duplicatePoint( orgNodeId );
-					eIter.setCellId(i,newNodeId);
-					l = static_cast<long>(newNodeId);
-					data->setPhysicalValue( orgNodeId, &l );
-				}else if( data->getPhysicalValue( orgNodeId, &l ) ){
-					newNodeId = static_cast<kmb::nodeIdType>(l);
-					eIter.setCellId(i,newNodeId);
-				}
-			}
-			++eIter;
-		}
-		if( data && coupleName == NULL ){
-
-			delete data;
-		}
-	}
-	return count;
-}
-
 
 int
 kmb::MeshDB::replaceNodeIdOfBody(kmb::bodyIdType bodyId,kmb::nodeIdType oldNodeId,kmb::nodeIdType newNodeId)
@@ -251,14 +208,7 @@ kmb::MeshDB::replaceNodeIdOfBody(kmb::bodyIdType bodyId,kmb::nodeIdType oldNodeI
 	int count = 0;
 	kmb::ElementContainer* body = this->getBodyPtr(bodyId);
 	if( body ){
-		kmb::ElementContainer::iterator eIter = body->begin();
-		while( eIter != body->end() )
-		{
-			if( eIter.replaceNodeId(oldNodeId,newNodeId) ){
-				++count;
-			}
-			++eIter;
-		}
+		count = body->replaceNodeId(oldNodeId,newNodeId);
 	}
 	return count;
 }
@@ -270,12 +220,7 @@ kmb::MeshDB::replaceNodeIdOfBody(kmb::bodyIdType bodyId,std::map<kmb::nodeIdType
 	int count = 0;
 	kmb::ElementContainer* body = this->getBodyPtr(bodyId);
 	if( body ){
-		kmb::ElementContainer::iterator eIter = body->begin();
-		while( eIter != body->end() )
-		{
-			count += eIter.replaceNodeId(nodeMapper);
-			++eIter;
-		}
+		count = body->replaceNodeId(nodeMapper);
 	}
 	return count;
 }
@@ -320,4 +265,43 @@ kmb::MeshDB::reverseBody(kmb::bodyIdType bodyId)
 			++eIter;
 		}
 	}
+}
+
+size_t kmb::MeshDB::countCommonNode(kmb::bodyIdType bodyId0,kmb::bodyIdType bodyId1) const
+{
+	const kmb::ElementContainer* body0 = this->getBodyPtr(bodyId0);
+	const kmb::ElementContainer* body1 = this->getBodyPtr(bodyId1);
+	if( body0 == NULL || body1 == NULL ){
+		return 0;
+	}
+
+	kmb::DataBindings* nodeGroup0 = kmb::DataBindings::createDataBindings(kmb::DataBindings::NodeGroup,kmb::PhysicalValue::None,"",bodyId0);
+	kmb::DataBindings* nodeGroup1 = kmb::DataBindings::createDataBindings(kmb::DataBindings::NodeGroup,kmb::PhysicalValue::None,"",bodyId0);
+	kmb::ElementContainer::const_iterator eIter0 = body0->begin();
+	while( !eIter0.isFinished() ){
+		int len = eIter0.getNodeCount();
+		for(int i=0;i<len;++i){
+			nodeGroup0->addId( eIter0[i] );
+		}
+		++eIter0;
+	}
+	kmb::ElementContainer::const_iterator eIter1 = body1->begin();
+	while( !eIter1.isFinished() ){
+		int len = eIter1.getNodeCount();
+		for(int i=0;i<len;++i){
+			nodeGroup1->addId( eIter1[i] );
+		}
+		++eIter1;
+	}
+	size_t count = 0;
+	kmb::DataBindings::const_iterator dIter = nodeGroup1->begin();
+	while( !dIter.isFinished() ){
+		if( nodeGroup0->hasId( dIter.getId() ) ){
+			++count;
+		}
+		++dIter;
+	}
+	delete nodeGroup0;
+	delete nodeGroup1;
+	return count;
 }

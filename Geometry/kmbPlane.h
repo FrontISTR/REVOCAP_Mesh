@@ -57,6 +57,9 @@ public:
 	Vector3D getNormal(void) const;
 	double getConstant(void) const;
 
+	bool setNormal(double a,double b,double c);
+	void setOrigin(double x,double y,double z);
+
 	Point3D* createIntersectPoint(const Point3D &p0,const Point3D &p1) const;
 
 

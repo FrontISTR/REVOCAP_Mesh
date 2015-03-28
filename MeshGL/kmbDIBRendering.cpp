@@ -12,7 +12,7 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-#ifdef REVO_USE_DIB
+#ifdef REVOCAP_SUPPORT_DIB
 #ifdef WIN32
 #include "MeshGL/kmbDIBRendering.h"
 

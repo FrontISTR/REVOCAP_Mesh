@@ -145,10 +145,10 @@ public:
 			return false;
 		}
 		bitlength = 0U;
-		while( size > (1U<<bitlength)*tSize && bitlength < MAX_BITLENGTH ){
+		while( size > (static_cast<size_t>(1U)<<bitlength)*tSize && bitlength < MAX_BITLENGTH ){
 			++bitlength;
 		}
-		subSize = 1U << bitlength;
+		subSize = static_cast<size_t>(1U) << bitlength;
 		topSize = (size>>bitlength)+1;
 		localbitmask = static_cast<unsigned int>(subSize-1);
 		ary = new T*[ topSize ];
@@ -168,7 +168,18 @@ public:
 	{
 		return set(index.getTopIndex(),index.getSubIndex(),t);
 	}
-	const T& operator()(const kmb::BLArrayIndex &index,int j=0){
+
+	T& operator()(const kmb::BLArrayIndex &index,int j=0){
+		const size_t& tIndex = index.getTopIndex();
+		const size_t& sIndex = index.getSubIndex();
+		return ary[tIndex][n*sIndex+j];
+	}
+	T& operator()(size_t i,int j=0){
+		const size_t& tIndex = i>>bitlength;
+		const size_t& sIndex = i&localbitmask;
+		return ary[tIndex][n*sIndex+j];
+	}
+	const T& operator()(const kmb::BLArrayIndex &index,int j=0) const{
 		const size_t& tIndex = index.getTopIndex();
 		const size_t& sIndex = index.getSubIndex();
 		if( tIndex >= topSize ){
@@ -179,7 +190,7 @@ public:
 		}
 		return ary[tIndex][n*sIndex+j];
 	}
-	const T& operator()(size_t i,int j=0){
+	const T& operator()(size_t i,int j=0) const{
 		const size_t& tIndex = i>>bitlength;
 		const size_t& sIndex = i&localbitmask;
 		if( tIndex >= topSize ){
@@ -419,10 +430,10 @@ public:
 			return false;
 		}
 		bitlength = 0U;
-		while( size > (1U<<bitlength)*tSize && bitlength < MAX_BITLENGTH ){
+		while( size > (static_cast<size_t>(1U)<<bitlength)*tSize && bitlength < MAX_BITLENGTH ){
 			++bitlength;
 		}
-		subSize = 1U << bitlength;
+		subSize = static_cast<size_t>(1U) << bitlength;
 		topSize = (size>>bitlength)+1;
 		localbitmask = static_cast<unsigned int>(subSize-1);
 		ary = new T**[ topSize ];

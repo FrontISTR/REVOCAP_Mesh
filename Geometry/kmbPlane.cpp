@@ -114,6 +114,23 @@ kmb::Plane::getConstant(void) const
 	return d;
 }
 
+bool kmb::Plane::setNormal(double a,double b,double c)
+{
+	double r = sqrt(a*a+b*b+c*c);
+	if( r != 0.0 ){
+		this->a = a/r;
+		this->b = b/r;
+		this->c = c/r;
+		return true;
+	}
+	return false;
+}
+
+void kmb::Plane::setOrigin(double x,double y,double z)
+{
+	d = -a*x-b*y-c*z;
+}
+
 kmb::Point3D*
 kmb::Plane::createIntersectPoint(const kmb::Point3D &p0, const kmb::Point3D &p1) const
 {
