@@ -16,6 +16,7 @@
 
 #include "MeshDB/kmbTypes.h"
 #include <map>
+#include <cstddef>
 
 namespace kmb{
 
