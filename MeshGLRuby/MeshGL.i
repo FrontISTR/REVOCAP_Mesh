@@ -431,14 +431,6 @@ public:
 
 /**--------------------------------------------------------------------------
 =begin
---- volumeRendering(physicalVal,colorMap,repeatLevel,numParticle,volCorrect=true,comp=-1)
-	ボリュームレンダリング（テスト用）
-=end
----------------------------------------------------------------------------*/
-	void volumeRendering(const char* physicalValue, kmb::ColorMap* colorMap,int repeatLevel,int numParticle,bool volCorrect=true,int comp=-1);
-
-/**--------------------------------------------------------------------------
-=begin
 ---drawIntersection(bodyId,plane)
 	bodyId の Body を plane と交差する要素を除いた面を表示する
 

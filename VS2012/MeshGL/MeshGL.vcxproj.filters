@@ -21,13 +21,7 @@
     <ClInclude Include="..\..\MeshGL\kmbColorMap.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\MeshGL\kmbDIBRendering.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\MeshGL\kmbFBORendering.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\MeshGL\kmbMatrixGL.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="..\..\MeshGL\kmbMeshGL.h">
@@ -41,13 +35,7 @@
     <ClCompile Include="..\..\MeshGL\kmbColorMap.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\MeshGL\kmbDIBRendering.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\MeshGL\kmbFBORendering.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\MeshGL\kmbMatrixGL.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="..\..\MeshGL\kmbMeshGL.cpp">
