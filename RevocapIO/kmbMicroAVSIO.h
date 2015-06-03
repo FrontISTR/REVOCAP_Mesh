@@ -27,7 +27,9 @@
 namespace kmb{
 
 class MeshData;
+#ifndef REVOCAP_SUPPORT_RUBY
 class StructuredGrid;
+#endif
 
 class MicroAVSIO
 {

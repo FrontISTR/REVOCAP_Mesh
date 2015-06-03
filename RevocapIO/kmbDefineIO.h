@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
-# Class Name : RevocapMeshDumpIO                                       #
+# Common Definitions for RevocapIO                                     #
 #                                                                      #
 #                                Written by                            #
 #                                           K. Tokunaga 2014/09/03     #
