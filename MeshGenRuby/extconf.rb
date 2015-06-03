@@ -8,7 +8,7 @@ Linux 環境の場合、ldd RevocapMeshGen.so で確認！
 require 'mkmf'
 require 'fileutils'
 
-modulename = " RevocapMeshGen"
+modulename = "RevocapMeshGen"
 
 puts "extconf for #{modulename} #{RUBY_PLATFORM} #{RUBY_VERSION}"
 
