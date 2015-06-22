@@ -166,7 +166,7 @@ kmb::Point3DContainerArray::deletePoint(nodeIdType id)
 void kmb::Point3DContainerArray::commit(kmb::nodeIdType nodeId)
 {
 	index = nodeId+1;
-	for(int i=0;i<index;i++){
+	for(unsigned int i=0;i<index;i++){
 		boundBox.update( pointArray[3*i+0], pointArray[3*i+1], pointArray[3*i+2] );
 	}
 }

@@ -748,7 +748,6 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
-		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
 
 		kmb::Vector3D normVect(0.0,0.0,0.0);

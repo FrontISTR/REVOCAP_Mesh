@@ -18,6 +18,7 @@
 
 #include <cstdio>
 #include <ctime>
+#include <iostream>
 
 void
 kmb::EnvInfo::printCVersion(void)
@@ -64,11 +65,11 @@ kmb::EnvInfo::printCVersion(void)
 void
 kmb::EnvInfo::printSize(void)
 {
-	printf("sizeof(int) = %zu\n", sizeof(int) );
-	printf("sizeof(long) = %zu\n", sizeof(long) );
-	printf("sizeof(size_t) = %zu\n", sizeof(size_t) );
-	printf("sizeof(float) = %zu\n", sizeof(float) );
-	printf("sizeof(double) = %zu\n", sizeof(double) );
+	std::cout << "sizeof(int) = " << sizeof(int) << std::endl;
+	std::cout << "sizeof(long) = " << sizeof(long) << std::endl;
+	std::cout << "sizeof(size_t) = " << sizeof(size_t) << std::endl;
+	std::cout << "sizeof(float) = " << sizeof(float) << std::endl;
+	std::cout << "sizeof(double) = " << sizeof(double) << std::endl;
 }
 
 void kmb::EnvInfo::getCurrentTimeString(std::string& str)

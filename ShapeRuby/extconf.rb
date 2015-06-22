@@ -10,31 +10,30 @@ require 'mkmf'
 
 modulename = "RevocapShape"
 
-use_opencascade = (ENV['OPENCASCADEFLAG'] != nil)
+use_opencascade = true
+casroot = ENV['CASROOT'] || "/usr/local/opencascade"
+
+if !File.exist?( File.join('..','lib',RUBY_PLATFORM) )
+	Dir.mkdir( File.join('..','lib',RUBY_PLATFORM) )
+end
+arch = RUBY_PLATFORM
 
 case RUBY_PLATFORM
 when "i486-linux", "x86_64-linux", "x86_64-linux-gnu", "i686-linux"
 	dir_config( "#{modulename}", "/usr/include/opencascade", "/usr/lib" )
-	if !File.exist?( File.join('..','lib',RUBY_PLATFORM) )
-		Dir.mkdir( File.join('..','lib',RUBY_PLATFORM) )
-	end
 	CONFIG['LDSHARED'] = 'g++ -shared -s'
-	arch = RUBY_PLATFORM
+when "x64-mingw32"
+	dir_config( "#{modulename}", "#{casroot}/oce/inc", "#{casroot}/build/win64/bin/Release" )
+	CONFIG['LDSHARED'] = 'g++ -shared -s'
 when "i386-cygwin"
-	if !File.exist?( File.join('..','lib','i386-cygwin') )
-		Dir.mkdir( File.join('..','lib','i386-cygwin') )
-	end
 	CONFIG['LDSHARED'] = 'g++ -shared -s'
-	arch = "i386-cygwin"
 	use_opencascade = false
 else
-	if !File.exist?( File.join('..','lib',RUBY_PLATFORM) )
-		Dir.mkdir( File.join('..','lib',RUBY_PLATFORM) )
-	end
-	arch = RUBY_PLATFORM
 	use_opencascade = false
 end
 
+puts "ARCH = #{arch}"
+puts "OPENCASCADE = #{use_opencascade}"
 if use_opencascade
 [
 'TKSTEPBase',
@@ -43,8 +42,6 @@ if use_opencascade
 'TKSTEP',
 'TKSTL',
 'TKVRML',
-'TKV3d',
-'TKV2d',
 'TKMesh',
 'TKTopAlgo',
 'TKService',
@@ -62,10 +59,8 @@ if use_opencascade
 'TKFillet',
 'TKFeat',
 'TKernel',
-#'TKDraw', # comment for OpenCASCADE 6.3
 'TKCDF',
 'TKCAF',
-#'TKDCAF', # comment for OpenCASCADE 6.3
 'TKLCAF',
 'TKXCAF',
 'TKBool',

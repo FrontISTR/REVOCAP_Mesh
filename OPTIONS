@@ -3,16 +3,21 @@
 #
 
 #
+# export variables
+#
+export EXTENSIONLIB =
+export DEBUGFLAG =
+
+#
 # for debug
 # 
-#export DEBUGFLAG = -D_DEBUG=3 # debug message enable even if in loop
-#export DEBUGFLAG = -D_DEBUG -g
-export DEBUGFLAG = -DNDEBUG
+#DEBUGFLAG = -D_DEBUG=3 # debug message enable even if in loop
+#DEBUGFLAG = -D_DEBUG -g
+DEBUGFLAG = -DNDEBUG
 
 ### for OpenCASCADE
 
-#OPENCASCADEFLAG = -DOPENCASCADE -DHAVE_CONFIG_H -DHAVE_FSTREAM -DHAVE_IOSTREAM -DHAVE_LIMITS_H
-#export OPENCASCADEFLAG
+OPENCASCADEFLAG = -DOPENCASCADE -DHAVE_CONFIG_H -DHAVE_FSTREAM -DHAVE_IOSTREAM -DHAVE_LIMITS_H
 
 ### for OpenGLEW
 
@@ -20,5 +25,3 @@ EXTENSIONLIB += -DREVOCAP_SUPPORT_GLEW
 
 ### for Dump Container
 #EXTENSIONLIB += -DREVOCAP_DUMP_CONTAINER
-
-export EXTENSIONLIB

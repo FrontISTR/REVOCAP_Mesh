@@ -29,6 +29,7 @@
 #include <BRepMesh.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepTools.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
 #include <ShapeAnalysis.hxx>
 #include <ShapeAnalysis_Shell.hxx>
 #include <ShapeAnalysis_Surface.hxx>
@@ -120,13 +121,12 @@ bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 
 	kmb::OctreePoint3D octree;
 	octree.setContainer( mesh.getNodes() );
-
-	if( relative ){
-		BRepMesh::Mesh( shape.getShape(), static_cast<Standard_Real>( incremental*modelDiameter ) );
-	}else{
-		BRepMesh::Mesh( shape.getShape(), static_cast<Standard_Real>( incremental ) );
-	}
-
+	
+	BRepMesh_IncrementalMesh imesh(
+		shape.getShape(), 
+		static_cast<Standard_Real>( incremental*modelDiameter ),
+		relative );
+	imesh.Perform();
 
 	TopExp_Explorer exFace;
 	for( exFace.Init(shape.getShape(),TopAbs_FACE); exFace.More(); exFace.Next() ){

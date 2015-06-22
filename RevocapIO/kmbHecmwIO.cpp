@@ -538,7 +538,6 @@ kmb::HecmwIO::readEGroup( std::ifstream &input, std::string &line, kmb::MeshData
 
 			index = createEgrpInfo( name, "" );
 		}
-		int count = 0;
 		while( !input.eof() ){
 			std::getline( input, line );
 			if( line.find("!") == 0 ){
@@ -551,7 +550,6 @@ kmb::HecmwIO::readEGroup( std::ifstream &input, std::string &line, kmb::MeshData
 	}else{
 		std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
 		kmb::bodyIdType bodyId_eg = kmb::Body::nullBodyId;
-		size_t count = 0;
 		std::string matName;
 
 		int index = getEgrpInfoIndex( name );
@@ -817,7 +815,6 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 		kmb::ElementContainerMap elements;
 
 		size_t nodeCount = 0;
-		kmb::bodyIdType bodyId = 0;
 		std::string line;
 
 
@@ -859,7 +856,7 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 				}
 			}else if( line.find("!SECTION") == 0 ){
 
-				bodyId = readSection( input, line, mesh );
+				readSection( input, line, mesh );
 			}else if( line.find("!MATERIAL") == 0 ){
 				readMaterial( input, line, mesh );
 			}else if( line.find("!EGROUP") == 0 ){
@@ -873,7 +870,7 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 			}
 		}
 		input.clear();
-		input.seekg( 0, std::ios_base::beg	);
+		input.seekg( 0, std::ios_base::beg );
 
 
 
@@ -1203,7 +1200,6 @@ kmb::HecmwIO::loadFromResFileItem(const char* filename,kmb::DataBindings* data,c
 	int nodeValueOffset = -1;
 	int elementValueOffset = -1;
 
-	int dataDim = 0;
 	std::vector<int> nodeValDims;
 	std::vector<int> elementValDims;
 	std::string line;
@@ -1245,7 +1241,6 @@ kmb::HecmwIO::loadFromResFileItem(const char* filename,kmb::DataBindings* data,c
 				data->getBindingMode() == kmb::DataBindings::NodeVariable &&
 				data->getDimension() == nodeValDims[i] ){
 				nodeValueOffset = dim;
-				dataDim = nodeValDims[i];
 			}
 			dim += nodeValDims[i];
 		}
@@ -1292,7 +1287,6 @@ kmb::HecmwIO::loadFromResFileItem(const char* filename,kmb::DataBindings* data,c
 				data->getBindingMode() == kmb::DataBindings::ElementVariable &&
 				data->getDimension() == elementValDims[i] ){
 				elementValueOffset = dim;
-				dataDim = elementValDims[i];
 			}
 			dim += elementValDims[i];
 		}
@@ -2365,7 +2359,7 @@ kmb::HecmwIO::saveToResFile(const char* filename,kmb::MeshData* mesh) const
 	output << "HECMW_BINARY_RESULT";
 	char buf[64];
 	long n;
-	sprintf(buf,"%2lu",sizeof(long));
+	sprintf(buf,"%2lu",static_cast<unsigned long>(sizeof(long)));
 	output.write(buf,2);
 	output << this->resHeader << '\0';
 	n = static_cast<long>( mesh->getNodeCount() );

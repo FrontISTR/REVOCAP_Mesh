@@ -40,7 +40,7 @@ class PolygonPartitioner
 {
 public:
 	PolygonPartitioner(void);
-	virtual ~PolygonPartioner(void);
+	virtual ~PolygonPartitioner(void);
 	kmb::bodyIdType partitionToTriangles(kmb::MeshDB* mesh,kmb::bodyIdType edgeId);
 };
 

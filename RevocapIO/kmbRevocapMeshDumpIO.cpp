@@ -146,7 +146,6 @@ kmb::RevocapMeshDumpIO::getVersion(int &ver,std::istream &input)
 	if( input.fail() ){
 		return kmb::RevocapIO::kFileOpenError;
 	}
-	size_t res = 0;
 	char buf[16];
 	input.seekg(0, std::ios::beg);
 	input.read(buf,8);
@@ -373,21 +372,18 @@ kmb::RevocapMeshDumpIO::saveNodeData(const kmb::MeshData* mesh,std::ostream &out
 	if( mesh == NULL ){
 		return kmb::RevocapIO::kMeshNullError;
 	}
-	int nSize = 0;
 	switch( sInfo.nodeCount )
 	{
 	case 4:
 	{
 		uint32_t nCount = static_cast<uint32_t>( mesh->getNodeCount() );
 		output.write( reinterpret_cast<char*>(&nCount), sizeof(uint32_t) );
-		nSize = static_cast<int>( nCount );
 		break;
 	}
 	case 8:
 	{
 		uint64_t nCount = static_cast<uint64_t>( mesh->getNodeCount() );
 		output.write( reinterpret_cast<char*>(&nCount), sizeof(uint64_t) );
-		nSize = static_cast<int>( nCount );
 		break;
 	}
 	default:
