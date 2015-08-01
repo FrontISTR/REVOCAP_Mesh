@@ -62,10 +62,10 @@ namespace kmb{
 #endif
 %}
 
-
+// swig の制御文
 #ifdef OPENCASCADE
 
-
+// cxx ファイルにそのまま出力される
 %{
 #define OPENCASCADE 1
 #include "Shape/kmbCADFileIO.h"
@@ -151,7 +151,7 @@ public:
 
 }
 
-
+// swig の制御文
 #endif
 
 %{

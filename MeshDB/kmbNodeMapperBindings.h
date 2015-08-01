@@ -29,7 +29,7 @@
 
 namespace kmb{
 
-
+// T ‚Å‘z’è‚·‚é‚Ì‚Í nodeIdType elementIdType
 template<typename T>
 class NodeMapperBindings : public DataBindings
 {

@@ -80,8 +80,8 @@ kmb::Permutation::isFinished(void) const
 	return ( seq == NULL );
 }
 
-
-
+// ÅŒã‚Ì‚à‚Ì‚ğ next ‚·‚é‚Æ
+// seq = NULL ‚É‚·‚é
 bool
 kmb::Permutation::nextPerm(int i)
 {
@@ -94,7 +94,7 @@ kmb::Permutation::nextPerm(int i)
 			}
 			return nextPerm(i-1);
 		}
-
+		// 0 ‚©‚ç i-1 Œ…–Ú‚Åg‚í‚ê‚Ä‚¢‚½‚ç true;
 		bool* temp = new bool[n];
 		for(int j=0;j<n;++j){
 			temp[j] = false;
@@ -102,7 +102,7 @@ kmb::Permutation::nextPerm(int i)
 		for(int j=0;j<i;++j){
 			temp[ seq[j] ] = true;
 		}
-
+		// i Œ…–Ú‚ğ 0 ‚©‚ç i-1 Œ…–Ú‚Åg‚í‚ê‚Ä‚¢‚È‚¢”‚É‘‚â‚·
 		bool flag = false;
 		for(int j=0;j<n;++j){
 			if( temp[j] == false && j > seq[i] ){
@@ -112,12 +112,12 @@ kmb::Permutation::nextPerm(int i)
 				break;
 			}
 		}
-
+		// ‘‚â‚¹‚È‚©‚Á‚½‚Æ‚«
 		if( !flag ){
 			delete[] temp;
 			return nextPerm(i-1);
 		}
-
+		// i+1 Œ…–ÚˆÈ‰º‚ğ‹ó‚¢‚Ä‚¢‚é”‚Å–„‚ß‚é
 		++i;
 		if( i < k ){
 			for(int j=0;j<n;++j){

@@ -78,20 +78,20 @@ void kmb::MeshGL::drawQuadByDividingPoint
 		s3*t31*n30->z() - s3*t30*n31->z());
 }
 
-
-
-
-
-
-
-
-
+// n0 , n1 è„Ç… t0, t1 Ç™Ç†ÇÈÇ∆Ç´Ç… 0 ÇÃì_Çó^Ç¶ÇÈ
+//void glVertex3dAtZero(kmb::Node* n0,kmb::Node* n1,double t0,double t1){
+//	double s = 1.0/(t1-t0);
+//	::glVertex3d( 
+//		s*t1*n0->x() - s*t0*n1->x(),
+//		s*t1*n0->y() - s*t0*n1->y(),
+//		s*t1*n0->z() - s*t0*n1->z() );
+//}
 
 void
 kmb::MeshGL::drawIsosurfTetrahedron
 (kmb::nodeIdType nodeId0, kmb::nodeIdType nodeId1, kmb::nodeIdType nodeId2, kmb::nodeIdType nodeId3,const kmb::DataBindings* isoData,double val,int comp)
 {
-
+	// no null check and no type check!!
 	kmb::Node node[4];
 	kmb::nodeIdType nodeId[4] = {nodeId0,nodeId1,nodeId2,nodeId3};
 	double t[4] = {0.0, 0.0, 0.0, 0.0};
@@ -180,7 +180,7 @@ kmb::MeshGL::drawIsosurfNodeContourTetrahedron
  const kmb::DataBindings* isoData, double iso,
  const kmb::DataBindings* data, kmb::ColorMap* colorMap)
 {
-
+	// no null check and no type check!!
 	kmb::Node node[4];
 	kmb::nodeIdType nodeId[4] = {nodeId0,nodeId1,nodeId2,nodeId3};
 	double t[4] = {0.0, 0.0, 0.0, 0.0};
@@ -233,90 +233,6 @@ kmb::MeshGL::drawIsosurfNodeContourTetrahedron
 		v[0], v[1], v[2], v[3], colorMap );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void
 kmb::MeshGL::drawIsosurfTetrahedronContour
 (kmb::Node* n0,kmb::Node* n1,kmb::Node* n2,kmb::Node* n3,
@@ -324,8 +240,8 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
  double v0, double v1, double v2, double v3,
  kmb::ColorMap* colorMap)
 {
-
-
+//	std::cout << "_drawIsosurfTetrahedronContour" << std::endl;
+	// signature check
 	unsigned int flag = 0;
 	if( t0 > 0 ) flag |= 0x01;
 	if( t1 > 0 ) flag |= 0x02;
@@ -337,11 +253,11 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 	double u0, u1, u2, u3, u4;
 	switch( flag )
 	{
-
-
-	case 0x01:
+//	std::cout << "_drawIsosurfTetrahedronContour " << flag << std::endl;
+	// ÇPÇ¬ÇæÇØê≥
+	case 0x01: // 0
 		{
-
+			// REMARK ORDER!!
 			u0 = getMiddleNode( n0, n1, t0, t1, v0, v1, m0 );
 			u1 = getMiddleNode( n0, n3, t0, t3, v0, v3, m1 );
 			u2 = getMiddleNode( n0, n2, t0, t2, v0, v2, m2 );
@@ -356,9 +272,9 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-	case 0x02:
+	case 0x02: // 1
 		{
-
+			// REMARK ORDER!!
 			u0 = getMiddleNode( n1, n0, t1, t0, v1, v0, m0 );
 			u1 = getMiddleNode( n1, n2, t1, t2, v1, v2, m1 );
 			u2 = getMiddleNode( n1, n3, t1, t3, v1, v3, m2 );
@@ -373,9 +289,9 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-	case 0x04:
+	case 0x04: // 2
 		{
-
+			// REMARK ORDER!!
 			u0 = getMiddleNode( n2, n0, t2, t0, v2, v0, m0 );
 			u1 = getMiddleNode( n2, n3, t2, t3, v2, v3, m1 );
 			u2 = getMiddleNode( n2, n1, t2, t1, v2, v1, m2 );
@@ -390,9 +306,9 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-	case 0x08:
+	case 0x08: // 3
 		{
-
+			// REMARK ORDER!!
 			u0 = getMiddleNode( n3, n0, t3, t0, v3, v0, m0 );
 			u1 = getMiddleNode( n3, n1, t3, t1, v3, v1, m1 );
 			u2 = getMiddleNode( n3, n2, t3, t2, v3, v2, m2 );
@@ -407,10 +323,10 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-
-	case 0x03:
+	// ÇQÇ¬ÇæÇØê≥
+	case 0x03: // 0 1
 		{
-
+			// REMARK ORDER!!
 			u0 = getMiddleNode( n0, n2, t0, t2, v0, v2, m0 );
 			u1 = getMiddleNode( n1, n2, t1, t2, v1, v2, m1 );
 			u2 = getMiddleNode( n1, n3, t1, t3, v1, v3, m2 );
@@ -435,9 +351,9 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-	case 0x05:
+	case 0x05: // 0 2
 		{
-
+			// REMARK ORDER!!
 			u0 = getMiddleNode( n0, n3, t0, t3, v0, v3, m0 );
 			u1 = getMiddleNode( n2, n3, t2, t3, v2, v3, m1 );
 			u2 = getMiddleNode( n2, n1, t2, t1, v2, v1, m2 );
@@ -462,9 +378,9 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-	case 0x06:
+	case 0x06: // 1 2
 		{
-
+			// REMARK ORDER!!
 			u0 = getMiddleNode( n1, n0, t1, t0, v1, v0, m0 );
 			u1 = getMiddleNode( n2, n0, t2, t0, v2, v0, m1 );
 			u2 = getMiddleNode( n2, n3, t2, t3, v2, v3, m2 );
@@ -489,9 +405,9 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-	case 0x09:
+	case 0x09: // 0 3
 		{
-
+			// REMARK ORDER!!
 			u0 = getMiddleNode( n0, n1, t0, t1, v0, v1, m0 );
 			u1 = getMiddleNode( n3, n1, t3, t1, v3, v1, m1 );
 			u2 = getMiddleNode( n3, n2, t3, t2, v3, v2, m2 );
@@ -516,9 +432,9 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-	case 0x0a:
+	case 0x0a: // 1 3
 		{
-
+			// REMARK ORDER!!
 			u0 = getMiddleNode( n1, n2, t1, t2, v1, v2, m0 );
 			u1 = getMiddleNode( n3, n2, t3, t2, v3, v2, m1 );
 			u2 = getMiddleNode( n3, n0, t3, t0, v3, v0, m2 );
@@ -543,9 +459,9 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-	case 0x0c:
+	case 0x0c: // 2 3
 		{
-
+			// REMARK ORDER!!
 			u0 = getMiddleNode( n2, n0, t2, t0, v2, v0, m0 );
 			u1 = getMiddleNode( n3, n0, t3, t0, v3, v0, m1 );
 			u2 = getMiddleNode( n3, n1, t3, t1, v3, v1, m2 );
@@ -570,10 +486,10 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-
-	case 0x07:
+	// ÇRÇ¬ÇæÇØê≥
+	case 0x07: // 0 1 2
 		{
-
+			// REMARK ORDER!!
 			u0 = getMiddleNode( n3, n0, t3, t0, v3, v0, m0 );
 			u1 = getMiddleNode( n3, n2, t3, t2, v3, v2, m1 );
 			u2 = getMiddleNode( n3, n1, t3, t1, v3, v1, m2 );
@@ -588,9 +504,9 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-	case 0x0b:
+	case 0x0b: // 0 1 3
 		{
-
+			// REMARK ORDER!!
 			u0 = getMiddleNode( n2, n0, t2, t0, v2, v0, m0 );
 			u1 = getMiddleNode( n2, n1, t2, t1, v2, v1, m1 );
 			u2 = getMiddleNode( n2, n3, t2, t3, v2, v3, m2 );
@@ -605,9 +521,9 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-	case 0x0d:
+	case 0x0d: // 0 2 3
 		{
-
+			// REMARK ORDER!!
 			u0 = getMiddleNode( n1, n0, t1, t0, v1, v0, m0 );
 			u1 = getMiddleNode( n1, n3, t1, t3, v1, v3, m1 );
 			u2 = getMiddleNode( n1, n2, t1, t2, v1, v2, m2 );
@@ -622,9 +538,9 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-	case 0x0e:
+	case 0x0e: // 1 2 3
 		{
-
+			// REMARK ORDER!!
 			u0 = getMiddleNode( n0, n1, t0, t1, v0, v1, m0 );
 			u1 = getMiddleNode( n0, n2, t0, t2, v0, v2, m1 );
 			u2 = getMiddleNode( n0, n3, t0, t3, v0, v3, m2 );
@@ -646,7 +562,7 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 void
 kmb::MeshGL::drawInterpolatedVector(kmb::Node& n0,kmb::Node& n1,double t0, double t1,double v0[3], double v1[3],double factor,kmb::ColorMap* colorMap)
 {
-
+	// signature check
 	unsigned int flag = 0;
 	if( t0 > 0 ) flag |= 0x01;
 	if( t1 > 0 ) flag |= 0x02;
@@ -662,7 +578,7 @@ kmb::MeshGL::drawInterpolatedVector(kmb::Node& n0,kmb::Node& n1,double t0, doubl
 
 void kmb::MeshGL::drawInterpolatedField(kmb::Node& n0,kmb::Node& n1,double t0, double t1,double v0[3], double v1[3],double arrowSize,kmb::ColorMap* colorMap)
 {
-
+	// signature check
 	unsigned int flag = 0;
 	if( t0 > 0 ) flag |= 0x01;
 	if( t1 > 0 ) flag |= 0x02;
@@ -690,7 +606,6 @@ kmb::MeshGL::drawIsosurface
 	{
 		::glPushAttrib( GL_ENABLE_BIT );
 		::glEnable( GL_COLOR_MATERIAL );
-
 		kmb::nodeIdType tetras[6][4];
 		for(int i=0;i<6;++i){
 			for(int j=0;j<4;++j){
@@ -736,7 +651,6 @@ void kmb::MeshGL::drawSection(kmb::bodyIdType bodyId,kmb::Plane* plane)
 		body->isUniqueDim(3) && plane != NULL )
 	{
 		kmb::Node n0,n1,n2,n3;
-
 		kmb::nodeIdType tetras[6][4];
 		for(int i=0;i<6;++i){
 			for(int j=0;j<4;++j){
@@ -1277,8 +1191,8 @@ kmb::MeshGL::drawSectionVector(kmb::bodyIdType bodyId,kmb::Plane* plane,const ch
 	{
 		::glPushAttrib( GL_ENABLE_BIT );
 		::glEnable( GL_COLOR_MATERIAL );
-
-
+		// èdï°ÇñhÇÆÇΩÇﬂÇÃÉLÉÉÉbÉVÉÖ
+		// è¨Ç≥Ç¢ï˚Ç™ëÊÇPê¨ï™
 		std::set< std::pair<kmb::nodeIdType,kmb::nodeIdType> > nodePairs;
 		kmb::Node n0, n1;
 		double v0[3], v1[3];
@@ -1326,8 +1240,8 @@ void kmb::MeshGL::drawSectionField(kmb::bodyIdType bodyId,kmb::Plane* plane,cons
 	{
 		::glPushAttrib( GL_ENABLE_BIT );
 		::glEnable( GL_COLOR_MATERIAL );
-
-
+		// èdï°ÇñhÇÆÇΩÇﬂÇÃÉLÉÉÉbÉVÉÖ
+		// è¨Ç≥Ç¢ï˚Ç™ëÊÇPê¨ï™
 		std::set< std::pair<kmb::nodeIdType,kmb::nodeIdType> > nodePairs;
 		kmb::Node n0, n1;
 		double v0[3], v1[3];

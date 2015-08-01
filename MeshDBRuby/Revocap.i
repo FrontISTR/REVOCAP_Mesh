@@ -63,7 +63,7 @@ REVOCAP_PrePost の FXRuby で実装された GUI 部から利用される。
 #include "MeshDBRuby/kmbPhysicalValue_SWIG.h"
 %}
 
-
+// typedef は %include しないと int 型のエイリアスが基本型にならない
 %include "../MeshDB/kmbTypes.h"
 %include "../Common/kmbCommon.h"
 %include "../Geometry/kmbIdTypes.h"
@@ -101,7 +101,7 @@ namespace kmb{
 #define COPYRIGHT "IIS, The University of Tokyo CISS, Large Scale Assembly, Structural Correspondence, Multi Dynamics Simulator"
 }
 
-
+// 順番は重要！
 %include "BoundingBox.i"
 %include "MeshData.i"
 %include "MeshDB.i"

@@ -39,13 +39,13 @@ public:
 	Triangle(kmb::nodeIdType *ary);
 	virtual ~Triangle(void);
 
-
-
+	// •Ó‚ÌŒðŠ·
+	// abc ‚Æ acd ‚©‚ç abd ‚Æ bcd ‚É•ÏŠ·‚·‚é
 	static bool edgeSwap(kmb::ElementBase &triangle0,kmb::ElementBase &triangle1);
-
-
+	// ŽOŠpŒ`‚É“Á‰»‚µ‚½ˆê’v”»’è
+	// 1 : ˆê’v -1 : ‹tŒü‚« 0 : ‚»‚Ì‘¼
 	static int isCoincident(kmb::nodeIdType t00,kmb::nodeIdType t01,kmb::nodeIdType t02,kmb::nodeIdType t10,kmb::nodeIdType t11,kmb::nodeIdType t12);
-
+	// ‚R“_‚Ì‚¤‚¿ˆê’v‚µ‚Ä‚¢‚é“_‚ª‚ ‚é‚©‚ð”»’è‚·‚é
 	static bool isCoincidentNodes(kmb::nodeIdType t0,kmb::nodeIdType t1,kmb::nodeIdType t2);
 public:
 	static const int connectionTable[3][3];

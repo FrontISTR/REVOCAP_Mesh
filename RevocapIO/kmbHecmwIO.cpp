@@ -23,11 +23,11 @@
 #      "Innovative General-Purpose Coupled Analysis System"            #
 #                                                                      #
 ----------------------------------------------------------------------*/
-
-
-
-
-
+//
+// HEC-MW のためのファイル I/O
+//
+// material 属性は CNT ファイルを読まないとわからない
+//
 
 #include "RevocapIO/kmbHecmwIO.h"
 #include "RevocapIO/kmbRevocapIOUtils.h"
@@ -276,7 +276,7 @@ kmb::HecmwIO::readNode( std::ifstream &input, std::string &line, kmb::MeshData* 
 	kmb::nodeIdType nodeId = kmb::nullNodeId;
 	size_t nodeCount = 0;
 	double x=0.0,y=0.0,z=0.0;
-	char comma;
+	char comma;  // for comma
 	if( mesh == NULL ){
 		while( !input.eof() ){
 			std::getline( input, line );
@@ -355,36 +355,36 @@ kmb::HecmwIO::readSection( std::ifstream &input, std::string &line, kmb::MeshDat
 		std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
 		std::string matname = kmb::RevocapIOUtils::getValue( line, "MATERIAL" );
 		if( name.size() > 0 ){
-
+			// egrpInfo から探す
 			int index = getEgrpInfoIndex( name );
 			if( index != -1 ){
-
+				// 見つかれば Material 登録
 				egrpInfo[index].materialName = matname;
 			}else{
-
+				// なければ新規登録
 				index = createEgrpInfo( name, matname );
 			}
 			std::cout << "section " << egrpInfo[index].bodyId << " " << egrpInfo[index].egrpName << " => " << egrpInfo[index].materialName << std::endl;
-
+			// Body の生成（入れ物だけ）
 			bodyId = mesh->beginElement( egrpInfo[index].egrpCount );
 			mesh->endElement();
 			mesh->setBodyName( bodyId, name.c_str() );
 			egrpInfo[index].bodyId = bodyId;
-
+			// Section データの解析
 			kmb::HashValue* hash = new kmb::HashValue();
 			std::string typestr = kmb::RevocapIOUtils::getValue( line, "TYPE" );
 			hash->setValue( "TYPE", new kmb::TextValue( typestr.c_str() ) );
 			hash->setValue( "EGRP", new kmb::TextValue( name.c_str() ) );
 			hash->setValue( "MATERIAL", new kmb::TextValue( matname.c_str() ) );
 			sectionInfo->setPhysicalValue( bodyId, hash );
-
+			// ２行目以降があるかどうか
 			std::getline( input, line );
 			if( line.find("!") == 0 || line.size() == 0 ){
-
-
+				// default value
+				//hash->setValue( "THICKNESS", new kmb::ScalarValue( 1.0 ) );
 			}else{
 				std::istringstream tokenizer(line);
-				char comma;
+				char comma;  // for comma
 				if( typestr == "SOLID" ){
 					double thickness;
 					tokenizer >> thickness;
@@ -439,7 +439,7 @@ kmb::HecmwIO::readMaterial( std::ifstream &input, std::string &line, kmb::MeshDa
 		}
 	}else{
 		double value;
-		char comma;
+		char comma;  // for comma
 		std::stringstream ss;
 		std::string matname = kmb::RevocapIOUtils::getValue(line,"NAME");
 		kmb::DataBindings* data = mesh->getDataBindingsPtr( matname.c_str(), "Material" );
@@ -458,7 +458,7 @@ kmb::HecmwIO::readMaterial( std::ifstream &input, std::string &line, kmb::MeshDa
 			ss << kmb::RevocapIOUtils::getValue( line, "SUBITEM" );
 			int subitem = 0;
 			ss >> subitem;
-
+			// subitem は省略したときに1
 			if( subitem == 0 ){
 				subitem = 1;
 			}
@@ -470,7 +470,7 @@ kmb::HecmwIO::readMaterial( std::ifstream &input, std::string &line, kmb::MeshDa
 				}
 				value = 0.0;
 				tokenizer >> value;
-
+				// comma なら一つ進める
 				tokenizer >> comma;
 				switch(this->soltype)
 				{
@@ -532,10 +532,10 @@ kmb::HecmwIO::readEGroup( std::ifstream &input, std::string &line, kmb::MeshData
 	size_t count = 0;
 	if( mesh == NULL ){
 		std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
-
+		// egrpInfo から探す
 		int index = getEgrpInfoIndex( name );
 		if( index == -1 ){
-
+			// なければ新規登録
 			index = createEgrpInfo( name, "" );
 		}
 		while( !input.eof() ){
@@ -551,7 +551,7 @@ kmb::HecmwIO::readEGroup( std::ifstream &input, std::string &line, kmb::MeshData
 		std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
 		kmb::bodyIdType bodyId_eg = kmb::Body::nullBodyId;
 		std::string matName;
-
+		// 領域として登録されているかを判定する
 		int index = getEgrpInfoIndex( name );
 		if( index != -1 ){
 			bodyId_eg = egrpInfo[index].bodyId;
@@ -559,7 +559,7 @@ kmb::HecmwIO::readEGroup( std::ifstream &input, std::string &line, kmb::MeshData
 			matName = egrpInfo[index].materialName;
 		}
 		if( bodyId_eg != kmb::Body::nullBodyId ){
-
+			// 領域として定義されているとき
 			if( parentBody != NULL ){
 				kmb::ElementContainer* body = mesh->getBodyPtr( bodyId_eg );
 				kmb::elementIdType elementId = kmb::Element::nullElementId;
@@ -588,13 +588,13 @@ kmb::HecmwIO::readEGroup( std::ifstream &input, std::string &line, kmb::MeshData
 				delete[] nodeTable;
 			}
 		}else{
-
+			// Data として定義されているとき
 			kmb::DataBindings* data = mesh->getDataBindingsPtr( name.c_str() );
 			if( data == NULL && dataFlag ){
 				data = mesh->createDataBindings( name.c_str(), kmb::DataBindings::ElementGroup, kmb::PhysicalValue::None );
 			}
-
-
+			// すでにデータの入れ物がある場合はそれに入れる
+			// 境界条件を読むときは cnt ファイルを読んだ時点で入れ物を作っておく
 			if( data ){
 				kmb::elementIdType elementId = kmb::Element::nullElementId;
 				std::istringstream tokenLine;
@@ -644,8 +644,8 @@ kmb::HecmwIO::readNGroup( std::ifstream &input, std::string &line, kmb::MeshData
 		if( data == NULL && dataFlag ){
 			data = mesh->createDataBindings( name.c_str(), kmb::DataBindings::NodeGroup, kmb::PhysicalValue::None );
 		}
-
-
+		// すでにデータの入れ物がある場合はそれに入れる
+		// 境界条件を読むときは cnt ファイルを読んだ時点で入れ物を作っておく
 		if( data ){
 			if( generateFlag ){
 				std::istringstream tokenLine;
@@ -765,7 +765,7 @@ kmb::HecmwIO::readSGroup( std::ifstream &input, std::string &line, kmb::MeshData
 						++count;
 						break;
 					default:
-
+						// findElement でエラーの時もここを通る
 						break;
 					}
 				}
@@ -805,22 +805,22 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 		if( input.fail() ){
 			return -1;
 		}
-
+		// Section の情報
 		mesh->createDataBindings(
 			"SECTION",
 			kmb::DataBindings::BodyVariable,
 			kmb::PhysicalValue::Hash,
 			"SECTION");
-
+		// １回目の読み込み時に要素だけすべて読む
 		kmb::ElementContainerMap elements;
-
+		// 読み込み時のテンポラリ
 		size_t nodeCount = 0;
 		std::string line;
-
-
+		// 空読みする
+		// 最初の１行
 		std::getline( input, line );
 		while( !input.eof() ){
-
+			// ヘッダ部の解析
 			if( line.find("!HEADER") == 0 ){
 				readHeader( input, line );
 			}else if( line.find("!NODE") == 0 ){
@@ -829,25 +829,25 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 				std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
 				size_t count = 0;
 				if( name != "" ){
+					// EGRP 属性があるときは要素の個数を数える
 
-
-
+					// egrpInfo から探す
 					int index = getEgrpInfoIndex( name );
 					if( index == -1 ){
-
+						// なければ新規登録
 						index = createEgrpInfo( name, "" );
 					}
 
-
+					// 要素を読むのは本番で行うのでここでは空読み
 					count = readElement( input, line, NULL );
 					egrpInfo[index].egrpCount += count;
 				}else{
+					// EGRP 属性がないときは、ここですべて読む
 
-
-
+					// egrpInfo から探す
 					int index = getEgrpInfoIndex( "ALL" );
 					if( index == -1 ){
-
+						// なければ新規登録
 						index = createEgrpInfo( "ALL", "" );
 					}
 
@@ -855,7 +855,6 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 					egrpInfo[index].egrpCount += count;
 				}
 			}else if( line.find("!SECTION") == 0 ){
-
 				readSection( input, line, mesh );
 			}else if( line.find("!MATERIAL") == 0 ){
 				readMaterial( input, line, mesh );
@@ -869,20 +868,20 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 				std::getline( input, line );
 			}
 		}
-		input.clear();
-		input.seekg( 0, std::ios_base::beg );
+		input.clear(); // clear EOF flag
+		input.seekg( 0, std::ios_base::beg ); // rewind
 
-
-
-
+		// SECTION で ALL が設定されているときは単一領域とみなす
+		// ALL をまとめて MeshData に登録
+		// それ以外の SECTION で定義された Body を Material に追加
 		{
 			std::string matName;
 			std::vector< kmb::HecmwIO::egrpData >::iterator egrpIter = egrpInfo.begin();
 			while( egrpIter != egrpInfo.end() ){
-
+				// debug output
 				std::cout << "material binding " << egrpIter->bodyId << " " << egrpIter->egrpName << " => " << egrpIter->materialName << std::endl;
 				if( egrpIter->bodyId != kmb::Body::nullBodyId ){
-
+					// Material の登録
 					matName = egrpIter->materialName;
 					if( matName.size() > 0 && mesh->hasData( matName.c_str() ) ){
 						mesh->addId( matName.c_str(), egrpIter->bodyId );
@@ -906,14 +905,14 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 			}
 		}
 
-
-
+		// 本番
+		// !NODE が複数回現れてもよいようにする
 		mesh->beginNode( nodeCount );
 		mesh->endNode();
-
+		// 最初の１行
 		std::getline( input, line );
 		while( !input.eof() ){
-
+			// ヘッダ部の解析
 			if( line.find("!HEADER") == 0 ){
 				readHeader( input, line );
 			}else if( line.find("!NODE") == 0 ){
@@ -921,15 +920,15 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 			}else if( line.find("!ELEMENT") == 0 ){
 				std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
 				if( name == "" ){
-
+					// EGRP が定義されていない場合は ALL として既に読み込み済み
 					readElement( input, line, NULL );
 				}else{
-
+					// EGRP が定義されているとき
 					kmb::bodyIdType bodyId_eg = kmb::Body::nullBodyId;
 					std::string matName_eg;
+					// 領域として登録されているかを判定する（SECTIONに定義されているか）
 
-
-
+					// egrpInfo から探す
 					int index = getEgrpInfoIndex( name );
 					if( index != -1 ){
 						bodyId_eg = egrpInfo[index].bodyId;
@@ -938,15 +937,11 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 						std::cout << "Warning (HecmwIO) : not find section of egrp " << name << std::endl;
 					}
 					if( bodyId_eg != kmb::Body::nullBodyId ){
-
+						// SECTION に定義済みの時は本番読み
 						kmb::ElementContainer* body = mesh->getBodyPtr( bodyId_eg );
 						readElement( input, line, body );
-
-
-
-
 					}else{
-
+						// SECTION に定義されていない時は ALL として読む
 						readElement( input, line, NULL );
 					}
 				}
@@ -984,7 +979,7 @@ kmb::HecmwIO::loadFromFRSFile(const char* filename,kmb::MeshData* mesh) const
 	std::string line;
 	while( !input.eof() ){
 		std::getline( input, line );
-
+		// ヘッダ部の解析
 		if( line.find("#") == 0 ){
 			continue;
 		}else if( line.find("EGRP") == 0 ){
@@ -1151,8 +1146,8 @@ kmb::HecmwIO::loadFromFRSFile(const char* filename,kmb::MeshData* mesh) const
 	return 0;
 }
 
-
-
+// res の複数読み込み対応のため
+// 既にデータがある場合は初期化せずに追記する
 int
 kmb::HecmwIO::loadFromResFile(const char* filename,kmb::MeshData* mesh) const
 {
@@ -1160,7 +1155,7 @@ kmb::HecmwIO::loadFromResFile(const char* filename,kmb::MeshData* mesh) const
 	if( input.fail() ){
 		return -1;
 	}
-
+	// 最初の１行でバイナリチェック
 	char buf[64];
 	input.read( buf, 19 );
 	buf[19] = '\0';
@@ -1170,7 +1165,7 @@ kmb::HecmwIO::loadFromResFile(const char* filename,kmb::MeshData* mesh) const
 	}
 	input.clear();
 	input.seekg(0, std::ios::beg);
-
+	// 最初の１行でアスキーチェック
 	input.get( buf, 64, '\0' );
 	if( strncmp( resHeader.c_str(), buf, resHeader.size() ) == 0 ){
 		std::cout << "HECMW ASCII RESULT READING..." << std::endl;
@@ -1196,14 +1191,15 @@ kmb::HecmwIO::loadFromResFileItem(const char* filename,kmb::DataBindings* data,c
 	int elementCount = 0;
 	int nodeValueCount = 0;
 	int elementValueCount = 0;
-
+	// data を読むまでにいくつ空読みするのか
 	int nodeValueOffset = -1;
 	int elementValueOffset = -1;
-
+	// data の次元
+	int dataDim = 0;
 	std::vector<int> nodeValDims;
 	std::vector<int> elementValDims;
 	std::string line;
-
+	// 最初の１行
 	if( std::getline( input, line ) ){
 		if( line.find( resHeader) != 0 ){
 			return -1;
@@ -1211,20 +1207,20 @@ kmb::HecmwIO::loadFromResFileItem(const char* filename,kmb::DataBindings* data,c
 	}else{
 		return -1;
 	}
-
+	// nodecount , elementcount
 	if( std::getline( input, line ) ){
 		std::istringstream tokenizer(line);
 		tokenizer >> nodeCount;
 		tokenizer >> elementCount;
 	}
-
+	// node value , element value
 	if( std::getline( input, line ) ){
 		std::istringstream tokenizer(line);
 		tokenizer >> nodeValueCount;
 		tokenizer >> elementValueCount;
 	}
 	if( nodeValueCount > 0 ){
-
+		// node value dims
 		if( std::getline( input, line ) ){
 			std::istringstream tokenizer(line);
 			for(int i=0;i<nodeValueCount;++i){
@@ -1233,7 +1229,7 @@ kmb::HecmwIO::loadFromResFileItem(const char* filename,kmb::DataBindings* data,c
 				nodeValDims.push_back(d);
 			}
 		}
-
+		// node value names
 		int dim = 0;
 		for(int i=0;i<nodeValueCount;++i){
 			kmb::RevocapIOUtils::readOneLine( input, line );
@@ -1244,7 +1240,7 @@ kmb::HecmwIO::loadFromResFileItem(const char* filename,kmb::DataBindings* data,c
 			}
 			dim += nodeValDims[i];
 		}
-
+		// node value
 		kmb::nodeIdType nodeId = kmb::nullNodeId;
 		std::istringstream tokenizer;
 		double* v = new double[dim];
@@ -1270,7 +1266,7 @@ kmb::HecmwIO::loadFromResFileItem(const char* filename,kmb::DataBindings* data,c
 		delete[] v;
 	}
 	if( elementValueCount > 0 ){
-
+		// element value dims
 		if( std::getline( input, line ) ){
 			std::istringstream tokenizer(line);
 			for(int i=0;i<elementValueCount;++i){
@@ -1279,7 +1275,7 @@ kmb::HecmwIO::loadFromResFileItem(const char* filename,kmb::DataBindings* data,c
 				elementValDims.push_back(d);
 			}
 		}
-
+		// element value names
 		int dim = 0;
 		for(int i=0;i<elementValueCount;++i){
 			kmb::RevocapIOUtils::readOneLine( input, line );
@@ -1290,7 +1286,7 @@ kmb::HecmwIO::loadFromResFileItem(const char* filename,kmb::DataBindings* data,c
 			}
 			dim += elementValDims[i];
 		}
-
+		// element value
 		kmb::elementIdType elementId = kmb::Element::nullElementId;
 		std::istringstream tokenizer;
 		double* v = new double[dim];
@@ -1336,7 +1332,7 @@ kmb::HecmwIO::loadFromResAsciiFile(const char* filename,kmb::MeshData* mesh) con
 	std::vector<int> nodeValDims;
 	std::vector<int> elementValDims;
 	std::string line;
-
+	// 最初の１行
 	if( std::getline( input, line ) ){
 		if( line.find( resHeader) != 0 ){
 			std::cout << "Warning Hecmw Result file format error." << std::endl;
@@ -1346,13 +1342,13 @@ kmb::HecmwIO::loadFromResAsciiFile(const char* filename,kmb::MeshData* mesh) con
 	}else{
 		return -1;
 	}
-
+	// nodecount , elementcount
 	if( std::getline( input, line ) ){
 		std::istringstream tokenizer(line);
 		tokenizer >> nodeCount;
 		tokenizer >> elementCount;
 	}
-
+	// node value , element value
 	if( std::getline( input, line ) ){
 		std::istringstream tokenizer(line);
 		tokenizer >> nodeValueCount;
@@ -1361,7 +1357,7 @@ kmb::HecmwIO::loadFromResAsciiFile(const char* filename,kmb::MeshData* mesh) con
 	mesh->clearTargetData();
 	std::cout << "nodeValueCount " << nodeValueCount << std::endl;
 	if( nodeValueCount > 0 ){
-
+		// node value dims
 		if( std::getline( input, line ) ){
 			std::istringstream tokenizer(line);
 			for(int i=0;i<nodeValueCount;++i){
@@ -1370,7 +1366,7 @@ kmb::HecmwIO::loadFromResAsciiFile(const char* filename,kmb::MeshData* mesh) con
 				nodeValDims.push_back(d);
 			}
 		}
-
+		// node value names
 		int dim = 0;
 		for(int i=0;i<nodeValueCount;++i){
 			kmb::RevocapIOUtils::readOneLine( input, line );
@@ -1418,7 +1414,7 @@ kmb::HecmwIO::loadFromResAsciiFile(const char* filename,kmb::MeshData* mesh) con
 					break;
 			}
 		}
-
+		// node value
 		std::cout << "nodeCount " << nodeCount << " dim " << dim << std::endl;
 		kmb::nodeIdType nodeId = kmb::nullNodeId;
 		std::istringstream tokenizer;
@@ -1446,7 +1442,7 @@ kmb::HecmwIO::loadFromResAsciiFile(const char* filename,kmb::MeshData* mesh) con
 	mesh->clearTargetData();
 	std::cout << "elementValueCount " << elementValueCount << std::endl;
 	if( elementValueCount > 0 && this->resElementFlag ){
-
+		// element value dims
 		if( std::getline( input, line ) ){
 			std::istringstream tokenizer(line);
 			for(int i=0;i<elementValueCount;++i){
@@ -1455,7 +1451,7 @@ kmb::HecmwIO::loadFromResAsciiFile(const char* filename,kmb::MeshData* mesh) con
 				elementValDims.push_back(d);
 			}
 		}
-
+		// element value names
 		int dim = 0;
 		for(int i=0;i<elementValueCount;++i){
 			kmb::RevocapIOUtils::readOneLine( input, line );
@@ -1503,7 +1499,7 @@ kmb::HecmwIO::loadFromResAsciiFile(const char* filename,kmb::MeshData* mesh) con
 					break;
 			}
 		}
-
+		// element value
 		kmb::elementIdType elementId = kmb::Element::nullElementId;
 		std::istringstream tokenizer;
 		double* v = new double[dim];
@@ -1528,7 +1524,7 @@ kmb::HecmwIO::loadFromResAsciiFile(const char* filename,kmb::MeshData* mesh) con
 		delete[] v;
 	}
 	input.close();
-
+	// あえて clearTargetData をしない => boundary extractor で表面に値を引き継がせるため
 	return 0;
 }
 
@@ -1549,7 +1545,7 @@ kmb::HecmwIO::loadFromResBinFile(const char* filename,kmb::MeshData* mesh) const
 	int dim = 0;
 	std::vector<int> nodeValDims;
 	std::vector<int> elementValDims;
-
+	// 最初の１行
 	char buf[64];
 	input.read( buf, 19 );
 	buf[19] = '\0';
@@ -1557,17 +1553,17 @@ kmb::HecmwIO::loadFromResBinFile(const char* filename,kmb::MeshData* mesh) const
 		input.close();
 		return -1;
 	}
-
+	// long の大きさ
 	input.read( buf, 2 );
 	buf[2] = '\0';
 	std::cout << "HECMW BINARY RESULT INTEGERSIZE : " << buf << std::endl;
-
+	// ヘッダー
 	input.get( buf, 64, '\0' );
 	if( resHeader != buf ){
 		input.close();
 		return -2;
 	}
-
+	// NULL 文字
 	input.read( buf, 1 );
 
 	input.read(reinterpret_cast<char*>(&nodeCount),sizeof(long));
@@ -1576,7 +1572,7 @@ kmb::HecmwIO::loadFromResBinFile(const char* filename,kmb::MeshData* mesh) const
 	input.read(reinterpret_cast<char*>(&elementValueCount),sizeof(long));
 
 
-
+	// 節点データ
 	mesh->clearTargetData();
 	for(int i=0;i<nodeValueCount;++i){
 		long dl = 0;
@@ -1645,7 +1641,7 @@ kmb::HecmwIO::loadFromResBinFile(const char* filename,kmb::MeshData* mesh) const
 		delete[] v;
 	}
 
-
+	// 要素データ
 	mesh->clearTargetData();
 	for(int i=0;i<elementValueCount;++i){
 		long dl = 0;
@@ -1715,11 +1711,11 @@ kmb::HecmwIO::loadFromResBinFile(const char* filename,kmb::MeshData* mesh) const
 	}
 
 	input.close();
-
+	// あえて clearTargetData をしない => boundary extractor で表面に値を引き継がせるため
 	return 0;
 }
 
-
+// setSolutionType で解析の種類を設定しておくこと
 int
 kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 {
@@ -1747,9 +1743,9 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 		}
 
 		kmb::bodyIdType bodyCount = mesh->getBodyCount();
-
-
-
+		// SECTION で与えられる要素は、Body ごとに EGRP 名を付けて !ELEMENT で出力する
+		// REVOCAP と HEC の節点配列の順番を注意するためにあえて for を使わずに実装
+		// for TETRAHEDRON
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			const kmb::Body* body = mesh->getBodyPtr(bodyId);
 			if( body && body->getDimension() == 3 && body->getCountByType( kmb::TETRAHEDRON ) > 0 ){
@@ -1774,7 +1770,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 				}
 			}
 		}
-
+		// for TETRAHEDRON2
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			const kmb::Body* body = mesh->getBodyPtr(bodyId);
 			if( body && body->getDimension() == 3 && body->getCountByType( kmb::TETRAHEDRON2 ) > 0 ){
@@ -1805,7 +1801,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 				}
 			}
 		}
-
+		// for HEXAHEDRON
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			const kmb::Body* body = mesh->getBodyPtr(bodyId);
 			if( body && body->getDimension() == 3 && body->getCountByType( kmb::HEXAHEDRON ) > 0 ){
@@ -1834,7 +1830,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 				}
 			}
 		}
-
+		// for HEXAHEDRON2
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			const kmb::Body* body = mesh->getBodyPtr(bodyId);
 			if( body && body->getDimension() == 3 && body->getCountByType( kmb::HEXAHEDRON2 ) > 0 ){
@@ -1875,7 +1871,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 				}
 			}
 		}
-
+		// for WEDGE
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			const kmb::Body* body = mesh->getBodyPtr(bodyId);
 			if( body && body->getDimension() == 3 && body->getCountByType( kmb::WEDGE ) > 0 ){
@@ -1902,7 +1898,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 				}
 			}
 		}
-
+		// for WEDGE2
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			const kmb::Body* body = mesh->getBodyPtr(bodyId);
 			if( body && body->getDimension() == 3 && body->getCountByType( kmb::WEDGE2 ) > 0 ){
@@ -1938,7 +1934,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 				}
 			}
 		}
-
+		// Material
 		output.setf( std::ios::showpoint );
 		output.unsetf( std::ios::fixed );
 		std::multimap< std::string, kmb::DataBindings*> dataBindings = mesh->getDataBindingsMap();
@@ -1996,7 +1992,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 							}
 							matflag = true;
 						}else{
-
+							// output dummy material
 							output << "!MATERIAL, NAME=" << dIter->first << ", ITEM=1" << std::endl;
 							output << "!ITEM=1, SUBITEM=2" << std::endl;
 							output << " 0.0, 0.0" << std::endl;
@@ -2042,7 +2038,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 							}
 							matflag = true;
 						}else{
-
+							// output dummy material
 							output << "!MATERIAL, NAME=" << dIter->first << ", ITEM=1" << std::endl;
 							output << "!ITEM=1, SUBITEM=2" << std::endl;
 							output << " 0.0, 0.0" << std::endl;
@@ -2055,27 +2051,27 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 			++dIter;
 		}
 		if( matflag == false ){
-
+			// output dummy material
 			output << "!MATERIAL, NAME=MAT, ITEM=1" << std::endl;
 			output << "!ITEM=1, SUBITEM=2" << std::endl;
 			output << " 0.0, 0.0" << std::endl;
 			matflag = true;
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		// SECTION データの出力
+		// TYPE は SECTION データベースから調べる
+		// Body と Material の対応関係を記述する
+		//
+		// SECTION に THICKNESS 等が登録されていればそれを出力する
+		//
+		// section = mesh の "SECTION" データベース (Hash型)
+		// section["TYPE"]
+		// section["THICKNESS"]
+		// section["INTEGPOINTS"]
+		// section["GAPCON"]
+		// section["GAPRAD1"]
+		// section["GAPRAD2"]
+		//
+		// dummySectionFlag = true のとき　SECTION に記述がなければ TYPE = SOLID で出力する
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			std::string matName;
 			std::multimap< std::string, kmb::DataBindings*>::const_iterator sIter = dataBindings.begin();
@@ -2137,7 +2133,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 					}
 				}
 			}else if( dummySectionFlag && mesh->getDimension(bodyId) == 3 ){
-
+				// output dummy section
 				output << "!SECTION, TYPE=SOLID, ";
 				if( strlen( mesh->getBodyName(bodyId) ) == 0 ){
 					output << "EGRP=Body_" << bodyId << ", MATERIAL=MAT1" << std::endl;
@@ -2146,7 +2142,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 				}
 			}
 		}
-
+		// EGROUP
 		{
 			std::multimap< std::string, kmb::DataBindings*>::const_iterator egIter = dataBindings.begin();
 			std::multimap< std::string, kmb::DataBindings*>::const_iterator egEnd = dataBindings.end();
@@ -2165,7 +2161,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 				++egIter;
 			}
 		}
-
+		// NGROUP
 		{
 			std::multimap< std::string, kmb::DataBindings*>::const_iterator ngIter = dataBindings.begin();
 			std::multimap< std::string, kmb::DataBindings*>::const_iterator ngEnd = dataBindings.end();
@@ -2189,8 +2185,8 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 				++ngIter;
 			}
 		}
-
-
+		// SGROUP
+		// DFLUX, FILM, RADIATE は未対応
 		{
 			int tetFmap[] = {3,4,2,1};
 			int wedFmap[] = {1,2,3,4,5};
@@ -2200,9 +2196,9 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 			while( sgIter != sgEnd ){
 				if( dataFlag ||
 					sgIter->second->getSpecType() == "DLOAD" ||
-
-
-
+//					sgIter->second->getSpecType() == "DFLUX" ||
+//					sgIter->second->getSpecType() == "FILM" ||
+//					sgIter->second->getSpecType() == "RADIATE" ||
 					sgIter->second->getSpecType() == "COUPLING" )
 				{
 					if( sgIter->second->getBindingMode() == kmb::DataBindings::FaceGroup && sgIter->second->getIdCount() > 0 ){
@@ -2235,7 +2231,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 				++sgIter;
 			}
 		}
-
+		// AMPLITUDE
 		{
 			std::multimap< std::string, kmb::DataBindings*>::const_iterator aIter = dataBindings.begin();
 			std::multimap< std::string, kmb::DataBindings*>::const_iterator aEnd = dataBindings.end();
@@ -2277,7 +2273,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 				++aIter;
 			}
 		}
-
+		// CONTACT PAIR
 		{
 			int tetFmap[] = {3,4,2,1};
 			int wedFmap[] = {1,2,3,4,5};
@@ -2396,7 +2392,7 @@ kmb::HecmwIO::saveToResFile(const char* filename,kmb::MeshData* mesh) const
 	mesh->clearTargetData();
 	output.write( reinterpret_cast<char*>(&nodeValueCount), sizeof(long) );
 	output.write( reinterpret_cast<char*>(&elementValueCount), sizeof(long) );
-
+	// 節点物理量
 	{
 		std::vector< std::string >::iterator vIter = nodeValues.begin();
 		std::vector< std::string >::iterator endIter = nodeValues.end();
@@ -2470,7 +2466,7 @@ kmb::HecmwIO::saveToResFile(const char* filename,kmb::MeshData* mesh) const
 	}
 	dim = 0;
 	mesh->clearTargetData();
-
+	// 要素物理量
 	{
 		std::vector< std::string >::iterator vIter = elementValues.begin();
 		std::vector< std::string >::iterator endIter = elementValues.end();
@@ -2552,7 +2548,7 @@ kmb::HecmwIO::saveToResFile(const char* filename,kmb::MeshData* mesh) const
 	return 0;
 }
 
-
+// CONT PAIR と ASSEM PAIR は同じ部品に属するとしている仮実装
 int
 kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const char* partName) const
 {
@@ -2583,9 +2579,9 @@ kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const
 		}
 
 		kmb::bodyIdType bodyCount = mesh->getBodyCount();
-
-
-
+		// SECTION で与えられる要素は、Body ごとに EGRP 名を付けて !ELEMENT で出力する
+		// REVOCAP と HEC の節点配列の順番を注意するためにあえて for を使わずに実装
+		// for TETRAHEDRON
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			const kmb::Body* body = mesh->getBodyPtr(bodyId);
 			size_t elemNum = body->getCountByType( kmb::TETRAHEDRON );
@@ -2612,7 +2608,7 @@ kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const
 				}
 			}
 		}
-
+		// for TETRAHEDRON2
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			const kmb::Body* body = mesh->getBodyPtr(bodyId);
 			size_t elemNum = body->getCountByType( kmb::TETRAHEDRON2 );
@@ -2645,7 +2641,7 @@ kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const
 				}
 			}
 		}
-
+		// for HEXAHEDRON
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			const kmb::Body* body = mesh->getBodyPtr(bodyId);
 			size_t elemNum = body->getCountByType( kmb::HEXAHEDRON );
@@ -2676,7 +2672,7 @@ kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const
 				}
 			}
 		}
-
+		// for HEXAHEDRON2
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			const kmb::Body* body = mesh->getBodyPtr(bodyId);
 			size_t elemNum = body->getCountByType( kmb::HEXAHEDRON2 );
@@ -2719,7 +2715,7 @@ kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const
 				}
 			}
 		}
-
+		// for WEDGE
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			const kmb::Body* body = mesh->getBodyPtr(bodyId);
 			size_t elemNum = body->getCountByType( kmb::WEDGE );
@@ -2748,7 +2744,7 @@ kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const
 				}
 			}
 		}
-
+		// for WEDGE2
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			const kmb::Body* body = mesh->getBodyPtr(bodyId);
 			size_t elemNum = body->getCountByType( kmb::WEDGE2 );
@@ -2788,28 +2784,6 @@ kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const
 		}
 
 		std::multimap< std::string, kmb::DataBindings*> dataBindings = mesh->getDataBindingsMap();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		{
 			std::multimap< std::string, kmb::DataBindings*>::const_iterator dIter = dataBindings.begin();
 			std::multimap< std::string, kmb::DataBindings*>::const_iterator dEnd = dataBindings.end();
@@ -2829,7 +2803,7 @@ kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const
 				++dIter;
 			}
 		}
-
+		// NGROUP
 		{
 			std::multimap< std::string, kmb::DataBindings*>::const_iterator dIter = dataBindings.begin();
 			std::multimap< std::string, kmb::DataBindings*>::const_iterator dEnd = dataBindings.end();
@@ -2854,8 +2828,8 @@ kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const
 				++dIter;
 			}
 		}
-
-
+		// SGROUP
+		// DFLUX, FILM, RADIATE は未対応
 		{
 			int tetFmap[] = {3,4,2,1};
 			int wedFmap[] = {1,2,3,4,5};
@@ -2866,9 +2840,9 @@ kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const
 			while( dIter != dEnd ){
 				if( dataFlag ||
 					dIter->second->getSpecType() == "DLOAD" ||
-
-
-
+//					dIter->second->getSpecType() == "DFLUX" ||
+//					dIter->second->getSpecType() == "FILM" ||
+//					dIter->second->getSpecType() == "RADIATE" ||
 					dIter->second->getSpecType() == "COUPLING" )
 				{
 					if( dIter->second->getBindingMode() == kmb::DataBindings::FaceGroup ){
@@ -2902,7 +2876,7 @@ kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const
 				++dIter;
 			}
 		}
-
+		// CONTACT PAIR
 		{
 			int tetFmap[] = {3,4,2,1};
 			int wedFmap[] = {1,2,3,4,5};
@@ -2969,7 +2943,7 @@ kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const
 				++dIter;
 			}
 		}
-
+		// ASSEMBLY PAIR
 		{
 			int tetFmap[] = {3,4,2,1};
 			int wedFmap[] = {1,2,3,4,5};
@@ -3046,11 +3020,6 @@ kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const
 								}
 							}
 							output << "!ASSEMBLY_PAIR, NAME=" << dIter->first << ", NUM=1" << std::endl;
-
-
-
-
-
 							output << slaveName << "_ASSEM_SLAVE, " << masterName << "_ASSEM_MASTER, " <<
 								partName << ", " << partName << std::endl;
 						}
@@ -3125,7 +3094,7 @@ kmb::HecmwIO::appendEquationToFile(const char* filename,const kmb::MeshData* mes
 	output << "!EQUATION" << std::endl;
 	int equationCount = 0;
 
-
+	// slave の節点を master の要素で評価する
 	const kmb::DataBindings* mGroup = mesh->getDataBindingsPtr(master);
 	kmb::FaceBucket fbucket;
 	fbucket.setContainer(mesh,mGroup);
@@ -3147,59 +3116,14 @@ kmb::HecmwIO::appendEquationToFile(const char* filename,const kmb::MeshData* mes
 		mesh->getNode( nodeId, pt );
 		fbucket.getNearest( pt.x(), pt.y(), pt.z(), dist, f );
 		element = mesh->findElement( f.getElementId(), mGroup->getTargetBodyId() );
-
-/*
-		if( eev.getWeightElement( element, pt.x(), pt.y(), pt.z(), coeff ) >= outThresh ){
-			int len = element.getNodeCount();
-			int count = 1;
-			double sum = 0.0;
-			for(int j=0;j<len;++j){
-
-				if( fabs( coeff[j] ) > thresh ){
-					++count;
-					sum += coeff[j];
-				}else{
-					coeff[j] = 0.0;
-				}
-			}
-			if( len+1 != count ){
-				for(int j=0;j<len;++j){
-					coeff[j] /= sum;
-				}
-			}
-
-
-			for(int i=0;i<3;++i){
-				int term = 0;
-				output << count << std::endl;
-				output << nodeId + offsetNodeId << ", " << i+1 << ", " << 1.0;
-				++term;
-				for(int j=0;j<len;++j){
-					if( coeff[j] != 0.0 ){
-						if( term > 0 ){
-							output << ", ";
-						}
-						output << element[j] + offsetNodeId << ", " << i+1 << ", " << -coeff[j];
-						++term;
-					}
-					if( term == 4 ){
-						output << std::endl;
-						term = 0;
-					}
-				}
-				if( term != 0 ){
-					output << std::endl;
-				}
-			}
-		}
-*/
+		// 要素座標が定義域から大きく外れているものを除く
 		int findex = f.getLocalFaceId();
 		if( eev.getWeightElementFace( element, findex, pt.x(), pt.y(), pt.z(), coeff ) >= outThresh ){
 			int len = element.getBoundaryNodeCount(findex);
 			int count = 1;
 			double sum = 0.0;
 			for(int j=0;j<len;++j){
-
+				// thresh 以下の項を除く
 				if( fabs( coeff[j] ) > thresh ){
 					++count;
 					sum += coeff[j];
@@ -3212,9 +3136,9 @@ kmb::HecmwIO::appendEquationToFile(const char* filename,const kmb::MeshData* mes
 					coeff[j] /= sum;
 				}
 			}
-
-
-
+			// ここで equation データを出力する
+			// 項は１行で最大４項まで
+			// x, y, z => i = 1, 2, 3
 			for(int i=0;i<3;++i){
 				int term = 0;
 				output << count << std::endl;

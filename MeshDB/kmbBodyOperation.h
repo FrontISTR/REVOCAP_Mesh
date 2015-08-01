@@ -27,13 +27,13 @@ class BodyOperation
 public:
 	BodyOperation(const Point3DContainer* nodes);
 	virtual ~BodyOperation(void);
-
-
-
+	// 2ŸŒ³—v‘fƒOƒ‹[ƒv body ‚ÉŠÜ‚Ü‚ê‚é—v‘f‚Ì•Ó‚ğ
+	// SEGMENT —v‘f‚Æ‚µ‚Ä result ‚É“o˜^‚·‚é
+	// result == NULL ‚¾‚ÆŒÂ”‚¾‚¯•Ô‚·
 	size_t getEdgesOfBody(const kmb::ElementContainer* body,kmb::ElementContainer* result=NULL) const;
-
-
-
+	// body ‚ÉŠÜ‚Ü‚ê‚é—v‘f‚Ì•Ó‚Ì‚¤‚¿Aplane ‚ÆŒğ·‚·‚é‚à‚Ì‚ğ
+	// SEGMENT —v‘f‚Æ‚µ‚Ä result ‚É“o˜^‚·‚é
+	// result == NULL ‚¾‚ÆŒÂ”‚¾‚¯•Ô‚·
 	size_t getEdgesIntersectPlane(const kmb::ElementContainer* body, const kmb::Plane* plane,kmb::ElementContainer* result=NULL) const;
 private:
 	const Point3DContainer* points;

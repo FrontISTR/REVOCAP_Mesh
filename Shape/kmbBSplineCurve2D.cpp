@@ -116,7 +116,7 @@ kmb::BSplineCurve2D::getDerivative( double t, kmb::Vector2D& tangent ) const
 	if( deg < 0 ){
 		return false;
 	}
-
+	// 0 ŽŸ B-Spline ‹Èü‚Ì”÷•ª‚Íí‚É0
 	if( deg < 1 ){
 		return true;
 	}
@@ -136,7 +136,7 @@ kmb::BSplineCurve2D::getSecondDerivative( double t, kmb::Vector2D& tangent ) con
 	if( deg < 0 ){
 		return false;
 	}
-
+	// 0,1 ŽŸ B-Spline ‹Èü‚Ì2ŠK”÷•ª‚Íí‚É0
 	if( deg < 2 ){
 		return true;
 	}

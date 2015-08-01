@@ -17,12 +17,6 @@
 #include "MeshGL/kmbFBORendering.h"
 #include <cstdio>
 
-
-
-
-
-
-
 kmb::FBORendering::FBORendering(void)
 : framebuffer_name(0)
 , texture_name(0)
@@ -35,8 +29,7 @@ kmb::FBORendering::~FBORendering(void)
 	clear();
 }
 
-void
-kmb::FBORendering::clear(void)
+void kmb::FBORendering::clear(void)
 {
 	if( framebuffer_name != 0 ){
 		glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, framebuffer_name );
@@ -62,9 +55,9 @@ kmb::FBORendering::getSize(int size[2]) const
 	size[1] = viewport[3];
 }
 
-
-
-
+// glutInit
+// glutCreateWindow
+// Çé¿çsÇµÇƒÇ©ÇÁåƒÇ—èoÇ∑
 bool
 kmb::FBORendering::init(int width,int height)
 {
@@ -206,4 +199,4 @@ kmb::FBORendering::saveBMPFile(const char* szFilename )
 	return true;
 }
 
-#endif
+#endif // REVOCAP_SUPPORT_GLEW

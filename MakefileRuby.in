@@ -61,17 +61,12 @@ RubyUnitTest: RubyExtension
 RubyClean:
 	$(RM) MeshDBRuby/Makefile
 	$(RM) MeshDBRuby/*.cxx
-	$(RM) MeshDBRuby/*.def
 	$(RM) MeshGenRuby/Makefile
 	$(RM) MeshGenRuby/*.cxx
-	$(RM) MeshGenRuby/*.def
 	$(RM) MeshGLRuby/Makefile
 	$(RM) MeshGLRuby/*.cxx
-	$(RM) MeshGLRuby/*.def
 	$(RM) RevocapIORuby/Makefile
 	$(RM) RevocapIORuby/*.cxx
-	$(RM) RevocapIORuby/*.def
 	$(RM) ShapeRuby/Makefile
 	$(RM) ShapeRuby/*.cxx
-	$(RM) ShapeRuby/*.def
 	$(RM) $(LIBDIR)/$(ARCH)/Revocap*.$(DYNAMIC_EXT)

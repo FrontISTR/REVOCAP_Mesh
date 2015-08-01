@@ -31,12 +31,12 @@
 #include "Geometry/kmbPoint3DContainer.h"
 #include <vector>
 
-
-
-
-
-
-
+//
+// Face クラス
+// 要素の Id と局所 faceId の組
+// のデータを格納する
+// Data のキーに使う
+//
 
 /**
 
@@ -65,7 +65,7 @@ public:
 	Face(kmb::elementIdType elementId, kmb::idType localFaceId);
 	Face(const Face &f);
 	virtual ~Face(void);
-
+	// std::set や std::map に使うために operator< を定義しておく
 	bool operator<(const Face &other)const{
 		return (elementId < other.elementId) ||
 			(elementId==other.elementId &&

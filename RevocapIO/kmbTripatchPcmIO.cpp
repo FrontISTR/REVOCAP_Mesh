@@ -82,16 +82,14 @@ kmb::TripatchPcmIO::loadFromFile(const char* filename,MeshData* mesh)
 	}
 }
 
-
-
-
+// packOption = 0 : ‚»‚Ì‚Ü‚Üo—Í
+// packOption = 1 : ‚·‚×‚Ä‚ðˆê‚Â‚É‚Ü‚Æ‚ß‚Äo—Í
+// ‹ó‚Ì body ‚Ío—Í‚µ‚È‚¢
 int
 kmb::TripatchPcmIO::saveToFile(const char* filename,const kmb::MeshData* mesh,int packOption)
 {
 	if( mesh == NULL || !mesh->getNodes() ){
 		return -1;
-
-
 	}else{
 		int patchCount = 0;
 		kmb::bodyIdType bodyCount = mesh->getBodyCount();

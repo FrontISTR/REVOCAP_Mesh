@@ -23,22 +23,22 @@
 #      "Innovative General-Purpose Coupled Analysis System"            #
 #                                                                      #
 ----------------------------------------------------------------------*/
-
+// macro or global methods for geometry calculations
 
 #pragma once
 
 #include "Geometry/kmbIdTypes.h"
 
-
+// ŽžŒv‰ñ‚è
 #define LARGER_Y(p0,p1) ( (p0).y() > (p1).y() || ( (p0).y() == (p1).y() && (p0).x() < (p1).x() ) )
 #define LARGER_X(p0,p1) ( (p0).x() > (p1).x() || ( (p0).x() == (p1).x() && (p0).y() > (p1).y() ) )
-
-
-
+// ”½ŽžŒv‰ñ‚è
+//#define LARGER_Y(p0,p1) ( p0->y() > p1->y() || ( p0->y() == p1->y() && p0->x() > p1->x() ) )
+//#define LARGER_X(p0,p1) ( p0->x() > p1->x() || ( p0->x() == p1->x() && p0->y() < p1->y() ) )
 
 #define COS2ANGLE(c) ( (c>=1.0) ? 0.0 : (c<=-1.0) ? PI : acos(c) )
-
+// 0 ‚©‚ç 2PI ‚Ü‚Å
 #define ANGLE2(c,s) ( (c>=1.0) ? 0.0 : (c<=-1.0) ? PI : (s>0.0) ? acos(c) : 2.0*PI-acos(c) )
-
+// -PI ‚©‚ç PI ‚Ü‚Å
 #define ANGLE(c,s) ( (c>=1.0) ? 0.0 : (c<=-1.0) ? PI : (s>0.0) ? acos(c) : -acos(c) )
 

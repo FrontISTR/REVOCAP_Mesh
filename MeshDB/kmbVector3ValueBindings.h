@@ -21,7 +21,7 @@ class Vector3ValueBindings : public kmb::DataBindings
 {
 public:
 	Vector3ValueBindings(size_t count,kmb::DataBindings::bindingMode bmode=kmb::DataBindings::NodeVariable);
-
+	// ‘¼‚ÅŠm•ÛÏ‚İ‚Ì”z—ñ‚ğ Data ‚Æ‚µ‚Äg‚¤
 	Vector3ValueBindings(size_t count,double* values,kmb::DataBindings::bindingMode bmode=kmb::DataBindings::NodeVariable);
 	virtual ~Vector3ValueBindings(void);
 	virtual const char* getContainerType(void) const{

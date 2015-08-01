@@ -10,7 +10,8 @@ require 'mkmf'
 
 modulename = "RevocapShape"
 
-use_opencascade = true
+use_opencascade = (ENV['OPENCASCADEFLAG'] != "")
+
 casroot = ENV['CASROOT'] || "/usr/local/opencascade"
 
 if !File.exist?( File.join('..','lib',RUBY_PLATFORM) )

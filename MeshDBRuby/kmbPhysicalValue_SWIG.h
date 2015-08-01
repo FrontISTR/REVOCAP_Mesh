@@ -123,7 +123,6 @@ VALUE appendKeys(VALUE block,VALUE ary)
 	Check_Type(block,T_ARRAY);
 	Check_Type(ary,T_ARRAY);
 	VALUE key = rb_ary_entry(block,0);
-
 	rb_ary_push(ary, key);
 	return Qnil;
 }
@@ -369,7 +368,7 @@ kmb::PhysicalValue* createFromVALUE(VALUE v)
 		case T_HASH:
 		{
 			VALUE ary = rb_ary_new();
-
+			// ‚±‚ê‚Å ary ‚É key ‚ª‚·‚×‚Ä“ü‚é
 			rb_iterate( rb_each, v, (VALUE(*)(...))appendKeys, ary );
 			const int len = RARRAY_LEN(ary);
 			if( len > 0 ){

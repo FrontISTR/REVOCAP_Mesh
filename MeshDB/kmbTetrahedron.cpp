@@ -79,12 +79,12 @@
 *********************************************************************************/
 const int kmb::Tetrahedron::nodeCount = 4;
 
-
-
-
-
-
-
+// 面を構成する三角形の添え字番号
+// 外側から見て左回りが正
+//   1 2 3
+// 0   3 2
+// 0 1   3
+// 0 2 1
 
 const int kmb::Tetrahedron::connectionTable[4][4] =
 {
@@ -116,13 +116,13 @@ bool
 kmb::Tetrahedron::isEquivalent(int index[4])
 {
 	const int len = kmb::Element::getNodeCount(kmb::TETRAHEDRON);
-
+	// 置換じゃない時は無条件にだめ
 	for(int i=0;i<len;++i){
 		if(index[i] < 0 || len <= index[i]){
 			return false;
 		}
 	}
-
+	// connection matrix が同じならいいことにする
 	for(int i=0;i<len;++i){
 		for(int j=0;j<len;++j){
 			if( kmb::Tetrahedron::connectionTable[i][j]

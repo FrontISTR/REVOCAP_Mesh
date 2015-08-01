@@ -33,9 +33,9 @@
 
 #include <cmath>
 
-
-
-
+//
+// 積分曲線（オイラー法）
+//
 
 int
 kmb::MeshGL::drawTrajectory(const char* vectorVal,double x,double y,double z,double delta,int step, kmb::ColorMap* colorMap, double tolerance)
@@ -55,7 +55,7 @@ kmb::MeshGL::drawTrajectory(const char* vectorVal,double x,double y,double z,dou
 			if( bbox.intersect(x,y,z) == kmb::Region::OUTSIDE ){
 				break;
 			}
-
+			// node cache を作っておく必要がある
 			int res = mesh->getValueOnNearestNode(vectorVal,x,y,z,v);
 			if( res != -1 ){
 				if( colorMap ){

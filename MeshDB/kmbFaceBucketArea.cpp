@@ -67,11 +67,11 @@ kmb::FaceBucketArea::setAutoBucketSize(void)
 	}
 	kmb::BoundingBox bbox;
 	mesh->getBoundingBoxOfData( bbox, faceGroup );
-
+	// ”–”Â‚Ìê‡‚ÉŒú‚İ‚ªo‚é‚æ‚¤‚É‚·‚é‚½‚ß
 	bbox.expandDiameter( 1.5 );
 	this->setRegion( bbox );
 
-
+	// ˆê”Ô’Z‚¢‚Æ‚±‚ë‚ğ 1 ‚Æ‚µ‚½‚Æ‚«‚Ì bucket ‚ÌŒÂ”‚ğ‹‚ß‚é
 	double range[3] = { bbox.rangeX(), bbox.rangeY(), bbox.rangeZ() };
 	int minIndex = 0;
 	if( range[0] > range[1] ){
@@ -89,8 +89,8 @@ kmb::FaceBucketArea::setAutoBucketSize(void)
 	}
 	int num = static_cast<int>( bbox.rangeX() * bbox.rangeY() * bbox.rangeZ() / range[minIndex] );
 	int div = static_cast<int>( faceGroup->getIdCount() / num );
-
-
+	// minIndex ‚Ì‚Æ‚±‚ë‚ğ div •ªŠ„
+	// ‘¼‚Ì‚Æ‚±‚ë‚Í‚Ù‚Ú“¯‚¶’·‚³‚É‚È‚é‚æ‚¤‚É•ªŠ„
 	switch(minIndex){
 	case 0:
 		this->setGridSize( div, static_cast<int>(div * range[1] / range[0]), static_cast<int>(div * range[2] / range[0]) );
@@ -123,12 +123,13 @@ kmb::FaceBucketArea::appendAll(void)
 		if( fIter.getFace( f ) ){
 			kmb::ElementContainer::const_iterator elem = mesh->findElement( f.getElementId(), bodyId );
 			if( !elem.isFinished() ){
-				switch( elem.getBoundaryType(f.getLocalFaceId()) ){
+				kmb::idType localId = f.getLocalFaceId();
+				switch( elem.getBoundaryType(localId) ){
 				case kmb::TRIANGLE:
 				case kmb::TRIANGLE2:
-					n0 = elem.getBoundaryCellId(f.getLocalFaceId(),0);
-					n1 = elem.getBoundaryCellId(f.getLocalFaceId(),1);
-					n2 = elem.getBoundaryCellId(f.getLocalFaceId(),2);
+					n0 = elem.getBoundaryCellId(localId,0);
+					n1 = elem.getBoundaryCellId(localId,1);
+					n2 = elem.getBoundaryCellId(localId,2);
 					if(
 						mesh->getNode( n0, q0 ) &&
 						mesh->getNode( n1, q1 ) &&
@@ -170,10 +171,10 @@ kmb::FaceBucketArea::appendAll(void)
 					break;
 				case kmb::QUAD:
 				case kmb::QUAD2:
-					n0 = elem.getBoundaryCellId(f.getLocalFaceId(),0);
-					n1 = elem.getBoundaryCellId(f.getLocalFaceId(),1);
-					n2 = elem.getBoundaryCellId(f.getLocalFaceId(),2);
-					n3 = elem.getBoundaryCellId(f.getLocalFaceId(),3);
+					n0 = elem.getBoundaryCellId(localId,0);
+					n1 = elem.getBoundaryCellId(localId,1);
+					n2 = elem.getBoundaryCellId(localId,2);
+					n3 = elem.getBoundaryCellId(localId,3);
 					if(
 						mesh->getNode( n0, q0 ) &&
 						mesh->getNode( n1, q1 ) &&
@@ -228,8 +229,8 @@ kmb::FaceBucketArea::appendAll(void)
 	return count;
 }
 
-
-
+// ‚±‚ê‚ğg‚¤‚ÆOŠpŒ`‚É•ªŠ„‚µ‚Ä•¡”“o˜^‚³‚ê‚Ä‚µ‚Ü‚¤‚±‚Æ‚É’ˆÓ
+// ‚·‚È‚í‚¿AFace ‚Æ Grid ‚ÌŒğ·‚ªlŠpŒ`‚È‚ç‚ÎOŠpŒ`‚É•ªŠ„‚µ‚Ä2‚Â“o˜^‚³‚ê‚Ä‚µ‚Ü‚¤B
 int
 kmb::FaceBucketArea::appendSubBucket(int i0,int i1,int j0,int j1,int k0,int k1,const kmb::Point3D &a,const kmb::Point3D &b,const kmb::Point3D &c,const kmb::Face &f)
 {
@@ -239,22 +240,22 @@ kmb::FaceBucketArea::appendSubBucket(int i0,int i1,int j0,int j1,int k0,int k1,c
 		insert( i0,j0,k0, t );
 		return 1;
 	}
-
+	// ˆê”Ô‘å‚«‚È‚Æ‚±‚ë‚Å•ªŠ„
 	int which = -1;
 	if( i1-i0 >= j1-j0 ){
 		if( i1-i0 >= k1-k0 ){
-
+			// i ‚Ì•‚ªÅ‘å
 			which = 0;
 		}else{
-
+			// k ‚Ì•‚ªÅ‘å
 			which = 2;
 		}
 	}else{
 		if( j1-j0 >= k1-k0 ){
-
+			// j ‚Ì•‚ªÅ‘å
 			which = 1;
 		}else{
-
+			// k ‚Ì•‚ªÅ‘å
 			which = 2;
 		}
 	}
@@ -262,9 +263,9 @@ kmb::FaceBucketArea::appendSubBucket(int i0,int i1,int j0,int j1,int k0,int k1,c
 	switch( which ){
 	case 0:
 		{
-
+			// i ‚Ì•‚ªÅ‘å
 			int i = (i0 + i1)/2;
-
+			// i ‚Æ i+1 ‚Ì‹«ŠE‚Ì x
 			double x = getSubRegionMaxX(i,j0,k0);
 			switch( kmb::PlaneYZ::getIntersectionTriangle(x,a,b,c,p,q) ){
 			case -2:
@@ -331,9 +332,9 @@ kmb::FaceBucketArea::appendSubBucket(int i0,int i1,int j0,int j1,int k0,int k1,c
 		}
 	case 1:
 		{
-
+			// j ‚Ì•‚ªÅ‘å
 			int j = (j0 + j1)/2;
-
+			// j ‚Æ j+1 ‚Ì‹«ŠE‚Ì y
 			double y = getSubRegionMaxY(i0,j,k0);
 			switch( kmb::PlaneZX::getIntersectionTriangle(y,a,b,c,p,q) ){
 			case -2:
@@ -400,9 +401,9 @@ kmb::FaceBucketArea::appendSubBucket(int i0,int i1,int j0,int j1,int k0,int k1,c
 		}
 	case 2:
 		{
-
+			// k ‚Ì•‚ªÅ‘å
 			int k = (k0 + k1)/2;
-
+			// k ‚Æ k+1 ‚Ì‹«ŠE‚Ì z
 			double z = getSubRegionMaxZ(i0,j0,k);
 			switch( kmb::PlaneXY::getIntersectionTriangle(z,a,b,c,p,q) ){
 			case -2:
@@ -548,7 +549,7 @@ kmb::FaceBucketArea::getNearest(double x,double y,double z,double &dist,kmb::Fac
 		int i1=0,j1=0,k1=0,i2=0,j2=0,k2=0;
 		getSubIndices( x-dist, y-dist, z-dist, i1, j1, k1 );
 		getSubIndices( x+dist, y+dist, z+dist, i2, j2, k2 );
-
+		// (i0,j0,k0) ˆÈŠO‚ğ’T‚·
 		for(int i=i1;i<=i2;++i){
 			for(int j=j1;j<=j2;++j){
 				for(int k=k1;k<=k2;++k){
@@ -561,8 +562,8 @@ kmb::FaceBucketArea::getNearest(double x,double y,double z,double &dist,kmb::Fac
 			}
 		}
 	}else{
-
-
+		// (i0,j0,k0) ‚Ì Bucket ‚É Face ‚ª‚È‚¢
+		// ‘S•”’²‚×‚é
 		kmb::BoxRegion box;
 		kmb::Bucket< std::pair<kmb::Face,double> >::const_iterator fIter = this->begin();
 		kmb::Bucket< std::pair<kmb::Face,double> >::const_iterator endIter = this->end();

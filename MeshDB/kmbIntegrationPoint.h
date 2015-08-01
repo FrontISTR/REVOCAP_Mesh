@@ -25,7 +25,7 @@ public:
 	kmb::idType integrationIndex;
 	IntegrationPoint(kmb::elementIdType _elementId=kmb::Element::nullElementId, kmb::idType _integrationIndex=kmb::nullId);
 	~IntegrationPoint(void);
-
+	// std::set ‚â std::map ‚ÉŽg‚¤‚½‚ß‚É operator< ‚ð’è‹`‚µ‚Ä‚¨‚­
 	bool operator<(const IntegrationPoint &other)const{
 		return (elementId < other.elementId) ||
 			(elementId==other.elementId && integrationIndex < other.integrationIndex);

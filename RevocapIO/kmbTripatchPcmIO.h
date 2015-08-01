@@ -35,10 +35,9 @@ public:
 	TripatchPcmIO(void){};
 	~TripatchPcmIO(void){};
 	int loadFromFile(const char* filename,kmb::MeshData* mesh);
-
-
+	// packOption = 0 : ‚»‚Ì‚Ü‚Üo—Í
+	// packOption = 1 : ‚·‚×‚Ä‚ğˆê‚Â‚É‚Ü‚Æ‚ß‚Äo—Í
 	int saveToFile(const char* filename,const kmb::MeshData* mesh,int packOption=0);
-
 };
 
 }

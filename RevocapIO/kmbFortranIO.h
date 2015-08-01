@@ -12,9 +12,9 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-
-
-
+//
+// Fortran の unformat 形式を読むためのサブルーチン集
+//
 
 #pragma once
 
@@ -72,9 +72,9 @@ protected:
 		return static_cast<int>(len);
 	}
 	virtual int readString(std::ifstream &input, std::string &str);
-
+	// 文字列の前後の空白を取る
 	void strip(std::string &str);
-
+	// 単精度出力
 	int writeFloat(std::ofstream &output,float f);
 public:
 	FortranIO(void);

@@ -37,82 +37,82 @@ class Face;
 class ElementRelation
 {
 public:
-
+	// —v‘fŠÔ‚ÌŠÖŒW
 	enum relationType{
-		UNKNOWNRELATION = -1,
-
-		EQUAL,
-		REVERSE,
-		ADJACENT,
-		ANTIADJACENT,
-
-		BOUNDARY,
-		ANTIBOUNDARY,
-
-		COBOUNDARY,
-		ANTICOBOUNDARY,
-
-		COMMONEDGE,
-		COMMONNODE,
-		NOCOMMON,
-		OTHERRELATION
+		UNKNOWNRELATION = -1,// ˜_—“I‚É‚ ‚è‚¦‚È‚¢ŠÖŒW
+		// “¯‚¶ŸŒ³‚Ì—v‘f‚É‚Â‚¢‚Ä‚ÌŠÖŒW
+		EQUAL,			// Œü‚«‚àŠÜ‚ß‚Ä“™‚µ‚¢
+		REVERSE,		// ‹tŒü‚«‚Å“™‚µ‚¢
+		ADJACENT,		// Ú‚·‚é
+		ANTIADJACENT,	// ‹tŒü‚«‚ÅÚ‚·‚é
+		// ‘Šè‚ª©•ª‚æ‚è‚àŸŒ³‚ª‚P‚‚¢ê‡
+		BOUNDARY,		// ‹«ŠE‚É‚È‚Á‚Ä‚¢‚é
+		ANTIBOUNDARY,	// ‹tŒü‚«‚Ì‹«ŠE‚É‚È‚Á‚Ä‚¢‚é
+		// ‘Šè‚ª©•ª‚æ‚è‚àŸŒ³‚ª‚P’á‚¢ê‡
+		COBOUNDARY,		// ‹«ŠE‚Æ‚µ‚ÄŠÜ‚Ş
+		ANTICOBOUNDARY, // ‹tŒü‚«‚Ì‹«ŠE‚Æ‚µ‚ÄŠÜ‚Ş
+		// ã‹L‚Ì‚¢‚¸‚ê‚Å‚à‚È‚¢‚ªA‹¤—L‚µ‚Ä‚¢‚é‚à‚Ì‚ª‚ ‚é‚Æ‚«
+		COMMONEDGE,		// ‹¤—L•Ó‚ ‚è
+		COMMONNODE,		// ‹¤—L’¸“_‚ ‚è
+		NOCOMMON,		// ‹¤—L‚È‚µ
+		OTHERRELATION   // ‚»‚Ì‘¼‚ÌŠÖŒW
 	};
-
+	// —v‘fŠÔ‚ÌŠÖŒW‚ğ•¶š—ñ‚É•ÏŠ·
 	static std::string	getRelationTypeString(kmb::ElementRelation::relationType rel);
-
-
-
+	
+	// —v‘fŠÔ‚ÌŠÖŒW‚ğ‹‚ß‚é
+	// Ú‚µ‚Ä‚¢‚é‚Í‚Ç‚Ì–Ê‚ÅÚ‚µ‚Ä‚¢‚é‚©‚ğ index0 index1 ‚Ì’l‚Å•Ô‚·
 	static kmb::ElementRelation::relationType
 		getRelation(const kmb::ElementBase &eIter0, int &index0,
 					const kmb::ElementBase &eIter1, int &index1 );
 
-
+	// ü•ª‚ªˆê’v‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	static kmb::ElementRelation::relationType
 		getSegmentRelation
 			(int a0,int a1,int b0,int b1,int &aIndex,int &bIndex);
-
+	// OŠpŒ`‚ªˆê’v‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	static kmb::ElementRelation::relationType
 		getTriangleRelation
 			(int a0,int a1,int a2,int b0,int b1,int b2,int &aIndex,int &bIndex);
-
+	// lŠpŒ`‚ªˆê’v‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	static kmb::ElementRelation::relationType
 		getQuadRelation
 			(int a0,int a1,int a2,int a3,int b0,int b1,int b2,int b3,int &aIndex,int &bIndex);
-
+	// OŠpŒ`‚ÆlŠpŒ`‚ÌŠÔ‚ÌŠÖŒW
 	static kmb::ElementRelation::relationType
 		getTriangleQuadRelation
 			(int a0,int a1,int a2,int b0,int b1,int b2,int b3,int &aIndex,int &bIndex);
-
+	// l–Ê‘Ì‚ªˆê’v‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	static kmb::ElementRelation::relationType
 		getTetrahedronRelation
 			(int a0,int a1,int a2,int a3,int b0,int b1,int b2,int b3,int &aIndex,int &bIndex);
-
-
-
+	// OŠpŒ`‚Æl–Ê‘Ì‚ÌŠÖŒW
+	// ‚P“_‹¤—L‚Ì => aIndex bIndex ‚Í‹¤—L‚·‚éß“_‚Ì index
+	// ‚Q“_‹¤—L‚Ì => aIndex ‚Í Edge ‚Ì index AbIndex ‚Í Face ‚Ì index
 	static kmb::ElementRelation::relationType
 		getTriangleTetrahedronRelation
 			(int a0,int a1,int a2,int b0,int b1,int b2,int b3,int &aIndex,int &bIndex);
 
-
+	// Relation ‚·‚×‚Ä‚ğ‹‚ß‚¸‚ÉÚ‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ì‚İ‚ğ”»’è‚·‚éŠÈˆÕ”Å
 	static bool isAdjacent(const kmb::ElementBase &eIter0, int &index0, const kmb::ElementBase &eIter1, int &index1 );
 
-
+	// •¡»
 	static bool clone( const kmb::ElementBase &eIter, kmb::nodeIdType *clonedCell );
 	static bool clone( const kmb::ElementBase &eIter, kmb::nodeIdType *clonedCell, std::map< kmb::nodeIdType, kmb::nodeIdType >& nodeMapper );
-
+	// Œü‚«‚ğ‹t‚É‚·‚é
 	static bool reverse( const kmb::ElementBase &eIter, kmb::nodeIdType *reversedCell );
 	static bool reverse( const kmb::ElementBase &eIter, kmb::nodeIdType *reversedCell, std::map< kmb::nodeIdType, kmb::nodeIdType >& nodeMapper );
-
+	// ‹¤’Ê—v‘f
 	static kmb::elementType common( const kmb::ElementBase &eIter0, const kmb::ElementBase &eIter1, kmb::nodeIdType *commonCell );
 	static kmb::elementType common( kmb::Face f0, kmb::Face f1, const kmb::ElementContainer* elements, kmb::nodeIdType *commonCell );
 
 protected:
-
-
+	// “à•”‰º¿‚¯
+	// ‘æ‚Pˆø”‚ÌŒ^‚Å•ª—Ş
 	static kmb::ElementRelation::relationType getRelationForSegment
 		(const kmb::ElementBase &eIter0, int &index0, const kmb::ElementBase &eIter1, int &index1 );
-
-
+	// common edge ‚Ì index0 = triangle ‚Ì face id
+	// common node ‚Ì index0 = triangle ‚Ìß“_‚Ì index
 	static kmb::ElementRelation::relationType getRelationForTriangle
 		(const kmb::ElementBase &eIter0, int &index0, const kmb::ElementBase &eIter1, int &index1 );
 	static kmb::ElementRelation::relationType getRelationForQuad

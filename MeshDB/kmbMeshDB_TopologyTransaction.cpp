@@ -23,7 +23,7 @@
 #      "Innovative General-Purpose Coupled Analysis System"            #
 #                                                                      #
 ----------------------------------------------------------------------*/
-
+// ƒƒbƒVƒ…‚ÌˆÊ‘Š‚ÉŠÖ‚·‚éˆ—
 
 #include "MeshDB/kmbMeshDB.h"
 #include "MeshDB/kmbElementContainer.h"
@@ -34,7 +34,7 @@
 
 #include "Geometry/kmbFramedPlane.h"
 
-
+//------------------- ‹ß–Tî•ñæ“¾ ------------------------
 
 void
 kmb::MeshDB::getSurroundingElements(nodeIdType nodeId,std::vector<elementIdType>& elements,bool cacheOnly) const
@@ -61,7 +61,7 @@ kmb::MeshDB::getSurroundingElements(nodeIdType nodeId,std::vector<elementIdType>
 }
 
 
-
+//------------------- OŠpŒ`•ªŠ„ --------------------------
 
 void
 kmb::MeshDB::triangulation(kmb::bodyIdType bodyId)
@@ -72,7 +72,7 @@ kmb::MeshDB::triangulation(kmb::bodyIdType bodyId)
 	this->meshOperation->triangulation(bodyId);
 }
 
-
+//------------------- ‘½ŠpŒ`•ªŠ„ --------------------------//
 
 kmb::bodyIdType
 kmb::MeshDB::polygonPartition(bodyIdType polygonID,kmb::FramedPlane &plane)
@@ -81,7 +81,7 @@ kmb::MeshDB::polygonPartition(bodyIdType polygonID,kmb::FramedPlane &plane)
 
 	kmb::Body* body = this->getBodyPtr( polygonID );
 	if( body && body->isUniqueDim(1) ){
-
+		// polygon ‚Ì“_‚ğ2ŸŒ³Ë‰e‚µ‚Ä points ‚ÉŠi”[‚·‚é
 		kmb::Point2DContainerMap points;
 		std::set< kmb::nodeIdType > nodeSet;
 		body->getNodesOfBody( nodeSet );

@@ -101,7 +101,7 @@ kmb::QuadOrientedSet::clear(void)
 	while( tIter != quads.end() ){
 		kmb::nodeIdType nodeId = tIter->first;
 		kmb::Quad* quad = tIter->second;
-
+		// ß“_”Ô†‚Ìˆê”Ô‘å‚«‚¢‚É delete ‚·‚é
 		if( quad && quad->getCellId(0) <= nodeId && quad->getCellId(1) <= nodeId && quad->getCellId(2) <= nodeId && quad->getCellId(3) <= nodeId ){
 			delete quad;
 			quad = NULL;
@@ -123,7 +123,7 @@ kmb::QuadOrientedSet::appendItem(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::no
 {
 	NodeQuadMap::iterator tIter = quads.lower_bound(n0);
 	NodeQuadMap::iterator endIter = quads.upper_bound(n0);
-
+	// ‚Ü‚¾“o˜^‚³‚ê‚Ä‚¢‚È‚¢
 	if( tIter == quads.end() ){
 		kmb::Quad* quad = new kmb::Quad(n0,n1,n2,n3);
 		quads.insert( NodeQuadPair(n0,quad) );
@@ -143,13 +143,13 @@ kmb::QuadOrientedSet::appendItem(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::no
 				other->getCellId(0), other->getCellId(1), other->getCellId(2), other->getCellId(3) ) )
 			{
 			case 1:
-
+				// d•¡‚µ‚Ä“o˜^‚Í‚µ‚È‚¢
 				return NULL;
 			case -1:
 			{
-
+				// ‹tŒü‚«‚ª‚ ‚Á‚½‚çíœ
 				quads.erase( tIter );
-
+				// n1
 				NodeQuadMap::iterator tIter1 = quads.lower_bound(n1);
 				NodeQuadMap::iterator endIter1 = quads.upper_bound(n1);
 				while( tIter1 != endIter1 )
@@ -163,7 +163,7 @@ kmb::QuadOrientedSet::appendItem(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::no
 					}
 					++tIter1;
 				}
-
+				// n2
 				NodeQuadMap::iterator tIter2 = quads.lower_bound(n2);
 				NodeQuadMap::iterator endIter2 = quads.upper_bound(n2);
 				while( tIter2 != endIter2 )
@@ -177,7 +177,7 @@ kmb::QuadOrientedSet::appendItem(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::no
 					}
 					++tIter2;
 				}
-
+				// n3
 				NodeQuadMap::iterator tIter3 = quads.lower_bound(n3);
 				NodeQuadMap::iterator endIter3 = quads.upper_bound(n3);
 				while( tIter3 != endIter3 )
@@ -256,9 +256,9 @@ kmb::QuadOrientedSet::removeItem(kmb::Quad* quad)
 			other->getCellId(0), other->getCellId(1), other->getCellId(2), other->getCellId(3) ) )
 		{
 		case 1:{
-
+			// ˆê’v‚·‚é‚à‚Ì‚ª‚ ‚ê‚Îíœ
 			quads.erase( tIter );
-
+			// n1
 			NodeQuadMap::iterator tIter1 = quads.lower_bound(n1);
 			NodeQuadMap::iterator endIter1 = quads.upper_bound(n1);
 			while( tIter1 != endIter1 )
@@ -272,7 +272,7 @@ kmb::QuadOrientedSet::removeItem(kmb::Quad* quad)
 				}
 				++tIter1;
 			}
-
+			// n2
 			NodeQuadMap::iterator tIter2 = quads.lower_bound(n2);
 			NodeQuadMap::iterator endIter2 = quads.upper_bound(n2);
 			while( tIter2 != endIter2 )
@@ -286,7 +286,7 @@ kmb::QuadOrientedSet::removeItem(kmb::Quad* quad)
 				}
 				++tIter2;
 			}
-
+			// n3
 			NodeQuadMap::iterator tIter3 = quads.lower_bound(n3);
 			NodeQuadMap::iterator endIter3 = quads.upper_bound(n3);
 			while( tIter3 != endIter3 )
@@ -320,26 +320,26 @@ kmb::QuadOrientedSet::getElementNeighbor( const kmb::Quad* quad, kmb::Quad* neig
 
 	int count = 0;
 
-
-
-
-
+	// coboundaries ‚©‚çŒvZ‚·‚é
+	// ©•ª©g‚Ì’¸“_”z—ñ‚©‚ç
+	// ü•Ó—v‘f‚ğæ‚èo‚µ‚ÄA
+	// ‚»‚ê‚Æ‚Ì—v‘fŠÔŠÖŒW‚ğŒvZ‚·‚é
 
 	int index = -1;
 	int otherIndex = -1;
 	for(int i=0;i<4;++i){
 		neighbors[i] = NULL;
-
+		// Face ‚ÌÅ‰‚Ì’¸“_‚Å’T‚·
 		kmb::nodeIdType nodeId = quad->getBoundaryCellId(i,0);
-
+		// ’¸“_‚²‚Æ‚Ìü•Ó—v‘f‚Æ‚ÌŠÖŒW‚ğ’²‚×‚é
 		std::pair< NodeQuadMap::const_iterator, NodeQuadMap::const_iterator >
 			eIterPair = quads.equal_range( nodeId );
 		NodeQuadMap::const_iterator eIter = eIterPair.first;
 		while( eIter != eIterPair.second && neighbors[i] == NULL )
 		{
-
+			// ˆÙ‚È‚é—v‘f‚ªÚ‚µ‚Ä‚¢‚½‚ç“o˜^‚·‚é
 			kmb::Quad* other = eIter->second;
-
+			// ƒ|ƒCƒ“ƒ^‚Å”äŠr
 			if( other && quad != other ){
 				kmb::ElementRelation::relationType rel =
 					kmb::ElementRelation::getRelation( *quad, index, *other, otherIndex );
@@ -357,7 +357,7 @@ kmb::QuadOrientedSet::getElementNeighbor( const kmb::Quad* quad, kmb::Quad* neig
 }
 
 
-
+// doublet ‚ğ‹–‚·
 kmb::Quad*
 kmb::QuadOrientedSet::getAdjacent( const kmb::Quad* quad, const int edgeNum, int &adjEdge ) const
 {
@@ -365,23 +365,20 @@ kmb::QuadOrientedSet::getAdjacent( const kmb::Quad* quad, const int edgeNum, int
 
 	kmb::nodeIdType nodeId0 = quad->getBoundaryCellId(edgeNum,0);
 	kmb::nodeIdType nodeId1 = quad->getBoundaryCellId(edgeNum,1);
-
+	// nodeId0 ‚Æ nodeId1 ‚ğ—¼•ûŠÜ‚İ quad ‚ÆˆÙ‚È‚é‚à‚Ì‚ğ’T‚·
 	std::pair< NodeQuadMap::const_iterator, NodeQuadMap::const_iterator > eIterPair = quads.equal_range( nodeId0 );
 	NodeQuadMap::const_iterator eIter = eIterPair.first;
 	while( eIter != eIterPair.second )
 	{
-
+		// ˆÙ‚È‚é—v‘f‚ªÚ‚µ‚Ä‚¢‚½‚ç”Ô†ƒ`ƒFƒbƒN‚µ‚Ä•Ô‚·
 		kmb::Quad* other = eIter->second;
-
+		// ƒ|ƒCƒ“ƒ^‚Å”äŠr
 		if( other && quad != other ){
-
-
-
 			int index0 = other->indexOf( nodeId0 );
-
+			// ‚Ğ‚Æ‚Â‘O‚Ìß“_
 			int index1 = (index0+3)%4;
 			if( other->getCellId( index1 ) == nodeId1 ){
-
+				// face ‚Ì index ‚Íß“_‚Ì index ‚Ì¬‚³‚¢•û
 				adjEdge = index1;
 				return other;
 			}
@@ -399,7 +396,7 @@ kmb::QuadOrientedSet::getSharedThreeNodes(kmb::nodeIdType n0, kmb::nodeIdType n1
 	NodeQuadMap::const_iterator endIter = quads.upper_bound(n0);
 	while( tIter != endIter ){
 		kmb::Quad* other = tIter->second;
-
+		// other ‚Ì nodeTable 
 		int indexes[4] = {-1,-1,-1,-1};
 		int i1 = -1;
 		int i2 = -1;
@@ -613,7 +610,7 @@ kmb::QuadOrientedSet::_iterator::operator[](const int cellIndex) const
 kmb::ElementContainer::_iterator*
 kmb::QuadOrientedSet::_iterator::operator++(void)
 {
-
+	// tIter->second ‚Ìß“_”Ô†‚ÌÅ¬’l‚ªƒL[‚É‚È‚Á‚Ä‚¢‚é‚à‚Ì‚ğ’T‚·
 	tIter++;
 	while( tIter != endIter ){
 		kmb::nodeIdType nodeId = tIter->first;

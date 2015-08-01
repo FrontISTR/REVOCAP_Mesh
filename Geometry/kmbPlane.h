@@ -43,9 +43,9 @@ protected:
 	double b;
 	double c;
 	double d;
-	static double thres;
 public:
 	Plane(const double a,const double b,const double c,const double d);
+	Plane(const kmb::Point3D &base,const kmb::Vector3D &normal);
 	virtual ~Plane(void);
 	static Plane* createFromPoints(const Point3D &p,const Point3D &q,const Point3D &r);
 	static Plane* createFromBaseNormal(const Point3D &base,const Vector3D &normal);
@@ -56,32 +56,32 @@ public:
 	double evaluate(const Point3D &pt) const;
 	Vector3D getNormal(void) const;
 	double getConstant(void) const;
-
+	// 法線の変更
 	bool setNormal(double a,double b,double c);
 	void setOrigin(double x,double y,double z);
-
+	// 空集合かもしれないからポインタで返す
 	Point3D* createIntersectPoint(const Point3D &p0,const Point3D &p1) const;
-
-
+	// p0 と p1 を結ぶ直線との交点
+	// p0 を t=0、p1 を t=1 としてパラメータを与えたときの t も計算する
 	bool getIntersection(const Point3D &p0,const Point3D &p1, Point3D &pt, double &t) const;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	// p0 p1 p2 の三角形との交わり
+	// 戻り値
+	// -2 交わりなし三角形は負の側
+	// -1 交わりなし三角形は正の側
+	// 0 p0 p3 p4 が正の側 p1 p2 p4 p3 が負の側
+	// 1 p1 p3 p4 が正の側 p2 p0 p4 p3 が負の側
+	// 2 p2 p3 p4 が正の側 p0 p1 p4 p3 が負の側
+	// 3 p1 p2 p4 p3 が正の側 p0 p3 p4 が負の側
+	// 4 p2 p0 p4 p3 が正の側 p1 p3 p4 が負の側
+	// 5 p0 p1 p4 p3 が正の側 p2 p3 p4 が負の側
+	// 6 p0 を通る p0 p1 p3 が正の側 p0 p3 p2 が負の側
+	// 7 p1 を通る p1 p2 p3 が正の側 p1 p3 p0 が負の側
+	// 8 p2 を通る p2 p0 p3 が正の側 p2 p3 p1 が負の側
+	// 9  p0 を通る p0 p3 p2 が正の側 p0 p1 p3 が負の側
+	// 10 p1 を通る p1 p3 p0 が正の側 p1 p2 p3 が負の側
+	// 11 p2 を通る p2 p3 p1 が正の側 p2 p0 p3 が負の側
 	int getIntersectionTriangle(const Point3D &p0,const Point3D &p1, const Point3D &p2, Point3D &p3, Point3D &p4) const;
-
+	// get foot of perpendicular
 	Point3D projectOnPlane(const Point3D& p) const;
 };
 

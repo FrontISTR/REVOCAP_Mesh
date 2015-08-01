@@ -51,7 +51,6 @@ kmb::MeshData::~MeshData(void)
 
 void kmb::MeshData::clearModel(void)
 {
-
 	if( node3Ds ){
 		delete node3Ds;
 		node3Ds = NULL;
@@ -60,11 +59,11 @@ void kmb::MeshData::clearModel(void)
 		delete coordMatrix;
 		coordMatrix = NULL;
 	}
-
+	// clear elements
 	removeAllBodies();
-
+	// clear data cache
 	clearTargetData();
-
+	// clear physical values
 	std::multimap<std::string, kmb::DataBindings*>::iterator pIter = this->bindings.begin();
 	while( pIter != this->bindings.end() )
 	{
@@ -355,7 +354,7 @@ kmb::MeshData::addElement(kmb::elementType type,kmb::nodeIdType *ary)
 kmb::elementIdType
 kmb::MeshData::addElementWithId(kmb::elementType type,kmb::nodeIdType *ary,kmb::elementIdType elementId)
 {
-
+	// if necessary, verify elementId is not used
 	if( this->currentBody && ary ){
 		return this->currentBody->addElement(type,ary,elementId);
 	}
@@ -395,7 +394,7 @@ kmb::MeshData::insertElement(kmb::bodyIdType bodyID,kmb::elementType type,kmb::n
 kmb::elementIdType
 kmb::MeshData::insertElementWithId(bodyIdType bodyID,kmb::elementType type,kmb::nodeIdType *ary,elementIdType elementId)
 {
-
+	// not verify which elementId is used
 	kmb::ElementContainer* body = this->getBodyPtr( bodyID );
 	if( body && ary ){
 		return body->addElement(type,ary,elementId);
@@ -646,7 +645,7 @@ kmb::MeshData::findElement(kmb::elementIdType elementId,kmb::bodyIdType bodyId)
 			if( body != NULL ){
 				kmb::ElementContainer::iterator eIter = body->find( elementId );
 				if( !eIter.isFinished() ){
-					return eIter;
+					return eIter; // 代入演算子が呼ばれる
 				}
 			}
 		}
@@ -738,11 +737,11 @@ kmb::MeshData::importBody(const kmb::MeshData& otherMesh,kmb::bodyIdType bodyId)
 
 	kmb::Node node;
 
-
-
+	// 要素の追加
+	// 追加できなかった節点は nullNodeId になっている
 	kmb::nodeIdType* cell = new kmb::nodeIdType[ kmb::Element::MAX_NODE_COUNT ];
 	kmb::ElementContainer::const_iterator eIter = otherBody->begin();
-
+	// otherMesh の節点 Id と自分の節点 Id の対応を覚えておく
 	std::map< kmb::nodeIdType, kmb::nodeIdType > nodeMapper;
 	while( !eIter.isFinished() ){
 		const int len = eIter.getNodeCount();
@@ -796,7 +795,7 @@ kmb::MeshData::createDataBindings
 (const char* name,kmb::DataBindings::bindingMode bmode,PhysicalValue::valueType vtype,const char* stype,kmb::bodyIdType targetBodyId)
 {
 	if( name == NULL || this->getDataBindingsPtr( name, stype ) != NULL ){
-
+		// 既に使われている
 		return NULL;
 	}else{
 		kmb::DataBindings* data = kmb::DataBindings::createDataBindings(bmode,vtype,stype,targetBodyId);
@@ -1217,7 +1216,7 @@ kmb::MeshData::setMultiPhysicalValues(double* values)
 std::string
 kmb::MeshData::getUniqueDataName(std::string prefix,int num)
 {
-
+	// unique な名前を見つける
 	int count = num;
 	std::stringstream stream;
 	do{
@@ -1742,14 +1741,14 @@ kmb::MeshData::getBoundingBoxOfData(kmb::BoundingBox &bbox,const kmb::DataBindin
 	}
 }
 
-
-
-
-
-
-
-
-
+// 対応しているのは
+// NodeGroup => FaceGroup
+// NodeGroup => ElementGroup
+// FaceGroup => NodeGroup
+// FaceGroup => FaceGroup （単なるコピー）
+// FaceGroup => ElementGroup （親要素をグループに追加）
+// ElementGroup => NodeGroup
+// ElementVariable => NodeGroup （平均化）
 int
 kmb::MeshData::convertData(const char* org, const char* conv, const char* orgstype,const char* convstype)
 {
@@ -1765,7 +1764,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 	if( orgData == NULL || convData == NULL ){
 		return -1;
 	}
-
+	// NodeGroup => FaceGroup
 	if( orgData->getBindingMode() == kmb::DataBindings::NodeGroup &&
 		convData->getBindingMode() == kmb::DataBindings::FaceGroup )
 	{
@@ -1774,7 +1773,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 		kmb::bodyIdType bodyId  = faceGroup->getTargetBodyId();
 		kmb::ElementContainer* elements = this->getBodyPtr( bodyId );
 		if( elements ){
-
+			// 一旦 nodeGroup の節点を含む要素を覚えておく
 			kmb::DataBindings* elementGroup
 				= kmb::DataBindings::createDataBindings( kmb::DataBindings::ElementGroup, kmb::PhysicalValue::None, "" );
 			kmb::NodeNeighborInfo neighborInfo;
@@ -1822,7 +1821,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 			faceGroup->setPhysicalValue( nodeGroup->getPhysicalValue() );
 		}
 	}
-
+	// NodeGroup => ElementGroup
 	else
 	if( orgData->getBindingMode() == kmb::DataBindings::NodeGroup &&
 		convData->getBindingMode() == kmb::DataBindings::ElementGroup )
@@ -1832,7 +1831,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 		kmb::bodyIdType bodyId  = elementGroup->getTargetBodyId();
 		kmb::ElementContainer* elements = this->getBodyPtr( bodyId );
 		if( elements ){
-
+			// 一旦 nodeGroup の節点を含む要素を覚えておく
 			kmb::DataBindings* eGroup
 				= kmb::DataBindings::createDataBindings( kmb::DataBindings::ElementGroup, kmb::PhysicalValue::None, "" );
 			kmb::NodeNeighborInfo neighborInfo;
@@ -1851,7 +1850,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 				}
 				++nIter;
 			}
-
+			// eGroup に含まれる要素の節点がすべて含まれる場合に追加する
 			kmb::DataBindings::iterator eIter = eGroup->begin();
 			while( !eIter.isFinished() ){
 				kmb::ElementContainer::iterator elem = elements->find( eIter.getId() );
@@ -1877,7 +1876,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 			elementGroup->setPhysicalValue( nodeGroup->getPhysicalValue() );
 		}
 	}
-
+	// FaceGroup => NodeGroup
 	else
 	if( orgData->getBindingMode() == kmb::DataBindings::FaceGroup &&
 		convData->getBindingMode() == kmb::DataBindings::NodeGroup )
@@ -1910,7 +1909,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 			nodeGroup->setPhysicalValue( faceGroup->getPhysicalValue() );
 		}
 	}
-
+	// FaceGroup => FaceGroup
 	else
 	if( orgData->getBindingMode() == kmb::DataBindings::FaceGroup &&
 		convData->getBindingMode() == kmb::DataBindings::FaceGroup )
@@ -1931,7 +1930,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 			faceGroup1->setPhysicalValue( faceGroup0->getPhysicalValue() );
 		}
 	}
-
+	// FaceGroup => ElementGroup
 	else
 	if( orgData->getBindingMode() == kmb::DataBindings::FaceGroup &&
 		convData->getBindingMode() == kmb::DataBindings::ElementGroup )
@@ -1957,7 +1956,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 			elementGroup->setPhysicalValue( faceGroup->getPhysicalValue() );
 		}
 	}
-
+	// ElementGroup => NodeGroup
 	else
 	if( orgData->getBindingMode() == kmb::DataBindings::ElementGroup &&
 		convData->getBindingMode() == kmb::DataBindings::NodeGroup )
@@ -1988,7 +1987,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 			nodeGroup->setPhysicalValue( elementGroup->getPhysicalValue() );
 		}
 	}
-
+	// ElementVariable => NodeVariable
 	else
 	if( orgData->getBindingMode() == kmb::DataBindings::ElementVariable &&
 		convData->getBindingMode() == kmb::DataBindings::NodeVariable &&
@@ -2071,7 +2070,7 @@ kmb::MeshData::convertBodyToData(kmb::bodyIdType bodyId, const char* name,const 
 {
 	int dataCount = 0;
 	kmb::DataBindings* data = this->getDataBindingsPtr(name,stype);
-
+	// BODY => NodeGroup
 	if( data != NULL && data->getBindingMode() == kmb::DataBindings::NodeGroup )
 	{
 		kmb::ElementContainer* elements = this->getBodyPtr( bodyId );
@@ -2089,7 +2088,7 @@ kmb::MeshData::convertBodyToData(kmb::bodyIdType bodyId, const char* name,const 
 		}
 	}
 	else
-
+	// BODY => FaceGroup (localFaceId = -1 を与えて)
 	if( data != NULL && data->getBindingMode() == kmb::DataBindings::FaceGroup )
 	{
 		kmb::ElementContainer* elements = this->getBodyPtr( bodyId );
@@ -2103,7 +2102,7 @@ kmb::MeshData::convertBodyToData(kmb::bodyIdType bodyId, const char* name,const 
 		}
 	}
 	else
-
+	// BODY => ElementGroup
 	if( data != NULL && data->getBindingMode() == kmb::DataBindings::ElementGroup )
 	{
 		kmb::ElementContainer* elements = this->getBodyPtr( bodyId );

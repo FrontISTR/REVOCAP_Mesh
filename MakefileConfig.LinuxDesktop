@@ -27,3 +27,5 @@ DOXYGEN = doxygen
 TAR = tar
 RUBY = ruby
 SWIG = swig
+
+OPENMP_OPTION = -fopenmp

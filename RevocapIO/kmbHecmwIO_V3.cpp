@@ -12,11 +12,11 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-
-
-
-
-
+//
+// HecMW Ver.3 のためのファイル I/O
+//
+// material 属性は CNT ファイルを読まないとわからない
+//
 
 #include "RevocapIO/kmbHecmwIO.h"
 #include "RevocapIO/kmbRevocapIOUtils.h"
@@ -32,7 +32,7 @@
  #endif
 #endif
 
-
+// section 情報が解析制御ファイルに書かれている
 int
 kmb::HecmwIO::loadFromMW3File(const char* filename,MeshData* mesh) const
 {
@@ -45,7 +45,7 @@ kmb::HecmwIO::loadFromMW3File(const char* filename,MeshData* mesh) const
 		}
 		std::stringstream ss;
 		std::string line;
-		char comma;
+		char comma;  // for comma
 		std::getline( input, line );
 		while( !input.eof() ){
 			if( line.find("!HEADER") == 0 ){
@@ -83,12 +83,12 @@ kmb::HecmwIO::loadFromMW3File(const char* filename,MeshData* mesh) const
 				}
 			}else if( line.find("!ELEMENT") == 0 ){
 				std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
-
+				// 名前が既にある領域名と一致するかどうか
 				kmb::bodyIdType bodyId = kmb::Body::nullBodyId;
 				if( name.length() > 0 ){
 					bodyId = mesh->getBodyIdByName( name.c_str() );
 				}
-
+				// ElementContainer を取得
 				kmb::ElementContainer* body = NULL;
 				if( bodyId == kmb::Body::nullBodyId ){
 					bodyId = mesh->beginElement();
@@ -106,7 +106,7 @@ kmb::HecmwIO::loadFromMW3File(const char* filename,MeshData* mesh) const
 					int len = kmb::Element::getNodeCount( etype );
 					kmb::elementIdType elementId = kmb::Element::nullElementId;
 					kmb::nodeIdType* nodeTable = new kmb::nodeIdType[len];
-					char comma;
+					char comma;  // for comma
 					while( !input.eof() ){
 						std::getline( input, line );
 						if( line.find("!") == 0 ){
@@ -230,7 +230,7 @@ kmb::HecmwIO::loadFromMW3File(const char* filename,MeshData* mesh) const
 								data->addId( f );
 								break;
 							default:
-
+								// findElement でエラーの時もここを通る
 								break;
 							}
 						}

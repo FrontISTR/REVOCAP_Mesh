@@ -81,7 +81,7 @@ namespace kmb{
 %include "../Geometry/kmbIdTypes.h"
 %include "../Common/kmbCommon.h"
 
-
+// ‡”Ô‚Íd—vI
 %include "MeshGL.i"
 %include "ColorMap.i"
 %include "FBORendering.i"

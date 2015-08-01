@@ -63,7 +63,6 @@ kmb::NetgenIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
 										&mat, &array_num,
 										&nodeTable[3], &nodeTable[1], &nodeTable[2], &nodeTable[0]);
 									for (i=0;i<4;i++)	nodeTable[i] -= 1;
-
 									mesh->addElement(kmb::TETRAHEDRON, nodeTable);
 								} else if (array_num == 10){
 									sscanf(st, "%d %d %d %d %d %d %d %d %d %d %d %d",

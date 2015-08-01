@@ -82,19 +82,19 @@ kmb::MeshDB::MeshDB(void)
 	defaultElementContainerType = kmb::ElementContainerMap::CONTAINER_TYPE;
 }
 
-
-
+// virtual デストラクタは自分自身のデストラクタを呼んだ後に、親クラスのデストラクタを呼ぶ
+// 冗長なところがある
 kmb::MeshDB::~MeshDB(void)
 {
 	clearModel();
 }
 
-
+//----------------------- メモリ管理 --------------------------
 
 void
 kmb::MeshDB::clearModel(void)
 {
-
+	// デストラクタからは２回呼ばれてしまう
 	kmb::MeshData::clearModel();
 
 	this->maxElementId = kmb::Element::nullElementId;
@@ -165,10 +165,8 @@ void
 kmb::MeshDB::setDefaultContainerType(const char* containerType)
 {
 	if( strcmp(containerType,"Post") == 0 ){
-
 		this->defaultNodeContainerType = kmb::Point3DContainerArray::CONTAINER_TYPE;
 		this->defaultElementContainerType = kmb::ElementContainerMArray::CONTAINER_TYPE;
-
 		this->defaultDataContainerType = "Post";
 	}
 #ifdef REVOCAP_SUPPORT_DUMP_CONTAINER
@@ -182,7 +180,7 @@ kmb::MeshDB::setDefaultContainerType(const char* containerType)
 	}
 }
 
-
+//-------------------- 頂点管理 ---------------------
 
 void
 kmb::MeshDB::beginNode(size_t size,kmb::Point3DContainer* point3Ds)
@@ -252,7 +250,7 @@ kmb::MeshDB::beginNode(size_t size,const char* containerType)
 		if( point2Ds ){
 			this->beginNode(size,point2Ds);
 		}else{
-
+			// どれにもあてはまらなかった時
 			this->beginNode(size,new kmb::Point3DContainerMap());
 		}
 	}
@@ -458,13 +456,13 @@ kmb::MeshDB::duplicatePoint(nodeIdType nodeId)
 	}
 }
 
-
+//----------------------- 要素管理 --------------------------
 
 kmb::bodyIdType
 kmb::MeshDB::beginElement(size_t size,kmb::ElementContainer* container)
 {
 	kmb:: bodyIdType bodyId = kmb::MeshData::beginElement(size,container);
-
+	// map type 以外のものは offset する
 	if( this->currentBody &&
 		strcmp( this->currentBody->getContainerType(), kmb::ElementContainerMap::CONTAINER_TYPE ) != 0 ){
 		this->currentBody->setOffsetId( this->maxElementId + 1 );
@@ -500,7 +498,7 @@ kmb::MeshDB::addElement(kmb::elementType type,kmb::nodeIdType *ary)
 kmb::elementIdType
 kmb::MeshDB::addElementWithId(kmb::elementType type,kmb::nodeIdType *ary,kmb::elementIdType elementID)
 {
-
+	// verify elementId is not used
 	if(maxElementId >= elementID){
 		kmb::bodyIdType bodyId = this->getBodyId(elementID);
 		if(bodyId != kmb::Body::nullBodyId){
@@ -512,7 +510,7 @@ kmb::MeshDB::addElementWithId(kmb::elementType type,kmb::nodeIdType *ary,kmb::el
 	}else{
 		elementID = kmb::Element::nullElementId;
 	}
-
+	// guarantee maxElementId
 	if( maxElementId < elementID ){
 		maxElementId = elementID;
 	}
@@ -534,44 +532,30 @@ kmb::MeshDB::insertElement(kmb::bodyIdType bodyID,kmb::elementType type,kmb::nod
 kmb::elementIdType
 kmb::MeshDB::insertElementWithId(bodyIdType bodyID,kmb::elementType type,kmb::nodeIdType *ary,elementIdType elementId)
 {
-
+	// verify elementId is not used
 	if(maxElementId >= elementId){
 		kmb::bodyIdType bodyId = this->getBodyId(elementId);
 		if(bodyId != kmb::Body::nullBodyId){
-
+			// if used, return nullElementId
 			return kmb::Element::nullElementId;
 		}
 	}
 	kmb::ElementContainer* body = this->getBodyPtr( bodyID );
 	if( body == NULL ||
 		body->addElement(type,ary,elementId) == kmb::Element::nullElementId ){
-
 		return kmb::Element::nullElementId;
 	}
-
+	// guarantee maxElementId is not used as element id
 	if( maxElementId < elementId ){
 		maxElementId = elementId;
 	}
 	return elementId;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 kmb::elementIdType
 kmb::MeshDB::generateElementId(void)
 {
-
+	// return after increment
 	return ++maxElementId;
 }
 
@@ -585,52 +569,6 @@ kmb::MeshDB::deleteElement(kmb::bodyIdType bodyId,kmb::elementIdType elementId)
 	return kmb::Element::nullElementId;
 }
 
-/*
-kmb::ElementContainer::iterator
-kmb::MeshDB::findElement(kmb::elementIdType elementId,kmb::bodyIdType bodyId)
-{
-	kmb::Body* body = NULL;
-	if( bodyId >= 0 && (body=this->getBodyPtr( bodyId )) != NULL ){
-		return body->find( elementId );
-	}else{
-		const size_t len = this->getBodyCount();
-		for(unsigned int i=0;i<len;++i)
-		{
-			body = this->getBodyPtr(i);
-			if( body != NULL ){
-				kmb::ElementContainer::iterator eIter = body->find( elementId );
-				if( !eIter.isFinished() ){
-					return eIter;
-				}
-			}
-		}
-	}
-	return kmb::ElementContainer::getEndIterator();
-}
-
-kmb::ElementContainer::const_iterator
-kmb::MeshDB::findElement(kmb::elementIdType elementId,kmb::bodyIdType bodyId) const
-{
-	const kmb::Body* body = NULL;
-	if( bodyId >= 0 && (body=this->getBodyPtr( bodyId )) != NULL ){
-		return body->find( elementId );
-	}else{
-		const size_t len = this->getBodyCount();
-		for(unsigned int i=0;i<len;++i)
-		{
-			body = this->getBodyPtr(i);
-			if( body != NULL ){
-				kmb::ElementContainer::const_iterator eIter = body->find( elementId );
-				if( !eIter.isFinished() ){
-					return eIter;
-				}
-			}
-		}
-	}
-	return kmb::ElementContainer::getEndConstIterator();
-}
-*/
-
 bool
 kmb::MeshDB::elementToFace( const kmb::ElementBase &element, kmb::Face &face, kmb::bodyIdType bodyId)
 {
@@ -639,7 +577,7 @@ kmb::MeshDB::elementToFace( const kmb::ElementBase &element, kmb::Face &face, km
 	if( bodyId != kmb::Body::nullBodyId ){
 		kmb::Body* body = this->getBodyPtr( bodyId );
 		if( body != NULL ){
-
+			// if exists node neighbor info
 			if( this->neighborInfo.getSize() > 0 ){
 				return this->neighborInfo.getFace( element, face, body );
 			}else{
@@ -661,7 +599,7 @@ kmb::MeshDB::elementToFace( const kmb::ElementBase &element, kmb::Face &face, km
 		for( kmb::bodyIdType id = 0; id < bCount; ++id ){
 			kmb::Body* body = this->getBodyPtr( id );
 			if( body != NULL ){
-
+				// if exists node neighbor info
 				if( this->neighborInfo.getSize() > 0 ){
 					if( this->neighborInfo.getFace( element, face, body ) ){
 						return true;
@@ -685,7 +623,7 @@ kmb::MeshDB::elementToFace( const kmb::ElementBase &element, kmb::Face &face, km
 	return false;
 }
 
-
+//---------------- 要素グループ管理 ----------------------
 
 void
 kmb::MeshDB::endModel(void)
@@ -715,7 +653,7 @@ kmb::MeshDB::removeAllBodies(void)
 	this->elementBucket.clear();
 }
 
-
+//--------------------- 法線ベクトル -----------------------------
 
 kmb::Vector3D
 kmb::MeshDB::getNormalVector(kmb::elementIdType elementID,kmb::bodyIdType bodyID) const
@@ -839,14 +777,14 @@ kmb::MeshDB::getAreaVectorOfFaceGroup(const char* faceGroup) const
 	return area;
 }
 
+//------------------- 物理量管理 --------------------------
 
-
-
+// defaultDataContainerType == "Post" のときは、ポスト処理用のものを使う
 kmb::DataBindings*
 kmb::MeshDB::createDataBindings(const char* name,kmb::DataBindings::bindingMode bmode,PhysicalValue::valueType vtype,const char* stype,kmb::bodyIdType targetBodyId)
 {
 	if( name == NULL || this->getDataBindingsPtr( name, stype ) != NULL ){
-
+		// 既に使われている
 		return NULL;
 	}else{
 		kmb::DataBindings* data = NULL;
@@ -857,7 +795,6 @@ kmb::MeshDB::createDataBindings(const char* name,kmb::DataBindings::bindingMode 
 				if( bmode == kmb::DataBindings::NodeVariable ){
 					data = new kmb::ScalarValueBindings( getMaxNodeId()+1, bmode );
 				}else if( bmode == kmb::DataBindings::ElementVariable ){
-
 					data = new kmb::ScalarValueMArrayBindings( getMaxElementId()+1, bmode );
 				}
 				break;
@@ -865,7 +802,6 @@ kmb::MeshDB::createDataBindings(const char* name,kmb::DataBindings::bindingMode 
 				if( bmode == kmb::DataBindings::NodeVariable ){
 					data = new kmb::Vector2ValueBindings( getMaxNodeId()+1, bmode );
 				}else if( bmode == kmb::DataBindings::ElementVariable ){
-
 					data = new kmb::Vector2ValueMArrayBindings( getMaxElementId()+1, bmode );
 				}
 				break;
@@ -873,7 +809,6 @@ kmb::MeshDB::createDataBindings(const char* name,kmb::DataBindings::bindingMode 
 				if( bmode == kmb::DataBindings::NodeVariable ){
 					data = new kmb::Vector3ValueBindings( getMaxNodeId()+1, bmode );
 				}else if( bmode == kmb::DataBindings::ElementVariable ){
-
 					data = new kmb::Vector3ValueMArrayBindings( getMaxElementId()+1, bmode );
 				}
 				break;
@@ -881,7 +816,6 @@ kmb::MeshDB::createDataBindings(const char* name,kmb::DataBindings::bindingMode 
 				if( bmode == kmb::DataBindings::NodeVariable ){
 					data = new kmb::Tensor6ValueBindings( getMaxNodeId()+1, bmode );
 				}else if( bmode == kmb::DataBindings::ElementVariable ){
-
 					data = new kmb::Tensor6ValueMArrayBindings( getMaxElementId()+1, bmode );
 				}
 				break;
@@ -943,7 +877,7 @@ kmb::MeshDB::createDataBindings(const char* name,kmb::DataBindings::bindingMode 
 			}
 		}
 #endif
-
+		// その他の特殊データの生成
 		if( data == NULL ){
 			if( vtype == kmb::PhysicalValue::Vector2withInt && bmode == kmb::DataBindings::NodeVariable ){
 				data = new kmb::Vector2WithIntBindings<kmb::nodeIdType>( getMaxNodeId()+1, bmode );
@@ -1175,6 +1109,20 @@ kmb::MeshDB::getMinMaxValueWithId(const kmb::DataBindings* data, kmb::MinMaxWith
 {
 	if( data != NULL && this->dataEvaluator ){
 		this->dataEvaluator->getMinMaxWithId( data, minmax, comp );
+		return true;
+	}
+	return false;
+}
+
+bool kmb::MeshDB::calcRanking(const char* key,const char* stype)
+{
+	kmb::DataBindings* data = this->getDataBindingsPtr(key,stype);
+	if( data->getBindingMode() == kmb::DataBindings::NodeVariable &&
+		data->getValueType() == kmb::PhysicalValue::Scalar &&
+		strcmp( kmb::ScalarValueBindings::CONTAINER_TYPE,data->getContainerType()) == 0 )
+	{
+		kmb::ScalarValueBindings* sdata = reinterpret_cast<kmb::ScalarValueBindings*>(data);
+		sdata->createRanking();
 		return true;
 	}
 	return false;

@@ -179,9 +179,9 @@ kmb::Triangle2::checkShapeFunctionDomain(double s,double t)
 	return kmb::Minimizer::getMin( 1.0-s-t, s, t );
 }
 
-
-
-
+// g = \sum coeff[i] * points[i] - target
+// ‚±‚ê‚Í2•Ï”‚Ì3ŸŒ³ŠÖ”‚È‚Ì‚Å
+// ( g * dg/ds, g * dg/dt ) ‚ğl‚¦‚é
 bool
 kmb::Triangle2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D* points,double naturalCoords[2])
 {
@@ -211,7 +211,7 @@ kmb::Triangle2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Poin
 			g[0] -= target[0];
 			g[1] -= target[1];
 			g[2] -= target[2];
-
+			// s ‚Å”÷•ª
 			kmb::Triangle2::shapeFunction_ds(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgds[i] = 0.0;
@@ -219,7 +219,7 @@ kmb::Triangle2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Poin
 					dgds[i] += coeff[j] * points[j][i];
 				}
 			}
-
+			// t ‚Å”÷•ª
 			kmb::Triangle2::shapeFunction_dt(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgdt[i] = 0.0;
@@ -248,7 +248,7 @@ kmb::Triangle2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Poin
 			g[0] -= target[0];
 			g[1] -= target[1];
 			g[2] -= target[2];
-
+			// s ‚Å”÷•ª
 			kmb::Triangle2::shapeFunction_ds(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgds[i] = 0.0;
@@ -256,7 +256,7 @@ kmb::Triangle2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Poin
 					dgds[i] += coeff[j] * points[j][i];
 				}
 			}
-
+			// t ‚Å”÷•ª
 			kmb::Triangle2::shapeFunction_dt(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgdt[i] = 0.0;
@@ -264,7 +264,7 @@ kmb::Triangle2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Poin
 					dgdt[i] += coeff[j] * points[j][i];
 				}
 			}
-
+			// ss
 			kmb::Triangle2::shapeFunction_dsds(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgdss[i] = 0.0;
@@ -272,7 +272,7 @@ kmb::Triangle2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Poin
 					dgdss[i] += coeff[j] * points[j][i];
 				}
 			}
-
+			// st
 			kmb::Triangle2::shapeFunction_dsdt(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgdst[i] = 0.0;
@@ -280,7 +280,7 @@ kmb::Triangle2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Poin
 					dgdst[i] += coeff[j] * points[j][i];
 				}
 			}
-
+			// tt
 			kmb::Triangle2::shapeFunction_dsds(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgdtt[i] = 0.0;

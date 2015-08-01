@@ -40,20 +40,20 @@ public:
 	FramedPlane(const double a0,const double b0,const double c0,const double d0);
 	FramedPlane(const Point3D &o,const Vector3D &v0,const Vector3D &v1);
 	virtual ~FramedPlane(void);
-
+	// origin を原点とするような UV 座標を返す
 	Point2D transformTo2D(const Point3D &point) const;
 	Point3D transformTo3D(const Point2D &point) const;
 	Point3D transformTo3D(double u,double v) const;
-
+	// UV 座標の基底ベクトルを回転する
 	void rotateUVBase(const double angle);
-
+	// 原点の移動
 	void setOrigin(const Point3D& point);
 	void setOrigin(double x,double y,double z);
-
+	// origin = origin + s * normal
 	void slideOrigin(double s);
-
+	// 法線の変更
 	bool setNormal(double a,double b,double c);
-
+	// ラジアン
 	void setNormalPolar(double phi,double theta);
 /**--------------------------------------------------------------------
 =begin

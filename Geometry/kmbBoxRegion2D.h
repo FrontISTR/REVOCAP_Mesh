@@ -30,7 +30,7 @@
 
 namespace kmb{
 
-
+/// 座標軸に平行な長方形
 class BoxRegion2D : public Region2D
 {
 protected:
@@ -55,7 +55,7 @@ public:
 	double centerY(void) const;
 	double rangeX(void) const;
 	double rangeY(void) const;
-
+	// rangeX と rangeY の大きい方を返す
 	double range(void) const;
 	double diameter(void) const;
 	const Point2D& getMin(void) const;
@@ -66,16 +66,16 @@ public:
 	virtual locationType intersect(const Point2D &point) const;
 	virtual double distanceSq(const Point2D &point) const;
 	virtual double distanceSq(const double x,const double y) const;
-
+	// Box 同士の判定関数
 	bool intersect(const BoxRegion2D& box) const;
 	double intersectArea(const BoxRegion2D& box) const;
 	double distanceSq(const kmb::BoxRegion2D& box) const;
-
+	// max min の両方を拡大する
 	void expand(double x,double y);
 	void expand(double ratio);
 	void translate(double x,double y);
-
-
+	// 直線と重なっている部分
+	// 重なっていなければ、mint_t = max_t = 0.0 を返す
 	void crossOnLine(const kmb::Point2D& origin, const kmb::Vector2D& dir, double &min_t, double &max_t) const;
 };
 

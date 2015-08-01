@@ -44,7 +44,7 @@ else
 	end
 	arch = RUBY_PLATFORM
 	$libs = append_library($libs, 'GLUT')
-	dir_config( "#{modulename}", "/opt/local/")
+	dir_config( "#{modulename}", "/opt/local")
 end
 
 $libs = append_library($libs, 'RcapCommon')

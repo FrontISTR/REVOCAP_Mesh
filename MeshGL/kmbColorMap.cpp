@@ -84,56 +84,56 @@ kmb::ColorMap::calcRGB(double x,float rgb[3]) const
 {
 	/* HSV の色相を用いる */
 	if(x <= 0.0f){
-		rgb[0] = 0.0f;
-		rgb[1] = 0.0f;
-		rgb[2] = 1.0f;
+		rgb[0] = 0.0f;  // r
+		rgb[1] = 0.0f;  // g
+		rgb[2] = 1.0f;  // b
 	}else if(x < 0.25f){
-		rgb[0] = 0.0f;
-		rgb[1] = 4.0f * static_cast<float>( x );
-		rgb[2] = 1.0f;
+		rgb[0] = 0.0f;  // r
+		rgb[1] = 4.0f * static_cast<float>( x ); //g
+		rgb[2] = 1.0f;  // b
 	}else if(x < 0.5f){
-		rgb[0] = 0.0f;
-		rgb[1] = 1.0f;
-		rgb[2] = 4.0f * static_cast<float>( 0.5 - x );
+		rgb[0] = 0.0f;  // r
+		rgb[1] = 1.0f;  // g
+		rgb[2] = 4.0f * static_cast<float>( 0.5 - x );  // b
 	}else if(x < 0.75f){
-		rgb[0] = 4.0f * static_cast<float>( x - 0.5 );
-		rgb[1] = 1.0f;
-		rgb[2] = 0.0f;
+		rgb[0] = 4.0f * static_cast<float>( x - 0.5 );  // r
+		rgb[1] = 1.0f;  // g
+		rgb[2] = 0.0f;  // b
 	}else if (x < 1.0f){
-		rgb[0] = 1.0f;
-		rgb[1] = 4.0f * static_cast<float>( 1.0  - x );
-		rgb[2] = 0.0f;
+		rgb[0] = 1.0f;  // r
+		rgb[1] = 4.0f * static_cast<float>( 1.0  - x );  // g
+		rgb[2] = 0.0f;  // b
 	}else{
-		rgb[0] = 1.0f;
-		rgb[1] = 0.0f;
-		rgb[2] = 0.0f;
+		rgb[0] = 1.0f;  // r
+		rgb[1] = 0.0f;  // g
+		rgb[2] = 0.0f;  // b
 	}
 	/* HSV の色相を修正。関数を2次式にする */
 /*
 	if(x <= 0.0f){
-		rgb[0] = 0.0f;
-		rgb[1] = 0.0f;
-		rgb[2] = 1.0f;
+		rgb[0] = 0.0f;  // r
+		rgb[1] = 0.0f;  // g
+		rgb[2] = 1.0f;  // b
 	}else if(x < 0.25f){
-		rgb[0] = 0.0f;
-		rgb[1] = 16.0f * static_cast<float>( x*(0.5-x) );
-		rgb[2] = 1.0f;
+		rgb[0] = 0.0f;  // r
+		rgb[1] = 16.0f * static_cast<float>( x*(0.5-x) ); //g
+		rgb[2] = 1.0f;  // b
 	}else if(x < 0.5f){
-		rgb[0] = 0.0f;
-		rgb[1] = 1.0f;
-		rgb[2] = 16.0f * static_cast<float>( x*(0.5-x) );
+		rgb[0] = 0.0f;  // r
+		rgb[1] = 1.0f;  // g
+		rgb[2] = 16.0f * static_cast<float>( x*(0.5-x) );  // b
 	}else if(x < 0.75f){
-		rgb[0] = 16.0f * static_cast<float>( (x-0.5)*(1.0-x) );
-		rgb[1] = 1.0f;
-		rgb[2] = 0.0f;
+		rgb[0] = 16.0f * static_cast<float>( (x-0.5)*(1.0-x) );  // r
+		rgb[1] = 1.0f;  // g
+		rgb[2] = 0.0f;  // b
 	}else if (x < 1.0f){
-		rgb[0] = 1.0f;
-		rgb[1] = 16.0f * static_cast<float>( (x-0.5)*(1.0-x) );
-		rgb[2] = 0.0f;
+		rgb[0] = 1.0f;  // r
+		rgb[1] = 16.0f * static_cast<float>( (x-0.5)*(1.0-x) );  // g
+		rgb[2] = 0.0f;  // b
 	}else{
-		rgb[0] = 1.0f;
-		rgb[1] = 0.0f;
-		rgb[2] = 0.0f;
+		rgb[0] = 1.0f;  // r
+		rgb[1] = 0.0f;  // g
+		rgb[2] = 0.0f;  // b
 	}
 */
 }
@@ -157,9 +157,9 @@ kmb::ColorMap::setStep(int s)
 		for(int i=0;i<step;++i){
 			float x = i / (step - 1.0f);
 			calcRGB(x,rgb);
-			color[3*i  ] = rgb[0];
-			color[3*i+1] = rgb[1];
-			color[3*i+2] = rgb[2];
+			color[3*i  ] = rgb[0];  // r
+			color[3*i+1] = rgb[1];  // g
+			color[3*i+2] = rgb[2];  // b
 		}
 	}
 }
@@ -170,7 +170,7 @@ kmb::ColorMap::getStep(void) const
 	return this->step;
 }
 
-
+// 今は rgba[3] を無視している
 void
 kmb::ColorMap::setRGBAByStep(int s,const float rgba[4])
 {
@@ -295,7 +295,7 @@ kmb::ColorMap::getRGBAByStep(int s,float rgba[4],float ratio) const
 bool
 kmb::ColorMap::createColorCache(const kmb::DataBindings* nodeValue, int comp)
 {
-
+	// nodeValue の節点番号はとびとびでないことを仮定
 	if( cache == NULL ){
 		cache = new kmb::Color3fValueBindings(nodeValue->getIdCount());
 	}else if( cache->getIdCount() != nodeValue->getIdCount() ){

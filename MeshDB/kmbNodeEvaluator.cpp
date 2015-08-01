@@ -130,7 +130,7 @@ kmb::NodeEvaluator::calcCurvature(const char* name,const char* stype)
 			++eIter;
 		}
 	}
-
+	// DataBinding ‚Ì iterator ‚Å‚Í set o—ˆ‚È‚¢‚±‚Æ‚É’ˆÓ
 	kmb::Point3DContainer::iterator pIter = points->begin();
 	while( !pIter.isFinished() ){
 		if( data->getPhysicalValue( pIter.getId(), &angle ) ){

@@ -30,18 +30,18 @@ namespace kmb{
 class ElementContainerNArray : public ElementContainerDirectAccessable
 {
 protected:
-	size_t index;
-	size_t size;
-	kmb::elementType etype;
-	size_t ncount;
-	kmb::nodeIdType *nodeTable;
-	bool nodeTableDeletable;
-	kmb::nodeIdType nodeOffset;
+	size_t index; // 0 から順に埋めていく場合の添え字
+	size_t size;  // 配列の大きさ
+	kmb::elementType etype; // 要素の種類
+	size_t ncount; // 要素ごとの節点の個数
+	kmb::nodeIdType *nodeTable;  // 節点配列
+	bool nodeTableDeletable;  // 節点配列をこのクラスで Delete してもよいかどうか
+	kmb::nodeIdType nodeOffset; // 節点番号をずらして登録する場合
 public:
 	static const char* CONTAINER_TYPE;
 	ElementContainerNArray(kmb::elementType etype, size_t size );
-
-
+	// writable = true は確保した配列だけ渡して、要素を格納するのはこのクラスで行う
+	// writable = false はすでに要素を格納した配列を渡して、ラッパとしてこのクラスを使う
 	ElementContainerNArray(kmb::elementType etype, size_t size, kmb::nodeIdType *nodeTable, bool writable=false, kmb::nodeIdType offset=0 );
 	virtual ~ElementContainerNArray(void);
 	virtual kmb::elementIdType addElement(kmb::elementType etype, const kmb::nodeIdType *nodes);
@@ -83,9 +83,9 @@ public:
 	virtual const_iterator find(kmb::elementIdType id) const;
 
 	kmb::elementType getElementType(kmb::elementIdType id) const;
-
-
-
+	// direct access
+	// nodeOffset は考慮されないので注意
+	// elementOffset は考慮される
 	kmb::nodeIdType operator()(kmb::elementIdType elementId,kmb::idType localId) const;
 	kmb::nodeIdType& operator()(kmb::elementIdType elementId,kmb::idType localId);
 	void commit(kmb::elementIdType elementId);

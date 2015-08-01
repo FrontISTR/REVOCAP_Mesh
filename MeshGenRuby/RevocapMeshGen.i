@@ -29,7 +29,7 @@
 	’˜ìŒ î•ñ‚Ì•¶š—ñ
 =end
 ---------------------------------------------------------------*/
-%module RevocapMeshGen
+%module RevocapMeshGen  // create_makefile ‚Æ“¯‚¶–¼‘O‚É‚·‚é
 
 #ifndef VERSION
 namespace kmb{

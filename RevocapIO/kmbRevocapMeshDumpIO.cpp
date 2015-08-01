@@ -23,31 +23,31 @@
 #      "Innovative General-Purpose Coupled Analysis System"            #
 #                                                                      #
 ----------------------------------------------------------------------*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//
+// RevocapMeshDumpIO 仕様
+//
+// バイナリファイル
+// version 情報 （文字列は８個のchar + バージョン番号は４バイト整数値）
+// 型情報 int double 等の sizeof の記述
+// nodeCount
+// nodeId x y z (nodeCount分繰り返し)
+// bodyCount
+//  bodyName
+//  elementCount (bodyCount分繰り返し）
+//   elementType elementId nodeArray (elementCount分繰り返し）
+// dbCount
+//  boundingmode, idcount, name, stype, valuetype, targetbodyId (dbCount分繰り返し)
+//   variable の場合: (id, value : idcount分繰り返し) 
+//   group の場合: value, (id : idcount分繰り返し) 
+//   global の場合: value
+//
+// 文字列は len + 実体(\0を除く)
 
 #ifdef WIN32
-
-
-
-
+// 引数の型が違うのでこのままでは使えない
+// #if _MSC_VER >= 1400
+//  #define fopen fopen_s
+// #endif
 #endif
 
 #include "RevocapIO/kmbRevocapMeshDumpIO.h"
@@ -56,7 +56,7 @@
 #include "RevocapIO/kmbDefineIO.h"
 
 #include <fstream>
-
+#include <cstdio>
 #include <cstring>
 
 const char* kmb::RevocapMeshDumpIO::headerString = "REVOMESH";
@@ -76,7 +76,7 @@ kmb::RevocapMeshDumpIO::checkTypeSize(void)
 }
 
 kmb::RevocapMeshDumpIO::RevocapMeshDumpIO(void)
-
+//: fp(NULL)
 {
 }
 
@@ -103,43 +103,6 @@ void kmb::RevocapMeshDumpIO::setSizeInfoVersion1(void)
 	sInfo.faceId = 4;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 kmb::RevocapIO::ErrorCode
 kmb::RevocapMeshDumpIO::getVersion(int &ver,std::istream &input)
 {
@@ -165,7 +128,7 @@ kmb::RevocapMeshDumpIO::getVersion(int &ver,std::istream &input)
 		switch( ver )
 		{
 		case 1:
-
+			// ver 1 の時はヘッダに書かれていないのでデフォルト値
 			setSizeInfoVersion1();
 			break;
 		default:
@@ -174,28 +137,6 @@ kmb::RevocapMeshDumpIO::getVersion(int &ver,std::istream &input)
 	}
 	return kmb::RevocapIO::kSuccess;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 kmb::RevocapIO::ErrorCode
 kmb::RevocapMeshDumpIO::setVersion(const int ver,std::ostream &output)
@@ -219,51 +160,6 @@ kmb::RevocapMeshDumpIO::setVersion(const int ver,std::ostream &output)
 	}
 	return kmb::RevocapIO::kSuccess;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 kmb::RevocapIO::ErrorCode
 kmb::RevocapMeshDumpIO::loadNodeData(kmb::MeshData* mesh,std::istream &input)
@@ -320,49 +216,6 @@ kmb::RevocapMeshDumpIO::loadNodeData(kmb::MeshData* mesh,std::istream &input)
 	return kmb::RevocapIO::kNodeSizeNotImplemented;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 kmb::RevocapIO::ErrorCode
 kmb::RevocapMeshDumpIO::saveNodeData(const kmb::MeshData* mesh,std::ostream &output)
 {
@@ -410,82 +263,6 @@ kmb::RevocapMeshDumpIO::saveNodeData(const kmb::MeshData* mesh,std::ostream &out
 	return kmb::RevocapIO::kSuccess;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 kmb::RevocapIO::ErrorCode
 kmb::RevocapMeshDumpIO::loadElementData(kmb::MeshData* mesh,std::istream &input)
 {
@@ -526,7 +303,7 @@ kmb::RevocapMeshDumpIO::loadElementData(kmb::MeshData* mesh,std::istream &input)
 		uint32_t eCount = 0;
 		int32_t* nodes = new int32_t[kmb::Element::MAX_NODE_COUNT];
 		kmb::nodeIdType* cells = new kmb::nodeIdType[kmb::Element::MAX_NODE_COUNT];
-		size_t nCount = 0;
+		size_t nCount = 0; // 要素ごとの節点個数
 		for(kmb::bodyIdType bodyId=0;bodyId<bCount;++bodyId){
 			input.read( reinterpret_cast<char*>(&len), sizeof(uint32_t) );
 			if( input.fail() ){ return kmb::RevocapIO::kFileReadError; }
@@ -562,83 +339,6 @@ kmb::RevocapMeshDumpIO::loadElementData(kmb::MeshData* mesh,std::istream &input)
 	}
 	return kmb::RevocapIO::kElementSizeNotImplemented;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 kmb::RevocapIO::ErrorCode
 kmb::RevocapMeshDumpIO::saveElementData(const kmb::MeshData* mesh,std::ostream &output)
@@ -721,685 +421,6 @@ kmb::RevocapMeshDumpIO::saveElementData(const kmb::MeshData* mesh,std::ostream &
 	return kmb::RevocapIO::kElementSizeNotImplemented;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 kmb::RevocapIO::ErrorCode
 kmb::RevocapMeshDumpIO::loadBindingData(kmb::MeshData* mesh,std::istream &input)
 {
@@ -1409,12 +430,12 @@ kmb::RevocapMeshDumpIO::loadBindingData(kmb::MeshData* mesh,std::istream &input)
 	if( mesh == NULL ){
 		return kmb::RevocapIO::kMeshNullError;
 	}
-
-
-
-
-
-
+	// bmode
+	// idcount
+	// name
+	// stype
+	// vtype
+	// bodyId
 	if( sInfo.dataCount == sizeof( uint32_t ) &&
 		sInfo.bindingMode == sizeof( int32_t ) &&
 		sInfo.idCount == sizeof( uint32_t ) &&
@@ -1425,28 +446,28 @@ kmb::RevocapMeshDumpIO::loadBindingData(kmb::MeshData* mesh,std::istream &input)
 		input.read( reinterpret_cast<char*>(&dataNum), sizeof(uint32_t) );
 		std::cout << "dataNum = " << dataNum << std::endl;
 		for(uint32_t i=0;i<dataNum;++i){
-
+			// bmode
 			int32_t bmode = kmb::DataBindings::Unknown;
 			input.read( reinterpret_cast<char*>(&bmode), sizeof(int32_t) );
-
+			// idcount
 			uint32_t idcount = 0;
 			input.read( reinterpret_cast<char*>(&idcount), sizeof(uint32_t) );
-
+			// name
 			uint32_t len = 0;
 			input.read( reinterpret_cast<char*>(&len), sizeof(uint32_t) );
 			char* name = new char[len+1];
 			input.read( name, sizeof(char)*len );
 			name[len] = '\0';
-
+			// stype
 			uint32_t slen = 0;
 			input.read( reinterpret_cast<char*>(&slen), sizeof(uint32_t) );
 			char* stype = new char[slen+1];
 			input.read( stype, sizeof(char)*slen );
 			stype[slen] = '\0';
-
+			// vtype
 			int32_t vtype = kmb::PhysicalValue::Unknown;
 			input.read( reinterpret_cast<char*>(&vtype), sizeof(int32_t) );
-
+			// bodyId
 			int32_t bodyId = kmb::Body::nullBodyId;
 			input.read( reinterpret_cast<char*>(&bodyId), sizeof(int32_t) );
 			std::cout << name << " " << bmode << " " << vtype << " " << idcount << std::endl;
@@ -1482,24 +503,24 @@ kmb::RevocapMeshDumpIO::saveBindingData(const kmb::MeshData* mesh,std::ostream &
 		output.write( reinterpret_cast<char*>(&dataNum), sizeof(uint32_t) );
 		std::multimap< std::string, kmb::DataBindings* >::const_iterator dIter = mesh->getDataBindingsMap().begin();
 		while( dIter != mesh->getDataBindingsMap().end() ){
-
+			// bmode
 			int32_t bmode = static_cast<int32_t>( dIter->second->getBindingMode() );
 			output.write( reinterpret_cast<char*>(&bmode), sizeof(int32_t) );
-
+			// idcount
 			uint32_t idCount = static_cast<uint32_t>( dIter->second->getIdCount() );
 			output.write( reinterpret_cast<char*>(&idCount), sizeof(uint32_t) );
-
+			// name
 			uint32_t len = static_cast<uint32_t>( dIter->first.size() );
 			output.write( reinterpret_cast<char*>(&len), sizeof(uint32_t) );
 			output.write( dIter->first.c_str(), len );
-
+			// stype
 			len = static_cast<uint32_t>( dIter->second->getSpecType().size() );
 			output.write( reinterpret_cast<char*>(&len), sizeof(uint32_t) );
 			output.write( dIter->second->getSpecType().c_str(), len );
-
+			// vtype
 			int32_t vtype = static_cast<int32_t>( dIter->second->getValueType() );
 			output.write( reinterpret_cast<char*>(&vtype), sizeof(int32_t) );
-
+			// bodyId
 			int32_t bodyId = static_cast<int32_t>(dIter->second->getTargetBodyId());
 			output.write( reinterpret_cast<char*>(&bodyId), sizeof(int32_t) );
 			std::cout << dIter->first << " " << bmode << " " << vtype << " " << idCount << std::endl;
@@ -2249,28 +1270,6 @@ kmb::RevocapIO::ErrorCode kmb::RevocapMeshDumpIO::saveData(const kmb::DataBindin
 	return kmb::RevocapIO::kSuccess;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 int
 kmb::RevocapMeshDumpIO::loadMeshFromFile(const char *filename, kmb::MeshData *mesh )
 {
@@ -2292,48 +1291,6 @@ kmb::RevocapMeshDumpIO::loadMeshFromFile(const char *filename, kmb::MeshData *me
 	return 0;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 int
 kmb::RevocapMeshDumpIO::saveMeshToFile(const char *filename, const kmb::MeshData *mesh)
 {
@@ -2353,25 +1310,3 @@ kmb::RevocapMeshDumpIO::saveMeshToFile(const char *filename, const kmb::MeshData
 	output.close();
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

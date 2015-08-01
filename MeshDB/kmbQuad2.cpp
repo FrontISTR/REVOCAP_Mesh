@@ -226,7 +226,7 @@ kmb::Quad2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D*
 			g[0] -= target[0];
 			g[1] -= target[1];
 			g[2] -= target[2];
-
+			// s ‚Å”÷•ª
 			kmb::Quad2::shapeFunction_ds(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgds[i] = 0.0;
@@ -234,7 +234,7 @@ kmb::Quad2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D*
 					dgds[i] += coeff[j] * points[j][i];
 				}
 			}
-
+			// t ‚Å”÷•ª
 			kmb::Quad2::shapeFunction_dt(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgdt[i] = 0.0;
@@ -264,7 +264,7 @@ kmb::Quad2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D*
 			g[0] -= target[0];
 			g[1] -= target[1];
 			g[2] -= target[2];
-
+			// s ‚Å”÷•ª
 			kmb::Quad2::shapeFunction_ds(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgds[i] = 0.0;
@@ -272,7 +272,7 @@ kmb::Quad2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D*
 					dgds[i] += coeff[j] * points[j][i];
 				}
 			}
-
+			// t ‚Å”÷•ª
 			kmb::Quad2::shapeFunction_dt(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgdt[i] = 0.0;
@@ -280,7 +280,7 @@ kmb::Quad2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D*
 					dgdt[i] += coeff[j] * points[j][i];
 				}
 			}
-
+			// ss
 			kmb::Quad2::shapeFunction_dsds(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgdss[i] = 0.0;
@@ -288,7 +288,7 @@ kmb::Quad2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D*
 					dgdss[i] += coeff[j] * points[j][i];
 				}
 			}
-
+			// st
 			kmb::Quad2::shapeFunction_dsdt(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgdst[i] = 0.0;
@@ -296,7 +296,7 @@ kmb::Quad2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D*
 					dgdst[i] += coeff[j] * points[j][i];
 				}
 			}
-
+			// tt
 			kmb::Quad2::shapeFunction_dtdt(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgdtt[i] = 0.0;
@@ -314,8 +314,6 @@ kmb::Quad2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D*
 		: target(t), points(pt){}
 	};
 	nr_local opt_obj(target,points);
-
-
 	double init_t[2]  = { 0.0,  0.0};
 	kmb::Optimization opt;
 	bool res = opt.calcZero_DN( opt_obj, naturalCoords, init_t );

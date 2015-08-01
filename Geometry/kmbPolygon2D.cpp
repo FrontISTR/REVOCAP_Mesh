@@ -106,7 +106,7 @@ kmb::Polygon2D::getOrientation(void) const
 			angle += kmb::Point2D::angle( p0, p1, p2 );
 		}
 	}
-	if( fabs(angle-2*PI) < 0.1 ){
+	if( fabs(angle-2*PI) < 0.1 ){  // ­‚µ—]—T‚ðŽ‚Á‚Ä
 		return kmb::Polygon2D::CLOCKWISE;
 	}else if( fabs(angle+2*PI) < 0.1 ){
 		return kmb::Polygon2D::UNTICLOCKWISE;
@@ -131,8 +131,8 @@ kmb::Polygon2D::intersect( kmb::Point2D &point ) const
 			angle += kmb::Point2D::angle( p0, point, p1 );
 		}
 	}
-
-
+	// ”½ŽžŒv‰ñ‚è‚Ì“à‘¤‚É‚ ‚é‚©‚Ç‚¤‚©
+	// ­‚µ—]—T‚ðŽ‚Á‚Ä”»’è‚·‚é
 	if( fabs(angle+2*PI) < 0.1 ){
 		return kmb::Region::INSIDE;
 	}else{
@@ -149,12 +149,12 @@ kmb::Polygon2D::appendNodeId( kmb::nodeIdType nodeId )
 void
 kmb::Polygon2D::dividePolygon(kmb::nodeIdType n0,kmb::nodeIdType n1,Polygon2D* &p0,Polygon2D* &p1)
 {
-
+	// n0 ‚Æ n1 ‚Ì‚ ‚éêŠ‚ð’T‚·
 	int i0 = getNodeIndex( n0 );
 	int i1 = getNodeIndex( n1 );
 	const int len = this->getSize();
 	if( i0>=0 && i1>=0 && i0!=i1){
-		p0 = new kmb::Polygon2D();
+		p0 = new kmb::Polygon2D(); // n0 ‚©‚ç n1
 		if( p0 ){
 			p0->setPointContainer( points );
 			for(int i=i0;i!=i1;i=(i+1)%len){
@@ -162,7 +162,7 @@ kmb::Polygon2D::dividePolygon(kmb::nodeIdType n0,kmb::nodeIdType n1,Polygon2D* &
 			}
 			p0->appendNodeId( nodeArray[i1] );
 		}
-		p1 = new kmb::Polygon2D();
+		p1 = new kmb::Polygon2D(); // n1 ‚©‚ç n0
 		if( p1 ){
 			p1->setPointContainer( points );
 			for(int i=i1;i!=i0;i=(i+1)%len){
@@ -179,16 +179,16 @@ kmb::Polygon2D::dividePolygon(kmb::nodeIdType n0,kmb::nodeIdType n1,Polygon2D* &
 void
 kmb::Polygon2D::branchPolygon(kmb::nodeIdType n0,kmb::nodeIdType n1,Polygon2D &negative,Polygon2D* &cancel)
 {
-
+	// n0 ‚Æ n1 ‚Ì‚ ‚éêŠ‚ð’T‚·
 	int i0 = this->getNodeIndex( n0 );
 	int i1 = negative.getNodeIndex( n1 );
 	const int len = this->getSize();
 	const int lenNeg = negative.getSize();
-
-
-
-
-
+	//
+	// n0 -> n0 (ŠO‘¤‚ðˆêŽü)
+	// n0 -> n1 (ŠO‘¤‚©‚ç“à‘¤‚Ö)
+	// n1 -> n1 (“à‘¤‚ðˆêŽü)
+	//
 	if( i0>=0 && i1>=0 && i0!=i1){
 		cancel = new kmb::Polygon2D();
 		cancel->setPointContainer( points );

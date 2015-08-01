@@ -49,7 +49,7 @@ kmb::MeshDB::getDistance(kmb::nodeIdType nodeId0, kmb::nodeIdType nodeId1) const
 	return DBL_MAX;
 }
 
-
+// 座標から最近点を検索
 
 double
 kmb::MeshDB::getNearestNodeInBody(double x,double y,double z,kmb::bodyIdType bodyId,kmb::nodeIdType& nearestId) const
@@ -83,7 +83,7 @@ kmb::MeshDB::getNearestNodeInBody(const kmb::Point3D& point, kmb::bodyIdType bod
 	return sqrt( minimizer.getMin() );
 }
 
-
+// NodeId から自分以外の最近点を検索
 double
 kmb::MeshDB::getNearestNode(const kmb::nodeIdType id,kmb::nodeIdType& nearestId) const
 {

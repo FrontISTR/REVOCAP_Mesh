@@ -12,7 +12,7 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-
+// BLArray を使ったコンテナ
 #pragma once
 #include "Geometry/kmbPoint3DContainer.h"
 #include "Common/kmbBLArray.h"

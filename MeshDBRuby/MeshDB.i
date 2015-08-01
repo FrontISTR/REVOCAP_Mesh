@@ -243,7 +243,7 @@ generateXXX : ‚·‚Å‚ÉƒRƒ“ƒeƒi‚É“ü‚Á‚Ä‚¢‚éƒf[ƒ^‚©‚ç•Ê‚Ìƒf[ƒ^‚Ì¶¬
 #include "MeshDBRuby/kmbPhysicalValue_SWIG.h"
 %}
 
-
+// typedef ‚Í %include ‚µ‚È‚¢‚Æ int Œ^‚ÌƒGƒCƒŠƒAƒX‚ªŠî–{Œ^‚É‚È‚ç‚È‚¢
 %include "../Geometry/kmbCircle.h"
 %include "../Geometry/kmbLine.h"
 %include "../Geometry/kmbPlane.h"
@@ -376,7 +376,7 @@ public:
 	const char* getDefaultDataContainerType(void);
 	void setDefaultContainerType(const char* containerType);
 
-
+//////////////////////////// ß“_ŠÇ— //////////////////////////////
 /**----------------------------------------------------------------------
 =begin
 ==ß“_ŠÇ—iMeshDB ‚ÌŠg’£‹@”\j
@@ -686,7 +686,7 @@ MeshData ‚Å’è‹`‚³‚ê‚Ä‚¢‚éƒƒ\ƒbƒh‚Íœ‚­
 ---------------------------------------------------------------------------*/
 		void	clearNodes(void);
 
-
+//////////////////////////// —v‘fŠÇ— //////////////////////////////
 /**--------------------------------------------------------------------
 =begin
 ==—v‘fŠÇ—iMeshDB‚Ì Šg’£‹@”\j
@@ -737,7 +737,7 @@ RevocapMesh ‚Å‚ÌŞ—¿‘®«ƒf[ƒ^‚ÌŠÇ—•û–@
 	g‚í‚ê‚Ä‚¢‚é—v‘fID‚ÌÅ‘å’l‚ğ•Ô‚·B
 =end
 ---------------------------------------------------------------------------*/
-	kmb::elementIdType	getMaxElementId();
+	kmb::elementIdType getMaxElementId();
 
 /**-------------------------------------------------------------------------
 =begin
@@ -798,7 +798,7 @@ RevocapMesh ‚Å‚ÌŞ—¿‘®«ƒf[ƒ^‚ÌŠÇ—•û–@
 	VALUE replaceNodeIdOfBody(bodyIdType bodyId,VALUE hash){
 		Check_Type(hash, T_HASH);
 		VALUE ary = rb_ary_new();
-
+		// ‚±‚ê‚Å ary ‚É key ‚ª‚·‚×‚Ä“ü‚é
 		rb_iterate( rb_each, hash, (VALUE(*)(...))appendKeys, ary );
 		const int len = RARRAY_LEN(ary);
 		std::map<kmb::nodeIdType,kmb::nodeIdType> nodeMapper;
@@ -892,7 +892,7 @@ RevocapMesh ‚Å‚ÌŞ—¿‘®«ƒf[ƒ^‚ÌŠÇ—•û–@
 	int getEdgeCountOfBody(kmb::bodyIdType bodyID);
 	int getNodeCountOfBody(kmb::bodyIdType bodyID);
 
-
+/////////////////////////// Šô‰½ˆ— ///////////////////////////////////
 /**-----------------------------------------------------------------------
 =begin
 ==Šô‰½ˆ—
@@ -1153,7 +1153,7 @@ RevocapMesh ‚Å‚ÌŞ—¿‘®«ƒf[ƒ^‚ÌŠÇ—•û–@
 	bool reverseElement(kmb::elementIdType elementId,kmb::bodyIdType bodyId=kmb::Body::nullBodyId);
 	void reverseBody(kmb::bodyIdType bodyId);
 
-
+/////////////////////////// ŒŸõˆ— ///////////////////////////////////
 /**-----------------------------------------------------------------------
 =begin
 ==ŒŸõˆ—
@@ -1214,17 +1214,6 @@ generateNodeSearchCache ‚ğÀs‚µ‚½Œã‚Å getNearestNode(x,y,z) ‚ğÀs‚·‚é‚ÆÅ‚à‹ß‚
 			return Qnil;
 		}
 	}
-
-
-
-
-
-
-
-
-
-
-
 	VALUE searchElementInData(const char* name,double x,double y,double z,double tolerance=0.0){
 		kmb::elementIdType findElementId = self->searchElementInData(name,x,y,z,tolerance);
 		if( findElementId != kmb::Element::nullElementId ){
@@ -1326,7 +1315,7 @@ generateNodeSearchCache ‚ğÀs‚µ‚½Œã‚Å getNearestNode(x,y,z) ‚ğÀs‚·‚é‚ÆÅ‚à‹ß‚
 		return ary;
 	}
 }
-
+/////////////////////////// ‹ß–Tˆ— ///////////////////////////////////
 /**-----------------------------------------------------------------------
 =begin
 ==‹ß–Tˆ—
@@ -1485,7 +1474,7 @@ MeshDB‚Ì‹ß–Tˆ—‚Å‚Í
 	}
 }
 
-
+/////////////////////////////// —v‘fŠÔŠÖŒWæ“¾ //////////////////////////////
 /**------------------------------------------------------------------------
 =begin
 ==—v‘fŠÔŠÖŒW
@@ -1537,12 +1526,12 @@ MeshDB‚Ì‹ß–Tˆ—‚Å‚Í
 	int isFace(kmb::elementIdType elementId,VALUE ary,kmb::bodyIdType bodyId=kmb::Body::nullBodyId){
 		Check_Type(ary, T_ARRAY);
 		int result = 0;
-
+		// —v‘f‚ğæ‚èo‚·
 		kmb::ElementContainer::iterator elem = self->findElement(elementId,bodyId);
 		if( elem.isFinished() || elem.getDimension() != 3 ){
 			return result;
 		}
-
+		// ary ‚Ì’·‚³‚ğ“¾‚Ä‚©‚çæ‚èo‚·
 		int length = RARRAY_LEN(ary);
 		int index;
 		switch(length){
@@ -1620,7 +1609,7 @@ MeshDB‚Ì‹ß–Tˆ—‚Å‚Í
 		return rb_str_new2(kmb::ElementRelation::getRelationTypeString(result).c_str());
 	}
 }
-
+////////////////////////////// ƒƒbƒVƒ…Œ‹‡E•ÏŠ· ///////////////////////////////
 /**-----------------------------------------------------------------------
 =begin
 ==ƒƒbƒVƒ…Œ‹‡E•ÏŠ·
@@ -1697,7 +1686,7 @@ MeshDB‚Ì‹ß–Tˆ—‚Å‚Í
 	kmb::bodyIdType importBodyWithNodeMatching(kmb::MeshDB& otherMesh, kmb::bodyIdType bodyId, double tolerance, const char* coupleName=NULL);
 	size_t importAllBody(kmb::MeshData& otherMesh);
 
-
+////////////////////////////// ƒf[ƒ^ŠÇ— ///////////////////////////////
 /**---------------------------------------------------------------------
 =begin
 --- getDataNameArray
@@ -1742,7 +1731,7 @@ MeshDB‚Ì‹ß–Tˆ—‚Å‚Í
 /**-------------------------------------------------------------------------
 =begin
 --- replaceIdOfData(name,oldID,newID,stype=nil)
-	name ‚Å’è‹`‚³‚ê‚½ Data ‚Ì Id ‚ğæ‚è‘Ö‚¦‚é
+	name ‚Å’è‹`‚³‚ê‚½ Data ‚Ì Id ‚ğæ‚è‘Ö‚¦‚é	
 =end
 ---------------------------------------------------------------------------*/
 	bool replaceIdOfData(const char* name,kmb::idType oldID,kmb::idType newID,const char* stype=NULL);
@@ -2061,6 +2050,14 @@ MeshDB‚Ì‹ß–Tˆ—‚Å‚Í
 
 /**--------------------------------------------------------------------------
 =begin
+--- calcRanking(name,stype=nil)
+	ƒXƒJƒ‰[ƒf[ƒ^‚É‚Â‚¢‚Ä’l‚Ì‡ˆÊ‚ğŒvZ‚µ‚Ä‹L˜^‚·‚éB
+=end
+----------------------------------------------------------------------------*/
+bool calcRanking(const char* key,const char* stype=NULL);
+
+/**--------------------------------------------------------------------------
+=begin
 ==‚»‚Ì‘¼
 --- calcMeshProperty(name,bodyId=-1)
 	ƒƒbƒVƒ…‚Ì«¿‚È‚Ç‚ğŒvZ‚µ‚Ä•¨——Ê‚É“o˜^‚·‚éB
@@ -2089,4 +2086,4 @@ test $ ruby -e "require 'RevocapMesh'; RevocapMesh::MeshDB::test();"
 -------------------------------------------------------------------------------*/
 /*---------------------------- end of test ------------------------------------*/
 };
-}
+} //namespace

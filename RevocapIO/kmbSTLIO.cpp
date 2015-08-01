@@ -90,13 +90,11 @@ kmb::STLIO::loadFromBinaryFile(const char* filename,kmb::MeshData* mesh)
 		for(int j=0;j<3;++j){
 			input.read(reinterpret_cast<char*>(v),3*sizeof(float));
 			dist = nodeOctree.getNearest( static_cast<double>(v[0]), static_cast<double>(v[1]), static_cast<double>(v[2]), nearestId );
-
 			if( nearestId != kmb::nullNodeId && dist < thresh ){
 				nodes[j] = nearestId;
 			}else{
 				nodes[j] = mesh->addNode( static_cast<double>(v[0]), static_cast<double>(v[1]), static_cast<double>(v[2]) );
 				nodeOctree.append( nodes[j] );
-
 			}
 		}
 		input.read(reinterpret_cast<char*>(&attr),sizeof(short));
@@ -129,13 +127,11 @@ kmb::STLIO::loadFromAsciiFile(const char* filename,kmb::MeshData* mesh)
 		}else if( str.find("vertex") != std::string::npos && index < 3 ){
 			std::stringstream is(str);
 			is >> tag >> x >> y >> z;
-
 			dist = nodeOctree.getNearest( x,y,z,nearestId );
 			if( nearestId != kmb::nullNodeId && dist < thresh ){
 				nodes[index] = nearestId;
 			}else{
 				nodes[index] = mesh->addNode( x, y, z );
-
 				nodeOctree.append( nodes[index] );
 			}
 			++index;
