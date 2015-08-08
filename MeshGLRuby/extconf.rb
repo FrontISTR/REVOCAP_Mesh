@@ -16,6 +16,8 @@ when "i486-linux", "x86_64-linux", "x86_64-linux-gnu", "i686-linux"
 	end
 	CONFIG['LDSHARED'] = 'g++ -shared -s'
 	arch = RUBY_PLATFORM
+	$libs = append_library($libs, 'GL')
+	$libs = append_library($libs, 'GLU')
 	$libs = append_library($libs, 'GLEW')
 when "i386-cygwin"
 	if !File.exist?( File.join('..','lib',RUBY_PLATFORM) )
