@@ -20,6 +20,19 @@
 #include <ctime>
 #include <iostream>
 
+kmb::EnvInfo::endianType kmb::EnvInfo::checkEndian(void)
+{
+	uint16_t n = 1;
+	uint8_t* p = reinterpret_cast<uint8_t*>(&n);
+	if( p[0] == 0 ){
+		std::cout << "big endian" << std::endl;
+		return kmb::EnvInfo::kBigEndian;
+	}else{
+		std::cout << "little endian" << std::endl;
+		return kmb::EnvInfo::kLittleEndian;
+	}
+}
+
 void
 kmb::EnvInfo::printCVersion(void)
 {

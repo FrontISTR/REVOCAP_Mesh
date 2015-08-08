@@ -16,6 +16,7 @@
 
 #include "MeshGL/kmbFBORendering.h"
 #include <cstdio>
+#include <algorithm>
 
 kmb::FBORendering::FBORendering(void)
 : framebuffer_name(0)
@@ -141,8 +142,8 @@ kmb::FBORendering::saveBMPFile(const char* szFilename )
 	setContext();
 	GLint viewport[ 4 ];
 	glGetIntegerv( GL_VIEWPORT, viewport );
-	unsigned long width = viewport[2];
-	unsigned long height = viewport[3];
+	uint32_t width = viewport[2];
+	uint32_t height = viewport[3];
 	unsigned int color = 3;
 
 	FILE* output = fopen(szFilename,"wb");
@@ -153,33 +154,32 @@ kmb::FBORendering::saveBMPFile(const char* szFilename )
 	if(res > 0){
 		res = 4 - res;
 	}
-	unsigned long imageSize = height*8*(width*color+res);
-	unsigned long bfsize = (40 + 14)*8 + imageSize;
-	unsigned long offset = 54;
-	unsigned long headersize = 40;
-	unsigned short tmp = 1U;
+	uint32_t imageSize = height*8*(width*color+res);
+	uint32_t bfsize = (40 + 14)*8 + imageSize;
+	uint32_t offset = 54;
+	uint32_t headersize = 40;
+	uint16_t tmp = 1U;
 	char header[2] = {'B','M'};
 	fwrite(header,sizeof(unsigned char),2,output);
-	fwrite(&bfsize,sizeof(unsigned long),1,output);
-	unsigned short zero = 0U;
-	fwrite(&zero,sizeof(unsigned short),1,output);
-	fwrite(&zero,sizeof(unsigned short),1,output);
-	fwrite(&offset,sizeof(unsigned long),1,output);
-	fwrite(&headersize,sizeof(unsigned long),1,output);
-	fwrite(&width,sizeof(unsigned long),1,output);
-	fwrite(&height,sizeof(unsigned long),1,output);
+	fwrite(&bfsize,sizeof(uint32_t),1,output);
+	uint16_t zero = 0U;
+	fwrite(&zero,sizeof(uint16_t),1,output);
+	fwrite(&zero,sizeof(uint16_t),1,output);
+	fwrite(&offset,sizeof(uint32_t),1,output);
+	fwrite(&headersize,sizeof(uint32_t),1,output);
+	fwrite(&width,sizeof(uint32_t),1,output);
+	fwrite(&height,sizeof(uint32_t),1,output);
 	tmp = 1U;
-	fwrite(&tmp,sizeof(unsigned short),1,output);
+	fwrite(&tmp,sizeof(uint16_t),1,output);
 	tmp = color*8U;
-	fwrite(&tmp,sizeof(unsigned short),1,output);
-	unsigned long zeroL = 0UL;
-	fwrite(&zeroL,sizeof(unsigned long),1,output);
-	fwrite(&imageSize,sizeof(unsigned long),1,output);
-	fwrite(&zeroL,sizeof(unsigned long),1,output);
-	fwrite(&zeroL,sizeof(unsigned long),1,output);
-	fwrite(&zeroL,sizeof(unsigned long),1,output);
-	fwrite(&zeroL,sizeof(unsigned long),1,output);
-
+	fwrite(&tmp,sizeof(uint16_t),1,output);
+	uint32_t zeroL = 0UL;
+	fwrite(&zeroL,sizeof(uint32_t),1,output);
+	fwrite(&imageSize,sizeof(uint32_t),1,output);
+	fwrite(&zeroL,sizeof(uint32_t),1,output);
+	fwrite(&zeroL,sizeof(uint32_t),1,output);
+	fwrite(&zeroL,sizeof(uint32_t),1,output);
+	fwrite(&zeroL,sizeof(uint32_t),1,output);
 
 	GLubyte* image = new GLubyte[width*3];
 
