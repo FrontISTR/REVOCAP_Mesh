@@ -30,7 +30,6 @@
 #include "MeshDB/kmbTetrahedron.h"
 #include "MeshDB/kmbMeshOperation.h"
 #include "MeshDB/kmbMatching.h"
-#include "MeshDB/kmbPolygonPartitioner.h"
 
 #include "Geometry/kmbFramedPlane.h"
 
@@ -72,44 +71,3 @@ kmb::MeshDB::triangulation(kmb::bodyIdType bodyId)
 	this->meshOperation->triangulation(bodyId);
 }
 
-//------------------- ‘½ŠpŒ`•ªŠ„ --------------------------//
-
-kmb::bodyIdType
-kmb::MeshDB::polygonPartition(bodyIdType polygonID,kmb::FramedPlane &plane)
-{
-	kmb::bodyIdType bodyID = kmb::Body::nullBodyId;
-
-	kmb::Body* body = this->getBodyPtr( polygonID );
-	if( body && body->isUniqueDim(1) ){
-		// polygon ‚Ì“_‚ð2ŽŸŒ³ŽË‰e‚µ‚Ä points ‚ÉŠi”[‚·‚é
-		kmb::Point2DContainerMap points;
-		std::set< kmb::nodeIdType > nodeSet;
-		body->getNodesOfBody( nodeSet );
-		std::set< kmb::nodeIdType >::iterator nIter = nodeSet.begin();
-		kmb::Point3D point;
-		while( nIter != nodeSet.end() )
-		{
-			kmb::nodeIdType nodeId = (*nIter);
-			++nIter;
-			if( this->getNode( nodeId, point ) ){
-				kmb::Point2D uv = plane.transformTo2D( point );
-				points.addPoint( uv, nodeId );
-			}
-		}
-		kmb::PolygonPartitioner partitioner;
-		partitioner.setPoints( &points );
-		partitioner.setInitialPolygon( body );
-		kmb::ElementContainerMap* triangles = NULL;
-		triangles = new kmb::ElementContainerMap;
-		partitioner.partition( *triangles );
-
-		if( triangles->getCount() > 0 )
-		{
-			bodyID = this->appendBody( triangles );
-		}else{
-			delete triangles;
-		}
-	}
-
-	return bodyID;
-}

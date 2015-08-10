@@ -271,7 +271,6 @@ public:
 	// convert all surface elements to triangle
 	//
 	void triangulation(bodyIdType bodyID);
-	bodyIdType polygonPartition(bodyIdType polygonID,kmb::FramedPlane &plane);
 
 public:
 	//------------ Data Manager ------------------------//

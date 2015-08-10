@@ -44,12 +44,12 @@ class PolygonPartitioner
 public:
 	// y 座標 monotonisity を考えた時のタイプ
 	enum vertexType{
-		UNKNOWN,
-		START,
-		SPLIT,
-		END,
-		MERGE,
-		REGULAR
+		kUNKNOWN,
+		kSTART,
+		kSPLIT,
+		kEND,
+		kMERGE,
+		kREGULAR
 	};
 
 	PolygonPartitioner(void);
@@ -62,9 +62,10 @@ public:
 	// 三角形化して body に登録する
 	bool partition( kmb::ElementContainer &body );
 
-	// 単体実行用
+	// 2D 実行ルーチン
 	kmb::bodyIdType partitionToTriangles(kmb::MeshDB* mesh,kmb::bodyIdType edgeId);
-
+	// 3D 実行ルーチン
+	kmb::bodyIdType partitionToTriangles(kmb::MeshDB* mesh,kmb::bodyIdType edgeId,const kmb::FramedPlane &plane);
 private:
 	// 点と y 座標が同じ点を含む要素のうち、x 座標が最も近いもの
 	// left = true 左側（x座標が小さいほう）false 右側を探す

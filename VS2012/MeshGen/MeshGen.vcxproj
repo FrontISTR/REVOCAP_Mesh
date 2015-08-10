@@ -157,6 +157,8 @@
     <ClInclude Include="..\..\MeshGen\kmbMeshSmoother.h" />
     <ClInclude Include="..\..\MeshGen\kmbMiddleNodeManager.h" />
     <ClInclude Include="..\..\MeshGen\kmbPatchModifier.h" />
+    <ClInclude Include="..\..\MeshGen\kmbPatchOperation.h" />
+    <ClInclude Include="..\..\MeshGen\kmbPolygonPartitioner.h" />
     <ClInclude Include="..\..\MeshGen\kmbQuadOrientedSet.h" />
     <ClInclude Include="..\..\MeshGen\kmbTetraItem.h" />
     <ClInclude Include="..\..\MeshGen\kmbTriangleItem.h" />
@@ -170,6 +172,8 @@
     <ClCompile Include="..\..\MeshGen\kmbMeshSmoother.cpp" />
     <ClCompile Include="..\..\MeshGen\kmbMiddleNodeManager.cpp" />
     <ClCompile Include="..\..\MeshGen\kmbPatchModifier.cpp" />
+    <ClCompile Include="..\..\MeshGen\kmbPatchOperation.cpp" />
+    <ClCompile Include="..\..\MeshGen\kmbPolygonPartitioner.cpp" />
     <ClCompile Include="..\..\MeshGen\kmbQuadOrientedSet.cpp" />
     <ClCompile Include="..\..\MeshGen\kmbTetraItem.cpp" />
     <ClCompile Include="..\..\MeshGen\kmbTriangleItem.cpp" />

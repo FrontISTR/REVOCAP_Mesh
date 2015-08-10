@@ -15,8 +15,8 @@
 #ifdef REVOCAP_SUPPORT_GLEW
 
 #include "MeshGL/kmbFBORendering.h"
+#include "Common/kmbCommon.h"
 #include <cstdio>
-#include <algorithm>
 
 kmb::FBORendering::FBORendering(void)
 : framebuffer_name(0)

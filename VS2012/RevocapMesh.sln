@@ -64,6 +64,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShapeRuby", "ShapeRuby\Shap
 		{58218B00-A59C-41B7-8B68-03D1F9BE5E5B} = {58218B00-A59C-41B7-8B68-03D1F9BE5E5B}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RubyExtension", "RubyExtension", "{D9B97A27-C451-48AC-94F3-9AF2935A0036}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -233,5 +235,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6B1E2283-466D-4315-9676-C94A76B13F9B} = {D9B97A27-C451-48AC-94F3-9AF2935A0036}
+		{DB079BDA-E08D-45DF-881D-D5F0FCEC8B0F} = {D9B97A27-C451-48AC-94F3-9AF2935A0036}
+		{E80337A1-9115-419F-95CA-CB4BA45EEE55} = {D9B97A27-C451-48AC-94F3-9AF2935A0036}
+		{B4D0C1D3-F621-4D59-B399-3816BCC68F18} = {D9B97A27-C451-48AC-94F3-9AF2935A0036}
 	EndGlobalSection
 EndGlobal

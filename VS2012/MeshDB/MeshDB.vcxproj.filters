@@ -165,16 +165,10 @@
     <ClCompile Include="..\..\MeshDB\kmbNodeNeighborPtrInfo.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\MeshDB\kmbPatchOperation.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\MeshDB\kmbPhysicalValue.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="..\..\MeshDB\kmbPolygon.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\MeshDB\kmbPolygonPartitioner.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="..\..\MeshDB\kmbPyramid.cpp">
@@ -371,16 +365,10 @@
     <ClInclude Include="..\..\MeshDB\kmbNodeNeighborPtrInfo.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\MeshDB\kmbPatchOperation.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\MeshDB\kmbPhysicalValue.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="..\..\MeshDB\kmbPolygon.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\MeshDB\kmbPolygonPartitioner.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="..\..\MeshDB\kmbPyramid.h">

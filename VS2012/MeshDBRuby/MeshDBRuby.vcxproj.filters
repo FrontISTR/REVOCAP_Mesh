@@ -35,9 +35,7 @@
     <None Include="..\..\MeshDBRuby\MeshData.i" />
     <None Include="..\..\MeshDBRuby\MeshDB.i" />
     <None Include="..\..\MeshDBRuby\MeshOperation.i" />
-    <None Include="..\..\MeshDBRuby\PatchOperation.i" />
     <None Include="..\..\MeshDBRuby\Plane.i" />
-    <None Include="..\..\MeshDBRuby\PolygonPartitioner.i" />
     <None Include="..\..\MeshDBRuby\SurfaceOperation.i" />
   </ItemGroup>
   <ItemGroup>

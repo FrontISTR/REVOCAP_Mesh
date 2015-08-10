@@ -23,7 +23,7 @@
 #      "Innovative General-Purpose Coupled Analysis System"            #
 #                                                                      #
 ----------------------------------------------------------------------*/
-#include "MeshDB/kmbPolygonPartitioner.h"
+#include "MeshGen/kmbPolygonPartitioner.h"
 #include "MeshDB/kmbElementContainer.h"
 #include "MeshDB/kmbTriangle.h"
 #include "MeshDB/kmbPolygon.h"
@@ -38,7 +38,7 @@
 // local struct
 struct  nodeStackType{
 	kmb::nodeIdType nodeId;
-	bool            isLeft;    // true if left side
+	bool isLeft;    // true if left side
 };
 
 kmb::PolygonPartitioner::PolygonPartitioner(void)
@@ -72,6 +72,40 @@ kmb::PolygonPartitioner::partitionToTriangles(kmb::MeshDB* mesh,kmb::bodyIdType 
 		kmb::ElementContainerMap* triangles = NULL;
 		triangles = new kmb::ElementContainerMap();
 		setPoints( mesh->getNode2Ds() );
+		setInitialPolygon( edges );
+		partition( *triangles );
+		triId = mesh->appendBody( triangles );
+	}
+	return triId;
+}
+
+kmb::bodyIdType
+kmb::PolygonPartitioner::partitionToTriangles(kmb::MeshDB* mesh,kmb::bodyIdType edgeId,const kmb::FramedPlane &plane)
+{
+	kmb::bodyIdType triId = kmb::Body::nullBodyId;
+	kmb::Body* edges = NULL;
+	if( mesh &&
+		(edges = mesh->getBodyPtr(edgeId) ) != NULL &&
+		edges->isUniqueType( kmb::SEGMENT ) )
+	{
+		// polygon ÇÃì_Ç2éüå≥éÀâeÇµÇƒ points Ç…äiî[Ç∑ÇÈ
+		kmb::Point2DContainerMap points;
+		std::set< kmb::nodeIdType > nodeSet;
+		edges->getNodesOfBody( nodeSet );
+		std::set< kmb::nodeIdType >::iterator nIter = nodeSet.begin();
+		kmb::Point3D point;
+		while( nIter != nodeSet.end() )
+		{
+			kmb::nodeIdType nodeId = (*nIter);
+			++nIter;
+			if( mesh->getNode( nodeId, point ) ){
+				kmb::Point2D uv = plane.transformTo2D( point );
+				points.addPoint( uv, nodeId );
+			}
+		}
+		kmb::ElementContainerMap* triangles = NULL;
+		triangles = new kmb::ElementContainerMap();
+		setPoints( &points );
 		setInitialPolygon( edges );
 		partition( *triangles );
 		triId = mesh->appendBody( triangles );
@@ -134,24 +168,24 @@ kmb::PolygonPartitioner::getVertexType(const kmb::Point2D& previousPoint,const k
 				area >= 0.0 &&
 				LARGER_Y( targetPoint, previousPoint ) &&
 				LARGER_Y( targetPoint, nextPoint ) ){
-		return kmb::PolygonPartitioner::START;
+		return kmb::PolygonPartitioner::kSTART;
 	}else if(   // LARGER_X( nextPoint, previousPoint ) && 
 				area <= 0.0 && 
 				LARGER_Y( targetPoint, previousPoint ) && 
 				LARGER_Y( targetPoint, nextPoint ) ){
-		return kmb::PolygonPartitioner::SPLIT;
+		return kmb::PolygonPartitioner::kSPLIT;
 	}else if(   // LARGER_X( nextPoint, previousPoint ) &&
 				area >= 0.0 &&
 				LARGER_Y( previousPoint, targetPoint ) &&
 				LARGER_Y( nextPoint,     targetPoint ) ){
-		return kmb::PolygonPartitioner::END;
+		return kmb::PolygonPartitioner::kEND;
 	}else if(   // LARGER_X( previousPoint, nextPoint ) &&
 				area <= 0.0 &&
 				LARGER_Y( previousPoint, targetPoint ) &&
 				LARGER_Y( nextPoint,     targetPoint ) ){
-		return kmb::PolygonPartitioner::MERGE;
+		return kmb::PolygonPartitioner::kMERGE;
 	}else{
-		return kmb::PolygonPartitioner::REGULAR;
+		return kmb::PolygonPartitioner::kREGULAR;
 	}
 }
 
@@ -159,7 +193,7 @@ kmb::PolygonPartitioner::vertexType
 kmb::PolygonPartitioner::getVertexType(kmb::Polygon* polygon,kmb::nodeIdType nodeId) const
 {
 	if( points == NULL || polygon == NULL || !polygon->include(nodeId) )
-		return kmb::PolygonPartitioner::UNKNOWN;
+		return kmb::PolygonPartitioner::kUNKNOWN;
 
 	kmb::nodeIdType previousNodeId = polygon->getNodeId(nodeId,-1);
 	kmb::nodeIdType nextNodeId = polygon->getNodeId(nodeId,1);
@@ -171,7 +205,7 @@ kmb::PolygonPartitioner::getVertexType(kmb::Polygon* polygon,kmb::nodeIdType nod
 	{
 		return getVertexType(p0,p1,p2);
 	}else{
-		return kmb::PolygonPartitioner::UNKNOWN;
+		return kmb::PolygonPartitioner::kUNKNOWN;
 	}
 }
 
@@ -253,7 +287,7 @@ kmb::PolygonPartitioner::getHelperNode( kmb::nodeIdType nodeID, kmb::elementIdTy
 	kmb::Point2D helperNode;
 	switch( vType )
 	{
-	case SPLIT:
+	case kSPLIT:
 		{
 			if( LARGER_Y( l0, r1 ) ){
 				helperNode = r1;
@@ -264,7 +298,7 @@ kmb::PolygonPartitioner::getHelperNode( kmb::nodeIdType nodeID, kmb::elementIdTy
 			}
 		}
 		break;
-	case MERGE:
+	case kMERGE:
 		{
 			if( LARGER_Y( l1, r0 ) ){
 				helperNode = r0;
@@ -291,7 +325,7 @@ kmb::PolygonPartitioner::getHelperNode( kmb::nodeIdType nodeID, kmb::elementIdTy
 			{
 				// node ÇÃ y ç¿ïWÇ∆ nearY ÇÃä‘Ç…Ç†ÇÈÇ©
 				switch( vType ){
-					case kmb::PolygonPartitioner::SPLIT:
+					case kmb::PolygonPartitioner::kSPLIT:
 						{
 							if( LARGER_Y( targetNode, point ) && LARGER_Y( helperNode, targetNode ) ){ //&&
 //								LARGER_X( targetNode, helperNode ) && LARGER_X( point, targetNode ) ){
@@ -300,7 +334,7 @@ kmb::PolygonPartitioner::getHelperNode( kmb::nodeIdType nodeID, kmb::elementIdTy
 							}
 						}
 						break;
-					case kmb::PolygonPartitioner::MERGE:
+					case kmb::PolygonPartitioner::kMERGE:
 						{
 							if( LARGER_Y( point, targetNode ) && LARGER_Y( targetNode, helperNode ) ){ //&&
 //								LARGER_X( helperNode, targetNode ) && LARGER_X( targetNode, point ) ){
@@ -336,7 +370,7 @@ kmb::PolygonPartitioner::partition( kmb::ElementContainer &body )
 		kmb::PolygonPartitioner::vertexType vtype = getVertexType( initialPolygon, nodeId );
 		switch( vtype )
 		{
-		case kmb::PolygonPartitioner::SPLIT:
+		case kmb::PolygonPartitioner::kSPLIT:
 			{
 				kmb::elementIdType left = getNearestSegmentWithSameLevel(nodeId,true);
 				kmb::elementIdType right = getNearestSegmentWithSameLevel(nodeId,false);
@@ -346,7 +380,7 @@ kmb::PolygonPartitioner::partition( kmb::ElementContainer &body )
 				}
 				break;
 			}
-		case kmb::PolygonPartitioner::MERGE:
+		case kmb::PolygonPartitioner::kMERGE:
 			{
 				kmb::elementIdType left = getNearestSegmentWithSameLevel(nodeId,true);
 				kmb::elementIdType right = getNearestSegmentWithSameLevel(nodeId,false);
@@ -412,10 +446,10 @@ kmb::PolygonPartitioner::triangulateMonotonePolygon
 		kmb::nodeIdType nodeId = (*nIter);
 		kmb::PolygonPartitioner::vertexType vtype = getVertexType(polygon,nodeId);
 		switch( vtype ){
-			case kmb::PolygonPartitioner::START:
+			case kmb::PolygonPartitioner::kSTART:
 				startVertex = nodeId;
 				break;
-			case kmb::PolygonPartitioner::END:
+			case kmb::PolygonPartitioner::kEND:
 				endVertex = nodeId;
 				break;
 			default:

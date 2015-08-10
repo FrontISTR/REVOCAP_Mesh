@@ -40,7 +40,6 @@
     <ClCompile Include="..\..\Geometry\kmbPoint3DContainerMap.cpp" />
     <ClCompile Include="..\..\Geometry\kmbPoint3DContainerMArray.cpp" />
     <ClCompile Include="..\..\Geometry\kmbPoint3DContainerVect.cpp" />
-    <ClCompile Include="..\..\Geometry\kmbPoint3DStructured.cpp" />
     <ClCompile Include="..\..\Geometry\kmbPoint4D.cpp" />
     <ClCompile Include="..\..\Geometry\kmbPolygon2D.cpp" />
     <ClCompile Include="..\..\Geometry\kmbRegion.cpp" />

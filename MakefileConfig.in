@@ -4,28 +4,25 @@
 # If Ruby is installed in your system, please give RUBY_PLATFORM to ARCH variable.
 # Otherwise ARCH variable should be a platform string (ex, i686-linux, etc)
 
-######################################
-# for Desktop PC linux GNU Compilers #
-######################################
+###########################################################
+# for mingw64                                             #
+# http://sourceforge.net/projects/mingw-w64/              #
+###########################################################
 
-ARCH = $(shell ruby -e 'puts RUBY_PLATFORM')
+ARCH = x64-mingw32
 CC = gcc
 CFLAGS = -O -Wall $(DEBUGFLAG)
 CXX = g++
-CXXFLAGS = -O -Wall -fPIC $(DEBUGFLAG) $(EXTENSIONLIB) -I/opt/local/include
+CXXFLAGS = -O -Wall $(DEBUGFLAG) $(EXTENSIONLIB) -I/local/include -I/include
 F90 = gfortran
 FFLAGS = -Wall $(DEBUGFLAG)
 AR = ar
 ARFLAGS = rsv
-LD = $(F90)
-LDFLAGS = $(FFLAGS)
+LD = gcc-4
+LDFLAGS = -O -Wall $(DEBUGFLAG)
 LDSHARED = g++ -shared -s
-LIBPATH =
-LIBS = -lstdc++
+LIBPATH = -L"/mingw/lib/gcc/x86_64-w64-mingw32/4.7.2" -L"/mingw/lib"
+LIBS = -lgfortran -lgfortranbegin
 RM = rm -f
 DOXYGEN = doxygen
 TAR = tar
-RUBY = ruby
-SWIG = swig
-
-OPENMP_OPTION = -fopenmp

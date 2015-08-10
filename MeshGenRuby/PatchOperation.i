@@ -47,7 +47,7 @@ RevocapPatch モジュールを使う。
 ------------------------------------------------------------------------------*/
 
 %{
-#include "MeshDB/kmbPatchOperation.h"
+#include "MeshGen/kmbPatchOperation.h"
 %}
 
 namespace kmb{

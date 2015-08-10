@@ -68,10 +68,8 @@
     <ClCompile Include="..\..\MeshDB\kmbNodeNeighborFaceInfo.cpp" />
     <ClCompile Include="..\..\MeshDB\kmbNodeNeighborInfo.cpp" />
     <ClCompile Include="..\..\MeshDB\kmbNodeNeighborPtrInfo.cpp" />
-    <ClCompile Include="..\..\MeshDB\kmbPatchOperation.cpp" />
     <ClCompile Include="..\..\MeshDB\kmbPhysicalValue.cpp" />
     <ClCompile Include="..\..\MeshDB\kmbPolygon.cpp" />
-    <ClCompile Include="..\..\MeshDB\kmbPolygonPartitioner.cpp" />
     <ClCompile Include="..\..\MeshDB\kmbPyramid.cpp" />
     <ClCompile Include="..\..\MeshDB\kmbPyramid2.cpp" />
     <ClCompile Include="..\..\MeshDB\kmbQuad.cpp" />
@@ -139,10 +137,8 @@
     <ClInclude Include="..\..\MeshDB\kmbNodeNeighborFaceInfo.h" />
     <ClInclude Include="..\..\MeshDB\kmbNodeNeighborInfo.h" />
     <ClInclude Include="..\..\MeshDB\kmbNodeNeighborPtrInfo.h" />
-    <ClInclude Include="..\..\MeshDB\kmbPatchOperation.h" />
     <ClInclude Include="..\..\MeshDB\kmbPhysicalValue.h" />
     <ClInclude Include="..\..\MeshDB\kmbPolygon.h" />
-    <ClInclude Include="..\..\MeshDB\kmbPolygonPartitioner.h" />
     <ClInclude Include="..\..\MeshDB\kmbPyramid.h" />
     <ClInclude Include="..\..\MeshDB\kmbPyramid2.h" />
     <ClInclude Include="..\..\MeshDB\kmbQuad.h" />

@@ -31,7 +31,7 @@
 ---------------------------------------------------------------------------*/
 
 %{
-#include "MeshDB/kmbPolygonPartitioner.h"
+#include "MeshGen/kmbPolygonPartitioner.h"
 %}
 
 namespace kmb{
@@ -42,6 +42,7 @@ public:
 	PolygonPartitioner(void);
 	virtual ~PolygonPartitioner(void);
 	kmb::bodyIdType partitionToTriangles(kmb::MeshDB* mesh,kmb::bodyIdType edgeId);
+	kmb::bodyIdType partitionToTriangles(kmb::MeshDB* mesh,kmb::bodyIdType edgeId,const kmb::FramedPlane &plane);
 };
 
 }

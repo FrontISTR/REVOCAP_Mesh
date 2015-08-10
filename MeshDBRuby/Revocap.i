@@ -109,7 +109,5 @@ namespace kmb{
 %include "Plane.i"
 %include "Boundary.i"
 %include "Matching.i"
-%include "PatchOperation.i"
 %include "SurfaceOperation.i"
 %include "MeshOperation.i"
-%include "PolygonPartitioner.i"

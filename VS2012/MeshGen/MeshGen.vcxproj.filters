@@ -51,6 +51,12 @@
     <ClInclude Include="..\..\MeshGen\kmbTriangleOrientedSet.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\MeshGen\kmbPatchOperation.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MeshGen\kmbPolygonPartitioner.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\MeshGen\kmbBLMGenerator.cpp">
@@ -84,6 +90,12 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="..\..\MeshGen\kmbTriangleOrientedSet.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MeshGen\kmbPatchOperation.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MeshGen\kmbPolygonPartitioner.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

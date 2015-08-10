@@ -55,4 +55,6 @@ namespace kmb{
 %include "PatchModifier.i"
 %include "EdgeStitcher.i"
 %include "MeshSmoother.i"
+%include "PatchOperation.i"
+%include "PolygonPartitioner.i"
 

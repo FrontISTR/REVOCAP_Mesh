@@ -18,9 +18,6 @@
     <ClCompile Include="..\..\Geometry\kmbPoint3DContainerVect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Geometry\kmbPoint3DStructured.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Geometry\kmbPoint4D.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>

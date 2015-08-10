@@ -23,7 +23,7 @@
 #      "Innovative General-Purpose Coupled Analysis System"            #
 #                                                                      #
 ----------------------------------------------------------------------*/
-#include "MeshDB/kmbPatchOperation.h"
+#include "MeshGen/kmbPatchOperation.h"
 #include "MeshDB/kmbMeshDB.h"
 #include "Common/kmbCalculator.h"
 #include "Geometry/kmbPoint3DContainer.h"
@@ -36,8 +36,8 @@
 #include "MeshDB/kmbPolygon.h"
 #include "MeshDB/kmbNodeMatchingInfo.h"
 #include "MeshDB/kmbMatching.h"
-#include "MeshDB/kmbPolygonPartitioner.h"
 #include "MeshDB/kmbNodeNeighborInfo.h"
+#include "MeshGen/kmbPolygonPartitioner.h"
 #include <cmath>
 #include <map>
 
