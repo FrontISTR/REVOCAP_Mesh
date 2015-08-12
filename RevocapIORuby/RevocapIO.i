@@ -38,7 +38,7 @@ RevocapIO とは RevocapMesh への入出力を定義したモジュールである。
 
 #ifndef VERSION
 namespace kmb{
-#define VERSION "RevocapIO version 1.6.05 (2013/3/08)"
+#define VERSION "RevocapIO version 1.6.09 (2015/8/12)"
 #define COPYRIGHT "IIS, The University of Tokyo CISS, Large Scale Assembly, Structural Correspondence, Multi Dynamics Simulator"
 }
 #endif

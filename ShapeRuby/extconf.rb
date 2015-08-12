@@ -20,13 +20,13 @@ end
 arch = RUBY_PLATFORM
 
 case RUBY_PLATFORM
-when "i486-linux", "x86_64-linux", "x86_64-linux-gnu", "i686-linux"
+when /linux/
 	dir_config( "#{modulename}", "/usr/include/opencascade", "/usr/lib" )
 	CONFIG['LDSHARED'] = 'g++ -shared -s'
-when "x64-mingw32"
+when /mingw/
 	dir_config( "#{modulename}", "#{casroot}/oce/inc", "#{casroot}/build/win64/bin/Release" )
 	CONFIG['LDSHARED'] = 'g++ -shared -s'
-when "i386-cygwin"
+when /cygwin/
 	CONFIG['LDSHARED'] = 'g++ -shared -s'
 	use_opencascade = false
 else

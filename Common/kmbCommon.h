@@ -108,3 +108,4 @@ typedef double float64_t; /* REAL*8 */
 
 #endif /* REVOCAP_SIZE_DEF */
 
+#include "Common/kmbDebug.h"

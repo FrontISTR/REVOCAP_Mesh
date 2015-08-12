@@ -50,7 +50,7 @@ RevocapVisual ‚É‚¨‚¯‚é FXRuby ‚Å‚Ì OpenGL ‚Ì•`‰æ‚ğ‚‘¬‰»‚·‚é–Ú“I‚Åì‚ç‚ê‚½
 
 #ifndef VERSION
 namespace kmb{
-#define VERSION "RevocapGL version 1.6.03 (2013/3/8)"
+#define VERSION "RevocapGL version 1.6.09 (2015/8/12)"
 #define COPYRIGHT "IIS, The University of Tokyo CISS, Large Scale Assembly, Structural Correspondence, Multi Dynamics Simulator"
 }
 #endif

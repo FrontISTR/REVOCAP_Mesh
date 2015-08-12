@@ -2168,6 +2168,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 			while( ngIter != ngEnd ){
 				if( dataFlag ||
 					ngIter->second->getSpecType() == "BOUNDARY" ||
+					ngIter->second->getSpecType() == "SPRING" ||
 					ngIter->second->getSpecType() == "CLOAD" ||
 					ngIter->second->getSpecType() == "FIXTEMP" ||
 					ngIter->second->getSpecType() == "CFLUX" ||
