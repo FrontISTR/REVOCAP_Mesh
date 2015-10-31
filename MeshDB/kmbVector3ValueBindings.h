@@ -20,12 +20,13 @@ namespace kmb{
 class Vector3ValueBindings : public kmb::DataBindings
 {
 public:
+	static const char* CONTAINER_TYPE;
 	Vector3ValueBindings(size_t count,kmb::DataBindings::bindingMode bmode=kmb::DataBindings::NodeVariable);
 	// ëºÇ≈ämï€çœÇ›ÇÃîzóÒÇ Data Ç∆ÇµÇƒégÇ§
 	Vector3ValueBindings(size_t count,double* values,kmb::DataBindings::bindingMode bmode=kmb::DataBindings::NodeVariable);
 	virtual ~Vector3ValueBindings(void);
 	virtual const char* getContainerType(void) const{
-		return "Vector3ValueBindings";
+		return CONTAINER_TYPE;
 	};
 	virtual void clear(void);
 	virtual bool setPhysicalValue(kmb::idType id,kmb::PhysicalValue* val);

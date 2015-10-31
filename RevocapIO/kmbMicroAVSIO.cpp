@@ -209,7 +209,7 @@ kmb::MicroAVSIO::readGeom(std::ifstream &input,kmb::MeshData* mesh)
 				mesh->addElementWithId( kmb::TETRAHEDRON, nodeTable, elementId-elementOffset );
 			}else if( etype == "tet2" ){
 				input >> nodeTable[0] >> nodeTable[1] >> nodeTable[3] >> nodeTable[2];
-				input >> nodeTable[9] >> nodeTable[6] >> nodeTable[4] >> nodeTable[5] >> nodeTable[7] >> nodeTable[8];
+				input >> nodeTable[6] >> nodeTable[7] >> nodeTable[5] >> nodeTable[8] >> nodeTable[9] >> nodeTable[4];
 				for(int j=0;j<10;++j){
 					nodeTable[j] -= nodeOffset;
 				}
@@ -1272,12 +1272,12 @@ kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
 						eIter[1] + this->nodeOffset << " " <<
 						eIter[3] + this->nodeOffset << " " <<
 						eIter[2] + this->nodeOffset << " " <<
-						eIter[6] + this->nodeOffset << " " <<
-						eIter[7] + this->nodeOffset << " " <<
-						eIter[5] + this->nodeOffset << " " <<
-						eIter[8] + this->nodeOffset << " " <<
 						eIter[9] + this->nodeOffset << " " <<
-						eIter[4] + this->nodeOffset << std::endl;
+						eIter[6] + this->nodeOffset << " " <<
+						eIter[4] + this->nodeOffset << " " <<
+						eIter[5] + this->nodeOffset << " " <<
+						eIter[7] + this->nodeOffset << " " <<
+						eIter[8] + this->nodeOffset << std::endl;
 					break;
 				case kmb::TRIANGLE:
 					output << "tri " <<

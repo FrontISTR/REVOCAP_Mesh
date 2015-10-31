@@ -35,13 +35,13 @@
 double kmb::BoxRegion::thres = 1.0e-20;
 
 kmb::BoxRegion::BoxRegion(void)
+: minPoint(0.0,0.0,0.0), maxPoint(0.0,0.0,0.0)
 {
-	kmb::BoxRegion( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 );
 }
 
 kmb::BoxRegion::BoxRegion(const kmb::Point3D &l,const kmb::Point3D &u)
 {
-	kmb::BoxRegion(l.x(), l.y(), l.z(), u.x(), u.y(), u.z());
+	setMinMax(l.x(), l.y(), l.z(), u.x(), u.y(), u.z());
 }
 
 kmb::BoxRegion::BoxRegion(double x0,double y0,double z0,double x1,double y1,double z1)
