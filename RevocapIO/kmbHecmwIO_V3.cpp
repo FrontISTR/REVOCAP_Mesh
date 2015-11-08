@@ -25,6 +25,7 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include <cstring>
 
 #ifdef WIN32
  #if _MSC_VER >= 1400
@@ -246,3 +247,180 @@ kmb::HecmwIO::loadFromMW3File(const char* filename,MeshData* mesh) const
 		return 0;
 	}
 }
+
+// CONT PAIR と ASSEM PAIR は同じ部品に属するとしている仮実装
+int
+kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const char* partName) const
+{
+	if( mesh == NULL || !mesh->getNodes() ){
+		return -1;
+	}else{
+		std::ofstream output( filename, std::ios_base::out );
+		if( output.fail() ){
+			return -1;
+		}
+		writeHeader(output,"4");
+		writeNode(output,mesh,partName);
+
+		// SECTION で与えられる要素は、Body ごとに EGRP 名を付けて !ELEMENT で出力する
+		kmb::bodyIdType bodyCount = mesh->getBodyCount();
+		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
+			writeElement(output,mesh,bodyId,partName);
+		}
+
+		writeEGroup(output,mesh,partName);
+		writeNGroup(output,mesh,partName);
+		writeSGroup(output,mesh,partName);
+
+		std::multimap< std::string, kmb::DataBindings*> dataBindings = mesh->getDataBindingsMap();
+		// CONTACT PAIR
+		{
+			kmb::ArrayValue* ary = NULL;
+			std::multimap< std::string, kmb::DataBindings*>::const_iterator dIter = dataBindings.begin();
+			std::multimap< std::string, kmb::DataBindings*>::const_iterator dEnd = dataBindings.end();
+			while( dIter != dEnd ){
+				if( dataFlag ||
+					dIter->second->getSpecType() == "CONTPAIR" )
+				{
+					if( dIter->second->getValueType() == kmb::PhysicalValue::Array &&
+						(ary = reinterpret_cast<kmb::ArrayValue*>(dIter->second->getPhysicalValue())) != NULL )
+					{
+						std::string masterName = reinterpret_cast<kmb::TextValue*>( ary->getValue(0) )->getValue();
+						std::string slaveName = reinterpret_cast<kmb::TextValue*>( ary->getValue(1) )->getValue();
+						kmb::DataBindings* masterData = dataBindings.find( masterName )->second;
+						kmb::DataBindings* slaveData = dataBindings.find( slaveName )->second;
+						if( masterData && masterData->getBindingMode() == kmb::DataBindings::FaceGroup &&
+							slaveData && slaveData->getBindingMode() == kmb::DataBindings::FaceGroup )
+						{
+							output << "!SGROUP, SGRP=" << masterName << "_CONT_MASTER" <<
+								", PARTNAME=" << partName << ", NUM=" << masterData->getIdCount() << std::endl;
+							kmb::DataBindings::const_iterator fIter = masterData->begin();
+							while( !fIter.isFinished() ){
+								kmb::Face f;
+								fIter.getFace(f);
+								switch( mesh->findElement( f.getElementId() ).getType() )
+								{
+								case kmb::TETRAHEDRON:
+								case kmb::TETRAHEDRON2:
+									output << f.getElementId()+offsetElementId << "," << tetFmap[f.getLocalFaceId()] << std::endl;
+									break;
+								case kmb::WEDGE:
+								case kmb::WEDGE2:
+									output << f.getElementId()+offsetElementId << "," << wedFmap[f.getLocalFaceId()] << std::endl;
+									break;
+								case kmb::HEXAHEDRON:
+								case kmb::HEXAHEDRON2:
+									output << f.getElementId()+offsetElementId << "," << hexFmap[f.getLocalFaceId()] << std::endl;
+									break;
+								default:
+									break;
+								}
+								++fIter;
+							}
+							std::set<kmb::nodeIdType> nodeSet;
+							mesh->getNodeSetFromDataBindings(nodeSet,slaveName.c_str());
+							output << "!NGROUP, NGRP=" << slaveName << "_CONT_SLAVE" <<
+								", PARTNAME=" << partName << ", NUM=" << nodeSet.size() << std::endl;
+							std::set<kmb::nodeIdType>::iterator nIter = nodeSet.begin();
+							kmb::nodeIdType nodeId;
+							while( nIter != nodeSet.end() ){
+								nodeId = *nIter;
+								output << nodeId+offsetNodeId << std::endl;
+								++nIter;
+							}
+							output << "!CONTACT_PAIR, NAME=" << dIter->first << ", NUM=1" << std::endl;
+							output << slaveName << "_CONT_SLAVE, " << masterName << "_CONT_MASTER, " <<
+								partName << ", " << partName << std::endl;
+						}
+					}
+				}
+				++dIter;
+			}
+		}
+		// ASSEMBLY PAIR
+		{
+			kmb::ArrayValue* ary = NULL;
+			std::multimap< std::string, kmb::DataBindings*>::const_iterator dIter = dataBindings.begin();
+			std::multimap< std::string, kmb::DataBindings*>::const_iterator dEnd = dataBindings.end();
+			while( dIter != dEnd ){
+				if( dataFlag ||
+					dIter->second->getSpecType() == "ASSEMBLY" )
+				{
+					if( dIter->second->getValueType() == kmb::PhysicalValue::Array &&
+						(ary = reinterpret_cast<kmb::ArrayValue*>(dIter->second->getPhysicalValue())) != NULL )
+					{
+						std::string masterName = reinterpret_cast<kmb::TextValue*>( ary->getValue(0) )->getValue();
+						std::string slaveName = reinterpret_cast<kmb::TextValue*>( ary->getValue(1) )->getValue();
+						kmb::DataBindings* masterData = dataBindings.find( masterName )->second;
+						kmb::DataBindings* slaveData = dataBindings.find( slaveName )->second;
+						if( masterData && masterData->getBindingMode() == kmb::DataBindings::FaceGroup &&
+							slaveData && slaveData->getBindingMode() == kmb::DataBindings::FaceGroup )
+						{
+							output << "!SGROUP, SGRP=" << masterName << "_ASSEM_MASTER" <<
+								", PARTNAME=" << partName << ", NUM=" << masterData->getIdCount() << std::endl;
+							{
+								kmb::DataBindings::const_iterator fIter = masterData->begin();
+								while( !fIter.isFinished() ){
+									kmb::Face f;
+									fIter.getFace(f);
+									switch( mesh->findElement( f.getElementId() ).getType() )
+									{
+									case kmb::TETRAHEDRON:
+									case kmb::TETRAHEDRON2:
+										output << f.getElementId()+offsetElementId << "," << tetFmap[f.getLocalFaceId()] << std::endl;
+										break;
+									case kmb::WEDGE:
+									case kmb::WEDGE2:
+										output << f.getElementId()+offsetElementId << "," << wedFmap[f.getLocalFaceId()] << std::endl;
+										break;
+									case kmb::HEXAHEDRON:
+									case kmb::HEXAHEDRON2:
+										output << f.getElementId()+offsetElementId << "," << hexFmap[f.getLocalFaceId()] << std::endl;
+										break;
+									default:
+										break;
+									}
+									++fIter;
+								}
+							}
+							output << "!SGROUP, SGRP=" << slaveName << "_ASSEM_SLAVE" <<
+								", PARTNAME=" << partName << ", NUM=" << slaveData->getIdCount() << std::endl;
+							{
+								kmb::DataBindings::const_iterator fIter = slaveData->begin();
+								while( !fIter.isFinished() ){
+									kmb::Face f;
+									fIter.getFace(f);
+									switch( mesh->findElement( f.getElementId() ).getType() )
+									{
+									case kmb::TETRAHEDRON:
+									case kmb::TETRAHEDRON2:
+										output << f.getElementId()+offsetElementId << "," << tetFmap[f.getLocalFaceId()] << std::endl;
+										break;
+									case kmb::WEDGE:
+									case kmb::WEDGE2:
+										output << f.getElementId()+offsetElementId << "," << wedFmap[f.getLocalFaceId()] << std::endl;
+										break;
+									case kmb::HEXAHEDRON:
+									case kmb::HEXAHEDRON2:
+										output << f.getElementId()+offsetElementId << "," << hexFmap[f.getLocalFaceId()] << std::endl;
+										break;
+									default:
+										break;
+									}
+									++fIter;
+								}
+							}
+							output << "!ASSEMBLY_PAIR, NAME=" << dIter->first << ", NUM=1" << std::endl;
+							output << slaveName << "_ASSEM_SLAVE, " << masterName << "_ASSEM_MASTER, " <<
+								partName << ", " << partName << std::endl;
+						}
+					}
+				}
+				++dIter;
+			}
+		}
+		output.close();
+	}
+	return 0;
+}
+

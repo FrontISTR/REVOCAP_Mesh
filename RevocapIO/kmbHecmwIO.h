@@ -99,6 +99,8 @@ public:
 	int saveToResFile(const char* filename,kmb::MeshData* mesh) const;
 	// MW3 形式で出力
 	int saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const char* partName) const;
+	// Ver.4.4 形式
+	int saveToMeshFile_4_4(const char* filename,const kmb::MeshData* mesh) const;
 	// master の節点を slave の要素で評価して equation data を出力する
 	// 絶対値が thresh 以下の項は出力しない
 	// 要素座標が outThresh 以下の項があれば方程式を出力しない
@@ -154,6 +156,15 @@ protected:
 	size_t readNGroup( std::ifstream &input, std::string &line, kmb::MeshData* mesh ) const;
 	size_t readSGroup( std::ifstream &input, std::string &line, kmb::MeshData* mesh ) const;
 
+	void writeHeader( std::ofstream &output, std::string version="" ) const;
+	void writeNode( std::ofstream &output, const kmb::MeshData* mesh, std::string partName="" ) const;
+	void writeElement( std::ofstream &output, const kmb::MeshData* mesh, kmb::bodyIdType bodyId, std::string partName="" ) const;
+	void writeMaterial( std::ofstream &output, const kmb::MeshData* mesh ) const;
+	void writeSection( std::ofstream &output, const kmb::MeshData* mesh, kmb::bodyIdType bodyId ) const;
+	void writeEGroup( std::ofstream &output, const kmb::MeshData* mesh, std::string partName="" ) const;
+	void writeNGroup( std::ofstream &output, const kmb::MeshData* mesh, std::string partName="" ) const;
+	void writeSGroup( std::ofstream &output, const kmb::MeshData* mesh, std::string partName="" ) const;
+
 	int getEgrpInfoIndex( std::string name ) const;
 	int createEgrpInfo( std::string name, std::string matname );
 
@@ -162,6 +173,11 @@ protected:
 	static int wedRmap[];
 	static int hexRmap[];
 	static int pyrRmap[];
+	// 面の変換 Revo => Fstr
+	static int tetFmap[];
+	static int wedFmap[];
+	static int hexFmap[];
+	static int pyrFmap[];
 };
 
 }
