@@ -54,6 +54,9 @@
     <ClInclude Include="..\..\RevocapIO\kmbTripatchPcmIO.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\RevocapIO\kmbGmshIO.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\RevocapIO\kmbFFbIO.cpp">
@@ -63,9 +66,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="..\..\RevocapIO\kmbHecmwIO.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\RevocapIO\kmbHecmwIO_V3.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="..\..\RevocapIO\kmbMicroAVSIO.cpp">
@@ -93,6 +93,15 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="..\..\RevocapIO\kmbTripatchPcmIO.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\RevocapIO\kmbGmshIO.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\RevocapIO\kmbHecmwIO_3_6.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\RevocapIO\kmbHecmwIO_4_4.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

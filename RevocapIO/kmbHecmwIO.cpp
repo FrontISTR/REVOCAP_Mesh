@@ -699,7 +699,7 @@ void kmb::HecmwIO::writeSection( std::ofstream &output, const kmb::MeshData* mes
 	std::multimap< std::string, kmb::DataBindings*>::const_iterator sIter = dataBindings.begin();
 	std::multimap< std::string, kmb::DataBindings*>::const_iterator sEnd = dataBindings.end();
 	while( sIter != sEnd ){
-		if( sIter->second->getSpecType() == "Material" && sIter->second->hasId( bodyId ) ){
+		if( sIter->second->getSpecType() == "MATERIAL" && sIter->second->hasId( bodyId ) ){
 			matName = sIter->first;
 			break;
 		}
@@ -780,12 +780,12 @@ kmb::HecmwIO::readMaterial( std::ifstream &input, std::string &line, kmb::MeshDa
 		char comma;  // for comma
 		std::stringstream ss;
 		std::string matname = kmb::RevocapIOUtils::getValue(line,"NAME");
-		kmb::DataBindings* data = mesh->getDataBindingsPtr( matname.c_str(), "Material" );
+		kmb::DataBindings* data = mesh->getDataBindingsPtr( matname.c_str(), "MATERIAL" );
 		if( data == NULL ){
 			data = mesh->createDataBindings( matname.c_str(),
 			kmb::DataBindings::BodyGroup,
 			kmb::PhysicalValue::Hash,
-			"Material");
+			"MATERIAL");
 		}
 		std::cout << "material " << matname << std::endl;
 		kmb::HashValue* material = new kmb::HashValue();
@@ -875,7 +875,7 @@ void kmb::HecmwIO::writeMaterial( std::ofstream &output, const kmb::MeshData* me
 	bool matflag = false;
 	while( dIter != dEnd ){
 		kmb::HashValue* mat = NULL;
-		if( dIter->second && dIter->second->getSpecType() == "Material" &&
+		if( dIter->second && dIter->second->getSpecType() == "MATERIAL" &&
 			dIter->second->getValueType() == kmb::PhysicalValue::Hash &&
 			dIter->second->getIdCount() > 0 &&
 			(mat = dynamic_cast<kmb::HashValue*>( dIter->second->getPhysicalValue() )) != NULL )
@@ -1098,20 +1098,17 @@ void kmb::HecmwIO::writeEGroup( std::ofstream &output, const kmb::MeshData* mesh
 		std::multimap< std::string, kmb::DataBindings*>::const_iterator egIter = dataBindings.begin();
 		std::multimap< std::string, kmb::DataBindings*>::const_iterator egEnd = dataBindings.end();
 		while( egIter != egEnd ){
-			if( dataFlag )
-			{
-				if( egIter->second->getBindingMode() == kmb::DataBindings::ElementGroup && egIter->second->getIdCount() > 0 ){
-					if( partName.length() == 0 ){
-						output << "!EGROUP, EGRP=" << egIter->first << std::endl;
-					}else{
-						output << "!EGROUP, EGRP=" << egIter->first <<
-							", PARTNAME=" << partName << ", NUM=" << egIter->second->getIdCount() << std::endl;
-					}
-					kmb::DataBindings::const_iterator eIter = egIter->second->begin();
-					while( !eIter.isFinished() ){
-						output << eIter.getId()+offsetElementId << std::endl;
-						++eIter;
-					}
+			if( dataFlag && egIter->second->getBindingMode() == kmb::DataBindings::ElementGroup && egIter->second->getIdCount() > 0 ){
+				if( partName.length() == 0 ){
+					output << "!EGROUP, EGRP=" << egIter->first << std::endl;
+				}else{
+					output << "!EGROUP, EGRP=" << egIter->first <<
+						", PARTNAME=" << partName << ", NUM=" << egIter->second->getIdCount() << std::endl;
+				}
+				kmb::DataBindings::const_iterator eIter = egIter->second->begin();
+				while( !eIter.isFinished() ){
+					output << eIter.getId()+offsetElementId << std::endl;
+					++eIter;
 				}
 			}
 			++egIter;
@@ -1363,6 +1360,244 @@ void kmb::HecmwIO::writeSGroup( std::ofstream &output, const kmb::MeshData* mesh
 			}
 			++sgIter;
 		}
+	}
+}
+
+void kmb::HecmwIO::writeAmplitude( std::ofstream &output, const kmb::MeshData* mesh, std::string partName ) const
+{
+	std::multimap< std::string, kmb::DataBindings*> dataBindings = mesh->getDataBindingsMap();
+	{
+		std::multimap< std::string, kmb::DataBindings*>::const_iterator aIter = dataBindings.begin();
+		std::multimap< std::string, kmb::DataBindings*>::const_iterator aEnd = dataBindings.end();
+		while( aIter != aEnd ){
+			if( dataFlag || aIter->second->getSpecType() == "AMPLITUDE" )
+			{
+				if( aIter->second->getValueType() == kmb::PhysicalValue::Hash ){
+					const kmb::HashValue* h = reinterpret_cast< const kmb::HashValue* >( aIter->second );
+					output << "!AMPLITUDE, NAME=" << aIter->first;
+					const kmb::PhysicalValue* d = NULL;
+					d = h->getValue("definition");
+					if( d != NULL && d->getType() == kmb::PhysicalValue::String ){
+						output << ", DEFINITION=" << reinterpret_cast< const kmb::TextValue* >(d)->getValue();
+					}
+					d = h->getValue("time");
+					if( d != NULL && d->getType() == kmb::PhysicalValue::String ){
+						output << ", TIME=" << reinterpret_cast< const kmb::TextValue* >(d)->getValue();
+					}
+					d = h->getValue("value");
+					if( d != NULL && d->getType() == kmb::PhysicalValue::String ){
+						output << ", VALUE=" << reinterpret_cast< const kmb::TextValue* >(d)->getValue();
+					}
+					d = h->getValue("input");
+					if( d != NULL && d->getType() == kmb::PhysicalValue::String ){
+						output << ", INPUT=" << reinterpret_cast< const kmb::TextValue* >(d)->getValue();
+					}
+					output << std::endl;
+					d = h->getValue("table");
+					if( d != NULL && d->getType() == kmb::PhysicalValue::Array ){
+						const kmb::ArrayValue* a = reinterpret_cast< const kmb::ArrayValue* >(d);
+						size_t num = a->getSize();
+						for(unsigned int i=0;i<num/2;++i){
+							output << reinterpret_cast< const kmb::ScalarValue* >(a->getValue(2*i))->getValue() << ", ";
+							output << reinterpret_cast< const kmb::ScalarValue* >(a->getValue(2*i))->getValue() << std::endl;
+						}
+					}
+				}
+			}
+			++aIter;
+		}
+	}
+}
+
+void kmb::HecmwIO::writeContactPair( std::ofstream &output, const kmb::MeshData* mesh, std::string card, std::string partName ) const
+{
+	std::multimap< std::string, kmb::DataBindings*> dataBindings = mesh->getDataBindingsMap();
+	{
+		kmb::ArrayValue* ary = NULL;
+		std::multimap< std::string, kmb::DataBindings*>::const_iterator cIter = dataBindings.begin();
+		std::multimap< std::string, kmb::DataBindings*>::const_iterator cEnd = dataBindings.end();
+		while( cIter != cEnd ){
+			if( dataFlag || cIter->second->getSpecType() == "CONTPAIR" )
+			{
+				if( cIter->second->getValueType() == kmb::PhysicalValue::Array &&
+					(ary = reinterpret_cast<kmb::ArrayValue*>(cIter->second->getPhysicalValue())) != NULL )
+				{
+					std::string masterName = reinterpret_cast<kmb::TextValue*>( ary->getValue(0) )->getValue();
+					std::string slaveName = reinterpret_cast<kmb::TextValue*>( ary->getValue(1) )->getValue();
+					kmb::DataBindings* masterData = dataBindings.find( masterName )->second;
+					kmb::DataBindings* slaveData = dataBindings.find( slaveName )->second;
+					if( masterData && masterData->getBindingMode() == kmb::DataBindings::FaceGroup &&
+						slaveData && slaveData->getBindingMode() == kmb::DataBindings::FaceGroup )
+					{
+						if( partName.length() == 0 ){
+							output << "!SGROUP, SGRP=" << masterName << "_CONT_MASTER" << std::endl;
+						}else{
+							output << "!SGROUP, SGRP=" << masterName << "_CONT_MASTER" <<
+								", PARTNAME=" << partName << ", NUM=" << masterData->getIdCount() << std::endl;
+						}
+						kmb::DataBindings::const_iterator fIter = masterData->begin();
+						while( !fIter.isFinished() ){
+							kmb::Face f;
+							fIter.getFace(f);
+							switch( mesh->findElement( f.getElementId() ).getType() )
+							{
+							case kmb::TETRAHEDRON:
+							case kmb::TETRAHEDRON2:
+								output << f.getElementId()+offsetElementId << "," << tetFmap[f.getLocalFaceId()] << std::endl;
+								break;
+							case kmb::WEDGE:
+							case kmb::WEDGE2:
+								output << f.getElementId()+offsetElementId << "," << wedFmap[f.getLocalFaceId()] << std::endl;
+								break;
+							case kmb::HEXAHEDRON:
+							case kmb::HEXAHEDRON2:
+								output << f.getElementId()+offsetElementId << "," << hexFmap[f.getLocalFaceId()] << std::endl;
+								break;
+							default:
+								break;
+							}
+							++fIter;
+						}
+						std::set<kmb::nodeIdType> nodeSet;
+						mesh->getNodeSetFromDataBindings(nodeSet,slaveName.c_str());
+						if( partName.length() == 0 ){
+							output << "!NGROUP, NGRP=" << slaveName << "_CONT_SLAVE" << std::endl;
+						}else{
+							output << "!NGROUP, NGRP=" << slaveName << "_CONT_SLAVE" <<
+								", PARTNAME=" << partName << ", NUM=" << nodeSet.size() << std::endl;
+						}
+						std::set<kmb::nodeIdType>::iterator ngIter = nodeSet.begin();
+						kmb::nodeIdType nodeId;
+						while( ngIter != nodeSet.end() ){
+							nodeId = *ngIter;
+							output << nodeId+offsetNodeId << std::endl;
+							++ngIter;
+						}
+						output << card << ", NAME=" << cIter->first << std::endl;
+						output << slaveName << "_CONT_SLAVE, " << masterName << "_CONT_MASTER" << std::endl;
+					}
+				}
+			}
+			++cIter;
+		}
+	}
+}
+
+void kmb::HecmwIO::writeAssemblyPair( std::ofstream &output, const kmb::MeshData* mesh, std::string partName ) const
+{
+	std::multimap< std::string, kmb::DataBindings*> dataBindings = mesh->getDataBindingsMap();
+	// ASSEMBLY PAIR
+	kmb::ArrayValue* ary = NULL;
+	std::multimap< std::string, kmb::DataBindings*>::const_iterator dIter = dataBindings.begin();
+	std::multimap< std::string, kmb::DataBindings*>::const_iterator dEnd = dataBindings.end();
+	while( dIter != dEnd ){
+		if( dataFlag || dIter->second->getSpecType() == "ASSEMBLY" )
+		{
+			if( dIter->second->getValueType() == kmb::PhysicalValue::Array &&
+				(ary = dynamic_cast<kmb::ArrayValue*>(dIter->second->getPhysicalValue())) != NULL )
+			{
+				std::string masterName = reinterpret_cast<kmb::TextValue*>( ary->getValue(0) )->getValue();
+				std::string slaveName = reinterpret_cast<kmb::TextValue*>( ary->getValue(1) )->getValue();
+				kmb::DataBindings* masterData = dataBindings.find( masterName )->second;
+				kmb::DataBindings* slaveData = dataBindings.find( slaveName )->second;
+				if( masterData && masterData->getBindingMode() == kmb::DataBindings::FaceGroup &&
+					slaveData && slaveData->getBindingMode() == kmb::DataBindings::FaceGroup )
+				{
+					output << "!SGROUP, SGRP=" << masterName << "_ASSEM_MASTER" <<
+						", PARTNAME=" << partName << ", NUM=" << masterData->getIdCount() << std::endl;
+					{
+						kmb::DataBindings::const_iterator fIter = masterData->begin();
+						while( !fIter.isFinished() ){
+							kmb::Face f;
+							fIter.getFace(f);
+							switch( mesh->findElement( f.getElementId() ).getType() )
+							{
+							case kmb::TETRAHEDRON:
+							case kmb::TETRAHEDRON2:
+								output << f.getElementId()+offsetElementId << "," << tetFmap[f.getLocalFaceId()] << std::endl;
+								break;
+							case kmb::WEDGE:
+							case kmb::WEDGE2:
+								output << f.getElementId()+offsetElementId << "," << wedFmap[f.getLocalFaceId()] << std::endl;
+								break;
+							case kmb::HEXAHEDRON:
+							case kmb::HEXAHEDRON2:
+								output << f.getElementId()+offsetElementId << "," << hexFmap[f.getLocalFaceId()] << std::endl;
+								break;
+							default:
+								break;
+							}
+							++fIter;
+						}
+					}
+					output << "!SGROUP, SGRP=" << slaveName << "_ASSEM_SLAVE" <<
+						", PARTNAME=" << partName << ", NUM=" << slaveData->getIdCount() << std::endl;
+					{
+						kmb::DataBindings::const_iterator fIter = slaveData->begin();
+						while( !fIter.isFinished() ){
+							kmb::Face f;
+							fIter.getFace(f);
+							switch( mesh->findElement( f.getElementId() ).getType() )
+							{
+							case kmb::TETRAHEDRON:
+							case kmb::TETRAHEDRON2:
+								output << f.getElementId()+offsetElementId << "," << tetFmap[f.getLocalFaceId()] << std::endl;
+								break;
+							case kmb::WEDGE:
+							case kmb::WEDGE2:
+								output << f.getElementId()+offsetElementId << "," << wedFmap[f.getLocalFaceId()] << std::endl;
+								break;
+							case kmb::HEXAHEDRON:
+							case kmb::HEXAHEDRON2:
+								output << f.getElementId()+offsetElementId << "," << hexFmap[f.getLocalFaceId()] << std::endl;
+								break;
+							default:
+								break;
+							}
+							++fIter;
+						}
+					}
+					output << "!ASSEMBLY_PAIR, NAME=" << dIter->first << ", NUM=1" << std::endl;
+					output << slaveName << "_ASSEM_SLAVE, " << masterName << "_ASSEM_MASTER, " <<
+						partName << ", " << partName << std::endl;
+				}
+			}
+		}
+		++dIter;
+	}
+}
+
+void kmb::HecmwIO::writeZero( std::ofstream &output, const kmb::MeshData* mesh ) const
+{
+	const kmb::DataBindings* zero = mesh->getDataBindingsPtr("ZERO");
+	if( zero != NULL ){
+		double z = 0.0;
+		zero->getPhysicalValue()->getValue(&z);
+		output << "!ZERO" << std::endl;
+		output << z << std::endl;
+	}
+}
+
+void kmb::HecmwIO::writeInitialCondition( std::ofstream &output, const kmb::MeshData* mesh ) const
+{
+	std::multimap< std::string, kmb::DataBindings*> dataBindings = mesh->getDataBindingsMap();
+	std::multimap< std::string, kmb::DataBindings*>::const_iterator dIter = dataBindings.begin();
+	std::multimap< std::string, kmb::DataBindings*>::const_iterator dEnd = dataBindings.end();
+	double v = 0.0;
+	while( dIter != dEnd ){
+		if( dataFlag || dIter->second->getSpecType() == "INITCOND" ){
+			const kmb::DataBindings* data = dIter->second;
+			if( data->getValueType() == kmb::PhysicalValue::Scalar && data->getBindingMode() == kmb::DataBindings::NodeVariable ){
+				output << "!INITIAL CONDITION,TYPE=" << dIter->first << std::endl;
+				kmb::DataBindings::const_iterator vIter = data->begin();
+				while( !vIter.isFinished() ){
+					vIter.getValue(&v);
+					output << vIter.getId() << "," << std::scientific << std::setprecision(8) << v << std::endl;
+					++vIter;
+				}
+			}
+		}
+		++dIter;
 	}
 }
 
@@ -2327,111 +2562,10 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 		writeEGroup(output,mesh);
 		writeNGroup(output,mesh);
 		writeSGroup(output,mesh);
-		
-		std::multimap< std::string, kmb::DataBindings*> dataBindings = mesh->getDataBindingsMap();
-		// AMPLITUDE
-		{
-			std::multimap< std::string, kmb::DataBindings*>::const_iterator aIter = dataBindings.begin();
-			std::multimap< std::string, kmb::DataBindings*>::const_iterator aEnd = dataBindings.end();
-			while( aIter != aEnd ){
-				if( aIter->second->getSpecType() == "AMPLITUDE" )
-				{
-					if( aIter->second->getValueType() == kmb::PhysicalValue::Hash ){
-						const kmb::HashValue* h = reinterpret_cast< const kmb::HashValue* >( aIter->second );
-						output << "!AMPLITUDE, NAME=" << aIter->first;
-						const kmb::PhysicalValue* d = NULL;
-						d = h->getValue("definition");
-						if( d != NULL && d->getType() == kmb::PhysicalValue::String ){
-							output << ", DEFINITION=" << reinterpret_cast< const kmb::TextValue* >(d)->getValue();
-						}
-						d = h->getValue("time");
-						if( d != NULL && d->getType() == kmb::PhysicalValue::String ){
-							output << ", TIME=" << reinterpret_cast< const kmb::TextValue* >(d)->getValue();
-						}
-						d = h->getValue("value");
-						if( d != NULL && d->getType() == kmb::PhysicalValue::String ){
-							output << ", VALUE=" << reinterpret_cast< const kmb::TextValue* >(d)->getValue();
-						}
-						d = h->getValue("input");
-						if( d != NULL && d->getType() == kmb::PhysicalValue::String ){
-							output << ", INPUT=" << reinterpret_cast< const kmb::TextValue* >(d)->getValue();
-						}
-						output << std::endl;
-						d = h->getValue("table");
-						if( d != NULL && d->getType() == kmb::PhysicalValue::Array ){
-							const kmb::ArrayValue* a = reinterpret_cast< const kmb::ArrayValue* >(d);
-							size_t num = a->getSize();
-							for(unsigned int i=0;i<num/2;++i){
-								output << reinterpret_cast< const kmb::ScalarValue* >(a->getValue(2*i))->getValue() << ", ";
-								output << reinterpret_cast< const kmb::ScalarValue* >(a->getValue(2*i))->getValue() << std::endl;
-							}
-						}
-					}
-				}
-				++aIter;
-			}
-		}
-		// CONTACT PAIR
-		{
-			kmb::ArrayValue* ary = NULL;
-			std::multimap< std::string, kmb::DataBindings*>::const_iterator cIter = dataBindings.begin();
-			std::multimap< std::string, kmb::DataBindings*>::const_iterator cEnd = dataBindings.end();
-			while( cIter != cEnd ){
-				if( dataFlag ||
-					cIter->second->getSpecType() == "CONTPAIR" )
-				{
-					if( cIter->second->getValueType() == kmb::PhysicalValue::Array &&
-						(ary = reinterpret_cast<kmb::ArrayValue*>(cIter->second->getPhysicalValue())) != NULL )
-					{
-						std::string masterName = reinterpret_cast<kmb::TextValue*>( ary->getValue(0) )->getValue();
-						std::string slaveName = reinterpret_cast<kmb::TextValue*>( ary->getValue(1) )->getValue();
-						kmb::DataBindings* masterData = dataBindings.find( masterName )->second;
-						kmb::DataBindings* slaveData = dataBindings.find( slaveName )->second;
-						if( masterData && masterData->getBindingMode() == kmb::DataBindings::FaceGroup &&
-							slaveData && slaveData->getBindingMode() == kmb::DataBindings::FaceGroup )
-						{
-							output << "!SGROUP, SGRP=" << masterName << "_CONT_MASTER" << std::endl;
-							kmb::DataBindings::const_iterator fIter = masterData->begin();
-							while( !fIter.isFinished() ){
-								kmb::Face f;
-								fIter.getFace(f);
-								switch( mesh->findElement( f.getElementId() ).getType() )
-								{
-								case kmb::TETRAHEDRON:
-								case kmb::TETRAHEDRON2:
-									output << f.getElementId()+offsetElementId << "," << tetFmap[f.getLocalFaceId()] << std::endl;
-									break;
-								case kmb::WEDGE:
-								case kmb::WEDGE2:
-									output << f.getElementId()+offsetElementId << "," << wedFmap[f.getLocalFaceId()] << std::endl;
-									break;
-								case kmb::HEXAHEDRON:
-								case kmb::HEXAHEDRON2:
-									output << f.getElementId()+offsetElementId << "," << hexFmap[f.getLocalFaceId()] << std::endl;
-									break;
-								default:
-									break;
-								}
-								++fIter;
-							}
-							output << "!NGROUP, NGRP=" << slaveName << "_CONT_SLAVE" << std::endl;
-							std::set<kmb::nodeIdType> nodeSet;
-							mesh->getNodeSetFromDataBindings(nodeSet,slaveName.c_str());
-							std::set<kmb::nodeIdType>::iterator ngIter = nodeSet.begin();
-							kmb::nodeIdType nodeId;
-							while( ngIter != nodeSet.end() ){
-								nodeId = *ngIter;
-								output << nodeId+offsetNodeId << std::endl;
-								++ngIter;
-							}
-							output << "!CONTACT PAIR, NAME=" << cIter->first << std::endl;
-							output << slaveName << "_CONT_SLAVE, " << masterName << "_CONT_MASTER" << std::endl;
-						}
-					}
-				}
-				++cIter;
-			}
-		}
+
+		writeAmplitude(output,mesh);
+		writeContactPair(output,mesh,"!CONTACT PAIR");
+
 		output.close();
 	}
 	return 0;

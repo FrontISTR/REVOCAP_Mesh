@@ -57,6 +57,7 @@ private:
 	kmb::nodeIdType offsetNodeId;
 	kmb::elementIdType offsetElementId;
 	solutionType soltype;
+	// true のときは spectype に依らずに出力する
 	bool dataFlag;
 	bool resElementFlag;
 	bool dummySectionFlag;
@@ -99,8 +100,10 @@ public:
 	int saveToResFile(const char* filename,kmb::MeshData* mesh) const;
 	// MW3 形式で出力
 	int saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const char* partName) const;
+	// Ver.3.6 形式
+	int saveToMeshFile_3_6(const char* filename,const kmb::MeshData* mesh) const;
 	// Ver.4.4 形式
-	int saveToMeshFile_4_4(const char* filename,const kmb::MeshData* mesh) const;
+	int saveToMeshFile_4_4(const char* filename,const kmb::MeshData* mesh,const char* partName) const;
 	// master の節点を slave の要素で評価して equation data を出力する
 	// 絶対値が thresh 以下の項は出力しない
 	// 要素座標が outThresh 以下の項があれば方程式を出力しない
@@ -164,6 +167,11 @@ protected:
 	void writeEGroup( std::ofstream &output, const kmb::MeshData* mesh, std::string partName="" ) const;
 	void writeNGroup( std::ofstream &output, const kmb::MeshData* mesh, std::string partName="" ) const;
 	void writeSGroup( std::ofstream &output, const kmb::MeshData* mesh, std::string partName="" ) const;
+	void writeAmplitude( std::ofstream &output, const kmb::MeshData* mesh, std::string partName="" ) const;
+	void writeContactPair( std::ofstream &output, const kmb::MeshData* mesh, std::string card="!CONTACT_PAIR", std::string partName="" ) const;
+	void writeAssemblyPair( std::ofstream &output, const kmb::MeshData* mesh, std::string partName="" ) const;
+	void writeZero( std::ofstream &output, const kmb::MeshData* mesh ) const;
+	void writeInitialCondition( std::ofstream &output, const kmb::MeshData* mesh ) const;
 
 	int getEgrpInfoIndex( std::string name ) const;
 	int createEgrpInfo( std::string name, std::string matname );

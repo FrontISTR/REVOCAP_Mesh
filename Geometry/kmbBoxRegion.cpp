@@ -35,7 +35,7 @@
 double kmb::BoxRegion::thres = 1.0e-20;
 
 kmb::BoxRegion::BoxRegion(void)
-: minPoint(0.0,0.0,0.0), maxPoint(0.0,0.0,0.0)
+: maxPoint(0.0,0.0,0.0), minPoint(0.0,0.0,0.0)
 {
 }
 

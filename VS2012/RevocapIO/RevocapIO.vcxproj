@@ -22,6 +22,7 @@
     <ClInclude Include="..\..\RevocapIO\kmbDefineIO.h" />
     <ClInclude Include="..\..\RevocapIO\kmbFFbIO.h" />
     <ClInclude Include="..\..\RevocapIO\kmbFortranIO.h" />
+    <ClInclude Include="..\..\RevocapIO\kmbGmshIO.h" />
     <ClInclude Include="..\..\RevocapIO\kmbHecmwIO.h" />
     <ClInclude Include="..\..\RevocapIO\kmbMicroAVSIO.h" />
     <ClInclude Include="..\..\RevocapIO\kmbNetgenIO.h" />
@@ -36,8 +37,10 @@
   <ItemGroup>
     <ClCompile Include="..\..\RevocapIO\kmbFFbIO.cpp" />
     <ClCompile Include="..\..\RevocapIO\kmbFortranIO.cpp" />
+    <ClCompile Include="..\..\RevocapIO\kmbGmshIO.cpp" />
     <ClCompile Include="..\..\RevocapIO\kmbHecmwIO.cpp" />
-    <ClCompile Include="..\..\RevocapIO\kmbHecmwIO_V3.cpp" />
+    <ClCompile Include="..\..\RevocapIO\kmbHecmwIO_3_6.cpp" />
+    <ClCompile Include="..\..\RevocapIO\kmbHecmwIO_4_4.cpp" />
     <ClCompile Include="..\..\RevocapIO\kmbMicroAVSIO.cpp" />
     <ClCompile Include="..\..\RevocapIO\kmbNetgenIO.cpp" />
     <ClCompile Include="..\..\RevocapIO\kmbRevocapCouplerIO.cpp" />
