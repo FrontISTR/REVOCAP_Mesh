@@ -49,7 +49,7 @@ RevocapShape とは RevocapMesh と OpenCASCADE のインターフェイス
 =end
 ---------------------------------------------------------------*/
 namespace kmb{
-#define VERSION "RevocapShape version 1.6.01 (2013/3/8)"
+#define VERSION "RevocapShape version 1.6.09 (2015/8/12)"
 #define COPYRIGHT "IIS, The University of Tokyo CISS, Large Scale Assembly, Structural Correspondence, Multi Dynamics Simulator"
 }
 
@@ -62,10 +62,10 @@ namespace kmb{
 #endif
 %}
 
-
+// swig の制御文
 #ifdef OPENCASCADE
 
-
+// cxx ファイルにそのまま出力される
 %{
 #define OPENCASCADE 1
 #include "Shape/kmbCADFileIO.h"
@@ -151,7 +151,7 @@ public:
 
 }
 
-
+// swig の制御文
 #endif
 
 %{

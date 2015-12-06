@@ -45,12 +45,12 @@ public:
 	bool isValid(void) const;
 	kmb::BoundingBox getBoundingBox(void) const;
 
-
-
+	// topo_shape ‚©‚ç CAD –Ê‚ğæ‚èo‚·
+	// surfaceId ‚É‚ÍŒ³‚Ì CAD –Ê‚Ì HashCode ‚ğ“ü‚ê‚Ä‚¨‚­
 	int getSurfaces( std::vector<kmb::Surface3D*> &surfaces) const;
 	int saveToRNF(const char* filename, bool append=false ) const;
 private:
-
+	// OpenCASCADE ‚©‚ç REVOCAP ‚Ö‚Ì•ÏŠ·
 	int getBSplineSurface( TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const;
 	int getBezierSurface( TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const;
 	int getCylindricalSurface( TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const;

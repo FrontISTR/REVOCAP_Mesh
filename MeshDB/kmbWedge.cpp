@@ -80,7 +80,7 @@
 *********************************************************************************/
 const int kmb::Wedge::nodeCount = 6;
 
-
+// 隣接行列
 const int kmb::Wedge::connectionTable[6][6] =
 {
 	{ 0, 1, 1, 1, 0, 0},
@@ -91,9 +91,9 @@ const int kmb::Wedge::connectionTable[6][6] =
 	{ 0, 0, 1, 1, 1, 0}
 };
 
-
-
-
+// 面を構成する多角形の添え字番号
+// 外側から見て左回りが正
+// 番号の付け方は FrontSTR に準拠
 const int kmb::Wedge::faceTable[5][4] =
 {
 	{ 0, 2, 1,-1},
@@ -120,13 +120,13 @@ bool
 kmb::Wedge::isEquivalent(int index[6])
 {
 	const int len = kmb::Element::getNodeCount(kmb::WEDGE);
-
+	// 置換じゃない時は無条件にだめ
 	for(int i=0;i<len;++i){
 		if(index[i] < 0 || len <= index[i]){
 			return false;
 		}
 	}
-
+	// connection matrix が同じならいいことにする
 	for(int i=0;i<len;++i){
 		for(int j=0;j<len;++j){
 			if( kmb::Wedge::connectionTable[i][j]
@@ -182,7 +182,7 @@ kmb::Wedge::shapeFunction(double s,double t,double u,double* coeff)
 double
 kmb::Wedge::checkShapeFunctionDomain(double s,double t,double u)
 {
-
+	// 形状関数 serendipity 0 <= s,t, <= 1, -1 <= u <= 1, s+t <= 1
 	kmb::Minimizer minimizer;
 	minimizer.update( s );
 	minimizer.update( t );
@@ -223,19 +223,19 @@ kmb::Wedge::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D*
 		}
 		bool df(const ColumnVector &t,Matrix &jac){
 			for(int i=0;i<3;++i){
-
+				// s で微分
 				jac.set(i,0,0.5 * (
 					-(1.0-t[2])*points[0][i]
 					+(1.0-t[2])*points[1][i]
 					-(1.0+t[2])*points[3][i]
 					+(1.0+t[2])*points[4][i] ) );
-
+				// t で微分
 				jac.set(i,1,0.5 * (
 					-(1.0-t[2])*points[0][i]
 					+(1.0-t[2])*points[2][i]
 					-(1.0+t[2])*points[3][i]
 					+(1.0+t[2])*points[5][i] ) );
-
+				// u で微分
 				jac.set(i,2,0.5 * (
 					-(1.0-t[0]-t[1])*points[0][i]
 					-t[0]*points[1][i]
@@ -282,24 +282,24 @@ kmb::Wedge::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nodeIdTy
 		return 0;
 	}
 	int num = 3;
+	// 対角線の与え方
+	// [0,4] [1,5] [0,5]            0 0 0
+	// [0,4] [1,5] [2,3] ありえない	0 0 1
+	// [0,4] [2,4] [0,5]			0 1 0
+	// [0,4] [2,4] [2,3]			0 1 1
+	// [1,3] [1,5] [0,5]			1 0 0
+	// [1,3] [1,5] [2,3]			1 0 1
+	// [1,3] [2,4] [0,5] ありえない	1 1 0
+	// [1,3] [2,4] [2,3]			1 1 1
 
-
-
-
-
-
-
-
-
-
-
-	bool n2 = element->getIndexMinNodeIdOfFace( 2 )%2 == 1;
-	bool n3 = element->getIndexMinNodeIdOfFace( 3 )%2 == 1;
-	bool n4 = element->getIndexMinNodeIdOfFace( 4 )%2 == 1;
+	// 対角線をどのように引くか決める
+	bool n2 = element->getIndexMinNodeIdOfFace( 2 )%2 == 1; // [0,1,4,3]
+	bool n3 = element->getIndexMinNodeIdOfFace( 3 )%2 == 1; // [1,2,5,4]
+	bool n4 = element->getIndexMinNodeIdOfFace( 4 )%2 == 1; // [2,0,3,5]
 
 	if( !n2 && !n3 && n4 )
 	{
-
+		// [0,4] [1,5] [0,5]			0 0 1
 		tetrahedrons[0][0] = element->getCellId(0);
 		tetrahedrons[0][1] = element->getCellId(4);
 		tetrahedrons[0][2] = element->getCellId(5);
@@ -317,7 +317,7 @@ kmb::Wedge::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nodeIdTy
 	}
 	else if( !n2 && n3 && n4 )
 	{
-
+		// [0,4] [2,4] [0,5]			0 1 1
 		tetrahedrons[0][0] = element->getCellId(0);
 		tetrahedrons[0][1] = element->getCellId(4);
 		tetrahedrons[0][2] = element->getCellId(5);
@@ -335,7 +335,7 @@ kmb::Wedge::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nodeIdTy
 	}
 	else if( !n2 && n3 && !n4 )
 	{
-
+		// [0,4] [2,4] [2,3]			0 1 0
 		tetrahedrons[0][0] = element->getCellId(0);
 		tetrahedrons[0][1] = element->getCellId(4);
 		tetrahedrons[0][2] = element->getCellId(2);
@@ -353,7 +353,7 @@ kmb::Wedge::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nodeIdTy
 	}
 	else if( n2 && !n3 && n4 )
 	{
-
+		// [1,3] [1,5] [0,5]			1 0 1
 		tetrahedrons[0][0] = element->getCellId(0);
 		tetrahedrons[0][1] = element->getCellId(1);
 		tetrahedrons[0][2] = element->getCellId(5);
@@ -371,7 +371,7 @@ kmb::Wedge::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nodeIdTy
 	}
 	else if( n2 && !n3 && !n4 )
 	{
-
+		// [1,3] [1,5] [2,3]			1 0 0
 		tetrahedrons[0][0] = element->getCellId(0);
 		tetrahedrons[0][1] = element->getCellId(1);
 		tetrahedrons[0][2] = element->getCellId(2);
@@ -389,7 +389,7 @@ kmb::Wedge::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nodeIdTy
 	}
 	else if( n2 && n3 && !n4 )
 	{
-
+		// [1,3] [2,4] [2,3]			1 1 0
 		tetrahedrons[0][0] = element->getCellId(0);
 		tetrahedrons[0][1] = element->getCellId(1);
 		tetrahedrons[0][2] = element->getCellId(2);

@@ -210,7 +210,7 @@ kmb::TriangleBucketArea::getNearest(double x,double y,double z,double &dist,kmb:
 		double span = sqrt( minimizer.getMin() );
 		getSubIndices( x-span, y-span, z-span, i1, j1, k1 );
 		getSubIndices( x+span, y+span, z+span, i2, j2, k2 );
-
+		// (i0,j0,k0) ˆÈŠO‚ð’T‚·
 		for(int i=i1;i<=i2;++i){
 			for(int j=j1;j<=j2;++j){
 				for(int k=k1;k<=k2;++k){
@@ -223,8 +223,8 @@ kmb::TriangleBucketArea::getNearest(double x,double y,double z,double &dist,kmb:
 			}
 		}
 	}else{
-
-
+		// (i0,j0,k0) ‚Ì Bucket ‚É‚È‚¢
+		// ‘S•”’²‚×‚é
 		kmb::BoxRegion box;
 		kmb::Bucket< std::pair<kmb::elementIdType,double> >::const_iterator tIter = this->begin();
 		kmb::Bucket< std::pair<kmb::elementIdType,double> >::const_iterator endIter = this->end();

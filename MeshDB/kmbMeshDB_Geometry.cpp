@@ -530,7 +530,7 @@ kmb::MeshDB::calcMeshProperty(const char* name,kmb::bodyIdType bodyId)
 	return -1.0;
 }
 
-
+//------------------- 面積・体積 --------------------------
 
 double
 kmb::MeshDB::getElementArea(kmb::elementIdType triId,kmb::bodyIdType bodyId) const
@@ -559,7 +559,7 @@ double
 kmb::MeshDB::getArea(kmb::bodyIdType bodyId) const
 {
 	double area = 0.0;
-
+	// すでに MeshProperty があればそれを使う
 	const kmb::ElementContainer* body = this->getBodyPtr(bodyId);
 	if( body && body->isUniqueDim(2) ){
 		const kmb::DataBindings* data = this->getDataBindingsPtr("ElementArea","MeshProperty");
@@ -593,7 +593,7 @@ double
 kmb::MeshDB::getVolume(kmb::bodyIdType bodyId) const
 {
 	double vol = 0.0;
-
+	// すでに MeshProperty があればそれを使う
 	const kmb::ElementContainer* body = this->getBodyPtr(bodyId);
 	if( body && body->isUniqueDim(3) ){
 		const kmb::DataBindings* data = this->getDataBindingsPtr("ElementVolume","MeshProperty");
@@ -623,7 +623,7 @@ kmb::MeshDB::getVolume(kmb::bodyIdType bodyId) const
 	return vol;
 }
 
-
+//------------------- 端点 --------------------------
 
 kmb::nodeIdType
 kmb::MeshDB::getCornerNodeIdOfSurface(kmb::bodyIdType bodyId,kmb::Vector3D dir) const

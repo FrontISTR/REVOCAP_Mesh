@@ -36,7 +36,7 @@ public:
 	virtual ~BezierCurve2D(void);
 	void clear(void);
 	virtual bool isDomain( double t ) const;
-
+	// ’è‹`ˆæ‚Í [0.0, 1.0]
 	virtual void getDomain( double &min_t, double &max_t ) const;
 	virtual bool getPoint( double t, kmb::Point2D& point ) const;
 	bool getDerivative( double t, kmb::Vector2D& tangent ) const;

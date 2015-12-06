@@ -39,22 +39,22 @@ protected:
 	size_t triIndex;
 	size_t triSize;
 	unsigned int* triNodes;
-
+	// 2次要素の中間節点保存用（描画には使わない）
 	unsigned int* tri2Nodes;
 	size_t quadIndex;
 	size_t quadSize;
 	unsigned int* quadNodes;
-
+	// 2次要素の中間節点保存用（描画には使わない）
 	unsigned int* quad2Nodes;
-
+	// 法線ベクトル用
 	float* triNormals;
 	float* quadNormals;
 
-
-
+	// element id => triIndex (tri)
+	//            => triSize + quadIndex (quad)
 	std::map< kmb::elementIdType, size_t > elementIdMap;
 
-
+	// substitute for kmb::nullNodeId
 	static unsigned int unsignedNullNodeId;
 public:
 	static const char* CONTAINER_TYPE;
@@ -100,9 +100,9 @@ public:
 	virtual iterator find(kmb::elementIdType id);
 	virtual const_iterator find(kmb::elementIdType id) const;
 
-
-
-
+	// 既に生成済み 0
+	// この呼び出し時に生成 1
+	// 生成に失敗 -1
 	int calcNormals(kmb::Point3DContainer* points);
 
 	const unsigned int* getTriNodeTable(void) const { return triNodes; }

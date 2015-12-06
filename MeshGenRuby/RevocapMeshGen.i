@@ -29,11 +29,11 @@
 	’˜ìŒ î•ñ‚Ì•¶š—ñ
 =end
 ---------------------------------------------------------------*/
-%module RevocapMeshGen
+%module RevocapMeshGen  // create_makefile ‚Æ“¯‚¶–¼‘O‚É‚·‚é
 
 #ifndef VERSION
 namespace kmb{
-#define VERSION "RevocapMeshGen version 1.6.01 (2013/3/8)"
+#define VERSION "RevocapMeshGen version 1.6.09 (2015/8/12)"
 #define COPYRIGHT "IIS, The University of Tokyo CISS, Large Scale Assembly, Structural Correspondence, Multi Dynamics Simulator"
 }
 #endif
@@ -55,4 +55,6 @@ namespace kmb{
 %include "PatchModifier.i"
 %include "EdgeStitcher.i"
 %include "MeshSmoother.i"
+%include "PatchOperation.i"
+%include "PolygonPartitioner.i"
 

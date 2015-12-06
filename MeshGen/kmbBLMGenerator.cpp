@@ -128,15 +128,15 @@ kmb::BLMGenerator::getDuplicatedNodeId(kmb::nodeIdType nodeId)
 kmb::bodyIdType
 kmb::BLMGenerator::extrude(kmb::bodyIdType &boundaryId)
 {
-
+	// 準備
 	kmb::ElementContainer* boundBody = this->mesh->getBodyPtr(boundaryId);
 	if( boundBody == NULL ){
 		return kmb::Body::nullBodyId;
 	}
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
 
-
-
+	// boundBody に含まれる節点を２重化
+	// 新しい boundaryId に新節点からなる面を追加
 	kmb::nodeIdType nodeTable[8];
 	boundaryId = mesh->beginElement( boundBody->getCount() );
 	kmb::ElementContainer::iterator bIter = boundBody->begin();
@@ -150,22 +150,22 @@ kmb::BLMGenerator::extrude(kmb::bodyIdType &boundaryId)
 	}
 	mesh->endElement();
 
-
+	// 近傍情報の作成
 	kmb::NodeNeighborInfo neighborInfo;
 	neighborInfo.appendCoboundary( boundBody );
 
-
-
-
-
-
+	// 法線を計算する => オリジナル表面
+	// 点を動かす     => 複製した表面
+	// 元の点の周りの要素を調べて
+	// その法線方向でダミー節点を外側にずらす
+	// 元の節点はそのままの場所においておく
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-
+		// 周辺要素を取り出して、法線ベクトルを求める
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighbor::iterator neiIter = neighborInfo.beginIteratorAt( nodeId );
@@ -183,15 +183,15 @@ kmb::BLMGenerator::extrude(kmb::bodyIdType &boundaryId)
 		}
 		normVect.normalize();
 		this->mesh->getNode(nodeId,node);
-
-
+		// 内側のダミー頂点の更新
+		// 法線ベクトルに動かす
 		kmb::Point3D point = node + normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), dupnodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
 
-
+	// オリジナル表面と複製した点の情報から層メッシュの作成
 	kmb::bodyIdType layerId = this->mesh->beginElement( boundBody->getCount() * this->layerNum );
 	{
 		kmb::nodeIdType oldNodeId[8];
@@ -207,7 +207,7 @@ kmb::BLMGenerator::extrude(kmb::bodyIdType &boundaryId)
 	}
 	this->mesh->endElement();
 
-
+	// メモリ解放
 	clearLayerNodes();
 	return layerId;
 }
@@ -215,13 +215,13 @@ kmb::BLMGenerator::extrude(kmb::bodyIdType &boundaryId)
 kmb::bodyIdType
 kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 {
+	// (1) body の節点の周りの近傍情報、境界情報
+	// (2) 元の body の節点を二重化
+	// (3) 親要素で元の節点を含むものを新節点に置き換える
+	// (4) 節点の法線ベクトルを求めて、元の節点を外側に動かす
+	// (5) 元の節点と新節点の間を要素で埋める
 
-
-
-
-
-
-
+	// 準備
 	kmb::ElementContainer* boundBody = mesh->getBodyPtr( boundaryId );
 	if( boundBody == NULL ){
 		return false;
@@ -232,8 +232,8 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 	}
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
 
-
-
+	// 旧節点からなるダミー面を追加
+	// 元の面の節点番号を新しいものに置き換える
 	kmb::nodeIdType orgNodeTable[8];
 	kmb::nodeIdType nodeTable[8];
 	kmb::bodyIdType outerBoundaryId = mesh->beginElement( boundBody->getCount() );
@@ -251,9 +251,9 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 		++bIter;
 	}
 	mesh->endElement();
+	// boundBody => 元の境界面で節点番号を新しい番号に置き換えた
 
-
-
+	// 面の親要素すべてについて番号の付け替え
 	kmb::ElementContainer::iterator eIter = parentBody->begin();
 	while( !eIter.isFinished() ){
 		int len = eIter.getNodeCount();
@@ -265,32 +265,32 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 		}
 		++eIter;
 	}
+	// parentBody => 親領域で節点番号を新しい番号に置き換えた
 
-
-
+	// 複製した表面グループ
 	kmb::ElementContainer* outerBoundaryBody = mesh->getBodyPtr( outerBoundaryId );
 	if( outerBoundaryBody == NULL ){
 		return false;
 	}
+	// outerBoundBody => 元の境界面で元の節点番号のまま
 
-
-
-
+	// 節点の近傍関係の取得
+	// boundBody の節点を置き換えてから
 	kmb::NodeNeighborInfo neighborInfo;
 	neighborInfo.appendCoboundary( boundBody );
 
-
-
-
-
-
+	// 法線を計算する => 複製した節点   内部の面   boundBody
+	// 点を動かす     => オリジナル節点 外側の面　 outerBoundaryBody
+	// 複製した点の周りの要素を調べて
+	// その法線方向で元の節点を外側にずらす
+	// 複製した節点はそのままの場所においておく
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-
+		// 複製点の周辺要素を取り出して、法線ベクトルを求める
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighbor::iterator neiIter = neighborInfo.beginIteratorAt( dupnodeId );
@@ -308,15 +308,15 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 		}
 		normVect.normalize();
 		this->mesh->getNode(nodeId,node);
-
-
+		// 頂点の更新
+		// 法線ベクトルの方向に動かす
 		kmb::Point3D point = node + normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), nodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
 
-
+	// 新しい表面とオリジナル節点の情報から層メッシュの作成
 	kmb::bodyIdType layerId = this->mesh->beginElement( boundBody->getCount() * this->layerNum );
 	{
 		kmb::ElementContainer::iterator bIter = outerBoundaryBody->begin();
@@ -331,9 +331,9 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 	}
 	this->mesh->endElement();
 
-
+	// メモリ解放
 	clearLayerNodes();
-
+	// 新しい表面（節点番号はオリジナル）を返す
 	boundaryId = outerBoundaryId;
 	return layerId;
 }
@@ -341,13 +341,13 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 kmb::bodyIdType
 kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 {
+	// (1) body の節点の周りの近傍情報、境界情報
+	// (2) 元の body の節点を二重化
+	// (3) 親要素で元の節点を含むものを新節点に置き換える
+	// (4) 節点の法線ベクトルを求めて、新しい節点を内側に動かす
+	// (5) 元の節点と新節点の間を要素で埋める
 
-
-
-
-
-
-
+	// 準備
 	kmb::ElementContainer* boundBody = mesh->getBodyPtr( boundaryId );
 	if( boundBody == NULL ){
 		return false;
@@ -358,8 +358,8 @@ kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId
 	}
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
 
-
-
+	// 旧節点からなるダミー面を追加
+	// 元の面の節点番号を新しいものに置き換える
 	kmb::nodeIdType orgNodeTable[8];
 	kmb::nodeIdType nodeTable[8];
 	kmb::bodyIdType outerBoundaryId = mesh->beginElement( boundBody->getCount() );
@@ -378,7 +378,7 @@ kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId
 	}
 	mesh->endElement();
 
-
+	// 面の親要素すべてについて番号の付け替え
 	kmb::ElementContainer::iterator eIter = parentBody->begin();
 	while( !eIter.isFinished() ){
 		int len = eIter.getNodeCount();
@@ -391,29 +391,29 @@ kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId
 		++eIter;
 	}
 
-
+	// 複製した表面グループ
 	kmb::ElementContainer* outerBoundaryBody = mesh->getBodyPtr( outerBoundaryId );
 	if( outerBoundaryBody == NULL ){
 		return false;
 	}
 
-
-
+	// 節点の近傍関係の取得
+	// boundBody の節点を置き換えてから
 	kmb::NodeNeighborInfo neighborInfo;
 	neighborInfo.appendCoboundary( outerBoundaryBody );
 
-
-
-
-
-
+	// 点を動かす     => 複製した節点   内部面 boundBody
+	// 法線を計算する => オリジナル節点 外側面 outerBoundaryBody
+	// 複製した点の周りの要素を調べて
+	// その法線方向で元の節点を外側にずらす
+	// 複製した節点はそのままの場所においておく
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-
+		// 複製点の周辺要素を取り出して、法線ベクトルを求める
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighbor::iterator neiIter = neighborInfo.beginIteratorAt( nodeId );
@@ -431,15 +431,15 @@ kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId
 		}
 		normVect.normalize();
 		this->mesh->getNode(dupnodeId,node);
-
-
+		// 頂点の更新
+		// 法線ベクトルの逆方向に動かす
 		kmb::Point3D point = node - normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), dupnodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
 
-
+	// 新しい表面とオリジナル節点の情報から層メッシュの作成
 	kmb::bodyIdType layerId = this->mesh->beginElement( boundBody->getCount() * this->layerNum );
 	{
 		kmb::ElementContainer::iterator bIter = outerBoundaryBody->begin();
@@ -454,9 +454,9 @@ kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId
 	}
 	this->mesh->endElement();
 
-
+	// メモリ解放
 	clearLayerNodes();
-
+	// 新しい表面（節点番号はオリジナル）を返す
 	boundaryId = outerBoundaryId;
 	return layerId;
 }
@@ -464,7 +464,7 @@ kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId
 kmb::bodyIdType
 kmb::BLMGenerator::extrudeFromData(const char* faceGroup)
 {
-
+	// (0) 準備
 	kmb::DataBindings* faceData = mesh->getDataBindingsPtr(faceGroup);
 	if( faceData == NULL || faceData->getBindingMode() != kmb::DataBindings::FaceGroup ){
 		return kmb::Body::nullBodyId;
@@ -474,14 +474,14 @@ kmb::BLMGenerator::extrudeFromData(const char* faceGroup)
 		return kmb::Body::nullBodyId;
 	}
 
-
+	// 評価関数の準備
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
 
-
+	// 近傍情報の作成
 	kmb::NodeNeighborFaceInfo neighborInfo;
 	neighborInfo.appendCoboundary( faceData, parentBody );
 
-
+	// FaceGroup 上の節点を二重化
 	kmb::DataBindings::iterator fIter = faceData->begin();
 	while( !fIter.isFinished() ){
 		kmb::Face f;
@@ -498,15 +498,15 @@ kmb::BLMGenerator::extrudeFromData(const char* faceGroup)
 		++fIter;
 	}
 
-
-
+	// 元の点の周りの要素を調べて
+	// その法線方向でダミー節点をずらす
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-
+		// 周辺要素を取り出して、法線ベクトルを求める
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighborFace::iterator nfIter = neighborInfo.beginIteratorAt( nodeId );
@@ -524,15 +524,15 @@ kmb::BLMGenerator::extrudeFromData(const char* faceGroup)
 		}
 		normVect.normalize();
 		this->mesh->getNode(nodeId,node);
-
-
+		// 内側のダミー頂点の更新
+		// 法線ベクトルと逆の方向に動かす
 		kmb::Point3D point = node + normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), dupnodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
 
-
+	// 面すべてについて処理
 	kmb::bodyIdType layerId = this->mesh->beginElement( faceData->getIdCount() * this->layerNum );
 	{
 		kmb::DataBindings* faceData2 = mesh->createDataBindings(faceGroup,
@@ -577,7 +577,7 @@ kmb::BLMGenerator::extrudeFromData(const char* faceGroup)
 kmb::bodyIdType
 kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 {
-
+	// 準備
 	kmb::DataBindings* faceData = mesh->getDataBindingsPtr(faceGroup);
 	if( faceData == NULL || faceData->getBindingMode() != kmb::DataBindings::FaceGroup ){
 		return kmb::Body::nullBodyId;
@@ -587,8 +587,8 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 		return kmb::Body::nullBodyId;
 	}
 
-
-
+	// FaceGroup 上の節点を二重化
+	// オリジナル節点の Boundary Body を作成
 	kmb::ElementContainerMap boundaryBody;
 	kmb::DataBindings::iterator fIter = faceData->begin();
 	kmb::nodeIdType nodes[8];
@@ -609,7 +609,7 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 		++fIter;
 	}
 
-
+	// 面の親要素すべてについて番号の付け替え
 	kmb::ElementContainer::iterator eIter = parentBody->begin();
 	while( !eIter.isFinished() ){
 		int len = eIter.getNodeCount();
@@ -622,22 +622,22 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 		++eIter;
 	}
 
-
+	// 評価関数の準備
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
 
-
+	// 近傍情報の作成
 	kmb::NodeNeighborFaceInfo neighborInfo;
 	neighborInfo.appendCoboundary( faceData, parentBody );
 
-
-
+	// 複製節点の周りの要素を調べて
+	// その法線方向で元の節点をずらす
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-
+		// 周辺要素を取り出して、法線ベクトルを求める
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighborFace::iterator nfIter = neighborInfo.beginIteratorAt( dupnodeId );
@@ -655,15 +655,15 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 		}
 		normVect.normalize();
 		this->mesh->getNode(nodeId,node);
-
-
+		// 内側のダミー頂点の更新
+		// 法線ベクトルと逆の方向に動かす
 		kmb::Point3D point = node + normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), nodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
 
-
+	// 面すべてについて処理
 	kmb::bodyIdType layerId = this->mesh->beginElement( faceData->getIdCount() * this->layerNum );
 	{
 		faceData->clear();
@@ -682,7 +682,7 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 	this->mesh->endElement();
 	faceData->setTargetBodyId( layerId );
 
-
+	// メモリ解放
 	clearLayerNodes();
 	return layerId;
 }
@@ -690,7 +690,7 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 kmb::bodyIdType
 kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 {
-
+	// 準備
 	kmb::DataBindings* faceData = mesh->getDataBindingsPtr(faceGroup);
 	if( faceData == NULL || faceData->getBindingMode() != kmb::DataBindings::FaceGroup ){
 		return kmb::Body::nullBodyId;
@@ -700,8 +700,8 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 		return kmb::Body::nullBodyId;
 	}
 
-
-
+	// FaceGroup 上の節点を二重化
+	// オリジナル節点の Boundary Body を作成
 	kmb::ElementContainerMap outerBoundaryBody;
 	kmb::DataBindings::iterator fIter = faceData->begin();
 	kmb::nodeIdType nodes[8];
@@ -722,7 +722,7 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 		++fIter;
 	}
 
-
+	// 面の親要素すべてについて番号の付け替え
 	kmb::ElementContainer::iterator eIter = parentBody->begin();
 	while( !eIter.isFinished() ){
 		int len = eIter.getNodeCount();
@@ -735,22 +735,21 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 		++eIter;
 	}
 
-
+	// 評価関数の準備
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
 
-
+	// 近傍情報の作成
 	kmb::NodeNeighborInfo neighborInfo;
 	neighborInfo.appendCoboundary( &outerBoundaryBody );
 
-
-
+	// 複製節点の周りの要素を調べて
+	// その法線方向で元の節点をずらす
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
-		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-
+		// 周辺要素を取り出して、法線ベクトルを求める
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighbor::iterator neiIter = neighborInfo.beginIteratorAt( dupnodeId );
@@ -768,15 +767,15 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 		}
 		normVect.normalize();
 		this->mesh->getNode(dupnodeId,node);
-
-
+		// 内側のダミー頂点の更新
+		// 法線ベクトルと逆の方向に動かす
 		kmb::Point3D point = node - normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), dupnodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
 
-
+	// 面すべてについて処理
 	kmb::bodyIdType layerId = this->mesh->beginElement( faceData->getIdCount() * this->layerNum );
 	{
 		faceData->clear();
@@ -795,7 +794,7 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 	this->mesh->endElement();
 	faceData->setTargetBodyId( layerId );
 
-
+	// メモリ解放
 	clearLayerNodes();
 	return layerId;
 }
@@ -803,14 +802,14 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 bool
 kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &layerId)
 {
+	// (0) 準備
+	// (1) faceGroup の節点の周りの近傍情報、境界情報
+	// (2) 元の faceGroup の内部節点を二重化
+	// (3) 節点の法線ベクトルを求めて、二重化した新節点を内側に動かす
+	// (4) 元の節点と新節点の間を要素で埋める
+	// (5) 親要素で元の節点を含むものを新節点に置き換える
 
-
-
-
-
-
-
-
+	// (0)
 	kmb::DataBindings* faceData = mesh->getDataBindingsPtr(faceGroup);
 	if( faceData == NULL || faceData->getBindingMode() != kmb::DataBindings::FaceGroup ){
 		return false;
@@ -820,11 +819,11 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 		return false;
 	}
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
-
+	// facegroup を要素化する
 	kmb::ElementContainer* body = new kmb::ElementContainerMap();
 	mesh->faceGroupToBody( faceGroup, body );
 
-
+	// (1)
 	kmb::NodeNeighborFaceInfo neighborInfo;
 	neighborInfo.appendCoboundary( faceData, parentBody );
 	kmb::BoundaryExtractor bext;
@@ -832,7 +831,7 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 	kmb::DataBindings* boundNG = mesh->createDataBindings("BoundNG",kmb::DataBindings::NodeGroup,kmb::PhysicalValue::None,"tmp");
 	bext.getBoundaryNodeGroup( body, boundNG );
 
-
+	// (2)
 	kmb::DataBindings::iterator fIter = faceData->begin();
 	while( !fIter.isFinished() ){
 		kmb::Face f;
@@ -852,16 +851,16 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 		++fIter;
 	}
 
-
-
-
+	// (3)
+	// 元の点の周りの要素を調べて
+	// その法線方向でダミー節点をずらす
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-
+		// 周辺要素を取り出して、法線ベクトルを求める
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighborFace::iterator nfIter = neighborInfo.beginIteratorAt( nodeId );
@@ -879,16 +878,16 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 		}
 		normVect.normalize();
 		this->mesh->getNode(nodeId,node);
-
-
+		// 内側のダミー頂点の更新
+		// 法線ベクトルと逆の方向に動かす
 		kmb::Point3D point = node - normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), dupnodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
 
-
-
+	// (4)
+	// 面すべてについて処理
 	layerId = this->mesh->beginElement( faceData->getIdCount() * this->layerNum );
 	{
 		kmb::DataBindings* faceData2 = mesh->createDataBindings(faceGroup,
@@ -925,8 +924,8 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 	}
 	this->mesh->endElement();
 
-
-
+	// (5)
+	// 面の親要素すべてについて番号の付け替え
 	kmb::ElementContainer::iterator eIter = parentBody->begin();
 	while( !eIter.isFinished() ){
 		int len = eIter.getNodeCount();
@@ -949,14 +948,14 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 bool
 kmb::BLMGenerator::generateInner(kmb::bodyIdType bodyId,kmb::bodyIdType parentId,kmb::bodyIdType &layerId)
 {
+	// (0) 準備
+	// (1) body の節点の周りの近傍情報、境界情報
+	// (2) 元の body の内部節点を二重化
+	// (3) 節点の法線ベクトルを求めて、二重化した新節点を内側に動かす
+	// (4) 元の節点と新節点の間を要素で埋める
+	// (5) 親要素で元の節点を含むものを新節点に置き換える
 
-
-
-
-
-
-
-
+	// (0)
 	kmb::ElementContainer* boundBody = mesh->getBodyPtr( bodyId );
 	if( boundBody == NULL ){
 		return false;
@@ -967,7 +966,7 @@ kmb::BLMGenerator::generateInner(kmb::bodyIdType bodyId,kmb::bodyIdType parentId
 	}
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
 
-
+	// (1)
 	kmb::NodeNeighborInfo neighborInfo;
 	neighborInfo.appendCoboundary( boundBody );
 	kmb::BoundaryExtractor bext;
@@ -975,7 +974,7 @@ kmb::BLMGenerator::generateInner(kmb::bodyIdType bodyId,kmb::bodyIdType parentId
 	kmb::DataBindings* boundNG = mesh->createDataBindings("BoundNG",kmb::DataBindings::NodeGroup,kmb::PhysicalValue::None,"tmp");
 	bext.getBoundaryNodeGroup( boundBody, boundNG );
 
-
+	// (2)
 	kmb::ElementContainer::iterator bIter = boundBody->begin();
 	while( !bIter.isFinished() ){
 		int num = bIter.getNodeCount();
@@ -985,16 +984,16 @@ kmb::BLMGenerator::generateInner(kmb::bodyIdType bodyId,kmb::bodyIdType parentId
 		++bIter;
 	}
 
-
-
-
+	// (3)
+	// 元の点の周りの要素を調べて
+	// その法線方向で2重化したダミー節点を内側にずらす
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-
+		// 周辺要素を取り出して、法線ベクトルを求める
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighbor::iterator neiIter = neighborInfo.beginIteratorAt( nodeId );
@@ -1012,16 +1011,16 @@ kmb::BLMGenerator::generateInner(kmb::bodyIdType bodyId,kmb::bodyIdType parentId
 		}
 		normVect.normalize();
 		this->mesh->getNode(nodeId,node);
-
-
+		// 内側のダミー頂点の更新
+		// 法線ベクトルと逆の方向に動かす
 		kmb::Point3D point = node - normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), dupnodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
 
-
-
+	// (4)
+	// 面すべてについて処理
 	layerId = this->mesh->beginElement( boundBody->getCount() * this->layerNum );
 	{
 		kmb::nodeIdType oldNodeId[8];
@@ -1037,8 +1036,8 @@ kmb::BLMGenerator::generateInner(kmb::bodyIdType bodyId,kmb::bodyIdType parentId
 	}
 	this->mesh->endElement();
 
-
-
+	// (5)
+	// 面の親要素すべてについて番号の付け替え
 	kmb::ElementContainer::iterator eIter = parentBody->begin();
 	while( !eIter.isFinished() ){
 		int len = eIter.getNodeCount();
@@ -1075,12 +1074,12 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 			newNodeId[i] = oldNodeId[i];
 		}
 	}
-
+	// 要素の頂点のうち、どの節点が２重化されているかで場合分け
 	switch( etype ){
 	case kmb::TRIANGLE:
 		switch( flag ){
 		case 0x07:
-
+			// 3点全て
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = getLayerNodeId( oldNodeId[0], newNodeId[0], i );
@@ -1091,10 +1090,6 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[5] = getLayerNodeId( oldNodeId[2], newNodeId[2], i+1 );
 					elemId = mesh->addElement(kmb::WEDGE,nodeTable);
 					if( i == layerNum-1 ){
-
-
-
-
 						outerFace.setId(elemId,1);
 					}
 				}
@@ -1108,17 +1103,13 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[5] = getLayerNodeId( oldNodeId[2], newNodeId[2], i );
 					elemId = mesh->addElement(kmb::WEDGE,nodeTable);
 					if( i == 0 ){
-
-
-
-
 						outerFace.setId(elemId,1);
 					}
 				}
 			}
 			break;
 		case 0x03:
-
+			// 2点 0 1
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = oldNodeId[2];
@@ -1128,10 +1119,6 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[4] = getLayerNodeId( oldNodeId[1], newNodeId[1], i );
 					elemId = mesh->addElement(kmb::PYRAMID,nodeTable);
 					if( i == layerNum-1 ){
-
-
-
-
 						outerFace.setId(elemId,1);
 					}
 				}
@@ -1144,17 +1131,13 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[4] = getLayerNodeId( oldNodeId[1], newNodeId[1], i+1 );
 					elemId = mesh->addElement(kmb::PYRAMID,nodeTable);
 					if( i == 0 ){
-
-
-
-
 						outerFace.setId(elemId,1);
 					}
 				}
 			}
 			break;
 		case 0x05:
-
+			// 2点 2 0
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = oldNodeId[1];
@@ -1164,10 +1147,6 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[4] = getLayerNodeId( oldNodeId[0], newNodeId[0], i );
 					elemId = mesh->addElement(kmb::PYRAMID,nodeTable);
 					if( i == layerNum-1 ){
-
-
-
-
 						outerFace.setId(elemId,1);
 					}
 				}
@@ -1180,17 +1159,13 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[4] = getLayerNodeId( oldNodeId[0], newNodeId[0], i+1 );
 					elemId = mesh->addElement(kmb::PYRAMID,nodeTable);
 					if( i == 0 ){
-
-
-
-
 						outerFace.setId(elemId,1);
 					}
 				}
 			}
 			break;
 		case 0x06:
-
+			// 2点 1 2
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = oldNodeId[0];
@@ -1200,10 +1175,6 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[4] = getLayerNodeId( oldNodeId[2], newNodeId[2], i );
 					elemId = mesh->addElement(kmb::PYRAMID,nodeTable);
 					if( i == layerNum-1 ){
-
-
-
-
 						outerFace.setId(elemId,1);
 					}
 				}
@@ -1216,17 +1187,13 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[4] = getLayerNodeId( oldNodeId[2], newNodeId[2], i+1 );
 					elemId = mesh->addElement(kmb::PYRAMID,nodeTable);
 					if( i == 0 ){
-
-
-
-
 						outerFace.setId(elemId,1);
 					}
 				}
 			}
 			break;
 		case 0x01:
-
+			// 1点 0
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = getLayerNodeId( oldNodeId[0], newNodeId[0], i );
@@ -1235,10 +1202,6 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[3] = getLayerNodeId( oldNodeId[0], newNodeId[0], i+1 );
 					elemId = mesh->addElement(kmb::TETRAHEDRON,nodeTable);
 					if( i == layerNum-1 ){
-
-
-
-
 						outerFace.setId(elemId,0);
 					}
 				}
@@ -1250,17 +1213,13 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[3] = getLayerNodeId( oldNodeId[0], newNodeId[0], i );
 					elemId = mesh->addElement(kmb::TETRAHEDRON,nodeTable);
 					if( i == 0 ){
-
-
-
-
 						outerFace.setId(elemId,0);
 					}
 				}
 			}
 			break;
 		case 0x02:
-
+			// 1点 1
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = oldNodeId[0];
@@ -1269,10 +1228,6 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[3] = getLayerNodeId( oldNodeId[1], newNodeId[1], i+1 );
 					elemId = mesh->addElement(kmb::TETRAHEDRON,nodeTable);
 					if( i == layerNum-1 ){
-
-
-
-
 						outerFace.setId(elemId,1);
 					}
 				}
@@ -1284,17 +1239,13 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[3] = getLayerNodeId( oldNodeId[1], newNodeId[1], i );
 					elemId = mesh->addElement(kmb::TETRAHEDRON,nodeTable);
 					if( i == 0 ){
-
-
-
-
 						outerFace.setId(elemId,1);
 					}
 				}
 			}
 			break;
 		case 0x04:
-
+			// 1点 2
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = oldNodeId[0];
@@ -1303,10 +1254,6 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[3] = getLayerNodeId( oldNodeId[2], newNodeId[2], i+1 );
 					elemId = mesh->addElement(kmb::TETRAHEDRON,nodeTable);
 					if( i == layerNum-1 ){
-
-
-
-
 						outerFace.setId(elemId,2);
 					}
 				}
@@ -1318,10 +1265,6 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[3] = getLayerNodeId( oldNodeId[2], newNodeId[2], i );
 					elemId = mesh->addElement(kmb::TETRAHEDRON,nodeTable);
 					if( i == 0 ){
-
-
-
-
 						outerFace.setId(elemId,2);
 					}
 				}
@@ -1334,7 +1277,7 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 	case kmb::QUAD:
 		switch( flag ){
 		case 0x0f:
-
+			// 4点全て
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = getLayerNodeId( oldNodeId[0], newNodeId[0], i );
@@ -1347,11 +1290,6 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[7] = getLayerNodeId( oldNodeId[3], newNodeId[3], i+1 );
 					elemId = mesh->addElement(kmb::HEXAHEDRON,nodeTable);
 					if( i == layerNum-1 ){
-
-
-
-
-
 						outerFace.setId(elemId,1);
 					}
 				}
@@ -1367,57 +1305,52 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 					nodeTable[7] = getLayerNodeId( oldNodeId[3], newNodeId[3], i );
 					elemId = mesh->addElement(kmb::HEXAHEDRON,nodeTable);
 					if( i == 0 ){
-
-
-
-
-
 						outerFace.setId(elemId,1);
 					}
 				}
 			}
 			break;
 		case 0x01:
-
+			// 1点 0
 			break;
 		case 0x02:
-
+			// 1点 1
 			break;
 		case 0x04:
-
+			// 1点 2
 			break;
 		case 0x08:
-
+			// 1点 3
 			break;
 		case 0x03:
-
+			// 2点 0 1
 			break;
 		case 0x05:
-
+			// 2点 0 2
 			break;
 		case 0x09:
-
+			// 2点 0 3
 			break;
 		case 0x06:
-
+			// 2点 1 2
 			break;
 		case 0x0a:
-
+			// 2点 1 3
 			break;
 		case 0x0c:
-
+			// 2点 2 3
 			break;
 		case 0x07:
-
+			// 3点 0 1 2
 			break;
 		case 0x0b:
-
+			// 3点 0 1 3
 			break;
 		case 0x0d:
-
+			// 3点 0 2 3
 			break;
 		case 0x0e:
-
+			// 3点 1 2 3
 			break;
 		default:
 			break;
@@ -1437,11 +1370,11 @@ kmb::BLMGenerator::getLayerNodeId(kmb::nodeIdType outerNodeId, kmb::nodeIdType i
 
 	}
 	kmb::nodeIdType* nodes = NULL;
-
+	// あればそれを返す
 	if( this->layerNodes.find( std::pair<kmb::nodeIdType,kmb::nodeIdType>(innerNodeId,outerNodeId) ) != this->layerNodes.end() ){
 		nodes = this->layerNodes[ std::pair<kmb::nodeIdType,kmb::nodeIdType>(innerNodeId,outerNodeId) ];
 	}else{
-
+	// なければ作る
 		kmb::Node inner,outer;
 		if( !this->mesh->getNode(innerNodeId,inner)
 			|| !this->mesh->getNode(outerNodeId,outer) ){
@@ -1453,7 +1386,7 @@ kmb::BLMGenerator::getLayerNodeId(kmb::nodeIdType outerNodeId, kmb::nodeIdType i
 			dict.normalize();
 			for( int i = 0 ; i < this->layerNum-1; ++i )
 			{
-
+				// 中間頂点の登録
 				kmb::Point3D pt = inner + dict.scalar( layerThick[i] );
 				nodes[i] = this->mesh->addNode(pt.x(),pt.y(),pt.z());
 			}

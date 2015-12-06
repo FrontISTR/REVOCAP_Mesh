@@ -33,8 +33,7 @@ kmb::RevocapNeutralIO::~RevocapNeutralIO(void)
 {
 }
 
-int
-kmb::RevocapNeutralIO::loadFromRNFFile(const char* filename,kmb::MeshData* mesh)
+int kmb::RevocapNeutralIO::loadFromRNFFile(const char* filename,kmb::MeshData* mesh)
 {
 	if( mesh == NULL ){
 		return -1;
@@ -67,6 +66,109 @@ kmb::RevocapNeutralIO::loadFromRNFFile(const char* filename,kmb::MeshData* mesh)
 }
 
 int
+kmb::RevocapNeutralIO::saveHeader(const char* filename)
+{
+	std::ofstream output( filename, std::ios_base::out );
+	if( output.fail() ){
+		return -1;
+	}
+	writeHeader(output);
+	output.close();
+	return 0;
+}
+
+int
+kmb::RevocapNeutralIO::appendHeader(const char* filename)
+{
+	std::ofstream output( filename, std::ios_base::app );
+	if( output.fail() ){
+		return -1;
+	}
+	writeHeader(output);
+	output.close();
+	return 0;
+}
+
+int
+kmb::RevocapNeutralIO::appendDataToRNFFile(const char* filename,kmb::MeshData* mesh,const char* name,const char* stype)
+{
+	kmb::DataBindings* data = NULL;
+	if( mesh == NULL || (data=mesh->getDataBindingsPtr(name,stype))==NULL ){
+		return -1;
+	}else{
+		std::ofstream output( filename, std::ios_base::app );
+		if( output.fail() ){
+			return -1;
+		}
+		output << "data:" << std::endl;
+		writeData(output,mesh,name,stype);
+		output.close();
+	}
+	return 0;
+}
+
+int
+kmb::RevocapNeutralIO::saveToRNFFile(const char* filename,kmb::MeshData* mesh)
+{
+	if( mesh == NULL || !mesh->getNodes() ){
+		return -1;
+	}else{
+		std::ofstream output( filename, std::ios_base::out );
+		if( output.fail() ){
+			return -1;
+		}
+		writeHeader(output);
+		output << "node:" << std::endl;
+		output << "  size: " << mesh->getNodeCount() << std::endl;
+		output << "  coordinate: " << std::endl;
+		double x,y,z;
+		kmb::Point3DContainer::const_iterator nIter = mesh->getNodes()->begin();
+		kmb::Point3DContainer::const_iterator nIterEnd = mesh->getNodes()->end();
+		while( nIter != nIterEnd ){
+			if( nIter.getXYZ(x,y,z) ){
+				output << "  - [" << nIter.getId() << ", " << std::showpoint << x << ", " << y << ", " << z <<  "]" << std::endl;
+			}			
+			++nIter;
+		}
+		int bodyCount = static_cast<int>(mesh->getBodyCount());
+		output << "bodyCount: " << bodyCount << std::endl;
+		output << "element:" << std::endl;
+		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
+			const kmb::ElementContainer* body = mesh->getBodyPtr(bodyId);
+			if( body )
+			{
+				output << "  - size: " << body->getCount() << std::endl;
+				const char* bodyName = body->getBodyName();
+				if( bodyName && strlen(bodyName) > 0 ){
+					output << "    name: \"" << body->getBodyName() << "\"" << std::endl;
+				}
+				output << "    connectivity:" << std::endl;
+				kmb::ElementContainer::const_iterator eIter = body->begin();
+				while( eIter != body->end() ){
+					output << "      - [" << eIter.getId() << ", ";
+					output << eIter.getTypeString();
+					int num = eIter.getNodeCount();
+					for(int i=0;i<num;++i){
+						output << ", " << eIter.getCellId(i);
+					}
+					output << "]" << std::endl;
+					++eIter;
+				}
+			}
+		}
+		output << "data:" << std::endl;
+		const std::multimap< std::string, kmb::DataBindings* > mapper = mesh->getDataBindingsMap();
+		std::multimap< std::string, kmb::DataBindings* >::const_iterator dIter = mapper.begin();
+		while( dIter != mapper.end() ){
+			writeData(output,mesh,dIter->first.c_str(),dIter->second->getSpecType().c_str());
+			++dIter;
+		}
+		output.close();
+	}
+	return 0;
+}
+
+int
 kmb::RevocapNeutralIO::readNode(std::ifstream &input,kmb::MeshData* mesh)
 {
 	std::string line;
@@ -92,7 +194,7 @@ kmb::RevocapNeutralIO::readNode(std::ifstream &input,kmb::MeshData* mesh)
 	mesh->beginNode( static_cast<size_t>(size) );
 	double x, y, z;
 	kmb::nodeIdType id;
-	char c;
+	char c; // [ や , を読み込むため
 	long nodeCounter=0;
 	while( !std::getline( input, line ).eof() ){
 		if( line.size() == 0 || line[0] == '#' ){
@@ -111,15 +213,15 @@ kmb::RevocapNeutralIO::readNode(std::ifstream &input,kmb::MeshData* mesh)
 	return 0;
 }
 
-
-
+// element は element: タグの下の配列要素
+// input.seekg( pos ); で読み込んだタグは戻しておく
 int
 kmb::RevocapNeutralIO::readElement(std::ifstream &input,kmb::MeshData* mesh)
 {
 	std::string line;
 	std::string tag;
 	std::string name;
-	char c;
+	char c; // [ や , を読み込むため
 	long size=0L;
 	kmb::elementIdType id;
 	kmb::nodeIdType nodes[20];
@@ -189,10 +291,10 @@ kmb::RevocapNeutralIO::readElement(std::ifstream &input,kmb::MeshData* mesh)
 	return 0;
 }
 
-
-
-
-
+// data: タグの下の配列要素
+// input.seekg( pos ); で読み込んだタグは戻しておく
+// Group 系のみ実装
+// Variable 系は Vector2Int のみ
 int
 kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 {
@@ -202,7 +304,7 @@ kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 	std::string mode;
 	std::string vtype;
 	std::string stype;
-	char c;
+	char c; // [ や , を読み込むため
 	long size=0L;
 	kmb::elementIdType elementId;
 	kmb::idType localId;
@@ -220,7 +322,7 @@ kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 			input.seekg( pos );
 			return 0;
 		}
-
+		// 配列要素が始まる
 		if( line[2] == '-' ){
 			name = "";
 			mode = "";
@@ -295,12 +397,12 @@ kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 							tokenizer.str(line);
 							tokenizer.clear();
 							tokenizer >> c >> c >> nodeId >> c >> c >> u >> c >> v >> c >> s >> c >> c;
-
+							//           -    [    1         ,    [    u    ,    v    ,    s    ]    ]
 							reinterpret_cast< kmb::Vector2WithIntBindings<kmb::nodeIdType>* >(data)->setValue(nodeId,u,v,s);
 							++dataCounter;
 						}
 					}else{
-
+						// GROUP 系の値の取得
 						switch( kmb::PhysicalValue::string2valueType( vtype ) )
 						{
 						case kmb::PhysicalValue::Scalar:
@@ -335,9 +437,9 @@ kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 							{
 								double v[] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 								tokenizer >> c >> c >> v[0] >> c >> v[1] >> c >> v[2] >> c >> c
-
+									//       [    [     0.0    ,    0.0     ,    0.0     ]    ,
 									>> c >> v[3] >> c >> v[4] >> c >> v[5] >> c >> c;
-
+									// [    1.0     ,    0.0     ,    0.0     ]    ]
 								value = new Point3Vector3Value( &v[0], &v[3] );
 								break;
 							}
@@ -378,7 +480,7 @@ kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 							tokenizer.str(line);
 							tokenizer.clear();
 							tokenizer >> c >> c >> elementId >> c >> localId >> c;
-
+							//           -    [    1            ,    0          ]
 							data->addId( kmb::Face(elementId,localId) );
 							++dataCounter;
 						}
@@ -397,7 +499,7 @@ kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 							tokenizer.str(line);
 							tokenizer.clear();
 							tokenizer >> c >> nodeId;;
-
+							//           -    1
 							data->addId( nodeId );
 							++dataCounter;
 						}
@@ -416,12 +518,12 @@ kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 							tokenizer.str(line);
 							tokenizer.clear();
 							tokenizer >> c >> elementId;;
-
+							//           -    1
 							data->addId( elementId );
 							++dataCounter;
 						}
 					}else{
-
+						// 空読み
 						while( !std::getline( input, line ).eof() ){
 							if( line.size() == 0 || line[0] == '#' ){
 								continue;
@@ -439,7 +541,7 @@ kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 			}
 			if( data != NULL && value != NULL && value->getType() == data->getValueType() ){
 				data->setPhysicalValue( value );
-
+				// 以後 value のメモリは data が管理する
 				value = NULL;
 			}
 			input.seekg( pos );
@@ -478,109 +580,6 @@ kmb::RevocapNeutralIO::writeHeader(std::ofstream &output)
 		std::setw(2) << std::setfill('0') << local->tm_min << ":" <<
 		std::setw(2) << std::setfill('0') << local->tm_sec << std::endl;
 	output << "---" << std::endl;
-	return 0;
-}
-
-int
-kmb::RevocapNeutralIO::saveToRNFFile(const char* filename,kmb::MeshData* mesh)
-{
-	if( mesh == NULL || !mesh->getNodes() ){
-		return -1;
-	}else{
-		std::ofstream output( filename, std::ios_base::out );
-		if( output.fail() ){
-			return -1;
-		}
-		writeHeader(output);
-		output << "node:" << std::endl;
-		output << "  size: " << mesh->getNodeCount() << std::endl;
-		output << "  coordinate: " << std::endl;
-		double x,y,z;
-		kmb::Point3DContainer::const_iterator nIter = mesh->getNodes()->begin();
-		kmb::Point3DContainer::const_iterator nIterEnd = mesh->getNodes()->end();
-		while( nIter != nIterEnd ){
-			if( nIter.getXYZ(x,y,z) ){
-				output << "  - [" << nIter.getId() << ", " << std::showpoint << x << ", " << y << ", " << z <<  "]" << std::endl;
-			}
-			++nIter;
-		}
-		int bodyCount = static_cast<int>(mesh->getBodyCount());
-		output << "bodyCount: " << bodyCount << std::endl;
-		output << "element:" << std::endl;
-		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
-			const kmb::ElementContainer* body = mesh->getBodyPtr(bodyId);
-			if( body )
-			{
-				output << "  - size: " << body->getCount() << std::endl;
-				const char* bodyName = body->getBodyName();
-				if( bodyName && strlen(bodyName) > 0 ){
-					output << "    name: \"" << body->getBodyName() << "\"" << std::endl;
-				}
-				output << "    connectivity:" << std::endl;
-				kmb::ElementContainer::const_iterator eIter = body->begin();
-				while( eIter != body->end() ){
-					output << "      - [" << eIter.getId() << ", ";
-					output << eIter.getTypeString();
-					int num = eIter.getNodeCount();
-					for(int i=0;i<num;++i){
-						output << ", " << eIter.getCellId(i);
-					}
-					output << "]" << std::endl;
-					++eIter;
-				}
-			}
-		}
-		output << "data:" << std::endl;
-		const std::multimap< std::string, kmb::DataBindings* > mapper = mesh->getDataBindingsMap();
-		std::multimap< std::string, kmb::DataBindings* >::const_iterator dIter = mapper.begin();
-		while( dIter != mapper.end() ){
-			writeData(output,mesh,dIter->first.c_str(),dIter->second->getSpecType().c_str());
-			++dIter;
-		}
-		output.close();
-	}
-	return 0;
-}
-
-int
-kmb::RevocapNeutralIO::saveHeader(const char* filename)
-{
-	std::ofstream output( filename, std::ios_base::out );
-	if( output.fail() ){
-		return -1;
-	}
-	writeHeader(output);
-	output.close();
-	return 0;
-}
-
-int
-kmb::RevocapNeutralIO::appendHeader(const char* filename)
-{
-	std::ofstream output( filename, std::ios_base::app );
-	if( output.fail() ){
-		return -1;
-	}
-	writeHeader(output);
-	output.close();
-	return 0;
-}
-
-int
-kmb::RevocapNeutralIO::appendDataToRNFFile(const char* filename,kmb::MeshData* mesh,const char* name,const char* stype)
-{
-	kmb::DataBindings* data = NULL;
-	if( mesh == NULL || (data=mesh->getDataBindingsPtr(name,stype))==NULL ){
-		return -1;
-	}else{
-		std::ofstream output( filename, std::ios_base::app );
-		if( output.fail() ){
-			return -1;
-		}
-		output << "data:" << std::endl;
-		writeData(output,mesh,name,stype);
-		output.close();
-	}
 	return 0;
 }
 

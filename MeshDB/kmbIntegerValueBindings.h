@@ -18,7 +18,7 @@ class IntegerValueBindings : public kmb::DataBindings
 {
 public:
 	IntegerValueBindings(size_t count,kmb::DataBindings::bindingMode bmode=kmb::DataBindings::NodeVariable);
-
+	// ‘¼‚ÅŠm•ÛÏ‚İ‚Ì”z—ñ‚ğ Data ‚Æ‚µ‚Äg‚¤
 	IntegerValueBindings(size_t count,int* values,kmb::DataBindings::bindingMode bmode=kmb::DataBindings::NodeVariable);
 	virtual ~IntegerValueBindings(void);
 	virtual const char* getContainerType(void) const{

@@ -236,7 +236,7 @@ kmb::SquareMatrix_DoubleArray::add(int i,int j,double val)
 	return true;
 }
 
-
+/// Column Vector
 
 kmb::ColumnVector_DoubleArray::ColumnVector_DoubleArray(int size)
 : ColumnVector(size)

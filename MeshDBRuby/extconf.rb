@@ -10,7 +10,7 @@ Linux 環境の場合、ldd RevocapMesh.so で確認！
 require 'mkmf'
 require 'fileutils'
 
-modulename = " RevocapMesh"
+modulename = "RevocapMesh"
 
 puts "extconf for #{modulename} #{RUBY_PLATFORM} #{RUBY_VERSION}"
 

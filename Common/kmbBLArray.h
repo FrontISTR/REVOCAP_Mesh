@@ -133,11 +133,11 @@ public:
 			}
 		}
 	}
-
-
-
-
-
+	// メイン配列とサブ配列の大きさを決める
+	// 2^n * tSize >= size を満たす最小の n を決めて、
+	// サブ配列の大きさは 2^n とする
+	// メイン配列の大きさは subSize * topSize > size を満たすように決めた topSize とする
+	// この処理のあとには getSize() >= size が保証される
 	bool initialize(size_t size,size_t tSize=1)
 	{
 		clear();
@@ -253,13 +253,13 @@ public:
 			ary[tIndex] != NULL &&
 			ary[tIndex][n*sIndex] != defval;
 	}
-
+	// 最初に何かが格納されている index を返す
 	bool first(BLArrayIndex &index) const
 	{
 		for(size_t i = 0;i<topSize;++i){
 			if( ary[i] != NULL ){
 				for(size_t j = 0;j<subSize;++j){
-
+					// 全ての成分に値が入っているか
 					bool flag = true;
 					for(int k=0;k<n;++k){
 						flag &= ( ary[i][n*j+k] != defval );
@@ -335,12 +335,12 @@ protected:
 		}
 		return true;
 	}
-
+	// 実際の subarray の確保は必要になった時に行う
 	bool increaseSubArray(size_t tSize){
 		if( tSize > topSize ){
-
+			// 元の親配列を保存
 			T** temp = ary;
-
+			// 新しい親配列を作る
 			ary = new T*[ tSize ];
 			for(size_t i = 0;i<topSize;++i){
 				ary[i] = temp[i];
@@ -348,12 +348,6 @@ protected:
 			for(size_t i = topSize;i<tSize;++i){
 				ary[i] = NULL;
 			}
-
-
-
-
-
-
 			delete[] temp;
 			topSize = tSize;
 			return true;
@@ -410,8 +404,8 @@ public:
 			localbitmask = 0U;
 		}
 	}
-
-
+	// ポインタを NULL にするだけでメモリの解放はしない
+	// このクラスの外でメモリ管理をしている場合
 	void clearData(void){
 		if( ary ){
 			for(size_t i = 0;i<topSize;++i){
@@ -471,7 +465,7 @@ public:
 			ary[tIndex] != NULL &&
 			ary[tIndex][sIndex] != NULL;
 	}
-
+	// 最初に格納されている index を返す
 	bool first(BLArrayIndex &index) const
 	{
 		for(size_t i = 0;i<topSize;++i){
@@ -508,7 +502,7 @@ protected:
 		}
 		return ary[tIndex][sIndex];
 	}
-
+	// 実際の subarray の確保は必要になった時に行う
 	bool increaseSubArray(size_t tSize){
 		if( tSize > topSize ){
 			T*** temp = ary;
@@ -519,12 +513,6 @@ protected:
 			for(size_t i = topSize;i<tSize;++i){
 				ary[i] = NULL;
 			}
-
-
-
-
-
-
 			delete[] temp;
 			topSize = tSize;
 			return true;

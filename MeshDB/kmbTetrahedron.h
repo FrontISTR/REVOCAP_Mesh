@@ -38,8 +38,8 @@ public:
 	Tetrahedron(kmb::nodeIdType *ary);
 	virtual ~Tetrahedron(void);
 
-
-
+	// Œü‚«‚ğ–³‹‚µ‚Äß“_”Ô†‡‚ª“¯‚¶}Œ`‚ğ‚ ‚ç‚í‚·‚©
+	// index ‚Í 0 ‚©‚ç 3 ‚Ü‚Å‚Ì®”‚Ì’uŠ·
 	static bool isEquivalent(int index[4]);
 
 	static void shapeFunction(double s,double t,double u,double* coeff);

@@ -32,7 +32,7 @@ namespace kmb{
 class BezierSurface3D : public Surface3D
 {
 private:
-
+	// uOrder * vOrder の制御点を与える
 	unsigned int uOrder, vOrder;
 	std::vector< kmb::Point3D > ctrlPts;
 public:
@@ -44,8 +44,8 @@ public:
 	virtual bool isUDomain( double u ) const;
 	virtual bool isVDomain( double v ) const;
 	virtual void getDomain( double &min_u, double &max_u, double &min_v, double &max_v ) const;
-
-
+	// 登録済みの制御点の個数と適合するなら true を返す
+	// そうでなければ false を返す。この場合は制御点の設定が必要
 	bool setOrder(unsigned int uOrder,unsigned int vOrder);
 	bool getOrder(unsigned int &uOrder,unsigned int &vOrder) const;
 	void getDegree(unsigned int &uDegree,unsigned int &vDegree) const;

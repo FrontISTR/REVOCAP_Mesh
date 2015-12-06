@@ -30,7 +30,7 @@ public:
 	static const int connectionTable[6][6];
 	static const int faceTable[5][3];
 	static const int edgeTable[12][2];
-
+	// 2“_‚©‚çŒˆ‚Ü‚é–Ê”Ô†‚ğ•Ô‚·
 	static const int faceIndexTable[6][6];
 };
 

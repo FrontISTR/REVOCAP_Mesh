@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\MeshDB\kmbBodyOperation.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbBoundaryExtractor.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbCollision.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbCollision_detect.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbCollision_static.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbDataBindings.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbDataEvaluator.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElement.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElementBucket.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElementContainer.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElementContainerArray.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElementContainerMap.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElementContainerMArray.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElementContainerMixedArray.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElementContainerNArray.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElementContainerOpenGLDraw.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElementContainerTriangleArray.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElementEvaluator.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElementEvaluator_Matrix.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElementEvaluator_Quad.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElementOctree.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbElementRelation.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbFace.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbFaceBucket.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbFaceBucketArea.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbFaceGroupBoundaryExtractBindings.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbHexahedron.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbHexahedron2.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbIntegerMapBindings.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbIntegerValueBindings.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbIntegrationPoint.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbMatching.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbMeshBrepInfo.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbMeshData.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbMeshDB.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbMeshDB_CloneBody.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbMeshDB_Distance.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbMeshDB_Geometry.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbMeshDB_Interpolation.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbMeshDB_Merge.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbMeshDB_NodeIdDefragmentation.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbMeshDB_Search.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbMeshDB_TopologyTransaction.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbMeshOperation.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbNodeEvaluator.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbNodeMatchingInfo.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbNodeNeighborFaceInfo.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbNodeNeighborInfo.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbNodeNeighborPtrInfo.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbPhysicalValue.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbPolygon.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbPyramid.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbPyramid2.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbQuad.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbQuad2.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbQuadInterface.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbScalarValueBindings.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbScalarValueMArrayBindings.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbSegment.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbSegment2.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbSurfaceMatching.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbSurfaceOperation.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbTensor6ValueBindings.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbTensor6ValueMArrayBindings.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbTetrahedron.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbTetrahedron2.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbTriangle.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbTriangle2.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbTriangleBucket.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbTriangleBucketArea.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbTriInterface.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbVector2ValueBindings.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbVector2ValueMArrayBindings.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbVector3ValueBindings.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbVector3ValueMArrayBindings.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbWedge.cpp" />
+    <ClCompile Include="..\..\MeshDB\kmbWedge2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\MeshDB\kmbBodyOperation.h" />
+    <ClInclude Include="..\..\MeshDB\kmbBoundaryExtractor.h" />
+    <ClInclude Include="..\..\MeshDB\kmbCollision.h" />
+    <ClInclude Include="..\..\MeshDB\kmbDataBindings.h" />
+    <ClInclude Include="..\..\MeshDB\kmbDataEvaluator.h" />
+    <ClInclude Include="..\..\MeshDB\kmbElement.h" />
+    <ClInclude Include="..\..\MeshDB\kmbElementBucket.h" />
+    <ClInclude Include="..\..\MeshDB\kmbElementContainer.h" />
+    <ClInclude Include="..\..\MeshDB\kmbElementContainerArray.h" />
+    <ClInclude Include="..\..\MeshDB\kmbElementContainerMap.h" />
+    <ClInclude Include="..\..\MeshDB\kmbElementContainerMArray.h" />
+    <ClInclude Include="..\..\MeshDB\kmbElementContainerMixedArray.h" />
+    <ClInclude Include="..\..\MeshDB\kmbElementContainerNArray.h" />
+    <ClInclude Include="..\..\MeshDB\kmbElementContainerOpenGLDraw.h" />
+    <ClInclude Include="..\..\MeshDB\kmbElementContainerTriangleArray.h" />
+    <ClInclude Include="..\..\MeshDB\kmbElementEvaluator.h" />
+    <ClInclude Include="..\..\MeshDB\kmbElementOctree.h" />
+    <ClInclude Include="..\..\MeshDB\kmbElementRelation.h" />
+    <ClInclude Include="..\..\MeshDB\kmbElementType.h" />
+    <ClInclude Include="..\..\MeshDB\kmbFace.h" />
+    <ClInclude Include="..\..\MeshDB\kmbFaceBucket.h" />
+    <ClInclude Include="..\..\MeshDB\kmbFaceBucketArea.h" />
+    <ClInclude Include="..\..\MeshDB\kmbFaceGroupBoundaryExtractBindings.h" />
+    <ClInclude Include="..\..\MeshDB\kmbHexahedron.h" />
+    <ClInclude Include="..\..\MeshDB\kmbHexahedron2.h" />
+    <ClInclude Include="..\..\MeshDB\kmbIntegerMapBindings.h" />
+    <ClInclude Include="..\..\MeshDB\kmbIntegerValueBindings.h" />
+    <ClInclude Include="..\..\MeshDB\kmbIntegrationPoint.h" />
+    <ClInclude Include="..\..\MeshDB\kmbMatching.h" />
+    <ClInclude Include="..\..\MeshDB\kmbMeshBrepInfo.h" />
+    <ClInclude Include="..\..\MeshDB\kmbMeshData.h" />
+    <ClInclude Include="..\..\MeshDB\kmbMeshDB.h" />
+    <ClInclude Include="..\..\MeshDB\kmbMeshOperation.h" />
+    <ClInclude Include="..\..\MeshDB\kmbNodeEvaluator.h" />
+    <ClInclude Include="..\..\MeshDB\kmbNodeMapperBindings.h" />
+    <ClInclude Include="..\..\MeshDB\kmbNodeMatchingInfo.h" />
+    <ClInclude Include="..\..\MeshDB\kmbNodeNeighborFaceInfo.h" />
+    <ClInclude Include="..\..\MeshDB\kmbNodeNeighborInfo.h" />
+    <ClInclude Include="..\..\MeshDB\kmbNodeNeighborPtrInfo.h" />
+    <ClInclude Include="..\..\MeshDB\kmbPhysicalValue.h" />
+    <ClInclude Include="..\..\MeshDB\kmbPolygon.h" />
+    <ClInclude Include="..\..\MeshDB\kmbPyramid.h" />
+    <ClInclude Include="..\..\MeshDB\kmbPyramid2.h" />
+    <ClInclude Include="..\..\MeshDB\kmbQuad.h" />
+    <ClInclude Include="..\..\MeshDB\kmbQuad2.h" />
+    <ClInclude Include="..\..\MeshDB\kmbQuadInterface.h" />
+    <ClInclude Include="..\..\MeshDB\kmbScalarValueBindings.h" />
+    <ClInclude Include="..\..\MeshDB\kmbScalarValueMArrayBindings.h" />
+    <ClInclude Include="..\..\MeshDB\kmbSegment.h" />
+    <ClInclude Include="..\..\MeshDB\kmbSegment2.h" />
+    <ClInclude Include="..\..\MeshDB\kmbSurfaceMatching.h" />
+    <ClInclude Include="..\..\MeshDB\kmbSurfaceOperation.h" />
+    <ClInclude Include="..\..\MeshDB\kmbTensor6ValueBindings.h" />
+    <ClInclude Include="..\..\MeshDB\kmbTensor6ValueMArrayBindings.h" />
+    <ClInclude Include="..\..\MeshDB\kmbTetrahedron.h" />
+    <ClInclude Include="..\..\MeshDB\kmbTetrahedron2.h" />
+    <ClInclude Include="..\..\MeshDB\kmbTriangle.h" />
+    <ClInclude Include="..\..\MeshDB\kmbTriangle2.h" />
+    <ClInclude Include="..\..\MeshDB\kmbTriangleBucket.h" />
+    <ClInclude Include="..\..\MeshDB\kmbTriangleBucketArea.h" />
+    <ClInclude Include="..\..\MeshDB\kmbTriInterface.h" />
+    <ClInclude Include="..\..\MeshDB\kmbTypes.h" />
+    <ClInclude Include="..\..\MeshDB\kmbVector2ValueBindings.h" />
+    <ClInclude Include="..\..\MeshDB\kmbVector2ValueMArrayBindings.h" />
+    <ClInclude Include="..\..\MeshDB\kmbVector2WithIntBindings.h" />
+    <ClInclude Include="..\..\MeshDB\kmbVector3ValueBindings.h" />
+    <ClInclude Include="..\..\MeshDB\kmbVector3ValueMArrayBindings.h" />
+    <ClInclude Include="..\..\MeshDB\kmbWedge.h" />
+    <ClInclude Include="..\..\MeshDB\kmbWedge2.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AF27EEAA-8FED-41CC-81AA-7469A24D141F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>MeshDB</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v100</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v100</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v100</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v100</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>RcapMeshDB</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>RcapMeshDB</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>RcapMeshDB</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetName>RcapMeshDB</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

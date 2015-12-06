@@ -25,7 +25,7 @@ class Tensor6ValueBindings : public kmb::DataBindings
 {
 public:
 	Tensor6ValueBindings(size_t count,kmb::DataBindings::bindingMode bmode=kmb::DataBindings::NodeVariable);
-
+	// ‘¼‚ÅŠm•ÛÏ‚İ‚Ì”z—ñ‚ğ Data ‚Æ‚µ‚Äg‚¤
 	Tensor6ValueBindings(size_t count,double* values,kmb::DataBindings::bindingMode bmode=kmb::DataBindings::NodeVariable);
 	virtual ~Tensor6ValueBindings(void);
 	virtual const char* getContainerType(void) const{

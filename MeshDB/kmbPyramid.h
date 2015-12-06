@@ -40,8 +40,8 @@ public:
 
 	static int divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nodeIdType tetrahedrons[][4]);
 
-
-
+	// Œü‚«‚ğ–³‹‚µ‚Äß“_”Ô†‡‚ª“¯‚¶}Œ`‚ğ‚ ‚ç‚í‚·‚©
+	// index ‚Í 0 ‚©‚ç 7 ‚Ü‚Å‚Ì®”‚Ì’uŠ·
 	static bool isEquivalent(int index[5]);
 public:
 	static const int connectionTable[5][5];

@@ -17,12 +17,12 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100)
+#pragma warning(disable:4100) // Žg‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ðo‚³‚È‚¢ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869)
+#pragma warning(disable:869) // Žg‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ðo‚³‚È‚¢ for intel
 #endif
 
 const char* kmb::Point3DContainerMArray::CONTAINER_TYPE = "double_marray";
@@ -191,7 +191,7 @@ kmb::Point3DContainerMArray::begin(void)
 	if( _it ){
 		_it->points = this;
 		this->pointArray.first( _it->aIndex );
-
+//		_it->aIndex = this->pointArray.getBLArrayIndex(0);
 	}
 	return kmb::Point3DContainer::iterator(_it);
 }
@@ -207,7 +207,7 @@ kmb::Point3DContainerMArray::begin(void) const
 	if( _it ){
 		_it->points = const_cast<kmb::Point3DContainerMArray*>(this);
 		this->pointArray.first( _it->aIndex );
-
+//		_it->aIndex = this->pointArray.getBLArrayIndex(0);
 	}
 	return kmb::Point3DContainer::const_iterator(_it);
 }

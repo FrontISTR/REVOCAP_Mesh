@@ -39,11 +39,11 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100)
+#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
 #endif
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869)
+#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
 #endif
 
 namespace kmb{
@@ -107,12 +107,12 @@ protected:
 			}
 		};
 
-
+		// ©•ª‚ÌŠK‘w‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é“_‚ÌŒÂ”
 		size_t getLocalCount(void) const{
 			return count;
 		}
 
-
+		// ©•ª‚æ‚è‰º‚ÌŠK‘w‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é“_‚ÌŒÂ”
 		size_t getCount(void) const{
 			size_t sum = 0;
 			if( children != NULL ){
@@ -129,7 +129,7 @@ protected:
 			center.setCoordinate(x,y,z);
 		}
 
-
+		// Ši”[‚³‚ê‚Ä‚¢‚é T Œ^‚Ì—v‘f‚É‚Â‚¢‚ÄÅ’Z‹——£‚ğ•Ô‚·
 		double getNearest(const double x,const double y,const double z,T &t) const{
 			double d = getNearestSq(x,y,z,t);
 			if( d > 0.0 ){
@@ -144,7 +144,7 @@ protected:
 			box.getCenter( center );
 		}
 
-
+		// À•W‚ğ—^‚¦‚Ä’Ç‰Á
 		int appendByPoint(const kmb::Point3D &pt,const T t){
 			box.update(pt);
 			if( children != NULL )
@@ -163,8 +163,8 @@ protected:
 			return 0;
 		}
 
-
-
+		// —Ìˆæ‚ğ—^‚¦‚Ä’Ç‰Á
+		// d•¡‚µ‚Ä‚¢‚Ä‚à‚æ‚¢
 		int appendByRegion(const kmb::BoxRegion &b,const T t){
 			box.update(b);
 			if( children != NULL )
@@ -184,7 +184,7 @@ protected:
 				if( bxmin && bymax && bzmin ) res += children[2]->appendByRegion(b,t);
 				if( bxmin && bymin && bzmax ) res += children[1]->appendByRegion(b,t);
 				if( bxmin && bymin && bzmin ) res += children[0]->appendByRegion(b,t);
-
+//				REVOCAP_Debug_X("%d %d\n",this->layer,res);
 				return res;
 			}
 			else if( idarray != NULL )
@@ -194,7 +194,7 @@ protected:
 				if( count == maxCount ){
 					createChildren();
 				}
-
+//				REVOCAP_Debug_X("%d [1] %d\n",this->layer,count);
 				return 1;
 			}
 			return 0;
@@ -252,11 +252,11 @@ protected:
 				( ( bz ) ? 1 : 0 );
 		}
 
-
+		// q‚ÌŠK‘w‚ğì‚é
 		void createChildren(void){
 			if( children == NULL )
 			{
-
+				// Œ´‘¥‚Æ‚µ‚Äq‚ÌŠK‘w‚ğì‚Á‚½‚ç center ‚Ì’l‚Í•Ï‚¦‚Ä‚Í‚¢‚¯‚È‚¢
 				box.getCenter( center );
 				children = new typename kmb::Octree<T>::OctreeNode*[8];
 				children[0] = new typename kmb::Octree<T>::OctreeNode(octree,
@@ -275,13 +275,13 @@ protected:
 					box.maxX(), box.maxY(), box.minZ(), center.x(), center.y(), center.z(), layer+1 );
 				children[7] = new typename kmb::Octree<T>::OctreeNode(octree,
 					box.maxX(), box.maxY(), box.maxZ(), center.x(), center.y(), center.z(), layer+1 );
-
+				// q‹Ÿ‚É Id ‚ğƒRƒs[
 				for(unsigned int i=0;i<count;++i)
 				{
 					octree->append(idarray[i],this);
 				}
 				this->count = 0;
-
+				// children ‚ğ‚Á‚½‚ç idarray ‚Í NULL
 				delete[] idarray;
 				idarray = NULL;
 			}
@@ -298,52 +298,52 @@ protected:
 				bool bx = ( x > center.x() );
 				bool by = ( y > center.y() );
 				bool bz = ( z > center.z() );
-
+//				REVOCAP_Debug_X("child index %d\n",getChildIndex(bx,by,bz));
 				if( min.update( children[ getChildIndex(bx,by,bz) ]->getNearestSq(x,y,z,tmp) ) ){
 					t = tmp;
 				}
-
-
-
+				// —×Ú—Ìˆæ‚æ‚è‚à‹ß‚¢‚©‚Ç‚¤‚©‚ğŠm‚©‚ß‚é
+				// min ‚ÍXV‚³‚ê‚é‚Ì‚ÅA–ˆ‰ñ’²‚×‚é
+				// x
 				if( (x-center.x())*(x-center.x()) < min.getMin() &&
 					min.update( children[ getChildIndex(!bx,by,bz) ]->getNearestSq(x,y,z,tmp) ) )
 				{
 					t = tmp;
 				}
-
+				// y
 				if( (y-center.y())*(y-center.y()) < min.getMin() &&
 					min.update( children[ getChildIndex(bx,!by,bz) ]->getNearestSq(x,y,z,tmp) ) )
 				{
 					t = tmp;
 				}
-
+				// z
 				if( (z-center.z())*(z-center.z()) < min.getMin() &&
 					min.update( children[ getChildIndex(bx,by,!bz) ]->getNearestSq(x,y,z,tmp) ) )
 				{
 					t = tmp;
 				}
-
+				// x y
 				if( (x-center.x())*(x-center.x()) < min.getMin() &&
 					(y-center.y())*(y-center.y()) < min.getMin() &&
 					min.update( children[ getChildIndex(!bx,!by,bz) ]->getNearestSq(x,y,z,tmp) ) )
 				{
 					t = tmp;
 				}
-
+				// y z
 				if( (y-center.y())*(y-center.y()) < min.getMin() &&
 					(z-center.z())*(z-center.z()) < min.getMin() &&
 					min.update( children[ getChildIndex(bx,!by,!bz) ]->getNearestSq(x,y,z,tmp) ) )
 				{
 					t = tmp;
 				}
-
+				// z x
 				if( (z-center.z())*(z-center.z()) < min.getMin() &&
 					(x-center.x())*(x-center.x()) < min.getMin() &&
 					min.update( children[ getChildIndex(!bx,by,!bz) ]->getNearestSq(x,y,z,tmp) ) )
 				{
 					t = tmp;
 				}
-
+				// x y z
 				if( (x-center.x())*(x-center.x()) < min.getMin() &&
 					(y-center.y())*(y-center.y()) < min.getMin() &&
 					(z-center.z())*(z-center.z()) < min.getMin() &&
@@ -355,24 +355,24 @@ protected:
 			}
 			else if( idarray != NULL )
 			{
-
+//				REVOCAP_Debug_X("tree count %d\n",count);
 				for(unsigned int i=0;i<count;++i)
 				{
 					if( min.update( octree->getDistanceSq(x,y,z,idarray[i]) ) ){
 						t = idarray[i];
 					}
 				}
-
+//				REVOCAP_Debug_X("min = %f\n",min.getMin());
 				return min.getMin();
 			}
 			return min.getMin();
 		}
 	};
 protected:
-
+	// OctreeNode ‚Í NULL ‚É‚µ‚È‚¢
 	OctreeNode* topNode;
 	size_t maxCount;
-
+	// q‚ÌŠK‘w‚És‚­‚É‚µ‚½‚ª‚Á‚Ä maxCount ‚ğ‘‚â‚·
 	bool maxExpand;
 public:
 	Octree(size_t mCount=256)
@@ -404,25 +404,25 @@ public:
 	size_t getCount(void) const{
 		return topNode->getCount();
 	}
-
-
+	// id ‚ğ—^‚¦‚Ä’Ç‰Á
+	// ‚±‚ê‚Í“Áê‰»‚·‚éƒNƒ‰ƒX‚ÅÀ‘•‚·‚é
 	virtual int append(const T t,typename kmb::Octree<T>::OctreeNode* octNode=NULL) = 0;
-
-
+	// ƒRƒ“ƒeƒi‚Ì—v‘f‚·‚×‚Ä’Ç‰Á
+	// ‚±‚ê‚Í“Áê‰»‚·‚éƒNƒ‰ƒX‚ÅÀ‘•‚·‚é
 	virtual int appendAll(typename kmb::Octree<T>::OctreeNode* octNode=NULL) = 0;
-
-
-
+	// id ‚ğ—^‚¦‚Ä‹——£‚Ì‚Qæ‚ğ•Ô‚·
+	// ‚±‚ê‚Í“Áê‰»‚·‚éƒNƒ‰ƒX‚ÅÀ‘•‚·‚é
+	// ’FgetNearest ‚©‚çŒÄ‚ñ‚Å‚¢‚éƒI[ƒo[ƒwƒbƒh‚ğŒ¸‚ç‚¹‚Î­‚µ‘¬‚­‚È‚é
 	virtual double getDistanceSq(const double x,const double y,const double z,const T t) const = 0;
-
+	// ‹——£‚ğ•Ô‚·
 	double getNearest(const double x,const double y,const double z,T &t) const{
 		return topNode->getNearest(x,y,z,t);
 	}
-
+	// —Ìˆæ‚Æ‚ÌŠÖŒW‚ğ•Ô‚·
 	virtual bool getIntersectToRegion(const kmb::Region* region,const T t) const{
 		return false;
 	}
-
+	// debug print
 	void debugPrint(void){
 		if( topNode ){
 			topNode->debugPrint();
@@ -441,7 +441,7 @@ public:
 
 		iterator  operator++(int n){
 			typename kmb::Octree<T>::iterator itClone;
-			itClone.iter = iter;
+			itClone.iter = iter; 
 			iter++;
 			return itClone;
 		};
@@ -473,7 +473,7 @@ public:
 
 		const_iterator operator++(int n){
 			typename kmb::Octree<T>::iterator itClone;
-			itClone.iter = iter;
+			itClone.iter = iter; 
 			iter++;
 			return itClone;
 		};

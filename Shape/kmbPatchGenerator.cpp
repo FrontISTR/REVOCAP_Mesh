@@ -29,6 +29,7 @@
 #include <BRepMesh.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepTools.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
 #include <ShapeAnalysis.hxx>
 #include <ShapeAnalysis_Shell.hxx>
 #include <ShapeAnalysis_Surface.hxx>
@@ -103,7 +104,7 @@ bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 		return false;
 	}
 
-
+	// 最初に execute したモデルのサイズを基準にする
 	if( modelDiameter < 0.0 ){
 		modelDiameter = shape.getBoundingBox().range();
 	}
@@ -120,14 +121,14 @@ bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 
 	kmb::OctreePoint3D octree;
 	octree.setContainer( mesh.getNodes() );
+	
+	BRepMesh_IncrementalMesh imesh(
+		shape.getShape(), 
+		static_cast<Standard_Real>( incremental*modelDiameter ),
+		relative );
+	imesh.Perform();
 
-	if( relative ){
-		BRepMesh::Mesh( shape.getShape(), static_cast<Standard_Real>( incremental*modelDiameter ) );
-	}else{
-		BRepMesh::Mesh( shape.getShape(), static_cast<Standard_Real>( incremental ) );
-	}
-
-
+	// TopoDS_Shape に含まれる Face の iterator
 	TopExp_Explorer exFace;
 	for( exFace.Init(shape.getShape(),TopAbs_FACE); exFace.More(); exFace.Next() ){
 		TopoDS_Face face = TopoDS::Face(exFace.Current());

@@ -22,7 +22,7 @@
 #include "MeshGen/kmbMeshSmoother.h"
 #include <cmath>
 
-
+// local function
 bool addTriangle( kmb::ElementContainer* triangles, kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::nodeIdType n2 )
 {
 	if( triangles && n0 != n1 && n1 != n2 && n2 != n0 ){
@@ -105,8 +105,8 @@ kmb::EdgeStitcher::setEdgesWithinDistance(kmb::bodyIdType forward,kmb::bodyIdTyp
 		if( f != NULL && f->isUniqueType( kmb::SEGMENT )  &&
 			b != NULL && b->isUniqueType( kmb::SEGMENT )  )
 		{
-
-
+			// f と b の距離が distance 以下
+			// のものを登録する
 
 			kmb::ElementContainerMap fnear;
 			kmb::ElementContainerMap bnear;
@@ -148,13 +148,13 @@ kmb::EdgeStitcher::setEdgesWithinDistance(kmb::bodyIdType forward,kmb::bodyIdTyp
 				}
 				++eIterb;
 			}
-
+			// Polygon は内部で edges の複製を作る
 			this->forward.setEdges( &fnear );
 			this->backward.setEdges( &bnear );
 			kmb::nodeIdType initF=kmb::nullNodeId, endF=kmb::nullNodeId, initB=kmb::nullNodeId, endB=kmb::nullNodeId;
-
+			// 連結性チェック
 			if( !this->forward.getEndPoints(initF,endF) || !this->backward.getEndPoints(initB,endB) ){
-
+				// どちらかが連結ではない
 				return false;
 			}
 			normal.zero();
@@ -236,7 +236,7 @@ kmb::EdgeStitcher::getNormalCheck(void) const
 void
 kmb::EdgeStitcher::setInitNormal(void)
 {
-
+	// 初期法線ベクトルは + edgesbackward の法線ベクトルと - edgesforward の法線ベクトルの和
 	kmb::nodeIdType n0 = b0;
 	kmb::nodeIdType n1 = backward.getNodeId( n0, -1 );
 	kmb::nodeIdType n2 = backward.getNodeId( n1, -1 );
@@ -264,13 +264,13 @@ kmb::EdgeStitcher::setInitialNode( kmb::nodeIdType forwardInit, kmb::nodeIdType 
 		return;
 	}
 	kmb::nodeIdType initF=kmb::nullNodeId, endF=kmb::nullNodeId, initB=kmb::nullNodeId, endB=kmb::nullNodeId;
-
+	// 連結性チェック
 	if( !forward.getEndPoints(initF,endF) || !backward.getEndPoints(initB,endB) ){
-
+		// どちらかが連結ではない
 		return;
 	}
 	if( initF == kmb::nullNodeId && endB == kmb::nullNodeId ){
-
+		// 両方ループの時
 		if( f0 != kmb::nullNodeId ){
 			initF = f0;
 		}else if( b0 != kmb::nullNodeId ){
@@ -280,8 +280,8 @@ kmb::EdgeStitcher::setInitialNode( kmb::nodeIdType forwardInit, kmb::nodeIdType 
 		}
 	}
 	if( initF == kmb::nullNodeId && endB != kmb::nullNodeId ){
-
-
+		// backward がループじゃない
+		// forward の中から backward の最近点を探す
 		kmb::Point3D node, target;
 		if( points->getPoint( endB, node ) ){
 			kmb::Minimizer min;
@@ -297,7 +297,7 @@ kmb::EdgeStitcher::setInitialNode( kmb::nodeIdType forwardInit, kmb::nodeIdType 
 		}
 	}
 	if( initF != kmb::nullNodeId && endB == kmb::nullNodeId ){
-
+		// backward の中から forward の最近点を探す
 		kmb::Point3D node, target;
 		if( points->getPoint( initF, node ) ){
 			kmb::Minimizer min;
@@ -316,10 +316,10 @@ kmb::EdgeStitcher::setInitialNode( kmb::nodeIdType forwardInit, kmb::nodeIdType 
 	b0 = endB;
 }
 
-
-
-
-
+// 多角形 forward の点 f0 を順方向に
+// 多角形 backward の点 b0 を逆方向に
+// 三角形を作る（1ステップだけ）
+// fend bend に到達したらそれ以上は進めない
 bool
 kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
 {
@@ -338,7 +338,7 @@ kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
 		if( b1 == kmb::nullNodeId ){
 			return false;
 		}else{
-
+			// b1 のみ使える
 			addTriangle( result, f0, b0, b1 );
 			if( normalCheck ){
 				normal = points->calcVerticalVector( f0, b0, b1 );
@@ -350,7 +350,7 @@ kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
 		}
 	}else{
 		if( b1 == kmb::nullNodeId ){
-
+			// f1 のみ使える
 			addTriangle( result, f0, b0, f1 );
 			if( normalCheck ){
 				normal = points->calcVerticalVector( f0, b0, f1 );
@@ -360,14 +360,14 @@ kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
 			}
 			f0 = f1;
 		}else{
-
+			// 両方使える時は角度で判断
 			kmb::Point3D pf0,pf1,pb0,pb1;
 			if( points->getPoint(f0,pf0) &&
 				points->getPoint(f1,pf1) &&
 				points->getPoint(b0,pb0) &&
 				points->getPoint(b1,pb1) )
 			{
-
+				// f0 f1 b1 b0 からなる四角形で cos が一番小さくなるところを分割するような三角形にする
 				kmb::nodeIdType nextId = kmb::nullNodeId;
 				kmb::Minimizer min;
 				if( min.update( Point3D::cos( pb0, pf0, pf1 ) ) ){
@@ -409,11 +409,11 @@ kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
 	return true;
 }
 
-
-
-
-
-
+// 多角形 forward の点 f0 を順方向に
+// 多角形 backward の点 b0 を逆方向に
+// 四角形を作る
+// fend bend に到達したらそれ以上は進めない
+// 選択肢が複数ある時には法線ベクトルと辺の長さで判断する
 bool
 kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 {
@@ -425,7 +425,7 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 	kmb::nodeIdType b1 = (b0!=bend) ? backward.getNodeId(b0,-1) : kmb::nullNodeId;
 	kmb::nodeIdType b2 = (b1!=bend) ? backward.getNodeId(b1,-1) : kmb::nullNodeId;
 	unsigned int flag = 0;
-
+	// 頂点を進めるかどうかの判定
 	if( f1 != kmb::nullNodeId ) flag |= 0x01;
 	if( f2 != kmb::nullNodeId ) flag |= 0x02;
 	if( b1 != kmb::nullNodeId ) flag |= 0x04;
@@ -448,26 +448,26 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 	}
 	kmb::nodeIdType nodes[4] = {f0,b0,kmb::nullNodeId,kmb::nullNodeId};
 	switch(flag){
-		case 0x00:
-		case 0x01:
-		case 0x04:
+		case 0x00: // どちらの辺もすでに終点
+		case 0x01: // f1 forward 1回しか進めない
+		case 0x04: // b1 backward 1回しか進めない
 			return false;
-		case 0x03:
+		case 0x03: // f1 f2
 			nodes[2] = f2;
 			nodes[3] = f1;
 			result->addElement( kmb::QUAD, nodes );
-
+			// ループの時のために終了点を覚えておく
 			if( fend == kmb::nullNodeId ){
 				fend = f0;
 			}
 			f0 = f2;
 			normal = points->calcNormalVector( nodes[0], nodes[1], nodes[2], nodes[3] );
 			return true;
-		case 0x05:
+		case 0x05: // f1 b1
 			nodes[2] = b1;
 			nodes[3] = f1;
 			result->addElement( kmb::QUAD, nodes );
-
+			// ループの時のために終了点を覚えておく
 			if( fend == kmb::nullNodeId ){
 				fend = f0;
 			}
@@ -478,28 +478,28 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 			b0 = b1;
 			normal = points->calcNormalVector( nodes[0], nodes[1], nodes[2], nodes[3] );
 			return true;
-		case 0x0c:
+		case 0x0c: // b1 b2
 			nodes[2] = b1;
 			nodes[3] = b2;
 			result->addElement( kmb::QUAD, nodes );
-
+			// ループの時のために終了点を覚えておく
 			if( bend == kmb::nullNodeId ){
 				bend = b0;
 			}
 			b0 = b2;
 			normal = points->calcNormalVector( nodes[0], nodes[1], nodes[2], nodes[3] );
 			return true;
-		case 0x07:
+		case 0x07: // f1 f2 b1
 			{
-
+				// f1 b1 と f1 f2 の比較
 				double f1b1 = points->distanceSq(f1,b1) + points->distanceSq(b1,b0);
 				double f1f2 = points->distanceSq(f1,f2) + points->distanceSq(f2,b0);
 				if( fabs(f1b1) <= fabs(f1f2) ){
-
+					// f1 b1
 					nodes[2] = b1;
 					nodes[3] = f1;
 					result->addElement( kmb::QUAD, nodes );
-
+					// ループの時のために終了点を覚えておく
 					if( fend == kmb::nullNodeId ){
 						fend = f0;
 					}
@@ -511,11 +511,11 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 					normal = points->calcNormalVector( nodes[0], nodes[1], nodes[2], nodes[3] );
 					return true;
 				}else{
-
+					// f1 f2
 					nodes[2] = f2;
 					nodes[3] = f1;
 					result->addElement( kmb::QUAD, nodes );
-
+					// ループの時のために終了点を覚えておく
 					if( fend == kmb::nullNodeId ){
 						fend = f0;
 					}
@@ -524,17 +524,17 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 					return true;
 				}
 			}
-		case 0x0d:
+		case 0x0d: // f1 b1 b2
 			{
-
+				// f1 b1 と b1 b2 の比較
 				double f1b1 = points->distanceSq(f0,f1) + points->distanceSq(f1,b1);
 				double b2b1 = points->distanceSq(f0,b2) + points->distanceSq(b2,b1);
 				if( fabs(f1b1) <= fabs(b2b1) ){
-
+					// f1 b1
 					nodes[2] = b1;
 					nodes[3] = f1;
 					result->addElement( kmb::QUAD, nodes );
-
+					// ループの時のために終了点を覚えておく
 					if( fend == kmb::nullNodeId ){
 						fend = f0;
 					}
@@ -546,11 +546,11 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 					normal = points->calcNormalVector( nodes[0], nodes[1], nodes[2], nodes[3] );
 					return true;
 				}else{
-
+					// b1 b2
 					nodes[2] = b1;
 					nodes[3] = b2;
 					result->addElement( kmb::QUAD, nodes );
-
+					// ループの時のために終了点を覚えておく
 					if( bend == kmb::nullNodeId ){
 						bend = b0;
 					}
@@ -559,34 +559,34 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 					return true;
 				}
 			}
-		case 0x0f:
+		case 0x0f: // f1 f2 b1 b2
 			{
-
+				// f1 b1 と f1 f2 と b1 b2 の比較
 				double f1b1 = points->distanceSq(f0,f1) + points->distanceSq(f1,b1) + points->distanceSq(b1,b0);
 				double f1f2 = points->distanceSq(f0,f1) + points->distanceSq(f1,f2) + points->distanceSq(f2,b0);
 				double b2b1 = points->distanceSq(f0,b2) + points->distanceSq(b2,b1) + points->distanceSq(b1,b0);
 				if( fabs(f1b1) <= fabs(f1f2) ){
 					if( fabs(f1b1) <= fabs(b2b1) ){
-
+						// f1 b1
 						nodes[2] = b1;
 						nodes[3] = f1;
 						result->addElement( kmb::QUAD, nodes );
-
+						// ループの時のために終了点を覚えておく
 						if( fend == kmb::nullNodeId ){
 							fend = f0;
 						}
-
+						// ループの時のために終了点を覚えておく
 						if( bend == kmb::nullNodeId ){
 							bend = b0;
 						}
 						f0 = f1;
 						b0 = b1;
 					}else{
-
+						// b1 b2
 						nodes[2] = b1;
 						nodes[3] = b2;
 						result->addElement( kmb::QUAD, nodes );
-
+						// ループの時のために終了点を覚えておく
 						if( bend == kmb::nullNodeId ){
 							bend = b0;
 						}
@@ -594,21 +594,21 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 					}
 				}else{
 					if( fabs(f1f2) <= fabs(b2b1) ){
-
+						// f1 f2
 						nodes[2] = f2;
 						nodes[3] = f1;
 						result->addElement( kmb::QUAD, nodes );
-
+						// ループの時のために終了点を覚えておく
 						if( fend == kmb::nullNodeId ){
 							fend = f0;
 						}
 						f0 = f2;
 					}else{
-
+						// b1 b2
 						nodes[2] = b1;
 						nodes[3] = b2;
 						result->addElement( kmb::QUAD, nodes );
-
+						// ループの時のために終了点を覚えておく
 						if( bend == kmb::nullNodeId ){
 							bend = b0;
 						}
@@ -637,15 +637,15 @@ kmb::EdgeStitcher::stitchByQuadsWithNodeCount(int fCount,int bCount)
 		std::vector<kmb::nodeIdType> appendNodes;
 		kmb::ElementContainerMap* result = NULL;
 		result = new kmb::ElementContainerMap();
-
-
-
+		// 節点の個数に応じてつなぎ方を変える
+		// 4点以上節点を追加する場合は、もうちょっと工夫しないと、
+		// 同じところにいくつも点を追加してしまう。
 		if( forward.getSize() == 4 && backward.getSize() == 6 ){
-
+			// forward の方が少ない場合は、適当に点を追加する
 			kmb::Point3D backCenter;
 			kmb::Point3D forwardCenter;
 			if( backward.getCenter( points, backCenter ) && forward.getCenter( points, forwardCenter ) ){
-
+				// 重心に一番近いところ
 				kmb::nodeIdType a0 = forward.getNearestNode( points, backCenter );
 				kmb::nodeIdType nodes[4] = {kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId};
 				if( a0 != kmb::nullNodeId ){
@@ -656,15 +656,15 @@ kmb::EdgeStitcher::stitchByQuadsWithNodeCount(int fCount,int bCount)
 						kmb::Vector3D diffCenter( backCenter, forwardCenter );
 						kmb::Vector3D v_next( p_next, p0 );
 						kmb::Vector3D v_prev( p_prev, p0 );
-
+						// 重心のずれとの方向を調べる
 						if( v_next * diffCenter < v_prev * diffCenter ){
 							nodes[0] = a0;
 							nodes[1] = points->addPoint(p0);
 							nodes[2] = points->addPoint(p_next);
 							nodes[3] = a_next;
-
-
-
+							// forward で [f0,f0,f1,f1] を追加
+							// [f0,f1,f2,f3] とみなす
+							// nodes[1] と nodes[2] は２重点
 							forward.deleteSegment( nodes[0], nodes[3] );
 							forward.addSegment( nodes[0], nodes[1] );
 							forward.addSegment( nodes[1], nodes[2] );
@@ -674,15 +674,15 @@ kmb::EdgeStitcher::stitchByQuadsWithNodeCount(int fCount,int bCount)
 							nodes[1] = points->addPoint(p_prev);
 							nodes[2] = points->addPoint(p0);
 							nodes[3] = a0;
-
-
-
+							// forward で [f-1,f-1,f0,f0] を追加
+							// [f-3,f-2,f-1,f0] とみなす
+							// nodes[1] と nodes[2] は２重点
 							forward.deleteSegment( nodes[0], nodes[3] );
 							forward.addSegment( nodes[0], nodes[1] );
 							forward.addSegment( nodes[1], nodes[2] );
 							forward.addSegment( nodes[2], nodes[3] );
 						}
-
+						// nodes[1] と nodes[2] はあとで smoothing する
 						appendNodes.push_back( nodes[1] );
 						appendNodes.push_back( nodes[2] );
 						result->addElement( kmb::QUAD, nodes );
@@ -710,7 +710,7 @@ kmb::EdgeStitcher::stitchByQuadsWithNodeCount(int fCount,int bCount)
 		if( result->getCount() > 0 ){
 			kmb::bodyIdType bodyId = mesh->appendBody( result );
 			kmb::MeshSmoother smoother(mesh);
-
+			// ２回 smoothing をかける
 			for(int i=0;i<2;++i){
 				smoother.init();
 				smoother.appendBody(bodyId);

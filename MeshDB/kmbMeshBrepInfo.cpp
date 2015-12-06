@@ -15,6 +15,7 @@
 #include "MeshDB/kmbSurfaceOperation.h"
 
 #include <sstream>
+#include <cstdlib>
 
 kmb::MeshBrepItem::MeshBrepItem(void)
 	: bodyId(kmb::Body::nullBodyId)
@@ -257,7 +258,7 @@ kmb::MeshBrepInfo* kmb::MeshBrepInfo::create3DModelWithBoundary(kmb::MeshData *m
 			item->dim = 3;
 			brep->mapperById.insert( std::pair< kmb::bodyIdType, kmb::MeshBrepItem* >(bodyId,item) );
 			brep->volumes.push_back(item);
-
+			// eŽqŠÖŒW‚Ì\’z
 			kmb::BoundaryExtractor bext;
 			bext.setReverseMode(reverse);
 			bext.setMesh(mesh);
@@ -267,7 +268,7 @@ kmb::MeshBrepInfo* kmb::MeshBrepInfo::create3DModelWithBoundary(kmb::MeshData *m
 				if( mesh->getDimension(surfaceId) == 2 ){
 					kmb::ElementContainer* body = mesh->getBodyPtr(surfaceId);
 					if( body != NULL ){
-
+						// Å‰‚Ì—v‘f‚¾‚¯‚Å”»’è‚·‚é
 						kmb::ElementContainer::const_iterator eIter = body->begin();
 						if( !eIter.isFinished() && bext.getBoundaryFace(eIter,f) ){
 							item->children.push_back( brep->mapperById.find(surfaceId)->second );

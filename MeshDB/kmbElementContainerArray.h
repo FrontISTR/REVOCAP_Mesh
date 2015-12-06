@@ -38,7 +38,7 @@
 
 namespace kmb{
 
-
+// ”z—ñ‚É‚æ‚éÀ‘•
 class ElementContainerArray : public ElementContainer
 {
 public:
@@ -89,9 +89,9 @@ public:
 	virtual iterator find(kmb::elementIdType id);
 	virtual const_iterator find(kmb::elementIdType id) const;
 protected:
-	size_t index;
-	size_t size;
-	size_t count;
+	size_t index; // 0 ‚©‚ç‡‚É–„‚ß‚Ä‚¢‚­ê‡‚Ì”z—ñ‚Ì“Y‚¦š
+	size_t size;  // ”z—ñ‚Ì‘å‚«‚³
+	size_t count; // “o˜^Ï‚İ‚Ì—v‘f‚ÌŒÂ”
 	kmb::Element** elementArray;
 	kmb::Element* getElementPtr(kmb::elementIdType id) const;
 };

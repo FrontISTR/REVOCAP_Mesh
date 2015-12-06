@@ -35,12 +35,12 @@ public:
 	kmb::bodyIdType getBodyId(void) const;
 	const char* getGroup(void) const;
 private:
-
-
+	// Body か FaceGroup のどちらかを指定する
+	// faceGroup は stype が Brep であること
 	kmb::bodyIdType bodyId;
 	std::string faceGroup;
 	int dim;
-
+	// 輪郭を表示するもの 1 次元の要素グループであること
 	kmb::bodyIdType outlineId;
 	MeshBrepItem* parent;
 	std::vector< const MeshBrepItem* > children;
@@ -81,22 +81,22 @@ public:
 	size_t getSurfaces(std::vector<kmb::bodyIdType>& bodyIds) const;
 	size_t getEdges(std::vector<kmb::bodyIdType>& bodyIds) const;
 
-
-
-
+	// 作成用
+	// volume しかないメッシュから作成する
+	// 境界面は Surface で作る
 	static MeshBrepInfo* create3DModel(kmb::MeshData *mesh,double angle=120.0,bool ridge=true);
-
-
+	// volume しかないメッシュから作成する
+	// 境界面は FaceGroup で作る
 	static MeshBrepInfo* create3DFaceModel(kmb::MeshData *mesh,double angle=120.0,bool ridge=true);
-
-
-
+	// すでに境界面抽出してある場合（親子関係は失われている）
+	// 境界面は Surface で与えられている
+	// 逆向きの境界も許す時は reverse = true にする
 	static MeshBrepInfo* create3DModelWithBoundary(kmb::MeshData *mesh,bool reverse=false);
-
-
+	// surface しかないメッシュから作成する
+	// 面はすでに分割されている
 	static MeshBrepInfo* createPatchModel(kmb::MeshData *mesh,bool outline=false);
-
-
+	// surface しかないメッシュから作成する
+	// 面は分割する
 	static MeshBrepInfo* createSurfaceModel(kmb::MeshData *mesh,double angle=120.0,bool ridge=true);
 };
 

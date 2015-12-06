@@ -38,7 +38,7 @@ RevocapIO とは RevocapMesh への入出力を定義したモジュールである。
 
 #ifndef VERSION
 namespace kmb{
-#define VERSION "RevocapIO version 1.6.05 (2013/3/08)"
+#define VERSION "RevocapIO version 1.7.00 (2015/10/1)"
 #define COPYRIGHT "IIS, The University of Tokyo CISS, Large Scale Assembly, Structural Correspondence, Multi Dynamics Simulator"
 }
 #endif
@@ -49,6 +49,7 @@ namespace kmb{
 #pragma warning(disable:4311)
 #endif
 #include "MeshDB/kmbMeshData.h"
+#include "MeshDB/kmbDataBindings.h"
 #include "RevocapIO/kmbTripatchPcmIO.h"
 #include "RevocapIO/kmbTetMeshMIO.h"
 #include "RevocapIO/kmbFortranIO.h"
@@ -58,6 +59,8 @@ namespace kmb{
 #include "RevocapIO/kmbMicroAVSIO.h"
 #include "RevocapIO/kmbSTLIO.h"
 #include "RevocapIO/kmbRevocapNeutralIO.h"
+#include "RevocapIO/kmbNetgenIO.h"
+#include "RevocapIO/kmbGmshIO.h"
 %}
 
 %include "../MeshDB/kmbTypes.h"
@@ -125,11 +128,9 @@ HEC-MW の msh 形式・frs 形式ファイルの読み書きをする
 --- setResElementFlag(flag)
 --- appendEquationToFile(filename,mesh,master,slave,thresh,outThresh)
     MPC データを出力する
-
 =end
 ---------------------------------------------------------------------*/
 %include "../RevocapIO/kmbHecmwIO.h"
-
 /**-----------------------------------------------------------------
 =begin
 = RevocapIO::FFbIO
@@ -218,5 +219,6 @@ REVOCAP_PrePost の YAML 形式ニュートラルファイルの読み書き
 =end
 ---------------------------------------------------------------------*/
 %include "../RevocapIO/kmbRevocapNeutralIO.h"
-
 %include "../RevocapIO/kmbSTLIO.h"
+%include "../RevocapIO/kmbNetgenIO.h"
+%include "../RevocapIO/kmbGmshIO.h"

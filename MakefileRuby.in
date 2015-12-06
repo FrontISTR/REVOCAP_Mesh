@@ -1,5 +1,7 @@
 RUBY = ruby
 export RUBY
+SWIG = swig
+export SWIG
 
 ifeq ($(ARCH),i686-darwin10)
 	DYNAMIC_EXT = bundle

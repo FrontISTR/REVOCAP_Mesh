@@ -66,51 +66,6 @@ kmb::Collision::getAccuracy(void) const
 	return this->accuracy;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 double
 kmb::Collision::distanceSqPtTri(kmb::nodeIdType nodeId,kmb::ElementBase& tri,double s[2]) const
 {
@@ -170,76 +125,6 @@ kmb::Collision::distanceSegSeg(kmb::ElementBase& seg0,kmb::ElementBase& seg1) co
 	return sqrt( distanceSqSegSeg(seg0,seg1,s,t) );
 }
 
-/*
-double
-kmb::Collision::distanceSqSegTri(kmb::Point3D& p0,kmb::Point3D& p1,
-	kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2,
-	double &s,double t[2]) const
-{
-
-
-
-	kmb::Vector3D u0(p0,q0);
-	kmb::Vector3D u1(p1,p0);
-	kmb::Vector3D u2(q0,q1);
-	kmb::Vector3D u3(q0,q2);
-	kmb::Matrix3x3 mat(
-		u1*u1, u1*u2, u1*u3,
-		u2*u1, u2*u2, u2*u3,
-		u3*u1, u3*u2, u3*u3);
-	kmb::Vector3D v(-(u1*u0),-(u2*u0),-(u3*u0));
-	kmb::Vector3D* tmp = mat.solve(v);
-	if( tmp &&
-		0.0 < tmp->x() && tmp->x() < 1.0 &&
-		0.0 < tmp->y() && 0.0 < tmp->z() &&
-		tmp->y() + tmp->z() < 1.0 )
-	{
-
-		s = tmp->getCoordinate(0);
-		t[0] = tmp->getCoordinate(1);
-		t[1] = tmp->getCoordinate(2);
-		delete tmp;
-		return (u0 + u1.scalar(s) + u2.scalar(t[0]) + u3.scalar(t[1])).lengthSq();
-	}else{
-
-		kmb::Minimizer min;
-
-		double tt[2];
-		if( min.update( p0.distanceSqToTriangle( q0, q1, q2, tt ) ) ){
-			s = 0.0;
-			t[0] = tt[0];
-			t[1] = tt[1];
-		}
-		if( min.update( p1.distanceSqToTriangle( q0, q1, q2, tt ) ) ){
-			s = 1.0;
-			t[0] = tt[0];
-			t[1] = tt[1];
-		}
-
-		double ss0,ss1;
-		if( min.update( kmb::Collision::testSegSeg( p0, p1, q0, q1, ss0, ss1 ) ) ){
-			s = ss0;
-			t[0] = ss1;
-			t[1] = 0.0;
-		}
-		if( min.update( kmb::Collision::testSegSeg( p0, p1, q1, q2, ss0, ss1 ) ) ){
-			s = ss0;
-			t[0] = 1.0 - ss1;
-			t[1] = ss1;
-		}
-		if( min.update( kmb::Collision::testSegSeg( p0, p1, q0, q2, ss0, ss1 ) ) ){
-			s = ss0;
-			t[0] = 0.0;
-			t[1] = ss1;
-		}
-		if( tmp ){
-			delete tmp;
-		}
-		return min.getMin();
-	}
-}
-*/
-
 double
 kmb::Collision::distanceSqSegTri(kmb::nodeIdType a0,kmb::nodeIdType a1,kmb::ElementBase& tri,double &s,double t[2]) const
 {
@@ -263,95 +148,6 @@ kmb::Collision::distanceSegTri(kmb::nodeIdType a0,kmb::nodeIdType a1,kmb::Elemen
 	double s[2] = {0.0,0.0};
 	return sqrt( distanceSqSegTri( a0, a1, tri, t, s ) );
 }
-/*
-double
-kmb::Collision::distanceSqTriTri(
-	kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& p2,
-	kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2,
-	double s[2],double t[2]) const
-{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		kmb::Minimizer min;
-
-		double ss = 0.0;
-		double tt[2] = {0.0, 0.0};
-		if( min.update( kmb::Collision::testSegTri( p0, p1, q0, q1, q2, ss, tt ) ) ){
-			s[0] = ss;
-			s[1] = 0.0;
-			t[0] = tt[0];
-			t[1] = tt[1];
-		}
-		if( min.update( kmb::Collision::testSegTri( p1, p2, q0, q1, q2, ss, tt ) ) ){
-			s[0] = 1.0-ss;
-			s[1] = ss;
-			t[0] = tt[0];
-			t[1] = tt[1];
-		}
-		if( min.update( kmb::Collision::testSegTri( p0, p2, q0, q1, q2, ss, tt ) ) ){
-			s[0] = 0.0;
-			s[1] = ss;
-			t[0] = tt[0];
-			t[1] = tt[1];
-		}
-		if( min.update( kmb::Collision::testSegTri( q0, q1, p0, p1, p2, ss, tt ) ) ){
-			s[0] = tt[0];
-			s[1] = tt[1];
-			t[0] = ss;
-			t[1] = 0.0;
-		}
-		if( min.update( kmb::Collision::testSegTri( q1, q2, p0, p1, p2, ss, tt ) ) ){
-			s[0] = tt[0];
-			s[1] = tt[1];
-			t[0] = 1.0-ss;
-			t[1] = ss;
-		}
-		if( min.update( kmb::Collision::testSegTri( q0, q2, p0, p1, p2, ss, tt ) ) ){
-			s[0] = tt[0];
-			s[1] = tt[1];
-			t[0] = 0.0;
-			t[1] = ss;
-		}
-
-
-
-		return min.getMin();
-
-}
-*/
-
 
 double
 kmb::Collision::distanceSqTriTri(kmb::ElementBase& tri0,kmb::ElementBase& tri1,double s[2],double t[2]) const
@@ -370,7 +166,7 @@ kmb::Collision::distanceSqTriTri(kmb::ElementBase& tri0,kmb::ElementBase& tri1,d
 	return DBL_MAX;
 }
 
-
+// 干渉時に負になるのは未対応
 double
 kmb::Collision::distanceTriTri(kmb::ElementBase& tri0,kmb::ElementBase& tri1) const
 {
@@ -531,9 +327,9 @@ kmb::Collision::distance(kmb::ElementBase& elem0,kmb::Face& f,const kmb::Element
 }
 
 
-
-
-
+// n^2 のアルゴリズムなので速くない
+// fg0 に対して fg1 の面のうち、距離が thres より小さいものを result に追加する
+// result は fg1 の部分集合
 int
 kmb::Collision::detectFaceGroup(const char* fg0,const char* fg1,double thres,const char* result) const
 {
@@ -628,9 +424,9 @@ foundFace:
 }
 
 
-
-
-
+// n^2 のアルゴリズムなので速くない
+// bodyId0 に対して fg1 の面のうち、距離が thres より小さいものを result に追加する
+// result は fg1 の部分集合
 int
 kmb::Collision::detectSurfaceFaceGroup(kmb::bodyIdType bodyId0,const char* fg1,double thres,const char* result) const
 {
@@ -738,18 +534,11 @@ kmb::Collision::detectSurfaceFaceGroupByNode(kmb::bodyIdType bodyId0,const char*
 		kmb::Element2DOctree octree;
 		const kmb::ElementContainer* body = mesh->getBodyPtr(bodyId0);
 		octree.setContainer( mesh->getNodes(), body );
-
-
-
-
 		size_t orgSize = resultGroup->getIdCount();
 		kmb::Face f1;
 		kmb::Triangle tri1;
 		kmb::Quad q1;
 		kmb::Node node;
-
-
-
 		double dist = 0.0;
 		kmb::DataBindings::const_iterator f1Iter = faceGroup1->begin();
 		while( !f1Iter.isFinished() ){
@@ -760,7 +549,6 @@ kmb::Collision::detectSurfaceFaceGroupByNode(kmb::bodyIdType bodyId0,const char*
 				for(int i=0;i<len;++i){
 					kmb::nodeIdType nodeId = eIter.getBoundaryCellId( f1.getLocalFaceId(), i );
 					mesh->getNode( nodeId, node );
-
 					kmb::elementIdType nearest = kmb::Element::nullElementId;
 					dist = octree.getNearest( node.x(), node.y(), node.z(), nearest );
 					if( nearest != kmb::Element::nullElementId && dist < thres ){

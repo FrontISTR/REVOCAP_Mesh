@@ -39,12 +39,12 @@ public:
 	Quad(kmb::nodeIdType *ary);
 	virtual ~Quad(void);
 
-
-
-
+	// •Ó‚ÌŒğŠ·
+	// orientation=true  abcd ‚Æ befc ‚©‚ç abed ‚Æ efcd ‚É•ÏŠ·‚·‚éi‹¤’Ê•Ó‚ğ‡•ûŒü‚É‚¸‚ç‚·j
+	// orientation=false abcd ‚Æ befc ‚©‚ç abef ‚Æ afcd ‚É•ÏŠ·‚·‚éi‹¤’Ê•Ó‚ğ‹t•ûŒü‚É‚¸‚ç‚·j
 	static bool edgeSwap(kmb::ElementBase &quad0,kmb::ElementBase &quad1,bool orientation=true);
-
-
+	// lŠpŒ`‚É“Á‰»‚µ‚½ˆê’v”»’è
+	// 1 : ˆê’v -1 : ‹tŒü‚« 0 : ‚»‚Ì‘¼
 	static int isCoincident(kmb::nodeIdType t00,kmb::nodeIdType t01,kmb::nodeIdType t02,kmb::nodeIdType t03,
 							kmb::nodeIdType t10,kmb::nodeIdType t11,kmb::nodeIdType t12,kmb::nodeIdType t13);
 public:

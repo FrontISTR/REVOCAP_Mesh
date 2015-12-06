@@ -25,7 +25,7 @@
 ----------------------------------------------------------------------*/
 #pragma once
 
-
+#include <cstdio>
 #include <istream>
 #include <ostream>
 #include "RevocapIO/kmbDefineIO.h"
@@ -38,23 +38,23 @@ class DataBindings;
 class RevocapMeshDumpIO
 {
 public:
-
+	// 文字 char と文字列の長さを表す int4 は環境によらないとする
 	struct SizeInfo{
-		unsigned char nodeCount;
-		unsigned char nodeId;
-		unsigned char xyz;
-		unsigned char bodyCount;
-		unsigned char bodyId;
-		unsigned char elementCount;
-		unsigned char elementId;
-		unsigned char elementType;
-		unsigned char dataCount;
-		unsigned char bindingMode;
-		unsigned char idCount;
-		unsigned char valueType;
-		unsigned char value;
-		unsigned char intValue;
-		unsigned char faceId;
+		unsigned char nodeCount;    // 符号なし整数
+		unsigned char nodeId;       // 符号付き整数
+		unsigned char xyz;          // 浮動点小数
+		unsigned char bodyCount;    // 符号なし整数
+		unsigned char bodyId;       // 符号付き整数
+		unsigned char elementCount; // 符号なし整数
+		unsigned char elementId;    // 符号付き整数
+		unsigned char elementType;  // 符号付き整数
+		unsigned char dataCount;    // 符号なし整数
+		unsigned char bindingMode;  // 符号付き整数
+		unsigned char idCount;      // 符号なし整数
+		unsigned char valueType;    // 符号付き整数
+		unsigned char value;        // 浮動点小数
+		unsigned char intValue;     // 符号付き整数
+		unsigned char faceId;       // 符号付き整数
 	};
 
 	RevocapMeshDumpIO(void);
@@ -62,38 +62,15 @@ public:
 
 	static bool checkTypeSize(void);
 	int loadMeshFromFile(const char* filename,kmb::MeshData* mesh);
-
 	int saveMeshToFile(const char* filename,const kmb::MeshData* mesh);
-
-
-
 private:
 	static const char* headerString;
 	static const int headerLength;
 protected:
-
 	struct SizeInfo sInfo;
 	bool getVersion(int &ver);
 	bool setVersion(const int ver);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	// stream 版
 	kmb::RevocapIO::ErrorCode getVersion(int &ver,std::istream &input);
 	kmb::RevocapIO::ErrorCode setVersion(const int ver,std::ostream &output);
 	kmb::RevocapIO::ErrorCode loadNodeData(kmb::MeshData* mesh,std::istream &input);
@@ -104,7 +81,6 @@ protected:
 	kmb::RevocapIO::ErrorCode saveBindingData(const kmb::MeshData* mesh,std::ostream &output);
 	kmb::RevocapIO::ErrorCode loadData(kmb::DataBindings* data,std::istream &input,size_t count);
 	kmb::RevocapIO::ErrorCode saveData(const kmb::DataBindings* data,std::ostream &output);
-
 	void setSizeInfoVersion1(void);
 };
 

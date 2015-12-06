@@ -223,13 +223,13 @@ kmb::BoundaryExtractor::eraseData(const kmb::DataBindings* data,bool reverse)
 	}
 }
 
-
+// elements ‚ª—^‚¦‚ç‚ê‚Ä‚¢‚é‚Í mesh ‚Í NULL ‚Å‚à‚æ‚¢
 void
 kmb::BoundaryExtractor::appendElement(kmb::elementIdType elementId,kmb::ElementBase &element,const kmb::ElementContainer* elements)
 {
 	kmb::elementType etype = element.getType();
 	if( ( mesh || elements ) && kmb::Element::getDimension( etype ) >= 2 ){
-
+		// Face ‚Ì’¸“_‚Ìß“_”Ô†‚Ì˜a‚ğƒL[‚É‚·‚é
 		const int boundNum = element.getBoundaryCount();
 		for(int i=0;i<boundNum;++i)
 		{
@@ -246,7 +246,7 @@ kmb::BoundaryExtractor::appendElement(kmb::elementIdType elementId,kmb::ElementB
 			}
 			int index = -1;
 			int otherIndex = -1;
-
+			// Šù‚É“o˜^Ï‚İ‚Ì Face ‚Æ”äŠr‚·‚é
 			std::multimap< kmb::nodeIdType, kmb::Face >::iterator fIter = facemap.lower_bound(sum);
 			std::multimap< kmb::nodeIdType, kmb::Face >::iterator end = facemap.upper_bound(sum);
 			switch(vertexNum){
@@ -267,20 +267,20 @@ kmb::BoundaryExtractor::appendElement(kmb::elementIdType elementId,kmb::ElementB
 							kmb::ElementRelation::relationType rel = kmb::ElementRelation::getSegmentRelation( a0,a1,b0,b1,index,otherIndex );
 							if( rel == kmb::ElementRelation::REVERSE )
 							{
-
+								// — Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ‚µ‚Ä“o˜^‚µ‚È‚¢
 								facemap.erase( fIter );
 								goto findElement2;
 							}
 							else if( reverseMode && rel == kmb::ElementRelation::EQUAL )
 							{
-
+								// “¯‚¶Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ‚µ‚Ä“o˜^‚µ‚È‚¢
 								facemap.erase( fIter );
 								goto findElement2;
 							}
 						}
 						++fIter;
 					}
-
+					// Œ©‚Â‚©‚ç‚È‚©‚Á‚½‚ç“o˜^
 					facemap.insert( std::pair<kmb::nodeIdType,kmb::Face>(sum,kmb::Face(elementId,i) ) );
 findElement2:
 					break;
@@ -304,20 +304,20 @@ findElement2:
 							kmb::ElementRelation::relationType rel = kmb::ElementRelation::getTriangleRelation( a0,a1,a2,b0,b1,b2,index,otherIndex );
 							if( rel == kmb::ElementRelation::REVERSE )
 							{
-
+								// — Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ‚µ‚Ä“o˜^‚µ‚È‚¢
 								facemap.erase( fIter );
 								goto findElement3;
 							}
 							else if( reverseMode && rel == kmb::ElementRelation::EQUAL )
 							{
-
+								// “¯‚¶Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ‚µ‚Ä“o˜^‚µ‚È‚¢
 								facemap.erase( fIter );
 								goto findElement3;
 							}
 						}
 						++fIter;
 					}
-
+					// Œ©‚Â‚©‚ç‚È‚©‚Á‚½‚ç“o˜^
 					facemap.insert( std::pair<kmb::nodeIdType,kmb::Face>(sum,kmb::Face(elementId,i) ) );
 findElement3:
 					break;
@@ -343,20 +343,20 @@ findElement3:
 							kmb::ElementRelation::relationType rel = kmb::ElementRelation::getQuadRelation( a0,a1,a2,a3,b0,b1,b2,b3,index,otherIndex );
 							if( rel == kmb::ElementRelation::REVERSE )
 							{
-
+								// — Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ‚µ‚Ä“o˜^‚µ‚È‚¢
 								facemap.erase( fIter );
 								goto findElement4;
 							}
 							else if( reverseMode && rel == kmb::ElementRelation::EQUAL )
 							{
-
+								// “¯‚¶Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ‚µ‚Ä“o˜^‚µ‚È‚¢
 								facemap.erase( fIter );
 								goto findElement4;
 							}
 						}
 						++fIter;
 					}
-
+					// Œ©‚Â‚©‚ç‚È‚©‚Á‚½‚ç“o˜^
 					facemap.insert( std::pair<kmb::nodeIdType,kmb::Face>(sum,kmb::Face(elementId,i) ) );
 findElement4:
 					break;
@@ -373,7 +373,7 @@ kmb::BoundaryExtractor::appendFaceMap(kmb::elementIdType elementId,kmb::ElementB
 {
 	kmb::elementType etype = element.getType();
 	if( ( mesh || elements ) && kmb::Element::getDimension( etype ) >= 2 ){
-
+		// Face ‚Ì’¸“_‚Ìß“_”Ô†‚Ì˜a‚ğƒL[‚É‚·‚é
 		kmb::nodeIdType sum = 0;
 		int vertexNum = kmb::ElementBase::getBoundaryVertexCount( etype, static_cast<int>(faceId) );
 		for(int j=0;j<vertexNum;++j)
@@ -382,13 +382,13 @@ kmb::BoundaryExtractor::appendFaceMap(kmb::elementIdType elementId,kmb::ElementB
 		}
 		if( facemap.find(sum) == facemap.end() )
 		{
-
+			// “o˜^‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‘f’¼‚É“o˜^
 			facemap.insert( std::pair<kmb::nodeIdType,kmb::Face>(sum,kmb::Face(elementId,faceId) ) );
 			return;
 		}
 		int index = -1;
 		int otherIndex = -1;
-
+		// Šù‚É“o˜^Ï‚İ‚Ì Face ‚Æ”äŠr‚·‚é
 		std::multimap< kmb::nodeIdType, kmb::Face >::iterator fIter = facemap.lower_bound(sum);
 		std::multimap< kmb::nodeIdType, kmb::Face >::iterator end = facemap.upper_bound(sum);
 		switch(vertexNum){
@@ -409,20 +409,20 @@ kmb::BoundaryExtractor::appendFaceMap(kmb::elementIdType elementId,kmb::ElementB
 						kmb::ElementRelation::relationType rel = kmb::ElementRelation::getSegmentRelation( a0,a1,b0,b1,index,otherIndex );
 						if( rel== kmb::ElementRelation::REVERSE )
 						{
-
+							// — Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ‚µ‚Ä“o˜^‚µ‚È‚¢
 							facemap.erase( fIter );
 							goto findElement2;
 						}
 						else if( reverseMode && rel == kmb::ElementRelation::EQUAL )
 						{
-
+							// “¯‚¶Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ‚µ‚Ä“o˜^‚µ‚È‚¢
 							facemap.erase( fIter );
 							goto findElement2;
 						}
 					}
 					++fIter;
 				}
-
+				// Œ©‚Â‚©‚ç‚È‚©‚Á‚½‚ç“o˜^
 				facemap.insert( std::pair<kmb::nodeIdType,kmb::Face>(sum,kmb::Face(elementId,faceId) ) );
 findElement2:
 				break;
@@ -446,20 +446,20 @@ findElement2:
 						kmb::ElementRelation::relationType rel = kmb::ElementRelation::getTriangleRelation( a0,a1,a2,b0,b1,b2,index,otherIndex );
 						if( rel == kmb::ElementRelation::REVERSE )
 						{
-
+							// — Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ‚µ‚Ä“o˜^‚µ‚È‚¢
 							facemap.erase( fIter );
 							goto findElement3;
 						}
 						else if( reverseMode && rel == kmb::ElementRelation::EQUAL )
 						{
-
+							// “¯‚¶Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ‚µ‚Ä“o˜^‚µ‚È‚¢
 							facemap.erase( fIter );
 							goto findElement3;
 						}
 					}
 					++fIter;
 				}
-
+				// Œ©‚Â‚©‚ç‚È‚©‚Á‚½‚ç“o˜^
 				facemap.insert( std::pair<kmb::nodeIdType,kmb::Face>(sum,kmb::Face(elementId,faceId) ) );
 findElement3:
 				break;
@@ -485,20 +485,20 @@ findElement3:
 						kmb::ElementRelation::relationType rel = kmb::ElementRelation::getQuadRelation( a0,a1,a2,a3,b0,b1,b2,b3,index,otherIndex );
 						if( rel == kmb::ElementRelation::REVERSE )
 						{
-
+							// — Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ‚µ‚Ä“o˜^‚µ‚È‚¢
 							facemap.erase( fIter );
 							goto findElement4;
 						}
 						else if( reverseMode && rel == kmb::ElementRelation::EQUAL )
 						{
-
+							// “¯‚¶Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ‚µ‚Ä“o˜^‚µ‚È‚¢
 							facemap.erase( fIter );
 							goto findElement4;
 						}
 					}
 					++fIter;
 				}
-
+				// Œ©‚Â‚©‚ç‚È‚©‚Á‚½‚ç“o˜^
 				facemap.insert( std::pair<kmb::nodeIdType,kmb::Face>(sum,kmb::Face(elementId,faceId) ) );
 findElement4:
 				break;
@@ -514,7 +514,7 @@ kmb::BoundaryExtractor::eraseFaceMap(kmb::ElementBase &element,kmb::idType faceI
 {
 	kmb::elementType etype = element.getType();
 	if( ( mesh || elements ) && kmb::Element::getDimension( etype ) >= 2 ){
-
+		// Face ‚Ì’¸“_‚Ìß“_”Ô†‚Ì˜a‚ğƒL[‚É‚·‚é
 		kmb::nodeIdType sum = 0;
 		int vertexNum = kmb::ElementBase::getBoundaryVertexCount( etype, static_cast<int>(faceId) );
 		for(int j=0;j<vertexNum;++j)
@@ -523,10 +523,10 @@ kmb::BoundaryExtractor::eraseFaceMap(kmb::ElementBase &element,kmb::idType faceI
 		}
 		if( facemap.find(sum) == facemap.end() )
 		{
-
+			// “o˜^‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
 			return;
 		}
-
+		// Šù‚É“o˜^Ï‚İ‚Ì Face ‚Æ”äŠr‚·‚é
 		int index = -1;
 		int otherIndex = -1;
 		std::multimap< kmb::nodeIdType, kmb::Face >::iterator fIter = facemap.lower_bound(sum);
@@ -549,13 +549,13 @@ kmb::BoundaryExtractor::eraseFaceMap(kmb::ElementBase &element,kmb::idType faceI
 						kmb::ElementRelation::relationType rel = kmb::ElementRelation::getSegmentRelation( a0,a1,b0,b1,index,otherIndex );
 						if( reverse && rel == kmb::ElementRelation::REVERSE )
 						{
-
+							// — Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ
 							facemap.erase( fIter );
 							return;
 						}
 						if( !reverse && rel == kmb::ElementRelation::EQUAL )
 						{
-
+							// “¯‚¶Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ
 							facemap.erase( fIter );
 							return;
 						}
@@ -583,13 +583,13 @@ kmb::BoundaryExtractor::eraseFaceMap(kmb::ElementBase &element,kmb::idType faceI
 						kmb::ElementRelation::relationType rel = kmb::ElementRelation::getTriangleRelation( a0,a1,a2,b0,b1,b2,index,otherIndex );
 						if( reverse && rel == kmb::ElementRelation::REVERSE )
 						{
-
+							// — Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ
 							facemap.erase( fIter );
 							return;
 						}
 						if( !reverse && rel == kmb::ElementRelation::EQUAL )
 						{
-
+							// “¯‚¶Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ
 							facemap.erase( fIter );
 							return;
 						}
@@ -619,13 +619,13 @@ kmb::BoundaryExtractor::eraseFaceMap(kmb::ElementBase &element,kmb::idType faceI
 						kmb::ElementRelation::relationType rel = kmb::ElementRelation::getQuadRelation( a0,a1,a2,a3,b0,b1,b2,b3,index,otherIndex );
 						if( reverse && rel == kmb::ElementRelation::REVERSE )
 						{
-
+							// — Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ
 							facemap.erase( fIter );
 							return;
 						}
 						if( !reverse && rel == kmb::ElementRelation::EQUAL )
 						{
-
+							// “¯‚¶Œü‚«‚ªŒ©‚Â‚©‚Á‚½‚çíœ
 							facemap.erase( fIter );
 							return;
 						}
@@ -680,7 +680,7 @@ kmb::BoundaryExtractor::getBoundary(kmb::bodyIdType bodyId) const
 	}
 
 	kmb::nodeIdType* cell = new kmb::nodeIdType[ kmb::Element::MAX_NODE_COUNT_DIM2 ];
-
+	// body ‚ÉŠÜ‚Ü‚ê‚é‹«ŠE‚ÌŒÂ”‚ğ”‚¦‚é
 	size_t bCount = 0;
 	{
 		std::multimap< kmb::nodeIdType, kmb::Face >::const_iterator fIter = facemap.begin();
@@ -692,7 +692,7 @@ kmb::BoundaryExtractor::getBoundary(kmb::bodyIdType bodyId) const
 			++fIter;
 		}
 	}
-
+	// ‚±‚±‚Å mesh ‚É defaultType ‚ª—^‚¦‚ç‚ê‚Ä‚¢‚½‚ç‚»‚ê‚Åì‚é
 	kmb::bodyIdType boundaryId = mesh->beginElement( bCount );
 	{
 		std::multimap< kmb::nodeIdType, kmb::Face >::const_iterator fIter = facemap.begin();
@@ -721,7 +721,7 @@ kmb::BoundaryExtractor::getBoundary(void) const
 		return kmb::Body::nullBodyId;
 	}
 	kmb::nodeIdType* cell = new kmb::nodeIdType[ kmb::Element::MAX_NODE_COUNT_DIM2 ];
-
+	// ‚±‚±‚Å mesh ‚É defaultType ‚ª—^‚¦‚ç‚ê‚Ä‚¢‚½‚ç‚»‚ê‚Åì‚é
 	kmb::bodyIdType boundaryId = mesh->beginElement( facemap.size() );
 	{
 		std::multimap< kmb::nodeIdType, kmb::Face >::const_iterator fIter = facemap.begin();
@@ -742,7 +742,7 @@ kmb::BoundaryExtractor::getBoundary(void) const
 	return boundaryId;
 }
 
-
+// ˆø”‚Ì bodyId ‚Ì–Ê‚Æ“¯‚¶Œü‚«‚Å“o˜^‚·‚é
 kmb::bodyIdType
 kmb::BoundaryExtractor::getInterfaceBoundary(kmb::bodyIdType bodyId) const
 {
@@ -762,7 +762,7 @@ kmb::BoundaryExtractor::getInterfaceBoundary(kmb::bodyIdType bodyId) const
 		{
 			kmb::elementType etype = eIter.getType();
 			if( kmb::Element::getDimension( etype ) >= 2 ){
-
+				// Face ‚Ì’¸“_‚Ìß“_”Ô†‚Ì˜a‚ğƒL[‚É‚·‚é
 				const int boundNum = eIter.getBoundaryCount();
 				for(int i=0;i<boundNum;++i)
 				{
@@ -776,7 +776,7 @@ kmb::BoundaryExtractor::getInterfaceBoundary(kmb::bodyIdType bodyId) const
 					{
 						int index = -1;
 						int otherIndex = -1;
-
+						// Šù‚É“o˜^Ï‚İ‚Ì Face ‚Æ”äŠr‚·‚é
 						std::multimap< kmb::nodeIdType, kmb::Face >::const_iterator fIter = facemap.lower_bound(sum);
 						std::multimap< kmb::nodeIdType, kmb::Face >::const_iterator end = facemap.upper_bound(sum);
 						switch(vertexNum){
@@ -882,13 +882,13 @@ bool kmb::BoundaryExtractor::getInterfaceBoundaryFace(kmb::bodyIdType bodyId,con
 		return false;
 	}
 
-
+	// name ‚Ìƒf[ƒ^‚ª‚·‚Å‚É‚ ‚Á‚½‚ç‚»‚ê‚ğg‚¤
 	bface = mesh->getDataBindingsPtr( name );
 	if( bface == NULL ){
-
+		// Face ‚ÌƒRƒ“ƒeƒi‚ğì‚é
 		bface = mesh->createDataBindings(name,kmb::DataBindings::FaceGroup,kmb::PhysicalValue::None,"Brep",bodyId);
 	}else if( bface->getBindingMode() != kmb::DataBindings::FaceGroup ){
-
+		// ‚·‚Å‚É•Ê‚Ìƒ‚[ƒh‚Å‘¶İ‚µ‚½‚ç¸”s‚Æ‚·‚é
 		return false;
 	}
 
@@ -899,7 +899,7 @@ bool kmb::BoundaryExtractor::getInterfaceBoundaryFace(kmb::bodyIdType bodyId,con
 	{
 		kmb::elementType etype = eIter.getType();
 		if( kmb::Element::getDimension( etype ) >= 2 ){
-
+			// Face ‚Ì’¸“_‚Ìß“_”Ô†‚Ì˜a‚ğƒL[‚É‚·‚é
 			const int boundNum = eIter.getBoundaryCount();
 			for(int i=0;i<boundNum;++i)
 			{
@@ -913,7 +913,7 @@ bool kmb::BoundaryExtractor::getInterfaceBoundaryFace(kmb::bodyIdType bodyId,con
 				{
 					int index = -1;
 					int otherIndex = -1;
-
+					// Šù‚É“o˜^Ï‚İ‚Ì Face ‚Æ”äŠr‚·‚é
 					std::multimap< kmb::nodeIdType, kmb::Face >::const_iterator fIter = facemap.lower_bound(sum);
 					std::multimap< kmb::nodeIdType, kmb::Face >::const_iterator end = facemap.upper_bound(sum);
 					switch(vertexNum){
@@ -1065,7 +1065,7 @@ kmb::BoundaryExtractor::getBoundary(kmb::BoundaryExtractor& other) const
 			kmb::ElementContainer::iterator e0 = mesh->findElement(f0.getElementId());
 			kmb::idType l0 = f0.getLocalFaceId();
 			if( other.facemap.find(sum) != other.facemap.end() && !e0.isFinished() ){
-
+				// other ‚Ì Face ‚Æ”äŠr‚·‚é
 				std::multimap< kmb::nodeIdType, kmb::Face >::iterator oIter = other.facemap.lower_bound(sum);
 				std::multimap< kmb::nodeIdType, kmb::Face >::iterator end = other.facemap.upper_bound(sum);
 				while( oIter != end){
@@ -1122,7 +1122,7 @@ kmb::BoundaryExtractor::getBoundaryComponents(kmb::bodyIdType bodyId,kmb::bodyId
 	int size = static_cast<int>( components.size() );
 	boundaryIds = new kmb::bodyIdType[ size ];
 	std::set<kmb::ElementContainer*>::iterator cIter = components.begin();
-
+	// MeshDB ‚É“o˜^
 	while( cIter != components.end() )
 	{
 		kmb::ElementContainer* container = (*cIter);
@@ -1151,13 +1151,13 @@ kmb::BoundaryExtractor::getBoundaryFace(kmb::bodyIdType bodyId,const char* name)
 		return false;
 	}
 
-
+	// name ‚Ìƒf[ƒ^‚ª‚·‚Å‚É‚ ‚Á‚½‚ç‚»‚ê‚ğg‚¤
 	bface = mesh->getDataBindingsPtr( name );
 	if( bface == NULL ){
-
+		// Face ‚ÌƒRƒ“ƒeƒi‚ğì‚é
 		bface = mesh->createDataBindings(name,kmb::DataBindings::FaceGroup,kmb::PhysicalValue::None,"Brep",bodyId);
 	}else if( bface->getBindingMode() != kmb::DataBindings::FaceGroup ){
-
+		// ‚·‚Å‚É•Ê‚Ìƒ‚[ƒh‚Å‘¶İ‚µ‚½‚ç¸”s‚Æ‚·‚é
 		return false;
 	}
 

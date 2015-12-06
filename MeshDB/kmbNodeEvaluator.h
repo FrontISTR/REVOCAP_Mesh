@@ -12,7 +12,7 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-
+// ƒƒbƒVƒ…‚Ì•]‰¿’l‚Åß“_‚ÉŠi”[‚·‚é‚à‚Ì‚ğˆµ‚¤
 
 #pragma once
 
@@ -30,9 +30,9 @@ public:
 	NodeEvaluator(void);
 	virtual ~NodeEvaluator(void);
 	void setMesh(kmb::MeshData* mesh);
-
-
-
+	// –Ê‚Ìî•ñ‚ğ—^‚¦‚Ä curvature ‚ğ data ‚É‘ã“ü‚·‚é
+	// data ‚Í 2\pi ‚Å‰Šú‰»
+	// data ‚ÌŒÂ”‚ğ•Ô‚·
 	int calcCurvature(const char* name,const char* stype=NULL);
 };
 

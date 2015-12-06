@@ -50,7 +50,7 @@ RevocapVisual における FXRuby での OpenGL の描画を高速化する目的で作られた
 
 #ifndef VERSION
 namespace kmb{
-#define VERSION "RevocapGL version 1.6.03 (2013/3/8)"
+#define VERSION "RevocapGL version 1.6.09 (2015/8/12)"
 #define COPYRIGHT "IIS, The University of Tokyo CISS, Large Scale Assembly, Structural Correspondence, Multi Dynamics Simulator"
 }
 #endif
@@ -81,7 +81,7 @@ namespace kmb{
 %include "../Geometry/kmbIdTypes.h"
 %include "../Common/kmbCommon.h"
 
-
+// 順番は重要！
 %include "MeshGL.i"
 %include "ColorMap.i"
 %include "FBORendering.i"

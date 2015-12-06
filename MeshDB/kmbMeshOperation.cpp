@@ -24,6 +24,7 @@
 #include "Geometry/kmbPoint3DContainerMArray.h"
 
 #include <cstring>
+#include <cstdlib>
 
 kmb::MeshOperation::MeshOperation(MeshData* _mesh)
 	: mesh(_mesh)
@@ -47,11 +48,11 @@ size_t kmb::MeshOperation::nodeSplitByVolumes(void)
 			++volCount;
 		}
 	}
-
+	// そもそも領域が1以下
 	if( volCount <= 1 ){
 		return 0;
 	}
-
+	// 節点番号を2重化する必要がある場合の対応
 	kmb::MeshBrepInfo* brep = kmb::MeshBrepInfo::create3DModelWithBoundary(mesh,true);
 	kmb::Point3DContainer* nodes = new kmb::Point3DContainerMArray();
 	nodes->initialize( mesh->getNodeCount() );
@@ -60,7 +61,7 @@ size_t kmb::MeshOperation::nodeSplitByVolumes(void)
 	kmb::Point3D pt;
 	for( std::vector< kmb::bodyIdType >::iterator vIter = volumes.begin(); vIter < volumes.end(); ++vIter)
 	{
-
+		// 旧番号 => 新番号
 		std::map< kmb::nodeIdType, kmb::nodeIdType > nodeMapperLocal;
 		kmb::bodyIdType volumeId = *vIter;
 		kmb::ElementContainer* body = mesh->getBodyPtr(volumeId);
@@ -69,7 +70,7 @@ size_t kmb::MeshOperation::nodeSplitByVolumes(void)
 			while( !eIter.isFinished() ){
 				int nCount = eIter.getNodeCount();
 				for(int i=0;i<nCount;++i){
-
+					// Local で最初に出てきた節点かどうか
 					std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator n2Iter = nodeMapperLocal.find(eIter[i]);
 					if( n2Iter == nodeMapperLocal.end() ){
 						mesh->getNode(eIter[i],pt);
@@ -94,7 +95,7 @@ size_t kmb::MeshOperation::nodeSplitByVolumes(void)
 			}
 		}
 	}
-
+	// node container を入れ替え
 	mesh->replaceNodes( nodes );
 	delete brep;
 	return 0;
@@ -105,8 +106,8 @@ size_t kmb::MeshOperation::uniteNodes(double thresh)
 	if( mesh == NULL || mesh->getNodes() == NULL ){
 		return 0;
 	}
-
-
+	// 新しい nodeId と古い nodeId の対応関係を覚えておく
+	// idmap[oldid] = newid
 	std::map<kmb::nodeIdType,kmb::nodeIdType> idmap;
 	kmb::BoundingBox bbox = mesh->getBoundingBox();
 	bbox.expand(1.2);
@@ -122,7 +123,7 @@ size_t kmb::MeshOperation::uniteNodes(double thresh)
 		kmb::nodeIdType nodeId = pIter.getId();
 		kmb::nodeIdType nearId = pIter.getId();
 		bucket.getNearPoints( nodeId, thresh, nodeIds );
-
+		// 小さい節点番号に一致させる
 		std::vector< kmb::nodeIdType >::iterator nIter = nodeIds.begin();
 		while( nIter != nodeIds.end() ){
 		  if( *nIter < nearId ){
@@ -137,7 +138,7 @@ size_t kmb::MeshOperation::uniteNodes(double thresh)
 		++pIter;
 	}
 
-
+	// 要素情報の更新
 	kmb::bodyIdType bCount = static_cast<kmb::bodyIdType>(mesh->getBodyCount());
 	for(kmb::bodyIdType bodyId=0;bodyId<bCount;++bodyId)
 	{
@@ -147,7 +148,7 @@ size_t kmb::MeshOperation::uniteNodes(double thresh)
 		}
 	}
 
-
+	// 物理量の更新
 	kmb::datamap::iterator dIter = mesh->beginDataIterator();
 	while( dIter != mesh->endDataIterator() )
 	{
@@ -218,7 +219,7 @@ int kmb::MeshOperation::duplicateNodeIdOfBody(kmb::bodyIdType bodyId,const char*
 			++eIter;
 		}
 		if( data && coupleName == NULL ){
-
+			// mesh に登録されていない data は削除する
 			delete data;
 		}
 	}
@@ -226,13 +227,13 @@ int kmb::MeshOperation::duplicateNodeIdOfBody(kmb::bodyIdType bodyId,const char*
 }
 
 
-
+// 親要素の検索
 kmb::elementIdType kmb::MeshOperation::getParentElement(const kmb::ElementBase &elem,const kmb::ElementContainer* parent,const kmb::NodeNeighborInfo &neighbors)
 {
 	if( parent == NULL ){
 		return kmb::Element::nullElementId;
 	}
-
+	// 最初の節点番号で調べてよい
 	int i0,i1;
 	kmb::nodeIdType nodeId = elem[0];
 	kmb::NodeNeighbor::const_iterator nIter = neighbors.beginIteratorAt(nodeId);
@@ -258,8 +259,8 @@ int kmb::MeshOperation::triangulation(kmb::bodyIdType bodyId)
 		return -1;
 	}
 	int count = 0;
-
-
+	// iterator の中でコンテナの中身を替えたくないから、
+	// 一度 elementId をキャッシュする
 	std::vector<kmb::elementIdType> elementIds;
 
 	kmb::ElementContainer::iterator eIter = body->begin();
@@ -278,28 +279,20 @@ int kmb::MeshOperation::triangulation(kmb::bodyIdType bodyId)
 		kmb::ElementContainer::iterator e = body->find(elementId);
 		if( !e.isFinished() && e.getDimension() == 2){
 			const int num = e.divideIntoTriangles( triangles );
-
-			if( num > 1 )
+			++count;
+			for(int i=0;i<num;++i)
 			{
-				++count;
-				for(int i=0;i<num;++i)
-				{
-					mesh->insertElement( bodyId, kmb::TRIANGLE, triangles[i] );
-				}
-				body->deleteElement(elementId);
+				mesh->insertElement( bodyId, kmb::TRIANGLE, triangles[i] ); // MeshDB を通して登録する（ ElementId を発行するため）
 			}
+			body->deleteElement(elementId);
 		}else if( !e.isFinished() && e.getDimension() == 3 ){
 			const int num = e.divideIntoTetrahedrons(tetrahedrons);
-
-			if( num > 1 )
+			++count;
+			for(int i=0;i<num;++i)
 			{
-				++count;
-				for(int i=0;i<num;++i)
-				{
-					mesh->insertElement( bodyId, kmb::TETRAHEDRON, tetrahedrons[i] );
-				}
-				body->deleteElement(elementId);
+				mesh->insertElement( bodyId, kmb::TETRAHEDRON, tetrahedrons[i] );
 			}
+			body->deleteElement(elementId);
 		}
 		++iter;
 	}
@@ -313,7 +306,7 @@ bool kmb::MeshOperation::isParent(const kmb::ElementContainer* child,const kmb::
 	}
 	kmb::ElementContainer::const_iterator eIter = child->begin();
 	if( !eIter.isFinished() ){
-
+		// 最初の節点番号で調べてよい
 		int i0,i1;
 		kmb::nodeIdType nodeId = eIter[0];
 		kmb::NodeNeighbor::const_iterator nIter = neighbors.beginIteratorAt(nodeId);

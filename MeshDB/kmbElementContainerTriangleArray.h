@@ -76,9 +76,9 @@ public:
 protected:
 	size_t index;
 	size_t size;
-
+	// use unsigned int for glDrawElements
 	unsigned int* nodeTable;
-
+	// substitute for kmb::nullNodeId
 	static unsigned int unsignedNullNodeId;
 };
 

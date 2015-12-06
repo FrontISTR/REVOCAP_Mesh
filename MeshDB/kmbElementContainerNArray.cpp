@@ -59,8 +59,8 @@ kmb::ElementContainerNArray::ElementContainerNArray( kmb::elementType etype, siz
 	this->etype = etype;
 	this->size = size;
 	this->ncount = kmb::Element::getNodeCount( etype );
-
-
+	// direct access ‚¾‚¯‰Â”\‚É‚·‚éê‡‚É‚Í
+	// writable = false ‚Å nodeTable = NULL ‚Ìê‡‚à‚ ‚é
 	if( nodeTable ){
 		this->nodeTable = nodeTable;
 		this->nodeTableDeletable = false;
@@ -73,8 +73,8 @@ kmb::ElementContainerNArray::ElementContainerNArray( kmb::elementType etype, siz
 		this->nodeTableDeletable = true;
 	}
 	this->nodeOffset = offset;
-
-
+	// writable = true => addElement callable
+	// even if writable = false, direct access is possible
 	if( !writable ){
 		this->typeCounter[ etype ] = size;
 		this->index = size;
@@ -282,7 +282,7 @@ kmb::elementType kmb::ElementContainerNArray::getElementType(kmb::elementIdType 
 	return etype;
 }
 
-
+// direct access
 kmb::nodeIdType kmb::ElementContainerNArray::operator()(kmb::elementIdType elementId,kmb::idType localId) const
 {
 	return nodeTable[ncount*(elementId-offsetId)+localId];
@@ -299,7 +299,7 @@ void kmb::ElementContainerNArray::commit(kmb::elementIdType elementId)
 	index = elementId-offsetId + 1;
 }
 
-
+//----------------- iterator -------------------
 
 kmb::ElementContainerNArray::_iteratorNA::_iteratorNA(void)
 : index(0)

@@ -165,7 +165,7 @@ kmb::Triangle::edgeSwap(kmb::ElementBase &triangle0,kmb::ElementBase &triangle1)
 	bool swapped = false;
 	if( triangle0.getType() == kmb::TRIANGLE && triangle1.getType() == kmb::TRIANGLE )
 	{
-
+		// 境界の4点を順番に並べる
 		kmb::nodeIdType nodes[4]
 			= {kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId};
 		int count = 0;
@@ -176,7 +176,7 @@ kmb::Triangle::edgeSwap(kmb::ElementBase &triangle0,kmb::ElementBase &triangle1)
 				++count;
 			}
 		}
-
+		// 共有する 2 点を探して、nodes[1] と nodes[3] に入れる
 		if( count == 2 )
 		{
 			if( indices[0] == -1 )
@@ -229,12 +229,12 @@ kmb::Triangle::isCoincident(kmb::nodeIdType t00,kmb::nodeIdType t01,kmb::nodeIdT
 	if( t02 == t11 )	rel |= 0x002;
 	if( t02 == t12 )	rel |= 0x004;
 	switch( rel ){
-
+		// 同じ向きに3点共有
 	case 0x124:
 	case 0x241:
 	case 0x412:
 		return 1;
-
+		// 逆向きに3点共有
 	case 0x421:
 	case 0x214:
 	case 0x142:

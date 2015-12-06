@@ -1,2 +1,15 @@
+*.user
+*.exe
+*.dll
+*.so
+*.suo
+*.sdf
+*.opensdf
 *.o
-/lib
+*.cxx
+*.bak
+lib
+VS2012/**/Win32
+VS2012/**/x64
+VS2012/Win32
+VS2012/x64

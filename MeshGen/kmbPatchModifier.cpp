@@ -93,13 +93,13 @@ kmb::PatchModifier::uniformOrientation(kmb::elementIdType elementId)
 {
 	int count = 0;
 	if( patch && neighborInfo ){
-
+		// 最初の elementId を与える
 		if( elementId == kmb::Element::nullElementId ){
 			elementId = patch->begin().getId();
 		}
 		std::set< kmb::elementIdType > checked;
 
-		std::set< kmb::elementIdType > candidate;
+		std::set< kmb::elementIdType > candidate;   // まだすべての近傍を調べ終わっていない要素
 		kmb::elementIdType neighbor[6];
 
 		while( true ){
@@ -108,14 +108,14 @@ kmb::PatchModifier::uniformOrientation(kmb::elementIdType elementId)
 				return count;
 			}
 			checked.insert( elementId );
-
+			// 近傍取得
 			const int boundNum = elem.getBoundaryCount();
 			neighborInfo->getNeighborElements(elementId,neighbor,patch);
 			for(int i=0;i<boundNum;++i){
 				if( neighbor[i] != kmb::Element::nullElementId ){
 					if( checked.find( neighbor[i] ) == checked.end() ){
 						kmb::ElementContainer::iterator nei = patch->find( neighbor[i] );
-
+						// チェックされていなければ、自分優先
 						int i0,i1;
 						if( !nei.isFinished() &&
 							kmb::ElementRelation::getRelation( elem, i0, nei, i1 ) == kmb::ElementRelation::ANTIADJACENT )
@@ -192,7 +192,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 		{
 			neighborInfo->deleteCoboundary( quad0, e0 );
 			neighborInfo->deleteCoboundary( quad1, e1 );
-
+			// 2点共有の確認
 			unsigned int rel = 0;
 			unsigned int flag = 0x0001;
 			for(int i=0;i<4;++i){
@@ -205,9 +205,9 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				= {kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId};
 			kmb::nodeIdType quadNodes[4]
 				= {kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId};
-
+			// nodes[0] = e0[0] となるように正規化する
 			switch( rel ){
-			case 0x0081:
+			case 0x0081:  // (0,0) (1,3)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e1.getCellId(1);
 				nodes[2] = e1.getCellId(2);
@@ -216,7 +216,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e0.getCellId(3);
 				swapped = true;
 				break;
-			case 0x0012:
+			case 0x0012:  // (0,1) (1,0)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e1.getCellId(2);
 				nodes[2] = e1.getCellId(3);
@@ -225,7 +225,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e0.getCellId(3);
 				swapped = true;
 				break;
-			case 0x0024:
+			case 0x0024:  // (0,2) (1,1)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e1.getCellId(3);
 				nodes[2] = e1.getCellId(0);
@@ -234,7 +234,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e0.getCellId(3);
 				swapped = true;
 				break;
-			case 0x0048:
+			case 0x0048:  // (0,3) (1,2)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e1.getCellId(0);
 				nodes[2] = e1.getCellId(1);
@@ -243,7 +243,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e0.getCellId(3);
 				swapped = true;
 				break;
-			case 0x0810:
+			case 0x0810:  // (1,0) (2,3)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e0.getCellId(1);
 				nodes[2] = e1.getCellId(1);
@@ -252,7 +252,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e0.getCellId(3);
 				swapped = true;
 				break;
-			case 0x0120:
+			case 0x0120:  // (1,1) (2,0)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e0.getCellId(1);
 				nodes[2] = e1.getCellId(2);
@@ -261,7 +261,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e0.getCellId(3);
 				swapped = true;
 				break;
-			case 0x0240:
+			case 0x0240:  // (1,2) (2,1)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e0.getCellId(1);
 				nodes[2] = e1.getCellId(3);
@@ -270,7 +270,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e0.getCellId(3);
 				swapped = true;
 				break;
-			case 0x0480:
+			case 0x0480:  // (1,3) (2,2)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e0.getCellId(1);
 				nodes[2] = e1.getCellId(0);
@@ -279,7 +279,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e0.getCellId(3);
 				swapped = true;
 				break;
-			case 0x8100:
+			case 0x8100:  // (2,0) (3,3)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e0.getCellId(1);
 				nodes[2] = e0.getCellId(2);
@@ -288,7 +288,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e0.getCellId(3);
 				swapped = true;
 				break;
-			case 0x1200:
+			case 0x1200:  // (2,1) (3,0)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e0.getCellId(1);
 				nodes[2] = e0.getCellId(2);
@@ -297,7 +297,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e0.getCellId(3);
 				swapped = true;
 				break;
-			case 0x2400:
+			case 0x2400:  // (2,2) (3,1)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e0.getCellId(1);
 				nodes[2] = e0.getCellId(2);
@@ -306,7 +306,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e0.getCellId(3);
 				swapped = true;
 				break;
-			case 0x4800:
+			case 0x4800:  // (2,3) (3,2)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e0.getCellId(1);
 				nodes[2] = e0.getCellId(2);
@@ -315,7 +315,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e0.getCellId(3);
 				swapped = true;
 				break;
-			case 0x1008:
+			case 0x1008:  // (3,0) (0,3)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e0.getCellId(1);
 				nodes[2] = e0.getCellId(2);
@@ -324,7 +324,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e1.getCellId(2);
 				swapped = true;
 				break;
-			case 0x2001:
+			case 0x2001:  // (3,1) (0,0)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e0.getCellId(1);
 				nodes[2] = e0.getCellId(2);
@@ -333,7 +333,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e1.getCellId(3);
 				swapped = true;
 				break;
-			case 0x4002:
+			case 0x4002:  // (3,2) (0,1)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e0.getCellId(1);
 				nodes[2] = e0.getCellId(2);
@@ -342,7 +342,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				nodes[5] = e1.getCellId(0);
 				swapped = true;
 				break;
-			case 0x8004:
+			case 0x8004:  // (3,3) (0,2)
 				nodes[0] = e0.getCellId(0);
 				nodes[1] = e0.getCellId(1);
 				nodes[2] = e0.getCellId(2);
@@ -355,7 +355,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				break;
 			}
 			if( swapped ){
-
+				// 7 個めの点を作る
 				kmb::Point3D center(0.0,0.0,0.0);
 				kmb::Point3D point;
 				for(int i=0;i<6;++i){
@@ -366,7 +366,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				center.scale( 1.0/6.0 );
 				nodes[6] = points->addPoint( center );
 				if( orientation ){
-
+					// 0,2,4,6 をつなぐ
 					e0.setCellId(0, nodes[0]);
 					e0.setCellId(1, nodes[1]);
 					e0.setCellId(2, nodes[2]);
@@ -381,7 +381,7 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 					quadNodes[3] = nodes[6];
 					elementId = patch->addElement(kmb::QUAD,quadNodes);
 				}else{
-
+					// 1,2,5,6 をつなぐ
 					e0.setCellId(0, nodes[5]);
 					e0.setCellId(1, nodes[0]);
 					e0.setCellId(2, nodes[1]);
@@ -407,10 +407,10 @@ kmb::PatchModifier::edgeContract(kmb::nodeIdType node0, kmb::nodeIdType node1)
 {
 	if( patch && neighborInfo ){
 		if( patch->isUniqueType(kmb::TRIANGLE) ){
-
+			// nodeID1 を含む要素
 			std::vector< kmb::elementIdType > elements1;
 			neighborInfo->getSurroundingElements(node1, elements1);
-
+			// nodeID0 と nodeID1 の両方を含む要素を探して削除
 			std::vector< kmb::elementIdType >::iterator eIter = elements1.begin();
 			while( eIter != elements1.end() )
 			{
@@ -418,14 +418,14 @@ kmb::PatchModifier::edgeContract(kmb::nodeIdType node0, kmb::nodeIdType node1)
 				kmb::ElementContainer::iterator element = patch->find( elemId );
 				if( !element.isFinished() ){
 					if( element.include( node0 ) ){
-
+						// nodeID0 も含む場合は削除
 						neighborInfo->deleteCoboundary( elemId, element );
 						patch->deleteElement( elemId );
 					}else{
-
+						// nodeID0 を含まない場合は nodeID を入れ替える
 						neighborInfo->deleteCoboundary( elemId, element );
 						element.replaceNodeId( node1, node0 );
-
+						// 近傍情報に登録しなおす
 						neighborInfo->appendCoboundary( elemId, element );
 					}
 				}

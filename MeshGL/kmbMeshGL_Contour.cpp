@@ -28,7 +28,6 @@
 #include "MeshDB/kmbMeshData.h"
 #include "MeshDB/kmbDataBindings.h"
 #include "MeshDB/kmbElementContainerOpenGLDraw.h"
-
 #include "MeshGL/kmbColorMap.h"
 #include "Geometry/kmbPoint3DContainerArray.h"
 
@@ -38,7 +37,7 @@
 double
 kmb::MeshGL::getMeanLengthVector( kmb::PhysicalValue* val0, kmb::PhysicalValue* val1, kmb::PhysicalValue* val2, kmb::PhysicalValue* val3)
 {
-
+	// no null check
 	double vx = 0.25 * (
 		static_cast<kmb::Vector3Value*>(val0)->getValue(0) +
 		static_cast<kmb::Vector3Value*>(val1)->getValue(0) +
@@ -458,7 +457,7 @@ kmb::MeshGL::drawSurfaceContour2D(kmb::bodyIdType bodyId,const char* physicalVal
 	}
 }
 
-
+// 親の要素に値が入っている時
 void
 kmb::MeshGL::drawFaceGroupContour(const char* faceName, const char* physicalValue, kmb::ColorMap* colorMap,int comp)
 {
@@ -704,15 +703,15 @@ kmb::MeshGL::drawFaceGroupContour(const char* faceName, const char* physicalValu
 	}
 }
 
-
-
+// 1次要素と2次要素を区別せずにコンターを書くため
+// getVertexCount() で判定する
 void
 kmb::MeshGL::drawSurfaceNodeContour(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp)
 {
 	const kmb::DataBindings* data = NULL;
 	const kmb::Body* body = NULL;
 	const kmb::Point3DContainer* points = NULL;
-
+	// 特別な場合
 	if( mesh != NULL && colorMap != NULL && prefMode == kmb::MeshGL::SPEED &&
 		(points = mesh->getNodes()) != NULL &&
 		(body = mesh->getBodyPtr(bodyId)) != NULL &&
@@ -724,18 +723,15 @@ kmb::MeshGL::drawSurfaceNodeContour(kmb::bodyIdType bodyId,const char* physicalV
 		colorMap->getColorCache() != NULL &&
 		colorMap->getStep() == 0 )
 	{
-
-
-
-
+		// 節点が配列で与えれらている
+		// 色が配列で与えられている
+		// 要素は三角形または四角形として配列で与えられている
+		// glColorPointer はポリゴンごとに色を付ける場合に使えるのでここでは使えない
 		::glPushAttrib(GL_ENABLE_BIT);
 			::glEnable(GL_COLOR_MATERIAL);
 			::glEnableClientState(GL_VERTEX_ARRAY);
-
-
 			::glVertexPointer(3 , GL_DOUBLE , 0 ,
 				reinterpret_cast<const kmb::Point3DContainerArray*>(points)->getDoubleArray() );
-
 			const kmb::ElementContainerOpenGLDraw* elements
 				= reinterpret_cast<const kmb::ElementContainerOpenGLDraw*>(body);
 			const float* colors = colorMap->getColorCache();
@@ -746,25 +742,22 @@ kmb::MeshGL::drawSurfaceNodeContour(kmb::bodyIdType bodyId,const char* physicalV
 				const float* triNormals = elements->getTriNormals();
 				::glBegin( GL_TRIANGLES );
 				for(size_t i=0;i<triCount;++i){
-
+					// 法線
 					::glNormal3f( triNormals[3*i], triNormals[3*i+1], triNormals[3*i+2] );
-
+					// 1点目
 					nodeId = triNodeTable[3*i];
 					::glColor3f( colors[3*nodeId], colors[3*nodeId+1], colors[3*nodeId+2] );
 					::glArrayElement( nodeId );
-
+					// 2点目
 					nodeId = triNodeTable[3*i+1];
 					::glColor3f( colors[3*nodeId], colors[3*nodeId+1], colors[3*nodeId+2] );
 					::glArrayElement( nodeId );
-
+					// 3点目
 					nodeId = triNodeTable[3*i+2];
 					::glColor3f( colors[3*nodeId], colors[3*nodeId+1], colors[3*nodeId+2] );
 					::glArrayElement( nodeId );
 				}
 				::glEnd();
-
-
-
 			}
 			if( elements->getQuadCount() > 0 ){
 				const size_t quadCount = elements->getQuadCount();
@@ -772,32 +765,28 @@ kmb::MeshGL::drawSurfaceNodeContour(kmb::bodyIdType bodyId,const char* physicalV
 				const float* quadNormals = elements->getQuadNormals();
 				::glBegin( GL_QUADS );
 				for(size_t i=0;i<quadCount;++i){
-
+					// 法線
 					::glNormal3f( quadNormals[3*i], quadNormals[3*i+1], quadNormals[3*i+2] );
-
+					// 1点目
 					nodeId = quadNodeTable[4*i];
 					::glColor3f( colors[3*nodeId], colors[3*nodeId+1], colors[3*nodeId+2] );
 					::glArrayElement( nodeId );
-
+					// 2点目
 					nodeId = quadNodeTable[4*i+1];
 					::glColor3f( colors[3*nodeId], colors[3*nodeId+1], colors[3*nodeId+2] );
 					::glArrayElement( nodeId );
-
+					// 3点目
 					nodeId = quadNodeTable[4*i+2];
 					::glColor3f( colors[3*nodeId], colors[3*nodeId+1], colors[3*nodeId+2] );
 					::glArrayElement( nodeId );
-
+					// 4点目
 					nodeId = quadNodeTable[4*i+3];
 					::glColor3f( colors[3*nodeId], colors[3*nodeId+1], colors[3*nodeId+2] );
 					::glArrayElement( nodeId );
 				}
 				::glEnd();
-
-
-
 			}
 			::glDisableClientState(GL_COLOR_ARRAY);
-
 			::glDisableClientState(GL_VERTEX_ARRAY);
 		::glPopAttrib();
 		::glFlush();
@@ -1289,7 +1278,7 @@ kmb::MeshGL::drawSurfaceNodeContour(kmb::bodyIdType bodyId,const char* physicalV
 	}
 }
 
-
+// comp 未対応
 void
 kmb::MeshGL::drawSurfaceNodeContour2D(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp)
 {
@@ -1960,7 +1949,7 @@ kmb::MeshGL::deformSurfaceNodeContour(kmb::bodyIdType bodyId, const char* displa
 					}
 					++eIter;
 				}
-			}else{
+			}else{ // solid contour
 				while( !eIter.isFinished() ){
 					switch( eIter.getVertexCount() ){
 						case 3:
@@ -2125,7 +2114,7 @@ kmb::MeshGL::deformSurfaceNodeContour(kmb::bodyIdType bodyId, const char* displa
 					}
 					++eIter;
 				}
-			}else{
+			}else{ // solid contour
 				while( !eIter.isFinished() ){
 					switch( eIter.getVertexCount() ){
 						case 3:
@@ -2298,7 +2287,7 @@ kmb::MeshGL::deformSurfaceNodeContour(kmb::bodyIdType bodyId, const char* displa
 					}
 					++eIter;
 				}
-			}else{
+			}else{ // solid contour
 				while( !eIter.isFinished() ){
 					switch( eIter.getVertexCount() ){
 						case 3:
@@ -2471,7 +2460,7 @@ kmb::MeshGL::deformSurfaceNodeContour(kmb::bodyIdType bodyId, const char* displa
 					}
 					++eIter;
 				}
-			}else{
+			}else{ // solid contour
 				while( !eIter.isFinished() ){
 					switch( eIter.getVertexCount() ){
 						case 3:
@@ -2887,7 +2876,7 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 					}
 					++fIter;
 				}
-			}else{
+			}else{ //solid contour
 				while( !fIter.isFinished() )
 				{
 					if( !fIter.getFace(f) ){
@@ -3948,7 +3937,7 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					}
 					++fIter;
 				}
-			}else{
+			}else{ // solid contour
 				while( !fIter.isFinished() ){
 					if( !fIter.getFace(f) ){
 						++fIter;
@@ -4129,7 +4118,7 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					}
 					++fIter;
 				}
-			}else{
+			}else{ // solid contour
 				while( !fIter.isFinished() ){
 					if( !fIter.getFace(f) ){
 						++fIter;
@@ -4318,7 +4307,7 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					}
 					++fIter;
 				}
-			}else{
+			}else{ // solid contour
 				while( !fIter.isFinished() ){
 					if( !fIter.getFace(f) ){
 						++fIter;
@@ -4507,7 +4496,7 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					}
 					++fIter;
 				}
-			}else{
+			}else{ // solid contour
 				while( !fIter.isFinished() ){
 					if( !fIter.getFace(f) ){
 						++fIter;
@@ -4750,7 +4739,7 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 					}
 					++fIter;
 				}
-			}else{
+			}else{ // solid contour
 				while( !fIter.isFinished() ){
 					if( !fIter.getFace(f) ){
 						++fIter;
@@ -4959,7 +4948,7 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 					}
 					++fIter;
 				}
-			}else{
+			}else{ // solid contour
 				while( !fIter.isFinished() ){
 					if( !fIter.getFace(f) ){
 						++fIter;
@@ -5176,7 +5165,7 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 					}
 					++fIter;
 				}
-			}else{
+			}else{ // solid contour
 				while( !fIter.isFinished() ){
 					if( !fIter.getFace(f) ){
 						++fIter;
@@ -5393,7 +5382,7 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 					}
 					++fIter;
 				}
-			}else{
+			}else{ // solid contour
 				while( !fIter.isFinished() ){
 					if( !fIter.getFace(f) ){
 						++fIter;
@@ -5512,7 +5501,7 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 	}
 }
 
-
+// n0 と n1 を t : 1-t に内分した点を与える
 void glVertex3dAtMiddle(kmb::Node* n0,kmb::Node* n1,double t){
 	::glVertex3d(
 		(1.0-t)*n0->x() + t*n1->x(),
@@ -5520,18 +5509,18 @@ void glVertex3dAtMiddle(kmb::Node* n0,kmb::Node* n1,double t){
 		(1.0-t)*n0->z() + t*n1->z());
 }
 
-
+// x0,y0 と x1,y1 を t : 1-t に内分した点を与える
 void glVertex2dAtMiddle(double x0,double y0,double x1,double y1,double t){
 	::glVertex2d(
 		(1.0-t)*x0 + t*x1,
 		(1.0-t)*y0 + t*y1);
 }
 
-
-
-
-
-
+// n0 と n1 と n2 について
+// 0 < t < 1 なら n0 と n1 を t0 : 1-t0 に内分した点を与える
+// t0 = 1     なら n1 を与える
+// 1 < t0 < 2 なら n1 と n2 を (t0-1) : 1-(t0-1) に内分した点を与える
+// t0 と t1 の間に 1 があれば n1 を自動的に書く
 void glVertex3dAtMiddle(kmb::Node* n0,kmb::Node* n1,kmb::Node* n2,double t0,double t1){
 	if( 0.0 < t0 && t0 < 1.0 ){
 		::glVertex3d(
@@ -5577,11 +5566,11 @@ void glVertex3dAtMiddle(kmb::Node* n0,kmb::Node* n1,kmb::Node* n2,double t0,doub
 	}
 }
 
-
-
-
-
-
+// n0 と n1 と n2 について
+// 0 < t < 1 なら n0 と n1 を t0 : 1-t0 に内分した点を与える
+// t0 = 1     なら n1 を与える
+// 1 < t0 < 2 なら n1 と n2 を (t0-1) : 1-(t0-1) に内分した点を与える
+// t0 と t1 の間に 1 があれば n1 を自動的に書く
 void glVertex2dAtMiddle(double x0,double y0,double x1,double y1,double x2,double y2,double t0,double t1){
 	if( 0.0 < t0 && t0 < 1.0 ){
 		::glVertex2d(
@@ -5706,44 +5695,44 @@ kmb::MeshGL::drawSolidContourTriangle
 (kmb::Node* node0,kmb::Node* node1,kmb::Node* node2,
  double v0,double v1,double v2,kmb::ColorMap* colorMap)
 {
-
-
+	// node0 node1 node2 colorMap の NULL チェックはしないよ
+	// 並び替え後 u0 < u1 < u2
 	kmb::Node *n0, *n1, *n2;
 	double u0,u1,u2;
-
-	bool clockwise = true;
+	// 右回りか左回りか
+	bool clockwise = true;   // 元の向きは反時計 false => maxIndex 2
 
 	kmb::Vector3D normal = kmb::Point3D::calcNormalVector( *node0, *node1, *node2 );
 	if( v1 <= v0 ){
 		if( v2 <= v1 ){
-
+			// v2 < v1 < v0
 			n0 = node2; n1 = node1; n2 = node0;
 			u0 = v2;    u1 = v1;    u2 = v0;
 			clockwise = true;
 		}else if( v0 <= v2 ){
-
+			// v1 < v0 < v2
 			n0 = node1; n1 = node0; n2 = node2;
 			u0 = v1;    u1 = v0;    u2 = v2;
 			clockwise = true;
 		}else{
-
+			// v1 < v2 < v0
 			n0 = node1; n1 = node2; n2 = node0;
 			u0 = v1;    u1 = v2;    u2 = v0;
 			clockwise = false;
 		}
 	}else{
 		if( v1 <= v2 ){
-
+			// v0 < v1 < v2
 			n0 = node0; n1 = node1; n2 = node2;
 			u0 = v0;    u1 = v1;    u2 = v2;
 			clockwise = false;
 		}else if( v2 <= v0 ){
-
+			// v2 < v0 < v1
 			n0 = node2; n1 = node0; n2 = node1;
 			u0 = v2;    u1 = v0;    u2 = v1;
 			clockwise = false;
 		}else{
-
+			// v0 < v2 < v1
 			n0 = node0; n1 = node2; n2 = node1;
 			u0 = v0;    u1 = v2;    u2 = v1;
 			clockwise = true;
@@ -5758,10 +5747,10 @@ kmb::MeshGL::drawSolidContourTriangle
 	int count02 = 0;
 	int step01 = colorMap->getSolidDivision(u0,u1,count01,part01);
 	int step12 = colorMap->getSolidDivision(u1,u2,count12,part12);
-
+	// step02 は使わないので
 	colorMap->getSolidDivision(u0,u2,count02,part02);
 	if( count02 == 0 ){
-
+		// すべて同じ色
 		colorMap->setGLColorByStep( step01 );
 		::glBegin( GL_TRIANGLES );
 		::glNormal3d( normal.x(), normal.y(), normal.z() );
@@ -5777,14 +5766,14 @@ kmb::MeshGL::drawSolidContourTriangle
 		::glEnd();
 		::glFlush();
 	}else{
-
+		// node0 -> node1 -> node2 の partions を作成
 		double* part012 = new double[count02];
 		int ind = 0;
 		for(int i=0;i<count01;++i){
 			part012[ind] = part01[i];
 			++ind;
 		}
-
+		// node1 がちょうど色の切れ目
 		if( step01 + count01 != step12 ){
 			part012[ind] = 1.0;
 			++ind;
@@ -5793,22 +5782,22 @@ kmb::MeshGL::drawSolidContourTriangle
 			part012[ind] = part12[i] + 1.0;
 			++ind;
 		}
-
+		// 最初
 		colorMap->setGLColorByStep( step01 );
 		::glBegin( GL_TRIANGLE_FAN );
 		::glNormal3d( normal.x(), normal.y(), normal.z() );
 		if( clockwise ){
 			::glVertex3d( n0->x(), n0->y(), n0->z() );
 			::glVertex3dAtMiddle( n0, n2, part02[0] );
-			::glVertex3dAtMiddle( n0, n1, n2, part012[0], -1.0 );
+			::glVertex3dAtMiddle( n0, n1, n2, part012[0], -1.0 ); // 必要なら自動的に node1 を追加する
 		}else{
 			::glVertex3d( n0->x(), n0->y(), n0->z() );
-			::glVertex3dAtMiddle( n0, n1, n2, -1.0, part012[0] );
+			::glVertex3dAtMiddle( n0, n1, n2, -1.0, part012[0] ); // 必要なら自動的に node1 を追加する
 			::glVertex3dAtMiddle( n0, n2, part02[0] );
 		}
 		::glEnd();
 		::glFlush();
-
+		// 中間
 		int i=1;
 		while(i<count02){
 			colorMap->setGLColorByStep( step01+i );
@@ -5827,7 +5816,7 @@ kmb::MeshGL::drawSolidContourTriangle
 			::glFlush();
 			++i;
 		}
-
+		// 最後
 		colorMap->setGLColorByStep( step01+count02 );
 		::glBegin( GL_TRIANGLE_FAN );
 		::glNormal3d( normal.x(), normal.y(), normal.z() );
@@ -5862,27 +5851,27 @@ kmb::MeshGL::drawSolidContourTriangle2D
  double x2,double y2,double v2,
  kmb::ColorMap* colorMap)
 {
-
+	// 並び替え後 u0 < u1 < u2
 	double u0,u1,u2;
 	double xx0,yy0,xx1,yy1,xx2,yy2;
-
-	bool clockwise = true;
+	// 右回りか左回りか
+	bool clockwise = true;   // 元の向きは反時計 false => maxIndex 2
 
 	if( v1 <= v0 ){
 		if( v2 <= v1 ){
-
+			// v2 < v1 < v0
 			u0 = v2;	xx0 = x2;	yy0 = y2;
 			u1 = v1;	xx1 = x1;	yy1 = y1;
 			u2 = v0;	xx2 = x0;	yy2 = y0;
 			clockwise = true;
 		}else if( v0 <= v2 ){
-
+			// v1 < v0 < v2
 			u0 = v1;	xx0 = x1;	yy0 = y1;
 			u1 = v0;	xx1 = x0;	yy1 = y0;
 			u2 = v2;	xx2 = x2;	yy2 = y2;
 			clockwise = true;
 		}else{
-
+			// v1 < v2 < v0
 			u0 = v1;	xx0 = x1;	yy0 = y1;
 			u1 = v2;	xx1 = x2;	yy1 = y2;
 			u2 = v0;	xx2 = x0;	yy2 = y0;
@@ -5890,19 +5879,19 @@ kmb::MeshGL::drawSolidContourTriangle2D
 		}
 	}else{
 		if( v1 <= v2 ){
-
+			// v0 < v1 < v2
 			u0 = v0;	xx0 = x0;	yy0 = y0;
 			u1 = v1;	xx1 = x1;	yy1 = y1;
 			u2 = v2;	xx2 = x2;	yy2 = y2;
 			clockwise = false;
 		}else if( v2 <= v0 ){
-
+			// v2 < v0 < v1
 			u0 = v2;	xx0 = x2;	yy0 = y2;
 			u1 = v0;	xx1 = x0;	yy1 = y0;
 			u2 = v1;	xx2 = x1;	yy2 = y1;
 			clockwise = false;
 		}else{
-
+			// v0 < v2 < v1
 			u0 = v0;	xx0 = x0;	yy0 = y0;
 			u1 = v2;	xx1 = x2;	yy1 = y2;
 			u2 = v1;	xx2 = x1;	yy2 = y1;
@@ -5918,10 +5907,10 @@ kmb::MeshGL::drawSolidContourTriangle2D
 	int count02 = 0;
 	int step01 = colorMap->getSolidDivision(u0,u1,count01,part01);
 	int step12 = colorMap->getSolidDivision(u1,u2,count12,part12);
-
+	// step02 は使わないので
 	colorMap->getSolidDivision(u0,u2,count02,part02);
 	if( count02 == 0 ){
-
+		// すべて同じ色
 		colorMap->setGLColorByStep( step01 );
 		::glBegin( GL_TRIANGLES );
 		if( clockwise ){
@@ -5935,14 +5924,14 @@ kmb::MeshGL::drawSolidContourTriangle2D
 		}
 		::glEnd();
 	}else{
-
+		// node0 -> node1 -> node2 の partions を作成
 		double* part012 = new double[count02];
 		int ind = 0;
 		for(int i=0;i<count01;++i){
 			part012[ind] = part01[i];
 			++ind;
 		}
-
+		// node1 がちょうど色の切れ目
 		if( step01 + count01 != step12 ){
 			part012[ind] = 1.0;
 			++ind;
@@ -5951,20 +5940,20 @@ kmb::MeshGL::drawSolidContourTriangle2D
 			part012[ind] = part12[i] + 1.0;
 			++ind;
 		}
-
+		// 最初
 		colorMap->setGLColorByStep( step01 );
 		::glBegin( GL_TRIANGLE_FAN );
 		if( clockwise ){
 			::glVertex2d( xx0, yy0 );
 			::glVertex2dAtMiddle( xx0, yy0, xx2, yy2, part02[0] );
-			::glVertex2dAtMiddle( xx0, yy0, xx1, yy1, xx2, yy2, part012[0], -1.0 );
+			::glVertex2dAtMiddle( xx0, yy0, xx1, yy1, xx2, yy2, part012[0], -1.0 ); // 必要なら自動的に node1 を追加する
 		}else{
 			::glVertex2d( xx0, yy0 );
-			::glVertex2dAtMiddle( xx0, yy0, xx1, yy1, xx2, yy2, -1.0, part012[0] );
+			::glVertex2dAtMiddle( xx0, yy0, xx1, yy1, xx2, yy2, -1.0, part012[0] ); // 必要なら自動的に node1 を追加する
 			::glVertex2dAtMiddle( xx0, yy0, xx2, yy2, part02[0] );
 		}
 		::glEnd();
-
+		// 中間
 		int i=1;
 		while(i<count02){
 			colorMap->setGLColorByStep( step01+i );
@@ -5981,7 +5970,7 @@ kmb::MeshGL::drawSolidContourTriangle2D
 			::glEnd();
 			++i;
 		}
-
+		// 最後
 		colorMap->setGLColorByStep( step01+count02 );
 		::glBegin( GL_TRIANGLE_FAN );
 		if( clockwise ){

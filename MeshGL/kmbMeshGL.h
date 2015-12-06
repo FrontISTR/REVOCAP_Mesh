@@ -25,7 +25,7 @@
 ----------------------------------------------------------------------*/
 #pragma once
 
-
+// order sensitive
 
 #include "MeshDB/kmbTypes.h"
 #include "MeshDB/kmbElementContainer.h"
@@ -64,11 +64,11 @@ public:
 	};
 protected:
 	const MeshData* mesh;
-
+	// DisplayList の配列
 	std::vector< GLuint > lists;
 	bool updateList;
 private:
-
+	// temporary for calc
 	float rgb[3];
 	float rgba[4];
 	kmb::Node m0, m1, m2, m3, m4;
@@ -83,7 +83,7 @@ public:
 	MeshGL(size_t listSize=1);
 	virtual ~MeshGL(void);
 
-
+	// OpenGL Display List の処理
 	size_t getListSize(void) const;
 	void setList(size_t index,GLuint list);
 	GLuint getList(size_t index) const;
@@ -91,72 +91,72 @@ public:
 	bool isUpdate(void) const;
 	void clearCache(void);
 
-
+	// 優先度の処理
 	void setPreferenceMode(drawingPreference mode);
 	drawingPreference getPreferenceMode(void) const;
 
 	void setMesh(const kmb::MeshData* mesh);
-
+	// 線分からなる要素グループの表示
 	void drawEdge(kmb::bodyIdType bodyId);
-
+	// 中心から拡大・縮小表示をする
 	void drawEdgeWithScale(kmb::bodyIdType bodyId,double x,double y,double z,double scale);
 
-
+	// 面の描画
 	void drawSurface(kmb::bodyIdType bodyId);
 	void drawFaceGroup(const char* faceName);
 	void drawSurface2D(kmb::bodyIdType bodyId);
 
-
+	// 変形
 	void deformSurface(kmb::bodyIdType bodyId, const char* displacement, double factor);
 	void deformFaceGroup(const char* faceName, const char* displacement, double factor);
 	void deformXYZFaceGroup(const char* faceName, const char* displacementX, const char* displacementY, const char* displacementZ, double factor);
 
-
-
+	// コンター
+	// element value でコンター表示
 	void drawSurfaceContour(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
 	void drawSurfaceContour2D(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
-
+	// 親の element に値が入っている時
 	void drawFaceGroupContour(const char* faceName, const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
-
+	// node value でコンター表示
 	void drawSurfaceNodeContour(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
 	void drawSurfaceNodeContour2D(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
 	void drawFaceGroupNodeContour(const char* faceName, const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
-
+	// node value で節点を色付け表示
 	void drawNodeContourOnSurface(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
 	void drawNodeContour2DOnSurface(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
 	void drawNodeContourOnFaceGroup(const char* faceName, const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
 
-
+	// コンターと変形の同時表示
 	void deformSurfaceNodeContour(kmb::bodyIdType bodyId, const char* displacement, double factor, const char* physicalValue, kmb::ColorMap* colorMap, int ccomp=-1);
 	void deformSurfaceContour(kmb::bodyIdType bodyId, const char* displacement, double factor, const char* physicalValue, kmb::ColorMap* colorMap, int ccomp=-1);
 	void deformFaceGroupNodeContour(const char* faceName, const char* displacement, double factor, const char* physicalValue, kmb::ColorMap* colorMap, int comp=-1);
 	void deformXYZFaceGroupNodeContour(const char* faceName, const char* displacementX, const char* displacementY, const char* displacementZ, double factor, const char* physicalValue, kmb::ColorMap* colorMap, int comp=-1);
 
-
+	// 節点の表示
 	void drawAllNodes(double r=-1.0);
 	void drawNodeContourAllNodes(const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
 
-
+	// ベクトル（ポスト）の表示
 	void drawVector(const char* vectorName, double factor, kmb::ColorMap* colorMap);
 	void drawSurfaceVector(kmb::bodyIdType bodyId,const char* vectorName, double factor, kmb::ColorMap* colorMap);
 	void drawFaceGroupVector(const char* faceName,const char* vectorName, double factor, kmb::ColorMap* colorMap);
-
+	// 向きを表示して、大きさは色で表現する
 	void drawField(const char* vectorName, double arrowSize, kmb::ColorMap* colorMap);
 	void drawSurfaceField(kmb::bodyIdType bodyId,const char* vectorName, double arrowSize, kmb::ColorMap* colorMap);
 
 	void drawIsosurface(kmb::bodyIdType bodyId, const char* nodeValue, double val);
 
-
+	// 断面の表示
 	void drawSection(kmb::bodyIdType bodyId,kmb::Plane* plane);
-
+	// 節点上の物理量について
 	void drawSectionNodeContour(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
-
+	// 要素上の物理量について
 	void drawSectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
 	void drawSectionVector(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* vectorName, double factor, kmb::ColorMap* colorMap);
 	void drawSectionField(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* vectorName, double arrowSize, kmb::ColorMap* colorMap);
-
+	// 平面と交わる面をそのまま表示（でこぼこしたまま）
 	void drawIntersection(kmb::bodyIdType bodyId,kmb::Plane* plane);
-
+	// element value で交差面のコンター表示
 	void drawIntersectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
 
 	void getDeformFaceGroupBoundingBox(kmb::BoundingBox& bbox,const char* faceName, const char* displacement, double factor) const;
@@ -206,10 +206,10 @@ public:
 	int getElementOffset(void) const;
 
 private:
-
+	// 四面体のマーカー
 	void drawTensorMark(kmb::Point3D& point);
 	void drawTensorMark(double x,double y,double z);
-
+	// 交差した四角形
 	void drawCrossMark(kmb::Point3D& point);
 	void drawCrossMark(double x,double y,double z);
 	void drawDotMark(kmb::Point3D& point);
@@ -226,7 +226,7 @@ private:
 	void drawElementEdge(kmb::ElementBase& element);
 	void drawFaceEdge(kmb::ElementBase& element,int index);
 	void drawVector(double x,double y,double z,double v0,double v1,double v2,double factor,kmb::ColorMap* colorMap);
-
+	// 向きを三角形で表し、大きさを色で表す
 	void drawArrow(double x,double y,double z,double v0,double v1,double v2,double arrowSize,kmb::ColorMap* colorMap);
 
 	void drawTriangle
@@ -297,9 +297,6 @@ private:
 		kmb::Node& n0,kmb::Node& n1,kmb::Node& n2,kmb::Node& n3,
 		double t0, double t1, double t2, double t3);
 
-
-
-
 	void drawIsosurfNodeContourTetrahedron(
 		kmb::nodeIdType nodeId0, kmb::nodeIdType nodeId1, kmb::nodeIdType nodeId2, kmb::nodeIdType nodeId3,
 		const kmb::DataBindings* isoData, double iso,const kmb::DataBindings* data, kmb::ColorMap* colorMap);
@@ -311,10 +308,10 @@ private:
 	void drawInterpolatedVector(kmb::Node& n0,kmb::Node& n1,double t0, double t1,double v0[3], double v1[3],double factor,kmb::ColorMap* colorMap);
 	void drawInterpolatedField(kmb::Node& n0,kmb::Node& n1,double t0, double t1,double v0[3], double v1[3],double arrowSize,kmb::ColorMap* colorMap);
 
-
-
+	// 矢印の先の三角を与えるため [v0,v1,v2] と直交するベクトルを計算
+	// 戻り値は [v0,v1,v2] の長さの２乗
 	double calcPerpendicular(double v0,double v1,double v2,kmb::Vector3D &normal);
-
+	// (v0,v1,v2) normal0, normal1 が向き付きの正規直交基底になるようにする
 	double calcFrame(double v0,double v1,double v2,kmb::Vector3D &normal0,kmb::Vector3D &normal1);
 
 	double getMeanLengthVector

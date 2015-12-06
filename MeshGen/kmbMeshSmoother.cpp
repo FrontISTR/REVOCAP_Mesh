@@ -89,7 +89,7 @@ kmb::MeshSmoother::appendBody(const kmb::ElementContainer* body)
 	if( body == NULL ){
 		return 0;
 	}
-
+	// ‹«ŠE–Ê‚Í“®‚©‚·‘ÎÛ‚É‚µ‚È‚¢
 	kmb::DataBindings* nodeGroup =
 		kmb::DataBindings::createDataBindings(
 			kmb::DataBindings::NodeGroup,

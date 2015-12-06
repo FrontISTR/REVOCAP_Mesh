@@ -55,7 +55,7 @@ kmb::Matching::getDistanceEdgeToNode( kmb::MeshDB* mesh, kmb::bodyIdType bodyId,
 		kmb::ElementContainer* body = mesh->getBodyPtr(bodyId);
 		return getDistanceEdgeToNodeWithParam(mesh->getNodes(),body,&point,nearestId,param);
 	}else{
-
+		// DBL_MAX
 		return getDistanceEdgeToNodeWithParam(mesh->getNodes(),NULL,NULL,nearestId,param);
 	}
 }
@@ -72,19 +72,19 @@ kmb::Matching::getDistanceEdgeToEdge( kmb::MeshDB* mesh, kmb::bodyIdType edgeId0
 		(edges1=mesh->getBodyPtr(edgeId1)) != NULL &&
 		edges1->isUniqueDim(1) )
 	{
-
+		// edge0 ‚Ìß“_‚Æ edge1 ‚Ì—v‘f‚ÌŠÔ‚Ì‹——£
 		kmb::ElementContainer::iterator eIter0 = edges0->begin();
 		while( eIter0 != edges0->end() )
 		{
-
+			// 1ŽŸŒ³—v‘f‚ÌŽn“_‚Æ‚Ì‹——£‚Ì•½‹Ï‚ð‚Æ‚é
 			ave0.add( getDistanceEdgeToNode( mesh, edgeId1 , eIter0.getCellId(0) ) );
 			++eIter0;
 		}
-
+		// edge1 ‚Ìß“_‚Æ edge0 ‚Ì—v‘f‚ÌŠÔ‚Ì‹——£
 		kmb::ElementContainer::iterator eIter1 = edges1->begin();
 		while( eIter1 != edges1->end() )
 		{
-
+			// 1ŽŸŒ³—v‘f‚ÌŽn“_‚Æ‚Ì‹——£‚Ì•½‹Ï‚ð‚Æ‚é
 			ave1.add( getDistanceEdgeToNode( mesh, edgeId0, eIter1.getCellId(0) ) );
 			++eIter1;
 		}
@@ -108,24 +108,24 @@ kmb::Matching::getDistanceEdgeToEdge( kmb::MeshDB* mesh0, kmb::bodyIdType edgeId
 		(edges1 = mesh1->getBodyPtr(edgeId1)) != NULL &&
 		edges1->isUniqueDim(1) )
 	{
-
+		// edge0 ‚Ìß“_‚Æ edge1 ‚Ì—v‘f‚ÌŠÔ‚Ì‹——£
 		kmb::ElementContainer::iterator eIter0 = edges0->begin();
 		while( !eIter0.isFinished() )
 		{
 			if( mesh0->getNode(eIter0.getCellId(0),node) )
 			{
-
+				// 1ŽŸŒ³—v‘f‚ÌŽn“_‚Æ‚Ì‹——£‚Ì•½‹Ï‚ð‚Æ‚é
 				ave0.add( getDistanceEdgeToNodeWithParam( mesh1->getNodes(),edges1,&node,nearestId,param) );
 			}
 			++eIter0;
 		}
-
+		// edge1 ‚Ìß“_‚Æ edge0 ‚Ì—v‘f‚ÌŠÔ‚Ì‹——£
 		kmb::ElementContainer::iterator eIter1 = edges1->begin();
 		while( !eIter1.isFinished() )
 		{
 			if( mesh1->getNode(eIter1.getCellId(0),node) )
 			{
-
+				// 1ŽŸŒ³—v‘f‚ÌŽn“_‚Æ‚Ì‹——£‚Ì•½‹Ï‚ð‚Æ‚é
 				ave1.add( getDistanceEdgeToNodeWithParam( mesh0->getNodes(),edges0,&node,nearestId,param) );
 			}
 			++eIter1;
@@ -167,7 +167,7 @@ kmb::Matching::getSurfaceRelation
 		return rel;
 	}
 
-
+	// •½–Ê—v‘f‚Ì‚Ý‚È‚é‚±‚Æ‚ðƒ`ƒFƒbƒN‚·‚é
 	if( surf0 == NULL || !surf0->isUniqueDim(2) ||
 		surf1 == NULL || !surf1->isUniqueDim(2) )
 	{
@@ -181,13 +181,13 @@ kmb::Matching::getSurfaceRelation
 		return rel;
 	}
 
-	unsigned int eqCount = 0;
-	unsigned int revCount = 0;
+	unsigned int eqCount = 0;	// ˆê’v‚µ‚Ä‚¢‚éŒÂ”
+	unsigned int revCount = 0;	// ‹tŒü‚«‚ÌŒÂ”
 
-
-
-
-
+	// ‹ß–Tî•ñ‚ðì‚è’¼‚·
+	// surf0 ‚©‚ç‹ß–Tî•ñ‚ðì‚Á‚Ä
+	// surf1 ‚Ì—v‘f‚Ì’¸“_‚ðŠÜ‚Þ surf0 ‚Ì—v‘f‚ðŒŸõ‚µ‚Ä
+	// ˆê’v‚·‚é or ‹tŒü‚«‚Ì‚à‚Ì‚ð’T‚·
 	kmb::NodeNeighborInfo neighborInfo;
 	neighborInfo.appendCoboundary( surf0 );
 
@@ -195,9 +195,9 @@ kmb::Matching::getSurfaceRelation
 	while( eIter != surf1->end() )
 	{
 		bool findFlag = false;
-
+		// Å‰‚Ì’¸“_‚¾‚¯‚ÅŒ©‚ê‚Î\•ª
 		kmb::nodeIdType nodeID = eIter.getCellId(0);
-
+		// ’¸“_‚ÌŽü•Ó—v‘f‚Æ‚ÌŠÖŒW‚ð’²‚×‚é
 		kmb::NodeNeighbor::iterator iter = neighborInfo.beginIteratorAt(nodeID);
 		while( iter != neighborInfo.endIteratorAt(nodeID) )
 		{
@@ -228,7 +228,7 @@ kmb::Matching::getSurfaceRelation
 			}
 			++iter;
 		}
-
+		// ’¸“_‚ÌŽü•Ó—v‘f‚Ìˆê’v‚·‚é‚Ü‚½‚Í‹tŒü‚«‚Ì—v‘f‚ª‚È‚¢
 		if( !findFlag ){
 			return kmb::ElementRelation::UNKNOWNRELATION;
 		}
@@ -250,7 +250,7 @@ kmb::ElementRelation::relationType
 kmb::Matching::getFaceRelation
 ( kmb::MeshDB* mesh, const char* faceId0, const char* faceId1 )
 {
-
+	// FaceGroup ‚Ü‚½‚Í FaceVariable ‚Å‚ ‚é‚±‚Æ‚ðŠm”F‚·‚é
 	kmb::DataBindings* face0 = mesh->getDataBindingsPtr(faceId0);
 	kmb::DataBindings* face1 = mesh->getDataBindingsPtr(faceId1);
 	if( mesh == NULL || face0 == NULL || face1 == NULL ){
@@ -270,14 +270,14 @@ kmb::Matching::getFaceRelation
 	if( len0 != len1 ){
 		return kmb::ElementRelation::UNKNOWNRELATION;
 	}
+	
+	unsigned int eqCount = 0;	// ˆê’v‚µ‚Ä‚¢‚éŒÂ”
+	unsigned int revCount = 0;	// ‹tŒü‚«‚ÌŒÂ”
 
-	unsigned int eqCount = 0;
-	unsigned int revCount = 0;
-
-
-
-
-
+	// ‹ß–Tî•ñ‚ðì‚è’¼‚·
+	// face0 ‚©‚ç‹ß–Tî•ñ‚ðì‚Á‚Ä
+	// face1 ‚Ì—v‘f‚Ì’¸“_‚ðŠÜ‚Þ face0 ‚Ì—v‘f‚ðŒŸõ‚µ‚Ä
+	// ˆê’v‚·‚é or ‹tŒü‚«‚Ì‚à‚Ì‚ð’T‚·
 	kmb::NodeNeighborFaceInfo coboundary;
 
 	coboundary.appendCoboundary( face0, mesh );
@@ -290,9 +290,9 @@ kmb::Matching::getFaceRelation
 		fIter.getFace( f );
 		kmb::Element* element = f.createElement(mesh);
 		if( element != NULL ){
-
+			// Å‰‚Ì’¸“_‚¾‚¯‚ÅŒ©‚ê‚Î\•ª
 			kmb::nodeIdType nodeID = element->getCellId(0);
-
+			// ’¸“_‚ÌŽü•Ó‚Æ‚ÌŠÖŒW‚ð’²‚×‚é
 			kmb::NodeNeighborFace::iterator iter = coboundary.beginIteratorAt(nodeID);
 			kmb::NodeNeighborFace::iterator iEnd = coboundary.endIteratorAt(nodeID);
 			while( iter != iEnd )
@@ -301,7 +301,6 @@ kmb::Matching::getFaceRelation
 				kmb::Element* nei = nei_f.createElement(mesh);
 				if( nei != NULL ){
 					int i0,i1;
-
 					kmb::ElementRelation::relationType rel =
 						kmb::ElementRelation::getRelation( *element, i0, *nei, i1 );
 					switch( rel ){
@@ -328,7 +327,7 @@ kmb::Matching::getFaceRelation
 			}
 			delete element;
 		}
-
+		// ’¸“_‚ÌŽü•Ó—v‘f‚Ìˆê’v‚·‚é‚Ü‚½‚Í‹tŒü‚«‚Ì—v‘f‚ª‚È‚¢
 		if( !findFlag ){
 			return kmb::ElementRelation::UNKNOWNRELATION;
 		}
@@ -354,7 +353,7 @@ kmb::Matching::getDistanceEdgeToNodeWithParam
 {
 	kmb::Minimizer minimizer;
 
-	elemId = kmb::Element::nullElementId;
+	elemId = kmb::Element::nullElementId; // Å¬‚ªŒ©‚Â‚©‚ç‚È‚¢
 
 	kmb::Point3D n0;
 	kmb::Point3D n1;
@@ -366,11 +365,11 @@ kmb::Matching::getDistanceEdgeToNodeWithParam
 		{
 			if( points0->getPoint( eIter.getCellId(0), n0 ) &&
 				points0->getPoint( eIter.getCellId(1), n1 ) ){
-
-
+				// t ‚Í node0 ‚Æ node1 ‚Ìü•ª‚ð [0,1] ‚É‘Î‰ž‚³‚¹‚½‚Æ‚«‚Ì
+				// ‚ü‚Ì‘«‚Ìƒpƒ‰ƒ[ƒ^‚Ì’l
 				double temp;
 				double distSq = point1->distanceSqToSegment( n0, n1, temp );
-
+				// Å¬’l‚ðŽæ‚é elemID ‚ðŠo‚¦‚Ä‚¨‚­
 				if( minimizer.update(distSq) )
 				{
 					elemId = eIter.getId();
@@ -412,9 +411,9 @@ kmb::Matching::matchNodeToNode
 }
 */
 
-
-
-
+// nodeMapper[ nodeId of mesh1 ] = nodeId of mesh0 
+// mesh1 ‚Ì edgeId ‚Å—^‚¦‚ç‚ê‚é Body ã‚Ìß“_‚É‘Î‚µ‚Ä
+// mesh0 ‚Ì 1 ŽŸŒ³ Body ‚Æ‚Ì nodeMatching ‚ðs‚¤
 int
 kmb::Matching::matchNodeToNodeOnEdges
 (kmb::MeshDB* mesh0, kmb::MeshDB* mesh1, kmb::bodyIdType edgeId,
@@ -425,7 +424,7 @@ kmb::Matching::matchNodeToNodeOnEdges
 	}
 	kmb::ElementContainer* body = mesh1->getBodyPtr(edgeId);
 
-
+	// get all nodes
 	std::set< kmb::nodeIdType > nodeSet;
 	if( body )
 	{
@@ -439,7 +438,7 @@ kmb::Matching::matchNodeToNodeOnEdges
 		const kmb::nodeIdType nodeId = (*nIter);
 		if( mesh1->getNode( nodeId, node ) )
 		{
-
+			// Ž©•ªŽ©g‚Ì 1ŽŸŒ³‚Ì Body ‚É‚Â‚¢‚Ä‚·‚×‚Ä’²‚×‚é
 			kmb::bodyIdType bodyCount = mesh0->getBodyCount();
 			for(kmb::bodyIdType bodyId = 0; bodyId < bodyCount; ++bodyId){
 				kmb::ElementContainer* body1 = mesh0->getBodyPtr( bodyId );
@@ -458,8 +457,8 @@ kmb::Matching::matchNodeToNodeOnEdges
 	return static_cast<int>(nodeSet.size() - nodeMapper.size());
 }
 
-
-
+// mesh1 ‚Ì bodyId1 ‚Å—^‚¦‚ç‚ê‚é Body ã‚Ìß“_‚É‘Î‚µ‚Ä
+// mesh0 ‚Ì “¯‚¶ŽŸŒ³‚Ì Body ‚Æ‚Ì nodeMatching ‚ðs‚¤
 int
 kmb::Matching::matchNodeToNodeOnBody
 (kmb::MeshDB* mesh0, kmb::MeshDB* mesh1, kmb::bodyIdType bodyId1,
@@ -470,7 +469,7 @@ kmb::Matching::matchNodeToNodeOnBody
 	}
 	kmb::ElementContainer* body1 = mesh1->getBodyPtr(bodyId1);
 
-
+	// get all nodes
 	std::set< kmb::nodeIdType > nodeSet;
 	if( body1==NULL ){
 		return 0;
@@ -485,7 +484,7 @@ kmb::Matching::matchNodeToNodeOnBody
 		const kmb::nodeIdType nodeId = (*nIter);
 		if( mesh1->getNode( nodeId, node ) )
 		{
-
+			// mesh0 ‚Ì body1 ‚Æ“¯‚¶ŽŸŒ³‚Ì Body ‚É‚Â‚¢‚Ä‚·‚×‚Ä’²‚×‚é
 			kmb::bodyIdType bodyCount = mesh0->getBodyCount();
 			for(kmb::bodyIdType bodyId0 = 0; bodyId0 < bodyCount; ++bodyId0){
 				kmb::ElementContainer* body0 = mesh0->getBodyPtr( bodyId0 );
@@ -559,7 +558,7 @@ kmb::Matching::nodeMatchingBetweenBodies(kmb::MeshDB* mesh0, kmb::bodyIdType bod
 	}
 
 	kmb::Node node;
-
+	// mesh0 ‚Ì body0 ã‚Ìß“_‚ð mesh1 ‚Ì body1 ‚©‚ç’T‚·
 	kmb::ElementContainer::iterator eIter = body0->begin();
 	while( !eIter.isFinished() ){
 		const int len = eIter.getNodeCount();
@@ -615,7 +614,7 @@ kmb::Matching::nodeMatchingOnBody(kmb::MeshDB* mesh0, kmb::bodyIdType bodyId0, k
 	}
 
 	kmb::Node node;
-
+	// mesh0 ‚Ì body0 ã‚Ìß“_‚ð mesh1 ‚Ìß“_‘S‘Ì‚©‚ç’T‚·
 	kmb::ElementContainer::iterator eIter = body0->begin();
 	while( !eIter.isFinished() ){
 		const int len = eIter.getNodeCount();

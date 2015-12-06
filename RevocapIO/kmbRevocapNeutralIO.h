@@ -54,6 +54,7 @@ public:
 	int appendHeader(const char* filename);
 	int appendDataToRNFFile(const char* filename,kmb::MeshData* mesh,const char* name,const char* stype=NULL);
 
+	// ŠK‘w tags[0]/tags[1]/tags[2] ‚Ì’l‚ðŽæ“¾‚·‚é
 	template <typename T> int loadParameterFromRNFFile(const char* filename,int num, const char** tags,T &param)
 	{
 		if( tags == NULL || num <= 0 ){
@@ -69,6 +70,7 @@ public:
 		input.close();
 		return res;
 	}
+
 protected:
 	int writeHeader(std::ofstream &output);
 	int readNode(std::ifstream &input,kmb::MeshData* mesh);

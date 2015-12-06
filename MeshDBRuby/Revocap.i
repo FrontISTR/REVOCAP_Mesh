@@ -63,7 +63,7 @@ REVOCAP_PrePost の FXRuby で実装された GUI 部から利用される。
 #include "MeshDBRuby/kmbPhysicalValue_SWIG.h"
 %}
 
-
+// typedef は %include しないと int 型のエイリアスが基本型にならない
 %include "../MeshDB/kmbTypes.h"
 %include "../Common/kmbCommon.h"
 %include "../Geometry/kmbIdTypes.h"
@@ -97,11 +97,11 @@ RevocapMesh において、次のモジュール定数が定義されている。
 =end
 ---------------------------------------------------------------*/
 namespace kmb{
-#define VERSION "RevocapMesh version 1.6.02 (2013/3/8)"
+#define VERSION "RevocapMesh version 1.6.09 (2015/8/12)"
 #define COPYRIGHT "IIS, The University of Tokyo CISS, Large Scale Assembly, Structural Correspondence, Multi Dynamics Simulator"
 }
 
-
+// 順番は重要！
 %include "BoundingBox.i"
 %include "MeshData.i"
 %include "MeshDB.i"
@@ -109,7 +109,5 @@ namespace kmb{
 %include "Plane.i"
 %include "Boundary.i"
 %include "Matching.i"
-%include "PatchOperation.i"
 %include "SurfaceOperation.i"
 %include "MeshOperation.i"
-%include "PolygonPartitioner.i"

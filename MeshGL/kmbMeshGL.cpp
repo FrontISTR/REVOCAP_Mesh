@@ -265,7 +265,7 @@ kmb::MeshGL::drawSurface(kmb::bodyIdType bodyId)
 			::glIsEnabled( GL_VERTEX_ARRAY ) == GL_TRUE &&
 			body->isUniqueDim(2) && body->getCount() > 0 )
 		{
-
+			// ::glEnable(GL_AUTO_NORMAL) は glMap2f などと一緒に Nurbs を書くときには使える
 			if( 0==strcmp(kmb::ElementContainerTriangleArray::CONTAINER_TYPE,body->getContainerType()) ){
 				::glEnableClientState(GL_VERTEX_ARRAY);
 				::glVertexPointer(3 , GL_DOUBLE , 0 ,
@@ -276,7 +276,6 @@ kmb::MeshGL::drawSurface(kmb::bodyIdType bodyId)
 				::glFlush();
 			}else if( 0==strcmp(kmb::ElementContainerOpenGLDraw::CONTAINER_TYPE,body->getContainerType()) ){
 				::glEnableClientState(GL_VERTEX_ARRAY);
-
 				::glVertexPointer(3 , GL_DOUBLE , 0 ,
 					reinterpret_cast<const kmb::Point3DContainerArray*>(points)->getDoubleArray() );
 				const kmb::ElementContainerOpenGLDraw* elements
@@ -293,9 +292,6 @@ kmb::MeshGL::drawSurface(kmb::bodyIdType bodyId)
 						::glArrayElement( triNodeTable[3*i+2] );
 					}
 					::glEnd();
-
-
-
 				}
 				if( elements->getQuadCount() > 0 ){
 					const size_t quadCount = elements->getQuadCount();
@@ -310,11 +306,7 @@ kmb::MeshGL::drawSurface(kmb::bodyIdType bodyId)
 						::glArrayElement( quadNodeTable[4*i+3] );
 					}
 					::glEnd();
-
-
-
 				}
-
 				::glDisableClientState(GL_VERTEX_ARRAY);
 				::glFlush();
 			}else{
@@ -1350,7 +1342,7 @@ kmb::MeshGL::drawMarking(const char* condName,const char* mode)
 	if( mesh != NULL &&
 		(data = mesh->getDataBindingsPtr( condName )) != NULL )
 	{
-
+		// VECTOR 定数値タイプのアイコンは長さをモデルの直径の1/20にする
 		if( data->getBindingMode() == kmb::DataBindings::NodeGroup && strcmp(mode,"VECTOR") == 0 ){
 			if( data->getValueType() == kmb::PhysicalValue::Vector3 ){
 				double v[3] = {0.0, 0.0, 0.0};
@@ -1693,7 +1685,7 @@ kmb::MeshGL::drawMarking(const char* condName,const char* mode)
 					}
 				}
 				else if( strcmp(mode,"VECTOR") == 0 ){
-
+				// not supported FaceVariable VECTOR
 					if( data->getValueType() == kmb::PhysicalValue::Vector3 ){
 						const kmb::Vector3Value* vData =
 							reinterpret_cast<const kmb::Vector3Value*>(data->getPhysicalValue());
@@ -1848,8 +1840,8 @@ kmb::MeshGL::drawTensorMark(kmb::Point3D& point)
 void
 kmb::MeshGL::drawTensorMark(double x,double y,double z)
 {
-	double c = 0.5;
-	double s = 0.707;
+	double c = 0.5;   // cos(60)
+	double s = 0.707; // sin(60)
 	::glBegin( GL_TRIANGLE_STRIP );
 	::glVertex3d( x + markSize,   y,              z );
 	::glVertex3d( x - c*markSize, y + s*markSize, z );
@@ -1865,11 +1857,11 @@ double
 kmb::MeshGL::calcPerpendicular(double v0,double v1,double v2,kmb::Vector3D &normal)
 {
 	double mag = v0*v0 + v1*v1 + v2*v2;
-
-
+	// v2 が相対的に小さい時には、できるだけ z 軸に近くする
+	// そうじゃないときには z 軸との外積を取る
 	if( v2 == 0.0 || mag == 0.0 ){
 		normal.setCoordinate(0.0,0.0,1.0);
-	}else if( v2*v2 / mag <= 0.5 ){
+	}else if( v2*v2 / mag <= 0.5 ){  // 方向余弦の２乗が 0.5 以下 ⇔ z軸とのなす角が 45 °以上
 		normal.setCoordinate(-v0*v2,-v1*v2,1.0-v2*v2);
 		normal.normalize();
 	}else{
@@ -1882,12 +1874,12 @@ kmb::MeshGL::calcPerpendicular(double v0,double v1,double v2,kmb::Vector3D &norm
 double kmb::MeshGL::calcFrame(double v0,double v1,double v2,kmb::Vector3D &normal0,kmb::Vector3D &normal1)
 {
 	double mag = v0*v0 + v1*v1 + v2*v2;
-
-
+	// v2 が相対的に小さい時には、できるだけ z 軸に近くする
+	// そうじゃないときには z 軸との外積を取る
 	if( v2 == 0.0 || mag == 0.0 ){
 		normal0.setCoordinate(0.0,0.0,1.0);
 		normal1.setCoordinate(0.0,-1.0,0.0);
-	}else if( v2*v2 / mag <= 0.5 ){
+	}else if( v2*v2 / mag <= 0.5 ){  // 方向余弦の２乗が 0.5 以下 ⇔ z軸とのなす角が 45 °以上
 		normal0.setCoordinate(-v0*v2,-v1*v2,mag-v2*v2);
 		normal0.normalize();
 	}else{
@@ -1917,9 +1909,9 @@ kmb::MeshGL::drawVectorMark(double x,double y,double z,double v0,double v1,doubl
 	if( mag <= 0.0 ){
 		drawDeltaMark( x, y, z );
 	}else{
-
+		// r = 1 / length
 		double r = 1.0 / sqrt(mag);
-
+		// 頭の ＜
 		::glBegin( GL_LINE_STRIP );
 		::glVertex3d(
 			x - v0*markSize*r + normal.x()*markSize*0.6,
@@ -1931,7 +1923,7 @@ kmb::MeshGL::drawVectorMark(double x,double y,double z,double v0,double v1,doubl
 			y - v1*markSize*r - normal.y()*markSize*0.6,
 			z - v2*markSize*r - normal.z()*markSize*0.6);
 		::glEnd();
-
+		// 棒
 		::glBegin( GL_LINES );
 		::glVertex3d( x, y, z );
 		::glVertex3d( x - v0 , y - v1, z - v2 );
@@ -2009,7 +2001,7 @@ kmb::MeshGL::drawCircleMark(double x,double y,double z)
 	::glBitmap( 8, 7, 4.0f, 3.5f, 0.0f, 0.0f, reinterpret_cast<const GLubyte*>(circle) );
 }
 
-
+// delta
 const GLubyte delta[] =
 {
  0xff, 0x80, 0x00, 0x00,
@@ -2028,7 +2020,7 @@ kmb::MeshGL::drawDeltaMark(double x,double y,double z)
 	::glBitmap( 9, 7, 4.5f, 3.5f, 0.0f, 0.0f, delta );
 }
 
-
+// square
 const GLubyte square[] =
 {
  0x7e, 0x00, 0x00, 0x00,
@@ -2046,7 +2038,7 @@ kmb::MeshGL::drawSquareMark(double x,double y,double z)
 	::glBitmap( 8, 6, 4.0f, 3.0f, 0.0f, 0.0f, square );
 }
 
-
+// left
 const GLubyte left[] =
 {
  0x03, 0x00, 0x00, 0x00,
@@ -2065,7 +2057,7 @@ kmb::MeshGL::drawLeftMark(double x,double y,double z)
 	::glBitmap( 8, 7, 4.0f, 3.5f, 0.0f, 0.0f, left );
 }
 
-
+// right
 const GLubyte right[] =
 {
  0xc0, 0x00, 0x00, 0x00,
@@ -2086,37 +2078,37 @@ kmb::MeshGL::drawRightMark(double x,double y,double z)
 
 /* 8 x 16 */
 const GLuint font[][16] = {
-
+	// '*' = 0x2a
 	{ 0x00, 0x00, 0x00, 0x08, 0x49, 0x49, 0x2a, 0x08, 0x2a, 0x49, 0x49, 0x08, 0x00, 0x00, 0x00, 0x00,},
-
+	// '+' = 0x2b
 	{ 0x00, 0x00, 0x00, 0x08, 0x08, 0x08, 0x08, 0x7f, 0x08, 0x08, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00,},
-
+	// ',' = 0x2c
 	{ 0x10, 0x08, 0x14, 0x38, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,},
-
+	// '-' = 0x2d
 	{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,},
-
+	// '.' = 0x2e
 	{ 0x00, 0x00, 0x10, 0x38, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,},
-
+	// '/' = 0x2f
 	{ 0x00, 0x00, 0x40, 0x40, 0x20, 0x20, 0x10, 0x10, 0x08, 0x08, 0x04, 0x04, 0x02, 0x02, 0x00, 0x00,},
-
+	// '0' = 0x30
 	{ 0x00, 0x00, 0x3e, 0x41, 0x41, 0x43, 0x45, 0x49, 0x51, 0x61, 0x41, 0x41, 0x41, 0x3e, 0x00, 0x00,},
-
+	// '1' = 0x31
 	{ 0x00, 0x00, 0x1c, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x28, 0x18, 0x08, 0x08, 0x00, 0x00,},
-
+	// '2' = 0x32
 	{ 0x00, 0x00, 0x7f, 0x40, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x41, 0x41, 0x22, 0x1c, 0x00, 0x00,},
-
+	// '3' = 0x33
 	{ 0x00, 0x00, 0x1c, 0x22, 0x41, 0x41, 0x01, 0x02, 0x1c, 0x02, 0x01, 0x41, 0x22, 0x1c, 0x00, 0x00,},
-
+	// '4' = 0x34
 	{ 0x00, 0x00, 0x04, 0x04, 0x04, 0x7f, 0x44, 0x44, 0x44, 0x44, 0x24, 0x14, 0x0c, 0x04, 0x00, 0x00,},
-
+	// '5' = 0x35
 	{ 0x00, 0x00, 0x1c, 0x22, 0x41, 0x01, 0x01, 0x41, 0x62, 0x5c, 0x40, 0x40, 0x40, 0x7e, 0x00, 0x00,},
-
+	// '6' = 0x36
 	{ 0x00, 0x00, 0x1c, 0x22, 0x41, 0x41, 0x41, 0x62, 0x5c, 0x40, 0x40, 0x20, 0x10, 0x0c, 0x00, 0x00,},
-
+	// '7' = 0x37
 	{ 0x00, 0x00, 0x08, 0x08, 0x08, 0x08, 0x08, 0x04, 0x04, 0x04, 0x02, 0x02, 0x41, 0x7f, 0x00, 0x00,},
-
+	// '8' = 0x38
 	{ 0x00, 0x00, 0x1c, 0x22, 0x41, 0x41, 0x41, 0x22, 0x1c, 0x22, 0x22, 0x22, 0x22, 0x1c, 0x00, 0x00,},
-
+	// '9' = 0x39
 	{ 0x00, 0x00, 0x1e, 0x21, 0x01, 0x01, 0x01, 0x1d, 0x23, 0x41, 0x41, 0x41, 0x22, 0x1c, 0x00, 0x00,},
 };
 
@@ -2143,7 +2135,7 @@ kmb::MeshGL::drawVector(double x,double y,double z,double v0,double v1,double v2
 	float rgb[3] = {0.0,0.0,0.0};
 	colorMap->getRGB( d, rgb );
 	::glColor3fv( rgb );
-
+	// 頭の ＜
 	::glBegin( GL_LINE_STRIP );
 	::glVertex3d(
 			x+factor*(v0*0.75+normal.x()*d*0.1),
@@ -2155,7 +2147,7 @@ kmb::MeshGL::drawVector(double x,double y,double z,double v0,double v1,double v2
 			y+factor*(v1*0.75-normal.y()*d*0.1),
 			z+factor*(v2*0.75-normal.z()*d*0.1));
 	::glEnd();
-
+	// 棒
 	::glBegin( GL_LINES );
 	::glVertex3d( x, y, z );
 	::glVertex3d( x+factor*v0, y+factor*v1, z+factor*v2 );

@@ -30,10 +30,10 @@ private:
 public:
 	SimplexRegion(double d=1.0);
 	virtual ~SimplexRegion(void);
-
+	/// ”»’èŠÖ”
 	virtual locationType intersect(const Point3D &point) const;
 	virtual bool intersect(const BoxRegion& box) const;
-
+	/// ‹——£ŠÖ”
 	virtual double distanceSq(const Point3D &point) const;
 };
 

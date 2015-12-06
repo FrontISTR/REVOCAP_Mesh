@@ -50,9 +50,9 @@ public:
 			(i==other.i && j < other.j) ||
 			(i==other.i && j == other.j && k < other.k);
 	}
-
-
-
+	// k j i の順に増やしていく
+	// operator < の順序と同じ
+	// ループは外から i j k
 	bool next(int nx,int ny,int nz){
 		if( k < nz-1 ){
 			++k;
@@ -137,9 +137,9 @@ public:
 			(k==other.k && j < other.j) ||
 			(k==other.k && j == other.j && i < other.i);
 	}
-
-
-
+	// i j k の順に増やしていく
+	// operator < の順序と同じ
+	// ループは外から k j i
 	bool next(int nx,int ny,int nz){
 		if( i < nx-1 ){
 			++i;
@@ -222,9 +222,9 @@ public:
 			(i < other.i) ||
 			(i==other.i && j < other.j);
 	}
-
-
-
+	// j i の順に増やしていく
+	// operator < の順序と同じ
+	// ループは外から i j
 	bool next(int nx,int ny){
 		if( j < ny-1 ){
 			++j;

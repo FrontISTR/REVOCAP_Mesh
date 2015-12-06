@@ -22,8 +22,8 @@
 
 #include <cmath>
 
-
-
+// ŽÀ‘•‚ÍŒ»ó‚Í Tetra ‚¾‚¯
+// plane ‚ÆŒð·‚·‚é—v‘f‚ðœ‚¢‚½‚Æ‚«‚ÉŒ©‚¦‚éŽOŠpŒ`‚ð•\Ž¦
 void
 kmb::MeshGL::drawIntersection(kmb::bodyIdType bodyId,kmb::Plane* plane)
 {
@@ -61,7 +61,7 @@ kmb::MeshGL::drawIntersection(kmb::bodyIdType bodyId,kmb::Plane* plane)
 	}
 }
 
-
+// comp –¢‘Î‰ž
 void
 kmb::MeshGL::drawIntersectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* physicalValue,kmb::ColorMap* colorMap,int comp)
 {
@@ -203,7 +203,7 @@ kmb::MeshGL::drawSectionTetrahedron(
 	kmb::Node& n0,kmb::Node& n1,kmb::Node& n2,kmb::Node& n3,
 	double t0, double t1, double t2, double t3)
 {
-
+	// signature check
 	unsigned int flag = 0;
 	if( t0 > 0 ) flag |= 0x01;
 	if( t1 > 0 ) flag |= 0x02;
@@ -214,47 +214,47 @@ kmb::MeshGL::drawSectionTetrahedron(
 	}
 	switch( flag )
 	{
-
-	case 0x01:
+	// ‚P‚Â‚¾‚¯³
+	case 0x01: // 0
 		{
-
+			// REMARK ORDER!!
 			drawTriangleByDividingPoint(
 				&n0,&n1,t0,t1,
 				&n0,&n3,t0,t3,
 				&n0,&n2,t0,t2);
 		}
 		break;
-	case 0x02:
+	case 0x02: // 1
 		{
-
+			// REMARK ORDER!!
 			drawTriangleByDividingPoint(
 				&n1,&n0,t1,t0,
 				&n1,&n2,t1,t2,
 				&n1,&n3,t1,t3);
 		}
 		break;
-	case 0x04:
+	case 0x04: // 2
 		{
-
+			// REMARK ORDER!!
 			drawTriangleByDividingPoint(
 				&n2,&n0,t2,t0,
 				&n2,&n3,t2,t3,
 				&n2,&n1,t2,t1);
 		}
 		break;
-	case 0x08:
+	case 0x08: // 3
 		{
-
+			// REMARK ORDER!!
 			drawTriangleByDividingPoint(
 				&n3,&n0,t3,t0,
 				&n3,&n1,t3,t1,
 				&n3,&n2,t3,t2);
 		}
 		break;
-
-	case 0x03:
+	// ‚Q‚Â‚¾‚¯³
+	case 0x03: // 0 1
 		{
-
+			// REMARK ORDER!!
 			drawQuadByDividingPoint(
 				&n0,&n2,t0,t2,
 				&n1,&n2,t1,t2,
@@ -262,9 +262,9 @@ kmb::MeshGL::drawSectionTetrahedron(
 				&n0,&n3,t0,t3);
 		}
 		break;
-	case 0x05:
+	case 0x05: // 0 2
 		{
-
+			// REMARK ORDER!!
 			drawQuadByDividingPoint(
 				&n0,&n3,t0,t3,
 				&n2,&n3,t2,t3,
@@ -272,9 +272,9 @@ kmb::MeshGL::drawSectionTetrahedron(
 				&n0,&n1,t0,t1);
 		}
 		break;
-	case 0x06:
+	case 0x06: // 1 2
 		{
-
+			// REMARK ORDER!!
 			drawQuadByDividingPoint(
 				&n1,&n0,t1,t0,
 				&n2,&n0,t2,t0,
@@ -282,9 +282,9 @@ kmb::MeshGL::drawSectionTetrahedron(
 				&n1,&n3,t1,t3);
 		}
 		break;
-	case 0x09:
+	case 0x09: // 0 3
 		{
-
+			// REMARK ORDER!!
 			drawQuadByDividingPoint(
 				&n0,&n1,t0,t1,
 				&n3,&n1,t3,t1,
@@ -292,9 +292,9 @@ kmb::MeshGL::drawSectionTetrahedron(
 				&n0,&n2,t0,t2);
 		}
 		break;
-	case 0x0a:
+	case 0x0a: // 1 3
 		{
-
+			// REMARK ORDER!!
 			drawQuadByDividingPoint(
 				&n1,&n2,t1,t2,
 				&n3,&n2,t3,t2,
@@ -302,9 +302,9 @@ kmb::MeshGL::drawSectionTetrahedron(
 				&n1,&n0,t1,t0);
 		}
 		break;
-	case 0x0c:
+	case 0x0c: // 2 3
 		{
-
+			// REMARK ORDER!!
 			drawQuadByDividingPoint(
 				&n2,&n0,t2,t0,
 				&n3,&n0,t3,t0,
@@ -312,37 +312,37 @@ kmb::MeshGL::drawSectionTetrahedron(
 				&n2,&n1,t2,t1);
 		}
 		break;
-
-	case 0x07:
+	// ‚R‚Â‚¾‚¯³
+	case 0x07: // 0 1 2
 		{
-
+			// REMARK ORDER!!
 			drawTriangleByDividingPoint(
 				&n3,&n0,t3,t0,
 				&n3,&n2,t3,t2,
 				&n3,&n1,t3,t1);
 		}
 		break;
-	case 0x0b:
+	case 0x0b: // 0 1 3
 		{
-
+			// REMARK ORDER!!
 			drawTriangleByDividingPoint(
 				&n2,&n0,t2,t0,
 				&n2,&n1,t2,t1,
 				&n2,&n3,t2,t3);
 		}
 		break;
-	case 0x0d:
+	case 0x0d: // 0 2 3
 		{
-
+			// REMARK ORDER!!
 			drawTriangleByDividingPoint(
 				&n1,&n0,t1,t0,
 				&n1,&n3,t1,t3,
 				&n1,&n2,t1,t2);
 		}
 		break;
-	case 0x0e:
+	case 0x0e: // 1 2 3
 		{
-
+			// REMARK ORDER!!
 			drawTriangleByDividingPoint(
 				&n0,&n1,t0,t1,
 				&n0,&n2,t0,t2,
@@ -358,7 +358,7 @@ kmb::MeshGL::drawIntersectionTetrahedron(
 	kmb::Node& n0,kmb::Node& n1,kmb::Node& n2,kmb::Node& n3,
 	double t0, double t1, double t2, double t3)
 {
-
+	// signature check
 	unsigned int flag = 0;
 	if( t0 > 0 ) flag |= 0x01;
 	if( t1 > 0 ) flag |= 0x02;
@@ -369,7 +369,7 @@ kmb::MeshGL::drawIntersectionTetrahedron(
 	}
 	switch( flag )
 	{
-	case 0x07:
+	case 0x07: // 0 1 2
 		{
 			drawTriangle(
 				n0.x(), n0.y(), n0.z(),
@@ -377,7 +377,7 @@ kmb::MeshGL::drawIntersectionTetrahedron(
 				n2.x(), n2.y(), n2.z() );
 		}
 		break;
-	case 0x0b:
+	case 0x0b: // 0 1 3
 		{
 			drawTriangle(
 				n0.x(), n0.y(), n0.z(),
@@ -385,7 +385,7 @@ kmb::MeshGL::drawIntersectionTetrahedron(
 				n3.x(), n3.y(), n3.z() );
 		}
 		break;
-	case 0x0d:
+	case 0x0d: // 0 2 3
 		{
 			drawTriangle(
 				n0.x(), n0.y(), n0.z(),
@@ -393,7 +393,7 @@ kmb::MeshGL::drawIntersectionTetrahedron(
 				n2.x(), n2.y(), n2.z() );
 		}
 		break;
-	case 0x0e:
+	case 0x0e: // 1 2 3
 		{
 			drawTriangle(
 				n1.x(), n1.y(), n1.z(),

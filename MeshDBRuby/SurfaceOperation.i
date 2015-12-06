@@ -236,10 +236,10 @@ public:
 	void setSurface(kmb::MeshDB* mesh,kmb::bodyIdType bodyId);
 	enum vertexType{
 		Unknown,
-		CONVEX,
-		CONCAVE,
-		FLAT,
-		HYPERBOLIC,
+		CONVEX,     // 頂点の周りの要素の角度の和が 360 度より小さい＆凸
+		CONCAVE,    // 頂点の周りの要素の角度の和が 360 度より小さい＆凹
+		FLAT,       // 頂点の周りの要素の角度の和が 360 度
+		HYPERBOLIC, // 頂点の周りの要素の角度の和が 360 度より大きい
 	};
 	kmb::SurfaceOperation::vertexType getVertexType(kmb::nodeIdType nodeId);
 };

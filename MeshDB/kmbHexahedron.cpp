@@ -112,9 +112,9 @@ const int kmb::Hexahedron::connectionTable[8][8] =
 	{ 0, 0, 0, 1, 1, 0, 1, 0}
 };
 
-
-
-
+// 面を構成する多角形の添え字番号
+// 外側から見て左回りが正
+// 相対する面の節点番号が同一面の対角にある
 const int kmb::Hexahedron::faceTable[6][4] =
 {
 	{ 3, 2, 1, 0},
@@ -145,13 +145,13 @@ bool
 kmb::Hexahedron::isEquivalent(int index[8])
 {
 	const int len = kmb::Element::getNodeCount(kmb::HEXAHEDRON);
-
+	// 置換じゃない時は無条件にだめ
 	for(int i=0;i<len;++i){
 		if(index[i] < 0 || len <= index[i]){
 			return false;
 		}
 	}
-
+	// connection matrix が同じならいいことにする
 	for(int i=0;i<len;++i){
 		for(int j=0;j<len;++j){
 			if( kmb::Hexahedron::connectionTable[i][j]
@@ -205,87 +205,87 @@ kmb::Hexahedron::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nod
 	}
 	int num = 0;
 
-
-	bool b0 = element->getIndexMinNodeIdOfFace( 0 )%2 == 1;
-	bool b1 = element->getIndexMinNodeIdOfFace( 1 )%2 == 1;
-	bool b2 = element->getIndexMinNodeIdOfFace( 2 )%2 == 1;
-	bool b3 = element->getIndexMinNodeIdOfFace( 3 )%2 == 1;
-	bool b4 = element->getIndexMinNodeIdOfFace( 4 )%2 == 1;
-	bool b5 = element->getIndexMinNodeIdOfFace( 5 )%2 == 1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	// 対角線をどのように引くか決める                                      true  false
+	bool b0 = element->getIndexMinNodeIdOfFace( 0 )%2 == 1; // [3,2,1,0]   20    13
+	bool b1 = element->getIndexMinNodeIdOfFace( 1 )%2 == 1; // [4,5,6,7]   57    46
+	bool b2 = element->getIndexMinNodeIdOfFace( 2 )%2 == 1; // [1,5,4,0]   50    14
+	bool b3 = element->getIndexMinNodeIdOfFace( 3 )%2 == 1; // [1,2,6,5]   25    16
+	bool b4 = element->getIndexMinNodeIdOfFace( 4 )%2 == 1; // [3,7,6,2]   72    36
+	bool b5 = element->getIndexMinNodeIdOfFace( 5 )%2 == 1; // [4,7,3,0]   70    43
+
+	// 対角線の与え方
+	// 四角形の節点番号の最小のところから必ず３本出る   ３本出ている節点のindex
+	//[b0,b1,b2,b3,b4,b5],[それぞれの面の対角線の与え方],[頂点から出ている対角線の本数]
+	//[0, 0, 0, 0, 0, 0], [1, 3, 4, 6, 1, 4, 1, 6, 3, 6, 3, 4], [0, 3, 0, 3, 3, 0, 3, 0], [1, 3, 4, 6]
+	//[0, 0, 0, 0, 0, 1], [1, 3, 4, 6, 1, 4, 1, 6, 3, 6, 0, 7], [1, 3, 0, 2, 2, 0, 3, 1], [1, 6]
+	//[0, 0, 0, 0, 1, 0], [1, 3, 4, 6, 1, 4, 1, 6, 2, 7, 3, 4], [0, 3, 1, 2, 3, 0, 2, 1], [1, 4]
+	//[0, 0, 0, 0, 1, 1], [1, 3, 4, 6, 1, 4, 1, 6, 2, 7, 0, 7], [1, 3, 1, 1, 2, 0, 2, 2], [1]
+	//[0, 0, 0, 1, 0, 0], [1, 3, 4, 6, 1, 4, 2, 5, 3, 6, 3, 4], [0, 2, 1, 3, 3, 1, 2, 0], [3, 4]
+	//[0, 0, 0, 1, 0, 1], [1, 3, 4, 6, 1, 4, 2, 5, 3, 6, 0, 7], [1, 2, 1, 2, 2, 1, 2, 1], []
+	//[0, 0, 0, 1, 1, 0], [1, 3, 4, 6, 1, 4, 2, 5, 2, 7, 3, 4], [0, 2, 2, 2, 3, 1, 1, 1], [4]
+	//[0, 0, 0, 1, 1, 1], [1, 3, 4, 6, 1, 4, 2, 5, 2, 7, 0, 7], [1, 2, 2, 1, 2, 1, 1, 2], []
+	//[0, 0, 1, 0, 0, 0], [1, 3, 4, 6, 0, 5, 1, 6, 3, 6, 3, 4], [1, 2, 0, 3, 2, 1, 3, 0], [3, 6]
+	//[0, 0, 1, 0, 0, 1], [1, 3, 4, 6, 0, 5, 1, 6, 3, 6, 0, 7], [2, 2, 0, 2, 1, 1, 3, 1], [6]
+	//[0, 0, 1, 0, 1, 0], [1, 3, 4, 6, 0, 5, 1, 6, 2, 7, 3, 4], [1, 2, 1, 2, 2, 1, 2, 1], []
+	//[0, 0, 1, 0, 1, 1], [1, 3, 4, 6, 0, 5, 1, 6, 2, 7, 0, 7], [2, 2, 1, 1, 1, 1, 2, 2], []
+	//[0, 0, 1, 1, 0, 0], [1, 3, 4, 6, 0, 5, 2, 5, 3, 6, 3, 4], [1, 1, 1, 3, 2, 2, 2, 0], [3]
+	//[0, 0, 1, 1, 0, 1], [1, 3, 4, 6, 0, 5, 2, 5, 3, 6, 0, 7], [2, 1, 1, 2, 1, 2, 2, 1], []
+	//[0, 0, 1, 1, 1, 0], [1, 3, 4, 6, 0, 5, 2, 5, 2, 7, 3, 4], [1, 1, 2, 2, 2, 2, 1, 1], []
+	//[0, 0, 1, 1, 1, 1], [1, 3, 4, 6, 0, 5, 2, 5, 2, 7, 0, 7], [2, 1, 2, 1, 1, 2, 1, 2], []
+	//[0, 1, 0, 0, 0, 0], [1, 3, 5, 7, 1, 4, 1, 6, 3, 6, 3, 4], [0, 3, 0, 3, 2, 1, 2, 1], [1, 3]
+	//[0, 1, 0, 0, 0, 1], [1, 3, 5, 7, 1, 4, 1, 6, 3, 6, 0, 7], [1, 3, 0, 2, 1, 1, 2, 2], [1]
+	//[0, 1, 0, 0, 1, 0], [1, 3, 5, 7, 1, 4, 1, 6, 2, 7, 3, 4], [0, 3, 1, 2, 2, 1, 1, 2], [1]
+	//[0, 1, 0, 0, 1, 1], [1, 3, 5, 7, 1, 4, 1, 6, 2, 7, 0, 7], [1, 3, 1, 1, 1, 1, 1, 3], [1, 7]
+	//[0, 1, 0, 1, 0, 0], [1, 3, 5, 7, 1, 4, 2, 5, 3, 6, 3, 4], [0, 2, 1, 3, 2, 2, 1, 1], [3]
+	//[0, 1, 0, 1, 0, 1], [1, 3, 5, 7, 1, 4, 2, 5, 3, 6, 0, 7], [1, 2, 1, 2, 1, 2, 1, 2], []
+	//[0, 1, 0, 1, 1, 0], [1, 3, 5, 7, 1, 4, 2, 5, 2, 7, 3, 4], [0, 2, 2, 2, 2, 2, 0, 2], []
+	//[0, 1, 0, 1, 1, 1], [1, 3, 5, 7, 1, 4, 2, 5, 2, 7, 0, 7], [1, 2, 2, 1, 1, 2, 0, 3], [7]
+	//[0, 1, 1, 0, 0, 0], [1, 3, 5, 7, 0, 5, 1, 6, 3, 6, 3, 4], [1, 2, 0, 3, 1, 2, 2, 1], [3]
+	//[0, 1, 1, 0, 0, 1], [1, 3, 5, 7, 0, 5, 1, 6, 3, 6, 0, 7], [2, 2, 0, 2, 0, 2, 2, 2], []
+	//[0, 1, 1, 0, 1, 0], [1, 3, 5, 7, 0, 5, 1, 6, 2, 7, 3, 4], [1, 2, 1, 2, 1, 2, 1, 2], []
+	//[0, 1, 1, 0, 1, 1], [1, 3, 5, 7, 0, 5, 1, 6, 2, 7, 0, 7], [2, 2, 1, 1, 0, 2, 1, 3], [7]
+	//[0, 1, 1, 1, 0, 0], [1, 3, 5, 7, 0, 5, 2, 5, 3, 6, 3, 4], [1, 1, 1, 3, 1, 3, 1, 1], [3, 5]
+	//[0, 1, 1, 1, 0, 1], [1, 3, 5, 7, 0, 5, 2, 5, 3, 6, 0, 7], [2, 1, 1, 2, 0, 3, 1, 2], [5]
+	//[0, 1, 1, 1, 1, 0], [1, 3, 5, 7, 0, 5, 2, 5, 2, 7, 3, 4], [1, 1, 2, 2, 1, 3, 0, 2], [5]
+	//[0, 1, 1, 1, 1, 1], [1, 3, 5, 7, 0, 5, 2, 5, 2, 7, 0, 7], [2, 1, 2, 1, 0, 3, 0, 3], [5, 7]
+	//[1, 0, 0, 0, 0, 0], [0, 2, 4, 6, 1, 4, 1, 6, 3, 6, 3, 4], [1, 2, 1, 2, 3, 0, 3, 0], [4, 6]
+	//[1, 0, 0, 0, 0, 1], [0, 2, 4, 6, 1, 4, 1, 6, 3, 6, 0, 7], [2, 2, 1, 1, 2, 0, 3, 1], [6]
+	//[1, 0, 0, 0, 1, 0], [0, 2, 4, 6, 1, 4, 1, 6, 2, 7, 3, 4], [1, 2, 2, 1, 3, 0, 2, 1], [4]
+	//[1, 0, 0, 0, 1, 1], [0, 2, 4, 6, 1, 4, 1, 6, 2, 7, 0, 7], [2, 2, 2, 0, 2, 0, 2, 2], []
+	//[1, 0, 0, 1, 0, 0], [0, 2, 4, 6, 1, 4, 2, 5, 3, 6, 3, 4], [1, 1, 2, 2, 3, 1, 2, 0], [4]
+	//[1, 0, 0, 1, 0, 1], [0, 2, 4, 6, 1, 4, 2, 5, 3, 6, 0, 7], [2, 1, 2, 1, 2, 1, 2, 1], []
+	//[1, 0, 0, 1, 1, 0], [0, 2, 4, 6, 1, 4, 2, 5, 2, 7, 3, 4], [1, 1, 3, 1, 3, 1, 1, 1], [2, 4]
+	//[1, 0, 0, 1, 1, 1], [0, 2, 4, 6, 1, 4, 2, 5, 2, 7, 0, 7], [2, 1, 3, 0, 2, 1, 1, 2], [2]
+	//[1, 0, 1, 0, 0, 0], [0, 2, 4, 6, 0, 5, 1, 6, 3, 6, 3, 4], [2, 1, 1, 2, 2, 1, 3, 0], [6]
+	//[1, 0, 1, 0, 0, 1], [0, 2, 4, 6, 0, 5, 1, 6, 3, 6, 0, 7], [3, 1, 1, 1, 1, 1, 3, 1], [0, 6]
+	//[1, 0, 1, 0, 1, 0], [0, 2, 4, 6, 0, 5, 1, 6, 2, 7, 3, 4], [2, 1, 2, 1, 2, 1, 2, 1], []
+	//[1, 0, 1, 0, 1, 1], [0, 2, 4, 6, 0, 5, 1, 6, 2, 7, 0, 7], [3, 1, 2, 0, 1, 1, 2, 2], [0]
+	//[1, 0, 1, 1, 0, 0], [0, 2, 4, 6, 0, 5, 2, 5, 3, 6, 3, 4], [2, 0, 2, 2, 2, 2, 2, 0], []
+	//[1, 0, 1, 1, 0, 1], [0, 2, 4, 6, 0, 5, 2, 5, 3, 6, 0, 7], [3, 0, 2, 1, 1, 2, 2, 1], [0]
+	//[1, 0, 1, 1, 1, 0], [0, 2, 4, 6, 0, 5, 2, 5, 2, 7, 3, 4], [2, 0, 3, 1, 2, 2, 1, 1], [2]
+	//[1, 0, 1, 1, 1, 1], [0, 2, 4, 6, 0, 5, 2, 5, 2, 7, 0, 7], [3, 0, 3, 0, 1, 2, 1, 2], [0, 2]
+	//[1, 1, 0, 0, 0, 0], [0, 2, 5, 7, 1, 4, 1, 6, 3, 6, 3, 4], [1, 2, 1, 2, 2, 1, 2, 1], []
+	//[1, 1, 0, 0, 0, 1], [0, 2, 5, 7, 1, 4, 1, 6, 3, 6, 0, 7], [2, 2, 1, 1, 1, 1, 2, 2], []
+	//[1, 1, 0, 0, 1, 0], [0, 2, 5, 7, 1, 4, 1, 6, 2, 7, 3, 4], [1, 2, 2, 1, 2, 1, 1, 2], []
+	//[1, 1, 0, 0, 1, 1], [0, 2, 5, 7, 1, 4, 1, 6, 2, 7, 0, 7], [2, 2, 2, 0, 1, 1, 1, 3], [7]
+	//[1, 1, 0, 1, 0, 0], [0, 2, 5, 7, 1, 4, 2, 5, 3, 6, 3, 4], [1, 1, 2, 2, 2, 2, 1, 1], []
+	//[1, 1, 0, 1, 0, 1], [0, 2, 5, 7, 1, 4, 2, 5, 3, 6, 0, 7], [2, 1, 2, 1, 1, 2, 1, 2], []
+	//[1, 1, 0, 1, 1, 0], [0, 2, 5, 7, 1, 4, 2, 5, 2, 7, 3, 4], [1, 1, 3, 1, 2, 2, 0, 2], [2]
+	//[1, 1, 0, 1, 1, 1], [0, 2, 5, 7, 1, 4, 2, 5, 2, 7, 0, 7], [2, 1, 3, 0, 1, 2, 0, 3], [2, 7]
+	//[1, 1, 1, 0, 0, 0], [0, 2, 5, 7, 0, 5, 1, 6, 3, 6, 3, 4], [2, 1, 1, 2, 1, 2, 2, 1], []
+	//[1, 1, 1, 0, 0, 1], [0, 2, 5, 7, 0, 5, 1, 6, 3, 6, 0, 7], [3, 1, 1, 1, 0, 2, 2, 2], [0]
+	//[1, 1, 1, 0, 1, 0], [0, 2, 5, 7, 0, 5, 1, 6, 2, 7, 3, 4], [2, 1, 2, 1, 1, 2, 1, 2], []
+	//[1, 1, 1, 0, 1, 1], [0, 2, 5, 7, 0, 5, 1, 6, 2, 7, 0, 7], [3, 1, 2, 0, 0, 2, 1, 3], [0, 7]
+	//[1, 1, 1, 1, 0, 0], [0, 2, 5, 7, 0, 5, 2, 5, 3, 6, 3, 4], [2, 0, 2, 2, 1, 3, 1, 1], [5]
+	//[1, 1, 1, 1, 0, 1], [0, 2, 5, 7, 0, 5, 2, 5, 3, 6, 0, 7], [3, 0, 2, 1, 0, 3, 1, 2], [0, 5]
+	//[1, 1, 1, 1, 1, 0], [0, 2, 5, 7, 0, 5, 2, 5, 2, 7, 3, 4], [2, 0, 3, 1, 1, 3, 0, 2], [2, 5]
+	//[1, 1, 1, 1, 1, 1], [0, 2, 5, 7, 0, 5, 2, 5, 2, 7, 0, 7], [3, 0, 3, 0, 0, 3, 0, 3], [0, 2, 5, 7]
+
+	// 対角線をどのように引くか決める
 
 	if( !b0 && !b1 && !b2 && !b3 && !b4 && !b5 )
 	{
-
+		// 0 0 0 0 0 0 [1,3] [4,6] [1,4] [1,6] [3,6] [3,4]  1,3,4,6
 		num = 5;
 		tetrahedrons[0][0] = element->getCellId(0);
 		tetrahedrons[0][1] = element->getCellId(1);
@@ -314,7 +314,7 @@ kmb::Hexahedron::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nod
 	}
 	else if( b0 && b1 && b2 && b3 && b4 && b5 )
 	{
-
+		// 1 1 1 1 1 1 [0,2] [5,7] [1,4] [2,5] [2,7] [0,7]  0,2,5,7 
 		num = 5;
 		tetrahedrons[0][0] = element->getCellId(0);
 		tetrahedrons[0][1] = element->getCellId(1);
@@ -348,7 +348,7 @@ kmb::Hexahedron::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nod
 		kmb::Wedge* w1 = NULL;
 		if( !b0 &&  b1 )
 		{
-
+			// [1,3] [5,7] で Wedge に分ける
 			w0 = new kmb::Wedge(
 				element->getCellId(0),element->getCellId(1),element->getCellId(3),
 				element->getCellId(4),element->getCellId(5),element->getCellId(7));
@@ -358,7 +358,7 @@ kmb::Hexahedron::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nod
 		}
 		else if( b0 && !b1 )
 		{
-
+			// [0,2] [4,6] で Wedge に分ける
 			w0 = new kmb::Wedge(
 				element->getCellId(0),element->getCellId(1),element->getCellId(2),
 				element->getCellId(4),element->getCellId(5),element->getCellId(6));
@@ -368,7 +368,7 @@ kmb::Hexahedron::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nod
 		}
 		else if( !b2 && b4 )
 		{
-
+			// [1,4] [2,7] で Wedge に分ける
 			w0 = new kmb::Wedge(
 				element->getCellId(4),element->getCellId(5),element->getCellId(1),
 				element->getCellId(7),element->getCellId(6),element->getCellId(2));
@@ -378,7 +378,7 @@ kmb::Hexahedron::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nod
 		}
 		else if( b2 && !b4 )
 		{
-
+			// [0,5] [3,6] で Wedge に分ける
 			w0 = new kmb::Wedge(
 				element->getCellId(0),element->getCellId(5),element->getCellId(1),
 				element->getCellId(3),element->getCellId(6),element->getCellId(2));
@@ -388,7 +388,7 @@ kmb::Hexahedron::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nod
 		}
 		else if( !b3 && b5 )
 		{
-
+			// [1,6] [0,7] で Wedge に分ける
 			w0 = new kmb::Wedge(
 				element->getCellId(1),element->getCellId(6),element->getCellId(2),
 				element->getCellId(0),element->getCellId(7),element->getCellId(3));
@@ -398,7 +398,7 @@ kmb::Hexahedron::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nod
 		}
 		else if( b3 && !b5 )
 		{
-
+			// [2,5] [3,4] で Wedge に分ける
 			w0 = new kmb::Wedge(
 				element->getCellId(2),element->getCellId(5),element->getCellId(6),
 				element->getCellId(3),element->getCellId(4),element->getCellId(7));
@@ -485,7 +485,7 @@ kmb::Hexahedron::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Poi
 		}
 		bool df(const ColumnVector &t,Matrix &jac){
 			for(int i=0;i<3;++i){
-
+				// s で微分
 				jac.set(i,0,
 					0.125 * (
 					-(1.0-t[1])*(1.0-t[2])*points[0][i]
@@ -557,10 +557,10 @@ kmb::Hexahedron::isOppositeFace(const kmb::ElementBase* hexa,const kmb::ElementB
 		quad1 == NULL || quad1->getType() != kmb::QUAD ){
 		return -1;
 	}
+	// 注意：
+	// quad0 と quad1 の両方が hexa の面であることを確認していない
 
-
-
-
+	// corr[ hexa index ] = quad0 index (0,1,2,3) or quad1 index (4,5,6,7)
 	int corr[8] = {-1,-1,-1,-1,-1,-1,-1,-1};
 	for(int i=0;i<4;++i){
 		int index0 = hexa->indexOf( quad0->getCellId(i) );
@@ -572,7 +572,7 @@ kmb::Hexahedron::isOppositeFace(const kmb::ElementBase* hexa,const kmb::ElementB
 			return -1;
 		}
 	}
-
+	// 対角線のところの差で判定する
 	if( corr[0] < 4 ){
 		return (corr[6]-corr[0]+2)%4;
 	}else{
@@ -642,7 +642,7 @@ kmb::Hexahedron::jacobian(double s, double t,double u,const kmb::Point3D* points
 		( jxs * jzt * jyu + jys * jxt * jzu + jzs * jyt * jxu );
 }
 
-
+// Hexa の場合は Jacobian の微係数は定数にならない
 
 double
 kmb::Hexahedron::jacobian_ds(double s, double t,double u,const kmb::Point3D* points)

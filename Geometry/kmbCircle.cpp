@@ -67,7 +67,7 @@ kmb::Circle::getCenter(void) const
 	return kmb::Point2D(this->center);
 }
 
-
+// “àÚ‰~
 kmb::Circle*
 kmb::Circle::createInscribedCircle(const Point2D &a,const Point2D &b,const Point2D &c)
 {
@@ -82,14 +82,14 @@ kmb::Circle::createInscribedCircle(const Point2D &a,const Point2D &b,const Point
 	return circle;
 }
 
-
+// “àÚ‰~‚Ì”¼Œa
 double
 kmb::Circle::getInscribedRadius(const Point2D &a,const Point2D &b,const Point2D &c)
 {
-
-
+	// OŠpŒ`‚Ì–ÊÏ = “àÚ‰~‚Ì”¼Œa * (•ÓAB + •ÓBC + •ÓCA) / 2
+	// –ÊÏ
 	double area = fabs(kmb::Point2D::area(a,b,c));
-
+	// ’·‚³
 	double ab = a.distance(b);
 	double bc = b.distance(c);
 	double ca = c.distance(a);
@@ -104,7 +104,7 @@ kmb::Circle::getInscribedRadius(const Point2D &a,const Point2D &b,const Point2D 
 kmb::Point2D
 kmb::Circle::getInscribedCenter(const Point2D &a,const Point2D &b,const Point2D &c)
 {
-
+	// ’·‚³
 	double ab = a.distance(b);
 	double bc = b.distance(c);
 	double ca = c.distance(a);
@@ -114,12 +114,12 @@ kmb::Circle::getInscribedCenter(const Point2D &a,const Point2D &b,const Point2D 
 		double y = (ab*c.y() + bc*a.y() + ca*b.y()) / d;
 		return kmb::Point2D(x,y);
 	}else{
-
+		// 3“_‚ªˆê’v
 		return kmb::Point2D(a);
 	}
 }
 
-
+// ŠOÚ‰~
 kmb::Circle*
 kmb::Circle::createCircumscribedCircle(const Point2D &a,const Point2D &b,const Point2D &c)
 {
@@ -137,27 +137,27 @@ kmb::Circle::createCircumscribedCircle(const Point2D &a,const Point2D &b,const P
 double
 kmb::Circle::getCircumscribedRadius(const Point2D &a,const Point2D &b,const Point2D &c)
 {
-
-
+	// ³Œ·’è—‚ğg‚¤
+	// –ÊÏ
 	double area = fabs(kmb::Point2D::area(a,b,c));
-
+	// ’·‚³
 	double ab = a.distance(b);
 	double bc = b.distance(c);
 	double ca = c.distance(a);
 	if( area != 0.0 ){
 		return ab*bc*ca/(area*4.0);
 	}else if( ab==0.0 && bc==0.0 ){
-
+		// 3“_ˆê’v
 		return 0.0;
 	}else if( ab==0.0 ){
-
+		// 2“_ˆê’v
 		return bc*0.5;
 	}else if( bc==0.0 ){
 		return ca*0.5;
 	}else if( ca==0.0 ){
 		return ab*0.5;
 	}else{
-
+		// 3“_ˆÙ‚È‚é
 		return DBL_MAX;
 	}
 }
@@ -239,7 +239,7 @@ kmb::Circle3D::getRadius(void) const
 	return this->radius;
 }
 
-
+// “àÚ‰~
 kmb::Circle3D*
 kmb::Circle3D::createInscribedCircle(const Point3D &a,const Point3D &b,const Point3D &c)
 {
@@ -259,7 +259,7 @@ kmb::Circle3D::createInscribedCircle(const Point3D &a,const Point3D &b,const Poi
 kmb::Point3D
 kmb::Circle3D::getInscribedCenter(const Point3D &a,const Point3D &b,const Point3D &c)
 {
-
+	// ’·‚³
 	double ab = a.distance(b);
 	double bc = b.distance(c);
 	double ca = c.distance(a);
@@ -272,10 +272,10 @@ kmb::Circle3D::getInscribedCenter(const Point3D &a,const Point3D &b,const Point3
 double
 kmb::Circle3D::getInscribedRadius(const Point3D &a,const Point3D &b,const Point3D &c)
 {
-
-
+	// OŠpŒ`‚Ì–ÊÏ = “àÚ‰~‚Ì”¼Œa * (•ÓAB + •ÓBC + •ÓCA) / 2
+	// –ÊÏ
 	double area = fabs(kmb::Point3D::area(a,b,c));
-
+	// ’·‚³
 	double ab = a.distance(b);
 	double bc = b.distance(c);
 	double ca = c.distance(a);
@@ -287,7 +287,7 @@ kmb::Circle3D::getInscribedRadius(const Point3D &a,const Point3D &b,const Point3
 	}
 }
 
-
+// ŠOÚ‰~
 kmb::Circle3D*
 kmb::Circle3D::createCircumscribedCircle(const Point3D &a,const Point3D &b,const Point3D &c)
 {
@@ -328,27 +328,27 @@ kmb::Circle3D::getCircumscribedCenter(const Point3D &a,const Point3D &b,const Po
 double
 kmb::Circle3D::getCircumscribedRadius(const Point3D &a,const Point3D &b,const Point3D &c)
 {
-
-
+	// ³Œ·’è—‚ğg‚¤
+	// –ÊÏ
 	double area = fabs(kmb::Point3D::area(a,b,c));
-
+	// ’·‚³
 	double ab = a.distance(b);
 	double bc = b.distance(c);
 	double ca = c.distance(a);
 	if( area != 0.0 ){
 		return ab*bc*ca/(area*4.0);
 	}else if( ab==0.0 && bc==0.0 ){
-
+		// 3“_ˆê’v
 		return 0.0;
 	}else if( ab==0.0 ){
-
+		// 2“_ˆê’v
 		return bc*0.5;
 	}else if( bc==0.0 ){
 		return ca*0.5;
 	}else if( ca==0.0 ){
 		return ab*0.5;
 	}else{
-
+		// 3“_ˆÙ‚È‚é
 		return DBL_MAX;
 	}
 }

@@ -19,9 +19,9 @@ namespace kmb{
 class Tolerance
 {
 public:
-
+	// Šô‰½ŒvZ‚É‚¨‚¯‚é 0 ‚Æ‚İ‚È‚¹‚é‘å‚«‚³
 	static const double geometric;
-
+	// ”’lŒvZ‚É‚¨‚¯‚é 0 ‚ÆŒ©‚È‚¹‚é‘å‚«‚³
 	static const double numeric;
 };
 
