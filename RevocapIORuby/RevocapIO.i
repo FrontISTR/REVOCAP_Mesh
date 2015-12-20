@@ -61,6 +61,7 @@ namespace kmb{
 #include "RevocapIO/kmbRevocapNeutralIO.h"
 #include "RevocapIO/kmbNetgenIO.h"
 #include "RevocapIO/kmbGmshIO.h"
+#include "RevocapIO/kmbOffIO.h"
 %}
 
 %include "../MeshDB/kmbTypes.h"
@@ -222,3 +223,4 @@ REVOCAP_PrePost の YAML 形式ニュートラルファイルの読み書き
 %include "../RevocapIO/kmbSTLIO.h"
 %include "../RevocapIO/kmbNetgenIO.h"
 %include "../RevocapIO/kmbGmshIO.h"
+%include "../RevocapIO/kmbOffIO.h"
