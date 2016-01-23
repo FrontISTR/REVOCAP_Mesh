@@ -48,7 +48,7 @@ def wget(location,path=nil)
     }
   end
 end
-=begin
+
 # cmake
 if !File.exists?('cmake-3.4.1.tar.gz')
   wget('https://cmake.org/files/v3.4/cmake-3.4.1.tar.gz')
@@ -73,7 +73,7 @@ FileUtils.chdir("zlib-1.2.8"){
   puts "zlib-1.2.8"
   system('make -fwin32/Makefile.gcc 2>&1 | tee ../zlib_make.log')
 }
-=end
+
 # oce
 if !File.exist?('master.zip')
   wget('https://github.com/tpaviot/oce/archive/master.zip')
@@ -104,4 +104,5 @@ FileUtils.chdir("build"){
 #         '-DOCE_TESTING=ON ' +
          '../oce-master')
   system('make 2>&1 | tee ../oce_make.log')
+  system('make install 2>&1 | tee ../oce_make_install.log')
 }

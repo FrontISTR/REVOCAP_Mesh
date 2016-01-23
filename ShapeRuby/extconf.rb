@@ -24,7 +24,7 @@ when /linux/
 	dir_config( "#{modulename}", "/usr/include/opencascade", "/usr/lib" )
 	CONFIG['LDSHARED'] = 'g++ -shared -s'
 when /mingw/
-	dir_config( "#{modulename}", "#{casroot}/oce/inc", "#{casroot}/build/win64/bin/Release" )
+	dir_config( "#{modulename}", "#{casroot}/include/oce", "#{casroot}/Win64/lib" )
 	CONFIG['LDSHARED'] = 'g++ -shared -s'
 when /cygwin/
 	CONFIG['LDSHARED'] = 'g++ -shared -s'
