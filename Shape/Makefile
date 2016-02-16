@@ -10,10 +10,9 @@ REVOCAPDIR = ..
 STATIC_LIB = libRcapShape.a
 
 # for https://github.com/tpaviot/oce.git
-INCFLAGS = -I. -I$(CASROOT)/oce/inc -I$(CASROOT)/oce/src/Standard \
- -I$(CASROOT)/oce/src/TCollection -I$(CASROOT)/oce/src/IGESControl \
- -I$(CASROOT)/oce/src/TopLoc -I$(REVOCAPDIR)
-LIBPATH =  -L$(LIBDIR)/$(ARCH) -L$(CASROOT)/build/win64/bin/Release
+# CASROOT is the target of "make install"
+INCFLAGS = -I. -I$(CASROOT)/include/oce -I$(REVOCAPDIR)
+LIBPATH =  -L$(LIBDIR)/$(ARCH) -L$(CASROOT)/Win64/lib
 LIBS = -lRcapGeometry -lRcapMeshDB -lTKSTEPBase -lTKSTEPAttr -lTKSTEP209 \
  -lTKSTEP -lTKSTL -lTKVRML -lTKV3d -lTKV2d -lTKMesh -lTKTopAlgo -lTKService \
  -lTKPShape -lTKPrim -lTKPCAF -lTKOffset -lTKMath -lTKHLR -lTKGeomBase \

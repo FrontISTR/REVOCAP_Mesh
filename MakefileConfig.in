@@ -7,6 +7,7 @@
 ###########################################################
 # for mingw64                                             #
 # http://sourceforge.net/projects/mingw-w64/              #
+# exception handling sysytem = sjlj                       #
 ###########################################################
 
 ARCH = x64-mingw32
