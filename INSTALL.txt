@@ -1,0 +1,4 @@
+* MinGW
+export PATH=/mingw64/bin:$PATH
+cmake -G "MinGW Makefiles" ..
+mingw32-make

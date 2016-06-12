@@ -1,0 +1,21 @@
+# This is the file describing options for REVOCAP_Refiner makefile.
+
+export ARCH
+
+#
+# for debug
+# 
+#export DEBUGFLAG = -D_DEBUG=3 # debug message enable even if in loop
+#export DEBUGFLAG = -D_DEBUG
+export DEBUGFLAG = -DNDEBUG
+
+ARCH = $(shell ruby -e 'puts RUBY_PLATFORM')
+#ARCH = i386-cygwin
+#ARCH = i486-linux
+#ARCH = x86_64-linux
+
+LIBDIR = lib
+RM = rm -f
+DOXYGEN = doxygen
+TAR = tar
+export DATE = $(shell date +%Y%m%d)
