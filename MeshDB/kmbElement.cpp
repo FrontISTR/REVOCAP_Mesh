@@ -430,7 +430,7 @@ kmb::ElementBase::getBoundaryType(kmb::elementType type,int index)
 	if( index < -1 || len <= index ){
 		return kmb::UNKNOWNTYPE;
 	}else if( index == -1 ){
-		// -1 ÇÃÇ∆Ç´ÇÕëSëÃÇï\Ç∑
+		// -1 „ÅÆ„Å®„Åç„ÅØÂÖ®‰Ωì„ÇíË°®„Åô
 		return type;
 	}
 	switch(type){
@@ -855,7 +855,7 @@ kmb::ElementBase::include(kmb::nodeIdType nodeId) const
 {
 	unsigned int len = this->getNodeCount();
 	for(unsigned int i=0;i<len;++i){
-		if( getCellId(i) == nodeId ){
+		if( getNodeId(i) == nodeId ){
 			return true;
 		}
 	}
@@ -867,7 +867,7 @@ kmb::ElementBase::includeVertex(kmb::nodeIdType nodeId) const
 {
 	unsigned int len = this->getVertexCount();
 	for(unsigned int i=0;i<len;++i){
-		if( getCellId(i) == nodeId ){
+		if( getNodeId(i) == nodeId ){
 			return true;
 		}
 	}
@@ -879,7 +879,7 @@ kmb::ElementBase::indexOf(kmb::nodeIdType nodeId) const
 {
 	unsigned int len = this->getNodeCount();
 	for(unsigned int i=0;i<len;++i){
-		if( getCellId(i) == nodeId ){
+		if( getNodeId(i) == nodeId ){
 			return i;
 		}
 	}
@@ -892,7 +892,7 @@ kmb::ElementBase::countCommonNode(kmb::ElementBase& other) const
 	int count = 0;
 	int len = other.getNodeCount();
 	for(int i=0;i<len;++i){
-		if( include( other.getCellId(i) ) ){
+		if( include( other.getNodeId(i) ) ){
 			++count;
 		}
 	}
@@ -904,8 +904,8 @@ kmb::ElementBase::replaceNodeId(kmb::nodeIdType oldNodeId,kmb::nodeIdType newNod
 {
 	const int len = this->getNodeCount();
 	for(int i=0;i<len;++i){
-		if( this->getCellId(i) == oldNodeId ){
-			return this->setCellId(i,newNodeId);
+		if( this->getNodeId(i) == oldNodeId ){
+			return this->setNodeId(i,newNodeId);
 		}
 	}
 	return false;
@@ -917,9 +917,9 @@ kmb::ElementBase::replaceNodeId(std::map<nodeIdType,nodeIdType> &idmap)
 	int counter = 0;
 	const int len = this->getNodeCount();
 	for(int i=0;i<len;++i){
-		std::map<nodeIdType,nodeIdType>::iterator nIter = idmap.find( this->getCellId(i) );
+		std::map<nodeIdType,nodeIdType>::iterator nIter = idmap.find( this->getNodeId(i) );
 		if( nIter != idmap.end() ){
-			if( this->setCellId(i,nIter->second) ){
+			if( this->setNodeId(i,nIter->second) ){
 				++counter;
 			}
 		}
@@ -928,89 +928,89 @@ kmb::ElementBase::replaceNodeId(std::map<nodeIdType,nodeIdType> &idmap)
 }
 
 kmb::nodeIdType
-kmb::ElementBase::getBoundaryCellId(int index,int i) const
+kmb::ElementBase::getBoundaryNodeId(int index,int i) const
 {
 	if( 0 <= i && 0 <= index && index < getBoundaryCount() && i < getBoundaryNodeCount(index) ){
 		switch( getType() )
 		{
 		case SEGMENT:
 		case SEGMENT2:
-			return getCellId( index );
+			return getNodeId( index );
 		case TRIANGLE:
-			return getCellId( kmb::Triangle::faceTable[index][i] );
+			return getNodeId( kmb::Triangle::faceTable[index][i] );
 		case TRIANGLE2:
-			return getCellId( kmb::Triangle2::faceTable[index][i] );
+			return getNodeId( kmb::Triangle2::faceTable[index][i] );
 		case QUAD:
-			return getCellId( kmb::Quad::faceTable[index][i] );
+			return getNodeId( kmb::Quad::faceTable[index][i] );
 		case QUAD2:
-			return getCellId( kmb::Quad2::faceTable[index][i] );
+			return getNodeId( kmb::Quad2::faceTable[index][i] );
 		case TETRAHEDRON:
-			return getCellId( kmb::Tetrahedron::faceTable[index][i] );
+			return getNodeId( kmb::Tetrahedron::faceTable[index][i] );
 		case TETRAHEDRON2:
-			return getCellId( kmb::Tetrahedron2::faceTable[index][i] );
+			return getNodeId( kmb::Tetrahedron2::faceTable[index][i] );
 		case WEDGE:
-			return getCellId( kmb::Wedge::faceTable[index][i] );
+			return getNodeId( kmb::Wedge::faceTable[index][i] );
 		case WEDGE2:
-			return getCellId( kmb::Wedge2::faceTable[index][i] );
+			return getNodeId( kmb::Wedge2::faceTable[index][i] );
 		case PYRAMID:
-			return getCellId( kmb::Pyramid::faceTable[index][i] );
+			return getNodeId( kmb::Pyramid::faceTable[index][i] );
 		case PYRAMID2:
-			return getCellId( kmb::Pyramid2::faceTable[index][i] );
+			return getNodeId( kmb::Pyramid2::faceTable[index][i] );
 		case HEXAHEDRON:
-			return getCellId( kmb::Hexahedron::faceTable[index][i] );
+			return getNodeId( kmb::Hexahedron::faceTable[index][i] );
 		case HEXAHEDRON2:
-			return getCellId( kmb::Hexahedron2::faceTable[index][i] );
+			return getNodeId( kmb::Hexahedron2::faceTable[index][i] );
 		case QUADRILATERAL_INTERFACE:
-			return getCellId( kmb::QuadInterface::faceTable[index][i] );
+			return getNodeId( kmb::QuadInterface::faceTable[index][i] );
 		case TRIANGLE_INTERFACE:
-			return getCellId( kmb::TriInterface::faceTable[index][i] );
+			return getNodeId( kmb::TriInterface::faceTable[index][i] );
 		default:
 			break;
 		}
 	}else if( index == -1 && 0 <= i && i < getNodeCount() ){
-		return getCellId(i);
+		return getNodeId(i);
 	}
 	return kmb::nullNodeId;
 }
 
 kmb::nodeIdType
-kmb::ElementBase::getEdgeCellId(int index,int i) const
+kmb::ElementBase::getEdgeNodeId(int index,int i) const
 {
-	// 2éüóvëfÇ»ÇÁï”è„ÇÃêﬂì_ÇÕ3Ç¬
+	// 2Ê¨°Ë¶ÅÁ¥†„Å™„ÇâËæ∫‰∏ä„ÅÆÁØÄÁÇπ„ÅØ3„Å§
 	if( 0 <= i && 0 <= index && index < getEdgeCount() && i < getDegree()+1 ){
 		switch( getType() )
 		{
 		case SEGMENT:
 		case SEGMENT2:
-			return getCellId( i );
+			return getNodeId( i );
 		case TRIANGLE:
-			return getCellId( kmb::Triangle::faceTable[index][i] );
+			return getNodeId( kmb::Triangle::faceTable[index][i] );
 		case TRIANGLE2:
-			return getCellId( kmb::Triangle2::faceTable[index][i] );
+			return getNodeId( kmb::Triangle2::faceTable[index][i] );
 		case QUAD:
-			return getCellId( kmb::Quad::faceTable[index][i] );
+			return getNodeId( kmb::Quad::faceTable[index][i] );
 		case QUAD2:
-			return getCellId( kmb::Quad2::faceTable[index][i] );
+			return getNodeId( kmb::Quad2::faceTable[index][i] );
 		case TETRAHEDRON:
-			return getCellId( kmb::Tetrahedron::edgeTable[index][i] );
+			return getNodeId( kmb::Tetrahedron::edgeTable[index][i] );
 		case TETRAHEDRON2:
-			return getCellId( kmb::Tetrahedron2::edgeTable[index][i] );
+			return getNodeId( kmb::Tetrahedron2::edgeTable[index][i] );
 		case WEDGE:
-			return getCellId( kmb::Wedge::edgeTable[index][i] );
+			return getNodeId( kmb::Wedge::edgeTable[index][i] );
 		case WEDGE2:
-			return getCellId( kmb::Wedge2::edgeTable[index][i] );
+			return getNodeId( kmb::Wedge2::edgeTable[index][i] );
 		case PYRAMID:
-			return getCellId( kmb::Pyramid::edgeTable[index][i] );
+			return getNodeId( kmb::Pyramid::edgeTable[index][i] );
 		case PYRAMID2:
-			return getCellId( kmb::Pyramid2::edgeTable[index][i] );
+			return getNodeId( kmb::Pyramid2::edgeTable[index][i] );
 		case HEXAHEDRON:
-			return getCellId( kmb::Hexahedron::edgeTable[index][i] );
+			return getNodeId( kmb::Hexahedron::edgeTable[index][i] );
 		case HEXAHEDRON2:
-			return getCellId( kmb::Hexahedron2::edgeTable[index][i] );
+			return getNodeId( kmb::Hexahedron2::edgeTable[index][i] );
 		case QUADRILATERAL_INTERFACE:
-			return getCellId( kmb::QuadInterface::edgeTable[index][i] );
+			return getNodeId( kmb::QuadInterface::edgeTable[index][i] );
 		case TRIANGLE_INTERFACE:
-			return getCellId( kmb::TriInterface::edgeTable[index][i] );
+			return getNodeId( kmb::TriInterface::edgeTable[index][i] );
 		default:
 			break;
 		}
@@ -1026,7 +1026,7 @@ kmb::ElementBase::getBoundaryElement(int index,kmb::nodeIdType* cell) const
 		etype = getBoundaryType( index );
 		const int len = getBoundaryNodeCount( index );
 		for(int i=0;i<len;++i){
-			cell[i] = getBoundaryCellId(index,i);
+			cell[i] = getBoundaryNodeId(index,i);
 		}
 	}
 	return etype;
@@ -1041,7 +1041,7 @@ kmb::ElementBase::getBoundaryElement(int index,kmb::ElementBase& elem) const
 		if( etype == elem.getType() ){
 			const int len = getBoundaryNodeCount( index );
 			for(int i=0;i<len;++i){
-				elem.setCellId(i,this->getBoundaryCellId(index,i));
+				elem.setNodeId(i,this->getBoundaryNodeId(index,i));
 			}
 			return true;
 		}
@@ -1057,7 +1057,7 @@ kmb::ElementBase::getEdgeElement(int index,kmb::nodeIdType* cell) const
 		etype = getEdgeType( index );
 		const int len = getEdgeNodeCount( index );
 		for(int i=0;i<len;++i){
-			cell[i] = getEdgeCellId(index,i);
+			cell[i] = getEdgeNodeId(index,i);
 		}
 	}
 	return etype;
@@ -1072,7 +1072,7 @@ kmb::ElementBase::getEdgeElement(int index,kmb::ElementBase& elem) const
 		if( etype == elem.getType() ){
 			const int len = getEdgeNodeCount( index );
 			for(int i=0;i<len;++i){
-				elem.setCellId(i,this->getEdgeCellId(index,i));
+				elem.setNodeId(i,this->getEdgeNodeId(index,i));
 			}
 			return true;
 		}
@@ -1136,23 +1136,23 @@ kmb::ElementBase::isFace(const kmb::ElementBase &element, int &faceIndex) const
 	{
 	case 2:
 		{
-			int index0 = this->indexOf( element.getCellId(0) );
-			int index1 = this->indexOf( element.getCellId(1) );
+			int index0 = this->indexOf( element.getNodeId(0) );
+			int index1 = this->indexOf( element.getNodeId(1) );
 			return this->isFace( index0, index1, faceIndex );
 		}
 	case 3:
 		{
-			int index0 = this->indexOf( element.getCellId(0) );
-			int index1 = this->indexOf( element.getCellId(1) );
-			int index2 = this->indexOf( element.getCellId(2) );
+			int index0 = this->indexOf( element.getNodeId(0) );
+			int index1 = this->indexOf( element.getNodeId(1) );
+			int index2 = this->indexOf( element.getNodeId(2) );
 			return this->isFace( index0, index1, index2, faceIndex );
 		}
 	case 4:
 		{
-			int index0 = this->indexOf( element.getCellId(0) );
-			int index1 = this->indexOf( element.getCellId(1) );
-			int index2 = this->indexOf( element.getCellId(1) );
-			int index3 = this->indexOf( element.getCellId(1) );
+			int index0 = this->indexOf( element.getNodeId(0) );
+			int index1 = this->indexOf( element.getNodeId(1) );
+			int index2 = this->indexOf( element.getNodeId(1) );
+			int index3 = this->indexOf( element.getNodeId(1) );
 			return this->isFace( index0, index1, index2, index3, faceIndex );
 		}
 	default:
@@ -1449,7 +1449,7 @@ kmb::ElementBase::isFace(int index0,int index1,int index2,int index3,int &faceIn
 	return ret;
 }
 
-// 2ì_Ç©ÇÁåàÇ‹ÇÈñ Çï‘Ç∑
+// 2ÁÇπ„Åã„ÇâÊ±∫„Åæ„ÇãÈù¢„ÇíËøî„Åô
 int
 kmb::ElementBase::getFaceIndex(int index0,int index1) const
 {
@@ -1731,11 +1731,11 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[2];
 			for(int i=0;i<2;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(0,tmp[1]) &&
-				this->setCellId(1,tmp[0])
+				this->setNodeId(0,tmp[1]) &&
+				this->setNodeId(1,tmp[0])
 				);
 			break;
 		}
@@ -1743,11 +1743,11 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[3];
 			for(int i=0;i<3;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(0,tmp[2]) &&
-				this->setCellId(2,tmp[0])
+				this->setNodeId(0,tmp[2]) &&
+				this->setNodeId(2,tmp[0])
 				);
 			break;
 		}
@@ -1755,13 +1755,13 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[6];
 			for(int i=0;i<6;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(0,tmp[2]) &&
-				this->setCellId(2,tmp[0]) &&
-				this->setCellId(3,tmp[5]) &&
-				this->setCellId(5,tmp[3])
+				this->setNodeId(0,tmp[2]) &&
+				this->setNodeId(2,tmp[0]) &&
+				this->setNodeId(3,tmp[5]) &&
+				this->setNodeId(5,tmp[3])
 				);
 			break;
 		}
@@ -1769,13 +1769,13 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[4];
 			for(int i=0;i<4;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(0,tmp[3]) &&
-				this->setCellId(1,tmp[2]) &&
-				this->setCellId(2,tmp[1]) &&
-				this->setCellId(3,tmp[0])
+				this->setNodeId(0,tmp[3]) &&
+				this->setNodeId(1,tmp[2]) &&
+				this->setNodeId(2,tmp[1]) &&
+				this->setNodeId(3,tmp[0])
 				);
 			break;
 		}
@@ -1783,15 +1783,15 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[8];
 			for(int i=0;i<8;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(0,tmp[3]) &&
-				this->setCellId(1,tmp[2]) &&
-				this->setCellId(2,tmp[1]) &&
-				this->setCellId(3,tmp[0]) &&
-				this->setCellId(4,tmp[6]) &&
-				this->setCellId(6,tmp[4])
+				this->setNodeId(0,tmp[3]) &&
+				this->setNodeId(1,tmp[2]) &&
+				this->setNodeId(2,tmp[1]) &&
+				this->setNodeId(3,tmp[0]) &&
+				this->setNodeId(4,tmp[6]) &&
+				this->setNodeId(6,tmp[4])
 				);
 			break;
 		}
@@ -1799,11 +1799,11 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[4];
 			for(int i=0;i<4;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(0,tmp[1]) &&
-				this->setCellId(1,tmp[0])
+				this->setNodeId(0,tmp[1]) &&
+				this->setNodeId(1,tmp[0])
 				);
 			break;
 		}
@@ -1811,15 +1811,15 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[10];
 			for(int i=0;i<10;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(0,tmp[1]) &&
-				this->setCellId(1,tmp[0]) &&
-				this->setCellId(4,tmp[5]) &&
-				this->setCellId(5,tmp[4]) &&
-				this->setCellId(7,tmp[8]) &&
-				this->setCellId(8,tmp[7])
+				this->setNodeId(0,tmp[1]) &&
+				this->setNodeId(1,tmp[0]) &&
+				this->setNodeId(4,tmp[5]) &&
+				this->setNodeId(5,tmp[4]) &&
+				this->setNodeId(7,tmp[8]) &&
+				this->setNodeId(8,tmp[7])
 				);
 			break;
 		}
@@ -1827,11 +1827,11 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[5];
 			for(int i=0;i<5;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(2,tmp[4]) &&
-				this->setCellId(4,tmp[2])
+				this->setNodeId(2,tmp[4]) &&
+				this->setNodeId(4,tmp[2])
 				);
 			break;
 		}
@@ -1839,17 +1839,17 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[13];
 			for(int i=0;i<13;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(2,tmp[4]) &&
-				this->setCellId(4,tmp[2]) &&
-				this->setCellId(6,tmp[8]) &&
-				this->setCellId(8,tmp[6]) &&
-				this->setCellId(9,tmp[12]) &&
-				this->setCellId(10,tmp[11]) &&
-				this->setCellId(11,tmp[10]) &&
-				this->setCellId(12,tmp[9])
+				this->setNodeId(2,tmp[4]) &&
+				this->setNodeId(4,tmp[2]) &&
+				this->setNodeId(6,tmp[8]) &&
+				this->setNodeId(8,tmp[6]) &&
+				this->setNodeId(9,tmp[12]) &&
+				this->setNodeId(10,tmp[11]) &&
+				this->setNodeId(11,tmp[10]) &&
+				this->setNodeId(12,tmp[9])
 				);
 			break;
 		}
@@ -1857,13 +1857,13 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[6];
 			for(int i=0;i<6;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(1,tmp[2]) &&
-				this->setCellId(2,tmp[1]) &&
-				this->setCellId(4,tmp[5]) &&
-				this->setCellId(5,tmp[4])
+				this->setNodeId(1,tmp[2]) &&
+				this->setNodeId(2,tmp[1]) &&
+				this->setNodeId(4,tmp[5]) &&
+				this->setNodeId(5,tmp[4])
 				);
 			break;
 		}
@@ -1871,21 +1871,21 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[15];
 			for(int i=0;i<15;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(1,tmp[2]) &&
-				this->setCellId(2,tmp[1]) &&
-				this->setCellId(4,tmp[5]) &&
-				this->setCellId(5,tmp[4]) &&
-				this->setCellId(6,tmp[6]) &&
-				this->setCellId(7,tmp[8]) &&
-				this->setCellId(8,tmp[7]) &&
-				this->setCellId(9,tmp[9]) &&
-				this->setCellId(10,tmp[11]) &&
-				this->setCellId(11,tmp[10]) &&
-				this->setCellId(13,tmp[14]) &&
-				this->setCellId(14,tmp[13])
+				this->setNodeId(1,tmp[2]) &&
+				this->setNodeId(2,tmp[1]) &&
+				this->setNodeId(4,tmp[5]) &&
+				this->setNodeId(5,tmp[4]) &&
+				this->setNodeId(6,tmp[6]) &&
+				this->setNodeId(7,tmp[8]) &&
+				this->setNodeId(8,tmp[7]) &&
+				this->setNodeId(9,tmp[9]) &&
+				this->setNodeId(10,tmp[11]) &&
+				this->setNodeId(11,tmp[10]) &&
+				this->setNodeId(13,tmp[14]) &&
+				this->setNodeId(14,tmp[13])
 				);
 			break;
 		}
@@ -1893,13 +1893,13 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[8];
 			for(int i=0;i<8;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(1,tmp[3]) &&
-				this->setCellId(3,tmp[1]) &&
-				this->setCellId(5,tmp[7]) &&
-				this->setCellId(7,tmp[5])
+				this->setNodeId(1,tmp[3]) &&
+				this->setNodeId(3,tmp[1]) &&
+				this->setNodeId(5,tmp[7]) &&
+				this->setNodeId(7,tmp[5])
 				);
 			break;
 		}
@@ -1907,23 +1907,23 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[20];
 			for(int i=0;i<20;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(1,tmp[3]) &&
-				this->setCellId(3,tmp[1]) &&
-				this->setCellId(5,tmp[7]) &&
-				this->setCellId(7,tmp[5]) &&
-				this->setCellId(8,tmp[11]) &&
-				this->setCellId(9,tmp[10]) &&
-				this->setCellId(10,tmp[9]) &&
-				this->setCellId(11,tmp[8]) &&
-				this->setCellId(12,tmp[15]) &&
-				this->setCellId(13,tmp[14]) &&
-				this->setCellId(14,tmp[13]) &&
-				this->setCellId(15,tmp[12]) &&
-				this->setCellId(17,tmp[19]) &&
-				this->setCellId(19,tmp[17])
+				this->setNodeId(1,tmp[3]) &&
+				this->setNodeId(3,tmp[1]) &&
+				this->setNodeId(5,tmp[7]) &&
+				this->setNodeId(7,tmp[5]) &&
+				this->setNodeId(8,tmp[11]) &&
+				this->setNodeId(9,tmp[10]) &&
+				this->setNodeId(10,tmp[9]) &&
+				this->setNodeId(11,tmp[8]) &&
+				this->setNodeId(12,tmp[15]) &&
+				this->setNodeId(13,tmp[14]) &&
+				this->setNodeId(14,tmp[13]) &&
+				this->setNodeId(15,tmp[12]) &&
+				this->setNodeId(17,tmp[19]) &&
+				this->setNodeId(19,tmp[17])
 				);
 			break;
 		}
@@ -1931,15 +1931,15 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[9];
 			for(int i=0;i<9;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(1,tmp[3]) &&
-				this->setCellId(3,tmp[1]) &&
-				this->setCellId(4,tmp[7]) &&
-				this->setCellId(5,tmp[6]) &&
-				this->setCellId(6,tmp[5]) &&
-				this->setCellId(7,tmp[4])
+				this->setNodeId(1,tmp[3]) &&
+				this->setNodeId(3,tmp[1]) &&
+				this->setNodeId(4,tmp[7]) &&
+				this->setNodeId(5,tmp[6]) &&
+				this->setNodeId(6,tmp[5]) &&
+				this->setNodeId(7,tmp[4])
 				);
 			break;
 		}
@@ -1947,13 +1947,13 @@ kmb::ElementBase::reverse(void)
 		{
 			kmb::nodeIdType tmp[6];
 			for(int i=0;i<6;++i){
-				tmp[i] = this->getCellId(i);
+				tmp[i] = this->getNodeId(i);
 			}
 			result = (
-				this->setCellId(0,tmp[2]) &&
-				this->setCellId(2,tmp[0]) &&
-				this->setCellId(3,tmp[5]) &&
-				this->setCellId(5,tmp[3])
+				this->setNodeId(0,tmp[2]) &&
+				this->setNodeId(2,tmp[0]) &&
+				this->setNodeId(3,tmp[5]) &&
+				this->setNodeId(5,tmp[3])
 				);
 			break;
 		}
@@ -2193,11 +2193,11 @@ int
 kmb::ElementBase::getIndexMinNodeIdOfFace(int faceIndex) const
 {
 	int minIndex = 0;
-	kmb::nodeIdType minId = this->getBoundaryCellId(faceIndex,0);
+	kmb::nodeIdType minId = this->getBoundaryNodeId(faceIndex,0);
 	const int len = this->getBoundaryVertexCount(faceIndex);
 	for(int i=1;i<len;++i)
 	{
-		kmb::nodeIdType nodeId = this->getBoundaryCellId(faceIndex,i);
+		kmb::nodeIdType nodeId = this->getBoundaryNodeId(faceIndex,i);
 		if( minId > nodeId ){
 			minIndex = i;
 			minId = nodeId;
@@ -2210,11 +2210,11 @@ int
 kmb::ElementBase::getIndexMinNodeId(void) const
 {
 	int minIndex = 0;
-	kmb::nodeIdType minId = this->getCellId(0);
+	kmb::nodeIdType minId = this->getNodeId(0);
 	const int len = this->getVertexCount();
 	for(int i=1;i<len;++i)
 	{
-		kmb::nodeIdType nodeId = this->getCellId(i);
+		kmb::nodeIdType nodeId = this->getNodeId(i);
 		if( minId > nodeId ){
 			minIndex = i;
 			minId = nodeId;
@@ -2233,7 +2233,7 @@ kmb::ElementBase::divideIntoTriangles(kmb::nodeIdType triangles[][3]) const
 	case kmb::TRIANGLE2:
 		{
 			for(int i=0;i<3;++i){
-				triangles[0][i] = this->getCellId(i);
+				triangles[0][i] = this->getNodeId(i);
 			}
 			num = 1;
 			break;
@@ -2241,12 +2241,12 @@ kmb::ElementBase::divideIntoTriangles(kmb::nodeIdType triangles[][3]) const
 	case kmb::QUAD:
 	case kmb::QUAD2:
 		{
-			triangles[0][0] = this->getCellId(0);
-			triangles[0][1] = this->getCellId(1);
-			triangles[0][2] = this->getCellId(2);
-			triangles[1][0] = this->getCellId(0);
-			triangles[1][1] = this->getCellId(2);
-			triangles[1][2] = this->getCellId(3);
+			triangles[0][0] = this->getNodeId(0);
+			triangles[0][1] = this->getNodeId(1);
+			triangles[0][2] = this->getNodeId(2);
+			triangles[1][0] = this->getNodeId(0);
+			triangles[1][1] = this->getNodeId(2);
+			triangles[1][2] = this->getNodeId(3);
 			num = 2;
 			break;
 		}
@@ -2266,7 +2266,7 @@ kmb::ElementBase::divideIntoTetrahedrons(kmb::nodeIdType tetrahedrons[][4]) cons
 	case kmb::TETRAHEDRON2:
 		{
 			for(int i=0;i<4;++i){
-				tetrahedrons[0][i] = this->getCellId(i);
+				tetrahedrons[0][i] = this->getNodeId(i);
 			}
 			num = 1;
 			break;
@@ -2297,16 +2297,16 @@ kmb::ElementBase::nextNode(kmb::nodeIdType nodeId) const
 	{
 	case kmb::TRIANGLE:
 	case kmb::TRIANGLE2:
-		if		( nodeId == getCellId(0) )	{	return getCellId(1);	}
-		else if	( nodeId == getCellId(1) )	{	return getCellId(2);	}
-		else if	( nodeId == getCellId(2) )	{	return getCellId(0);	}
+		if		( nodeId == getNodeId(0) )	{	return getNodeId(1);	}
+		else if	( nodeId == getNodeId(1) )	{	return getNodeId(2);	}
+		else if	( nodeId == getNodeId(2) )	{	return getNodeId(0);	}
 		break;
 	case kmb::QUAD:
 	case kmb::QUAD2:
-		if		( nodeId == getCellId(0) )	{	return getCellId(1);	}
-		else if	( nodeId == getCellId(1) )	{	return getCellId(2);	}
-		else if	( nodeId == getCellId(2) )	{	return getCellId(3);	}
-		else if	( nodeId == getCellId(3) )	{	return getCellId(0);	}
+		if		( nodeId == getNodeId(0) )	{	return getNodeId(1);	}
+		else if	( nodeId == getNodeId(1) )	{	return getNodeId(2);	}
+		else if	( nodeId == getNodeId(2) )	{	return getNodeId(3);	}
+		else if	( nodeId == getNodeId(3) )	{	return getNodeId(0);	}
 		break;
 	default:
 		break;
@@ -2321,16 +2321,16 @@ kmb::ElementBase::previousNode(kmb::nodeIdType nodeId) const
 	{
 	case kmb::TRIANGLE:
 	case kmb::TRIANGLE2:
-		if		( nodeId == getCellId(0) )	{	return getCellId(2);	}
-		else if	( nodeId == getCellId(1) )	{	return getCellId(0);	}
-		else if	( nodeId == getCellId(2) )	{	return getCellId(1);	}
+		if		( nodeId == getNodeId(0) )	{	return getNodeId(2);	}
+		else if	( nodeId == getNodeId(1) )	{	return getNodeId(0);	}
+		else if	( nodeId == getNodeId(2) )	{	return getNodeId(1);	}
 		break;
 	case kmb::QUAD:
 	case kmb::QUAD2:
-		if		( nodeId == getCellId(0) )	{	return getCellId(3);	}
-		else if	( nodeId == getCellId(1) )	{	return getCellId(0);	}
-		else if	( nodeId == getCellId(2) )	{	return getCellId(1);	}
-		else if	( nodeId == getCellId(3) )	{	return getCellId(2);	}
+		if		( nodeId == getNodeId(0) )	{	return getNodeId(3);	}
+		else if	( nodeId == getNodeId(1) )	{	return getNodeId(0);	}
+		else if	( nodeId == getNodeId(2) )	{	return getNodeId(1);	}
+		else if	( nodeId == getNodeId(3) )	{	return getNodeId(2);	}
 		break;
 	default:
 		break;
@@ -2338,7 +2338,7 @@ kmb::ElementBase::previousNode(kmb::nodeIdType nodeId) const
 	return kmb::nullNodeId;
 }
 
-//---------------- ê∂ê¨ÉÅÉ\ÉbÉh ----------------------------
+//---------------- ÁîüÊàê„É°„ÇΩ„ÉÉ„Éâ ----------------------------
 
 
 kmb::Element*
@@ -2428,7 +2428,7 @@ kmb::Element::clone() const
 	kmb::nodeIdType* ary = NULL;
 	ary = new kmb::nodeIdType[len];
 	for(int i=0;i<len;++i){
-		ary[i] = this->getCellId(i);
+		ary[i] = this->getNodeId(i);
 	}
 	return kmb::Element::create(this->type,ary);
 }
@@ -2448,7 +2448,7 @@ kmb::Element::clone( std::map< kmb::nodeIdType, kmb::nodeIdType >& nodeMapper ) 
 	kmb::nodeIdType* ary = NULL;
 	ary = new kmb::nodeIdType[len];
 	for(int i=0;i<len;++i){
-		kmb::nodeIdType nodeID = this->getCellId(i);
+		kmb::nodeIdType nodeID = this->getNodeId(i);
 		if( nodeMapper.find( nodeID ) != nodeMapper.end() ){
 			ary[i] = nodeMapper[ nodeID ];
 		}else{
@@ -2466,34 +2466,32 @@ kmb::Element::reverseClone( std::map< kmb::nodeIdType, kmb::nodeIdType >& nodeMa
 	return elem;
 }
 
-//---------------- ÉmÅ[Éhî‘çÜëÄçÏ ------------------------
+//---------------- „Éé„Éº„ÉâÁï™Âè∑Êìç‰Ωú ------------------------
 
 bool
-kmb::Element::setCellId(int index,kmb::nodeIdType id)
+kmb::Element::setNodeId(int index,kmb::nodeIdType id)
 {
 	cell[index] = id;
 	return true;
 }
 
 kmb::nodeIdType
-kmb::Element::getCellId(int index) const
+kmb::Element::getNodeId(int index) const
 {
 	return cell[index];
 }
 
-kmb::nodeIdType
-kmb::Element::operator[](const int i) const
+kmb::nodeIdType kmb::Element::operator[](const int i) const
 {
 	return cell[i];
 }
 
-kmb::nodeIdType&
-kmb::Element::operator[](const int i)
+kmb::nodeIdType& kmb::Element::operator[](const int i)
 {
 	return cell[i];
 }
 
-//---------------- å^èÓïÒ ------------------------
+//---------------- ÂûãÊÉÖÂ†± ------------------------
 
 kmb::elementType
 kmb::Element::getType() const

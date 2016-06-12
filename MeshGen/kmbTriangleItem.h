@@ -37,20 +37,20 @@ public:
 	// neighbor
 	void setNeighbors(kmb::TriangleItem* nei0, kmb::TriangleItem* nei1, kmb::TriangleItem* nei2 );
 	void setNeighbor(int index, kmb::TriangleItem* nei);
-	// ‰½”Ô–Ú‚Ì‹ß–T‚©‚í‚©‚ç‚È‚¢ê‡‚Ì“ü‚ê‘Ö‚¦
-	// –ß‚è’l‚Í“ü‚ê‘Ö‚¦‚½‹ß–T‚Ì”Ô†
+	// ä½•ç•ªç›®ã®è¿‘å‚ã‹ã‚ã‹ã‚‰ãªã„å ´åˆã®å…¥ã‚Œæ›¿ãˆ
+	// æˆ»ã‚Šå€¤ã¯å…¥ã‚Œæ›¿ãˆãŸè¿‘å‚ã®ç•ªå·
 	int changeNeighbor(kmb::TriangleItem* oldNei, kmb::TriangleItem* newNei);
 	kmb::TriangleItem* getNeighbor(int index) const;
 	int getNeighborIndex(kmb::TriangleItem* nei) const;
-	// ˆÈ‰º‚Í List ‚ÅŠÇ—‚³‚ê‚Ä‚¢‚È‚¢ Item ‚É‚Â‚¢‚Ä‚Ìƒƒ‚ƒŠŠÇ—
-	// chain ‚É’Ç‰Á
+	// ä»¥ä¸‹ã¯ List ã§ç®¡ç†ã•ã‚Œã¦ã„ãªã„ Item ã«ã¤ã„ã¦ã®ãƒ¡ãƒ¢ãƒªç®¡ç†
+	// chain ã«è¿½åŠ 
 	bool push_back(kmb::TriangleItem* item);
 	bool push_front(kmb::TriangleItem* item);
-	// æ“ª‚ğ—^‚¦‚Ä‚·‚×‚Äíœ
+	// å…ˆé ­ã‚’ä¸ãˆã¦ã™ã¹ã¦å‰Šé™¤
 	static size_t deleteChain(kmb::TriangleItem* item);
-	// ‹ß–Tî•ñ‚Ì•ÏX
-	// tri0 ‚Ì n ”Ô–Ú‚Ì‹ß–T‚ğ tri1
-	// tri1 ‚Ì old ‚Ì‹ß–T‚ğ tri0
+	// è¿‘å‚æƒ…å ±ã®å¤‰æ›´
+	// tri0 ã® n ç•ªç›®ã®è¿‘å‚ã‚’ tri1
+	// tri1 ã® old ã®è¿‘å‚ã‚’ tri0
 	static void swapNeighbors(kmb::TriangleItem* tri0,kmb::TriangleItem* tri1,int n,kmb::TriangleItem* old);
 private:
 	TriangleItem* previousTri;

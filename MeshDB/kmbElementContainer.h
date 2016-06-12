@@ -47,12 +47,12 @@ protected:
 public:
 	ElementContainer(void);
 	virtual ~ElementContainer(void);
-	// nodes ‚ÍÄ—˜—p‰Â”\‚Èƒ|ƒCƒ“ƒ^‚Æ‚·‚é
-	// ƒRƒ“ƒeƒi‘¤‚©‚ç‚Í•K‚¸ƒRƒs[‚µ‚Äg‚¤‚±‚Æ
+	// nodes ã¯å†åˆ©ç”¨å¯èƒ½ãªãƒã‚¤ãƒ³ã‚¿ã¨ã™ã‚‹
+	// ã‚³ãƒ³ãƒ†ãƒŠå´ã‹ã‚‰ã¯å¿…ãšã‚³ãƒ”ãƒ¼ã—ã¦ä½¿ã†ã“ã¨
 	virtual kmb::elementIdType addElement(kmb::elementType etype, const kmb::nodeIdType *nodes) = 0;
 	virtual kmb::elementIdType addElement(kmb::elementType etype, const kmb::nodeIdType *nodes, const kmb::elementIdType id) = 0;
 	virtual bool getElement(kmb::elementIdType id,kmb::elementType &etype,kmb::nodeIdType *nodes) const = 0;
-	/// deleteElement ‚Í pointer ‚ğ delete ‚·‚é
+	/// deleteElement ã¯ pointer ã‚’ delete ã™ã‚‹
 	virtual bool deleteElement(const kmb::elementIdType id) = 0;
 	virtual bool includeElement(const kmb::elementIdType id) const = 0;
 	virtual kmb::elementIdType getMaxId(void) const = 0;
@@ -60,16 +60,16 @@ public:
 	virtual size_t getCount(void) const = 0;
 	virtual void initialize(size_t size=0) = 0;
 
-	// Šg’£ƒNƒ‰ƒX‚Å’è‹`‚·‚éê‡‚ÍeƒNƒ‰ƒX‚Ì clear ‚ğŒÄ‚Ô‚±‚Æ
+	// æ‹¡å¼µã‚¯ãƒ©ã‚¹ã§å®šç¾©ã™ã‚‹å ´åˆã¯è¦ªã‚¯ãƒ©ã‚¹ã® clear ã‚’å‘¼ã¶ã“ã¨
 	virtual void clear(void);
 
-	// Šg’£ƒRƒ“ƒeƒi‚Å‚æ‚è—Ç‚¢À‘•‚ª‚ ‚ê‚Î override ‚·‚é
-	// addElement ‚µ‚½‚çAelement ‚Ìƒƒ‚ƒŠŠÇ—‚Í ElementContainer ‘¤‚Ås‚¤‚½‚ßA
-	// ŒÄ‚Ño‚µ‘¤‚Å‚ÌŠÇ—‚Í•s—v
+	// æ‹¡å¼µã‚³ãƒ³ãƒ†ãƒŠã§ã‚ˆã‚Šè‰¯ã„å®Ÿè£…ãŒã‚ã‚Œã° override ã™ã‚‹
+	// addElement ã—ãŸã‚‰ã€element ã®ãƒ¡ãƒ¢ãƒªç®¡ç†ã¯ ElementContainer å´ã§è¡Œã†ãŸã‚ã€
+	// å‘¼ã³å‡ºã—å´ã§ã®ç®¡ç†ã¯ä¸è¦
 	virtual kmb::elementIdType addElement(const kmb::Element* element);
 	virtual kmb::elementIdType addElement(const kmb::Element* element,const kmb::elementIdType id);
 	virtual void updateBoundingBox(const kmb::Point3DContainer* points);
-	/// eraseElement ‚Í pointer ‚ğ delete ‚µ‚È‚¢
+	/// eraseElement ã¯ pointer ã‚’ delete ã—ãªã„
 	virtual kmb::Element* eraseElement(kmb::elementIdType id);
 
 	virtual const char* getContainerType(void) const = 0;
@@ -89,8 +89,8 @@ public:
 	void getMinPoint(kmb::Point3D& pt) const;
 	const kmb::BoundingBox& getBoundingBox(void) const;
 	void setBoundingBox(const kmb::Point3D& max,const kmb::Point3D& min);
-	// ß“_”Ô†‚Ì’u‚«Š·‚¦
-	// ’u‚«Š·‚¦‚½—v‘f‚ÌŒÂ”‚ğ•Ô‚·
+	// ç¯€ç‚¹ç•ªå·ã®ç½®ãæ›ãˆ
+	// ç½®ãæ›ãˆãŸè¦ç´ ã®å€‹æ•°ã‚’è¿”ã™
 	int replaceNodeId(kmb::nodeIdType oldNodeId,kmb::nodeIdType newNodeId);
 	int replaceNodeId(std::map<kmb::nodeIdType,kmb::nodeIdType>& nodeMapper);
 public:
@@ -98,18 +98,18 @@ public:
 	{
 	public:
 		virtual ~_iterator(){};
-		// offset ‚·‚é‘O‚Ì Id
+		// offset ã™ã‚‹å‰ã® Id
 		virtual kmb::elementIdType getId(void) const = 0;
 		virtual kmb::Element* getElement(void){ return NULL; };
 		virtual const kmb::Element* getElement(void) const{ return NULL; };
 		virtual bool getElement(kmb::elementType &etype,kmb::nodeIdType *nodes) const = 0;
 		virtual kmb::elementType getType(void) const = 0;
-		virtual kmb::nodeIdType getCellId(int index) const = 0;
-		virtual bool setCellId(int cellIndex, kmb::nodeIdType nodeId) = 0;
+		virtual kmb::nodeIdType getNodeId(int index) const = 0;
+		virtual bool setNodeId(int cellIndex, kmb::nodeIdType nodeId) = 0;
 		virtual kmb::nodeIdType operator[](const int i) const = 0;
 		virtual _iterator* operator++(void) = 0;
 		virtual _iterator* operator++(int n) = 0;
-		virtual _iterator* clone(void) = 0; // ‘ã“ü‰‰Zq‚Ì’è‹`‚É•K—v
+		virtual _iterator* clone(void) = 0; // ä»£å…¥æ¼”ç®—å­ã®å®šç¾©ã«å¿…è¦
 	};
 
 public:
@@ -132,16 +132,16 @@ public:
 		bool getElement(kmb::elementType &etype,kmb::nodeIdType *nodes) const;
 		bool getElement(kmb::Element &element) const;
 		kmb::elementType getType(void) const;
-		kmb::nodeIdType getCellId(int cellIndex) const;
-		bool setCellId(int cellIndex, kmb::nodeIdType nodeId);
+		kmb::nodeIdType getNodeId(int cellIndex) const;
+		bool setNodeId(int cellIndex, kmb::nodeIdType nodeId);
 		virtual kmb::nodeIdType operator[](const int i) const;
-		// ‘ã“ü
+		// ä»£å…¥
 		iterator& operator=(const iterator& other);
-		iterator& operator++(void);  // ‘O’u ++
-		iterator  operator++(int n); // Œã’u ++
+		iterator& operator++(void);  // å‰ç½® ++
+		iterator  operator++(int n); // å¾Œç½® ++
 		bool operator==(const iterator &other) const;
 		bool operator!=(const iterator &other) const;
-		// I—¹”»’è == end() ‚Å‚à‚¢‚¢‚¯‚ÇA‚±‚Á‚¿‚Ì•û‚ª‘¬‚¢
+		// çµ‚äº†åˆ¤å®š == end() ã§ã‚‚ã„ã„ã‘ã©ã€ã“ã£ã¡ã®æ–¹ãŒé€Ÿã„
 		bool isFinished(void){	return (_iter==NULL);	}
 	};
 	class const_iterator : public kmb::ElementBase
@@ -162,29 +162,29 @@ public:
 		bool getElement(kmb::elementType &etype,kmb::nodeIdType *nodes) const;
 		bool getElement(kmb::Element &element) const;
 		kmb::elementType getType(void) const;
-		kmb::nodeIdType getCellId(int cellIndex) const;
-		bool setCellId(int cellIndex, kmb::nodeIdType nodeId);
+		kmb::nodeIdType getNodeId(int cellIndex) const;
+		bool setNodeId(int cellIndex, kmb::nodeIdType nodeId);
 		virtual kmb::nodeIdType operator[](const int i) const;
-		// ‘ã“ü
+		// ä»£å…¥
 		const_iterator& operator=(const const_iterator& other);
 		const_iterator& operator=(const iterator& other);
-		const_iterator& operator++(void);  // ‘O’u ++
-		const_iterator  operator++(int n); // Œã’u ++
+		const_iterator& operator++(void);  // å‰ç½® ++
+		const_iterator  operator++(int n); // å¾Œç½® ++
 		bool operator==(const const_iterator &other) const;
 		bool operator!=(const const_iterator &other) const;
-		// I—¹”»’è == end() ‚Å‚à‚¢‚¢‚¯‚ÇA‚±‚Á‚¿‚Ì•û‚ª‘¬‚¢
+		// çµ‚äº†åˆ¤å®š == end() ã§ã‚‚ã„ã„ã‘ã©ã€ã“ã£ã¡ã®æ–¹ãŒé€Ÿã„
 		bool isFinished(void){	return (_iter==NULL);	}
 	};
 private:
-	static const iterator endIterator; // NULL ’l
-	static const const_iterator endConstIterator; // NULL ’l
+	static const iterator endIterator; // NULL å€¤
+	static const const_iterator endConstIterator; // NULL å€¤
 public:
 	virtual iterator begin(void) = 0;
 	virtual const_iterator begin(void) const = 0;
 	virtual iterator find(kmb::elementIdType id) = 0;
 	virtual const_iterator find(kmb::elementIdType id) const = 0;
-	// ’l‚ğ•Ô‚·‚Æ•Ô‚·‚½‚Ñ‚ÉƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^‚ªŒÄ‚Î‚ê‚é‚æ
-	// QÆ•Ô‚µ‚É‚·‚é
+	// å€¤ã‚’è¿”ã™ã¨è¿”ã™ãŸã³ã«ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒå‘¼ã°ã‚Œã‚‹ã‚ˆ
+	// å‚ç…§è¿”ã—ã«ã™ã‚‹
 	const iterator& end(void){
 		return ElementContainer::endIterator;
 	};
@@ -212,8 +212,8 @@ public:
 	virtual kmb::elementType getElementType(kmb::elementIdType elementId) const = 0;
 	virtual kmb::nodeIdType operator()(kmb::elementIdType elementId,kmb::idType localId) const = 0;
 	virtual kmb::nodeIdType& operator()(kmb::elementIdType elementId,kmb::idType localId) = 0;
-	// elementId ‚Ü‚Å‚Ì’l‚Ìİ’è‚ğs‚Á‚ÄAiterator ‚ÅQÆ‚Å‚«‚é‚æ‚¤‚É‚·‚é
-	// ’Fsize ‚Í elementId + 1 ‚Å‚ ‚é
+	// elementId ã¾ã§ã®å€¤ã®è¨­å®šã‚’è¡Œã£ã¦ã€iterator ã§å‚ç…§ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
+	// æ³¨ï¼šsize ã¯ elementId + 1 ã§ã‚ã‚‹
 	virtual void commit(kmb::elementIdType elementId) = 0;
 };
 

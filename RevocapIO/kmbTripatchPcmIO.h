@@ -35,8 +35,8 @@ public:
 	TripatchPcmIO(void){};
 	~TripatchPcmIO(void){};
 	int loadFromFile(const char* filename,kmb::MeshData* mesh);
-	// packOption = 0 : ���̂܂܏o��
-	// packOption = 1 : ���ׂĂ���ɂ܂Ƃ߂ďo��
+	// packOption = 0 : そのまま出力
+	// packOption = 1 : すべてを一つにまとめて出力
 	int saveToFile(const char* filename,const kmb::MeshData* mesh,int packOption=0);
 };
 

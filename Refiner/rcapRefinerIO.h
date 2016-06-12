@@ -17,6 +17,10 @@
 
 #include "rcapRefiner.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief デバッグ用ファイル入出力ルーチン
  * @return 読み込んだ、または書き込んだ要素の個数

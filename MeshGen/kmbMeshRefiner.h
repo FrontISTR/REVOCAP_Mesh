@@ -13,7 +13,7 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// —v‘f‚ğ•ªŠ„‚Ü‚½‚ÍŸ”‚ğã‚°‚é
+// è¦ç´ ã‚’åˆ†å‰²ã¾ãŸã¯æ¬¡æ•°ã‚’ä¸Šã’ã‚‹
 //
 
 #pragma once
@@ -47,15 +47,15 @@ protected:
 	kmb::MeshData* mesh;
 	kmb::MiddleNodeManager* middleMan;
 	bool middleManDeletable;
-	// dataPairs ‚Í
-	// refine ‘O : { name, stype, orgData, NULL }
-	// refine Œã : { name, stype, orgData, refinedData }
-	// ‚Æ‚È‚é
+	// dataPairs ã¯
+	// refine å‰ : { name, stype, orgData, NULL }
+	// refine å¾Œ : { name, stype, orgData, refinedData }
+	// ã¨ãªã‚‹
 	std::vector< kmb::MeshRefiner::DataPair > dataPairs;
 
 	void setSecondNodes( kmb::ElementBase& element );
 	interpolationRule interpRule;
-	// 2Ÿ—v‘f‚ÌŒ`óŠÖ”‚Ì•â³‚ğ‚·‚é‚©
+	// 2æ¬¡è¦ç´ ã®å½¢çŠ¶é–¢æ•°ã®è£œæ­£ã‚’ã™ã‚‹ã‹
 	bool secondFitting;
 public:
 	MeshRefiner(void);
@@ -63,45 +63,45 @@ public:
 	void clear(void);
 	void setMesh(kmb::MeshData* mesh);
 	void setMiddleNodeManager(kmb::MiddleNodeManager* manager);
-	// Šù‚É‚QŸ—v‘f‚É‚È‚Á‚Ä‚¢‚é ElementGroup ‚É‚Â‚¢‚Ä MiddleNodeManager ‚ğXV‚·‚é
+	// æ—¢ã«ï¼’æ¬¡è¦ç´ ã«ãªã£ã¦ã„ã‚‹ ElementGroup ã«ã¤ã„ã¦ MiddleNodeManager ã‚’æ›´æ–°ã™ã‚‹
 	void setSecondNodesByData(const char* name,const char* stype=NULL);
-	// Šù‚É‚QŸ—v‘f‚É‚È‚Á‚Ä‚¢‚é Body ‚É‚Â‚¢‚Ä MiddleNodeManager ‚ğXV‚·‚é
+	// æ—¢ã«ï¼’æ¬¡è¦ç´ ã«ãªã£ã¦ã„ã‚‹ Body ã«ã¤ã„ã¦ MiddleNodeManager ã‚’æ›´æ–°ã™ã‚‹
 	void setSecondNodesByBody(kmb::bodyIdType bodyId);
-	// ‚QŸ—v‘f‚É•ÏŠ·‚·‚é
+	// ï¼’æ¬¡è¦ç´ ã«å¤‰æ›ã™ã‚‹
 	kmb::bodyIdType convertToSecondBody(kmb::bodyIdType bodyId);
-	// ×•ªŒã‚Ì—v‘f‚ÌŒÂ”
+	// ç´°åˆ†å¾Œã®è¦ç´ ã®å€‹æ•°
 	size_t getRefinedElementCount(const kmb::ElementContainer* orgBody) const;
-	// —v‘f‚ğ×•ª‚·‚é
-	// offsetElementId ‚ğ—^‚¦‚ÄArefine ‚Ì‘OŒã‚Å‚ÍˆÙ‚È‚é elementId ‚ğ—^‚¦‚Ä‚¢‚é
+	// è¦ç´ ã‚’ç´°åˆ†ã™ã‚‹
+	// offsetElementId ã‚’ä¸ãˆã¦ã€refine ã®å‰å¾Œã§ã¯ç•°ãªã‚‹ elementId ã‚’ä¸ãˆã¦ã„ã‚‹
 	kmb::bodyIdType refineBody(kmb::bodyIdType orgBodyId);
-	// —v‘f‚ğ×•ª‚·‚é
-	// targetBodyId ‚Ì•ÏX‚Í bodyId ‚ğ•t—^‚·‚é‚½‚ß‚É‚±‚Ìƒƒ\ƒbƒh‚ÌŠO‚Å‚â‚é
-	// refinedBody == NULL ‚Ì‚Í×•ª‚µ‚½—v‘f‚ğ“o˜^‚¹‚¸‚É‹«ŠEğŒ‚¾‚¯‚ğXV‚·‚é
+	// è¦ç´ ã‚’ç´°åˆ†ã™ã‚‹
+	// targetBodyId ã®å¤‰æ›´ã¯ bodyId ã‚’ä»˜ä¸ã™ã‚‹ãŸã‚ã«ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã®å¤–ã§ã‚„ã‚‹
+	// refinedBody == NULL ã®æ™‚ã¯ç´°åˆ†ã—ãŸè¦ç´ ã‚’ç™»éŒ²ã›ãšã«å¢ƒç•Œæ¡ä»¶ã ã‘ã‚’æ›´æ–°ã™ã‚‹
 	size_t refineBody(const kmb::ElementContainer* orgBody, kmb::ElementContainer* refinedBody);
-	// —v‘f‚ğ×•ª‚µ‚½‚É’Ç‰Á‚³‚ê‚½ß“_‚É‚Â‚¢‚ÄAŒ³‚Ìß“_‚ğ•Ô‚·
+	// è¦ç´ ã‚’ç´°åˆ†ã—ãŸæ™‚ã«è¿½åŠ ã•ã‚ŒãŸç¯€ç‚¹ã«ã¤ã„ã¦ã€å…ƒã®ç¯€ç‚¹ã‚’è¿”ã™
 	kmb::elementType getOriginal(kmb::nodeIdType middleNodeId, kmb::nodeIdType* originalNodes) const;
-	// •Ó‚Ü‚½‚Í—v‘f‚ğ—^‚¦‚ÄA‚»‚Ì’†“_‚ª—^‚¦‚ç‚ê‚Ä‚¢‚ê‚ÎA‚»‚ê‚ğ•Ô‚·
+	// è¾ºã¾ãŸã¯è¦ç´ ã‚’ä¸ãˆã¦ã€ãã®ä¸­ç‚¹ãŒä¸ãˆã‚‰ã‚Œã¦ã„ã‚Œã°ã€ãã‚Œã‚’è¿”ã™
 	kmb::nodeIdType getMiddle(kmb::ElementBase &element) const;
-	// refineBody ‚·‚é‚Æ‚«‚É“¯‚ÉXV‚·‚éƒf[ƒ^‚Ì“o˜^
+	// refineBody ã™ã‚‹ã¨ãã«åŒæ™‚ã«æ›´æ–°ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã®ç™»éŒ²
 	void appendData(const char* dataname,const char* stype=NULL);
 	size_t getDataCount(void) const;
-	// dataPairs ‚ÌƒNƒŠƒA
+	// dataPairs ã®ã‚¯ãƒªã‚¢
 	void clearData(void);
-	// commit ‚·‚é‚±‚Æ‚ÅArefineElement ‚Ì‚ÌXV‘ÎÛ‚ğ refine Œã‚Ì data ‚É•ÏX‚·‚é
-	// commit ‘O : { name, stype, orgData, refinedData }
-	// commit Œã : { name, stype, refinedData, NULL }
-	// ‚Ü‚½Amesh ‚É name stpe ‚Å“o˜^‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚ğ refinedData ‚É’u‚«Š·‚¦‚é
-	// ‚±‚Ìƒƒ\ƒbƒh‚ğÀs‘O : mesh ‚É“o˜^‚³‚ê‚Ä‚¢‚éƒf[ƒ^ = orgData
-	// ‚±‚Ìƒƒ\ƒbƒh‚ğÀsŒã : mesh ‚É“o˜^‚³‚ê‚Ä‚¢‚éƒf[ƒ^ = refinedData
-	// ‚Æ‚È‚é
+	// commit ã™ã‚‹ã“ã¨ã§ã€refineElement ã®æ™‚ã®æ›´æ–°å¯¾è±¡ã‚’ refine å¾Œã® data ã«å¤‰æ›´ã™ã‚‹
+	// commit å‰ : { name, stype, orgData, refinedData }
+	// commit å¾Œ : { name, stype, refinedData, NULL }
+	// ã¾ãŸã€mesh ã« name stpe ã§ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’ refinedData ã«ç½®ãæ›ãˆã‚‹
+	// ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å®Ÿè¡Œå‰ : mesh ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ = orgData
+	// ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å®Ÿè¡Œå¾Œ : mesh ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ = refinedData
+	// ã¨ãªã‚‹
 	void commitData(void);
 	void setInterpolationMode(const char* mode);
 	const char* getInterpolationMode(void) const;
 	void setSecondFitting(bool flag);
 	bool setSecondFitting(void) const;
 protected:
-	// body ‚É’Ç‰Á‚·‚é
-	// refineBody ‚ª NULL ‚Ì‚Æ‚«‚ÍAß“_ƒOƒ‹[ƒv‚ÌXV‚¾‚¯‚ğs‚¤
+	// body ã«è¿½åŠ ã™ã‚‹
+	// refineBody ãŒ NULL ã®ã¨ãã¯ã€ç¯€ç‚¹ã‚°ãƒ«ãƒ¼ãƒ—ã®æ›´æ–°ã ã‘ã‚’è¡Œã†
 	void refineSegment( kmb::elementIdType elementId, const kmb::ElementBase &segment, kmb::ElementContainer* refinedBody );
 	void refineSegment2( kmb::elementIdType elementId, const kmb::ElementBase &segment2, kmb::ElementContainer* refinedBody );
 	void refineTriangle( kmb::elementIdType elementId, const kmb::ElementBase &triangle, kmb::ElementContainer* refinedBody );

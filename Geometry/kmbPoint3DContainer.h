@@ -26,7 +26,7 @@
 #pragma once
 
 //
-// Point3D ‚É ID ‚ğ•t‚¯‚Äƒƒ‚ƒŠ‚ÉŠi”[‚·‚éƒRƒ“ƒeƒi—Ş
+// Point3D ã« ID ã‚’ä»˜ã‘ã¦ãƒ¡ãƒ¢ãƒªã«æ ¼ç´ã™ã‚‹ã‚³ãƒ³ãƒ†ãƒŠé¡
 //
 
 #include <map>
@@ -51,13 +51,16 @@ public:
 	virtual bool initialize(size_t size) = 0;
 	virtual nodeIdType addPoint(const double x,const double y,const double z) = 0;
 	virtual nodeIdType addPoint(const kmb::Point3D& point) = 0;
-	// id ‚ğw’è‚µ‚Ä’Ç‰Á
-	// ¸”s‚µ‚½‚ç -1 ‚ğ•Ô‚·
+	// id ã‚’æŒ‡å®šã—ã¦è¿½åŠ 
+	// å¤±æ•—ã—ãŸã‚‰ -1 ã‚’è¿”ã™
 	virtual nodeIdType addPoint(const double x,const double y,const double z,const nodeIdType id) = 0;
 	virtual nodeIdType addPoint(const kmb::Point3D& point,const nodeIdType id) = 0;
 //	virtual kmb::Point3D* getPoint(nodeIdType id) const = 0;
 	virtual bool getXYZ(nodeIdType id,double &x,double &y,double &z) const = 0;
 	virtual bool getPoint(nodeIdType id,kmb::Point3D &point) const = 0;
+	virtual double x(kmb::nodeIdType nodeId) const{ return 0.0; };
+	virtual double y(kmb::nodeIdType nodeId) const{ return 0.0; };
+	virtual double z(kmb::nodeIdType nodeId) const{ return 0.0; };
 	virtual nodeIdType getMaxId(void) const = 0;
 	virtual nodeIdType getMinId(void) const = 0;
 	virtual size_t getCount(void) const = 0;
@@ -86,7 +89,7 @@ protected:
 
 public:
 	class const_iterator;
-	// iterator pointer ‚Ì wrapper
+	// iterator pointer ã® wrapper
 	class iterator
 	{
 		friend class Point3DContainer;
@@ -106,11 +109,11 @@ public:
 		bool setXYZ(double x,double y,double z) const;
 		bool setPoint( kmb::Point3D &point ) const;
 		iterator& operator=(const iterator& other);
-		iterator& operator++(void);  // ++‘O’u
-		iterator operator++(int n);  // Œã’u++
+		iterator& operator++(void);  // ++å‰ç½®
+		iterator operator++(int n);  // å¾Œç½®++
 		bool operator==(const iterator &other) const;
 		bool operator!=(const iterator &other) const;
-		// I—¹”»’è == end() ‚Å‚à‚¢‚¢‚¯‚ÇA‚±‚Á‚¿‚Ì•û‚ª‘¬‚¢
+		// çµ‚äº†åˆ¤å®š == end() ã§ã‚‚ã„ã„ã‘ã©ã€ã“ã£ã¡ã®æ–¹ãŒé€Ÿã„
 		bool isFinished(void){ return (_it==NULL); }
 	};
 
@@ -133,22 +136,22 @@ public:
 		double z() const;
 		const_iterator& operator=(const const_iterator& other);
 		const_iterator& operator=(const iterator& other);
-		const_iterator& operator++(void);  // ++‘O’u
-		const_iterator operator++(int n);  // Œã’u++
+		const_iterator& operator++(void);  // ++å‰ç½®
+		const_iterator operator++(int n);  // å¾Œç½®++
 		bool operator==(const const_iterator &other) const;
 		bool operator!=(const const_iterator &other) const;
-		// I—¹”»’è == end() ‚Å‚à‚¢‚¢‚¯‚ÇA‚±‚Á‚¿‚Ì•û‚ª‘¬‚¢
+		// çµ‚äº†åˆ¤å®š == end() ã§ã‚‚ã„ã„ã‘ã©ã€ã“ã£ã¡ã®æ–¹ãŒé€Ÿã„
 		bool isFinished(void){ return (_it==NULL); }
 	};
 private:
-	static const iterator endIterator; // NULL ’l
-	static const const_iterator endConstIterator; // NULL ’l
+	static const iterator endIterator; // NULL å€¤
+	static const const_iterator endConstIterator; // NULL å€¤
 public:
 	virtual iterator begin(void) = 0;
 	virtual const_iterator begin(void) const = 0;
 	virtual iterator find(kmb::nodeIdType nodeId) = 0;
 	virtual const_iterator find(kmb::nodeIdType nodeId) const = 0;
-	// ’l•Ô‚µ‚É‚·‚é‚Æ–ˆ‰ñƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ªŒÄ‚Î‚ê‚é‚Ì‚Å‚æ‚­‚È‚¢
+	// å€¤è¿”ã—ã«ã™ã‚‹ã¨æ¯å›ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒå‘¼ã°ã‚Œã‚‹ã®ã§ã‚ˆããªã„
 	const iterator& end(void){
 		return endIterator;
 	};
@@ -160,29 +163,29 @@ public:
 	void getBoundingBox(kmb::BoundingBox& bound) const;
 	const kmb::BoundingBox* getBoundingBoxPtr(void) const {	return &boundBox;	};
 	const kmb::BoundingBox& getBoundingBox(void) const {	return boundBox;	};
-	// Å‹ß“_‚ÌŒŸõ
+	// æœ€è¿‘ç‚¹ã®æ¤œç´¢
 	double getNearest(const kmb::Point3D* target,kmb::Point3D& result,nodeIdType &nearestId) const;
 	double getNearest(const double x,const double y,const double z,kmb::Point3D& result,nodeIdType &nearestId) const;
-	// ü•ª‚É‘Î‚µ‚ÄÅ‹ß“_‚ğ’T‚·
-	// param*t0 + (1-param)*t1 ‚ªÅ‹ß“_
-	// d ‚Í‰Šú‹——£F‹——£‚ª‚»‚êˆÈ‰º‚Ì‚ğ’T‚·
+	// ç·šåˆ†ã«å¯¾ã—ã¦æœ€è¿‘ç‚¹ã‚’æ¢ã™
+	// param*t0 + (1-param)*t1 ãŒæœ€è¿‘ç‚¹
+	// d ã¯åˆæœŸè·é›¢ï¼šè·é›¢ãŒãã‚Œä»¥ä¸‹ã®ã‚’æ¢ã™
 	double getNearestToSegment(const Point3D& t0, const Point3D& t1,kmb::Point3D& result,nodeIdType &nearestId,double &param,double d=DBL_MAX) const;
 
-	// ƒRƒs[ƒƒ\ƒbƒh
+	// ã‚³ãƒ”ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰
 	void copyPreservingId(Point3DContainer& container);
 	void copyWithoutPreservingId(Point3DContainer& container);
-	// ß“_“ñd‰»
+	// ç¯€ç‚¹äºŒé‡åŒ–
 	kmb::nodeIdType duplicatePoint(nodeIdType nodeId);
-	// •ÏŠ·Œn
+	// å¤‰æ›ç³»
 	void convertAllNodes( kmb::Matrix4x4& mat );
 	void translateAllNodes( double x,double y,double z );
 	void scaleAllNodes( double r );
-	// XVŒn
+	// æ›´æ–°ç³»
 	bool updateCoordinate( kmb::nodeIdType nodeId, double x, double y, double z );
-	// –@üƒxƒNƒgƒ‹
+	// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 	kmb::Vector3D calcNormalVector( kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::nodeIdType n2 ) const;
 	kmb::Vector3D calcNormalVector( kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::nodeIdType n2, kmb::nodeIdType n3 ) const;
-	// ’¼ŒğƒxƒNƒgƒ‹i³‹K‰»‚µ‚È‚¢j
+	// ç›´äº¤ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆæ­£è¦åŒ–ã—ãªã„ï¼‰
 	kmb::Vector3D calcVerticalVector( kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::nodeIdType n2 ) const;
 	kmb::Vector3D calcVerticalVector( kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::nodeIdType n2, kmb::nodeIdType n3 ) const;
 	double distanceSq( kmb::nodeIdType n0, kmb::nodeIdType n1 ) const;
@@ -197,11 +200,11 @@ class Point3DContainerMap : public Point3DContainer
 {
 public:
 	enum idContinuityType{
-		UNKNOWN = -1,		// ‚æ‚­‚í‚©‚ç‚È‚¢
-		ZERO_LEADING = 0,	// 0 ‚©‚çn‚Ü‚é
-		ONE_LEADING = 1,	// 1 ‚©‚çn‚Ü‚é
-		OTHER_LEADING = 2,  // ‚»‚êˆÈŠO‚Ì”š‚©‚ç˜A‘±‚µ‚Ä‚¢‚é
-		NOT_CONTINUOUS = 3	// ˜A‘±‚µ‚Ä‚¢‚È‚¢
+		UNKNOWN = -1,		// ã‚ˆãã‚ã‹ã‚‰ãªã„
+		ZERO_LEADING = 0,	// 0 ã‹ã‚‰å§‹ã¾ã‚‹
+		ONE_LEADING = 1,	// 1 ã‹ã‚‰å§‹ã¾ã‚‹
+		OTHER_LEADING = 2,  // ãã‚Œä»¥å¤–ã®æ•°å­—ã‹ã‚‰é€£ç¶šã—ã¦ã„ã‚‹
+		NOT_CONTINUOUS = 3	// é€£ç¶šã—ã¦ã„ãªã„
 	};
 private:
 	nodeIdType minId;
@@ -236,7 +239,7 @@ public:
 	virtual iterator find(kmb::nodeIdType nodeId);
 	virtual const_iterator find(kmb::nodeIdType nodeId) const;
 
-// ˆÈ‰º‚Í Map ƒ‚[ƒh‚Ì‚Ì‚İ’è‹`‚³‚ê‚½ŠÖ”
+// ä»¥ä¸‹ã¯ Map ãƒ¢ãƒ¼ãƒ‰ã®æ™‚ã®ã¿å®šç¾©ã•ã‚ŒãŸé–¢æ•°
 	bool replaceId(nodeIdType oldid,nodeIdType newid);
 	bool deleteId(nodeIdType id);
 	void updateMinMaxId(void);
@@ -274,8 +277,8 @@ class Point3DContainerDirectAccessable : public Point3DContainer{
 public:
 	virtual double operator()(kmb::nodeIdType nodeId,int index) const = 0;
 	virtual double& operator()(kmb::nodeIdType nodeId,int index) = 0;
-	// nodeId ‚Ü‚Å‚Ì’l‚Ìİ’è‚ğs‚Á‚ÄAiterator ‚ÅQÆ‚Å‚«‚é‚æ‚¤‚É‚·‚é
-	// ’Fsize ‚Í nodeId + 1 ‚Å‚ ‚é
+	// nodeId ã¾ã§ã®å€¤ã®è¨­å®šã‚’è¡Œã£ã¦ã€iterator ã§å‚ç…§ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
+	// æ³¨ï¼šsize ã¯ nodeId + 1 ã§ã‚ã‚‹
 	virtual void commit(kmb::nodeIdType nodeId) = 0;
 };
 

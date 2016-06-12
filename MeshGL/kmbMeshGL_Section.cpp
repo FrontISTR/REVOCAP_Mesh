@@ -22,8 +22,8 @@
 
 #include <cmath>
 
-// À‘•‚ÍŒ»ó‚Í Tetra ‚¾‚¯
-// plane ‚ÆŒğ·‚·‚é—v‘f‚ğœ‚¢‚½‚Æ‚«‚ÉŒ©‚¦‚éOŠpŒ`‚ğ•\¦
+// å®Ÿè£…ã¯ç¾çŠ¶ã¯ Tetra ã ã‘
+// plane ã¨äº¤å·®ã™ã‚‹è¦ç´ ã‚’é™¤ã„ãŸã¨ãã«è¦‹ãˆã‚‹ä¸‰è§’å½¢ã‚’è¡¨ç¤º
 void
 kmb::MeshGL::drawIntersection(kmb::bodyIdType bodyId,kmb::Plane* plane)
 {
@@ -41,10 +41,10 @@ kmb::MeshGL::drawIntersection(kmb::bodyIdType bodyId,kmb::Plane* plane)
 			case kmb::TETRAHEDRON:
 			case kmb::TETRAHEDRON2:
 				{
-					if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-						mesh->getNode( eIter.getCellId(1), n1 ) &&
-						mesh->getNode( eIter.getCellId(2), n2 ) &&
-						mesh->getNode( eIter.getCellId(3), n3 ) )
+					if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+						mesh->getNode( eIter.getNodeId(1), n1 ) &&
+						mesh->getNode( eIter.getNodeId(2), n2 ) &&
+						mesh->getNode( eIter.getNodeId(3), n3 ) )
 					{
 						drawIntersectionTetrahedron(
 							n0, n1, n2, n3,
@@ -61,7 +61,7 @@ kmb::MeshGL::drawIntersection(kmb::bodyIdType bodyId,kmb::Plane* plane)
 	}
 }
 
-// comp –¢‘Î‰
+// comp æœªå¯¾å¿œ
 void
 kmb::MeshGL::drawIntersectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* physicalValue,kmb::ColorMap* colorMap,int comp)
 {
@@ -85,10 +85,10 @@ kmb::MeshGL::drawIntersectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,co
 					case kmb::TETRAHEDRON:
 					case kmb::TETRAHEDRON2:
 						{
-							if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-								mesh->getNode( eIter.getCellId(1), n1 ) &&
-								mesh->getNode( eIter.getCellId(2), n2 ) &&
-								mesh->getNode( eIter.getCellId(3), n3 ) )
+							if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+								mesh->getNode( eIter.getNodeId(1), n1 ) &&
+								mesh->getNode( eIter.getNodeId(2), n2 ) &&
+								mesh->getNode( eIter.getNodeId(3), n3 ) )
 							{
 								colorMap->setGLColor( v );
 								drawIntersectionTetrahedron(
@@ -116,10 +116,10 @@ kmb::MeshGL::drawIntersectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,co
 						case kmb::TETRAHEDRON:
 						case kmb::TETRAHEDRON2:
 							{
-								if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-									mesh->getNode( eIter.getCellId(1), n1 ) &&
-									mesh->getNode( eIter.getCellId(2), n2 ) &&
-									mesh->getNode( eIter.getCellId(3), n3 ) )
+								if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+									mesh->getNode( eIter.getNodeId(1), n1 ) &&
+									mesh->getNode( eIter.getNodeId(2), n2 ) &&
+									mesh->getNode( eIter.getNodeId(3), n3 ) )
 								{
 									colorMap->setGLColor( kmb::Vector3D::abs(v) );
 									drawIntersectionTetrahedron(
@@ -144,10 +144,10 @@ kmb::MeshGL::drawIntersectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,co
 						case kmb::TETRAHEDRON:
 						case kmb::TETRAHEDRON2:
 							{
-								if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-									mesh->getNode( eIter.getCellId(1), n1 ) &&
-									mesh->getNode( eIter.getCellId(2), n2 ) &&
-									mesh->getNode( eIter.getCellId(3), n3 ) )
+								if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+									mesh->getNode( eIter.getNodeId(1), n1 ) &&
+									mesh->getNode( eIter.getNodeId(2), n2 ) &&
+									mesh->getNode( eIter.getNodeId(3), n3 ) )
 								{
 									colorMap->setGLColor( v[comp] );
 									drawIntersectionTetrahedron(
@@ -175,10 +175,10 @@ kmb::MeshGL::drawIntersectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,co
 					case kmb::TETRAHEDRON:
 					case kmb::TETRAHEDRON2:
 						{
-							if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-								mesh->getNode( eIter.getCellId(1), n1 ) &&
-								mesh->getNode( eIter.getCellId(2), n2 ) &&
-								mesh->getNode( eIter.getCellId(3), n3 ) )
+							if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+								mesh->getNode( eIter.getNodeId(1), n1 ) &&
+								mesh->getNode( eIter.getNodeId(2), n2 ) &&
+								mesh->getNode( eIter.getNodeId(3), n3 ) )
 							{
 								colorMap->setGLColorByStep( v );
 								drawIntersectionTetrahedron(
@@ -214,7 +214,7 @@ kmb::MeshGL::drawSectionTetrahedron(
 	}
 	switch( flag )
 	{
-	// ‚P‚Â‚¾‚¯³
+	// ï¼‘ã¤ã ã‘æ­£
 	case 0x01: // 0
 		{
 			// REMARK ORDER!!
@@ -251,7 +251,7 @@ kmb::MeshGL::drawSectionTetrahedron(
 				&n3,&n2,t3,t2);
 		}
 		break;
-	// ‚Q‚Â‚¾‚¯³
+	// ï¼’ã¤ã ã‘æ­£
 	case 0x03: // 0 1
 		{
 			// REMARK ORDER!!
@@ -312,7 +312,7 @@ kmb::MeshGL::drawSectionTetrahedron(
 				&n2,&n1,t2,t1);
 		}
 		break;
-	// ‚R‚Â‚¾‚¯³
+	// ï¼“ã¤ã ã‘æ­£
 	case 0x07: // 0 1 2
 		{
 			// REMARK ORDER!!

@@ -35,8 +35,8 @@
 #include "Shape/kmbSurface3D.h"
 #include "Shape/kmbMiddleNodeManagerWithShape.h"
 
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include <vector>
 
 #ifdef WIN32
@@ -60,15 +60,6 @@ int32_t rcapLoadGFFile( const char* gffile, const char* bounfile )
 	rcapRefinerDoc.refiner->setMesh( rcapRefinerDoc.mesh );
 	rcapRefinerDoc.boundaryRefiner->setMesh( rcapRefinerDoc.mesh );
 
-
-
-
-
-
-
-
-
-
 	return static_cast<int32_t>(rcapRefinerDoc.mesh->getElementCount());
 }
 
@@ -80,11 +71,14 @@ int32_t rcapLoadHECFile( const char* hecfile )
 	return static_cast<int32_t>(rcapRefinerDoc.mesh->getElementCount());
 }
 
-
-
-
+// INLET 1
+// WALL 3
+// FREE 5
 void rcapRefineFFbModel( void )
 {
+	REVOCAP_Debug("inlt data size => %d\n", rcapRefinerDoc.mesh->getIdCount("BC_INLT") );
+	REVOCAP_Debug("wall data size => %d\n", rcapRefinerDoc.mesh->getIdCount("BC_WALL") );
+	REVOCAP_Debug("free data size => %d\n", rcapRefinerDoc.mesh->getIdCount("BC_FREE") );
 	size_t dataNum = 0;
 	dataNum += rcapRefinerDoc.mesh->getIdCount( "BC_INLT" );
 	dataNum += rcapRefinerDoc.mesh->getIdCount( "BC_WALL" );
@@ -118,12 +112,14 @@ void rcapRefineFFbModel( void )
 	rcapAppendBNodeVarInt( "BC", dataNum, nodeArray, nodeVars );
 	delete[] nodeArray;
 	delete[] nodeVars;
+	REVOCAP_Debug("data size = %d\n", rcapGetBNodeVarIntCount("BC") );
 
-
+	// element
 	size_t elementCount = rcapRefinerDoc.mesh->getElementCount(0);
+	REVOCAP_Debug("refine element count = %d\n", elementCount );
 	int32_t* nodeTable = new int32_t[elementCount*8];
 	int8_t* typeTable = new int8_t[elementCount];
-
+	// input data
 	kmb::ElementContainer::const_iterator eIter = rcapRefinerDoc.mesh->getBodyPtr(0)->begin();
 	i = 0; j = 0;
 	while( !eIter.isFinished() ){
@@ -136,18 +132,21 @@ void rcapRefineFFbModel( void )
 		++j;
 		++eIter;
 	}
-
+	REVOCAP_Debug("input data generated.\n");
+	// count refined node table
 	size_t refineNum = 0;
 	size_t refineNodeCount = 0;
 	refineNodeCount = rcapRefineElementMulti( elementCount, typeTable, nodeTable, &refineNum, NULL, NULL );
+	REVOCAP_Debug("refineElementCount = %d, refineNodeTableSize = %d\n", refineNum, refineNodeCount);
 	int32_t* refineNodeTable = new int32_t[refineNodeCount];
 	int8_t* refineTypeTable = new int8_t[refineNum];
 	refineNodeTable[0] = 0;
+	REVOCAP_Debug("RefineElement\n");
 	rcapRefineElementMulti( elementCount, typeTable, nodeTable, &refineNum, refineTypeTable, refineNodeTable );
-
+	REVOCAP_Debug("Commit\n");
 	rcapCommit();
 
-	rcapRefinerDoc.mesh->clearBody(0);
+	rcapRefinerDoc.mesh->clearBody(0); // original
 	rcapRefinerDoc.mesh->beginElement( refineNum );
 	kmb::nodeIdType nodes[20];
 	i = 0;
@@ -162,7 +161,8 @@ void rcapRefineFFbModel( void )
 	}
 	rcapRefinerDoc.mesh->endElement();
 
-
+	// data convert
+	REVOCAP_Debug("refined data size = %d\n", rcapRefinerDoc.mesh->getIdCount("BC") );
 	kmb::DataBindings::iterator dIterBC = rcapRefinerDoc.mesh->getDataBindingsPtr( "BC" )->begin();
 	kmb::DataBindings* inlt = rcapRefinerDoc.mesh->getDataBindingsPtr( "BC_INLT" );
 	kmb::DataBindings* wall = rcapRefinerDoc.mesh->getDataBindingsPtr( "BC_WALL" );
@@ -189,6 +189,9 @@ void rcapRefineFFbModel( void )
 		}
 		++dIterBC;
 	}
+	REVOCAP_Debug("refined inlt data size => %d\n", inlt->getIdCount());
+	REVOCAP_Debug("refined wall data size => %d\n", wall->getIdCount());
+	REVOCAP_Debug("refined free data size => %d\n", free->getIdCount());
 
 	size_t nodeCount = rcapRefinerDoc.mesh->getNodeCount();
 	int8_t etype;
@@ -198,6 +201,17 @@ void rcapRefineFFbModel( void )
 			orgNodes[k]= -1;
 		}
 		etype = rcapGetOriginal( j, orgNodes );
+		REVOCAP_Debug_3("original type %d => %d [%d %d %d %d %d %d %d %d]\n",
+										j ,etype, 
+										orgNodes[0],
+										orgNodes[1],
+										orgNodes[2],
+										orgNodes[3],
+										orgNodes[4],
+
+										orgNodes[5],
+										orgNodes[6],
+										orgNodes[7]);
 	}
 
 	delete[] nodeTable;
@@ -205,8 +219,8 @@ void rcapRefineFFbModel( void )
 	delete[] typeTable;
 	delete[] refineTypeTable;
 
-	rcapRefinerDoc.mesh->clearBody(1);
-	rcapRefinerDoc.mesh->clearBody(2);
+	rcapRefinerDoc.mesh->clearBody(1); // refine original
+	rcapRefinerDoc.mesh->clearBody(2); // boundary
 }
 
 int32_t rcapSaveGFFile( const char* gffile, const char* bounfile )

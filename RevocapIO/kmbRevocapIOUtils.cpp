@@ -29,10 +29,10 @@ kmb::RevocapIOUtils::getValue( std::string exp, std::string key, bool keyCaseSen
 		std::string::size_type valFirst = exp.find_first_not_of( " ", eqEnd );
 		if( valFirst == std::string::npos ) return "";
 		std::string::size_type valEnd = exp.find_first_not_of( "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-", valFirst );
-		// valEnd ‚ª npos ‚Ì‚Æ‚«‚ÍA•¶––‚Ü‚Å‚ğ value ‚Æ‚·‚é
+		// valEnd ãŒ npos ã®ã¨ãã¯ã€æ–‡æœ«ã¾ã§ã‚’ value ã¨ã™ã‚‹
 		return exp.substr( valFirst, valEnd-valFirst);
 	}else{
-		// exp ‚Æ key ‚ğ—¼•û¬•¶š‚É‚µ‚Ä‚©‚ç”ä‚×‚é
+		// exp ã¨ key ã‚’ä¸¡æ–¹å°æ–‡å­—ã«ã—ã¦ã‹ã‚‰æ¯”ã¹ã‚‹
 		std::string expDownCase = exp;
 		std::string keyDownCase = key;
 		std::transform( exp.begin(), exp.end(), expDownCase.begin(), tolower);
@@ -44,8 +44,8 @@ kmb::RevocapIOUtils::getValue( std::string exp, std::string key, bool keyCaseSen
 		std::string::size_type valFirst = expDownCase.find_first_not_of( " ", eqEnd );
 		if( valFirst == std::string::npos ) return "";
 		std::string::size_type valEnd = expDownCase.find_first_not_of( "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-", valFirst );
-		// valEnd ‚ª npos ‚Ì‚Æ‚«‚ÍA•¶––‚Ü‚Å‚ğ value ‚Æ‚·‚é
-		// ’l‚Í¬•¶š‚É‚·‚é‘O‚Ì exp ‚©‚çæ‚èo‚·
+		// valEnd ãŒ npos ã®ã¨ãã¯ã€æ–‡æœ«ã¾ã§ã‚’ value ã¨ã™ã‚‹
+		// å€¤ã¯å°æ–‡å­—ã«ã™ã‚‹å‰ã® exp ã‹ã‚‰å–ã‚Šå‡ºã™
 		return exp.substr( valFirst, valEnd-valFirst);
 	}
 }
@@ -58,7 +58,7 @@ kmb::RevocapIOUtils::hasKey( std::string exp, std::string key, bool keyCaseSensi
 		if( keyFirst == std::string::npos ) return false;
 		else return true;
 	}else{
-		// exp ‚Æ key ‚ğ—¼•û¬•¶š‚É‚µ‚Ä‚©‚ç”ä‚×‚é
+		// exp ã¨ key ã‚’ä¸¡æ–¹å°æ–‡å­—ã«ã—ã¦ã‹ã‚‰æ¯”ã¹ã‚‹
 		std::string expDownCase = exp;
 		std::string keyDownCase = key;
 		std::transform( exp.begin(), exp.end(), expDownCase.begin(), tolower);
@@ -79,7 +79,7 @@ kmb::RevocapIOUtils::readOneLine(std::istream &input, std::string &str)
 	return input;
 }
 
-// ¡‚Ü‚Å‚àƒXƒy[ƒX‚Å‚à‚È‚¢‚Æ‚±‚ë‚Ü‚Åi‚ß‚Ä•Ô‚·
+// ä»Šã¾ã§ã‚‚ã‚¹ãƒšãƒ¼ã‚¹ã§ã‚‚ãªã„ã¨ã“ã‚ã¾ã§é€²ã‚ã¦è¿”ã™
 std::istringstream& kmb::RevocapIOUtils::skipComma(std::istringstream &tokenizer)
 {
 	while( tokenizer.good() ){

@@ -89,7 +89,7 @@ kmb::MeshSmoother::appendBody(const kmb::ElementContainer* body)
 	if( body == NULL ){
 		return 0;
 	}
-	// ‹«ŠE–Ê‚Í“®‚©‚·‘ÎÛ‚É‚µ‚È‚¢
+	// å¢ƒç•Œé¢ã¯å‹•ã‹ã™å¯¾è±¡ã«ã—ãªã„
 	kmb::DataBindings* nodeGroup =
 		kmb::DataBindings::createDataBindings(
 			kmb::DataBindings::NodeGroup,
@@ -103,10 +103,10 @@ kmb::MeshSmoother::appendBody(const kmb::ElementContainer* body)
 	while( !eIter.isFinished() ){
 		int len = eIter.getEdgeCount();
 		for(int i=0;i<len;++i){
-			kmb::nodeIdType n0 = eIter.getEdgeCellId(i,0);
-			kmb::nodeIdType n1 = eIter.getEdgeCellId(i,1);
+			kmb::nodeIdType n0 = eIter.getEdgeNodeId(i,0);
+			kmb::nodeIdType n1 = eIter.getEdgeNodeId(i,1);
 			if( eIter.getDegree() == 2 ){
-				kmb::nodeIdType n2 = eIter.getEdgeCellId(i,2);
+				kmb::nodeIdType n2 = eIter.getEdgeNodeId(i,2);
 				if( !nodeGroup->hasId(n0) ){
 					appendConnectNode(n0,n2);
 				}

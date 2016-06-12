@@ -63,10 +63,10 @@ public:
 		Vector2withInt,
 		Vector3withInt,
 		Vector4withInt,
-		Array,			// •¨—’l‚Ì”z—ñ
-		Hash,			// •¶š—ñ‚ğƒL[‚Æ‚µ‚Ä•¨—’l‚ğ’l‚Æ‚·‚é˜A‘z”z—ñ
-		String,			// •¶š—ñ
-		IntHash,		// ®”’l‚ğƒL[‚Æ‚µ‚Ä•¨—’l‚ğ’l‚Æ‚·‚é˜A‘z”z—ñ
+		Array,			// ç‰©ç†å€¤ã®é…åˆ—
+		Hash,			// æ–‡å­—åˆ—ã‚’ã‚­ãƒ¼ã¨ã—ã¦ç‰©ç†å€¤ã‚’å€¤ã¨ã™ã‚‹é€£æƒ³é…åˆ—
+		String,			// æ–‡å­—åˆ—
+		IntHash,		// æ•´æ•°å€¤ã‚’ã‚­ãƒ¼ã¨ã—ã¦ç‰©ç†å€¤ã‚’å€¤ã¨ã™ã‚‹é€£æƒ³é…åˆ—
 		Undefined,
 		Unknown
 	};
@@ -448,8 +448,8 @@ public:
 };
 
 //
-// n“_‚ÆƒxƒNƒgƒ‹‚Ì‘g
-// ‰“S—Í‚È‚Ç‚Ì‰ñ“]—Ê‚ğ‚ ‚ç‚í‚·‚½‚ß‚ÌƒNƒ‰ƒX
+// å§‹ç‚¹ã¨ãƒ™ã‚¯ãƒˆãƒ«ã®çµ„
+// é å¿ƒåŠ›ãªã©ã®å›è»¢é‡ã‚’ã‚ã‚‰ã‚ã™ãŸã‚ã®ã‚¯ãƒ©ã‚¹
 //
 
 class Point3Vector3Value : public PhysicalValue
@@ -578,7 +578,7 @@ public:
 	int getDimension(void) const { return 6; };
 };
 
-// StringValue ‚Í ruby.h ‚Å‚Â‚©‚Á‚Ä‚¢‚é‚Ì‚Å•Ê‚Ì–¼‘O‚É‚·‚é
+// StringValue ã¯ ruby.h ã§ã¤ã‹ã£ã¦ã„ã‚‹ã®ã§åˆ¥ã®åå‰ã«ã™ã‚‹
 class TextValue : public PhysicalValue
 {
 private:
@@ -630,8 +630,8 @@ public:
 	virtual kmb::PhysicalValue* clone(void){
 		return new ArrayValue( this->values );
 	}
-	// i ”Ô–Ú‚Ì¬•ª‚ª vType ‚©‚Ç‚¤‚©‚ÌŠm”F
-	// Array ‚Ì‚ÍA‚³‚ç‚ÉƒTƒCƒY‚àƒ`ƒFƒbƒN‚·‚é
+	// i ç•ªç›®ã®æˆåˆ†ãŒ vType ã‹ã©ã†ã‹ã®ç¢ºèª
+	// Array ã®æ™‚ã¯ã€ã•ã‚‰ã«ã‚µã‚¤ã‚ºã‚‚ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 	bool checkType(unsigned int i,valueType vType,size_t size=0) const {
 		kmb::PhysicalValue* val = this->getValue(i);
 		if( val && val->getType() == vType ){
@@ -683,7 +683,7 @@ public:
 	}
 	bool setValue(std::string k,kmb::PhysicalValue* v){
 		if( v != NULL ){
-			// Šù‚É‚ ‚é‚ÍÁ‚µ‚Ä‚©‚ç
+			// æ—¢ã«ã‚ã‚‹æ™‚ã¯æ¶ˆã—ã¦ã‹ã‚‰
 			std::map< std::string, kmb::PhysicalValue* >::iterator f = values.find(k);
 			if( f != values.end() ){
 				delete f->second;

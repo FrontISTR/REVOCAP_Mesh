@@ -31,11 +31,11 @@
 
 namespace kmb{
 
-/// À•W²‚É•½s‚È’¼•û‘Ì
+/// åº§æ¨™è»¸ã«å¹³è¡Œãªç›´æ–¹ä½“
 class BoxRegion : public Region
 {
 protected:
-	// Š±Â”»’èè‡’l
+	// å¹²æ¸‰åˆ¤å®šé–¾å€¤
 	static double thres;
 protected:
 	Point3D maxPoint;
@@ -68,7 +68,7 @@ public:
 	double rangeX(void) const;
 	double rangeY(void) const;
 	double rangeZ(void) const;
-	// rangeX rangeY rangeZ ‚Ì‘å‚«‚¢•û‚ğ•Ô‚·
+	// rangeX rangeY rangeZ ã®å¤§ãã„æ–¹ã‚’è¿”ã™
 	double range(void) const;
 	double diameter(void) const;
 	double diameterSq(void) const;
@@ -81,35 +81,35 @@ public:
 	virtual kmb::Region::locationType intersect(const double x,const double y,const double z) const;
 	virtual double distanceSq(const kmb::Point3D &point) const;
 	virtual double distanceSq(const double x,const double y,const double z) const;
-	// Box “¯m‚Ì”»’èŠÖ”
+	// Box åŒå£«ã®åˆ¤å®šé–¢æ•°
 	bool intersect(const kmb::BoxRegion& box) const;
 	double intersectVolume(const BoxRegion& box) const;
 	double distanceSq(const kmb::BoxRegion& box) const;
-	// max min ‚Ì—¼•û‚ğŠg‘å‚·‚é
+	// max min ã®ä¸¡æ–¹ã‚’æ‹¡å¤§ã™ã‚‹
 	void expand(double x,double y,double z);
 	void expand(double ratio);
-	// •½sˆÚ“®
+	// å¹³è¡Œç§»å‹•
 	void translate(double x,double y,double z);
-	// center ‚ğ•Ï‚¦‚¸‚É range ‚ğ•Ï‚¦‚é
+	// center ã‚’å¤‰ãˆãšã« range ã‚’å¤‰ãˆã‚‹
 	void setRange(double rangeX,double rangeY,double rangeZ);
-	// diameter ‚ª ratio ”{‚É‚È‚é‚æ‚¤‚É x y z ‚ğ“¯‚¶’·‚³‚¾‚¯L‚°‚é
+	// diameter ãŒ ratio å€ã«ãªã‚‹ã‚ˆã†ã« x y z ã‚’åŒã˜é•·ã•ã ã‘åºƒã’ã‚‹
 	void expandDiameter(double ratio);
-	// ’¼ü‚Æd‚È‚Á‚Ä‚¢‚é•”•ª
-	// d‚È‚Á‚Ä‚¢‚È‚¯‚ê‚ÎAmint_t = max_t = 0.0 ‚ğ•Ô‚·
+	// ç›´ç·šã¨é‡ãªã£ã¦ã„ã‚‹éƒ¨åˆ†
+	// é‡ãªã£ã¦ã„ãªã‘ã‚Œã°ã€mint_t = max_t = 0.0 ã‚’è¿”ã™
 	void crossOnLine(const kmb::Point3D& origin, const kmb::Vector3D& dir, double &min_t, double &max_t) const;
-	// OŠpŒ`‚Æ‚Ì”»’è
-	// ab bc ca ‚ª6–Ê‚ÆŒğ·‚·‚é‚©‚Ç‚¤‚©‚Ì”»’è
-	// ¡‚ÌÀ‘•‚Å‚Í intersectArea > 0.0 ‚Æ‚µ‚½•û‚ª‘¬‚¢
+	// ä¸‰è§’å½¢ã¨ã®åˆ¤å®š
+	// ab bc ca ãŒ6é¢ã¨äº¤å·®ã™ã‚‹ã‹ã©ã†ã‹ã®åˆ¤å®š
+	// ä»Šã®å®Ÿè£…ã§ã¯ intersectArea > 0.0 ã¨ã—ãŸæ–¹ãŒé€Ÿã„
 	bool intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb::Point3D &c) const;
-	// intersectArea ‚©‚ç Area ‚ğœ‚¢‚½‚à‚Ì
+	// intersectArea ã‹ã‚‰ Area ã‚’é™¤ã„ãŸã‚‚ã®
 	bool intersect3(const kmb::Point3D &a,const kmb::Point3D &b,const kmb::Point3D &c) const;
-	// OŠpŒ`‚Æ‚Ì”»’èi–ÊÏ‚Â‚«j
-	// –@üƒxƒNƒgƒ‹‚ª‚Ù‚µ‚¢ê‡‚à‚±‚±‚Å–ÊÏ‚ğŒvZ‚µ‚Ä‚©‚ç–@ü‚ğV‚½‚ÉŒvZ‚·‚é‚Ù‚¤‚ª‘¬‚¢
-	// ——RFVector3D Œ^‚ğ–ß‚è’l‚É‚·‚éƒI[ƒo[ƒwƒbƒh‚ª‘å‚«‚¢
+	// ä¸‰è§’å½¢ã¨ã®åˆ¤å®šï¼ˆé¢ç©ã¤ãï¼‰
+	// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ãŒã»ã—ã„å ´åˆã‚‚ã“ã“ã§é¢ç©ã‚’è¨ˆç®—ã—ã¦ã‹ã‚‰æ³•ç·šã‚’æ–°ãŸã«è¨ˆç®—ã™ã‚‹ã»ã†ãŒé€Ÿã„
+	// ç†ç”±ï¼šVector3D å‹ã‚’æˆ»ã‚Šå€¤ã«ã™ã‚‹ã‚ªãƒ¼ãƒãƒ¼ãƒ˜ãƒƒãƒ‰ãŒå¤§ãã„
 	double intersectArea(const kmb::Point3D &a,const kmb::Point3D &b,const kmb::Point3D &c) const;
 private:
-	// “à•”‰º¿‚¯
-	// ‚±‚Ì‡‚Éã‚©‚çŒÄ‚Î‚ê‚é
+	// å†…éƒ¨ä¸‹è«‹ã‘
+	// ã“ã®é †ã«ä¸Šã‹ã‚‰å‘¼ã°ã‚Œã‚‹
 	double intersectArea_minx(const kmb::Point3D &p0,const kmb::Point3D &p1,const kmb::Point3D &p2) const;
 	double intersectArea_maxx(const kmb::Point3D &p0,const kmb::Point3D &p1,const kmb::Point3D &p2) const;
 	double intersectArea_miny(const kmb::Point3D &p0,const kmb::Point3D &p1,const kmb::Point3D &p2) const;

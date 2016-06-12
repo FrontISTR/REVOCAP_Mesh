@@ -13,7 +13,7 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// HecMW Ver.4 ‚Ì‚½‚ß‚Ìƒtƒ@ƒCƒ‹ I/O
+// HecMW Ver.4 ã®ãŸã‚ã®ãƒ•ã‚¡ã‚¤ãƒ« I/O
 //
 
 #include "RevocapIO/kmbHecmwIO.h"
@@ -33,7 +33,7 @@ int kmb::HecmwIO::saveToMeshFile_4_4(const char* filename,const kmb::MeshData* m
 		writeHeader(output,"4");
 		writeNode(output,mesh,partName);
 
-		// SECTION ‚Å—^‚¦‚ç‚ê‚é—v‘f‚ÍABody ‚²‚Æ‚É EGRP –¼‚ð•t‚¯‚Ä !ELEMENT ‚Åo—Í‚·‚é
+		// SECTION ã§ä¸Žãˆã‚‰ã‚Œã‚‹è¦ç´ ã¯ã€Body ã”ã¨ã« EGRP åã‚’ä»˜ã‘ã¦ !ELEMENT ã§å‡ºåŠ›ã™ã‚‹
 		kmb::bodyIdType bodyCount = mesh->getBodyCount();
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			writeElement(output,mesh,bodyId,partName);

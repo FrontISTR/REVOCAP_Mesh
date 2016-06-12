@@ -43,7 +43,7 @@ protected:
 	std::vector< kmb::ElementContainer* > bodies;
 	kmb::ElementContainer* currentBody;
 	std::multimap< std::string, kmb::DataBindings* > bindings;
-	// ˆê“I‚Èƒf[ƒ^•Û‘¶—p
+	// ä¸€æ™‚çš„ãªãƒ‡ãƒ¼ã‚¿ä¿å­˜ç”¨
 	std::vector< kmb::DataBindings* > bindingsStack;
 	int bindingsStackDim;
 	std::string defaultSpecType;
@@ -54,183 +54,183 @@ protected:
 public:
 	MeshData(void);
 	virtual ~MeshData(void);
-	// mesh ‚ğ new ‚µ‚½ó‘Ô‚É–ß‚·
+	// mesh ã‚’ new ã—ãŸçŠ¶æ…‹ã«æˆ»ã™
 	virtual void clearModel(void);
-	// ƒ‚ƒfƒ‹‘S‘Ì‚Ì“o˜^‚ğŠJn
-	// Šî’êƒNƒ‰ƒX‚Å‚Í“Á‚É‰½‚à‚µ‚È‚¢
-	// ”h¶ƒNƒ‰ƒX‚Å‚Í–Ú“I‚É‰‚¶‚ÄŠO•”‚Ì‰Šú‰»ƒ‹[ƒ`ƒ“‚ğƒR[ƒ‹ƒoƒbƒN‚·‚é‚È‚Ç
+	// ãƒ¢ãƒ‡ãƒ«å…¨ä½“ã®ç™»éŒ²ã‚’é–‹å§‹
+	// åŸºåº•ã‚¯ãƒ©ã‚¹ã§ã¯ç‰¹ã«ä½•ã‚‚ã—ãªã„
+	// æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã§ã¯ç›®çš„ã«å¿œã˜ã¦å¤–éƒ¨ã®åˆæœŸåŒ–ãƒ«ãƒ¼ãƒãƒ³ã‚’ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã™ã‚‹ãªã©
 	virtual void beginModel(void);
-	// ƒ‚ƒfƒ‹‘S‘Ì‚Ì“o˜^‚ÌI—¹
-	// Šî’êƒNƒ‰ƒX‚Å‚Í“Á‚É‰½‚à‚µ‚È‚¢
-	// ”h¶ƒNƒ‰ƒX‚Å‚Í–Ú“I‚É‰‚¶‚ÄŠO•”‚Ì‰Šú‰»ƒ‹[ƒ`ƒ“‚ğƒR[ƒ‹ƒoƒbƒN‚·‚é‚È‚Ç
+	// ãƒ¢ãƒ‡ãƒ«å…¨ä½“ã®ç™»éŒ²ã®çµ‚äº†
+	// åŸºåº•ã‚¯ãƒ©ã‚¹ã§ã¯ç‰¹ã«ä½•ã‚‚ã—ãªã„
+	// æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã§ã¯ç›®çš„ã«å¿œã˜ã¦å¤–éƒ¨ã®åˆæœŸåŒ–ãƒ«ãƒ¼ãƒãƒ³ã‚’ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã™ã‚‹ãªã©
 	virtual void endModel(void);
-	//-------------- À•WŒn ---------------------//
-	// ƒRƒs[‚µ‚Äg‚¤
+	//-------------- åº§æ¨™ç³» ---------------------//
+	// ã‚³ãƒ”ãƒ¼ã—ã¦ä½¿ã†
 	void setCoordinate( const kmb::Matrix4x4& matrix );
 	void translateCoordinate( double x, double y, double z );
 	kmb::Matrix4x4* getCoordMatrix(void);
 	const kmb::Matrix4x4* getCoordMatrix(void) const;
-	//-------------- ß“_ŠÇ— -------------------//
+	//-------------- ç¯€ç‚¹ç®¡ç† -------------------//
 	int getNodeDim(void) const;
-	// ß“_‚Ì“o˜^ŠJn
-	// ƒRƒ“ƒeƒi‚ğw’è‚·‚é‚±‚Æ‚ª‚Å‚«‚é
+	// ç¯€ç‚¹ã®ç™»éŒ²é–‹å§‹
+	// ã‚³ãƒ³ãƒ†ãƒŠã‚’æŒ‡å®šã™ã‚‹ã“ã¨ãŒã§ãã‚‹
 	virtual void beginNode(size_t size=0,const char* containerType=NULL);
 	virtual void beginNode(size_t size,kmb::Point3DContainer* point3Ds);
-	// ß“_‚Ì“o˜^
+	// ç¯€ç‚¹ã®ç™»éŒ²
 	virtual kmb::nodeIdType addNode(double x,double y,double z);
-	// ß“_‚Ì“o˜^iId•t‚«j
+	// ç¯€ç‚¹ã®ç™»éŒ²ï¼ˆIdä»˜ãï¼‰
 	virtual kmb::nodeIdType addNodeWithId(double x,double y,double z, kmb::nodeIdType id);
-	// ß“_‚Ì“o˜^I—¹
-	// Šî’êƒNƒ‰ƒX‚Å‚Í‰½‚à‚µ‚È‚¢
-	// ”h¶ƒNƒ‰ƒX‚ÌƒR[ƒ‹ƒoƒbƒN‚Åg‚¤
+	// ç¯€ç‚¹ã®ç™»éŒ²çµ‚äº†
+	// åŸºåº•ã‚¯ãƒ©ã‚¹ã§ã¯ä½•ã‚‚ã—ãªã„
+	// æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã§ä½¿ã†
 	virtual void endNode(void);
-	// ß“_”Ô†‚ÌÅ‘åÅ¬
-	// ‘¶İ‚µ‚È‚¢‚Æ‚«‚É max < min
-	// Ÿ‚É”Ô†‚ğw’è‚¹‚¸‚É’Ç‰Á‚µ‚½‚Æ‚«‚É‚Í max + 1
+	// ç¯€ç‚¹ç•ªå·ã®æœ€å¤§æœ€å°
+	// å­˜åœ¨ã—ãªã„ã¨ãã« max < min
+	// æ¬¡ã«ç•ªå·ã‚’æŒ‡å®šã›ãšã«è¿½åŠ ã—ãŸã¨ãã«ã¯ max + 1
 	kmb::nodeIdType getMaxNodeId(void) const;
 	kmb::nodeIdType getMinNodeId(void) const;
-	// ß“_ƒRƒ“ƒeƒi‚Ìæ“¾
-	// each ƒƒ\ƒbƒh“™‚ÍƒRƒ“ƒeƒi‚ğæ“¾‚µ‚Ä‚©‚ç
+	// ç¯€ç‚¹ã‚³ãƒ³ãƒ†ãƒŠã®å–å¾—
+	// each ãƒ¡ã‚½ãƒƒãƒ‰ç­‰ã¯ã‚³ãƒ³ãƒ†ãƒŠã‚’å–å¾—ã—ã¦ã‹ã‚‰
 	const kmb::Point3DContainer* getNodes(void) const;
 	kmb::Point3DContainer* getNodes(void);
 	virtual const kmb::Point2DContainer* getNode2Ds(void) const{ return NULL; };
 	kmb::Point3DContainer* replaceNodes(kmb::Point3DContainer* nodes);
-	// ß“_”
+	// ç¯€ç‚¹æ•°
 	virtual size_t getNodeCount(void) const;
-	// ß“_‚ğ’¼Ú Point3D Œ^‚Åæ“¾
+	// ç¯€ç‚¹ã‚’ç›´æ¥ Point3D å‹ã§å–å¾—
 	virtual bool getNode(nodeIdType i,kmb::Point3D &node) const;
 	bool getNodeXYZ(nodeIdType i,double &x,double &y,double &z) const;
-	// endNode ‚µ‚½Œã‚Åß“_‚Ì’Ç‰Á
-	// ¸”s‚µ‚½‚ç kmb::nullNodeId ‚ğ•Ô‚·
+	// endNode ã—ãŸå¾Œã§ç¯€ç‚¹ã®è¿½åŠ 
+	// å¤±æ•—ã—ãŸã‚‰ kmb::nullNodeId ã‚’è¿”ã™
 	virtual kmb::nodeIdType insertNode(double x,double y,double z);
-	// endNode ‚µ‚½Œã‚Åß“_‚Ì’Ç‰Á (id •t‚«)
-	// ¸”s‚µ‚½‚ç kmb::nullNodeId ‚ğ•Ô‚·
+	// endNode ã—ãŸå¾Œã§ç¯€ç‚¹ã®è¿½åŠ  (id ä»˜ã)
+	// å¤±æ•—ã—ãŸã‚‰ kmb::nullNodeId ã‚’è¿”ã™
 	virtual kmb::nodeIdType insertNodeWithId(double x,double y,double z, kmb::nodeIdType id);
-	// Šù‚É“o˜^Ï‚İ‚Ìß“_‚ÌÀ•W‚ğXV‚·‚é
+	// æ—¢ã«ç™»éŒ²æ¸ˆã¿ã®ç¯€ç‚¹ã®åº§æ¨™ã‚’æ›´æ–°ã™ã‚‹
 	virtual bool updateNode(double x,double y,double z, kmb::nodeIdType id);
-	// ƒRƒ“ƒeƒiƒ^ƒCƒv
+	// ã‚³ãƒ³ãƒ†ãƒŠã‚¿ã‚¤ãƒ—
 	const char* getNodeContainerType(void) const;
 	virtual const kmb::BoundingBox getBoundingBox(void) const;
-	//-------------- —v‘fŠÇ— -------------------//
-	// —v‘f‚Ì“o˜^ŠJn
+	//-------------- è¦ç´ ç®¡ç† -------------------//
+	// è¦ç´ ã®ç™»éŒ²é–‹å§‹
 	// set suitable container type
-	// ˆÈ~ endElement ‚ªŒÄ‚Î‚ê‚é‚Ü‚Å currentBody ‚É“o˜^‚³‚ê‚é
+	// ä»¥é™ endElement ãŒå‘¼ã°ã‚Œã‚‹ã¾ã§ currentBody ã«ç™»éŒ²ã•ã‚Œã‚‹
 	virtual kmb::bodyIdType beginElement(size_t size,kmb::ElementContainer* container);
 	virtual kmb::bodyIdType beginElement(size_t size=0,const char* containerType=NULL);
-	// —v‘f‚Ì’Ç‰Á
+	// è¦ç´ ã®è¿½åŠ 
 	virtual kmb::elementIdType addElement(kmb::elementType type,kmb::nodeIdType *ary);
-	// —v‘f‚Ì’Ç‰ÁiId•t‚«j
+	// è¦ç´ ã®è¿½åŠ ï¼ˆIdä»˜ãï¼‰
 	virtual kmb::elementIdType addElementWithId(kmb::elementType type,kmb::nodeIdType *ary,kmb::elementIdType elementId);
-	// —v‘f‚Ì“o˜^I—¹
+	// è¦ç´ ã®ç™»éŒ²çµ‚äº†
 	virtual void endElement(void);
 	// max element id means that larger id is not used
 	kmb::elementIdType getMaxElementId(void) const;
-	// beginElement endElement ‚ÌŒã‚Å—v‘f‚Ì’Ç‰Á
+	// beginElement endElement ã®å¾Œã§è¦ç´ ã®è¿½åŠ 
 	virtual kmb::elementIdType insertElement(kmb::bodyIdType bodyID,kmb::elementType type,kmb::nodeIdType *ary);
 	virtual kmb::elementIdType insertElementWithId(kmb::bodyIdType bodyID,kmb::elementType type,kmb::nodeIdType *ary,kmb::elementIdType elementId);
-	// “o˜^Ï‚İ‚Ì—v‘f‚ÌˆÚ“®
+	// ç™»éŒ²æ¸ˆã¿ã®è¦ç´ ã®ç§»å‹•
 	virtual bool moveElement(kmb::bodyIdType bodyId0,kmb::bodyIdType bodyId1,kmb::elementIdType elementId);
-	// —v‘fƒOƒ‹[ƒv‚ÌŒÂ”æ“¾
+	// è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã®å€‹æ•°å–å¾—
 	kmb::bodyIdType getBodyCount(void) const;
-	// —v‘f”Ô†‚©‚ç—v‘fƒOƒ‹[ƒv”Ô†‚Ìæ“¾
+	// è¦ç´ ç•ªå·ã‹ã‚‰è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ç•ªå·ã®å–å¾—
 	bodyIdType getBodyId(elementIdType elementId) const;
-	// —v‘fƒOƒ‹[ƒvƒRƒ“ƒeƒi‚Ì’Ç‰ÁE’uŠ·
-	// offset ƒtƒ‰ƒO‚Í’Ç‰Á‚·‚éƒRƒ“ƒeƒi‚Ì offset ‚ğ©“®“I‚É‘‚«Š·‚¦‚é
+	// è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã‚³ãƒ³ãƒ†ãƒŠã®è¿½åŠ ãƒ»ç½®æ›
+	// offset ãƒ•ãƒ©ã‚°ã¯è¿½åŠ ã™ã‚‹ã‚³ãƒ³ãƒ†ãƒŠã® offset ã‚’è‡ªå‹•çš„ã«æ›¸ãæ›ãˆã‚‹
 	virtual kmb::bodyIdType appendBody( kmb::Body* body, bool offset=true );
 	virtual kmb::bodyIdType replaceBody( kmb::bodyIdType bodyId, kmb::Body* body, bool offset=true );
-	// MeshData ‚ÌŠO‚Å ElementContainer ‚ğXV‚µ‚½‚Æ‚«‚É
-	// MeshData ‚ª‚Âî•ñ‚àXV‚·‚é‚½‚ß
-	// beginElement endElement ‚Å‰¼‚Ì Body ‚ğì‚Á‚Ä insertElement ‚µ‚½ê‡‚ÍAÅŒã‚É‚±‚Ìƒƒ\ƒbƒh‚ğŒÄ‚Ño‚µ‚ÄXV‚µ‚Ä‚¨‚­
+	// MeshData ã®å¤–ã§ ElementContainer ã‚’æ›´æ–°ã—ãŸã¨ãã«
+	// MeshData ãŒæŒã¤æƒ…å ±ã‚‚æ›´æ–°ã™ã‚‹ãŸã‚
+	// beginElement endElement ã§ä»®ã® Body ã‚’ä½œã£ã¦ insertElement ã—ãŸå ´åˆã¯ã€æœ€å¾Œã«ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã—ã¦æ›´æ–°ã—ã¦ãŠã
 	virtual bool updateBody( kmb::bodyIdType bodyId );
-	// —v‘fƒOƒ‹[ƒv‚Ì’†g‚ğ‹ó‚É‚·‚é‚¾‚¯‚ÅAbodyId ‚ÍÁ‚³‚È‚¢
+	// è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã®ä¸­èº«ã‚’ç©ºã«ã™ã‚‹ã ã‘ã§ã€bodyId ã¯æ¶ˆã•ãªã„
 	virtual void clearBody(bodyIdType bodyId);
-	// ‚·‚×‚Ä‚Ì—v‘fƒOƒ‹[ƒv‚ğÁ‹‚·‚é
+	// ã™ã¹ã¦ã®è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã‚’æ¶ˆå»ã™ã‚‹
 	virtual void removeAllBodies(void);
-	// —v‘fƒOƒ‹[ƒv‚ÌƒRƒ“ƒeƒiæ“¾
+	// è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã®ã‚³ãƒ³ãƒ†ãƒŠå–å¾—
 	kmb::Body* getBodyPtr(bodyIdType bodyId);
 	const kmb::Body* getBodyPtr(bodyIdType bodyId) const;
-	// —v‘fƒOƒ‹[ƒv‚ÉŠÜ‚Ü‚ê‚é—v‘f‚ÌŒÂ”‚Ìæ“¾
+	// è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã«å«ã¾ã‚Œã‚‹è¦ç´ ã®å€‹æ•°ã®å–å¾—
 	size_t getElementCount(kmb::bodyIdType bodyId) const;
 	size_t getElementCount(void) const;
 	size_t getElementCountOfDim(int dim) const;
-	// —v‘fƒOƒ‹[ƒv‚ÌŸŒ³i•\–ÊƒƒbƒVƒ…‚È‚ç2A‘ÌÏƒƒbƒVƒ…‚È‚ç3j
+	// è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã®æ¬¡å…ƒï¼ˆè¡¨é¢ãƒ¡ãƒƒã‚·ãƒ¥ãªã‚‰2ã€ä½“ç©ãƒ¡ãƒƒã‚·ãƒ¥ãªã‚‰3ï¼‰
 	int getDimension(kmb::bodyIdType bodyId) const;
-	// —v‘fƒOƒ‹[ƒv‚ÌÅ‘åŸŒ³i•\–ÊƒƒbƒVƒ…‚È‚ç2A‘ÌÏƒƒbƒVƒ…‚È‚ç3j
+	// è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã®æœ€å¤§æ¬¡å…ƒï¼ˆè¡¨é¢ãƒ¡ãƒƒã‚·ãƒ¥ãªã‚‰2ã€ä½“ç©ãƒ¡ãƒƒã‚·ãƒ¥ãªã‚‰3ï¼‰
 	int getDimension(void) const;
-	// —v‘fƒOƒ‹[ƒv‚ÌŸ”i2Ÿ—v‘f‚È‚ç2j
+	// è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã®æ¬¡æ•°ï¼ˆ2æ¬¡è¦ç´ ãªã‚‰2ï¼‰
 	int getDegree(kmb::bodyIdType bodyId) const;
-	// —v‘fƒOƒ‹[ƒv‚ÉŠÜ‚Ü‚ê‚é—v‘f‚Ìƒ^ƒCƒv‚ªˆêˆÓ‚©‚Ç‚¤‚©
+	// è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã«å«ã¾ã‚Œã‚‹è¦ç´ ã®ã‚¿ã‚¤ãƒ—ãŒä¸€æ„ã‹ã©ã†ã‹
 	bool isUniqueElementType(kmb::bodyIdType bodyId,kmb::elementType etype) const;
-	// —v‘f‚Ìæ“¾
+	// è¦ç´ ã®å–å¾—
 	kmb::ElementContainer::iterator findElement(elementIdType elementID,bodyIdType bodyID=kmb::Body::nullBodyId);
 	kmb::ElementContainer::const_iterator findElement(elementIdType elementID,bodyIdType bodyID=kmb::Body::nullBodyId) const;
-	// —v‘fƒOƒ‹[ƒv–¼
+	// è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—å
 	virtual const char* getBodyName(bodyIdType bodyId) const;
 	virtual void setBodyName(bodyIdType bodyId,const char* name);
 	kmb::bodyIdType getBodyIdByName(const char* name) const;
-	// ƒRƒ“ƒeƒiƒ^ƒCƒv
+	// ã‚³ãƒ³ãƒ†ãƒŠã‚¿ã‚¤ãƒ—
 	const char* getElementContainerType(bodyIdType bodyId) const;
-	// ŠO•”ƒƒbƒVƒ…‚©‚ç—v‘fƒOƒ‹[ƒv‚Ì’Ç‰Á
+	// å¤–éƒ¨ãƒ¡ãƒƒã‚·ãƒ¥ã‹ã‚‰è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã®è¿½åŠ 
 	kmb::bodyIdType importBody(const kmb::MeshData& otherMesh,kmb::bodyIdType bodyId);
 	//---------------------------------------------//
-	//-------------- •¨——ÊŠÇ— -------------------//
+	//-------------- ç‰©ç†é‡ç®¡ç† -------------------//
 	//---------------------------------------------//
 	virtual const std::multimap< std::string, kmb::DataBindings* >& getDataBindingsMap(void) const;
 	kmb::datamap::iterator beginDataIterator();
 	kmb::datamap::const_iterator beginDataIterator() const;
 	kmb::datamap::iterator endDataIterator();
 	kmb::datamap::const_iterator endDataIterator() const;
-	// •¨——Ê‚Ì¶¬i”h¶ƒNƒ‰ƒX‚ÅÀ‘•j
+	// ç‰©ç†é‡ã®ç”Ÿæˆï¼ˆæ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã§å®Ÿè£…ï¼‰
 	virtual kmb::DataBindings* createDataBindings(
 		const char* name,
 		kmb::DataBindings::bindingMode bmode,
 		kmb::PhysicalValue::valueType vtype,
 		const char* stype="",
 		kmb::bodyIdType targetBodyId=kmb::Body::nullBodyId);
-	// •¨——Êƒf[ƒ^‚Ìæ“¾
+	// ç‰©ç†é‡ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
 	kmb::DataBindings* getDataBindingsPtr(const char* name,const char* stype=NULL);
 	const kmb::DataBindings* getDataBindingsPtr(const char* name,const char* stype=NULL) const;
-	// •¨——Êƒf[ƒ^‚Ìİ’è
+	// ç‰©ç†é‡ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
 	bool setDataBindingsPtr(const char* name,kmb::DataBindings* data,const char* stype=NULL);
-	// “o˜^‚³‚ê‚Ä‚¢‚é•¨——Ê‚Ìí—Ş‚ÌŒÂ”
+	// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡ã®ç¨®é¡ã®å€‹æ•°
 	virtual size_t getDataCount(const char* stype=NULL) const;
 	bool hasData(const char* name,const char* stype=NULL) const;
 	bool renameData(const char* oldname,const char* newname,const char* stype=NULL);
 	bool deleteData(const char* name,const char* stype=NULL);
 	bool clearData(const char* name,const char* stype=NULL);
-	// name ‚É“o˜^‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚Ì’u‚«Š·‚¦
-	// g‚í‚È‚­‚È‚Á‚½ olddata ‚Í‚±‚Ìƒƒ\ƒbƒh‚ÌŠO‚Å delete ‚·‚é‚±‚Æ
-	// olddata ‚Í NULL ‚Å‚ ‚Á‚Ä‚Í‚¢‚¯‚È‚¢‚ªAnewdata ‚Í NULL ‚Ìê‡‚à‰Â
+	// name ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã®ç½®ãæ›ãˆ
+	// ä½¿ã‚ãªããªã£ãŸ olddata ã¯ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã®å¤–ã§ delete ã™ã‚‹ã“ã¨
+	// olddata ã¯ NULL ã§ã‚ã£ã¦ã¯ã„ã‘ãªã„ãŒã€newdata ã¯ NULL ã®å ´åˆã‚‚å¯
 	bool replaceData(const kmb::DataBindings* olddata, kmb::DataBindings* newdata, const char* name,const char* stype=NULL);
-	// id ‚ÌŒÂ”
+	// id ã®å€‹æ•°
 	size_t getIdCount(const char* name,const char* stype=NULL) const;
-	// stype ‚ğÈ—ª‚µ‚½‚Æ‚«‚É‰½‚ğg‚¤‚©‚ğŒˆ‚ß‚Ä‚¨‚­
+	// stype ã‚’çœç•¥ã—ãŸã¨ãã«ä½•ã‚’ä½¿ã†ã‹ã‚’æ±ºã‚ã¦ãŠã
 	void setDefaultSpecType(const char* specType);
-	// “o˜^‚³‚ê‚Ä‚¢‚é•¨——Ê‚Ìİ’èƒ‚[ƒh‚ğ•Ô‚·
+	// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡ã®è¨­å®šãƒ¢ãƒ¼ãƒ‰ã‚’è¿”ã™
 	kmb::DataBindings::bindingMode getDataMode(const char* name, const char* stype=NULL) const;
-	// “o˜^‚³‚ê‚Ä‚¢‚é•¨——Ê‚Ì’l‚ÌŒ^‚ğ•Ô‚·
+	// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡ã®å€¤ã®å‹ã‚’è¿”ã™
 	kmb::PhysicalValue::valueType getDataValueType(const char* name, const char* stype=NULL) const;
-	// “o˜^‚³‚ê‚Ä‚¢‚é•¨——Ê‚Ì¯•Êq(SpecType)‚ğ•Ô‚·
+	// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡ã®è­˜åˆ¥å­(SpecType)ã‚’è¿”ã™
 	std::string getDataSpecType(const char* name) const;
-	// “o˜^‚³‚ê‚Ä‚¢‚é•¨——Ê‚Ì¯•Êq(SpecType)‚ğ•ÏX‚·‚é
+	// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡ã®è­˜åˆ¥å­(SpecType)ã‚’å¤‰æ›´ã™ã‚‹
 	bool setDataSpecType(const char* name,const char* oldstype,const char* newstype);
-	// ƒRƒ“ƒeƒiƒ^ƒCƒv
+	// ã‚³ãƒ³ãƒ†ãƒŠã‚¿ã‚¤ãƒ—
 	const char* getDataContainerType(const char* name,const char* stype=NULL) const;
-	// Id ‚Ì“o˜^
+	// Id ã®ç™»éŒ²
 	virtual void addId(const char* name,kmb::idType id,const char* stype=NULL);
 	virtual void addId(const char* name,kmb::Face f,const char* stype=NULL);
-	// id ‚ª“o˜^‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	// •¨——Ê‚É’l‚ğ“o˜^
+	// id ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
+	// ç‰©ç†é‡ã«å€¤ã‚’ç™»éŒ²
 	virtual void setPhysicalValue(const char* name,kmb::PhysicalValue* val,const char* stype=NULL);
 	virtual void setPhysicalValueAtId(const char* name,kmb::idType id,kmb::PhysicalValue* val,const char* stype=NULL);
 	virtual void setPhysicalValueAtId(const char* name,kmb::Face f,kmb::PhysicalValue* val,const char* stype=NULL);
-	// •¨——Ê‚ğæ“¾
+	// ç‰©ç†é‡ã‚’å–å¾—
 	virtual const kmb::PhysicalValue* getPhysicalValue(const char* name,const char* stype=NULL) const;
 	virtual const kmb::PhysicalValue* getPhysicalValueAtId(const char* name,kmb::idType id,const char* stype=NULL) const;
 	virtual const kmb::PhysicalValue* getPhysicalValueAtId(const char* name,kmb::Face f,const char* stype=NULL) const;
 	virtual bool getPhysicalValueAtId(const char* name,kmb::idType id,double *val,const char* stype=NULL) const;
 	virtual bool getPhysicalValueAtId(const char* name,kmb::Face f,double *val,const char* stype=NULL) const;
-	// •¡”“¯“o˜^
+	// è¤‡æ•°åŒæ™‚ç™»éŒ²
 	void appendTargetData(const char* name, const char* stype=NULL);
 	void appendTargetDataPtr(kmb::DataBindings* data);
 	void clearTargetData(void);
@@ -243,28 +243,28 @@ public:
 	virtual void getMultiPhysicalValues(kmb::idType id, double* values) const;
 	// auto name generation such as "prefix_0" "prefix_1"
 	std::string getUniqueDataName(std::string prefix,int num=0);
-	// “o˜^‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚É ElementGroup / ElementVariable ‚ª‚ ‚ê‚ÎA
-	// orgElementId ‚Ìƒf[ƒ^‚ğ elementId ‚ªˆø‚«Œp‚®
+	// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã« ElementGroup / ElementVariable ãŒã‚ã‚Œã°ã€
+	// orgElementId ã®ãƒ‡ãƒ¼ã‚¿ã‚’ elementId ãŒå¼•ãç¶™ã
 	void deriveTargetData(kmb::elementIdType elementId,kmb::elementIdType orgElementId);
 
-	// •ÏŠ·ŒnFƒf[ƒ^‚©‚çƒ{ƒfƒB‚ğ¶¬‚µ‚Ä“o˜^
+	// å¤‰æ›ç³»ï¼šãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ãƒœãƒ‡ã‚£ã‚’ç”Ÿæˆã—ã¦ç™»éŒ²
 	kmb::bodyIdType faceGroupToBody(const char* faceG,const char* stype=NULL);
-	// •ÏŠ·ŒnFƒf[ƒ^‚©‚çƒ{ƒfƒB‚ğ¶¬‚µ‚Ä“o˜^A’l‚Í—v‘f’l‚É“o˜^
+	// å¤‰æ›ç³»ï¼šãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ãƒœãƒ‡ã‚£ã‚’ç”Ÿæˆã—ã¦ç™»éŒ²ã€å€¤ã¯è¦ç´ å€¤ã«ç™»éŒ²
 	kmb::bodyIdType faceVariableToBody(const char* faceV,const char* elemV,const char* stype=NULL);
-	// •ÏŠ·ŒnFƒf[ƒ^‚©‚çw’è‚³‚ê‚½ƒ{ƒfƒB‚É’Ç‰Áiƒ{ƒfƒB‚Ì’Ç‰Á‚Í‚µ‚È‚¢j
+	// å¤‰æ›ç³»ï¼šãƒ‡ãƒ¼ã‚¿ã‹ã‚‰æŒ‡å®šã•ã‚ŒãŸãƒœãƒ‡ã‚£ã«è¿½åŠ ï¼ˆãƒœãƒ‡ã‚£ã®è¿½åŠ ã¯ã—ãªã„ï¼‰
 	size_t faceGroupToBody(const char* faceG,kmb::ElementContainer* body, const char* stype=NULL);
 	size_t faceVariableToBody(const char* faceV,kmb::ElementContainer* body,const char* stype=NULL);
 	// get node ids of binding data
 	void getNodeSetFromDataBindings(std::set<kmb::nodeIdType>&nodeSet,const char* name,const char* stype=NULL) const;
 	void getBoundingBoxOfData(kmb::BoundingBox &bbox,const kmb::DataBindings* data) const;
-	// ‚ ‚ç‚©‚¶‚ßƒf[ƒ^‚Íì‚Á‚Ä‚¨‚­‚±‚Æ
+	// ã‚ã‚‰ã‹ã˜ã‚ãƒ‡ãƒ¼ã‚¿ã¯ä½œã£ã¦ãŠãã“ã¨
 	int convertData(const char* org, const char* conv, const char* orgstype=NULL,const char* convstype=NULL);
 	int convertData(const kmb::DataBindings* orgData, kmb::DataBindings* convData);
-	// ˆø‚«Z subtrahend ‚ÉŠÜ‚Ü‚ê‚é Id ‚ğ@minuend ‚©‚ç‚Ì‚¼‚­
-	// FaceGroup NodeGroup ElementGroup ‚É‘Î‰
+	// å¼•ãç®— subtrahend ã«å«ã¾ã‚Œã‚‹ Id ã‚’ã€€minuend ã‹ã‚‰ã®ãã
+	// FaceGroup NodeGroup ElementGroup ã«å¯¾å¿œ
 	int subtractData(const char* subt, const char* minu, const char* subtstype=NULL,const char* minustype=NULL);
-	// Body ‚ÉŠÜ‚Ü‚ê‚éß“_‚ğ‚·‚×‚Äß“_ƒOƒ‹[ƒv‚É‚·‚é
-	// Body ‚ğ FaceGroup ElementGroup ‚É•ÏŠ·‚·‚é
+	// Body ã«å«ã¾ã‚Œã‚‹ç¯€ç‚¹ã‚’ã™ã¹ã¦ç¯€ç‚¹ã‚°ãƒ«ãƒ¼ãƒ—ã«ã™ã‚‹
+	// Body ã‚’ FaceGroup ElementGroup ã«å¤‰æ›ã™ã‚‹
 	int convertBodyToData(kmb::bodyIdType bodyId, const char* name,const char* stype=NULL);
 
 #ifdef _MSC_VER
@@ -277,20 +277,20 @@ public:
 #pragma warning(disable:869)
 #endif
 
-	// (x,y,z) ‚©‚ç‹——£ tolerance ˆÈ‰º‚ÅÅ‚à‹ß‚¢—v‘f‚ğ’T‚·
-	// solid —v‘f‚Ì tolerance = 0.0 ‚Æ‚·‚é‚ÆA(x,y,z) ‚ğŠÜ‚Ş“_‚ğ’T‚·
+	// (x,y,z) ã‹ã‚‰è·é›¢ tolerance ä»¥ä¸‹ã§æœ€ã‚‚è¿‘ã„è¦ç´ ã‚’æ¢ã™
+	// solid è¦ç´ ã®æ™‚ tolerance = 0.0 ã¨ã™ã‚‹ã¨ã€(x,y,z) ã‚’å«ã‚€ç‚¹ã‚’æ¢ã™
 	virtual kmb::elementIdType searchElement(kmb::bodyIdType bodyId,double x,double y,double z,double tolerance=0.0) const{ return kmb::Element::nullElementId; };
 
-	// 0Ÿ•âŠÔFÅ‚à‹ß‚¢ß“_‚Å‚Ì’l‚ğæ‚èo‚·
-	// NodeVariable ‚Ì‚İ‘Î‰
+	// 0æ¬¡è£œé–“ï¼šæœ€ã‚‚è¿‘ã„ç¯€ç‚¹ã§ã®å€¤ã‚’å–ã‚Šå‡ºã™
+	// NodeVariable ã®ã¿å¯¾å¿œ
 	virtual int getValueOnNearestNode(const char* name,double x,double y,double z,double *values,const char* stype=NULL) const { return -1; };
-	// •âŠÔ’l‚ğŒvZ‚·‚é
+	// è£œé–“å€¤ã‚’è¨ˆç®—ã™ã‚‹
 	virtual int getInterpolatedValueInBody(const char* name,kmb::bodyIdType bodyId,double x,double y,double z,double *values,double tolerance=0.0,const char* stype=NULL) const { return -1; };
 	virtual int getInterpolatedValue(const char* name,double x,double y,double z,double *values,double tolerance=0.0,const char* stype=NULL) const { return -1; };
 	virtual int getInterpolatedValueInData(const char* name,const char* target,double x,double y,double z,double *values,double tolerance=0.0,const char* stype=NULL) const{ return -1; };
-	// TargetData ‚ÅƒLƒƒƒbƒVƒ…‚µ‚Ä‚ ‚éƒf[ƒ^‚É‚Â‚¢‚Ä•âŠÔ’l‚ğ‹‚ß‚é
-	// –ß‚è’l‚Í values ‚É“ü‚ê‚½”’l‚ÌŸŒ³
-	// •âŠÔ‚Å‚«‚È‚©‚Á‚½‚ç 0 ‚ğA‚»‚Ì‘¼‚ÌƒGƒ‰[‚Í -1 ‚ğ•Ô‚·
+	// TargetData ã§ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã—ã¦ã‚ã‚‹ãƒ‡ãƒ¼ã‚¿ã«ã¤ã„ã¦è£œé–“å€¤ã‚’æ±‚ã‚ã‚‹
+	// æˆ»ã‚Šå€¤ã¯ values ã«å…¥ã‚ŒãŸæ•°å€¤ã®æ¬¡å…ƒ
+	// è£œé–“ã§ããªã‹ã£ãŸã‚‰ 0 ã‚’ã€ãã®ä»–ã®ã‚¨ãƒ©ãƒ¼ã¯ -1 ã‚’è¿”ã™
 	virtual int getInterpolatedValuesInBody(kmb::bodyIdType bodyId,double x,double y,double z,double *values) const { return -1; };
 	virtual int getInterpolatedValues(double x,double y,double z,double *values) const { return -1; };
 	virtual int getInterpolatedValuesInData(const char* target,double x,double y,double z,double *values,double tolerance=0.0) const{ return -1;};

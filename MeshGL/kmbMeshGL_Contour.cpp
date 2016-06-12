@@ -457,7 +457,7 @@ kmb::MeshGL::drawSurfaceContour2D(kmb::bodyIdType bodyId,const char* physicalVal
 	}
 }
 
-// e‚Ì—v‘f‚É’l‚ª“ü‚Á‚Ä‚¢‚é
+// è¦ªã®è¦ç´ ã«å€¤ãŒå…¥ã£ã¦ã„ã‚‹æ™‚
 void
 kmb::MeshGL::drawFaceGroupContour(const char* faceName, const char* physicalValue, kmb::ColorMap* colorMap,int comp)
 {
@@ -490,9 +490,9 @@ kmb::MeshGL::drawFaceGroupContour(const char* faceName, const char* physicalValu
 					switch( element.getBoundaryVertexCount(localId) )
 					{
 					case 3:
-						if( mesh->getNode( element.getBoundaryCellId(localId,0), node0 ) &&
-							mesh->getNode( element.getBoundaryCellId(localId,1), node1 ) &&
-							mesh->getNode( element.getBoundaryCellId(localId,2), node2 ) )
+						if( mesh->getNode( element.getBoundaryNodeId(localId,0), node0 ) &&
+							mesh->getNode( element.getBoundaryNodeId(localId,1), node1 ) &&
+							mesh->getNode( element.getBoundaryNodeId(localId,2), node2 ) )
 						{
 							colorMap->setGLColor( v );
 							drawTriangle
@@ -502,10 +502,10 @@ kmb::MeshGL::drawFaceGroupContour(const char* faceName, const char* physicalValu
 						}
 						break;
 					case 4:
-						if( mesh->getNode( element.getBoundaryCellId(localId,0), node0 ) &&
-							mesh->getNode( element.getBoundaryCellId(localId,1), node1 ) &&
-							mesh->getNode( element.getBoundaryCellId(localId,2), node2 ) &&
-							mesh->getNode( element.getBoundaryCellId(localId,3), node3 ) )
+						if( mesh->getNode( element.getBoundaryNodeId(localId,0), node0 ) &&
+							mesh->getNode( element.getBoundaryNodeId(localId,1), node1 ) &&
+							mesh->getNode( element.getBoundaryNodeId(localId,2), node2 ) &&
+							mesh->getNode( element.getBoundaryNodeId(localId,3), node3 ) )
 						{
 							colorMap->setGLColor( v );
 							drawQuad
@@ -535,9 +535,9 @@ kmb::MeshGL::drawFaceGroupContour(const char* faceName, const char* physicalValu
 						switch( element.getBoundaryVertexCount(localId) )
 						{
 						case 3:
-							if( mesh->getNode( element.getBoundaryCellId(localId,0), node0 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,1), node1 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,2), node2 ) )
+							if( mesh->getNode( element.getBoundaryNodeId(localId,0), node0 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,1), node1 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,2), node2 ) )
 							{
 								colorMap->setGLColor( kmb::Vector3D::abs(v) );
 								drawTriangle
@@ -547,10 +547,10 @@ kmb::MeshGL::drawFaceGroupContour(const char* faceName, const char* physicalValu
 							}
 							break;
 						case 4:
-							if( mesh->getNode( element.getBoundaryCellId(localId,0), node0 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,1), node1 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,2), node2 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,3), node3 ) )
+							if( mesh->getNode( element.getBoundaryNodeId(localId,0), node0 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,1), node1 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,2), node2 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,3), node3 ) )
 							{
 								colorMap->setGLColor( kmb::Vector3D::abs(v) );
 								drawQuad
@@ -577,9 +577,9 @@ kmb::MeshGL::drawFaceGroupContour(const char* faceName, const char* physicalValu
 						switch( element.getBoundaryVertexCount(localId) )
 						{
 						case 3:
-							if( mesh->getNode( element.getBoundaryCellId(localId,0), node0 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,1), node1 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,2), node2 ) )
+							if( mesh->getNode( element.getBoundaryNodeId(localId,0), node0 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,1), node1 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,2), node2 ) )
 							{
 								colorMap->setGLColor( v[comp] );
 								drawTriangle
@@ -589,10 +589,10 @@ kmb::MeshGL::drawFaceGroupContour(const char* faceName, const char* physicalValu
 							}
 							break;
 						case 4:
-							if( mesh->getNode( element.getBoundaryCellId(localId,0), node0 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,1), node1 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,2), node2 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,3), node3 ) )
+							if( mesh->getNode( element.getBoundaryNodeId(localId,0), node0 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,1), node1 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,2), node2 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,3), node3 ) )
 							{
 								colorMap->setGLColor( v[comp] );
 								drawQuad
@@ -623,9 +623,9 @@ kmb::MeshGL::drawFaceGroupContour(const char* faceName, const char* physicalValu
 						switch( element.getBoundaryVertexCount(localId) )
 						{
 						case 3:
-							if( mesh->getNode( element.getBoundaryCellId(localId,0), node0 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,1), node1 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,2), node2 ) )
+							if( mesh->getNode( element.getBoundaryNodeId(localId,0), node0 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,1), node1 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,2), node2 ) )
 							{
 								colorMap->setGLColor( v[comp] );
 								drawTriangle
@@ -635,10 +635,10 @@ kmb::MeshGL::drawFaceGroupContour(const char* faceName, const char* physicalValu
 							}
 							break;
 						case 4:
-							if( mesh->getNode( element.getBoundaryCellId(localId,0), node0 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,1), node1 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,2), node2 ) &&
-								mesh->getNode( element.getBoundaryCellId(localId,3), node3 ) )
+							if( mesh->getNode( element.getBoundaryNodeId(localId,0), node0 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,1), node1 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,2), node2 ) &&
+								mesh->getNode( element.getBoundaryNodeId(localId,3), node3 ) )
 							{
 								colorMap->setGLColor( v[comp] );
 								drawQuad
@@ -668,9 +668,9 @@ kmb::MeshGL::drawFaceGroupContour(const char* faceName, const char* physicalValu
 					switch( element.getBoundaryVertexCount(localId) )
 					{
 					case 3:
-						if( mesh->getNode( element.getBoundaryCellId(localId,0), node0 ) &&
-							mesh->getNode( element.getBoundaryCellId(localId,1), node1 ) &&
-							mesh->getNode( element.getBoundaryCellId(localId,2), node2 ) )
+						if( mesh->getNode( element.getBoundaryNodeId(localId,0), node0 ) &&
+							mesh->getNode( element.getBoundaryNodeId(localId,1), node1 ) &&
+							mesh->getNode( element.getBoundaryNodeId(localId,2), node2 ) )
 						{
 							colorMap->setGLColorByStep( v );
 							drawTriangle
@@ -680,10 +680,10 @@ kmb::MeshGL::drawFaceGroupContour(const char* faceName, const char* physicalValu
 						}
 						break;
 					case 4:
-						if( mesh->getNode( element.getBoundaryCellId(localId,0), node0 ) &&
-							mesh->getNode( element.getBoundaryCellId(localId,1), node1 ) &&
-							mesh->getNode( element.getBoundaryCellId(localId,2), node2 ) &&
-							mesh->getNode( element.getBoundaryCellId(localId,3), node3 ) )
+						if( mesh->getNode( element.getBoundaryNodeId(localId,0), node0 ) &&
+							mesh->getNode( element.getBoundaryNodeId(localId,1), node1 ) &&
+							mesh->getNode( element.getBoundaryNodeId(localId,2), node2 ) &&
+							mesh->getNode( element.getBoundaryNodeId(localId,3), node3 ) )
 						{
 							colorMap->setGLColorByStep( v );
 							drawQuad
@@ -703,15 +703,15 @@ kmb::MeshGL::drawFaceGroupContour(const char* faceName, const char* physicalValu
 	}
 }
 
-// 1Ÿ—v‘f‚Æ2Ÿ—v‘f‚ğ‹æ•Ê‚¹‚¸‚ÉƒRƒ“ƒ^[‚ğ‘‚­‚½‚ß
-// getVertexCount() ‚Å”»’è‚·‚é
+// 1æ¬¡è¦ç´ ã¨2æ¬¡è¦ç´ ã‚’åŒºåˆ¥ã›ãšã«ã‚³ãƒ³ã‚¿ãƒ¼ã‚’æ›¸ããŸã‚
+// getVertexCount() ã§åˆ¤å®šã™ã‚‹
 void
 kmb::MeshGL::drawSurfaceNodeContour(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp)
 {
 	const kmb::DataBindings* data = NULL;
 	const kmb::Body* body = NULL;
 	const kmb::Point3DContainer* points = NULL;
-	// “Á•Ê‚Èê‡
+	// ç‰¹åˆ¥ãªå ´åˆ
 	if( mesh != NULL && colorMap != NULL && prefMode == kmb::MeshGL::SPEED &&
 		(points = mesh->getNodes()) != NULL &&
 		(body = mesh->getBodyPtr(bodyId)) != NULL &&
@@ -723,10 +723,10 @@ kmb::MeshGL::drawSurfaceNodeContour(kmb::bodyIdType bodyId,const char* physicalV
 		colorMap->getColorCache() != NULL &&
 		colorMap->getStep() == 0 )
 	{
-		// ß“_‚ª”z—ñ‚Å—^‚¦‚ê‚ç‚Ä‚¢‚é
-		// F‚ª”z—ñ‚Å—^‚¦‚ç‚ê‚Ä‚¢‚é
-		// —v‘f‚ÍOŠpŒ`‚Ü‚½‚ÍlŠpŒ`‚Æ‚µ‚Ä”z—ñ‚Å—^‚¦‚ç‚ê‚Ä‚¢‚é
-		// glColorPointer ‚Íƒ|ƒŠƒSƒ“‚²‚Æ‚ÉF‚ğ•t‚¯‚éê‡‚Ég‚¦‚é‚Ì‚Å‚±‚±‚Å‚Íg‚¦‚È‚¢
+		// ç¯€ç‚¹ãŒé…åˆ—ã§ä¸ãˆã‚Œã‚‰ã¦ã„ã‚‹
+		// è‰²ãŒé…åˆ—ã§ä¸ãˆã‚‰ã‚Œã¦ã„ã‚‹
+		// è¦ç´ ã¯ä¸‰è§’å½¢ã¾ãŸã¯å››è§’å½¢ã¨ã—ã¦é…åˆ—ã§ä¸ãˆã‚‰ã‚Œã¦ã„ã‚‹
+		// glColorPointer ã¯ãƒãƒªã‚´ãƒ³ã”ã¨ã«è‰²ã‚’ä»˜ã‘ã‚‹å ´åˆã«ä½¿ãˆã‚‹ã®ã§ã“ã“ã§ã¯ä½¿ãˆãªã„
 		::glPushAttrib(GL_ENABLE_BIT);
 			::glEnable(GL_COLOR_MATERIAL);
 			::glEnableClientState(GL_VERTEX_ARRAY);
@@ -742,17 +742,17 @@ kmb::MeshGL::drawSurfaceNodeContour(kmb::bodyIdType bodyId,const char* physicalV
 				const float* triNormals = elements->getTriNormals();
 				::glBegin( GL_TRIANGLES );
 				for(size_t i=0;i<triCount;++i){
-					// –@ü
+					// æ³•ç·š
 					::glNormal3f( triNormals[3*i], triNormals[3*i+1], triNormals[3*i+2] );
-					// 1“_–Ú
+					// 1ç‚¹ç›®
 					nodeId = triNodeTable[3*i];
 					::glColor3f( colors[3*nodeId], colors[3*nodeId+1], colors[3*nodeId+2] );
 					::glArrayElement( nodeId );
-					// 2“_–Ú
+					// 2ç‚¹ç›®
 					nodeId = triNodeTable[3*i+1];
 					::glColor3f( colors[3*nodeId], colors[3*nodeId+1], colors[3*nodeId+2] );
 					::glArrayElement( nodeId );
-					// 3“_–Ú
+					// 3ç‚¹ç›®
 					nodeId = triNodeTable[3*i+2];
 					::glColor3f( colors[3*nodeId], colors[3*nodeId+1], colors[3*nodeId+2] );
 					::glArrayElement( nodeId );
@@ -765,21 +765,21 @@ kmb::MeshGL::drawSurfaceNodeContour(kmb::bodyIdType bodyId,const char* physicalV
 				const float* quadNormals = elements->getQuadNormals();
 				::glBegin( GL_QUADS );
 				for(size_t i=0;i<quadCount;++i){
-					// –@ü
+					// æ³•ç·š
 					::glNormal3f( quadNormals[3*i], quadNormals[3*i+1], quadNormals[3*i+2] );
-					// 1“_–Ú
+					// 1ç‚¹ç›®
 					nodeId = quadNodeTable[4*i];
 					::glColor3f( colors[3*nodeId], colors[3*nodeId+1], colors[3*nodeId+2] );
 					::glArrayElement( nodeId );
-					// 2“_–Ú
+					// 2ç‚¹ç›®
 					nodeId = quadNodeTable[4*i+1];
 					::glColor3f( colors[3*nodeId], colors[3*nodeId+1], colors[3*nodeId+2] );
 					::glArrayElement( nodeId );
-					// 3“_–Ú
+					// 3ç‚¹ç›®
 					nodeId = quadNodeTable[4*i+2];
 					::glColor3f( colors[3*nodeId], colors[3*nodeId+1], colors[3*nodeId+2] );
 					::glArrayElement( nodeId );
-					// 4“_–Ú
+					// 4ç‚¹ç›®
 					nodeId = quadNodeTable[4*i+3];
 					::glColor3f( colors[3*nodeId], colors[3*nodeId+1], colors[3*nodeId+2] );
 					::glArrayElement( nodeId );
@@ -1278,7 +1278,7 @@ kmb::MeshGL::drawSurfaceNodeContour(kmb::bodyIdType bodyId,const char* physicalV
 	}
 }
 
-// comp –¢‘Î‰
+// comp æœªå¯¾å¿œ
 void
 kmb::MeshGL::drawSurfaceNodeContour2D(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp)
 {
@@ -2835,9 +2835,9 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 						switch( element.getBoundaryVertexCount(localId) )
 						{
 						case 3:
-							nodeId0 = element.getBoundaryCellId(localId,0);
-							nodeId1 = element.getBoundaryCellId(localId,1);
-							nodeId2 = element.getBoundaryCellId(localId,2);
+							nodeId0 = element.getBoundaryNodeId(localId,0);
+							nodeId1 = element.getBoundaryNodeId(localId,1);
+							nodeId2 = element.getBoundaryNodeId(localId,2);
 							if( mesh->getNode( nodeId0, node0 ) &&
 								mesh->getNode( nodeId1, node1 ) &&
 								mesh->getNode( nodeId2, node2 ) &&
@@ -2852,10 +2852,10 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 							}
 							break;
 						case 4:
-							nodeId0 = element.getBoundaryCellId(localId,0);
-							nodeId1 = element.getBoundaryCellId(localId,1);
-							nodeId2 = element.getBoundaryCellId(localId,2);
-							nodeId3 = element.getBoundaryCellId(localId,3);
+							nodeId0 = element.getBoundaryNodeId(localId,0);
+							nodeId1 = element.getBoundaryNodeId(localId,1);
+							nodeId2 = element.getBoundaryNodeId(localId,2);
+							nodeId3 = element.getBoundaryNodeId(localId,3);
 							if( mesh->getNode( nodeId0, node0 ) &&
 								mesh->getNode( nodeId1, node1 ) &&
 								mesh->getNode( nodeId2, node2 ) &&
@@ -2889,9 +2889,9 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 						switch( element.getBoundaryVertexCount(localId) )
 						{
 						case 3:
-							nodeId0 = element.getBoundaryCellId(localId,0);
-							nodeId1 = element.getBoundaryCellId(localId,1);
-							nodeId2 = element.getBoundaryCellId(localId,2);
+							nodeId0 = element.getBoundaryNodeId(localId,0);
+							nodeId1 = element.getBoundaryNodeId(localId,1);
+							nodeId2 = element.getBoundaryNodeId(localId,2);
 							if( mesh->getNode( nodeId0, node0 ) &&
 								mesh->getNode( nodeId1, node1 ) &&
 								mesh->getNode( nodeId2, node2 ) &&
@@ -2903,10 +2903,10 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 							}
 							break;
 						case 4:
-							nodeId0 = element.getBoundaryCellId(localId,0);
-							nodeId1 = element.getBoundaryCellId(localId,1);
-							nodeId2 = element.getBoundaryCellId(localId,2);
-							nodeId3 = element.getBoundaryCellId(localId,3);
+							nodeId0 = element.getBoundaryNodeId(localId,0);
+							nodeId1 = element.getBoundaryNodeId(localId,1);
+							nodeId2 = element.getBoundaryNodeId(localId,2);
+							nodeId3 = element.getBoundaryNodeId(localId,3);
 							if( mesh->getNode( nodeId0, node0 ) &&
 								mesh->getNode( nodeId1, node1 ) &&
 								mesh->getNode( nodeId2, node2 ) &&
@@ -2952,9 +2952,9 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 							switch( element.getBoundaryVertexCount(localId) )
 							{
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -2969,10 +2969,10 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -3006,9 +3006,9 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 							switch( element.getBoundaryVertexCount(localId) )
 							{
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -3023,10 +3023,10 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -3062,9 +3062,9 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 							switch( element.getBoundaryVertexCount(localId) )
 							{
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -3080,10 +3080,10 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -3125,9 +3125,9 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 							switch( element.getBoundaryVertexCount(localId) )
 							{
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -3143,10 +3143,10 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -3197,9 +3197,9 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 							switch( element.getBoundaryVertexCount(localId) )
 							{
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -3214,10 +3214,10 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -3253,9 +3253,9 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 							switch( element.getBoundaryVertexCount(localId) )
 							{
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -3271,10 +3271,10 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -3324,9 +3324,9 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 						switch( element.getBoundaryVertexCount(localId) )
 						{
 						case 3:
-							nodeId0 = element.getBoundaryCellId(localId,0);
-							nodeId1 = element.getBoundaryCellId(localId,1);
-							nodeId2 = element.getBoundaryCellId(localId,2);
+							nodeId0 = element.getBoundaryNodeId(localId,0);
+							nodeId1 = element.getBoundaryNodeId(localId,1);
+							nodeId2 = element.getBoundaryNodeId(localId,2);
 							if( mesh->getNode( nodeId0, node0 ) &&
 								mesh->getNode( nodeId1, node1 ) &&
 								mesh->getNode( nodeId2, node2 ) &&
@@ -3341,10 +3341,10 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 							}
 							break;
 						case 4:
-							nodeId0 = element.getBoundaryCellId(localId,0);
-							nodeId1 = element.getBoundaryCellId(localId,1);
-							nodeId2 = element.getBoundaryCellId(localId,2);
-							nodeId3 = element.getBoundaryCellId(localId,3);
+							nodeId0 = element.getBoundaryNodeId(localId,0);
+							nodeId1 = element.getBoundaryNodeId(localId,1);
+							nodeId2 = element.getBoundaryNodeId(localId,2);
+							nodeId3 = element.getBoundaryNodeId(localId,3);
 							if( mesh->getNode( nodeId0, node0 ) &&
 								mesh->getNode( nodeId1, node1 ) &&
 								mesh->getNode( nodeId2, node2 ) &&
@@ -3378,9 +3378,9 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 						switch( element.getBoundaryVertexCount(localId) )
 						{
 						case 3:
-							nodeId0 = element.getBoundaryCellId(localId,0);
-							nodeId1 = element.getBoundaryCellId(localId,1);
-							nodeId2 = element.getBoundaryCellId(localId,2);
+							nodeId0 = element.getBoundaryNodeId(localId,0);
+							nodeId1 = element.getBoundaryNodeId(localId,1);
+							nodeId2 = element.getBoundaryNodeId(localId,2);
 							if( mesh->getNode( nodeId0, node0 ) &&
 								mesh->getNode( nodeId1, node1 ) &&
 								mesh->getNode( nodeId2, node2 ) &&
@@ -3396,10 +3396,10 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 							}
 							break;
 						case 4:
-							nodeId0 = element.getBoundaryCellId(localId,0);
-							nodeId1 = element.getBoundaryCellId(localId,1);
-							nodeId2 = element.getBoundaryCellId(localId,2);
-							nodeId3 = element.getBoundaryCellId(localId,3);
+							nodeId0 = element.getBoundaryNodeId(localId,0);
+							nodeId1 = element.getBoundaryNodeId(localId,1);
+							nodeId2 = element.getBoundaryNodeId(localId,2);
+							nodeId3 = element.getBoundaryNodeId(localId,3);
 							if( mesh->getNode( nodeId0, node0 ) &&
 								mesh->getNode( nodeId1, node1 ) &&
 								mesh->getNode( nodeId2, node2 ) &&
@@ -3445,9 +3445,9 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 						switch( element.getBoundaryVertexCount(localId) )
 						{
 						case 3:
-							nodeId0 = element.getBoundaryCellId(localId,0);
-							nodeId1 = element.getBoundaryCellId(localId,1);
-							nodeId2 = element.getBoundaryCellId(localId,2);
+							nodeId0 = element.getBoundaryNodeId(localId,0);
+							nodeId1 = element.getBoundaryNodeId(localId,1);
+							nodeId2 = element.getBoundaryNodeId(localId,2);
 							if( mesh->getNode( nodeId0, node0 ) &&
 								mesh->getNode( nodeId1, node1 ) &&
 								mesh->getNode( nodeId2, node2 ) &&
@@ -3462,10 +3462,10 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 							}
 							break;
 						case 4:
-							nodeId0 = element.getBoundaryCellId(localId,0);
-							nodeId1 = element.getBoundaryCellId(localId,1);
-							nodeId2 = element.getBoundaryCellId(localId,2);
-							nodeId3 = element.getBoundaryCellId(localId,3);
+							nodeId0 = element.getBoundaryNodeId(localId,0);
+							nodeId1 = element.getBoundaryNodeId(localId,1);
+							nodeId2 = element.getBoundaryNodeId(localId,2);
+							nodeId3 = element.getBoundaryNodeId(localId,3);
 							if( mesh->getNode( nodeId0, node0 ) &&
 								mesh->getNode( nodeId1, node1 ) &&
 								mesh->getNode( nodeId2, node2 ) &&
@@ -3499,9 +3499,9 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 						switch( element.getBoundaryVertexCount(localId) )
 						{
 						case 3:
-							nodeId0 = element.getBoundaryCellId(localId,0);
-							nodeId1 = element.getBoundaryCellId(localId,1);
-							nodeId2 = element.getBoundaryCellId(localId,2);
+							nodeId0 = element.getBoundaryNodeId(localId,0);
+							nodeId1 = element.getBoundaryNodeId(localId,1);
+							nodeId2 = element.getBoundaryNodeId(localId,2);
 							if( mesh->getNode( nodeId0, node0 ) &&
 								mesh->getNode( nodeId1, node1 ) &&
 								mesh->getNode( nodeId2, node2 ) &&
@@ -3517,10 +3517,10 @@ kmb::MeshGL::drawFaceGroupNodeContour(const char* faceName, const char* physical
 							}
 							break;
 						case 4:
-							nodeId0 = element.getBoundaryCellId(localId,0);
-							nodeId1 = element.getBoundaryCellId(localId,1);
-							nodeId2 = element.getBoundaryCellId(localId,2);
-							nodeId3 = element.getBoundaryCellId(localId,3);
+							nodeId0 = element.getBoundaryNodeId(localId,0);
+							nodeId1 = element.getBoundaryNodeId(localId,1);
+							nodeId2 = element.getBoundaryNodeId(localId,2);
+							nodeId3 = element.getBoundaryNodeId(localId,3);
 							if( mesh->getNode( nodeId0, node0 ) &&
 								mesh->getNode( nodeId1, node1 ) &&
 								mesh->getNode( nodeId2, node2 ) &&
@@ -3586,7 +3586,7 @@ kmb::MeshGL::drawNodeContourOnFaceGroup(const char* faceName, const char* physic
 				if( !element.isFinished() ){
 					int nodeCount = element.getBoundaryNodeCount(localId);
 					for(int i=0;i<nodeCount;++i){
-						kmb::nodeIdType nodeId = element.getBoundaryCellId(localId,i);
+						kmb::nodeIdType nodeId = element.getBoundaryNodeId(localId,i);
 						if( nodeSet.insert(nodeId).second &&
 							mesh->getNode( nodeId, node ) &&
 							nodeValue->getPhysicalValue( nodeId, &v ) )
@@ -3612,7 +3612,7 @@ kmb::MeshGL::drawNodeContourOnFaceGroup(const char* faceName, const char* physic
 					if( !element.isFinished() ){
 						int nodeCount = element.getBoundaryNodeCount(localId);
 						for(int i=0;i<nodeCount;++i){
-							kmb::nodeIdType nodeId = element.getBoundaryCellId(localId,i);
+							kmb::nodeIdType nodeId = element.getBoundaryNodeId(localId,i);
 							if( nodeSet.insert(nodeId).second &&
 								mesh->getNode( nodeId, node ) &&
 								nodeValue->getPhysicalValue( nodeId, v ) )
@@ -3636,7 +3636,7 @@ kmb::MeshGL::drawNodeContourOnFaceGroup(const char* faceName, const char* physic
 					if( !element.isFinished() ){
 						int nodeCount = element.getBoundaryNodeCount(localId);
 						for(int i=0;i<nodeCount;++i){
-							kmb::nodeIdType nodeId = element.getBoundaryCellId(localId,i);
+							kmb::nodeIdType nodeId = element.getBoundaryNodeId(localId,i);
 							if( nodeSet.insert(nodeId).second &&
 								mesh->getNode( nodeId, node ) &&
 								nodeValue->getPhysicalValue( nodeId, v ) )
@@ -3663,7 +3663,7 @@ kmb::MeshGL::drawNodeContourOnFaceGroup(const char* faceName, const char* physic
 					if( !element.isFinished() ){
 						int nodeCount = element.getBoundaryNodeCount(localId);
 						for(int i=0;i<nodeCount;++i){
-							kmb::nodeIdType nodeId = element.getBoundaryCellId(localId,i);
+							kmb::nodeIdType nodeId = element.getBoundaryNodeId(localId,i);
 							if( nodeSet.insert(nodeId).second &&
 								mesh->getNode( nodeId, node ) &&
 								nodeValue->getPhysicalValue( nodeId, v ) )
@@ -3689,7 +3689,7 @@ kmb::MeshGL::drawNodeContourOnFaceGroup(const char* faceName, const char* physic
 				if( !element.isFinished() ){
 					int nodeCount = element.getBoundaryNodeCount(localId);
 					for(int i=0;i<nodeCount;++i){
-						kmb::nodeIdType nodeId = element.getBoundaryCellId(localId,i);
+						kmb::nodeIdType nodeId = element.getBoundaryNodeId(localId,i);
 						if( nodeSet.insert(nodeId).second &&
 							mesh->getNode( nodeId, node ) &&
 							nodeValue->getPhysicalValue( nodeId, v ) )
@@ -3714,7 +3714,7 @@ kmb::MeshGL::drawNodeContourOnFaceGroup(const char* faceName, const char* physic
 				if( !element.isFinished() ){
 					int nodeCount = element.getBoundaryNodeCount(localId);
 					for(int i=0;i<nodeCount;++i){
-						kmb::nodeIdType nodeId = element.getBoundaryCellId(localId,i);
+						kmb::nodeIdType nodeId = element.getBoundaryNodeId(localId,i);
 						if( nodeSet.insert(nodeId).second &&
 							mesh->getNode( nodeId, node ) &&
 							nodeValue->getPhysicalValue( nodeId, &v ) )
@@ -3739,7 +3739,7 @@ kmb::MeshGL::drawNodeContourOnFaceGroup(const char* faceName, const char* physic
 				if( !element.isFinished() ){
 					int nodeCount = element.getBoundaryNodeCount(localId);
 					for(int i=0;i<nodeCount;++i){
-						kmb::nodeIdType nodeId = element.getBoundaryCellId(localId,i);
+						kmb::nodeIdType nodeId = element.getBoundaryNodeId(localId,i);
 						if( nodeSet.insert(nodeId).second &&
 							mesh->getNode( nodeId, node ) &&
 							nodeValue->getPhysicalValue( nodeId, &v ) )
@@ -3864,9 +3864,9 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -3894,10 +3894,10 @@ kmb::MeshGL::deformFaceGroupNodeContour
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -3948,9 +3948,9 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -3977,10 +3977,10 @@ kmb::MeshGL::deformFaceGroupNodeContour
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4045,9 +4045,9 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4075,10 +4075,10 @@ kmb::MeshGL::deformFaceGroupNodeContour
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4129,9 +4129,9 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4162,10 +4162,10 @@ kmb::MeshGL::deformFaceGroupNodeContour
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4234,9 +4234,9 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4264,10 +4264,10 @@ kmb::MeshGL::deformFaceGroupNodeContour
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4318,9 +4318,9 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4351,10 +4351,10 @@ kmb::MeshGL::deformFaceGroupNodeContour
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4423,9 +4423,9 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4453,10 +4453,10 @@ kmb::MeshGL::deformFaceGroupNodeContour
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4507,9 +4507,9 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4540,10 +4540,10 @@ kmb::MeshGL::deformFaceGroupNodeContour
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4652,9 +4652,9 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4688,10 +4688,10 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4750,9 +4750,9 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4785,10 +4785,10 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4861,9 +4861,9 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4897,10 +4897,10 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4959,9 +4959,9 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -4998,10 +4998,10 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -5078,9 +5078,9 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -5114,10 +5114,10 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -5176,9 +5176,9 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -5215,10 +5215,10 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -5295,9 +5295,9 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -5331,10 +5331,10 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -5393,9 +5393,9 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 					if( !element.isFinished() ){
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -5432,10 +5432,10 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 								}
 								break;
 							case 4:
-								nodeId0 = element.getBoundaryCellId(localId,0);
-								nodeId1 = element.getBoundaryCellId(localId,1);
-								nodeId2 = element.getBoundaryCellId(localId,2);
-								nodeId3 = element.getBoundaryCellId(localId,3);
+								nodeId0 = element.getBoundaryNodeId(localId,0);
+								nodeId1 = element.getBoundaryNodeId(localId,1);
+								nodeId2 = element.getBoundaryNodeId(localId,2);
+								nodeId3 = element.getBoundaryNodeId(localId,3);
 								if( mesh->getNode( nodeId0, node0 ) &&
 									mesh->getNode( nodeId1, node1 ) &&
 									mesh->getNode( nodeId2, node2 ) &&
@@ -5501,7 +5501,7 @@ kmb::MeshGL::deformXYZFaceGroupNodeContour(
 	}
 }
 
-// n0 ‚Æ n1 ‚ğ t : 1-t ‚É“à•ª‚µ‚½“_‚ğ—^‚¦‚é
+// n0 ã¨ n1 ã‚’ t : 1-t ã«å†…åˆ†ã—ãŸç‚¹ã‚’ä¸ãˆã‚‹
 void glVertex3dAtMiddle(kmb::Node* n0,kmb::Node* n1,double t){
 	::glVertex3d(
 		(1.0-t)*n0->x() + t*n1->x(),
@@ -5509,18 +5509,18 @@ void glVertex3dAtMiddle(kmb::Node* n0,kmb::Node* n1,double t){
 		(1.0-t)*n0->z() + t*n1->z());
 }
 
-// x0,y0 ‚Æ x1,y1 ‚ğ t : 1-t ‚É“à•ª‚µ‚½“_‚ğ—^‚¦‚é
+// x0,y0 ã¨ x1,y1 ã‚’ t : 1-t ã«å†…åˆ†ã—ãŸç‚¹ã‚’ä¸ãˆã‚‹
 void glVertex2dAtMiddle(double x0,double y0,double x1,double y1,double t){
 	::glVertex2d(
 		(1.0-t)*x0 + t*x1,
 		(1.0-t)*y0 + t*y1);
 }
 
-// n0 ‚Æ n1 ‚Æ n2 ‚É‚Â‚¢‚Ä
-// 0 < t < 1 ‚È‚ç n0 ‚Æ n1 ‚ğ t0 : 1-t0 ‚É“à•ª‚µ‚½“_‚ğ—^‚¦‚é
-// t0 = 1     ‚È‚ç n1 ‚ğ—^‚¦‚é
-// 1 < t0 < 2 ‚È‚ç n1 ‚Æ n2 ‚ğ (t0-1) : 1-(t0-1) ‚É“à•ª‚µ‚½“_‚ğ—^‚¦‚é
-// t0 ‚Æ t1 ‚ÌŠÔ‚É 1 ‚ª‚ ‚ê‚Î n1 ‚ğ©“®“I‚É‘‚­
+// n0 ã¨ n1 ã¨ n2 ã«ã¤ã„ã¦
+// 0 < t < 1 ãªã‚‰ n0 ã¨ n1 ã‚’ t0 : 1-t0 ã«å†…åˆ†ã—ãŸç‚¹ã‚’ä¸ãˆã‚‹
+// t0 = 1     ãªã‚‰ n1 ã‚’ä¸ãˆã‚‹
+// 1 < t0 < 2 ãªã‚‰ n1 ã¨ n2 ã‚’ (t0-1) : 1-(t0-1) ã«å†…åˆ†ã—ãŸç‚¹ã‚’ä¸ãˆã‚‹
+// t0 ã¨ t1 ã®é–“ã« 1 ãŒã‚ã‚Œã° n1 ã‚’è‡ªå‹•çš„ã«æ›¸ã
 void glVertex3dAtMiddle(kmb::Node* n0,kmb::Node* n1,kmb::Node* n2,double t0,double t1){
 	if( 0.0 < t0 && t0 < 1.0 ){
 		::glVertex3d(
@@ -5566,11 +5566,11 @@ void glVertex3dAtMiddle(kmb::Node* n0,kmb::Node* n1,kmb::Node* n2,double t0,doub
 	}
 }
 
-// n0 ‚Æ n1 ‚Æ n2 ‚É‚Â‚¢‚Ä
-// 0 < t < 1 ‚È‚ç n0 ‚Æ n1 ‚ğ t0 : 1-t0 ‚É“à•ª‚µ‚½“_‚ğ—^‚¦‚é
-// t0 = 1     ‚È‚ç n1 ‚ğ—^‚¦‚é
-// 1 < t0 < 2 ‚È‚ç n1 ‚Æ n2 ‚ğ (t0-1) : 1-(t0-1) ‚É“à•ª‚µ‚½“_‚ğ—^‚¦‚é
-// t0 ‚Æ t1 ‚ÌŠÔ‚É 1 ‚ª‚ ‚ê‚Î n1 ‚ğ©“®“I‚É‘‚­
+// n0 ã¨ n1 ã¨ n2 ã«ã¤ã„ã¦
+// 0 < t < 1 ãªã‚‰ n0 ã¨ n1 ã‚’ t0 : 1-t0 ã«å†…åˆ†ã—ãŸç‚¹ã‚’ä¸ãˆã‚‹
+// t0 = 1     ãªã‚‰ n1 ã‚’ä¸ãˆã‚‹
+// 1 < t0 < 2 ãªã‚‰ n1 ã¨ n2 ã‚’ (t0-1) : 1-(t0-1) ã«å†…åˆ†ã—ãŸç‚¹ã‚’ä¸ãˆã‚‹
+// t0 ã¨ t1 ã®é–“ã« 1 ãŒã‚ã‚Œã° n1 ã‚’è‡ªå‹•çš„ã«æ›¸ã
 void glVertex2dAtMiddle(double x0,double y0,double x1,double y1,double x2,double y2,double t0,double t1){
 	if( 0.0 < t0 && t0 < 1.0 ){
 		::glVertex2d(
@@ -5695,12 +5695,12 @@ kmb::MeshGL::drawSolidContourTriangle
 (kmb::Node* node0,kmb::Node* node1,kmb::Node* node2,
  double v0,double v1,double v2,kmb::ColorMap* colorMap)
 {
-	// node0 node1 node2 colorMap ‚Ì NULL ƒ`ƒFƒbƒN‚Í‚µ‚È‚¢‚æ
-	// •À‚Ñ‘Ö‚¦Œã u0 < u1 < u2
+	// node0 node1 node2 colorMap ã® NULL ãƒã‚§ãƒƒã‚¯ã¯ã—ãªã„ã‚ˆ
+	// ä¸¦ã³æ›¿ãˆå¾Œ u0 < u1 < u2
 	kmb::Node *n0, *n1, *n2;
 	double u0,u1,u2;
-	// ‰E‰ñ‚è‚©¶‰ñ‚è‚©
-	bool clockwise = true;   // Œ³‚ÌŒü‚«‚Í”½Œv false => maxIndex 2
+	// å³å›ã‚Šã‹å·¦å›ã‚Šã‹
+	bool clockwise = true;   // å…ƒã®å‘ãã¯åæ™‚è¨ˆ false => maxIndex 2
 
 	kmb::Vector3D normal = kmb::Point3D::calcNormalVector( *node0, *node1, *node2 );
 	if( v1 <= v0 ){
@@ -5747,10 +5747,10 @@ kmb::MeshGL::drawSolidContourTriangle
 	int count02 = 0;
 	int step01 = colorMap->getSolidDivision(u0,u1,count01,part01);
 	int step12 = colorMap->getSolidDivision(u1,u2,count12,part12);
-	// step02 ‚Íg‚í‚È‚¢‚Ì‚Å
+	// step02 ã¯ä½¿ã‚ãªã„ã®ã§
 	colorMap->getSolidDivision(u0,u2,count02,part02);
 	if( count02 == 0 ){
-		// ‚·‚×‚Ä“¯‚¶F
+		// ã™ã¹ã¦åŒã˜è‰²
 		colorMap->setGLColorByStep( step01 );
 		::glBegin( GL_TRIANGLES );
 		::glNormal3d( normal.x(), normal.y(), normal.z() );
@@ -5766,14 +5766,14 @@ kmb::MeshGL::drawSolidContourTriangle
 		::glEnd();
 		::glFlush();
 	}else{
-		// node0 -> node1 -> node2 ‚Ì partions ‚ğì¬
+		// node0 -> node1 -> node2 ã® partions ã‚’ä½œæˆ
 		double* part012 = new double[count02];
 		int ind = 0;
 		for(int i=0;i<count01;++i){
 			part012[ind] = part01[i];
 			++ind;
 		}
-		// node1 ‚ª‚¿‚å‚¤‚ÇF‚ÌØ‚ê–Ú
+		// node1 ãŒã¡ã‚‡ã†ã©è‰²ã®åˆ‡ã‚Œç›®
 		if( step01 + count01 != step12 ){
 			part012[ind] = 1.0;
 			++ind;
@@ -5782,22 +5782,22 @@ kmb::MeshGL::drawSolidContourTriangle
 			part012[ind] = part12[i] + 1.0;
 			++ind;
 		}
-		// Å‰
+		// æœ€åˆ
 		colorMap->setGLColorByStep( step01 );
 		::glBegin( GL_TRIANGLE_FAN );
 		::glNormal3d( normal.x(), normal.y(), normal.z() );
 		if( clockwise ){
 			::glVertex3d( n0->x(), n0->y(), n0->z() );
 			::glVertex3dAtMiddle( n0, n2, part02[0] );
-			::glVertex3dAtMiddle( n0, n1, n2, part012[0], -1.0 ); // •K—v‚È‚ç©“®“I‚É node1 ‚ğ’Ç‰Á‚·‚é
+			::glVertex3dAtMiddle( n0, n1, n2, part012[0], -1.0 ); // å¿…è¦ãªã‚‰è‡ªå‹•çš„ã« node1 ã‚’è¿½åŠ ã™ã‚‹
 		}else{
 			::glVertex3d( n0->x(), n0->y(), n0->z() );
-			::glVertex3dAtMiddle( n0, n1, n2, -1.0, part012[0] ); // •K—v‚È‚ç©“®“I‚É node1 ‚ğ’Ç‰Á‚·‚é
+			::glVertex3dAtMiddle( n0, n1, n2, -1.0, part012[0] ); // å¿…è¦ãªã‚‰è‡ªå‹•çš„ã« node1 ã‚’è¿½åŠ ã™ã‚‹
 			::glVertex3dAtMiddle( n0, n2, part02[0] );
 		}
 		::glEnd();
 		::glFlush();
-		// ’†ŠÔ
+		// ä¸­é–“
 		int i=1;
 		while(i<count02){
 			colorMap->setGLColorByStep( step01+i );
@@ -5816,7 +5816,7 @@ kmb::MeshGL::drawSolidContourTriangle
 			::glFlush();
 			++i;
 		}
-		// ÅŒã
+		// æœ€å¾Œ
 		colorMap->setGLColorByStep( step01+count02 );
 		::glBegin( GL_TRIANGLE_FAN );
 		::glNormal3d( normal.x(), normal.y(), normal.z() );
@@ -5851,11 +5851,11 @@ kmb::MeshGL::drawSolidContourTriangle2D
  double x2,double y2,double v2,
  kmb::ColorMap* colorMap)
 {
-	// •À‚Ñ‘Ö‚¦Œã u0 < u1 < u2
+	// ä¸¦ã³æ›¿ãˆå¾Œ u0 < u1 < u2
 	double u0,u1,u2;
 	double xx0,yy0,xx1,yy1,xx2,yy2;
-	// ‰E‰ñ‚è‚©¶‰ñ‚è‚©
-	bool clockwise = true;   // Œ³‚ÌŒü‚«‚Í”½Œv false => maxIndex 2
+	// å³å›ã‚Šã‹å·¦å›ã‚Šã‹
+	bool clockwise = true;   // å…ƒã®å‘ãã¯åæ™‚è¨ˆ false => maxIndex 2
 
 	if( v1 <= v0 ){
 		if( v2 <= v1 ){
@@ -5907,10 +5907,10 @@ kmb::MeshGL::drawSolidContourTriangle2D
 	int count02 = 0;
 	int step01 = colorMap->getSolidDivision(u0,u1,count01,part01);
 	int step12 = colorMap->getSolidDivision(u1,u2,count12,part12);
-	// step02 ‚Íg‚í‚È‚¢‚Ì‚Å
+	// step02 ã¯ä½¿ã‚ãªã„ã®ã§
 	colorMap->getSolidDivision(u0,u2,count02,part02);
 	if( count02 == 0 ){
-		// ‚·‚×‚Ä“¯‚¶F
+		// ã™ã¹ã¦åŒã˜è‰²
 		colorMap->setGLColorByStep( step01 );
 		::glBegin( GL_TRIANGLES );
 		if( clockwise ){
@@ -5924,14 +5924,14 @@ kmb::MeshGL::drawSolidContourTriangle2D
 		}
 		::glEnd();
 	}else{
-		// node0 -> node1 -> node2 ‚Ì partions ‚ğì¬
+		// node0 -> node1 -> node2 ã® partions ã‚’ä½œæˆ
 		double* part012 = new double[count02];
 		int ind = 0;
 		for(int i=0;i<count01;++i){
 			part012[ind] = part01[i];
 			++ind;
 		}
-		// node1 ‚ª‚¿‚å‚¤‚ÇF‚ÌØ‚ê–Ú
+		// node1 ãŒã¡ã‚‡ã†ã©è‰²ã®åˆ‡ã‚Œç›®
 		if( step01 + count01 != step12 ){
 			part012[ind] = 1.0;
 			++ind;
@@ -5940,20 +5940,20 @@ kmb::MeshGL::drawSolidContourTriangle2D
 			part012[ind] = part12[i] + 1.0;
 			++ind;
 		}
-		// Å‰
+		// æœ€åˆ
 		colorMap->setGLColorByStep( step01 );
 		::glBegin( GL_TRIANGLE_FAN );
 		if( clockwise ){
 			::glVertex2d( xx0, yy0 );
 			::glVertex2dAtMiddle( xx0, yy0, xx2, yy2, part02[0] );
-			::glVertex2dAtMiddle( xx0, yy0, xx1, yy1, xx2, yy2, part012[0], -1.0 ); // •K—v‚È‚ç©“®“I‚É node1 ‚ğ’Ç‰Á‚·‚é
+			::glVertex2dAtMiddle( xx0, yy0, xx1, yy1, xx2, yy2, part012[0], -1.0 ); // å¿…è¦ãªã‚‰è‡ªå‹•çš„ã« node1 ã‚’è¿½åŠ ã™ã‚‹
 		}else{
 			::glVertex2d( xx0, yy0 );
-			::glVertex2dAtMiddle( xx0, yy0, xx1, yy1, xx2, yy2, -1.0, part012[0] ); // •K—v‚È‚ç©“®“I‚É node1 ‚ğ’Ç‰Á‚·‚é
+			::glVertex2dAtMiddle( xx0, yy0, xx1, yy1, xx2, yy2, -1.0, part012[0] ); // å¿…è¦ãªã‚‰è‡ªå‹•çš„ã« node1 ã‚’è¿½åŠ ã™ã‚‹
 			::glVertex2dAtMiddle( xx0, yy0, xx2, yy2, part02[0] );
 		}
 		::glEnd();
-		// ’†ŠÔ
+		// ä¸­é–“
 		int i=1;
 		while(i<count02){
 			colorMap->setGLColorByStep( step01+i );
@@ -5970,7 +5970,7 @@ kmb::MeshGL::drawSolidContourTriangle2D
 			::glEnd();
 			++i;
 		}
-		// ÅŒã
+		// æœ€å¾Œ
 		colorMap->setGLColorByStep( step01+count02 );
 		::glBegin( GL_TRIANGLE_FAN );
 		if( clockwise ){

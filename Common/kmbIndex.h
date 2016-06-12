@@ -50,9 +50,9 @@ public:
 			(i==other.i && j < other.j) ||
 			(i==other.i && j == other.j && k < other.k);
 	}
-	// k j i ‚Ì‡‚É‘‚â‚µ‚Ä‚¢‚­
-	// operator < ‚Ì‡˜‚Æ“¯‚¶
-	// ƒ‹[ƒv‚ÍŠO‚©‚ç i j k
+	// k j i ã®é †ã«å¢—ã‚„ã—ã¦ã„ã
+	// operator < ã®é †åºã¨åŒã˜
+	// ãƒ«ãƒ¼ãƒ—ã¯å¤–ã‹ã‚‰ i j k
 	bool next(int nx,int ny,int nz){
 		if( k < nz-1 ){
 			++k;
@@ -137,9 +137,9 @@ public:
 			(k==other.k && j < other.j) ||
 			(k==other.k && j == other.j && i < other.i);
 	}
-	// i j k ‚Ì‡‚É‘‚â‚µ‚Ä‚¢‚­
-	// operator < ‚Ì‡˜‚Æ“¯‚¶
-	// ƒ‹[ƒv‚ÍŠO‚©‚ç k j i
+	// i j k ã®é †ã«å¢—ã‚„ã—ã¦ã„ã
+	// operator < ã®é †åºã¨åŒã˜
+	// ãƒ«ãƒ¼ãƒ—ã¯å¤–ã‹ã‚‰ k j i
 	bool next(int nx,int ny,int nz){
 		if( i < nx-1 ){
 			++i;
@@ -222,9 +222,9 @@ public:
 			(i < other.i) ||
 			(i==other.i && j < other.j);
 	}
-	// j i ‚Ì‡‚É‘‚â‚µ‚Ä‚¢‚­
-	// operator < ‚Ì‡˜‚Æ“¯‚¶
-	// ƒ‹[ƒv‚ÍŠO‚©‚ç i j
+	// j i ã®é †ã«å¢—ã‚„ã—ã¦ã„ã
+	// operator < ã®é †åºã¨åŒã˜
+	// ãƒ«ãƒ¼ãƒ—ã¯å¤–ã‹ã‚‰ i j
 	bool next(int nx,int ny){
 		if( j < ny-1 ){
 			++j;
@@ -274,6 +274,75 @@ public:
 		return (0 <= i) && (i < nx) && (0 <= j) && (j < ny);
 	}
 	bool valid(Index2 &end) const{
+		return (0 <= i) && (i < end.i) && (0 <= j) && (j < end.j);
+	}
+};
+
+class Index2R{
+public:
+	static orderType getOrderType(void){
+		return kReverseOrder;
+	}
+	int i;
+	int j;
+	Index2R(int _i,int _j) : i(_i), j(_j){}
+	bool operator<(const Index2R &other)const{
+		return
+			(j < other.j) ||
+			(j == other.j && i < other.i);
+	}
+	// i j ã®é †ã«å¢—ã‚„ã—ã¦ã„ã
+	// operator < ã®é †åºã¨åŒã˜
+	// ãƒ«ãƒ¼ãƒ—ã¯å¤–ã‹ã‚‰ j i
+	bool next(int nx,int ny){
+		if( i < nx-1 ){
+			++i;
+			return true;
+		}else if( j < ny-1 ){
+			i = 0;
+			++j;
+			return true;
+		}else{
+			i = nx;
+			j = ny;
+			return false;
+		}
+	}
+	bool next(Index3R &end){
+		if( i < end.i-1 ){
+			++i;
+			return true;
+		}else if( j < end.j-1 ){
+			i = 0;
+			++j;
+			return true;
+		}else{
+			i = end.i;
+			j = end.j;
+			return false;
+		}
+	}
+	int operator()(int nx,int ny) const{
+		return j*nx + i;
+	}
+	void init(void){
+		i = 0;
+		j = 0;
+	}
+	bool set(int n,int nx,int ny){
+		if( n < 0 || n >= nx*ny ){
+			i = -1;
+			j = -1;
+			return false;;
+		}
+		j = n / nx;
+		i = n - j * nx;
+		return true;
+	}
+	bool valid(int nx,int ny) const{
+		return (0 <= i) && (i < nx) && (0 <= j) && (j < ny);
+	}
+	bool valid(Index2R &end) const{
 		return (0 <= i) && (i < end.i) && (0 <= j) && (j < end.j);
 	}
 };

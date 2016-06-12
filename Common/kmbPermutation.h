@@ -12,7 +12,7 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-// ’FBoost ‚ğg‚Á‚Ä‚æ‚¯‚ê‚Î permutation_iterator ‚ª‚ ‚é
+// æ³¨ï¼šBoost ã‚’ä½¿ã£ã¦ã‚ˆã‘ã‚Œã° permutation_iterator ãŒã‚ã‚‹
 #pragma once
 
 namespace kmb{

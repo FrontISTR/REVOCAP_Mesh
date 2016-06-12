@@ -40,21 +40,22 @@ class ColorMap
 protected:
 	double minVal;
 	double maxVal;
-	// step –ˆ‚Ì rgb ‚ğ•Û‘¶‚·‚é
+	// step æ¯ã® rgb ã‚’ä¿å­˜ã™ã‚‹
 	float *color;
 	int step;
 	float shininess[1];
 	// temporary for calc
 	float rgb[3];
 	float rgba[4];
+	float alpha;
 	// color cache
 	kmb::Color3fValueBindings* cache;
-	// update ‚ª•K—v‚È‚É true
+	// update ãŒå¿…è¦ãªæ™‚ã« true
 	bool cacheUpdate;
 protected:
-	// x ‚ª [0,1] ‚É³‹K‰»‚µ‚½ê‡‚Ì rgb ‚ğ‹‚ß‚é
+	// x ãŒ [0,1] ã«æ­£è¦åŒ–ã—ãŸå ´åˆã® rgb ã‚’æ±‚ã‚ã‚‹
 	void calcRGB(double x,float rgb[3]) const;
-	// x ‚ª Solid Color ‚Ì‰½ƒXƒeƒbƒv–Ú‚ÉŠÜ‚Ü‚ê‚é‚©
+	// x ãŒ Solid Color ã®ä½•ã‚¹ãƒ†ãƒƒãƒ—ç›®ã«å«ã¾ã‚Œã‚‹ã‹
 	int getStep(double x) const;
 public:
 	ColorMap(int s=5);
@@ -64,34 +65,36 @@ public:
 	double getContourValue(int i) const;
 	void getMinMax(double& min,double& max) const;
 	void setMinMax(double min,double max);
+	float getAlpha(void) const;
+	void setAlpha(float a);
 	void getRGB(double x,float rgb[3]) const;
 	void getRGBByStep(int s,float rgb[3]) const;
 	void getRGB(kmb::ScalarValue* value,float rgb[3]) const;
 	void getRGB(kmb::Vector3Value* value,float rgb[3]) const;
 	void getRGBA(double x,float rgba[4],float ratio=1.0) const;
 	void getRGBAByStep(int s,float rgba[4],float ratio=1.0) const;
-	// NodeVariable ‚Ì‚à‚Ì‚É‚Â‚¢‚ÄAˆê‹C‚É Color ‚ğŒvZ‚·‚é
-	// updateColorCache ‚Í clearColorCache ‚³‚ê‚é‚Ü‚ÅÄ¶¬‚µ‚È‚¢
-	// clearColorCache ‚ÍÄ¶¬ƒtƒ‰ƒO‚ğ—§‚Ä‚é‚¾‚¯
-	// deleteColorCache ‚Íƒ|ƒCƒ“ƒ^‚Ìíœ
+	// NodeVariable ã®ã‚‚ã®ã«ã¤ã„ã¦ã€ä¸€æ°—ã« Color ã‚’è¨ˆç®—ã™ã‚‹
+	// updateColorCache ã¯ clearColorCache ã•ã‚Œã‚‹ã¾ã§å†ç”Ÿæˆã—ãªã„
+	// clearColorCache ã¯å†ç”Ÿæˆãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹ã ã‘
+	// deleteColorCache ã¯ãƒã‚¤ãƒ³ã‚¿ã®å‰Šé™¤
 	bool createColorCache(const kmb::DataBindings* nodeValue, int comp=-1);
 	bool updateColorCache(const kmb::DataBindings* nodeValue, int comp=-1);
 	void clearColorCache(void);
 	void deleteColorCache(void);
 	const float* getColorCache(void) const;
-	// calcRGB ‚Å‚Í‚È‚­Aƒ}ƒjƒ…ƒAƒ‹‚ÅF‚ğ—^‚¦‚é
+	// calcRGB ã§ã¯ãªãã€ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ã§è‰²ã‚’ä¸ãˆã‚‹
 	void setRGBAByStep(int s,const float rgba[4]);
-	// OpenGL ‚Ì–½—ß‚Ì’†‚ÅF‚Ìİ’è‚ğs‚¤@glColor ‚ğŒÄ‚Ño‚·B
+	// OpenGL ã®å‘½ä»¤ã®ä¸­ã§è‰²ã®è¨­å®šã‚’è¡Œã†ã€€glColor ã‚’å‘¼ã³å‡ºã™ã€‚
 	void setGLColor(double v);
 	void setGLColorByStep(int step);
-	// v0 < v1 ‚Ì‚Æ‚«‚É Solid Contour ‚Ì•ªŠ„”ä‚Ì—ñ‚ğ‹‚ß‚é
-	// ’l‚ª v0 ‚©‚ç v1 ‚Ü‚Å‚ÌŠÔ‚É Solid Color ‚ª count ‰ñ•Ï‰»‚·‚é
-	// Solid Color ‚ª•Ï‰»‚·‚é‚Æ‚±‚ë‚Ì”ä(v0=0,v1=1‚Æ‚·‚é)‚Í partitions[0],...,partitions[count-1]
-	// –ß‚è’l‚ª s ‚Ì‚Æ‚«
-	// 0 ` partitions[0] ‚Ü‚Å s
-	// partitions[0] ` partitions[1] ‚Ü‚Å s+1
+	// v0 < v1 ã®ã¨ãã« Solid Contour ã®åˆ†å‰²æ¯”ã®åˆ—ã‚’æ±‚ã‚ã‚‹
+	// å€¤ãŒ v0 ã‹ã‚‰ v1 ã¾ã§ã®é–“ã« Solid Color ãŒ count å›å¤‰åŒ–ã™ã‚‹
+	// Solid Color ãŒå¤‰åŒ–ã™ã‚‹ã¨ã“ã‚ã®æ¯”(v0=0,v1=1ã¨ã™ã‚‹)ã¯ partitions[0],...,partitions[count-1]
+	// æˆ»ã‚Šå€¤ãŒ s ã®ã¨ã
+	// 0 ï½ partitions[0] ã¾ã§ s
+	// partitions[0] ï½ partitions[1] ã¾ã§ s+1
 	// ...
-	// partitions[count-1] ` 1 ‚Ü‚Å s+count
+	// partitions[count-1] ï½ 1 ã¾ã§ s+count
 	int getSolidDivision(double v0,double v1,int& count,double* &partitions) const;
 };
 

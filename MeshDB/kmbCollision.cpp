@@ -72,9 +72,9 @@ kmb::Collision::distanceSqPtTri(kmb::nodeIdType nodeId,kmb::ElementBase& tri,dou
 	kmb::Point3D p0,q0,q1,q2;
 	if( points &&
 		points->getPoint( nodeId, p0 ) &&
-		points->getPoint( tri.getCellId(0), q0 ) &&
-		points->getPoint( tri.getCellId(1), q1 ) &&
-		points->getPoint( tri.getCellId(2), q2 ) )
+		points->getPoint( tri.getNodeId(0), q0 ) &&
+		points->getPoint( tri.getNodeId(1), q1 ) &&
+		points->getPoint( tri.getNodeId(2), q2 ) )
 	{
 		return p0.distanceSqToTriangle(q0,q1,q2,s);
 	}
@@ -132,9 +132,9 @@ kmb::Collision::distanceSqSegTri(kmb::nodeIdType a0,kmb::nodeIdType a1,kmb::Elem
 	if( points &&
 		points->getPoint( a0, p0 ) &&
 		points->getPoint( a1, p1 ) &&
-		points->getPoint( tri.getCellId(0), q0 ) &&
-		points->getPoint( tri.getCellId(1), q1 ) &&
-		points->getPoint( tri.getCellId(2), q2 ) )
+		points->getPoint( tri.getNodeId(0), q0 ) &&
+		points->getPoint( tri.getNodeId(1), q1 ) &&
+		points->getPoint( tri.getNodeId(2), q2 ) )
 	{
 		return kmb::Collision::testSegTri( p0, p1, q0, q1, q2, s, t );
 	}
@@ -154,19 +154,19 @@ kmb::Collision::distanceSqTriTri(kmb::ElementBase& tri0,kmb::ElementBase& tri1,d
 {
 	kmb::Point3D p0,p1,p2,q0,q1,q2;
 	if( points &&
-		points->getPoint( tri0.getCellId(0), p0 ) &&
-		points->getPoint( tri0.getCellId(1), p1 ) &&
-		points->getPoint( tri0.getCellId(2), p2 ) &&
-		points->getPoint( tri1.getCellId(0), q0 ) &&
-		points->getPoint( tri1.getCellId(1), q1 ) &&
-		points->getPoint( tri1.getCellId(2), q2 ) )
+		points->getPoint( tri0.getNodeId(0), p0 ) &&
+		points->getPoint( tri0.getNodeId(1), p1 ) &&
+		points->getPoint( tri0.getNodeId(2), p2 ) &&
+		points->getPoint( tri1.getNodeId(0), q0 ) &&
+		points->getPoint( tri1.getNodeId(1), q1 ) &&
+		points->getPoint( tri1.getNodeId(2), q2 ) )
 	{
 		return kmb::Collision::testTriTri( p0, p1, p2, q0, q1, q2, s, t );
 	}
 	return DBL_MAX;
 }
 
-// Š±Â‚É•‰‚É‚È‚é‚Ì‚Í–¢‘Î‰
+// å¹²æ¸‰æ™‚ã«è² ã«ãªã‚‹ã®ã¯æœªå¯¾å¿œ
 double
 kmb::Collision::distanceTriTri(kmb::ElementBase& tri0,kmb::ElementBase& tri1) const
 {
@@ -180,10 +180,10 @@ kmb::Collision::distanceSqPtQuad(kmb::Point3D& pt,kmb::ElementBase& quad) const
 {
 	kmb::Point3D t0,t1,t2,t3;
 	if( points &&
-		points->getPoint( quad.getCellId(0), t0 ) &&
-		points->getPoint( quad.getCellId(1), t1 ) &&
-		points->getPoint( quad.getCellId(2), t2 ) &&
-		points->getPoint( quad.getCellId(3), t3 ) )
+		points->getPoint( quad.getNodeId(0), t0 ) &&
+		points->getPoint( quad.getNodeId(1), t1 ) &&
+		points->getPoint( quad.getNodeId(2), t2 ) &&
+		points->getPoint( quad.getNodeId(3), t3 ) )
 	{
 		return kmb::Minimizer::getMin(
 			pt.distanceSqToTriangle( t0, t1, t2 ),
@@ -327,9 +327,9 @@ kmb::Collision::distance(kmb::ElementBase& elem0,kmb::Face& f,const kmb::Element
 }
 
 
-// n^2 ‚ÌƒAƒ‹ƒSƒŠƒYƒ€‚È‚Ì‚Å‘¬‚­‚È‚¢
-// fg0 ‚É‘Î‚µ‚Ä fg1 ‚Ì–Ê‚Ì‚¤‚¿A‹——£‚ª thres ‚æ‚è¬‚³‚¢‚à‚Ì‚ğ result ‚É’Ç‰Á‚·‚é
-// result ‚Í fg1 ‚Ì•”•ªW‡
+// n^2 ã®ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ãªã®ã§é€Ÿããªã„
+// fg0 ã«å¯¾ã—ã¦ fg1 ã®é¢ã®ã†ã¡ã€è·é›¢ãŒ thres ã‚ˆã‚Šå°ã•ã„ã‚‚ã®ã‚’ result ã«è¿½åŠ ã™ã‚‹
+// result ã¯ fg1 ã®éƒ¨åˆ†é›†åˆ
 int
 kmb::Collision::detectFaceGroup(const char* fg0,const char* fg1,double thres,const char* result) const
 {
@@ -424,9 +424,9 @@ foundFace:
 }
 
 
-// n^2 ‚ÌƒAƒ‹ƒSƒŠƒYƒ€‚È‚Ì‚Å‘¬‚­‚È‚¢
-// bodyId0 ‚É‘Î‚µ‚Ä fg1 ‚Ì–Ê‚Ì‚¤‚¿A‹——£‚ª thres ‚æ‚è¬‚³‚¢‚à‚Ì‚ğ result ‚É’Ç‰Á‚·‚é
-// result ‚Í fg1 ‚Ì•”•ªW‡
+// n^2 ã®ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ãªã®ã§é€Ÿããªã„
+// bodyId0 ã«å¯¾ã—ã¦ fg1 ã®é¢ã®ã†ã¡ã€è·é›¢ãŒ thres ã‚ˆã‚Šå°ã•ã„ã‚‚ã®ã‚’ result ã«è¿½åŠ ã™ã‚‹
+// result ã¯ fg1 ã®éƒ¨åˆ†é›†åˆ
 int
 kmb::Collision::detectSurfaceFaceGroup(kmb::bodyIdType bodyId0,const char* fg1,double thres,const char* result) const
 {
@@ -547,7 +547,7 @@ kmb::Collision::detectSurfaceFaceGroupByNode(kmb::bodyIdType bodyId0,const char*
 				int count = 0;
 				int len = eIter.getBoundaryNodeCount( f1.getLocalFaceId() );
 				for(int i=0;i<len;++i){
-					kmb::nodeIdType nodeId = eIter.getBoundaryCellId( f1.getLocalFaceId(), i );
+					kmb::nodeIdType nodeId = eIter.getBoundaryNodeId( f1.getLocalFaceId(), i );
 					mesh->getNode( nodeId, node );
 					kmb::elementIdType nearest = kmb::Element::nullElementId;
 					dist = octree.getNearest( node.x(), node.y(), node.z(), nearest );
@@ -635,9 +635,9 @@ kmb::Collision::distanceByNodeTri(kmb::ElementBase& t0,kmb::ElementBase& t1,int 
 	index = -1;
 	for(int i=0;i<3;++i){
 		double d =
-			sqrt( points->distanceSq( t0.getCellId((0+i)%3), t1.getCellId(0) ) ) +
-			sqrt( points->distanceSq( t0.getCellId((1+i)%3), t1.getCellId(1) ) ) +
-			sqrt( points->distanceSq( t0.getCellId((2+i)%3), t1.getCellId(2) ) );
+			sqrt( points->distanceSq( t0.getNodeId((0+i)%3), t1.getNodeId(0) ) ) +
+			sqrt( points->distanceSq( t0.getNodeId((1+i)%3), t1.getNodeId(1) ) ) +
+			sqrt( points->distanceSq( t0.getNodeId((2+i)%3), t1.getNodeId(2) ) );
 		if( minimizer.update( d ) ){
 			index = i;
 		}
@@ -660,9 +660,9 @@ kmb::Collision::distanceByNodeTri(kmb::ElementBase& t0,kmb::Face &f,const kmb::E
 		index = -1;
 		for(int i=0;i<3;++i){
 			double d =
-				sqrt( points->distanceSq( t0.getCellId((0+i)%3), t1.getCellId(0) ) ) +
-				sqrt( points->distanceSq( t0.getCellId((1+i)%3), t1.getCellId(1) ) ) +
-				sqrt( points->distanceSq( t0.getCellId((2+i)%3), t1.getCellId(2) ) );
+				sqrt( points->distanceSq( t0.getNodeId((0+i)%3), t1.getNodeId(0) ) ) +
+				sqrt( points->distanceSq( t0.getNodeId((1+i)%3), t1.getNodeId(1) ) ) +
+				sqrt( points->distanceSq( t0.getNodeId((2+i)%3), t1.getNodeId(2) ) );
 			if( minimizer.update( d ) ){
 				index = i;
 			}
@@ -682,10 +682,10 @@ kmb::Collision::distanceByNodeQuad(kmb::ElementBase& q0,kmb::ElementBase& q1,int
 	index = -1;
 	for(int i=0;i<4;++i){
 		double d =
-			sqrt( points->distanceSq( q0.getCellId((0+i)%4), q1.getCellId(0) ) ) +
-			sqrt( points->distanceSq( q0.getCellId((1+i)%4), q1.getCellId(1) ) ) +
-			sqrt( points->distanceSq( q0.getCellId((2+i)%4), q1.getCellId(2) ) ) +
-			sqrt( points->distanceSq( q0.getCellId((3+i)%4), q1.getCellId(3) ) );
+			sqrt( points->distanceSq( q0.getNodeId((0+i)%4), q1.getNodeId(0) ) ) +
+			sqrt( points->distanceSq( q0.getNodeId((1+i)%4), q1.getNodeId(1) ) ) +
+			sqrt( points->distanceSq( q0.getNodeId((2+i)%4), q1.getNodeId(2) ) ) +
+			sqrt( points->distanceSq( q0.getNodeId((3+i)%4), q1.getNodeId(3) ) );
 		if( minimizer.update( d ) ){
 			index = i;
 		}
@@ -708,10 +708,10 @@ kmb::Collision::distanceByNodeQuad(kmb::ElementBase& q0,kmb::Face &f,const kmb::
 		index = -1;
 		for(int i=0;i<4;++i){
 			double d =
-				sqrt( points->distanceSq( q0.getCellId((0+i)%4), q1.getCellId(0) ) ) +
-				sqrt( points->distanceSq( q0.getCellId((1+i)%4), q1.getCellId(1) ) ) +
-				sqrt( points->distanceSq( q0.getCellId((2+i)%4), q1.getCellId(2) ) ) +
-				sqrt( points->distanceSq( q0.getCellId((3+i)%4), q1.getCellId(3) ) );
+				sqrt( points->distanceSq( q0.getNodeId((0+i)%4), q1.getNodeId(0) ) ) +
+				sqrt( points->distanceSq( q0.getNodeId((1+i)%4), q1.getNodeId(1) ) ) +
+				sqrt( points->distanceSq( q0.getNodeId((2+i)%4), q1.getNodeId(2) ) ) +
+				sqrt( points->distanceSq( q0.getNodeId((3+i)%4), q1.getNodeId(3) ) );
 			if( minimizer.update( d ) ){
 				index = i;
 			}

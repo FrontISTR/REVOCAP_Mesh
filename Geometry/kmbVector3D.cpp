@@ -38,7 +38,7 @@ kmb::Vector3D::Vector3D(const Point3D& p,const Point3D& q)
 	}
 }
 
-/// ƒXƒJƒ‰[Ï
+/// ã‚¹ã‚«ãƒ©ãƒ¼ç©
 
 kmb::Vector3D
 kmb::Vector3D::scalar(const double s) const{

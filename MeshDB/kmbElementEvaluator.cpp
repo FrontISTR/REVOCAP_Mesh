@@ -68,7 +68,7 @@ kmb::ElementEvaluator::getAspectRatio(const kmb::ElementBase &eIter) const
 		{
 		case kmb::TETRAHEDRON:
 		case kmb::TETRAHEDRON2:
-			// äOê⁄ãÖÇÃîºåa / ì‡ê⁄ãÖÇÃîºåa*3
+			// Â§ñÊé•ÁêÉ„ÅÆÂçäÂæÑ / ÂÜÖÊé•ÁêÉ„ÅÆÂçäÂæÑ*3
 			{
 				kmb::Node n0,n1,n2,n3;
 				if( points->getPoint( eIter[0], n0 )
@@ -104,7 +104,7 @@ kmb::ElementEvaluator::getAspectRatio(const kmb::ElementBase &eIter) const
 			break;
 		case HEXAHEDRON:
 		case HEXAHEDRON2:
-			// [01] [03] [04] ÇÃí∑Ç≥ÇÃç≈ëÂíl/ç≈è¨íl
+			// [01] [03] [04] „ÅÆÈï∑„Åï„ÅÆÊúÄÂ§ßÂÄ§/ÊúÄÂ∞èÂÄ§
 			{
 				kmb::Node n0,n1,n3,n4;
 				if( points->getPoint( eIter[0], n0 )
@@ -126,7 +126,7 @@ kmb::ElementEvaluator::getAspectRatio(const kmb::ElementBase &eIter) const
 			break;
 		case QUAD:
 		case QUAD2:
-			// [01] [03] ÇÃí∑Ç≥ÇÃç≈ëÂíl/ç≈è¨íl
+			// [01] [03] „ÅÆÈï∑„Åï„ÅÆÊúÄÂ§ßÂÄ§/ÊúÄÂ∞èÂÄ§
 			{
 				kmb::Node n0,n1,n3;
 				if( points->getPoint( eIter[0], n0 )
@@ -376,8 +376,8 @@ kmb::ElementEvaluator::getMaxEdgeLength(const kmb::ElementBase &eIter) const
 		kmb::Node n0,n1;
 		int len = eIter.getEdgeCount();
 		for(int i=0;i<len;++i){
-			if( points->getPoint( eIter.getEdgeCellId(i,0), n0 ) &&
-				points->getPoint( eIter.getEdgeCellId(i,1), n1 ) )
+			if( points->getPoint( eIter.getEdgeNodeId(i,0), n0 ) &&
+				points->getPoint( eIter.getEdgeNodeId(i,1), n1 ) )
 			{
 				max.update( n0.distance(n1) );
 			}
@@ -395,8 +395,8 @@ kmb::ElementEvaluator::getAverageEdgeLength(const kmb::ElementBase &eIter) const
 		kmb::Node n0,n1;
 		int len = eIter.getEdgeCount();
 		for(int i=0;i<len;++i){
-			if( points->getPoint( eIter.getEdgeCellId(i,0), n0 ) &&
-				points->getPoint( eIter.getEdgeCellId(i,1), n1 ) )
+			if( points->getPoint( eIter.getEdgeNodeId(i,0), n0 ) &&
+				points->getPoint( eIter.getEdgeNodeId(i,1), n1 ) )
 			{
 				ave.add( n0.distance(n1) );
 			}
@@ -943,9 +943,9 @@ kmb::ElementEvaluator::getArea(const kmb::ElementBase &eIter,kmb::idType localFa
 		case TRIANGLE2:
 			{
 				kmb::Point3D n0,n1,n2;
-				if( points->getPoint( eIter.getBoundaryCellId(localFaceId,0), n0 )
-				 && points->getPoint( eIter.getBoundaryCellId(localFaceId,1), n1 )
-				 && points->getPoint( eIter.getBoundaryCellId(localFaceId,2), n2 )
+				if( points->getPoint( eIter.getBoundaryNodeId(localFaceId,0), n0 )
+				 && points->getPoint( eIter.getBoundaryNodeId(localFaceId,1), n1 )
+				 && points->getPoint( eIter.getBoundaryNodeId(localFaceId,2), n2 )
 				 )
 				{
 					return kmb::Point3D::area( n0, n1, n2 );
@@ -957,10 +957,10 @@ kmb::ElementEvaluator::getArea(const kmb::ElementBase &eIter,kmb::idType localFa
 		case QUAD2:
 			{
 				kmb::Point3D a,b,c,d;
-				if( points->getPoint( eIter.getBoundaryCellId(localFaceId,0), a )
-				 && points->getPoint( eIter.getBoundaryCellId(localFaceId,1), b )
-				 && points->getPoint( eIter.getBoundaryCellId(localFaceId,2), c )
-				 && points->getPoint( eIter.getBoundaryCellId(localFaceId,3), d )
+				if( points->getPoint( eIter.getBoundaryNodeId(localFaceId,0), a )
+				 && points->getPoint( eIter.getBoundaryNodeId(localFaceId,1), b )
+				 && points->getPoint( eIter.getBoundaryNodeId(localFaceId,2), c )
+				 && points->getPoint( eIter.getBoundaryNodeId(localFaceId,3), d )
 				)
 				{
 					return 0.5 * (
@@ -982,9 +982,9 @@ kmb::ElementEvaluator::getArea(const kmb::ElementBase &eIter,kmb::idType localFa
 		case TRIANGLE2:
 			{
 				kmb::Point2D n0,n1,n2;
-				if( point2Ds->getPoint( eIter.getBoundaryCellId(localFaceId,0), n0 )
-				 && point2Ds->getPoint( eIter.getBoundaryCellId(localFaceId,1), n1 )
-				 && point2Ds->getPoint( eIter.getBoundaryCellId(localFaceId,2), n2 )
+				if( point2Ds->getPoint( eIter.getBoundaryNodeId(localFaceId,0), n0 )
+				 && point2Ds->getPoint( eIter.getBoundaryNodeId(localFaceId,1), n1 )
+				 && point2Ds->getPoint( eIter.getBoundaryNodeId(localFaceId,2), n2 )
 				 )
 				{
 					return kmb::Point2D::area( n0, n1, n2 );
@@ -996,10 +996,10 @@ kmb::ElementEvaluator::getArea(const kmb::ElementBase &eIter,kmb::idType localFa
 		case QUAD2:
 			{
 				kmb::Point2D a,b,c,d;
-				if( point2Ds->getPoint( eIter.getBoundaryCellId(localFaceId,0), a )
-				 && point2Ds->getPoint( eIter.getBoundaryCellId(localFaceId,1), b )
-				 && point2Ds->getPoint( eIter.getBoundaryCellId(localFaceId,2), c )
-				 && point2Ds->getPoint( eIter.getBoundaryCellId(localFaceId,3), d )
+				if( point2Ds->getPoint( eIter.getBoundaryNodeId(localFaceId,0), a )
+				 && point2Ds->getPoint( eIter.getBoundaryNodeId(localFaceId,1), b )
+				 && point2Ds->getPoint( eIter.getBoundaryNodeId(localFaceId,2), c )
+				 && point2Ds->getPoint( eIter.getBoundaryNodeId(localFaceId,3), d )
 				)
 				{
 					return
@@ -1474,18 +1474,18 @@ kmb::ElementEvaluator::getNormalVector(const Face &face, const kmb::ElementConta
 			const int size = element.getBoundaryVertexCount(index);
 			if( size == 3 ){
 				kmb::Point3D a,b,c;
-				if( points->getPoint( element.getBoundaryCellId(index, 0 ), a ) &&
-					points->getPoint( element.getBoundaryCellId(index, 1 ), b ) &&
-					points->getPoint( element.getBoundaryCellId(index, 2 ), c ) ){
+				if( points->getPoint( element.getBoundaryNodeId(index, 0 ), a ) &&
+					points->getPoint( element.getBoundaryNodeId(index, 1 ), b ) &&
+					points->getPoint( element.getBoundaryNodeId(index, 2 ), c ) ){
 					vect = kmb::Point3D::calcNormalVector( a, b, c );
 					return true;
 				}
 			}else if( size == 4 ){
 				kmb::Point3D a,b,c,d;
-				if( points->getPoint( element.getBoundaryCellId(index, 0 ), a ) &&
-					points->getPoint( element.getBoundaryCellId(index, 1 ), b ) &&
-					points->getPoint( element.getBoundaryCellId(index, 2 ), c ) &&
-					points->getPoint( element.getBoundaryCellId(index, 3 ), d ) ){
+				if( points->getPoint( element.getBoundaryNodeId(index, 0 ), a ) &&
+					points->getPoint( element.getBoundaryNodeId(index, 1 ), b ) &&
+					points->getPoint( element.getBoundaryNodeId(index, 2 ), c ) &&
+					points->getPoint( element.getBoundaryNodeId(index, 3 ), d ) ){
 					kmb::Vector3D n0 = kmb::Point3D::calcNormalVector( a, b, c );
 					kmb::Vector3D n1 = kmb::Point3D::calcNormalVector( a, c, d );
 					vect = n0 + n1;
@@ -1510,9 +1510,9 @@ kmb::ElementEvaluator::getNormalVectorOfFace(const kmb::ElementBase &element, in
 		{
 		case kmb::TRIANGLE:
 		case kmb::TRIANGLE2:
-			if( points->getPoint( element.getBoundaryCellId(index,0), a ) &&
-				points->getPoint( element.getBoundaryCellId(index,1), b ) &&
-				points->getPoint( element.getBoundaryCellId(index,2), c )  )
+			if( points->getPoint( element.getBoundaryNodeId(index,0), a ) &&
+				points->getPoint( element.getBoundaryNodeId(index,1), b ) &&
+				points->getPoint( element.getBoundaryNodeId(index,2), c )  )
 			{
 				vect = kmb::Point3D::calcNormalVector( a, b, c );
 				return true;
@@ -1520,10 +1520,10 @@ kmb::ElementEvaluator::getNormalVectorOfFace(const kmb::ElementBase &element, in
 			break;
 		case kmb::QUAD:
 		case kmb::QUAD2:
-			if( points->getPoint( element.getBoundaryCellId(index,0), a) &&
-				points->getPoint( element.getBoundaryCellId(index,1), b) &&
-				points->getPoint( element.getBoundaryCellId(index,2), c) &&
-				points->getPoint( element.getBoundaryCellId(index,3), d) )
+			if( points->getPoint( element.getBoundaryNodeId(index,0), a) &&
+				points->getPoint( element.getBoundaryNodeId(index,1), b) &&
+				points->getPoint( element.getBoundaryNodeId(index,2), c) &&
+				points->getPoint( element.getBoundaryNodeId(index,3), d) )
 			{
 				kmb::Vector3D n0 = kmb::Point3D::calcNormalVector( a, b, c );
 				kmb::Vector3D n1 = kmb::Point3D::calcNormalVector( a, c, d );
@@ -1804,7 +1804,7 @@ kmb::ElementEvaluator::getWeightElementFace(const kmb::ElementBase &element,int 
 		kmb::Point3D pt[3];
 		kmb::Point3D target(x,y,z);
 		for(int i=0;i<3;++i){
-			if( !points->getPoint( element.getBoundaryCellId(index,i), pt[i] ) ){
+			if( !points->getPoint( element.getBoundaryNodeId(index,i), pt[i] ) ){
 				return -DBL_MAX;
 			}
 		}
@@ -1821,7 +1821,7 @@ kmb::ElementEvaluator::getWeightElementFace(const kmb::ElementBase &element,int 
 		kmb::Point3D pt[6];
 		kmb::Point3D target(x,y,z);
 		for(int i=0;i<6;++i){
-			if( !points->getPoint( element.getBoundaryCellId(index,i), pt[i] ) ){
+			if( !points->getPoint( element.getBoundaryNodeId(index,i), pt[i] ) ){
 				return -DBL_MAX;
 			}
 		}
@@ -1838,7 +1838,7 @@ kmb::ElementEvaluator::getWeightElementFace(const kmb::ElementBase &element,int 
 		kmb::Point3D pt[4];
 		kmb::Point3D target(x,y,z);
 		for(int i=0;i<4;++i){
-			if( !points->getPoint( element.getBoundaryCellId(index,i), pt[i] ) ){
+			if( !points->getPoint( element.getBoundaryNodeId(index,i), pt[i] ) ){
 				return -DBL_MAX;
 			}
 		}
@@ -1855,7 +1855,7 @@ kmb::ElementEvaluator::getWeightElementFace(const kmb::ElementBase &element,int 
 		kmb::Point3D pt[8];
 		kmb::Point3D target(x,y,z);
 		for(int i=0;i<8;++i){
-			if( !points->getPoint( element.getBoundaryCellId(index,i), pt[i] ) ){
+			if( !points->getPoint( element.getBoundaryNodeId(index,i), pt[i] ) ){
 				return -DBL_MAX;
 			}
 		}
@@ -1886,7 +1886,7 @@ kmb::ElementEvaluator::getNaturalCoordinatesOfFace(const kmb::ElementBase &eleme
 		kmb::Point3D pt[3];
 		kmb::Point3D target(x,y,z);
 		for(int i=0;i<3;++i){
-			if( !points->getPoint( element.getBoundaryCellId(index,i), pt[i] ) ){
+			if( !points->getPoint( element.getBoundaryNodeId(index,i), pt[i] ) ){
 				return false;
 			}
 		}
@@ -1897,7 +1897,7 @@ kmb::ElementEvaluator::getNaturalCoordinatesOfFace(const kmb::ElementBase &eleme
 		kmb::Point3D pt[6];
 		kmb::Point3D target(x,y,z);
 		for(int i=0;i<6;++i){
-			if( !points->getPoint( element.getBoundaryCellId(index,i), pt[i] ) ){
+			if( !points->getPoint( element.getBoundaryNodeId(index,i), pt[i] ) ){
 				return false;
 			}
 		}
@@ -1908,7 +1908,7 @@ kmb::ElementEvaluator::getNaturalCoordinatesOfFace(const kmb::ElementBase &eleme
 		kmb::Point3D pt[4];
 		kmb::Point3D target(x,y,z);
 		for(int i=0;i<4;++i){
-			if( !points->getPoint( element.getBoundaryCellId(index,i), pt[i] ) ){
+			if( !points->getPoint( element.getBoundaryNodeId(index,i), pt[i] ) ){
 				return false;
 			}
 		}
@@ -1919,7 +1919,7 @@ kmb::ElementEvaluator::getNaturalCoordinatesOfFace(const kmb::ElementBase &eleme
 		kmb::Point3D pt[8];
 		kmb::Point3D target(x,y,z);
 		for(int i=0;i<8;++i){
-			if( !points->getPoint( element.getBoundaryCellId(index,i), pt[i] ) ){
+			if( !points->getPoint( element.getBoundaryNodeId(index,i), pt[i] ) ){
 				return false;
 			}
 		}
@@ -2011,7 +2011,7 @@ kmb::ElementEvaluator::getPhysicalCoordinates(const kmb::ElementBase &element,co
 	return false;
 }
 
-// ç°ÇÃé¿ëïÇ≈ÇÕêœï™ì_Ç∆í∏ì_Ç≈ÇÃï]âøílÇÃç≈ëÂç≈è¨
+// ‰ªä„ÅÆÂÆüË£Ö„Åß„ÅØÁ©çÂàÜÁÇπ„Å®È†ÇÁÇπ„Åß„ÅÆË©ï‰æ°ÂÄ§„ÅÆÊúÄÂ§ßÊúÄÂ∞è
 bool
 kmb::ElementEvaluator::getMinMaxJacobian(const kmb::ElementBase &element, double &min, double &max) const
 {
@@ -2033,9 +2033,9 @@ kmb::ElementEvaluator::getMinMaxJacobian(const kmb::ElementBase &element, double
 				for(int j=0;j<3;++j){
 					for(int k=0;k<3;++k){
 						bbox.update( kmb::Hexahedron::jacobian(
-							kmb::Integration::Gauss_Point3[i],
-							kmb::Integration::Gauss_Point3[j],
-							kmb::Integration::Gauss_Point3[k], pt) );
+							kmb::GaussQuadrature<3>::IntegrationPoint[i],
+							kmb::GaussQuadrature<3>::IntegrationPoint[j],
+							kmb::GaussQuadrature<3>::IntegrationPoint[k], pt) );
 					}
 				}
 			}
@@ -2076,9 +2076,9 @@ kmb::ElementEvaluator::getMinInnerVolume(const kmb::ElementBase &element,const d
 		case kmb::TRIANGLE:
 		case kmb::TRIANGLE2:
 			if(
-				points->getPoint( element.getBoundaryCellId(i,0), p1 ) &&
-				points->getPoint( element.getBoundaryCellId(i,1), p2 ) &&
-				points->getPoint( element.getBoundaryCellId(i,2), p3 ) )
+				points->getPoint( element.getBoundaryNodeId(i,0), p1 ) &&
+				points->getPoint( element.getBoundaryNodeId(i,1), p2 ) &&
+				points->getPoint( element.getBoundaryNodeId(i,2), p3 ) )
 			{
 				minimizer.update( kmb::Point3D::volume( p0, p1, p2, p3 ) );
 			}
@@ -2086,16 +2086,16 @@ kmb::ElementEvaluator::getMinInnerVolume(const kmb::ElementBase &element,const d
 		case kmb::QUAD:
 		case kmb::QUAD2:
 			if(
-				points->getPoint( element.getBoundaryCellId(i,0), p1 ) &&
-				points->getPoint( element.getBoundaryCellId(i,1), p2 ) &&
-				points->getPoint( element.getBoundaryCellId(i,2), p3 ) )
+				points->getPoint( element.getBoundaryNodeId(i,0), p1 ) &&
+				points->getPoint( element.getBoundaryNodeId(i,1), p2 ) &&
+				points->getPoint( element.getBoundaryNodeId(i,2), p3 ) )
 			{
 				minimizer.update( kmb::Point3D::volume( p0, p1, p2, p3 ) );
 			}
 			if(
-				points->getPoint( element.getBoundaryCellId(i,0), p1 ) &&
-				points->getPoint( element.getBoundaryCellId(i,2), p2 ) &&
-				points->getPoint( element.getBoundaryCellId(i,3), p3 ) )
+				points->getPoint( element.getBoundaryNodeId(i,0), p1 ) &&
+				points->getPoint( element.getBoundaryNodeId(i,2), p2 ) &&
+				points->getPoint( element.getBoundaryNodeId(i,3), p3 ) )
 			{
 				minimizer.update( kmb::Point3D::volume( p0, p1, p2, p3 ) );
 			}
@@ -2125,9 +2125,9 @@ kmb::ElementEvaluator::getDistanceSqOnBoundary(const kmb::ElementBase &element,c
 		case kmb::TRIANGLE:
 		case kmb::TRIANGLE2:
 			if(
-				points->getPoint( element.getBoundaryCellId(i,0), p0 ) &&
-				points->getPoint( element.getBoundaryCellId(i,1), p1 ) &&
-				points->getPoint( element.getBoundaryCellId(i,2), p2 ) )
+				points->getPoint( element.getBoundaryNodeId(i,0), p0 ) &&
+				points->getPoint( element.getBoundaryNodeId(i,1), p1 ) &&
+				points->getPoint( element.getBoundaryNodeId(i,2), p2 ) )
 			{
 				minimizer.update( q.distanceSqToTriangle(p0,p1,p2) );
 			}
@@ -2135,16 +2135,16 @@ kmb::ElementEvaluator::getDistanceSqOnBoundary(const kmb::ElementBase &element,c
 		case kmb::QUAD:
 		case kmb::QUAD2:
 			if(
-				points->getPoint( element.getBoundaryCellId(i,0), p0 ) &&
-				points->getPoint( element.getBoundaryCellId(i,1), p1 ) &&
-				points->getPoint( element.getBoundaryCellId(i,2), p2 ) )
+				points->getPoint( element.getBoundaryNodeId(i,0), p0 ) &&
+				points->getPoint( element.getBoundaryNodeId(i,1), p1 ) &&
+				points->getPoint( element.getBoundaryNodeId(i,2), p2 ) )
 			{
 				minimizer.update( q.distanceSqToTriangle(p0,p1,p2) );
 			}
 			if(
-				points->getPoint( element.getBoundaryCellId(i,0), p0 ) &&
-				points->getPoint( element.getBoundaryCellId(i,2), p1 ) &&
-				points->getPoint( element.getBoundaryCellId(i,3), p2 ) )
+				points->getPoint( element.getBoundaryNodeId(i,0), p0 ) &&
+				points->getPoint( element.getBoundaryNodeId(i,2), p1 ) &&
+				points->getPoint( element.getBoundaryNodeId(i,3), p2 ) )
 			{
 				minimizer.update( q.distanceSqToTriangle(p0,p1,p2) );
 			}
@@ -2152,15 +2152,15 @@ kmb::ElementEvaluator::getDistanceSqOnBoundary(const kmb::ElementBase &element,c
 		case kmb::SEGMENT:
 		case kmb::SEGMENT2:
 			if(
-				points->getPoint( element.getBoundaryCellId(i,0), p0 ) &&
-				points->getPoint( element.getBoundaryCellId(i,1), p1 ) )
+				points->getPoint( element.getBoundaryNodeId(i,0), p0 ) &&
+				points->getPoint( element.getBoundaryNodeId(i,1), p1 ) )
 			{
 				minimizer.update( q.distanceSqToSegment(p0,p1) );
 			}
 			break;
 		case kmb::VERTEX:
 			if(
-				points->getPoint( element.getBoundaryCellId(i,0), p0 ) )
+				points->getPoint( element.getBoundaryNodeId(i,0), p0 ) )
 			{
 				minimizer.update( q.distanceSq(p1) );
 			}

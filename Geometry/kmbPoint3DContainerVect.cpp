@@ -29,12 +29,12 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 const char* kmb::Point3DContainerVect::CONTAINER_TYPE = "stl::vector<Point3D*>";
@@ -88,7 +88,7 @@ kmb::Point3DContainerVect::addPoint(const double x,const double y,const double z
 	if( id < 0 ){
 		return -1;
 	}else if( 0 <= id && id < static_cast<int>(this->points.size()) ){
-		// Šù‚É“o˜^Ï‚İ‚È‚ç -1 ‚ğ•Ô‚·
+		// æ—¢ã«ç™»éŒ²æ¸ˆã¿ãªã‚‰ -1 ã‚’è¿”ã™
 		kmb::Point3D* pt = this->points[id];
 		if( pt != NULL )
 		{
@@ -117,7 +117,7 @@ kmb::Point3DContainerVect::addPoint(const kmb::Point3D& point,const nodeIdType i
 	if( id < 0 ){
 		return -1;
 	}else if( 0 <= id && id < static_cast<int>(this->points.size()) ){
-		// Šù‚É“o˜^Ï‚İ‚È‚ç -1 ‚ğ•Ô‚·
+		// æ—¢ã«ç™»éŒ²æ¸ˆã¿ãªã‚‰ -1 ã‚’è¿”ã™
 		kmb::Point3D* pt = this->points[id];
 		if( pt != NULL )
 		{
@@ -353,8 +353,8 @@ kmb::Point3DContainerVect::_iteratorVect::operator++(void)
 	if( this->index < static_cast<int>( this->vect->points.size() ) ){
 		return this;
 	}else{
-		// delete this ‚Í‚µ‚È‚¢B
-		// delete ‚·‚é‚Ì‚Í wrapper iterator
+		// delete this ã¯ã—ãªã„ã€‚
+		// delete ã™ã‚‹ã®ã¯ wrapper iterator
 		return NULL;
 	}
 }
@@ -366,8 +366,8 @@ kmb::Point3DContainerVect::_iteratorVect::operator++(int n)
 	if( this->index < static_cast<int>( this->vect->points.size() ) ){
 		return this;
 	}else{
-		// delete this ‚Í‚µ‚È‚¢B
-		// delete ‚·‚é‚Ì‚Í wrapper iterator
+		// delete this ã¯ã—ãªã„ã€‚
+		// delete ã™ã‚‹ã®ã¯ wrapper iterator
 		return NULL;
 	}
 }

@@ -13,7 +13,7 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// Fortran ‚Ì unformat Œ`®‚ğ“Ç‚Ş‚½‚ß‚ÌƒTƒuƒ‹[ƒ`ƒ“W
+// Fortran ã® unformat å½¢å¼ã‚’èª­ã‚€ãŸã‚ã®ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³é›†
 //
 
 #pragma once
@@ -43,7 +43,7 @@ public:
 	}
 protected:
 	bool unformatFlag;
-	bool endianFlag;
+	bool endianFlag; // endian ã‚’åè»¢ã™ã‚‹ã‹ã©ã†ã‹
 	template<typename T> int readArray(std::ifstream &input, std::vector<T> &val){
 		val.clear();
 		int size = 0;
@@ -89,9 +89,9 @@ protected:
 		return static_cast<int>(len);
 	}
 	virtual int readString(std::ifstream &input, std::string &str);
-	// •¶š—ñ‚Ì‘OŒã‚Ì‹ó”’‚ğæ‚é
+	// æ–‡å­—åˆ—ã®å‰å¾Œã®ç©ºç™½ã‚’å–ã‚‹
 	void strip(std::string &str);
-	// ’P¸“xo—Í
+	// å˜ç²¾åº¦å‡ºåŠ›
 	int writeFloat(std::ofstream &output,float f);
 public:
 	FortranIO(void);

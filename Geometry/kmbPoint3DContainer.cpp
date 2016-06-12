@@ -34,12 +34,12 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 bool
@@ -293,7 +293,7 @@ kmb::Point3DContainer::calcNormalVector( kmb::nodeIdType n0, kmb::nodeIdType n1,
 		x2 -= x0;
 		y2 -= y0;
 		z2 -= z0;
-		// •Ï”Ä—˜—p
+		// å¤‰æ•°å†åˆ©ç”¨
 		x0 = y1*z2 - y2*z1;
 		y0 = z1*x2 - z2*x1;
 		z0 = x1*y2 - x2*y1;
@@ -323,7 +323,7 @@ kmb::Point3DContainer::calcNormalVector( kmb::nodeIdType n0, kmb::nodeIdType n1,
 		x3 -= x0;
 		y3 -= y0;
 		z3 -= z0;
-		// •Ï”Ä—˜—p
+		// å¤‰æ•°å†åˆ©ç”¨
 		kmb::Vector3D n012(y1*z2 - y2*z1,z1*x2 - z2*x1,x1*y2 - x2*y1);
 		kmb::Vector3D n013(y1*z3 - y3*z1,z1*x3 - z3*x1,x1*y3 - x3*y1);
 		kmb::Vector3D normal = n012 + n013;
@@ -347,7 +347,7 @@ kmb::Point3DContainer::calcVerticalVector( kmb::nodeIdType n0, kmb::nodeIdType n
 		x2 -= x0;
 		y2 -= y0;
 		z2 -= z0;
-		// •Ï”Ä—˜—p
+		// å¤‰æ•°å†åˆ©ç”¨
 		x0 = y1*z2 - y2*z1;
 		y0 = z1*x2 - z2*x1;
 		z0 = x1*y2 - x2*y1;
@@ -374,7 +374,7 @@ kmb::Point3DContainer::calcVerticalVector( kmb::nodeIdType n0, kmb::nodeIdType n
 		x3 -= x0;
 		y3 -= y0;
 		z3 -= z0;
-		// •Ï”Ä—˜—p
+		// å¤‰æ•°å†åˆ©ç”¨
 		kmb::Vector3D n012(y1*z2 - y2*z1,z1*x2 - z2*x1,x1*y2 - x2*y1);
 		kmb::Vector3D n013(y1*z3 - y3*z1,z1*x3 - z3*x1,x1*y3 - x3*y1);
 		kmb::Vector3D normal = n012 + n013;
@@ -501,7 +501,7 @@ kmb::Point3DContainer::iterator::operator=(const kmb::Point3DContainer::iterator
 	return *this;
 }
 
-// ‘O’u
+// å‰ç½®
 kmb::Point3DContainer::iterator&
 kmb::Point3DContainer::iterator::operator++(void)
 {
@@ -515,7 +515,7 @@ kmb::Point3DContainer::iterator::operator++(void)
 	return *this;
 }
 
-// Œã’u
+// å¾Œç½®
 kmb::Point3DContainer::iterator
 kmb::Point3DContainer::iterator::operator++(int n)
 {
@@ -642,7 +642,7 @@ kmb::Point3DContainer::const_iterator::operator=(const kmb::Point3DContainer::it
 	return *this;
 }
 
-// ‘O’u
+// å‰ç½®
 kmb::Point3DContainer::const_iterator&
 kmb::Point3DContainer::const_iterator::operator++(void)
 {
@@ -656,7 +656,7 @@ kmb::Point3DContainer::const_iterator::operator++(void)
 	return *this;
 }
 
-// Œã’u
+// å¾Œç½®
 kmb::Point3DContainer::const_iterator
 kmb::Point3DContainer::const_iterator::operator++(int n)
 {

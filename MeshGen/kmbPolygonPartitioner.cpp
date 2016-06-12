@@ -59,7 +59,7 @@ kmb::PolygonPartitioner::clear(void)
 		delete initialPolygon;
 }
 
-// ’P‘ÌÀs—p
+// å˜ä½“å®Ÿè¡Œç”¨
 kmb::bodyIdType
 kmb::PolygonPartitioner::partitionToTriangles(kmb::MeshDB* mesh,kmb::bodyIdType edgeId)
 {
@@ -88,7 +88,7 @@ kmb::PolygonPartitioner::partitionToTriangles(kmb::MeshDB* mesh,kmb::bodyIdType 
 		(edges = mesh->getBodyPtr(edgeId) ) != NULL &&
 		edges->isUniqueType( kmb::SEGMENT ) )
 	{
-		// polygon ‚Ì“_‚ğ2ŸŒ³Ë‰e‚µ‚Ä points ‚ÉŠi”[‚·‚é
+		// polygon ã®ç‚¹ã‚’2æ¬¡å…ƒå°„å½±ã—ã¦ points ã«æ ¼ç´ã™ã‚‹
 		kmb::Point2DContainerMap points;
 		std::set< kmb::nodeIdType > nodeSet;
 		edges->getNodesOfBody( nodeSet );
@@ -142,28 +142,28 @@ kmb::PolygonPartitioner::getCount(void) const
 }
 
 //
-// y À•W‚Ì monotonisity ‚ğl‚¦‚½‚Ìƒ^ƒCƒv
-// y À•W‚ª“™‚µ‚¢‚Ì•]‰¿‚Ìd•û‚Í x À•W‚Å”»’f‚·‚é
-// ‚·‚È‚í‚¿‘S‘Ì‚ğ­‚µ‚¾‚¯Œv‰ñ‚è‚É‰ñ“]‚µ‚½‚Æ‚µ‚Äl‚¦‚é
+// y åº§æ¨™ã® monotonisity ã‚’è€ƒãˆãŸæ™‚ã®ã‚¿ã‚¤ãƒ—
+// y åº§æ¨™ãŒç­‰ã—ã„æ™‚ã®è©•ä¾¡ã®ä»•æ–¹ã¯ x åº§æ¨™ã§åˆ¤æ–­ã™ã‚‹
+// ã™ãªã‚ã¡å…¨ä½“ã‚’å°‘ã—ã ã‘æ™‚è¨ˆå›ã‚Šã«å›è»¢ã—ãŸã¨ã—ã¦è€ƒãˆã‚‹
 //
-// 2ŸŒ³•½–ÊãA‘½ŠpŒ`‚Í”½Œv‰ñ‚è‚É•À‚ñ‚Å‚¢‚é‚à‚Ì‚Æ‚·‚é
+// 2æ¬¡å…ƒå¹³é¢ä¸Šã€å¤šè§’å½¢ã¯åæ™‚è¨ˆå›ã‚Šã«ä¸¦ã‚“ã§ã„ã‚‹ã‚‚ã®ã¨ã™ã‚‹
 //
 // START    0       END  -1     1
-//        ^ _            _ ^
+//        ï¼ ï¼¼            ï¼¼ ï¼
 //       1     -1            0
 //
 // SPLIT    0       MERGE  1    -1 
-//        ^ _             _ ^
+//        ï¼ ï¼¼             ï¼¼ ï¼
 //      -1     1              0
 //
-// ‚²‚­‚Ü‚ê‚É”’lŒë·‚Åã‹L‚Ì‚¤‚¿‚Ì‚¢‚¸‚ê‚©‚Æ”»’è‚µ‚Ä‚à area = 0 ‚Æ‚È‚Á‚ÄƒXƒ‹[‚·‚é‚±‚Æ‚ª‚ ‚é
+// ã”ãã¾ã‚Œã«æ•°å€¤èª¤å·®ã§ä¸Šè¨˜ã®ã†ã¡ã®ã„ãšã‚Œã‹ã¨åˆ¤å®šã—ã¦ã‚‚ area = 0 ã¨ãªã£ã¦ã‚¹ãƒ«ãƒ¼ã™ã‚‹ã“ã¨ãŒã‚ã‚‹
 // 
 kmb::PolygonPartitioner::vertexType
 kmb::PolygonPartitioner::getVertexType(const kmb::Point2D& previousPoint,const kmb::Point2D& targetPoint,const kmb::Point2D& nextPoint)
 {
 	double area = kmb::Point2D::area( previousPoint, targetPoint, nextPoint );
 
-	// ‚Å‚«‚é‚¾‚¯¶‚ÌÀ•W’l‚Ì‘å¬‚¾‚¯‚©‚ç”»’f‚¹‚æ
+	// ã§ãã‚‹ã ã‘ç”Ÿã®åº§æ¨™å€¤ã®å¤§å°ã ã‘ã‹ã‚‰åˆ¤æ–­ã›ã‚ˆ
 	if      (   // LARGER_X( previousPoint, nextPoint ) &&
 				area >= 0.0 &&
 				LARGER_Y( targetPoint, previousPoint ) &&
@@ -230,19 +230,19 @@ kmb::PolygonPartitioner::getNearestSegmentWithSameLevel(kmb::nodeIdType nodeId, 
 		if( !eIter.include(nodeId) )
 		{
 			kmb::Point2D p0,p1;
-			if( points->getPoint( eIter.getCellId(0), p0 ) && points->getPoint( eIter.getCellId(1), p1 ) ){
+			if( points->getPoint( eIter.getNodeId(0), p0 ) && points->getPoint( eIter.getNodeId(1), p1 ) ){
 				if( ( LARGER_Y( p0, point ) && LARGER_Y( point, p1 ) ) ||
 					( LARGER_Y( point, p0 ) && LARGER_Y( p1, point ) ) )
 				{
 					if( left && ( LARGER_X( point, p0 ) || LARGER_X( point, p1 ) ) ){
-						// ü•ª p0 ‚Æ p1 ã‚Ì y À•W‚ª point ‚Æ“™‚µ‚­‚È‚é x À•W‚Ì’l
+						// ç·šåˆ† p0 ã¨ p1 ä¸Šã® y åº§æ¨™ãŒ point ã¨ç­‰ã—ããªã‚‹ x åº§æ¨™ã®å€¤
 						double x  = (p1.x() - p0.x()) * (point.y() - p0.y() ) / ( p1.y() - p0.y() ) + p0.x();
 						if( nearX <= x && x < point.x() ){
 							nearX = x;
 							nearSegment = eIter.getId();
 						}
 					}else if( !left && ( LARGER_X( p0, point ) || LARGER_X( p1, point ) ) ){
-						// ü•ª p0 ‚Æ p1 ã‚Ì y À•W‚ª point ‚Æ“™‚µ‚­‚È‚é x À•W‚Ì’l
+						// ç·šåˆ† p0 ã¨ p1 ä¸Šã® y åº§æ¨™ãŒ point ã¨ç­‰ã—ããªã‚‹ x åº§æ¨™ã®å€¤
 						double x  = (p1.x() - p0.x()) * (point.y() - p0.y() ) / ( p1.y() - p0.y() ) + p0.x();
 						if( nearX >= x && x > point.x() ){
 							nearX = x;
@@ -275,10 +275,10 @@ kmb::PolygonPartitioner::getHelperNode( kmb::nodeIdType nodeID, kmb::elementIdTy
 		return helperNodeId;
 	}
 	kmb::Point2D l0,l1,r0,r1,point;
-	if( !points->getPoint( leftEdge.getCellId(0), l0 )
-		|| !points->getPoint( leftEdge.getCellId(1), l1 )
-		|| !points->getPoint( rightEdge.getCellId(0), r0 )
-		|| !points->getPoint( rightEdge.getCellId(1), r1 )
+	if( !points->getPoint( leftEdge.getNodeId(0), l0 )
+		|| !points->getPoint( leftEdge.getNodeId(1), l1 )
+		|| !points->getPoint( rightEdge.getNodeId(0), r0 )
+		|| !points->getPoint( rightEdge.getNodeId(1), r1 )
 		|| !points->getPoint( nodeID, point ) )
 	{
 		return helperNodeId;
@@ -291,10 +291,10 @@ kmb::PolygonPartitioner::getHelperNode( kmb::nodeIdType nodeID, kmb::elementIdTy
 		{
 			if( LARGER_Y( l0, r1 ) ){
 				helperNode = r1;
-				helperNodeId = rightEdge.getCellId(1);
+				helperNodeId = rightEdge.getNodeId(1);
 			}else{
 				helperNode = l0;
-				helperNodeId = leftEdge.getCellId(0);
+				helperNodeId = leftEdge.getNodeId(0);
 			}
 		}
 		break;
@@ -302,10 +302,10 @@ kmb::PolygonPartitioner::getHelperNode( kmb::nodeIdType nodeID, kmb::elementIdTy
 		{
 			if( LARGER_Y( l1, r0 ) ){
 				helperNode = r0;
-				helperNodeId = rightEdge.getCellId(0);
+				helperNodeId = rightEdge.getNodeId(0);
 			}else{
 				helperNode = l1;
-				helperNodeId = leftEdge.getCellId(1);
+				helperNodeId = leftEdge.getNodeId(1);
 			}
 		}
 		break;
@@ -319,11 +319,11 @@ kmb::PolygonPartitioner::getHelperNode( kmb::nodeIdType nodeID, kmb::elementIdTy
 		if( targetNodeId != nodeID && initialPolygon->include(targetNodeId) )
 		{
 			kmb::Point2D targetNode;
-			// left ‚Æ right ‚ÌŠÔ‚É‚ ‚é‚©
+			// left ã¨ right ã®é–“ã«ã‚ã‚‹ã‹
 			if( pIter.getPoint( targetNode ) &&
 				Point2D::area( l0, l1, targetNode ) > 0.0 && Point2D::area( r0, r1, targetNode ) > 0.0 )
 			{
-				// node ‚Ì y À•W‚Æ nearY ‚ÌŠÔ‚É‚ ‚é‚©
+				// node ã® y åº§æ¨™ã¨ nearY ã®é–“ã«ã‚ã‚‹ã‹
 				switch( vType ){
 					case kmb::PolygonPartitioner::kSPLIT:
 						{
@@ -362,7 +362,7 @@ kmb::PolygonPartitioner::partition( kmb::ElementContainer &body )
 		return retVal;
 	}
 	std::vector< std::pair<kmb::nodeIdType, kmb::nodeIdType > > diagonals;
-	// split ‚Æ merge node ‚ğ’T‚·
+	// split ã¨ merge node ã‚’æ¢ã™
 
 	kmb::Point2DContainer::const_iterator pIter = points->begin();
 	while( pIter != points->end() ){
@@ -397,11 +397,11 @@ kmb::PolygonPartitioner::partition( kmb::ElementContainer &body )
 	}
 
 	{
-		// monotone ‰»
+		// monotone åŒ–
 		std::vector< kmb::Polygon* > polygons;
 		initialPolygon->dividePolygonsByDiagonals( points, diagonals, polygons );
 		retVal &= (polygons.size() > 0);
-		// monotone polygon ‚ğ triangulation
+		// monotone polygon ã‚’ triangulation
 		std::vector< kmb::Polygon* >::iterator gIter = polygons.begin();
 		while( gIter != polygons.end() )
 		{
@@ -423,7 +423,7 @@ kmb::PolygonPartitioner::triangulateMonotonePolygon
 (kmb::Polygon* polygon, kmb::ElementContainer &body )
 {
 	bool retVal = true;
-	// OŠpŒ`“o˜^—p
+	// ä¸‰è§’å½¢ç™»éŒ²ç”¨
 	kmb::nodeIdType cells[3] = {kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId};
 	const kmb::ElementContainer* eCon = NULL;
 	if( polygon == NULL || points == NULL ||
@@ -434,7 +434,7 @@ kmb::PolygonPartitioner::triangulateMonotonePolygon
 		return retVal;
 	}
 
-	// START Vertex END Vertex ‚ğ’T‚·
+	// START Vertex END Vertex ã‚’æ¢ã™
 	kmb::nodeIdType startVertex = kmb::nullNodeId;
 	kmb::nodeIdType endVertex = kmb::nullNodeId;
 
@@ -463,9 +463,9 @@ kmb::PolygonPartitioner::triangulateMonotonePolygon
 		return retVal;
 	}
 	kmb::nodeIdType top = startVertex;
-	kmb::nodeIdType left = polygon->getNodeId(startVertex,1);  // ŒvZ’†‚Ì y À•W‚ªÅ¬‚Ì“_i¶‘¤j
-	kmb::nodeIdType right = polygon->getNodeId(startVertex,-1); // ŒvZ’†‚Ì y À•W‚ªÅ¬‚Ì“_i‰E‘¤j
-	std::vector< nodeStackType > nodeStack;                    // ŒvZ’†‚Ìi‚Ü‚¾OŠpŒ`‰»‚µ‚Ä‚¢‚È‚¢j“_‚Ì Stack
+	kmb::nodeIdType left = polygon->getNodeId(startVertex,1);  // è¨ˆç®—ä¸­ã® y åº§æ¨™ãŒæœ€å°ã®ç‚¹ï¼ˆå·¦å´ï¼‰
+	kmb::nodeIdType right = polygon->getNodeId(startVertex,-1); // è¨ˆç®—ä¸­ã® y åº§æ¨™ãŒæœ€å°ã®ç‚¹ï¼ˆå³å´ï¼‰
+	std::vector< nodeStackType > nodeStack;                    // è¨ˆç®—ä¸­ã®ï¼ˆã¾ã ä¸‰è§’å½¢åŒ–ã—ã¦ã„ãªã„ï¼‰ç‚¹ã® Stack
 	Point2D leftPoint,rightPoint;
 	points->getPoint( left, leftPoint );
 	points->getPoint( right, rightPoint );
@@ -488,11 +488,11 @@ kmb::PolygonPartitioner::triangulateMonotonePolygon
 		if( stackSize < 2 ){
 			break;
 		}
-		// y À•W‚ªŸ‚É‘å‚«‚È“_
+		// y åº§æ¨™ãŒæ¬¡ã«å¤§ããªç‚¹
 		kmb::nodeIdType left_next = polygon->getNodeId(left,1);
 		kmb::nodeIdType right_next = polygon->getNodeId(right,-1);
 		if( !points->getPoint( left_next, leftPoint ) || !points->getPoint( right_next, rightPoint ) ){
-			// monotone ‚È‚ç‚Î‚¨‚±‚ç‚È‚¢‚Í‚¸EEE
+			// monotone ãªã‚‰ã°ãŠã“ã‚‰ãªã„ã¯ãšãƒ»ãƒ»ãƒ»
 			retVal &= false;
 			break;
 		}
@@ -516,10 +516,10 @@ kmb::PolygonPartitioner::triangulateMonotonePolygon
 		points->getPoint( last0.nodeId,lastPoint0 );
 		points->getPoint( last1.nodeId,lastPoint1 );
 		if( last0.isLeft != nextNode.isLeft ){
-			// ÅIƒm[ƒh‚ÆŸ‚Ìƒm[ƒh‚ªˆÙ‚È‚é‘¤
-			// nodeStack ‚Ì‚·‚×‚Ä‚É‘Î‚µ‚Ä
-			// nextNode, stack0, stack1 ‚ÌŒ`‚ÌOŠpŒ`‚ğ’Ç‰Á
-			// stack ‚É‚ÍÅIƒm[ƒh‚ÆŸ‚Ìƒm[ƒh‚¾‚¯‚ğc‚·
+			// æœ€çµ‚ãƒãƒ¼ãƒ‰ã¨æ¬¡ã®ãƒãƒ¼ãƒ‰ãŒç•°ãªã‚‹å´
+			// nodeStack ã®ã™ã¹ã¦ã«å¯¾ã—ã¦
+			// nextNode, stack0, stack1 ã®å½¢ã®ä¸‰è§’å½¢ã‚’è¿½åŠ 
+			// stack ã«ã¯æœ€çµ‚ãƒãƒ¼ãƒ‰ã¨æ¬¡ã®ãƒãƒ¼ãƒ‰ã ã‘ã‚’æ®‹ã™
 			for(unsigned int i=0;i<stackSize-1;++i){
 				nodeStackType n0 = nodeStack[i];
 				nodeStackType n1 = nodeStack[i+1];
@@ -555,11 +555,11 @@ kmb::PolygonPartitioner::triangulateMonotonePolygon
 				left = last0.nodeId;
 			}
 		}else{
-			// ÅIƒm[ƒh‚ÆŸ‚Ìƒm[ƒh‚ª“¯‚¶‘¤
-			// nodeStack ‚ÌÅI‚©‚ç‡‚É2‚Â‚¸‚Âæ‚Á‚Ä—ˆ‚Ä
-			// Ÿ‚Ìƒm[ƒh‚Æ‚Ì–ÊÏ‚ª³‚È‚ç‚ÎOŠpŒ`‚ğ“o˜^‚µ‚Ä
-			// ÅIƒm[ƒh‚ğ pop ‚·‚é
-			// area < 0 ‚É‚È‚é‚© nodeStack ‚ÌŒÂ”‚ª 1 ‚É‚È‚é‚Ü‚ÅŒJ‚è•Ô‚µ
+			// æœ€çµ‚ãƒãƒ¼ãƒ‰ã¨æ¬¡ã®ãƒãƒ¼ãƒ‰ãŒåŒã˜å´
+			// nodeStack ã®æœ€çµ‚ã‹ã‚‰é †ã«2ã¤ãšã¤å–ã£ã¦æ¥ã¦
+			// æ¬¡ã®ãƒãƒ¼ãƒ‰ã¨ã®é¢ç©ãŒæ­£ãªã‚‰ã°ä¸‰è§’å½¢ã‚’ç™»éŒ²ã—ã¦
+			// æœ€çµ‚ãƒãƒ¼ãƒ‰ã‚’ pop ã™ã‚‹
+			// area < 0 ã«ãªã‚‹ã‹ nodeStack ã®å€‹æ•°ãŒ 1 ã«ãªã‚‹ã¾ã§ç¹°ã‚Šè¿”ã—
 			while( true ){
 				double area = ( last0.isLeft ) ?
 					kmb::Point2D::area( nextPoint, lastPoint1, lastPoint0 ) :

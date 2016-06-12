@@ -49,6 +49,9 @@ public:
 	virtual const_iterator find(kmb::nodeIdType nodeId) const;
 
 	const double* getDoubleArray(void) const { return pointArray; }
+	double x(kmb::nodeIdType nodeId) const;
+	double y(kmb::nodeIdType nodeId) const;
+	double z(kmb::nodeIdType nodeId) const;
 
 	virtual double operator()(kmb::nodeIdType nodeId,int i) const{
 		return pointArray[3*nodeId+i];

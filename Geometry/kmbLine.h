@@ -31,9 +31,9 @@
 namespace kmb{
 
 /**
- * •½–Êã‚Ì’¼ü
+ * å¹³é¢ä¸Šã®ç›´ç·š
  * ax + by +c = 0
- * a*a + b*b = 1 ‚Æ‚È‚é‚æ‚¤‚É³‹K‰»‚µ‚Ä‚¨‚­
+ * a*a + b*b = 1 ã¨ãªã‚‹ã‚ˆã†ã«æ­£è¦åŒ–ã—ã¦ãŠã
  */
 
 class Line2D
@@ -43,7 +43,7 @@ private:
 	double b;
 	double c;
 private:
-	// •K‚¸³‹K‰»‚·‚é‚½‚ß‚ÉAŒW”‚ğ—^‚¦‚Ä¶¬‚·‚é‚Ì‚Í private ‚É‚·‚é
+	// å¿…ãšæ­£è¦åŒ–ã™ã‚‹ãŸã‚ã«ã€ä¿‚æ•°ã‚’ä¸ãˆã¦ç”Ÿæˆã™ã‚‹ã®ã¯ private ã«ã™ã‚‹
 	Line2D(double a,double b,double c);
 public:
 	virtual ~Line2D(void);
@@ -52,21 +52,21 @@ public:
 	double evaluate(const kmb::Point2D &pt) const;
 	double evaluate(double x,double y) const;
 	kmb::Vector2D getDirection(void) const;
-	// Œ´“_‚©‚çÅ‚à‹ß‚¢“_‚ğ‹N“_‚Æ‚·‚é (-ca,-cb) ‹——£‚Í c
+	// åŸç‚¹ã‹ã‚‰æœ€ã‚‚è¿‘ã„ç‚¹ã‚’èµ·ç‚¹ã¨ã™ã‚‹ (-ca,-cb) è·é›¢ã¯ c
 	kmb::Point2D getBase(void) const;
-	// Å‹ß“_‚ğƒpƒ‰ƒ[ƒ^•\¦‚Å•Ô‚·
+	// æœ€è¿‘ç‚¹ã‚’ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¡¨ç¤ºã§è¿”ã™
 	double nearest(const kmb::Point2D &pt) const;
 	double distance(const kmb::Point2D &pt) const;
 	double getXIntercept(void) const;
 	double getYIntercept(void) const;
-	// 2“_‚ğ’Ê‚é’¼ü‚Ì x Ø•Ğ‚Æ y Ø•Ğ‚ğ‹‚ß‚é
+	// 2ç‚¹ã‚’é€šã‚‹ç›´ç·šã® x åˆ‡ç‰‡ã¨ y åˆ‡ç‰‡ã‚’æ±‚ã‚ã‚‹
 	static double getXIntercept(const kmb::Point2D &p,const kmb::Point2D &q);
 	static double getYIntercept(const kmb::Point2D &p,const kmb::Point2D &q);
 };
 
 /**
- * ‹óŠÔ“à‚Ì’¼ü
- * •ûŒüƒxƒNƒgƒ‹‚Í³‹K‰»‚µ‚Ä‚¨‚­
+ * ç©ºé–“å†…ã®ç›´ç·š
+ * æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã¯æ­£è¦åŒ–ã—ã¦ãŠã
  */
 
 class Line3D
@@ -82,7 +82,7 @@ public:
 	static Line3D* createFromBaseDirection(const kmb::Point3D &base,const kmb::Vector3D &direction);
 	kmb::Vector3D getDirection(void) const;
 	kmb::Point3D getBase(void) const;
-	// Å‹ß“_‚ğƒpƒ‰ƒ[ƒ^•\¦‚Å•Ô‚·
+	// æœ€è¿‘ç‚¹ã‚’ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¡¨ç¤ºã§è¿”ã™
 	double nearest(const kmb::Point3D &pt) const;
 	double distance(const kmb::Point3D &pt) const;
 	double distanceSq(const kmb::Point3D &pt) const;

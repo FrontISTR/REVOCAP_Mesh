@@ -18,8 +18,8 @@
 
 double kmb::Collision::testSegSeg(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0,kmb::Point3D& q1,double &t1, double &t2)
 {
-	// p0 + t1(p1-p0) ‚Æ q0 + t2(q1-q0) ‚Ì‹——£‚ÌÅ¬‰»
-	// u0 + t1*u1 + t2*u2 ‚Ì’·‚³‚ÌÅ¬‰»
+	// p0 + t1(p1-p0) ã¨ q0 + t2(q1-q0) ã®è·é›¢ã®æœ€å°åŒ–
+	// u0 + t1*u1 + t2*u2 ã®é•·ã•ã®æœ€å°åŒ–
 	kmb::Vector3D u0(p0,q0);
 	kmb::Vector3D u1(p1,p0);
 	kmb::Vector3D u2(q0,q1);
@@ -32,13 +32,13 @@ double kmb::Collision::testSegSeg(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D
 		0.0 < t->x() && t->x() < 1.0 &&
 		0.0 < t->y() && t->y() < 1.0 )
 	{
-		// “à•”‚ÅÅ¬‚ğæ‚é
+		// å†…éƒ¨ã§æœ€å°ã‚’å–ã‚‹
 		t1 = t->x();
 		t2 = t->y();
 		delete t;
 		return (u0 + u1.scalar(t1) + u2.scalar(t2)).lengthSq();
 	}else{
-		// ‹«ŠE‚ÅÅ¬‚ğæ‚é
+		// å¢ƒç•Œã§æœ€å°ã‚’å–ã‚‹
 		kmb::Minimizer min;
 		double tmp=0.0;
 		if( min.update( p0.distanceSqToSegment( q0, q1, tmp ) ) ){
@@ -67,8 +67,8 @@ double kmb::Collision::testSegSeg(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D
 double kmb::Collision::testSegTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2,double &s,double t[2])
 {
 	// t1 = s t2 = t[0] t3 = t[1]
-	// p0 + t1(p1-p0) ‚Æ q0 + t2(q1-q0) + t3(q2-q0) ‚Æ ‚Ì‹——£‚ÌÅ¬‰»
-	// u0 + t1*u1 + t2*u2 + t3*u3 ‚Ì’·‚³‚ÌÅ¬‰»
+	// p0 + t1(p1-p0) ã¨ q0 + t2(q1-q0) + t3(q2-q0) ã¨ ã®è·é›¢ã®æœ€å°åŒ–
+	// u0 + t1*u1 + t2*u2 + t3*u3 ã®é•·ã•ã®æœ€å°åŒ–
 	kmb::Vector3D u0(p0,q0);
 	kmb::Vector3D u1(p1,p0);
 	kmb::Vector3D u2(q0,q1);
@@ -84,16 +84,16 @@ double kmb::Collision::testSegTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D
 		0.0 < tmp->y() && 0.0 < tmp->z() &&
 		tmp->y() + tmp->z() < 1.0 )
 	{
-		// “à•”‚ÅÅ¬‚ğæ‚é
+		// å†…éƒ¨ã§æœ€å°ã‚’å–ã‚‹
 		s = tmp->getCoordinate(0);
 		t[0] = tmp->getCoordinate(1);
 		t[1] = tmp->getCoordinate(2);
 		delete tmp;
 		return (u0 + u1.scalar(s) + u2.scalar(t[0]) + u3.scalar(t[1])).lengthSq();
 	}else{
-		// ‹«ŠE‚ÅÅ¬‚ğæ‚é
+		// å¢ƒç•Œã§æœ€å°ã‚’å–ã‚‹
 		kmb::Minimizer min;
-		// OŠpŒ`‚Æ“_
+		// ä¸‰è§’å½¢ã¨ç‚¹
 		double tt[2];
 		if( min.update( p0.distanceSqToTriangle( q0, q1, q2, tt ) ) ){
 			s = 0.0;
@@ -105,7 +105,7 @@ double kmb::Collision::testSegTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D
 			t[0] = tt[0];
 			t[1] = tt[1];
 		}
-		// •Ó‚Æ•Ó
+		// è¾ºã¨è¾º
 		double ss0,ss1;
 		if( min.update( testSegSeg( p0, p1, q0, q1, ss0, ss1 ) ) ){
 			s = ss0;
@@ -135,9 +135,9 @@ kmb::Collision::testTriTri(
 	kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2,
 	double s[2],double t[2])
 {
-	// ‹«ŠE‚ÅÅ¬‚ğæ‚é
+	// å¢ƒç•Œã§æœ€å°ã‚’å–ã‚‹
 	kmb::Minimizer min;
-	// OŠpŒ`‚Æ•Ó
+	// ä¸‰è§’å½¢ã¨è¾º
 	double ss = 0.0;
 	double tt[2] = {0.0, 0.0};
 	if( min.update( kmb::Collision::testSegTri( p0, p1, q0, q1, q2, ss, tt ) ) ){
@@ -179,7 +179,7 @@ kmb::Collision::testTriTri(
 	return min.getMin();
 }
 
-// Œµ‚µ‚ß‚É”»’è‚·‚é
+// å³ã—ã‚ã«åˆ¤å®šã™ã‚‹
 kmb::Collision::collisionType
 kmb::Collision::detectSegTri2(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2)
 {
@@ -221,7 +221,7 @@ kmb::Collision::detectSegTri2(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0
 	}
 }
 
-// ˆÀ‘S‚æ‚è‚É”»’è‚·‚é
+// å®‰å…¨ã‚ˆã‚Šã«åˆ¤å®šã™ã‚‹
 kmb::Collision::collisionType
 kmb::Collision::detectSegTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2)
 {

@@ -43,14 +43,14 @@ kmb::MicroAVSIO::~MicroAVSIO(void)
 {
 }
 
-/* version 9 ‚Ì‚Æ‚«
+/* version 9 ã®ã¨ã
 
-( ƒRƒƒ“ƒgs)
-( ƒXƒeƒbƒv”)
-( ƒf[ƒ^‚ÌŒJ‚è•Ô‚µƒ^ƒCƒv)
-( ƒXƒeƒbƒv”Ô†1) ( ƒRƒƒ“ƒg)
-( ‘Sß“_”) ( ‘S—v‘f”)
-( ß“_”Ô†1) (X À•W) (Y À•W) (Z À•W)
+( ã‚³ãƒ¡ãƒ³ãƒˆè¡Œ)
+( ã‚¹ãƒ†ãƒƒãƒ—æ•°)
+( ãƒ‡ãƒ¼ã‚¿ã®ç¹°ã‚Šè¿”ã—ã‚¿ã‚¤ãƒ—)
+( ã‚¹ãƒ†ãƒƒãƒ—ç•ªå·1) ( ã‚³ãƒ¡ãƒ³ãƒˆ)
+( å…¨ç¯€ç‚¹æ•°) ( å…¨è¦ç´ æ•°)
+( ç¯€ç‚¹ç•ªå·1) (X åº§æ¨™) (Y åº§æ¨™) (Z åº§æ¨™)
 
  */
 int
@@ -63,7 +63,7 @@ kmb::MicroAVSIO::getVersion(std::ifstream &input) const
 			return 9;
 		}else if( line.find_first_of("0123456789") != std::string::npos ){
 			if( line.find_first_not_of("0123456789") == std::string::npos ){
-				// ”šˆÈŠO‚Ì‹Lq‚ª‚È‚¢ = STEP ‚Æ‚İ‚È‚·
+				// æ•°å­—ä»¥å¤–ã®è¨˜è¿°ãŒãªã„æ™‚ = STEP ã¨ã¿ãªã™
 				return 9;
 			}else{
 				return 8;
@@ -96,7 +96,7 @@ kmb::MicroAVSIO::readHeader(std::ifstream &input)
 			if( line.length() > 0 &&  line.at(0) == '#' ){
 				continue;
 			}
-			// Å‰‚Ìs
+			// æœ€åˆã®è¡Œ
 			if( step == -1 ){
 				std::istringstream stream(line);
 				stream >> step;
@@ -424,7 +424,7 @@ kmb::MicroAVSIO::skipGeom(std::ifstream &input)
 	return 0;
 }
 
-// s‚Ì”ñ‹ó”’‚©‚çƒRƒ“ƒ}‚Ü‚Å‚ğæ‚èo‚·
+// è¡Œã®éç©ºç™½ã‹ã‚‰ã‚³ãƒ³ãƒã¾ã§ã‚’å–ã‚Šå‡ºã™
 void
 kmb::MicroAVSIO::getDataName(std::string &line)
 {
@@ -451,11 +451,11 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 	kmb::DataBindings* data = NULL;
 	if( version == 9 ){
 		int nodeDataCount = 0, elementDataCount = 0;
-		// •Ï”‚·‚×‚Ä‚ÌŒÂ”
+		// å¤‰æ•°ã™ã¹ã¦ã®å€‹æ•°
 		input >> nodeDimCount >> elementDimCount;
 		if( nodeDimCount > 0 ){
 			mesh->clearTargetData();
-			// •Ï”‚ÌŒÂ”
+			// å¤‰æ•°ã®å€‹æ•°
 			input >> nodeDataCount;
 			if( nodeDataCount>0 ){
 				std::string line;
@@ -466,14 +466,14 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 					items[i].dim = d;
 				}
 				std::getline( input, line );
-				// nodeDataCount s
+				// nodeDataCount è¡Œ
 				for(int i=0;i<nodeDataCount;++i){
 					std::getline( input, line );
 					getDataName(line);
 					items[i].name = line;
 				}
 				if( summary ){
-					// ; ‚ª‚ ‚és‚Í‚R‚Â‚É‚Ü‚Æ‚ß‚é
+					// ; ãŒã‚ã‚‹è¡Œã¯ï¼“ã¤ã«ã¾ã¨ã‚ã‚‹
 					for(int i=0;i<nodeDataCount-2;++i){
 						size_t semiColon = items[i].name.find(";");
 						if( semiColon != std::string::npos ){
@@ -484,7 +484,7 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 							items[i+2].dim = 0;
 						}
 					}
-					// _1 ‚ª‚ ‚és‚Í‚Ü‚Æ‚ß‚é
+					// _1 ãŒã‚ã‚‹è¡Œã¯ã¾ã¨ã‚ã‚‹
 					for(int i=0;i<nodeDataCount;++i){
 						size_t bar = items[i].name.find("_1");
 						if( bar != std::string::npos ){
@@ -505,7 +505,7 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 						}
 					}
 				}
-				// asVector3 ƒtƒ‰ƒO
+				// asVector3 ãƒ•ãƒ©ã‚°
 				if( asVector3 && nodeDataCount == 3 && items[0].dim == 1 && items[1].dim == 1 && items[1].dim == 1 ){
 					items[0].dim = 3;
 					items[1].dim = 0;
@@ -570,7 +570,7 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 						mesh->appendTargetDataPtr( data );
 						break;
 					case 7:
-						// FrontISTR ê—p 6+1 ‚É•ª‚¯‚é
+						// FrontISTR å°‚ç”¨ 6+1 ã«åˆ†ã‘ã‚‹
 						data = mesh->getDataBindingsPtr( items[i].name.c_str(), "post" );
 						if( data && (
 								data->getBindingMode() != kmb::DataBindings::NodeVariable ||
@@ -617,7 +617,7 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 		}
 		if( elementDimCount > 0 ){
 			mesh->clearTargetData();
-			// •Ï”‚ÌŒÂ”
+			// å¤‰æ•°ã®å€‹æ•°
 			input >> elementDataCount;
 			if( elementDataCount>0 ){
 				std::string line;
@@ -626,14 +626,14 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 					input >> items[i].dim;
 				}
 				std::getline( input, line );
-				// elementDataCount s
+				// elementDataCount è¡Œ
 				for(int i=0;i<elementDataCount;++i){
 					std::getline( input, line );
 					getDataName(line);
 					items[i].name = line;
 				}
 				if( summary ){
-					// ; ‚ª‚ ‚és‚Í‚R‚Â‚É‚Ü‚Æ‚ß‚é
+					// ; ãŒã‚ã‚‹è¡Œã¯ï¼“ã¤ã«ã¾ã¨ã‚ã‚‹
 					for(int i=0;i<elementDataCount-2;++i){
 						size_t semiColon = items[i].name.find(";");
 						if( semiColon != std::string::npos ){
@@ -644,7 +644,7 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 							items[i+2].dim = 0;
 						}
 					}
-					// _1 ‚ª‚ ‚és‚Í‚Ü‚Æ‚ß‚é
+					// _1 ãŒã‚ã‚‹è¡Œã¯ã¾ã¨ã‚ã‚‹
 					for(int i=0;i<elementDataCount;++i){
 						size_t bar = items[i].name.find("_1");
 						if( bar != std::string::npos ){
@@ -724,7 +724,7 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 						mesh->appendTargetDataPtr( data );
 						break;
 					case 7:
-						// FrontISTR ê—p 6 + 1 ‚É•ª‚¯‚é
+						// FrontISTR å°‚ç”¨ 6 + 1 ã«åˆ†ã‘ã‚‹
 						data = mesh->getDataBindingsPtr( items[i].name.c_str(), "post" );
 						if( data && (
 								data->getBindingMode() != kmb::DataBindings::ElementVariable ||
@@ -773,7 +773,7 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 		int nodeDataCount = 0, elementDataCount = 0;
 		if( nodeDimCount > 0 ){
 			mesh->clearTargetData();
-			// •Ï”‚ÌŒÂ”
+			// å¤‰æ•°ã®å€‹æ•°
 			input >> nodeDataCount;
 			if( nodeDataCount>0 ){
 				std::string line;
@@ -782,14 +782,14 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 					input >> items[i].dim;
 				}
 				std::getline( input, line );
-				// nodeDataCount s
+				// nodeDataCount è¡Œ
 				for(int i=0;i<nodeDataCount;++i){
 					std::getline( input, line );
 					getDataName(line);
 					items[i].name = line;
 				}
 				if( summary ){
-					// ; ‚ª‚ ‚és‚Í‚R‚Â‚É‚Ü‚Æ‚ß‚é
+					// ; ãŒã‚ã‚‹è¡Œã¯ï¼“ã¤ã«ã¾ã¨ã‚ã‚‹
 					for(int i=0;i<nodeDataCount-2;++i){
 						size_t semiColon = items[i].name.find(";");
 						if( semiColon != std::string::npos ){
@@ -800,7 +800,7 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 							items[i+2].dim = 0;
 						}
 					}
-					// _1 ‚ª‚ ‚és‚Í‚Ü‚Æ‚ß‚é
+					// _1 ãŒã‚ã‚‹è¡Œã¯ã¾ã¨ã‚ã‚‹
 					for(int i=0;i<nodeDataCount;++i){
 						size_t bar = items[i].name.find("_1");
 						if( bar != std::string::npos ){
@@ -821,7 +821,7 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 						}
 					}
 				}
-				// asVector3 ƒtƒ‰ƒO
+				// asVector3 ãƒ•ãƒ©ã‚°
 				if( asVector3 && nodeDataCount == 3 && items[0].dim == 1 && items[1].dim == 1 && items[1].dim == 1 ){
 					items[0].dim = 3;
 					items[1].dim = 0;
@@ -932,7 +932,7 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 		}
 		if( elementDimCount > 0 ){
 			mesh->clearTargetData();
-			// •Ï”‚ÌŒÂ”
+			// å¤‰æ•°ã®å€‹æ•°
 			input >> elementDataCount;
 			if( elementDataCount>0 ){
 				std::string line;
@@ -941,14 +941,14 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 					input >> items[i].dim;
 				}
 				std::getline( input, line );
-				// elementDataCount s
+				// elementDataCount è¡Œ
 				for(int i=0;i<elementDataCount;++i){
 					std::getline( input, line );
 					getDataName(line);
 					items[i].name = line;
 				}
 				if( summary ){
-					// ; ‚ª‚ ‚és‚Í‚R‚Â‚É‚Ü‚Æ‚ß‚é
+					// ; ãŒã‚ã‚‹è¡Œã¯ï¼“ã¤ã«ã¾ã¨ã‚ã‚‹
 					for(int i=0;i<elementDataCount-2;++i){
 						size_t semiColon = items[i].name.find(";");
 						if( semiColon != std::string::npos ){
@@ -959,7 +959,7 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 							items[i+2].dim = 0;
 						}
 					}
-					// _1 ‚ª‚ ‚és‚Í‚Ü‚Æ‚ß‚é
+					// _1 ãŒã‚ã‚‹è¡Œã¯ã¾ã¨ã‚ã‚‹
 					for(int i=0;i<elementDataCount;++i){
 						size_t bar = items[i].name.find("_1");
 						if( bar != std::string::npos ){
@@ -1039,7 +1039,7 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 						mesh->appendTargetDataPtr( data );
 						break;
 					case 7:
-						// FrontISTR ê—p 6 + 1 ‚É•ª‚¯‚é
+						// FrontISTR å°‚ç”¨ 6 + 1 ã«åˆ†ã‘ã‚‹
 						data = mesh->getDataBindingsPtr( items[i].name.c_str(), "post" );
 						if( data && (
 								data->getBindingMode() != kmb::DataBindings::ElementVariable ||
@@ -1196,8 +1196,8 @@ kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
 		return -1;
 	}
 	
-	// o—Í‚·‚é—v‘f‚ÌŸŒ³
-	// —v‘f”Ô†‚Ío—Í‚·‚éŸŒ³‚Ì‚à‚Ì‚ªæ‚É‚ ‚é‚±‚Æ
+	// å‡ºåŠ›ã™ã‚‹è¦ç´ ã®æ¬¡å…ƒ
+	// è¦ç´ ç•ªå·ã¯å‡ºåŠ›ã™ã‚‹æ¬¡å…ƒã®ã‚‚ã®ãŒå…ˆã«ã‚ã‚‹ã“ã¨
 	int modelDim = 3;
 	size_t nodeCount = mesh->getNodeCount();
 	size_t elemCount = 0;
@@ -1247,9 +1247,9 @@ kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
 		++nIter;
 	}
 
-	// REVOCAP ‚Æ AVS ‚Ìß“_”z—ñ‚Ì‡”Ô‚ğ’ˆÓ‚·‚é‚½‚ß‚É‚ ‚¦‚Ä for ‚ğg‚í‚¸‚ÉÀ‘•
-	// Šù‚É BodyName ‚Í—^‚¦‚ç‚ê‚Ä‚¢‚é‚à‚Ì‚Æ‚·‚é
-	// ƒ}ƒeƒŠƒAƒ‹”Ô†‚Í bodyId ‚ğo—Í‚µ‚Ä‚¢‚é
+	// REVOCAP ã¨ AVS ã®ç¯€ç‚¹é…åˆ—ã®é †ç•ªã‚’æ³¨æ„ã™ã‚‹ãŸã‚ã«ã‚ãˆã¦ for ã‚’ä½¿ã‚ãšã«å®Ÿè£…
+	// æ—¢ã« BodyName ã¯ä¸ãˆã‚‰ã‚Œã¦ã„ã‚‹ã‚‚ã®ã¨ã™ã‚‹
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ç•ªå·ã¯ bodyId ã‚’å‡ºåŠ›ã—ã¦ã„ã‚‹
 	for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 		const kmb::Body* body = mesh->getBodyPtr(bodyId);
 		if( body == NULL || body->getDimension() != modelDim ){
@@ -1520,8 +1520,8 @@ int kmb::MicroAVSIO::saveToFile_V8(const char* filename,kmb::MeshData* mesh)
 	size_t eDataDim = 0;
 	size_t mDataDim = 0;
 
-	// o—Í‚·‚é—v‘f‚ÌŸŒ³
-	// —v‘f”Ô†‚Ío—Í‚·‚éŸŒ³‚Ì‚à‚Ì‚ªæ‚É‚ ‚é‚±‚Æ
+	// å‡ºåŠ›ã™ã‚‹è¦ç´ ã®æ¬¡å…ƒ
+	// è¦ç´ ç•ªå·ã¯å‡ºåŠ›ã™ã‚‹æ¬¡å…ƒã®ã‚‚ã®ãŒå…ˆã«ã‚ã‚‹ã“ã¨
 	int modelDim = 3;
 
 	kmb::bodyIdType bodyCount = mesh->getBodyCount();
@@ -1596,7 +1596,7 @@ int kmb::MicroAVSIO::saveToFile_V8(const char* filename,kmb::MeshData* mesh)
 			}
 		}
 	}
-	// MicroAVS ‚Å‚ÍƒxƒNƒgƒ‹’l‚Ìo—Í‚Í”F‚ß‚ç‚ê‚Ä‚¢‚È‚¢‚Ì‚ÅA‚·‚×‚ÄƒXƒJƒ‰[‚Æ‚µ‚Äo—Í‚·‚é
+	// MicroAVS ã§ã¯ãƒ™ã‚¯ãƒˆãƒ«å€¤ã®å‡ºåŠ›ã¯èªã‚ã‚‰ã‚Œã¦ã„ãªã„ã®ã§ã€ã™ã¹ã¦ã‚¹ã‚«ãƒ©ãƒ¼ã¨ã—ã¦å‡ºåŠ›ã™ã‚‹
 	output << " " << std::setw(10) << nodeCount <<
 		" " << std::setw(10) << elemCount <<
 		" " << std::setw(10) << nDataDim <<
@@ -1614,8 +1614,8 @@ int kmb::MicroAVSIO::saveToFile_V8(const char* filename,kmb::MeshData* mesh)
 		++nIter;
 	}
 
-	// REVOCAP ‚Æ AVS ‚Ìß“_”z—ñ‚Ì‡”Ô‚ğ’ˆÓ‚·‚é‚½‚ß‚É‚ ‚¦‚Ä for ‚ğg‚í‚¸‚ÉÀ‘•
-	// Šù‚É BodyName ‚Í—^‚¦‚ç‚ê‚Ä‚¢‚é‚à‚Ì‚Æ‚·‚é
+	// REVOCAP ã¨ AVS ã®ç¯€ç‚¹é…åˆ—ã®é †ç•ªã‚’æ³¨æ„ã™ã‚‹ãŸã‚ã«ã‚ãˆã¦ for ã‚’ä½¿ã‚ãšã«å®Ÿè£…
+	// æ—¢ã« BodyName ã¯ä¸ãˆã‚‰ã‚Œã¦ã„ã‚‹ã‚‚ã®ã¨ã™ã‚‹
 	for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 		const kmb::Body* body = mesh->getBodyPtr(bodyId);
 		if( body == NULL || body->getDimension() != modelDim ){

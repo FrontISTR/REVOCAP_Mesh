@@ -1,10 +1,10 @@
 /*----------------------------------------------------------------------
 #                                                                      #
-# Software Name : REVOCAP_PrePost version 1.6                          #
-# Class Name : RnfShapeIO                                              #
+# Software Name : REVOCAP_PrePost version 1.7                          #
+# Common Definitions                                                   #
 #                                                                      #
 #                                Written by                            #
-#                                           K. Tokunaga 2012/03/23     #
+#                                           K. Tokunaga 2016/03/25     #
 #                                                                      #
 #      Contact Address: IIS, The University of Tokyo CISS              #
 #                                                                      #
@@ -12,28 +12,24 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-// OpenCASCADE によらずに RNF 形式の形状データファイルを読み込む
+
 #pragma once
 
 #include <vector>
-#include <fstream>
 
 namespace kmb{
 
-class Surface3D;
-class NurbsSurface3D;
-
-class RnfShapeIO
-{
-public:
-	RnfShapeIO(void);
-	~RnfShapeIO(void);
-	int loadFromFile(const char* filename, std::vector< kmb::Surface3D* >& surfaces);
-	int appendSurfaceHeaderToFile(const char* filename);
-	int appendSurfaceToFile(const char* filename, kmb::Surface3D* surface);
-private:
-	int readNurbs(std::ifstream &input,kmb::NurbsSurface3D* nurbs);
-
-};
+template<class T>
+void clearVector(std::vector<T*> container){
+	std::vector< T* >::iterator iter = container.begin();
+	while( iter != container.end() ){
+		T* t = *iter;
+		if( t != NULL ){
+			delete t;
+		}
+		++iter;
+	}
+	container.clear();
+}
 
 }

@@ -13,11 +13,11 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// REVOCAP_Coupler ‚ª—˜—p‚·‚éƒf[ƒ^‚Ì‚h^‚n
+// REVOCAP_Coupler ãŒåˆ©ç”¨ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã®ï¼©ï¼ï¼¯
 //
-// —Ìˆæ•ªŠ„Œã‚Ìƒtƒ@ƒCƒ‹
-// ‘åˆæId=æ“ª‚Ì”š
-// ‹ÇŠId=ƒtƒ@ƒCƒ‹‚É•\‚ê‚é‡”Ô(0,1,2,...)
+// é ˜åŸŸåˆ†å‰²å¾Œã®ãƒ•ã‚¡ã‚¤ãƒ«
+// å¤§åŸŸId=å…ˆé ­ã®æ•°å­—
+// å±€æ‰€Id=ãƒ•ã‚¡ã‚¤ãƒ«ã«è¡¨ã‚Œã‚‹é †ç•ª(0,1,2,...)
 //
 
 #pragma once
@@ -34,18 +34,18 @@ class RevocapCouplerIO
 private:
 	kmb::nodeIdType offsetNodeId;
 	kmb::elementIdType offsetElementId;
-	// —v‘f‚ğ“Ç‚İ‚ñ‚Å globalId ‚Å“o˜^
+	// è¦ç´ ã‚’èª­ã¿è¾¼ã‚“ã§ globalId ã§ç™»éŒ²
 	kmb::bodyIdType loadElement( std::ifstream &input, kmb::elementType etype, size_t elementCount, kmb::MeshData* mesh );
 	size_t loadNode( std::ifstream &input, size_t nodeCount, kmb::MeshData* mesh );
 	size_t loadLocalNode( std::ifstream &input, size_t nodeCount, kmb::MeshData* mesh );
 public:
 	RevocapCouplerIO( kmb::nodeIdType offsetNodeId=0, kmb::elementIdType offsetElementId=0 );
 	virtual ~RevocapCouplerIO(void);
-	// mesh ‚É‚ÍglobalId‚ÅŠi”[‚·‚é
+	// mesh ã«ã¯globalIdã§æ ¼ç´ã™ã‚‹
 	int loadFromPartitionFile(const char* filename,kmb::MeshData* mesh);
-	// ß“_‚Ì‚İ‚ğ“Ç‚İ‚Ş
-	// Id ‚ÍlocalId‚ÅŠi”[‚·‚é
-	// globalId‚Í Data ‚Æ‚µ‚Ä name = "GlobalId" ‚ÅQÆ
+	// ç¯€ç‚¹ã®ã¿ã‚’èª­ã¿è¾¼ã‚€
+	// Id ã¯localIdã§æ ¼ç´ã™ã‚‹
+	// globalIdã¯ Data ã¨ã—ã¦ name = "GlobalId" ã§å‚ç…§
 	int loadLocalNodesFromPartitionFile(const char* filename,kmb::MeshData* mesh);
 };
 

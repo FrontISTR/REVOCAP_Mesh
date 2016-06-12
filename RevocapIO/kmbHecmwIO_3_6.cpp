@@ -13,9 +13,9 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// HecMW Ver.3 ‚Ì‚½‚ß‚Ìƒtƒ@ƒCƒ‹ I/O
+// HecMW Ver.3 ã®ãŸã‚ã®ãƒ•ã‚¡ã‚¤ãƒ« I/O
 //
-// material ‘®«‚Í CNT ƒtƒ@ƒCƒ‹‚ð“Ç‚Ü‚È‚¢‚Æ‚í‚©‚ç‚È‚¢
+// material å±žæ€§ã¯ CNT ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¾ãªã„ã¨ã‚ã‹ã‚‰ãªã„
 //
 
 #include "RevocapIO/kmbHecmwIO.h"
@@ -33,7 +33,7 @@
  #endif
 #endif
 
-// section î•ñ‚ª‰ðÍ§Œäƒtƒ@ƒCƒ‹‚É‘‚©‚ê‚Ä‚¢‚é
+// section æƒ…å ±ãŒè§£æžåˆ¶å¾¡ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ã‹ã‚Œã¦ã„ã‚‹
 int
 kmb::HecmwIO::loadFromMW3File(const char* filename,MeshData* mesh) const
 {
@@ -84,12 +84,12 @@ kmb::HecmwIO::loadFromMW3File(const char* filename,MeshData* mesh) const
 				}
 			}else if( line.find("!ELEMENT") == 0 ){
 				std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
-				// –¼‘O‚ªŠù‚É‚ ‚é—Ìˆæ–¼‚Æˆê’v‚·‚é‚©‚Ç‚¤‚©
+				// åå‰ãŒæ—¢ã«ã‚ã‚‹é ˜åŸŸåã¨ä¸€è‡´ã™ã‚‹ã‹ã©ã†ã‹
 				kmb::bodyIdType bodyId = kmb::Body::nullBodyId;
 				if( name.length() > 0 ){
 					bodyId = mesh->getBodyIdByName( name.c_str() );
 				}
-				// ElementContainer ‚ðŽæ“¾
+				// ElementContainer ã‚’å–å¾—
 				kmb::ElementContainer* body = NULL;
 				if( bodyId == kmb::Body::nullBodyId ){
 					bodyId = mesh->beginElement();
@@ -231,7 +231,7 @@ kmb::HecmwIO::loadFromMW3File(const char* filename,MeshData* mesh) const
 								data->addId( f );
 								break;
 							default:
-								// findElement ‚ÅƒGƒ‰[‚ÌŽž‚à‚±‚±‚ð’Ê‚é
+								// findElement ã§ã‚¨ãƒ©ãƒ¼ã®æ™‚ã‚‚ã“ã“ã‚’é€šã‚‹
 								break;
 							}
 						}
@@ -248,7 +248,7 @@ kmb::HecmwIO::loadFromMW3File(const char* filename,MeshData* mesh) const
 	}
 }
 
-// CONT PAIR ‚Æ ASSEM PAIR ‚Í“¯‚¶•”•i‚É‘®‚·‚é‚Æ‚µ‚Ä‚¢‚é‰¼ŽÀ‘•
+// CONT PAIR ã¨ ASSEM PAIR ã¯åŒã˜éƒ¨å“ã«å±žã™ã‚‹ã¨ã—ã¦ã„ã‚‹ä»®å®Ÿè£…
 int
 kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const char* partName) const
 {
@@ -262,7 +262,7 @@ kmb::HecmwIO::saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const
 		writeHeader(output,"4");
 		writeNode(output,mesh,partName);
 
-		// SECTION ‚Å—^‚¦‚ç‚ê‚é—v‘f‚ÍABody ‚²‚Æ‚É EGRP –¼‚ð•t‚¯‚Ä !ELEMENT ‚Åo—Í‚·‚é
+		// SECTION ã§ä¸Žãˆã‚‰ã‚Œã‚‹è¦ç´ ã¯ã€Body ã”ã¨ã« EGRP åã‚’ä»˜ã‘ã¦ !ELEMENT ã§å‡ºåŠ›ã™ã‚‹
 		kmb::bodyIdType bodyCount = mesh->getBodyCount();
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			writeElement(output,mesh,bodyId,partName);
@@ -292,7 +292,7 @@ int kmb::HecmwIO::saveToMeshFile_3_6(const char* filename, const kmb::MeshData* 
 		writeHeader(output);
 		writeNode(output,mesh);
 
-		// SECTION ‚Å—^‚¦‚ç‚ê‚é—v‘f‚ÍABody ‚²‚Æ‚É EGRP –¼‚ð•t‚¯‚Ä !ELEMENT ‚Åo—Í‚·‚é
+		// SECTION ã§ä¸Žãˆã‚‰ã‚Œã‚‹è¦ç´ ã¯ã€Body ã”ã¨ã« EGRP åã‚’ä»˜ã‘ã¦ !ELEMENT ã§å‡ºåŠ›ã™ã‚‹
 		kmb::bodyIdType bodyCount = mesh->getBodyCount();
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			writeElement(output,mesh,bodyId);

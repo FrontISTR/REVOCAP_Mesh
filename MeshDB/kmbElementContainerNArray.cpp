@@ -59,8 +59,8 @@ kmb::ElementContainerNArray::ElementContainerNArray( kmb::elementType etype, siz
 	this->etype = etype;
 	this->size = size;
 	this->ncount = kmb::Element::getNodeCount( etype );
-	// direct access ‚¾‚¯‰Â”\‚É‚·‚éê‡‚É‚Í
-	// writable = false ‚Å nodeTable = NULL ‚Ìê‡‚à‚ ‚é
+	// direct access ã ã‘å¯èƒ½ã«ã™ã‚‹å ´åˆã«ã¯
+	// writable = false ã§ nodeTable = NULL ã®å ´åˆã‚‚ã‚ã‚‹
 	if( nodeTable ){
 		this->nodeTable = nodeTable;
 		this->nodeTableDeletable = false;
@@ -351,7 +351,7 @@ kmb::ElementContainerNArray::_iteratorNA::getType(void) const
 }
 
 kmb::nodeIdType
-kmb::ElementContainerNArray::_iteratorNA::getCellId(int cellIndex) const
+kmb::ElementContainerNArray::_iteratorNA::getNodeId(int cellIndex) const
 {
 	if( 0 <= cellIndex && cellIndex < static_cast<int>(elementContainer->ncount) &&
 		elementContainer->nodeTable[ (elementContainer->ncount)*index ] != elementContainer->nodeTable[ (elementContainer->ncount)*index+1 ] ){
@@ -362,7 +362,7 @@ kmb::ElementContainerNArray::_iteratorNA::getCellId(int cellIndex) const
 }
 
 bool
-kmb::ElementContainerNArray::_iteratorNA::setCellId(int cellIndex, kmb::nodeIdType nodeId)
+kmb::ElementContainerNArray::_iteratorNA::setNodeId(int cellIndex, kmb::nodeIdType nodeId)
 {
 	if( 0 <= cellIndex && cellIndex < static_cast<int>(elementContainer->ncount) ){
 		elementContainer->nodeTable[ (elementContainer->ncount)*index+cellIndex ] = nodeId + elementContainer->nodeOffset;

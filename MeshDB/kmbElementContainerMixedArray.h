@@ -13,11 +13,11 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 /**
- * •¡”í‚Ì—v‘f‚ğß“_”z—ñ‚ÉŠi”[‚·‚é
+ * è¤‡æ•°ç¨®ã®è¦ç´ ã‚’ç¯€ç‚¹é…åˆ—ã«æ ¼ç´ã™ã‚‹
  *
- * nodeTable  —v‘f‚Ìß“_”Ô†‚ğ‡‚É•À‚×‚½”z—ñ
- * etypeTable —v‘f‚Ìí—Ş‚ğ•À‚×‚½”z—ñichar ‚ÅŠm•Û‚µ‚Ä‚¢‚é‚±‚Æ‚É’ˆÓj
- * indexTable —v‘f‚Ì‹æØ‚è‚Ì”z—ñ‚Ì“Y‚¦š‚ğ•À‚×‚½”z—ñ
+ * nodeTable  è¦ç´ ã®ç¯€ç‚¹ç•ªå·ã‚’é †ã«ä¸¦ã¹ãŸé…åˆ—
+ * etypeTable è¦ç´ ã®ç¨®é¡ã‚’ä¸¦ã¹ãŸé…åˆ—ï¼ˆchar ã§ç¢ºä¿ã—ã¦ã„ã‚‹ã“ã¨ã«æ³¨æ„ï¼‰
+ * indexTable è¦ç´ ã®åŒºåˆ‡ã‚Šã®é…åˆ—ã®æ·»ãˆå­—ã‚’ä¸¦ã¹ãŸé…åˆ—
  */
 #pragma once
 #include "MeshDB/kmbElementContainer.h"
@@ -30,30 +30,30 @@ class ElementContainerMixedArray : public ElementContainerDirectAccessable
 public:
 	static const char* CONTAINER_TYPE;
 protected:
-	size_t size; // —v‘f‚Ì”z—ñ‚Ì‘å‚«‚³
-	kmb::nodeIdType *nodeTable; // ß“_”z—ñ
-	char *etypeTable; // —v‘f‚Ìí—Ş‚Ì”z—ñ
-	size_t *indexTable; // —v‘f‚Ì‹æØ‚è‚Ì index ‚Ì”z—ñ
-	// i ”Ô–Ú‚Ì—v‘f‚Í
-	// —v‘f‚Ìí—Ş etype = etypeTable[i] 
-	// ”z—ñ‚Ì‹æØ‚è j = indexTable[i]
+	size_t size; // è¦ç´ ã®é…åˆ—ã®å¤§ãã•
+	kmb::nodeIdType *nodeTable; // ç¯€ç‚¹é…åˆ—
+	char *etypeTable; // è¦ç´ ã®ç¨®é¡ã®é…åˆ—
+	size_t *indexTable; // è¦ç´ ã®åŒºåˆ‡ã‚Šã® index ã®é…åˆ—
+	// i ç•ªç›®ã®è¦ç´ ã¯
+	// è¦ç´ ã®ç¨®é¡ etype = etypeTable[i] 
+	// é…åˆ—ã®åŒºåˆ‡ã‚Š j = indexTable[i]
 	// len = kmb::Element::getNodeCount( etype )
 	// nodeTable[j] ... nodeTable[j+len-1]
-	bool nodeTableDeletable;  // ß“_”z—ñ‚ğ‚±‚ÌƒNƒ‰ƒX‚Å Delete ‚µ‚Ä‚à‚æ‚¢‚©‚Ç‚¤‚©
-	bool etypeTableDeletable;  // —v‘fí—Ş”z—ñ‚ğ‚±‚ÌƒNƒ‰ƒX‚Å Delete ‚µ‚Ä‚à‚æ‚¢‚©‚Ç‚¤‚©
-	bool indexTableDeletable;  // —v‘f‹æØ‚è”z—ñ‚ğ‚±‚ÌƒNƒ‰ƒX‚Å Delete ‚µ‚Ä‚à‚æ‚¢‚©‚Ç‚¤‚©
-	kmb::nodeIdType nodeOffset; // ß“_”Ô†‚ğ‚¸‚ç‚µ‚Ä“o˜^‚·‚éê‡
-	size_t index; // Ÿ‚É“o˜^‚·‚é—v‘fí—Ş”z—ñ‚Ì“Y‚¦ši“o˜^Ï‚İ‚ÌŒÂ”‚Æ‚Íˆá‚¤j
-	size_t nindex; // Ÿ‚É“o˜^‚·‚éß“_”z—ñ‚Ì“Y‚¦ši“o˜^Ï‚İ‚ÌŒÂ”‚Æ‚Íˆá‚¤j
-	size_t count; // Šù‚É“o˜^Ï‚İ‚ÌŒÂ”
+	bool nodeTableDeletable;  // ç¯€ç‚¹é…åˆ—ã‚’ã“ã®ã‚¯ãƒ©ã‚¹ã§ Delete ã—ã¦ã‚‚ã‚ˆã„ã‹ã©ã†ã‹
+	bool etypeTableDeletable;  // è¦ç´ ç¨®é¡é…åˆ—ã‚’ã“ã®ã‚¯ãƒ©ã‚¹ã§ Delete ã—ã¦ã‚‚ã‚ˆã„ã‹ã©ã†ã‹
+	bool indexTableDeletable;  // è¦ç´ åŒºåˆ‡ã‚Šé…åˆ—ã‚’ã“ã®ã‚¯ãƒ©ã‚¹ã§ Delete ã—ã¦ã‚‚ã‚ˆã„ã‹ã©ã†ã‹
+	kmb::nodeIdType nodeOffset; // ç¯€ç‚¹ç•ªå·ã‚’ãšã‚‰ã—ã¦ç™»éŒ²ã™ã‚‹å ´åˆ
+	size_t index; // æ¬¡ã«ç™»éŒ²ã™ã‚‹è¦ç´ ç¨®é¡é…åˆ—ã®æ·»ãˆå­—ï¼ˆç™»éŒ²æ¸ˆã¿ã®å€‹æ•°ã¨ã¯é•ã†ï¼‰
+	size_t nindex; // æ¬¡ã«ç™»éŒ²ã™ã‚‹ç¯€ç‚¹é…åˆ—ã®æ·»ãˆå­—ï¼ˆç™»éŒ²æ¸ˆã¿ã®å€‹æ•°ã¨ã¯é•ã†ï¼‰
+	size_t count; // æ—¢ã«ç™»éŒ²æ¸ˆã¿ã®å€‹æ•°
 public:
 	ElementContainerMixedArray(size_t typeCounter[kmb::ELEMENT_TYPE_NUM]);
-	// —]—T‚ğ‚Á‚Ä eSize * MAX_NODE_COUNT ‚Å‰Šú‰»‚·‚é
+	// ä½™è£•ã‚’æŒã£ã¦ eSize * MAX_NODE_COUNT ã§åˆæœŸåŒ–ã™ã‚‹
 	ElementContainerMixedArray(size_t eSize);
-	// writable = true ‚ÍŠm•Û‚µ‚½”z—ñ‚¾‚¯“n‚µ‚ÄA—v‘f‚ğŠi”[‚·‚é‚Ì‚Í‚±‚ÌƒNƒ‰ƒX‚Ås‚¤
-	// writable = false ‚Í‚·‚Å‚É—v‘f‚ğŠi”[‚µ‚½”z—ñ‚ğ“n‚µ‚ÄAƒ‰ƒbƒp‚Æ‚µ‚Ä‚±‚ÌƒNƒ‰ƒX‚ğg‚¤
+	// writable = true ã¯ç¢ºä¿ã—ãŸé…åˆ—ã ã‘æ¸¡ã—ã¦ã€è¦ç´ ã‚’æ ¼ç´ã™ã‚‹ã®ã¯ã“ã®ã‚¯ãƒ©ã‚¹ã§è¡Œã†
+	// writable = false ã¯ã™ã§ã«è¦ç´ ã‚’æ ¼ç´ã—ãŸé…åˆ—ã‚’æ¸¡ã—ã¦ã€ãƒ©ãƒƒãƒ‘ã¨ã—ã¦ã“ã®ã‚¯ãƒ©ã‚¹ã‚’ä½¿ã†
 	ElementContainerMixedArray(size_t eSize,char* etype, kmb::nodeIdType *nodeTable, bool writable=false, kmb::nodeIdType offset=0 );
-	// —v‘fí—Ş”z—ñ‚ª—^‚¦‚ç‚ê‚Ä‚¢‚é‚Æ‚«
+	// è¦ç´ ç¨®é¡é…åˆ—ãŒä¸ãˆã‚‰ã‚Œã¦ã„ã‚‹ã¨ã
 	ElementContainerMixedArray(size_t eSize,char *etype,kmb::nodeIdType offset=0);
 	virtual ~ElementContainerMixedArray(void);
 	virtual kmb::elementIdType addElement(kmb::elementType etype, const kmb::nodeIdType *nodes);
@@ -76,8 +76,8 @@ public:
 		virtual kmb::elementIdType getId(void) const;
 		virtual bool getElement(kmb::elementType &etype,kmb::nodeIdType *nodes) const;
 		virtual kmb::elementType getType(void) const;
-		virtual kmb::nodeIdType getCellId(int cellIndex) const;
-		virtual bool setCellId(int cellIndex, kmb::nodeIdType nodeId);
+		virtual kmb::nodeIdType getNodeId(int cellIndex) const;
+		virtual bool setNodeId(int cellIndex, kmb::nodeIdType nodeId);
 		virtual kmb::nodeIdType operator[](const int i) const;
 		virtual ElementContainer::_iterator* operator++(void);
 		virtual ElementContainer::_iterator* operator++(int n);
@@ -97,9 +97,9 @@ public:
 	size_t getNodeTableSize(void) const;
 	kmb::elementType getElementType(kmb::elementIdType id) const;
 	// direct access
-	// nodeOffset ‚Íl—¶‚³‚ê‚È‚¢‚Ì‚Å’ˆÓ
-	// elementOffset ‚Íl—¶‚³‚ê‚é
-	// —v‘fí—Ş”z—ñ‚ª–‘O‚É—^‚¦‚ç‚ê‚Ä‚¢‚é‚¾‚¯³‚µ‚­“®ì‚·‚é
+	// nodeOffset ã¯è€ƒæ…®ã•ã‚Œãªã„ã®ã§æ³¨æ„
+	// elementOffset ã¯è€ƒæ…®ã•ã‚Œã‚‹
+	// è¦ç´ ç¨®é¡é…åˆ—ãŒäº‹å‰ã«ä¸ãˆã‚‰ã‚Œã¦ã„ã‚‹æ™‚ã ã‘æ­£ã—ãå‹•ä½œã™ã‚‹
 	kmb::nodeIdType operator()(kmb::elementIdType elementId,kmb::idType localId) const;
 	kmb::nodeIdType& operator()(kmb::elementIdType elementId,kmb::idType localId);
 	void commit(kmb::elementIdType elementId);

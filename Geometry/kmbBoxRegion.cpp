@@ -394,7 +394,7 @@ kmb::BoxRegion::crossOnLine(const kmb::Point3D& origin, const kmb::Vector3D& dir
 		bbox_z.update( DBL_MAX );
 		bbox_z.update( -DBL_MAX );
 	}
-	// [t_minx,t_maxx] ‚Æ [t_miny,t_maxy] ‚ÌÏ‚ğ min_t max_t ‚É‚·‚é
+	// [t_minx,t_maxx] ã¨ [t_miny,t_maxy] ã®ç©ã‚’ min_t max_t ã«ã™ã‚‹
 	if( bbox_x.valid() ){
 		if( bbox_y.valid() ){
 			if( bbox_z.valid() ){
@@ -411,7 +411,7 @@ kmb::BoxRegion::crossOnLine(const kmb::Point3D& origin, const kmb::Vector3D& dir
 bool
 kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb::Point3D &c) const
 {
-	// “_‚ªŠÜ‚Ü‚ê‚Ä‚¢‚é‚Æ‚«‚Í–³ğŒ‚Å true
+	// ç‚¹ãŒå«ã¾ã‚Œã¦ã„ã‚‹ã¨ãã¯ç„¡æ¡ä»¶ã§ true
 	if( intersect( a ) == kmb::Region::INSIDE ||
 		intersect( b ) == kmb::Region::INSIDE ||
 		intersect( c ) == kmb::Region::INSIDE )
@@ -424,7 +424,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 	kmb::Matrix3x3 mat;
 	kmb::Vector3D v;
 	kmb::Vector3D t;
-	// ab,bc,ca ‚Æ6–Ê‚Ì”»’è
+	// ab,bc,ca ã¨6é¢ã®åˆ¤å®š
 	// yz
 	d = a.x() - b.x();
 	if( fabs(d) > localThres ){
@@ -457,7 +457,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 			return true;
 		}
 	}else{
-		// ab ‚ª yz ‚É•½s‚Èê‡
+		// ab ãŒ yz ã«å¹³è¡Œãªå ´åˆ
 		++countX;
 	}
 	d = b.x() - c.x();
@@ -491,7 +491,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 			return true;
 		}
 	}else{
-		// bc ‚ª yz ‚É•½s‚Èê‡
+		// bc ãŒ yz ã«å¹³è¡Œãªå ´åˆ
 		++countX;
 	}
 	d = c.x() - a.x();
@@ -525,7 +525,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 			return true;
 		}
 	}else{
-		// ca ‚ª yz ‚É•½s‚Èê‡
+		// ca ãŒ yz ã«å¹³è¡Œãªå ´åˆ
 		++countX;
 	}
 	if( countX == 3 ){
@@ -533,7 +533,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 			-localThres + minX() < b.x() && b.x() < maxX() + localThres &&
 			-localThres + minX() < c.x() && c.x() < maxX() + localThres )
 		{
-			// yz •½–Ê
+			// yz å¹³é¢
 			kmb::BoundingBox2D bbox2;
 			bbox2.update( a.y(), a.z() );
 			bbox2.update( b.y(), b.z() );
@@ -576,7 +576,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 			return true;
 		}
 	}else{
-		// ab ‚ª zx ‚É•½s‚Èê‡
+		// ab ãŒ zx ã«å¹³è¡Œãªå ´åˆ
 		++countY;
 	}
 	d = b.y() - c.y();
@@ -610,7 +610,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 			return true;
 		}
 	}else{
-		// bc ‚ª zx ‚É•½s‚Èê‡
+		// bc ãŒ zx ã«å¹³è¡Œãªå ´åˆ
 		++countY;
 	}
 	d = c.y() - a.y();
@@ -644,7 +644,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 			return true;
 		}
 	}else{
-		// ca ‚ª zx ‚É•½s‚Èê‡
+		// ca ãŒ zx ã«å¹³è¡Œãªå ´åˆ
 		++countY;
 	}
 	if( countY == 3 ){
@@ -652,7 +652,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 			-localThres + minY() < b.y() && b.y() < maxY() + localThres &&
 			-localThres + minY() < c.y() && c.y() < maxY() + localThres )
 		{
-			// zx •½–Ê
+			// zx å¹³é¢
 			kmb::BoundingBox2D bbox2;
 			bbox2.update( a.z(), a.x() );
 			bbox2.update( b.z(), b.x() );
@@ -695,7 +695,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 			return true;
 		}
 	}else{
-		// ab ‚ª xy ‚É•½s‚Èê‡
+		// ab ãŒ xy ã«å¹³è¡Œãªå ´åˆ
 		++countZ;
 	}
 	d = b.z() - c.z();
@@ -729,7 +729,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 			return true;
 		}
 	}else{
-		// bc ‚ª xy ‚É•½s‚Èê‡
+		// bc ãŒ xy ã«å¹³è¡Œãªå ´åˆ
 		++countZ;
 	}
 	d = c.z() - a.z();
@@ -763,7 +763,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 			return true;
 		}
 	}else{
-		// ca ‚ª xy ‚É•½s‚Èê‡
+		// ca ãŒ xy ã«å¹³è¡Œãªå ´åˆ
 		++countZ;
 	}
 	if( countZ == 3 ){
@@ -771,7 +771,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 			-localThres + minZ() < b.z() && b.z() < maxZ() + localThres &&
 			-localThres + minZ() < c.z() && c.z() < maxZ() + localThres )
 		{
-			// xy •½–Ê
+			// xy å¹³é¢
 			kmb::BoundingBox2D bbox2;
 			bbox2.update( a.x(), a.y() );
 			bbox2.update( b.x(), b.y() );
@@ -782,7 +782,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 			}
 		}
 	}
-	// abc ‚Æ•Ó‚Ì”»’è
+	// abc ã¨è¾ºã®åˆ¤å®š
 	// PA = t0 BA + t1 CA + t2 PQ
 	mat.zero();
 	mat.set(0,0,a.x()-b.x());
@@ -791,7 +791,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 	mat.set(0,1,a.x()-c.x());
 	mat.set(1,1,a.y()-c.y());
 	mat.set(2,1,a.z()-c.z());
-	// x ²•ûŒü
+	// x è»¸æ–¹å‘
 	mat.set(0,2,rangeX());
 //	mat.set(1,2,0.0);
 //	mat.set(2,2,0.0);
@@ -831,7 +831,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 	{
 		return true;
 	}
-	// y ²•ûŒü
+	// y è»¸æ–¹å‘
 	mat.set(0,2,0.0);
 	mat.set(1,2,rangeY());
 //	mat.set(2,2,0.0);
@@ -872,7 +872,7 @@ kmb::BoxRegion::intersect(const kmb::Point3D &a,const kmb::Point3D &b,const kmb:
 	{
 		return true;
 	}
-	// z ²•ûŒü
+	// z è»¸æ–¹å‘
 //	mat.set(0,2,0.0);
 	mat.set(1,2,0.0);
 	mat.set(2,2,rangeZ());
@@ -925,11 +925,11 @@ kmb::BoxRegion::intersect3(const kmb::Point3D &a,const kmb::Point3D &b,const kmb
 	return intersect_minx(a,b,c);
 }
 
-// OŠpŒ`‚ª˜Z–Ê‘Ì‚ÉŠÜ‚Ü‚ê‚é•”•ª‚Ì–ÊÏ‚ğ‹‚ß‚é
+// ä¸‰è§’å½¢ãŒå…­é¢ä½“ã«å«ã¾ã‚Œã‚‹éƒ¨åˆ†ã®é¢ç©ã‚’æ±‚ã‚ã‚‹
 //
-// OŠpŒ`‚ğ•½–Ê‚Å•ªŠ„‚µ‚ÄA³‚Ì—Ìˆæ‚Æ•‰‚Ì—Ìˆæ‚É•ª‚¯‚é
-// x, y, z ‚»‚ê‚¼‚ê‚Ì²‚É‚’¼‚È•½–Ê‚Å min max ‚Å‡Œv6‰ñŒÄ‚Ño‚·
-// •ª‚¯‚½‚à‚Ì‚ªlŠpŒ`‚¾‚Á‚½‚çAOŠpŒ`‚É•ª‚¯‚ÄŒÄ‚Ño‚·
+// ä¸‰è§’å½¢ã‚’å¹³é¢ã§åˆ†å‰²ã—ã¦ã€æ­£ã®é ˜åŸŸã¨è² ã®é ˜åŸŸã«åˆ†ã‘ã‚‹
+// x, y, z ãã‚Œãã‚Œã®è»¸ã«å‚ç›´ãªå¹³é¢ã§ min max ã§åˆè¨ˆ6å›å‘¼ã³å‡ºã™
+// åˆ†ã‘ãŸã‚‚ã®ãŒå››è§’å½¢ã ã£ãŸã‚‰ã€ä¸‰è§’å½¢ã«åˆ†ã‘ã¦å‘¼ã³å‡ºã™
 double
 kmb::BoxRegion::intersectArea(const kmb::Point3D &a,const kmb::Point3D &b,const kmb::Point3D &c) const
 {
@@ -939,7 +939,7 @@ kmb::BoxRegion::intersectArea(const kmb::Point3D &a,const kmb::Point3D &b,const 
 double
 kmb::BoxRegion::intersectArea_minx(const kmb::Point3D &p0,const kmb::Point3D &p1,const kmb::Point3D &p2) const
 {
-	// p3 p4 ‚ÍØ‚èŒû‚ÌÀ•W
+	// p3 p4 ã¯åˆ‡ã‚Šå£ã®åº§æ¨™
 	kmb::Point3D p3, p4;
 	switch( kmb::PlaneYZ::getIntersectionTriangle( minX(), p0, p1, p2, p3, p4 ) )
 	{
@@ -1255,8 +1255,8 @@ kmb::BoxRegion::setRange(double rangeX,double rangeY,double rangeZ)
 	this->minPoint.setCoordinate( cx - 0.5*rangeX, cy - 0.5*rangeY, cz - 0.5*rangeZ );
 }
 
-// c‰¡‚Ì’·‚³‚ğ ratio ”{‚·‚é
-// ‚½‚¾‚µ ratio > 0
+// ç¸¦æ¨ªã®é•·ã•ã‚’ ratio å€ã™ã‚‹
+// ãŸã ã— ratio > 0
 void
 kmb::BoxRegion::expand(double ratio)
 {

@@ -50,7 +50,7 @@ public:
 	void setSurfaceId(long id);
 	virtual surfaceType getSurfaceType(void) const = 0;
 	virtual int writeRNF( std::ofstream &output, std::string indent="  ") const = 0;
-	// ’è‹`ˆæ‚ÌŠO‚È‚ç‚Î false ‚ğ•Ô‚·
+	// å®šç¾©åŸŸã®å¤–ãªã‚‰ã° false ã‚’è¿”ã™
 	virtual bool getPoint( double u, double v, kmb::Point3D &point ) const = 0;
 	virtual void getDomain( double &min_u, double &max_u, double &min_v, double &max_v ) const = 0;
 	virtual bool isDomain( double u, double v ) const = 0;
@@ -62,8 +62,8 @@ public:
 	virtual bool getMiddlePoint( double u0, double v0, double u1, double v1, double &u, double &v, kmb::Point3D &point ) const;
 	virtual bool getMiddlePointByNearest( double u0, double v0, double u1, double v1, double &u, double &v, kmb::Point3D &point ) const;
 
-	// Newton-Raphson –@‚Å point ‚É‚à‚Á‚Æ‚à‹ß‚¢ ‹È–Êã‚Ì“_‚ğ‹‚ß‚é
-	// Newton-Raphson –@‚ªû‘©‚µ‚È‚©‚Á‚½‚Æ‚«‚Í false ‚ğ•Ô‚·
+	// Newton-Raphson æ³•ã§ point ã«ã‚‚ã£ã¨ã‚‚è¿‘ã„ æ›²é¢ä¸Šã®ç‚¹ã‚’æ±‚ã‚ã‚‹
+	// Newton-Raphson æ³•ãŒåæŸã—ãªã‹ã£ãŸã¨ãã¯ false ã‚’è¿”ã™
 	virtual bool getNearest( const kmb::Point3D& point, double &u, double &v ) const;
 
 	double getEpsilon(void) const;

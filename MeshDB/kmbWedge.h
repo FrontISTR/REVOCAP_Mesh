@@ -38,11 +38,13 @@ public:
 	Wedge(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::nodeIdType n2, kmb::nodeIdType n3, kmb::nodeIdType n4, kmb::nodeIdType n5);
 	Wedge(kmb::nodeIdType *ary);
 	virtual ~Wedge(void);
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 
 	static int divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nodeIdType tetrahedrons[][4]);
 
-	// Œü‚«‚ğ–³‹‚µ‚Äß“_”Ô†‡‚ª“¯‚¶}Œ`‚ğ‚ ‚ç‚í‚·‚©
-	// index ‚Í 0 ‚©‚ç 5 ‚Ü‚Å‚Ì®”‚Ì’uŠ·
+	// å‘ãã‚’ç„¡è¦–ã—ã¦ç¯€ç‚¹ç•ªå·é †ãŒåŒã˜å›³å½¢ã‚’ã‚ã‚‰ã‚ã™ã‹
+	// index ã¯ 0 ã‹ã‚‰ 5 ã¾ã§ã®æ•´æ•°ã®ç½®æ›
 	static bool isEquivalent(int index[6]);
 public:
 	static const int connectionTable[6][6];

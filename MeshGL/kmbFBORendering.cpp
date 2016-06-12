@@ -58,7 +58,7 @@ kmb::FBORendering::getSize(int size[2]) const
 
 // glutInit
 // glutCreateWindow
-// ‚ğÀs‚µ‚Ä‚©‚çŒÄ‚Ño‚·
+// ã‚’å®Ÿè¡Œã—ã¦ã‹ã‚‰å‘¼ã³å‡ºã™
 bool
 kmb::FBORendering::init(int width,int height)
 {

@@ -13,9 +13,9 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// ƒNƒ‰ƒX‚É‘Î‚µ‚ÄA‚»‚Ìƒƒ\ƒbƒh‚ğ•Û‚µ‚½‚Ü‚ÜƒŠƒXƒgƒCƒ“ƒ^[ƒtƒFƒCƒX‚ğ’Ç‰Á‚·‚é
+// ã‚¯ãƒ©ã‚¹ã«å¯¾ã—ã¦ã€ãã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ä¿æŒã—ãŸã¾ã¾ãƒªã‚¹ãƒˆã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã‚’è¿½åŠ ã™ã‚‹
 //
-// –â‘è“_FT ‚Ìˆø”‚ğ‚Æ‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŒÄ‚×‚È‚¢
+// å•é¡Œç‚¹ï¼šT ã®å¼•æ•°ã‚’ã¨ã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’å‘¼ã¹ãªã„
 //
 //
 #pragma once
@@ -36,7 +36,7 @@ public:
 	void setPrevious(ListItem<T>* item){ previousItem = item; }
 	ListItem<T>* getNext(void) const { return nextItem; }
 	void setNext(ListItem<T>* item){ nextItem = item; }
-	// ƒŠƒXƒg‚©‚çŠO‚·
+	// ãƒªã‚¹ãƒˆã‹ã‚‰å¤–ã™
 	// previousItem => this => nextItem
 	// previousItem => nextItem
 	void detach(void){
@@ -49,7 +49,7 @@ public:
 		previousItem = NULL;
 		nextItem = NULL;
 	}
-	// ƒŠƒXƒg‚É’Ç‰Á
+	// ãƒªã‚¹ãƒˆã«è¿½åŠ 
 	void attach(ListItem<T>* last){
 		if( last ){
 			last->nextItem = this;

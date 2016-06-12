@@ -36,27 +36,27 @@ public:
 	PatchModifier(kmb::Point3DContainer* points,kmb::ElementContainer* patch);
 	PatchModifier(kmb::MeshData* mesh,kmb::bodyIdType bodyId);
 	virtual ~PatchModifier(void);
-	// Œü‚«‚ğ‚»‚ë‚¦‚éBŒü‚«‚ğ•Ï‚¦‚½—v‘f‚ÌŒÂ”‚ğ•Ô‚·B
+	// å‘ãã‚’ãã‚ãˆã‚‹ã€‚å‘ãã‚’å¤‰ãˆãŸè¦ç´ ã®å€‹æ•°ã‚’è¿”ã™ã€‚
 	int uniformOrientation(kmb::elementIdType elementId=kmb::Element::nullElementId);
-	// —×Ú‚·‚éOŠpŒ`‚Ì•Ó‚ğŒğŠ·‚·‚é
+	// éš£æ¥ã™ã‚‹ä¸‰è§’å½¢ã®è¾ºã‚’äº¤æ›ã™ã‚‹
 	// [0,1,3] + [1,2,3] => [0,1,2] + [2,3,0]
 	bool triangleEdgeSwap(kmb::elementIdType tri0, kmb::elementIdType tri1 );
-	// —×Ú‚·‚élŠpŒ`‚Ì•Ó‚ğŒğŠ·‚·‚é
+	// éš£æ¥ã™ã‚‹å››è§’å½¢ã®è¾ºã‚’äº¤æ›ã™ã‚‹
 	// [0,1,2,3] + [0,3,4,5] => [1,2,3,4] + [0,1,4,5]  (orientation=true)
 	//                       => [0,1,2,5] + [2,3,4,5]  (orientation=false)
 	bool quadEdgeSwap(kmb::elementIdType quad0, kmb::elementIdType quad1, bool orientation=true);
-	// —×Ú‚·‚élŠpŒ`‚É‚P“_‚ğ‰Á‚¦‚Ä‚R‚Â‚ÌlŠpŒ`‚É‚·‚é
-	// ‚Å‚«‚éƒpƒ^[ƒ“‚Í‚Q’Ê‚è
-	// orientation true => quad0 ‚Ì 0 ”Ô–Ú‚©‚ç•Ó‚ğo‚·
+	// éš£æ¥ã™ã‚‹å››è§’å½¢ã«ï¼‘ç‚¹ã‚’åŠ ãˆã¦ï¼“ã¤ã®å››è§’å½¢ã«ã™ã‚‹
+	// ã§ãã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³ã¯ï¼’é€šã‚Š
+	// orientation true => quad0 ã® 0 ç•ªç›®ã‹ã‚‰è¾ºã‚’å‡ºã™
 	kmb::elementIdType quadTrisect(kmb::elementIdType quad0, kmb::elementIdType quad1, bool orientation=true );
-	// —×Ú‚µ‚Ä‚¢‚é—v‘f”Ô†‚ğ•Ô‚·
+	// éš£æ¥ã—ã¦ã„ã‚‹è¦ç´ ç•ªå·ã‚’è¿”ã™
 	int getNeighborElements(kmb::elementIdType elementId,kmb::elementIdType* neighbors) const;
 	kmb::elementIdType getNeighborElement(kmb::Face f) const;
-	// •Ó‚Ìk‘Ş
+	// è¾ºã®ç¸®é€€
 	bool edgeContract(kmb::nodeIdType node0, kmb::nodeIdType node1);
-	// ’¸“_‚Ì‚È‚·Šp“x‚ğ•Ô‚·
+	// é ‚ç‚¹ã®ãªã™è§’åº¦ã‚’è¿”ã™
 	double getAngleByIndex(kmb::elementIdType elementId,int index) const;
-	// TODO : ‰š‚ÈlŠpŒ`‚ª‚ ‚Á‚½‚Æ‚«‚ÉAC³‚·‚é
+	// TODO : å‡¹ãªå››è§’å½¢ãŒã‚ã£ãŸã¨ãã«ã€ä¿®æ­£ã™ã‚‹
 };
 
 }

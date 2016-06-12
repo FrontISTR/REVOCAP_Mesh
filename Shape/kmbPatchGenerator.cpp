@@ -104,7 +104,7 @@ bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 		return false;
 	}
 
-	// 最初に execute したモデルのサイズを基準にする
+	// 譛蛻昴↓ execute 縺励◆繝｢繝�繝ｫ縺ｮ繧ｵ繧､繧ｺ繧貞渕貅悶↓縺吶ｋ
 	if( modelDiameter < 0.0 ){
 		modelDiameter = shape.getBoundingBox().range();
 	}
@@ -128,7 +128,7 @@ bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 		relative );
 	imesh.Perform();
 
-	// TopoDS_Shape に含まれる Face の iterator
+	// TopoDS_Shape 縺ｫ蜷ｫ縺ｾ繧後ｋ Face 縺ｮ iterator
 	TopExp_Explorer exFace;
 	for( exFace.Init(shape.getShape(),TopAbs_FACE); exFace.More(); exFace.Next() ){
 		TopoDS_Face face = TopoDS::Face(exFace.Current());

@@ -13,13 +13,13 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// ‹óŠÔ‚ğŠiqó‚É•ªŠ„‚µ‚ÄA‚»‚ê‚¼‚ê‚Ì—Ìˆæ‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚éß“_E—v‘f‚Ìî•ñ‚ğæ“¾‚·‚é
-// •Û‘¶‚·‚é‚Ì‚Í Point3DContainer ‚Ü‚½‚Í ElementContainer ‚Å•Û‘¶‚³‚ê‚Ä‚¢‚é‚à‚Ì‚Ì ID
-// ‚ ‚éß“_‚Ü‚½‚Í—v‘f‚ª•¡”‚ÌŠiq‚Ì—Ìˆæ‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é‚±‚Æ‚Í‹–‚·‚½‚ß‚É multimap ‚ğg‚¤B
+// ç©ºé–“ã‚’æ ¼å­çŠ¶ã«åˆ†å‰²ã—ã¦ã€ãã‚Œãã‚Œã®é ˜åŸŸã«å«ã¾ã‚Œã¦ã„ã‚‹ç¯€ç‚¹ãƒ»è¦ç´ ã®æƒ…å ±ã‚’å–å¾—ã™ã‚‹
+// ä¿å­˜ã™ã‚‹ã®ã¯ Point3DContainer ã¾ãŸã¯ ElementContainer ã§ä¿å­˜ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã® ID
+// ã‚ã‚‹ç¯€ç‚¹ã¾ãŸã¯è¦ç´ ãŒè¤‡æ•°ã®æ ¼å­ã®é ˜åŸŸã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ã¯è¨±ã™ãŸã‚ã« multimap ã‚’ä½¿ã†ã€‚
 //
-// T ‚Í nodeIdType elementIdType ‚È‚Ç
+// T ã¯ nodeIdType elementIdType ãªã©
 //
-// Bucket<T>::iterator ‚Å T ‚ÌŒ^‚ÌƒCƒeƒŒ[ƒ^‚ª“¾‚ç‚ê‚é
+// Bucket<T>::iterator ã§ T ã®å‹ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ãŒå¾—ã‚‰ã‚Œã‚‹
 //
 
 #pragma once
@@ -34,16 +34,16 @@
 
 namespace kmb{
 
-// (i,j,k) ‚ğ‚Ü‚Æ‚ß‚Äˆµ‚¤‚½‚ß‚ÌƒNƒ‰ƒX
-// ‘å¬ŠÖŒW‚Í i,j,k ‚Ì‡‚É—Dæ
-// ‘å¬ŠÖŒW‚Å•À‚×‚½ƒ‹[ƒv‚Í
+// (i,j,k) ã‚’ã¾ã¨ã‚ã¦æ‰±ã†ãŸã‚ã®ã‚¯ãƒ©ã‚¹
+// å¤§å°é–¢ä¿‚ã¯ i,j,k ã®é †ã«å„ªå…ˆ
+// å¤§å°é–¢ä¿‚ã§ä¸¦ã¹ãŸãƒ«ãƒ¼ãƒ—ã¯
 //	for(i){
 //		for(j){
 //			for(k){
 //			}
 //		}
 //	}
-//	‚Æ“¯‚¶
+//	ã¨åŒã˜
 class BucketIndex{
 public:
 	int i,j,k;
@@ -69,7 +69,7 @@ public:
 		this->k = other.k;
 		return *this;
 	}
-	// next ‚µ‚½‚Æ‚«‚ÉÅ‰‚Ì index ‚É‚È‚é‚æ‚¤‚É‚·‚é
+	// next ã—ãŸã¨ãã«æœ€åˆã® index ã«ãªã‚‹ã‚ˆã†ã«ã™ã‚‹
 	void init(void){
 		set(0,0,-1);
 	}
@@ -82,8 +82,8 @@ public:
 	void init_kji(const BucketIndex& minIndex){
 		set(minIndex.i-1,minIndex.j,minIndex.k);
 	}
-	// ƒ‹[ƒv‚ÌŠO‘¤‚©‚ç i j k
-	// k ‚©‚ç‡‚É‘‚â‚· operator < ‚Ì‡‚Æ“¯‚¶
+	// ãƒ«ãƒ¼ãƒ—ã®å¤–å´ã‹ã‚‰ i j k
+	// k ã‹ã‚‰é †ã«å¢—ã‚„ã™ operator < ã®é †ã¨åŒã˜
 	bool next(const BucketIndex& maxIndex){
 		if( k < maxIndex.k-1 ){
 			++k;
@@ -102,8 +102,8 @@ public:
 			return false;
 		}
 	}
-	// ƒ‹[ƒv‚ÌŠO‘¤‚©‚ç i j k
-	// k ‚©‚ç‡‚É‘‚â‚· operator < ‚Ì‡‚Æ“¯‚¶
+	// ãƒ«ãƒ¼ãƒ—ã®å¤–å´ã‹ã‚‰ i j k
+	// k ã‹ã‚‰é †ã«å¢—ã‚„ã™ operator < ã®é †ã¨åŒã˜
 	bool next(const BucketIndex& maxIndex,const BucketIndex& minIndex){
 		if( k < maxIndex.k-1 ){
 			++k;
@@ -122,8 +122,8 @@ public:
 			return false;
 		}
 	}
-	// ƒ‹[ƒv‚ÌŠO‘¤‚©‚ç k j i 
-	// i ‚©‚ç‡‚É‘‚â‚· operator < ‚Ì‡‚Æˆá‚¤
+	// ãƒ«ãƒ¼ãƒ—ã®å¤–å´ã‹ã‚‰ k j i 
+	// i ã‹ã‚‰é †ã«å¢—ã‚„ã™ operator < ã®é †ã¨é•ã†
 	bool next_kji(const BucketIndex& maxIndex){
 		if( i < maxIndex.i-1 ){
 			++i;
@@ -142,8 +142,8 @@ public:
 			return false;
 		}
 	}
-	// ƒ‹[ƒv‚ÌŠO‘¤‚©‚ç k j i 
-	// i ‚©‚ç‡‚É‘‚â‚· operator < ‚Ì‡‚Æˆá‚¤
+	// ãƒ«ãƒ¼ãƒ—ã®å¤–å´ã‹ã‚‰ k j i 
+	// i ã‹ã‚‰é †ã«å¢—ã‚„ã™ operator < ã®é †ã¨é•ã†
 	bool next_kji(const BucketIndex& maxIndex,const BucketIndex& minIndex){
 		if( i < maxIndex.i-1 ){
 			++i;
@@ -189,8 +189,8 @@ public:
 	 : bucketRegion(box), xnum(xnum), ynum(ynum), znum(znum){};
 	virtual ~Bucket(void){};
 
-	// Ši”[‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚ÌƒNƒŠƒA
-	// ”wŒiŠiq‚Ìî•ñ‚Íc‚é
+	// æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã®ã‚¯ãƒªã‚¢
+	// èƒŒæ™¯æ ¼å­ã®æƒ…å ±ã¯æ®‹ã‚‹
 	void clear(void){
 		regions.clear();
 	}
@@ -215,7 +215,7 @@ public:
 		numZ = this->znum;
 	};
 
-	// ‘S‘Ì‚ª num ’ö“x‚É‚È‚é‚æ‚¤‚É x y z ‚ğ”z•ª‚µ‚Ä Grid ‚ğì‚é
+	// å…¨ä½“ãŒ num ç¨‹åº¦ã«ãªã‚‹ã‚ˆã†ã« x y z ã‚’é…åˆ†ã—ã¦ Grid ã‚’ä½œã‚‹
 	void setRegionGrid(const kmb::BoxRegion &box, size_t num){
 		if( num == 0 ){ num = 1; }
 		this->bucketRegion = box;
@@ -245,7 +245,7 @@ public:
 		return true;
 	}
 
-	// (i,j,k) ”Ô–Ú‚ÌŠiq‚ğæ“¾‚·‚é
+	// (i,j,k) ç•ªç›®ã®æ ¼å­ã‚’å–å¾—ã™ã‚‹
 	void getSubRegion(int i,int j,int k,kmb::BoxRegion& box) const{
 		box.setMinMax(
 			bucketRegion.minX() + (i * bucketRegion.rangeX()) / xnum,
@@ -258,11 +258,11 @@ public:
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 	double getSubRegionMinX(int i,int j,int k) const{
 		return bucketRegion.minX() + (i * bucketRegion.rangeX()) / xnum;
@@ -312,7 +312,7 @@ public:
 		indexType i = static_cast<indexType>( (x-bucketRegion.minX()) / bucketRegion.rangeX() * xnum );
 		indexType j = static_cast<indexType>( (y-bucketRegion.minY()) / bucketRegion.rangeY() * ynum );
 		indexType k = static_cast<indexType>( (z-bucketRegion.minZ()) / bucketRegion.rangeZ() * znum );
-		// maxX maxY maxZ ‚Ì‚Æ‚±‚ë‚¾‚¯“Á•Ê‘Î‰
+		// maxX maxY maxZ ã®ã¨ã“ã‚ã ã‘ç‰¹åˆ¥å¯¾å¿œ
 		if( x == bucketRegion.maxX() ){
 			i = xnum-1;
 		}
@@ -343,7 +343,7 @@ public:
 		iterator(void){};
 		virtual ~iterator(void){};
 
-		// Ši”[‚µ‚Ä‚¢‚é T Œ^‚ÌQÆ‚ğ•Ô‚·
+		// æ ¼ç´ã—ã¦ã„ã‚‹ T å‹ã®å‚ç…§ã‚’è¿”ã™
 		const T& get(void) const{ return it->second; };
 
 		int getIndex() const{ return it->first; };
@@ -474,17 +474,17 @@ public:
 	};
 
 protected:
-	// À•W‚©‚ç index ‚ğæ“¾‚·‚é
-	// e box ‚Ì’†‚É‚ ‚ê‚Î true ‚ğ•Ô‚·
-	// e box ‚ÌŠO‚É‚ ‚Á‚Ä‚à i j k ‚Í‹«ŠE‚Ì’l‚ğ“ü‚ê‚Ä false ‚ğ•Ô‚·
-	// x, y, z ‚ª–³ŒÀ‘å‚Ìê‡‚ÍŠ„‚èZ‚Å”’lŒë·‚É‚È‚é‚Ì‚Å’ˆÓ
+	// åº§æ¨™ã‹ã‚‰ index ã‚’å–å¾—ã™ã‚‹
+	// è¦ª box ã®ä¸­ã«ã‚ã‚Œã° true ã‚’è¿”ã™
+	// è¦ª box ã®å¤–ã«ã‚ã£ã¦ã‚‚ i j k ã¯å¢ƒç•Œã®å€¤ã‚’å…¥ã‚Œã¦ false ã‚’è¿”ã™
+	// x, y, z ãŒç„¡é™å¤§ã®å ´åˆã¯å‰²ã‚Šç®—ã§æ•°å€¤èª¤å·®ã«ãªã‚‹ã®ã§æ³¨æ„
 	bool getSubIndices(double x,double y,double z,int& i,int& j,int& k) const
 	{
 		bool res = true;
 		i = static_cast<int>( (x-bucketRegion.minX()) / bucketRegion.rangeX() * xnum );
 		j = static_cast<int>( (y-bucketRegion.minY()) / bucketRegion.rangeY() * ynum );
 		k = static_cast<int>( (z-bucketRegion.minZ()) / bucketRegion.rangeZ() * znum );
-		// maxX maxY maxZ ‚Ì‚Æ‚±‚ë‚¾‚¯“Á•Ê‘Î‰
+		// maxX maxY maxZ ã®ã¨ã“ã‚ã ã‘ç‰¹åˆ¥å¯¾å¿œ
 		if( x == bucketRegion.maxX() ){
 			i = xnum-1;
 		}
@@ -504,7 +504,7 @@ protected:
 	};
 };
 
-// Point3D ‚É‚Â‚¢‚Ä‚ÌƒŠƒtƒ@ƒŒƒ“ƒXÀ‘•
+// Point3D ã«ã¤ã„ã¦ã®ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹å®Ÿè£…
 
 class Point3DContainer;
 
@@ -521,16 +521,16 @@ public:
 	int append(kmb::nodeIdType nodeId);
 	int appendAll(void);
 
-	// ‹——£‚ğ•Ô‚·
+	// è·é›¢ã‚’è¿”ã™
 	double getNearest(const double x,const double y,const double z,kmb::nodeIdType &nearestId) const;
-	// ß“_”Ô†‚ğ—^‚¦‚ÄAthresh ˆÈ‰º‚Ì‘¼‚Ì“_‚ª‚ ‚é‚©‚Ç‚¤‚©
+	// ç¯€ç‚¹ç•ªå·ã‚’ä¸ãˆã¦ã€thresh ä»¥ä¸‹ã®ä»–ã®ç‚¹ãŒã‚ã‚‹ã‹ã©ã†ã‹
 	size_t getNearPoints(kmb::nodeIdType nodeId,double thresh,std::vector<kmb::nodeIdType>& nodeIds) const;
 protected:
-	// (i,j,k) ‚ÌƒoƒPƒbƒg‚Ì’†‚Å‚ÌÅ¬’l‚ğ’Tõ
-	// ‹——£‚ğ•Ô‚·
+	// (i,j,k) ã®ãƒã‚±ãƒƒãƒˆã®ä¸­ã§ã®æœ€å°å€¤ã‚’æ¢ç´¢
+	// è·é›¢ã‚’è¿”ã™
 	double getNearestInBucket(const kmb::Point3D& pt,int i,int j,int k,kmb::nodeIdType &nearestId) const;
-	// (imin,jmin,kmin) ‚©‚ç (imax,jmax,kmax) ‚ÌƒoƒPƒbƒg‚Ì’†‚Å‚ÌÅ¬’l‚ğ’Tõ
-	// ‚½‚¾‚µ (imin_ex,jmin_ex,kmin_ex) ‚©‚ç (imax_ex,jmax_ex,kmax_ex) ‚ğœ‚­
+	// (imin,jmin,kmin) ã‹ã‚‰ (imax,jmax,kmax) ã®ãƒã‚±ãƒƒãƒˆã®ä¸­ã§ã®æœ€å°å€¤ã‚’æ¢ç´¢
+	// ãŸã ã— (imin_ex,jmin_ex,kmin_ex) ã‹ã‚‰ (imax_ex,jmax_ex,kmax_ex) ã‚’é™¤ã
 	double getNearestInBucket2(const kmb::Point3D& pt,
 		int imin,int jmin,int kmin,int imax,int jmax,int kmax,
 		int imin_ex,int jmin_ex,int kmin_ex,int imax_ex,int jmax_ex,int kmax_ex,

@@ -30,7 +30,7 @@ class MiddleNodeManagerWithShape : public kmb::MiddleNodeManager
 protected:
 	kmb::Vector2WithIntBindings<kmb::nodeIdType>* mappingToSurface;
 	const std::vector< kmb::Surface3D* >* surfaces;
-	// (u,v) À•W‚Ì’†“_‚Å‚Í‚È‚­Aƒ†[ƒNƒŠƒbƒhÀ•W‚Ì’†“_‚ÌÅ‹ß“_‚ğ‹‚ß‚é
+	// (u,v) åº§æ¨™ã®ä¸­ç‚¹ã§ã¯ãªãã€ãƒ¦ãƒ¼ã‚¯ãƒªãƒƒãƒ‰åº§æ¨™ã®ä¸­ç‚¹ã®æœ€è¿‘ç‚¹ã‚’æ±‚ã‚ã‚‹
 	bool nearestFlag;
 	int iterMax;
 	double epsilon;
@@ -42,16 +42,16 @@ public:
 	void setNearestFlag(bool b);
 	void setiterMax(int m);
 	void setEpsilon(double e);
-	// Refiner —p‚É Global ß“_”Ô†‚Æ‹ÇŠß“_”Ô†‚ğ•ÏŠ·‚·‚é‚Æ‚«‚Ég‚¤
-	// ß“_”Ô†‚Ì’u‚«Š·‚¦A–ß‚è’l‚Í’u‚«Š·‚¦‚½ŒÂ”
+	// Refiner ç”¨ã« Global ç¯€ç‚¹ç•ªå·ã¨å±€æ‰€ç¯€ç‚¹ç•ªå·ã‚’å¤‰æ›ã™ã‚‹ã¨ãã«ä½¿ã†
+	// ç¯€ç‚¹ç•ªå·ã®ç½®ãæ›ãˆã€æˆ»ã‚Šå€¤ã¯ç½®ãæ›ãˆãŸå€‹æ•°
 	size_t replaceNodeIds( const std::map<kmb::nodeIdType,kmb::nodeIdType> &nodeMapper );
-	// ß“_”Ô†‚ğ—^‚¦‚ÄA“K‡‘ÎÛ‚Ì‹È–Ê‚ÌŒÂ”‚ÆA‚»‚Ì‹È–Êã‚ÌÀ•W‚ğ•Ô‚·
-	// mappingToSurface ‚É‹È–Ê‚ª—Bˆê—^‚¦‚ç‚ê‚Ä‚¢‚ê‚ÎA‚»‚Ì‹È–ÊÀ•W (u,v) ‚©‚ç‹óŠÔÀ•W‚ğ‹‚ß‚é
-	// “ñ‚ÂˆÈã—^‚¦‚ç‚ê‚Ä‚¢‚ê‚Î‚»‚ê‚ç‚Ì•½‹Ï
-	// –ß‚è’l‚Í‹È–Ê‚ÌŒÂ” 0 ‚Ì‚ÍÀ•W‚Í•Ï‰»‚µ‚È‚¢
+	// ç¯€ç‚¹ç•ªå·ã‚’ä¸ãˆã¦ã€é©åˆå¯¾è±¡ã®æ›²é¢ã®å€‹æ•°ã¨ã€ãã®æ›²é¢ä¸Šã®åº§æ¨™ã‚’è¿”ã™
+	// mappingToSurface ã«æ›²é¢ãŒå”¯ä¸€ä¸ãˆã‚‰ã‚Œã¦ã„ã‚Œã°ã€ãã®æ›²é¢åº§æ¨™ (u,v) ã‹ã‚‰ç©ºé–“åº§æ¨™ã‚’æ±‚ã‚ã‚‹
+	// äºŒã¤ä»¥ä¸Šä¸ãˆã‚‰ã‚Œã¦ã„ã‚Œã°ãã‚Œã‚‰ã®å¹³å‡
+	// æˆ»ã‚Šå€¤ã¯æ›²é¢ã®å€‹æ•° 0 ã®æ™‚ã¯åº§æ¨™ã¯å¤‰åŒ–ã—ãªã„
 	int getPointOnSurface(kmb::nodeIdType nodeId,kmb::Point3D &pt) const;
 protected:
-	// surface ‚Ìã‚Éæ‚é‰Â”\«‚Ì‚ ‚é‚à‚Ì‚ğÄ’è‹`
+	// surface ã®ä¸Šã«ä¹—ã‚‹å¯èƒ½æ€§ã®ã‚ã‚‹ã‚‚ã®ã‚’å†å®šç¾©
 	virtual kmb::nodeIdType createMiddleNode(kmb::nodeIdType n0, kmb::nodeIdType n1);
 	virtual kmb::nodeIdType createMiddleNode4(kmb::nodeIdType n0, kmb::nodeIdType n1,kmb::nodeIdType n2, kmb::nodeIdType n3);
 };

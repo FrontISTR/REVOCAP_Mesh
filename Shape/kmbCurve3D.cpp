@@ -107,7 +107,7 @@ kmb::Curve3D::getNearest( const kmb::Point3D& point, double& t ) const
 		kmb::Point3D pt;
 		kmb::Vector3D vec;
 		kmb::Vector3D acc;
-		// pt vec acc ‚É t ‚Å‚Ì’l‚ª“ü‚Á‚Ä‚¢‚½‚ç true
+		// pt vec acc ã« t ã§ã®å€¤ãŒå…¥ã£ã¦ã„ãŸã‚‰ true
 		bool calc(double t){
 			if( t == t0 && calculated ){
 				return true;
@@ -147,15 +147,15 @@ kmb::Curve3D::getNearest( const kmb::Point3D& point, double& t ) const
 	double min_t, max_t;
 	getDomain(min_t,max_t);
 	double t0 = 0.0;
-	// ƒjƒ…[ƒgƒ“–@‚Ì‰Šú’l‚ğ‹——£ŠÖ”‚©‚çŒˆ‚ß‚é
+	// ãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ³æ³•ã®åˆæœŸå€¤ã‚’è·é›¢é–¢æ•°ã‹ã‚‰æ±ºã‚ã‚‹
 	opt.calcMinOnGrid( dist_obj, t0, min_t, max_t, 10 );
-	// Œ¸‘¬ƒjƒ…[ƒgƒ“–@
+	// æ¸›é€Ÿãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ³æ³•
 	double t1 = opt.calcZero_DN( opt_obj, t0 );
 	if( min_t <= t1 && t1 <= max_t ){
 		t = t1;
 		return true;
 	}
-	// û‘©‚µ‚È‚¢ê‡‚Í‰©‹à”ä–@
+	// åæŸã—ãªã„å ´åˆã¯é»„é‡‘æ¯”æ³•
 	t1 = opt.calcMin_GS( dist_obj, min_t, max_t );
 	if( min_t <= t1 && t1 <= max_t ){
 		t = t1;

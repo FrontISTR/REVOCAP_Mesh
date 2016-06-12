@@ -62,7 +62,7 @@ kmb::PatchOperation::uniformOrientation(kmb::MeshDB* mesh,kmb::bodyIdType bodyId
 	if( mesh ){
 		kmb::ElementContainer* patch = mesh->getBodyPtr(bodyId);
 		if( patch && patch->isUniqueDim(2) ){
-			// Å‰‚Ì elementId ‚ğ—^‚¦‚é
+			// æœ€åˆã® elementId ã‚’ä¸ãˆã‚‹
 			if( elementId == kmb::Element::nullElementId ){
 				elementId = patch->begin().getId();
 			}
@@ -70,7 +70,7 @@ kmb::PatchOperation::uniformOrientation(kmb::MeshDB* mesh,kmb::bodyIdType bodyId
 			neighborInfo.appendCoboundary( patch );
 			std::set< kmb::elementIdType > checked;
 
-			std::set< kmb::elementIdType > candidate;   // ‚Ü‚¾‚·‚×‚Ä‚Ì‹ß–T‚ğ’²‚×I‚í‚Á‚Ä‚¢‚È‚¢—v‘f
+			std::set< kmb::elementIdType > candidate;   // ã¾ã ã™ã¹ã¦ã®è¿‘å‚ã‚’èª¿ã¹çµ‚ã‚ã£ã¦ã„ãªã„è¦ç´ 
 			kmb::elementIdType neighbor[6];
 
 			while( true ){
@@ -79,14 +79,14 @@ kmb::PatchOperation::uniformOrientation(kmb::MeshDB* mesh,kmb::bodyIdType bodyId
 					return count;
 				}
 				checked.insert( elementId );
-				// ‹ß–Tæ“¾
+				// è¿‘å‚å–å¾—
 				const int boundNum = elem.getBoundaryCount();
 				for(int i=0;i<boundNum;++i){
 					if( neighbor[i] != kmb::Element::nullElementId )
 					{
 						if( checked.find( neighbor[i] ) == checked.end() ){
 							kmb::ElementContainer::iterator nei = patch->find( neighbor[i] );
-							// ƒ`ƒFƒbƒN‚³‚ê‚Ä‚¢‚È‚¯‚ê‚ÎA©•ª—Dæ
+							// ãƒã‚§ãƒƒã‚¯ã•ã‚Œã¦ã„ãªã‘ã‚Œã°ã€è‡ªåˆ†å„ªå…ˆ
 							int i0,i1;
 							if( !nei.isFinished() &&
 								kmb::ElementRelation::getRelation( elem, i0, nei, i1 )
@@ -137,8 +137,8 @@ kmb::PatchOperation::edgeSubdivider
 					seg = edge->find(targetElementId);
 					// initialize node id
 					if( !seg.isFinished() ){
-						n0 = seg.getCellId(0);
-						n1 = seg.getCellId(0);
+						n0 = seg.getNodeId(0);
+						n1 = seg.getNodeId(0);
 					}
 				}
 				if( 0.0 < mIter->t && mIter->t < 1.0 )
@@ -154,7 +154,7 @@ kmb::PatchOperation::edgeSubdivider
 				++mIter;
 				if( mIter == matchingInfo.end() || targetElementId != mIter->elementId ){
 					// insert last segment
-					n1 = seg.getCellId(1);
+					n1 = seg.getNodeId(1);
 					if( n0 != n1 ){
 						kmb::nodeIdType divSeg[2] = {n0,n1};
 						edge->addElement(kmb::SEGMENT,divSeg,mesh->generateElementId());
@@ -370,31 +370,31 @@ kmb::PatchOperation::triangleSubdivider
 			{
 				// search triangle whose face is seg
 				faceId = -1;
-				n0 = seg.getCellId(0);
-				n1 = seg.getCellId(1);
+				n0 = seg.getNodeId(0);
+				n1 = seg.getNodeId(1);
 				kmb::NodeNeighbor::iterator tIter = neighborInfo.beginIteratorAt(n0);
 				while( tIter != neighborInfo.endIteratorAt(n0) ){
 					kmb::ElementContainer::iterator elem = patch->find( tIter->second );
 					if( elem.getType() == kmb::TRIANGLE ){
 						for(int i=0;i<3;++i){
-							if( elem.getBoundaryCellId(i,0) == seg.getCellId(0) &&
-								elem.getBoundaryCellId(i,1) == seg.getCellId(1) )
+							if( elem.getBoundaryNodeId(i,0) == seg.getNodeId(0) &&
+								elem.getBoundaryNodeId(i,1) == seg.getNodeId(1) )
 							{
-								n0 = seg.getCellId(0);
-								n1 = seg.getCellId(1);
-								n2 = elem.getCellId(i);  // elem = [n0,n1,n2]
+								n0 = seg.getNodeId(0);
+								n1 = seg.getNodeId(1);
+								n2 = elem.getNodeId(i);  // elem = [n0,n1,n2]
 								tri = elem;
 								triangleId = tIter->second;
 								faceId = i;
 								orient = true;
 								break;
 							}else
-							if( elem.getBoundaryCellId(i,0) == seg.getCellId(1) &&
-								elem.getBoundaryCellId(i,1) == seg.getCellId(0) )
+							if( elem.getBoundaryNodeId(i,0) == seg.getNodeId(1) &&
+								elem.getBoundaryNodeId(i,1) == seg.getNodeId(0) )
 							{
-								n0 = seg.getCellId(1);
-								n1 = seg.getCellId(0);
-								n2 = elem.getCellId(i);  // elem = [n0,n1,n2]
+								n0 = seg.getNodeId(1);
+								n1 = seg.getNodeId(0);
+								n2 = elem.getNodeId(i);  // elem = [n0,n1,n2]
 								tri = elem;
 								triangleId = tIter->second;
 								faceId = i;
@@ -422,7 +422,7 @@ kmb::PatchOperation::triangleSubdivider
 		++mIter;
 		if( faceId != -1 && (mIter == matchingInfo.end() || targetElementId != mIter->elementId ) ){
 			// insert last triangle
-			n1 = (orient)? seg.getCellId(1) : seg.getCellId(0);
+			n1 = (orient)? seg.getNodeId(1) : seg.getNodeId(0);
 			if( n0 != n1 ){
 				kmb::nodeIdType insTri[3] = {n2,n0,n1};
 				patch->addElement( kmb::TRIANGLE, insTri, mesh->generateElementId() );
@@ -434,12 +434,12 @@ kmb::PatchOperation::triangleSubdivider
 	return counter;
 }
 
-//------------------- •½–Ê‚É‚æ‚éƒpƒbƒ`‚Ì•ªŠ„ --------------------------//
+//------------------- å¹³é¢ã«ã‚ˆã‚‹ãƒ‘ãƒƒãƒã®åˆ†å‰² --------------------------//
 // local function
 //
-// Šù‚É“ñd‰»‚µ‚½ nodeId ‚ğ duplicatedNodes ‚É‹L‰¯
-// Šù‚É“ñd‰»‚³‚ê‚Ä‚¢‚ê‚Î‚»‚ÌŒ‹‰Ê‚ğ•Ô‚µA
-// “ñd‰»‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î mesh ‚É nodeId ‚ğ“ñd‰»‚µ‚Ä“o˜^
+// æ—¢ã«äºŒé‡åŒ–ã—ãŸ nodeId ã‚’ duplicatedNodes ã«è¨˜æ†¶
+// æ—¢ã«äºŒé‡åŒ–ã•ã‚Œã¦ã„ã‚Œã°ãã®çµæœã‚’è¿”ã—ã€
+// äºŒé‡åŒ–ã•ã‚Œã¦ã„ãªã‘ã‚Œã° mesh ã« nodeId ã‚’äºŒé‡åŒ–ã—ã¦ç™»éŒ²
 //
 
 kmb::nodeIdType
@@ -461,18 +461,18 @@ duplicatePointOnSection( kmb::MeshDB* mesh, kmb::nodeIdType nodeId, std::map< km
 
 // local function
 //
-// n0 ³—Ìˆæ‚Ì“_
-// n1 •‰—Ìˆæ‚Ì“_
-// n0 ‚Æ n1 ‚ğ m0 : m1 ‚É“à•ª‚µ‚½“_‚ğ mesh ‚É’Ç‰Á‚µ‚Ä n ‚Æ‚µA
+// n0 æ­£é ˜åŸŸã®ç‚¹
+// n1 è² é ˜åŸŸã®ç‚¹
+// n0 ã¨ n1 ã‚’ m0 : m1 ã«å†…åˆ†ã—ãŸç‚¹ã‚’ mesh ã«è¿½åŠ ã—ã¦ n ã¨ã—ã€
 // dividedNodes[ std::pair(n0,n1) ] = n 
-// ‚Æ‚·‚é
-// ‚·‚Å‚É dividedNodes ‚É“o˜^‚³‚ê‚Ä‚¢‚½‚ç‰½‚à‚µ‚È‚¢
-// –ß‚è’l‚Í n 
+// ã¨ã™ã‚‹
+// ã™ã§ã« dividedNodes ã«ç™»éŒ²ã•ã‚Œã¦ã„ãŸã‚‰ä½•ã‚‚ã—ãªã„
+// æˆ»ã‚Šå€¤ã¯ n 
 //
 
-// –ÊƒOƒ‹[ƒv‚ğ•½–Ê‚Å•ªŠ„‚·‚é
-// n0 ³—Ìˆæ
-// n1 •‰—Ìˆæ
+// é¢ã‚°ãƒ«ãƒ¼ãƒ—ã‚’å¹³é¢ã§åˆ†å‰²ã™ã‚‹
+// n0 æ­£é ˜åŸŸ
+// n1 è² é ˜åŸŸ
 
 kmb::nodeIdType
 getDividedNodeId
@@ -490,7 +490,7 @@ getDividedNodeId
 		std::map< std::pair<kmb::nodeIdType,kmb::nodeIdType>, kmb::nodeIdType >::iterator
 			it = dividedNodes.find( std::pair<kmb::nodeIdType,kmb::nodeIdType>(n0,n1) );
 		if( it == dividedNodes.end() ){
-			// ‚È‚¢ê‡‚Íì‚é
+			// ãªã„å ´åˆã¯ä½œã‚‹
 			nodeId = mesh->insertNode( p0.dividingPoint( p1, m0, m1 ) );
 			dividedNodes.insert( std::pair< std::pair<kmb::nodeIdType,kmb::nodeIdType>, kmb::nodeIdType>
 				(std::pair<kmb::nodeIdType,kmb::nodeIdType>(n0,n1), nodeId ) );
@@ -525,27 +525,27 @@ kmb::PatchOperation::divideByPlane
 	kmb::Body* negative = NULL;
 	negative = new kmb::ElementContainerMap();
 
-	// •‰—Ìˆæ‚Ì“_‚ÆA³—Ìˆæ‚Ì“_‚Ì‘g‚©‚ç’f–Êã‚Ì“_‚ğ‹‚ß‚é
+	// è² é ˜åŸŸã®ç‚¹ã¨ã€æ­£é ˜åŸŸã®ç‚¹ã®çµ„ã‹ã‚‰æ–­é¢ä¸Šã®ç‚¹ã‚’æ±‚ã‚ã‚‹
 	std::map< std::pair<kmb::nodeIdType,kmb::nodeIdType>, kmb::nodeIdType > dividedNodes;
 
-	// ’f–Êã‚Ìß“_‚ğ“ñd‰»‚·‚é‚Æ‚«‚É
-	// ³—Ìˆæ‚Ì’f–Êã‚Ìß“_‚Æ•‰—Ìˆæ‚Ì’f–Êã‚Ìß“_‚Ì‘Î‰‚ğ‹L‰¯‚·‚é
+	// æ–­é¢ä¸Šã®ç¯€ç‚¹ã‚’äºŒé‡åŒ–ã™ã‚‹ã¨ãã«
+	// æ­£é ˜åŸŸã®æ–­é¢ä¸Šã®ç¯€ç‚¹ã¨è² é ˜åŸŸã®æ–­é¢ä¸Šã®ç¯€ç‚¹ã®å¯¾å¿œã‚’è¨˜æ†¶ã™ã‚‹
 	std::map< kmb::nodeIdType, kmb::nodeIdType > posnegNodes;
 
-	// ’f–Ê‚É‚Ó‚½‚ğ‚·‚é‚½‚ß‚É³—Ìˆæ‚Ì’f–Êã‚Ì SEGMENT ‚ğŠo‚¦‚Ä‚¨‚­
+	// æ–­é¢ã«ãµãŸã‚’ã™ã‚‹ãŸã‚ã«æ­£é ˜åŸŸã®æ–­é¢ä¸Šã® SEGMENT ã‚’è¦šãˆã¦ãŠã
 	kmb::ElementContainerMap positiveSegments;
 
 
-	// •½–Ê‚ğ‰¡Ø‚Á‚Ä‚¢‚é•Ó‚ÌŒŸõ
+	// å¹³é¢ã‚’æ¨ªåˆ‡ã£ã¦ã„ã‚‹è¾ºã®æ¤œç´¢
 	kmb::Point3D p0,p1,p2;
 	kmb::ElementContainer::iterator eIter = target->begin();
 	while( eIter != target->end() )
 	{
 		kmb::elementIdType elementId = eIter.getId();
-		// OŠpŒ`‚«‚ß‚¤‚¿
-		kmb::nodeIdType n0 = eIter.getCellId(0);
-		kmb::nodeIdType n1 = eIter.getCellId(1);
-		kmb::nodeIdType n2 = eIter.getCellId(2);
+		// ä¸‰è§’å½¢ãã‚ã†ã¡
+		kmb::nodeIdType n0 = eIter.getNodeId(0);
+		kmb::nodeIdType n1 = eIter.getNodeId(1);
+		kmb::nodeIdType n2 = eIter.getNodeId(2);
 		++eIter;
 		if( mesh->getNode(n0,p0) &&
 			mesh->getNode(n1,p1) &&
@@ -559,14 +559,14 @@ kmb::PatchOperation::divideByPlane
 			if( fabs(eval2) < tolerance ) eval2 = 0.0;
 			if( eval0 == 0.0 && eval1 == 0.0 && eval2 == 0.0)
 			{
-				// z z z ‰½‚à‚µ‚È‚¢
+				// z z z ä½•ã‚‚ã—ãªã„
 			}
 			if( eval0 >= 0 && eval1 >= 0 && eval2 >= 0)
 			{
 				// pz pz pz
 				kmb::nodeIdType tri[3] = {n0,n1,n2};
 				positive->addElement( kmb::TRIANGLE, tri, elementId);
-				// zero ‚ª2ŒÂ‚ ‚é‚Í SEGMENT “o˜^
+				// zero ãŒ2å€‹ã‚ã‚‹æ™‚ã¯ SEGMENT ç™»éŒ²
 				if( capFlag && eval0 == 0.0 && eval1 == 0.0 ){
 					kmb::nodeIdType seg[2] = {n0,n1};
 					positiveSegments.addElement( kmb::SEGMENT, seg );
@@ -585,7 +585,7 @@ kmb::PatchOperation::divideByPlane
 				// nz nz nz
 				kmb::nodeIdType tri[3] = {n0,n1,n2};
 				if( duplicateFlag ){
-					// •K—v‚È‚ç“ñd‰»
+					// å¿…è¦ãªã‚‰äºŒé‡åŒ–
 					if( eval0 == 0.0 ){
 						kmb::nodeIdType nn0 = duplicatePointOnSection( mesh, n0, posnegNodes );
 						tri[0] = nn0;
@@ -606,23 +606,23 @@ kmb::PatchOperation::divideByPlane
 				// p p n
 				kmb::nodeIdType n20 = getDividedNodeId(n0,n2,eval0,-eval2,dividedNodes,mesh);
 				kmb::nodeIdType n12 = getDividedNodeId(n1,n2,eval1,-eval2,dividedNodes,mesh);
-				// V‚µ‚¢—v‘f‚ğ“o˜^
+				// æ–°ã—ã„è¦ç´ ã‚’ç™»éŒ²
 				kmb::nodeIdType tri0[3] = {n0,n1,n20};
 				positive->addElement(kmb::TRIANGLE,tri0,mesh->generateElementId());
 				kmb::nodeIdType tri1[3] = {n1,n12,n20};
 				positive->addElement(kmb::TRIANGLE,tri1,mesh->generateElementId());
 				if( capFlag ){
-					// SEGMENT ‚Í³—Ìˆæ‚ÌOŠpŒ`‚Ì•Ó‚Æ‚Í“¯‚¶Œü‚«‚É‚·‚é
-					// polygon partitioner ‚ÌŒü‚«‚Æ‚ ‚í‚¹‚é‚½‚ß 
+					// SEGMENT ã¯æ­£é ˜åŸŸã®ä¸‰è§’å½¢ã®è¾ºã¨ã¯åŒã˜å‘ãã«ã™ã‚‹
+					// polygon partitioner ã®å‘ãã¨ã‚ã‚ã›ã‚‹ãŸã‚ 
 					kmb::nodeIdType seg[2] = {n12,n20};
 					positiveSegments.addElement( kmb::SEGMENT, seg );
 				}
 				if( duplicateFlag ){
-					// •K—v‚È‚ç“ñd‰»
+					// å¿…è¦ãªã‚‰äºŒé‡åŒ–
 					n20 = duplicatePointOnSection( mesh, n20, posnegNodes );
 					n12 = duplicatePointOnSection( mesh, n12, posnegNodes );
 				}
-				// negative ‚Í elementId ‚ğÄ—˜—p
+				// negative ã¯ elementId ã‚’å†åˆ©ç”¨
 				kmb::nodeIdType tri2[3] = {n12,n2,n20};
 				negative->addElement(kmb::TRIANGLE,tri2,elementId);
 			}
@@ -631,7 +631,7 @@ kmb::PatchOperation::divideByPlane
 				// p n p
 				kmb::nodeIdType n01 = getDividedNodeId(n0,n1,eval0,-eval1,dividedNodes,mesh);
 				kmb::nodeIdType n12 = getDividedNodeId(n2,n1,eval2,-eval1,dividedNodes,mesh);
-				// V‚µ‚¢—v‘f‚ğ“o˜^
+				// æ–°ã—ã„è¦ç´ ã‚’ç™»éŒ²
 				kmb::nodeIdType tri0[3] = {n0,n01,n2};
 				positive->addElement(kmb::TRIANGLE,tri0,mesh->generateElementId());
 				kmb::nodeIdType tri1[3] = {n01,n12,n2};
@@ -641,11 +641,11 @@ kmb::PatchOperation::divideByPlane
 					positiveSegments.addElement( kmb::SEGMENT,seg );
 				}
 				if( duplicateFlag ){
-					// •K—v‚È‚ç“ñd‰»
+					// å¿…è¦ãªã‚‰äºŒé‡åŒ–
 					n01 = duplicatePointOnSection( mesh, n01, posnegNodes );
 					n12 = duplicatePointOnSection( mesh, n12, posnegNodes );
 				}
-				// negative ‚Í elementId ‚ğÄ—˜—p
+				// negative ã¯ elementId ã‚’å†åˆ©ç”¨
 				kmb::nodeIdType tri2[3] = {n01,n1,n12};
 				negative->addElement(kmb::TRIANGLE,tri2,elementId);
 			}
@@ -654,7 +654,7 @@ kmb::PatchOperation::divideByPlane
 				// n p p
 				kmb::nodeIdType n01 = getDividedNodeId(n1,n0,eval1,-eval0,dividedNodes,mesh);
 				kmb::nodeIdType n20 = getDividedNodeId(n2,n0,eval2,-eval0,dividedNodes,mesh);
-				// V‚µ‚¢—v‘f‚ğ“o˜^
+				// æ–°ã—ã„è¦ç´ ã‚’ç™»éŒ²
 				kmb::nodeIdType tri0[3] = {n01,n1,n2};
 				positive->addElement(kmb::TRIANGLE,tri0,mesh->generateElementId());
 				kmb::nodeIdType tri1[3] = {n01,n2,n20};
@@ -664,11 +664,11 @@ kmb::PatchOperation::divideByPlane
 					positiveSegments.addElement( kmb::SEGMENT,seg );
 				}
 				if( duplicateFlag ){
-					// •K—v‚È‚ç“ñd‰»
+					// å¿…è¦ãªã‚‰äºŒé‡åŒ–
 					n01 = duplicatePointOnSection( mesh, n01, posnegNodes );
 					n20 = duplicatePointOnSection( mesh, n20, posnegNodes );
 				}
-				// negative ‚Í elementId ‚ğÄ—˜—p
+				// negative ã¯ elementId ã‚’å†åˆ©ç”¨
 				kmb::nodeIdType tri2[3] = {n0,n01,n20};
 				negative->addElement(kmb::TRIANGLE,tri2,elementId);
 			}
@@ -677,7 +677,7 @@ kmb::PatchOperation::divideByPlane
 				// n n p
 				kmb::nodeIdType n12 = getDividedNodeId(n2,n1,eval2,-eval1,dividedNodes,mesh);
 				kmb::nodeIdType n20 = getDividedNodeId(n2,n0,eval2,-eval0,dividedNodes,mesh);
-				// positive ‚Í elementId ‚ğÄ—˜—p
+				// positive ã¯ elementId ã‚’å†åˆ©ç”¨
 				kmb::nodeIdType tri0[3] = {n20,n12,n2};
 				positive->addElement(kmb::TRIANGLE,tri0,elementId);
 				if( capFlag ){
@@ -685,11 +685,11 @@ kmb::PatchOperation::divideByPlane
 					positiveSegments.addElement( kmb::SEGMENT,seg );
 				}
 				if( duplicateFlag ){
-					// •K—v‚È‚ç“ñd‰»
+					// å¿…è¦ãªã‚‰äºŒé‡åŒ–
 					n12 = duplicatePointOnSection( mesh, n12, posnegNodes );
 					n20 = duplicatePointOnSection( mesh, n20, posnegNodes );
 				}
-				// V‚µ‚¢—v‘f‚ğ“o˜^
+				// æ–°ã—ã„è¦ç´ ã‚’ç™»éŒ²
 				kmb::nodeIdType tri1[3] = {n0,n1,n20};
 				negative->addElement(kmb::TRIANGLE,tri1,mesh->generateElementId());
 				kmb::nodeIdType tri2[3] = {n1,n12,n20};
@@ -700,7 +700,7 @@ kmb::PatchOperation::divideByPlane
 				// n p n
 				kmb::nodeIdType n01 = getDividedNodeId(n1,n0,eval1,-eval0,dividedNodes,mesh);
 				kmb::nodeIdType n12 = getDividedNodeId(n1,n2,eval1,-eval2,dividedNodes,mesh);
-				// positive ‚Í elementId ‚ğÄ—˜—p
+				// positive ã¯ elementId ã‚’å†åˆ©ç”¨
 				kmb::nodeIdType tri0[3] = {n01,n1,n12};
 				positive->addElement(kmb::TRIANGLE,tri0,elementId);
 				if( capFlag ){
@@ -708,11 +708,11 @@ kmb::PatchOperation::divideByPlane
 					positiveSegments.addElement( kmb::SEGMENT,seg );
 				}
 				if( duplicateFlag ){
-					// •K—v‚È‚ç“ñd‰»
+					// å¿…è¦ãªã‚‰äºŒé‡åŒ–
 					n01 = duplicatePointOnSection( mesh, n01, posnegNodes );
 					n12 = duplicatePointOnSection( mesh, n12, posnegNodes );
 				}
-				// V‚µ‚¢—v‘f‚ğ“o˜^
+				// æ–°ã—ã„è¦ç´ ã‚’ç™»éŒ²
 				kmb::nodeIdType tri1[3] = {n0,n01,n2};
 				negative->addElement(kmb::TRIANGLE,tri1,mesh->generateElementId());
 				kmb::nodeIdType tri2[3] = {n01,n12,n2};
@@ -723,7 +723,7 @@ kmb::PatchOperation::divideByPlane
 				// p n n
 				kmb::nodeIdType n01 = getDividedNodeId(n0,n1,eval0,-eval1,dividedNodes,mesh);
 				kmb::nodeIdType n20 = getDividedNodeId(n0,n2,eval0,-eval2,dividedNodes,mesh);
-				// positive ‚Í elementId ‚ğÄ—˜—p
+				// positive ã¯ elementId ã‚’å†åˆ©ç”¨
 				kmb::nodeIdType tri0[3] = {n0,n01,n20};
 				positive->addElement(kmb::TRIANGLE,tri0,elementId);
 				if( capFlag ){
@@ -731,11 +731,11 @@ kmb::PatchOperation::divideByPlane
 					positiveSegments.addElement( kmb::SEGMENT,seg );
 				}
 				if( duplicateFlag ){
-					// •K—v‚È‚ç“ñd‰»
+					// å¿…è¦ãªã‚‰äºŒé‡åŒ–
 					n01 = duplicatePointOnSection( mesh, n01, posnegNodes );
 					n20 = duplicatePointOnSection( mesh, n20, posnegNodes );
 				}
-				// V‚µ‚¢—v‘f‚ğ“o˜^
+				// æ–°ã—ã„è¦ç´ ã‚’ç™»éŒ²
 				kmb::nodeIdType tri1[3] = {n01,n1,n2};
 				negative->addElement(kmb::TRIANGLE,tri1,mesh->generateElementId());
 				kmb::nodeIdType tri2[3] = {n01,n2,n20};
@@ -745,7 +745,7 @@ kmb::PatchOperation::divideByPlane
 			{
 				// z n p
 				kmb::nodeIdType n12 = getDividedNodeId(n2,n1,eval2,-eval1,dividedNodes,mesh);
-				// positive ‚Í elementId ‚ğÄ—˜—p
+				// positive ã¯ elementId ã‚’å†åˆ©ç”¨
 				kmb::nodeIdType tri0[3] = {n0,n12,n2};
 				positive->addElement(kmb::TRIANGLE,tri0,elementId);
 				if( capFlag ){
@@ -753,11 +753,11 @@ kmb::PatchOperation::divideByPlane
 					positiveSegments.addElement( kmb::SEGMENT,seg );
 				}
 				if( duplicateFlag ){
-					// •K—v‚È‚ç“ñd‰»
+					// å¿…è¦ãªã‚‰äºŒé‡åŒ–
 					n0 = duplicatePointOnSection( mesh, n0, posnegNodes );
 					n12 = duplicatePointOnSection( mesh, n12, posnegNodes );
 				}
-				// V‚µ‚¢—v‘f‚ğ“o˜^
+				// æ–°ã—ã„è¦ç´ ã‚’ç™»éŒ²
 				kmb::nodeIdType tri1[3] = {n0,n1,n12};
 				negative->addElement(kmb::TRIANGLE,tri1,mesh->generateElementId());
 			}
@@ -765,7 +765,7 @@ kmb::PatchOperation::divideByPlane
 			{
 				// z p n
 				kmb::nodeIdType n12 = getDividedNodeId(n1,n2,eval1,-eval2,dividedNodes,mesh);
-				// positive ‚Í elementId ‚ğÄ—˜—p
+				// positive ã¯ elementId ã‚’å†åˆ©ç”¨
 				kmb::nodeIdType tri0[3] = {n0,n1,n12};
 				positive->addElement(kmb::TRIANGLE,tri0,elementId);
 				if( capFlag ){
@@ -773,11 +773,11 @@ kmb::PatchOperation::divideByPlane
 					positiveSegments.addElement( kmb::SEGMENT,seg );
 				}
 				if( duplicateFlag ){
-					// •K—v‚È‚ç“ñd‰»
+					// å¿…è¦ãªã‚‰äºŒé‡åŒ–
 					n0 = duplicatePointOnSection( mesh, n0, posnegNodes );
 					n12 = duplicatePointOnSection( mesh, n12, posnegNodes );
 				}
-				// V‚µ‚¢—v‘f‚ğ“o˜^
+				// æ–°ã—ã„è¦ç´ ã‚’ç™»éŒ²
 				kmb::nodeIdType tri1[3] = {n0,n12,n2};
 				negative->addElement(kmb::TRIANGLE,tri1,mesh->generateElementId());
 			}
@@ -785,7 +785,7 @@ kmb::PatchOperation::divideByPlane
 			{
 				// p z n
 				kmb::nodeIdType n20 = getDividedNodeId(n0,n2,eval0,-eval2,dividedNodes,mesh);
-				// positive ‚Í elementId ‚ğÄ—˜—p
+				// positive ã¯ elementId ã‚’å†åˆ©ç”¨
 				kmb::nodeIdType tri0[3] = {n0,n1,n20};
 				positive->addElement(kmb::TRIANGLE,tri0,elementId);
 				if( capFlag ){
@@ -793,11 +793,11 @@ kmb::PatchOperation::divideByPlane
 					positiveSegments.addElement( kmb::SEGMENT,seg );
 				}
 				if( duplicateFlag ){
-					// •K—v‚È‚ç“ñd‰»
+					// å¿…è¦ãªã‚‰äºŒé‡åŒ–
 					n1 = duplicatePointOnSection( mesh, n1, posnegNodes );
 					n20 = duplicatePointOnSection( mesh, n20, posnegNodes );
 				}
-				// V‚µ‚¢—v‘f‚ğ“o˜^
+				// æ–°ã—ã„è¦ç´ ã‚’ç™»éŒ²
 				kmb::nodeIdType tri1[3] = {n1,n2,n20};
 				negative->addElement(kmb::TRIANGLE,tri1,mesh->generateElementId());
 			}
@@ -805,7 +805,7 @@ kmb::PatchOperation::divideByPlane
 			{
 				// n z p
 				kmb::nodeIdType n20 = getDividedNodeId(n2,n0,eval2,-eval0,dividedNodes,mesh);
-				// positive ‚Í elementId ‚ğÄ—˜—p
+				// positive ã¯ elementId ã‚’å†åˆ©ç”¨
 				kmb::nodeIdType tri0[3] = {n1,n2,n20};
 				positive->addElement(kmb::TRIANGLE,tri0,elementId);
 				if( capFlag ){
@@ -813,11 +813,11 @@ kmb::PatchOperation::divideByPlane
 					positiveSegments.addElement( kmb::SEGMENT, seg );
 				}
 				if( duplicateFlag ){
-					// •K—v‚È‚ç“ñd‰»
+					// å¿…è¦ãªã‚‰äºŒé‡åŒ–
 					n1 = duplicatePointOnSection( mesh, n1, posnegNodes );
 					n20 = duplicatePointOnSection( mesh, n20, posnegNodes );
 				}
-				// V‚µ‚¢—v‘f‚ğ“o˜^
+				// æ–°ã—ã„è¦ç´ ã‚’ç™»éŒ²
 				kmb::nodeIdType tri1[3] = {n0,n1,n20};
 				negative->addElement(kmb::TRIANGLE,tri1,mesh->generateElementId());
 			}
@@ -825,7 +825,7 @@ kmb::PatchOperation::divideByPlane
 			{
 				// n p z
 				kmb::nodeIdType n01 = getDividedNodeId(n1,n0,eval1,-eval0,dividedNodes,mesh);
-				// positive ‚Í elementId ‚ğÄ—˜—p
+				// positive ã¯ elementId ã‚’å†åˆ©ç”¨
 				kmb::nodeIdType tri0[3] = {n01,n1,n2};
 				positive->addElement(kmb::TRIANGLE,tri0,elementId);
 				if( capFlag ){
@@ -833,11 +833,11 @@ kmb::PatchOperation::divideByPlane
 					positiveSegments.addElement( kmb::SEGMENT, seg );
 				}
 				if( duplicateFlag ){
-					// •K—v‚È‚ç“ñd‰»
+					// å¿…è¦ãªã‚‰äºŒé‡åŒ–
 					n2 = duplicatePointOnSection( mesh, n2, posnegNodes );
 					n01 = duplicatePointOnSection( mesh, n01, posnegNodes );
 				}
-				// V‚µ‚¢—v‘f‚ğ“o˜^
+				// æ–°ã—ã„è¦ç´ ã‚’ç™»éŒ²
 				kmb::nodeIdType tri1[3] = {n0,n01,n2};
 				negative->addElement(kmb::TRIANGLE,tri1,mesh->generateElementId());
 			}
@@ -845,7 +845,7 @@ kmb::PatchOperation::divideByPlane
 			{
 				// p n z
 				kmb::nodeIdType n01 = getDividedNodeId(n0,n1,eval0,-eval1,dividedNodes,mesh);
-				// positive ‚Í elementId ‚ğÄ—˜—p
+				// positive ã¯ elementId ã‚’å†åˆ©ç”¨
 				kmb::nodeIdType tri0[3] = {n0,n01,n2};
 				positive->addElement(kmb::TRIANGLE,tri0,elementId);
 				if( capFlag ){
@@ -853,11 +853,11 @@ kmb::PatchOperation::divideByPlane
 					positiveSegments.addElement( kmb::SEGMENT, seg );
 				}
 				if( duplicateFlag ){
-					// •K—v‚È‚ç“ñd‰»
+					// å¿…è¦ãªã‚‰äºŒé‡åŒ–
 					n2 = duplicatePointOnSection( mesh, n2, posnegNodes );
 					n01 = duplicatePointOnSection( mesh, n01, posnegNodes );
 				}
-				// negative ‚ÉV‚µ‚¢—v‘f‚ğ“o˜^
+				// negative ã«æ–°ã—ã„è¦ç´ ã‚’ç™»éŒ²
 				kmb::nodeIdType tri1[3] = {n01,n1,n2};
 				negative->addElement(kmb::TRIANGLE,tri1,mesh->generateElementId());
 			}
@@ -865,9 +865,9 @@ kmb::PatchOperation::divideByPlane
 	}
 	target->clear();
 	if( capFlag ){
-		// posnegNodes ‚Ì key ‚Æ‚È‚Á‚Ä‚¢‚é nodeId ‚É‚Â‚¢‚Ä ’f–Ê‚ÉË‰e
-		// ‚»‚Ì‚Ü‚Ü‚Ì Id ‚Å Point2DContainer ‚É“o˜^
-		// polygonpartioner ‚Å positiveSegments ‚ğOŠpŒ`‰»
+		// posnegNodes ã® key ã¨ãªã£ã¦ã„ã‚‹ nodeId ã«ã¤ã„ã¦ æ–­é¢ã«å°„å½±
+		// ãã®ã¾ã¾ã® Id ã§ Point2DContainer ã«ç™»éŒ²
+		// polygonpartioner ã§ positiveSegments ã‚’ä¸‰è§’å½¢åŒ–
 		kmb::PolygonPartitioner partitioner;
 		kmb::ElementContainerMap triangles;
 		kmb::Point3D point;
@@ -889,17 +889,17 @@ kmb::PatchOperation::divideByPlane
 		partitioner.setInitialPolygon( &positiveSegments );
 		retVal &= partitioner.partition( triangles );
 		if( triangles.getCount() > 0 ){
-			// ‚»‚ÌOŠpŒ`‚ğ positive ‚Æ negative ‚É’Ç‰Á
-			// positive ‚É‚Í polygon partitioner ‚ÅOŠpŒ`‰»‚µ‚½Œü‚«‚Æ‚Í‹t‚É‚·‚é
-			// Ú‚µ‚Ä‚¢‚éOŠpŒ`“¯m‚Ì•Ó‚ÌŒü‚«‚ÍŒİ‚¢‚É‹t‚¾‚©‚ç
-			// negative ‚É‚Í nodeId ‚ğ posnegNodes ‚Å•ÏŠ·‚µ‚ÄŒü‚«‚Í
-			// polygon partitioner ‚Ì‚Ü‚Ü’Ç‰Á‚·‚é
+			// ãã®ä¸‰è§’å½¢ã‚’ positive ã¨ negative ã«è¿½åŠ 
+			// positive ã«ã¯ polygon partitioner ã§ä¸‰è§’å½¢åŒ–ã—ãŸå‘ãã¨ã¯é€†ã«ã™ã‚‹
+			// æ¥ã—ã¦ã„ã‚‹ä¸‰è§’å½¢åŒå£«ã®è¾ºã®å‘ãã¯äº’ã„ã«é€†ã ã‹ã‚‰
+			// negative ã«ã¯ nodeId ã‚’ posnegNodes ã§å¤‰æ›ã—ã¦å‘ãã¯
+			// polygon partitioner ã®ã¾ã¾è¿½åŠ ã™ã‚‹
 			kmb::ElementContainerMap::iterator tIter = triangles.begin();
 			while( tIter != triangles.end() )
 			{
-				kmb::nodeIdType n0 = tIter.getCellId(0);
-				kmb::nodeIdType n1 = tIter.getCellId(1);
-				kmb::nodeIdType n2 = tIter.getCellId(2);
+				kmb::nodeIdType n0 = tIter.getNodeId(0);
+				kmb::nodeIdType n1 = tIter.getNodeId(1);
+				kmb::nodeIdType n2 = tIter.getNodeId(2);
 				kmb::nodeIdType tripos[3] = {n0,n2,n1};
 				positive->addElement(kmb::TRIANGLE,tripos,mesh->generateElementId());
 				if( duplicateFlag ){

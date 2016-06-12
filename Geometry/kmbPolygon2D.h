@@ -24,8 +24,8 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// •½–Êã‚Ì‘½ŠpŒ`‚ğˆµ‚¤ƒNƒ‰ƒX
-// •½–Êã‚Ì“_‚Ì“à•”ŠO•””»’è‚È‚Ç‚ÌŠô‰½ˆ—‚ğs‚¤
+// å¹³é¢ä¸Šã®å¤šè§’å½¢ã‚’æ‰±ã†ã‚¯ãƒ©ã‚¹
+// å¹³é¢ä¸Šã®ç‚¹ã®å†…éƒ¨å¤–éƒ¨åˆ¤å®šãªã©ã®å¹¾ä½•å‡¦ç†ã‚’è¡Œã†
 //
 #pragma once
 
@@ -53,18 +53,18 @@ public:
 	void appendNodeId( kmb::nodeIdType nodeId );
 	int getSize(void) const;
 	int getNodeIndex( kmb::nodeIdType nodeId ) const;
-	// nodeId ‚Æ offset ‚ğ—^‚¦‚ÄAß“_ Id ‚ğ•Ô‚·
+	// nodeId ã¨ offset ã‚’ä¸ãˆã¦ã€ç¯€ç‚¹ Id ã‚’è¿”ã™
 	kmb::nodeIdType getNode( kmb::nodeIdType nodeId, int offset=0 ) const;
 	kmb::nodeIdType getNodeId( int index ) const;
 
 	Polygon2D::orientation getOrientation(void) const;
 	kmb::Region::locationType intersect( kmb::Point2D &point ) const;
 	
-	// ß“_ID n0 ‚Æ n1 ‚ğŒ‹‚Ô‘ÎŠpü‚Å•ªŠ„‚·‚é
+	// ç¯€ç‚¹ID n0 ã¨ n1 ã‚’çµã¶å¯¾è§’ç·šã§åˆ†å‰²ã™ã‚‹
 	void dividePolygon(kmb::nodeIdType n0,kmb::nodeIdType n1,Polygon2D* &p0,Polygon2D* &p1);
 
-	// “à•”‚ÉŒü‚«‚ª‹t‚Ì‘½ŠpŒ`‚ğŠÜ‚Ş‚Æ‚«‚ÉAŠO•”‚Ì“_ n0 ‚©‚ç“à•”‚Ì“_ n1 ‚Ü‚Å
-	// Ø‚ê–Ú‚ğ“ü‚ê‚Ä“à•”‚Ì‘½ŠpŒ`‚ğ‰ğÁ‚·‚é
+	// å†…éƒ¨ã«å‘ããŒé€†ã®å¤šè§’å½¢ã‚’å«ã‚€ã¨ãã«ã€å¤–éƒ¨ã®ç‚¹ n0 ã‹ã‚‰å†…éƒ¨ã®ç‚¹ n1 ã¾ã§
+	// åˆ‡ã‚Œç›®ã‚’å…¥ã‚Œã¦å†…éƒ¨ã®å¤šè§’å½¢ã‚’è§£æ¶ˆã™ã‚‹
 	void branchPolygon(kmb::nodeIdType n0,kmb::nodeIdType n1,Polygon2D &negative,Polygon2D* &cancel);
 };
 

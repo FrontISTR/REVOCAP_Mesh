@@ -38,8 +38,8 @@ kmb::BodyOperation::getEdgesOfBody( const kmb::ElementContainer* body, kmb::Elem
 	{
 		const int len = eIter.getBoundaryCount();
 		for(int i=0;i<len;++i){
-			kmb::nodeIdType n0 = eIter.getBoundaryCellId(i,0);
-			kmb::nodeIdType n1 = eIter.getBoundaryCellId(i,1);
+			kmb::nodeIdType n0 = eIter.getBoundaryNodeId(i,0);
+			kmb::nodeIdType n1 = eIter.getBoundaryNodeId(i,1);
 			if( n0 < n1 ){
 				nodePair.insert( std::pair<kmb::nodeIdType,kmb::nodeIdType>(n0,n1) );
 			}else{
@@ -80,8 +80,8 @@ kmb::BodyOperation::getEdgesIntersectPlane(const kmb::ElementContainer* body,con
 			for(int i1=i0+1;i1<len;i1++){
 				if( abs(eIter.isConnected(i0,i1)) == degree )
 				{
-					kmb::nodeIdType n0 = eIter.getCellId(i0);
-					kmb::nodeIdType n1 = eIter.getCellId(i1);
+					kmb::nodeIdType n0 = eIter.getNodeId(i0);
+					kmb::nodeIdType n1 = eIter.getNodeId(i1);
 					if( points->getPoint(n0,p0) && points->getPoint(n1,p1) ){
 						if( plane->evaluate( p0 ) * plane->evaluate( p1 ) < 0 )
 						{

@@ -33,26 +33,26 @@ protected:
 public:
 	MeshOperation(kmb::MeshData* _mesh);
 	virtual ~MeshOperation(void);
-	// —Ìˆæ‚²‚Æ‚Éß“_”Ô†‚ªd•¡‚µ‚È‚¢‚æ‚¤‚É‚·‚é
-	// \‘¢‰ğÍ—p‚Ìƒ‚ƒfƒ‹‚Ìê‡AˆÙŞ—¿ŠÔ‚É—Í‚ª“`‚í‚ç‚È‚­‚È‚é‚Ì‚Å’ˆÓ‚·‚éB
+	// é ˜åŸŸã”ã¨ã«ç¯€ç‚¹ç•ªå·ãŒé‡è¤‡ã—ãªã„ã‚ˆã†ã«ã™ã‚‹
+	// æ§‹é€ è§£æç”¨ã®ãƒ¢ãƒ‡ãƒ«ã®å ´åˆã€ç•°ææ–™é–“ã«åŠ›ãŒä¼ã‚ã‚‰ãªããªã‚‹ã®ã§æ³¨æ„ã™ã‚‹ã€‚
 	size_t nodeSplitByVolumes(void);
-	// body ã‚Ìß“_”Ô†‚ğ•¡»
-	// coupleName ‚ª NULL ‚Å‚Í‚È‚¢‚Æ‚«‚ÍAorgNodeId => newNodeId ‚Ì‘Î‰‚ğ Data ‚Æ‚µ‚Ä‹L˜^‚·‚é
-	// –ß‚è’l‚Í’u‚«Š·‚¦‚½ß“_‚ÌŒÂ”‚ğ•Ô‚·
+	// body ä¸Šã®ç¯€ç‚¹ç•ªå·ã‚’è¤‡è£½
+	// coupleName ãŒ NULL ã§ã¯ãªã„ã¨ãã¯ã€orgNodeId => newNodeId ã®å¯¾å¿œã‚’ Data ã¨ã—ã¦è¨˜éŒ²ã™ã‚‹
+	// æˆ»ã‚Šå€¤ã¯ç½®ãæ›ãˆãŸç¯€ç‚¹ã®å€‹æ•°ã‚’è¿”ã™
 	int duplicateNodeIdOfBody(kmb::bodyIdType bodyId,const char* coupleName=NULL);
-	// ‹——£‚ª thresh ˆÈ‰º‚Ìß“_‚ğˆê‚Â‚É‚Ü‚Æ‚ß‚éAŠÖ˜A‚·‚é—v‘f‚à‘‚«Š·‚¦‚é
-	// ‚½‚¾‚µA“¯‚¶—v‘f“à‚É‹ß‚¢ß“_‚ª‚ ‚éê‡‚àƒ`ƒFƒbƒN‚µ‚È‚¢‚Ì‚ÅA•s³‚È—v‘f‚ª‚Å‚«‚é‰Â”\«‚ª‚ ‚é
+	// è·é›¢ãŒ thresh ä»¥ä¸‹ã®ç¯€ç‚¹ã‚’ä¸€ã¤ã«ã¾ã¨ã‚ã‚‹ã€é–¢é€£ã™ã‚‹è¦ç´ ã‚‚æ›¸ãæ›ãˆã‚‹
+	// ãŸã ã—ã€åŒã˜è¦ç´ å†…ã«è¿‘ã„ç¯€ç‚¹ãŒã‚ã‚‹å ´åˆã‚‚ãƒã‚§ãƒƒã‚¯ã—ãªã„ã®ã§ã€ä¸æ­£ãªè¦ç´ ãŒã§ãã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹
 	size_t uniteNodes(double thresh);
-	// OŠpŒ`•ªŠ„
+	// ä¸‰è§’å½¢åˆ†å‰²
 	int triangulation(kmb::bodyIdType bodyId);
 
-	// static ŠÖ”
-	// eqŠÖŒW
+	// static é–¢æ•°
+	// è¦ªå­é–¢ä¿‚
 	static bool isParent(const kmb::ElementContainer* child,const kmb::ElementContainer* parent,const kmb::NodeNeighborInfo &neighbors);
-	// surface ‚©‚ç facegroup ‚Ö‚Ì•ÏŠ·
+	// surface ã‹ã‚‰ facegroup ã¸ã®å¤‰æ›
 	static int surface2FaceGroup(const kmb::ElementContainer* child,const kmb::ElementContainer* parent,const kmb::NodeNeighborInfo &neighborInfo,kmb::DataBindings* faceGroup);
 protected:
-	// e—v‘f‚ÌŒŸõ
+	// è¦ªè¦ç´ ã®æ¤œç´¢
 	static kmb::elementIdType getParentElement(const kmb::ElementBase &elem,const kmb::ElementContainer* parent,const kmb::NodeNeighborInfo &neighbors);
 };
 

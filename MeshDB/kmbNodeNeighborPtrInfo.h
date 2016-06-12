@@ -13,8 +13,8 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 /*
- * kmb::NodeNeighborInfo ‚Æ“¯“™‚Ì‹@”\
- * ‚½‚¾‚µAelementId ‚Æ‚Ì‘Î‰‚Å‚Í‚È‚­‚ÄAkmb::Element* ‚Æ‚Ì‘Î‰‚ğ•Û‘¶‚·‚é
+ * kmb::NodeNeighborInfo ã¨åŒç­‰ã®æ©Ÿèƒ½
+ * ãŸã ã—ã€elementId ã¨ã®å¯¾å¿œã§ã¯ãªãã¦ã€kmb::Element* ã¨ã®å¯¾å¿œã‚’ä¿å­˜ã™ã‚‹
  */
 
 #pragma once
@@ -29,8 +29,8 @@ class Element;
 class ElementContainer;
 class MeshData;
 
-// Delaunay ‚â Advancing Front ‚Ì‰Šú‹ß–Tî•ñ‚Ì¶¬‚É—p‚¢‚é‚½‚ß
-// •Û‘¶‚·‚éƒ|ƒCƒ“ƒ^‚Í const ‚Å‚Í‚È‚¢
+// Delaunay ã‚„ Advancing Front ã®åˆæœŸè¿‘å‚æƒ…å ±ã®ç”Ÿæˆã«ç”¨ã„ã‚‹ãŸã‚
+// ä¿å­˜ã™ã‚‹ãƒã‚¤ãƒ³ã‚¿ã¯ const ã§ã¯ãªã„
 
 typedef std::multimap< kmb::nodeIdType, kmb::Element* > NodeNeighborPtr;
 
@@ -54,12 +54,12 @@ public:
 	// erase correspondence
 	bool deleteCoboundary( kmb::Element* element );
 
-	// ‹ß–Tî•ñAü•Óî•ñ‚Ìæ“¾
+	// è¿‘å‚æƒ…å ±ã€å‘¨è¾ºæƒ…å ±ã®å–å¾—
 	
-	// —v‘f‚ğ—^‚¦‚Ä‚»‚Ì‹ß–T—v‘f‚ğæ‚èo‚µAneighbors ‚É•Ô‚·
-	// neighbors ‚ÍŒÄ‚Ño‚µ‘¤‚Å element ‚Ì‹«ŠE‚ÌŒÂ”‚¾‚¯‚ ‚ç‚©‚¶‚ß—pˆÓ‚µ‚Ä
-	// ŒÄ‚Ño‚µ‘¤‚Åƒƒ‚ƒŠ‚ÌŠm•ÛE‰ğ•ú‚ğs‚¤‚±‚Æ
-	// –ß‚è’l‚Í‹ß–T—v‘f‚ÌŒÂ”
+	// è¦ç´ ã‚’ä¸ãˆã¦ãã®è¿‘å‚è¦ç´ ã‚’å–ã‚Šå‡ºã—ã€neighbors ã«è¿”ã™
+	// neighbors ã¯å‘¼ã³å‡ºã—å´ã§ element ã®å¢ƒç•Œã®å€‹æ•°ã ã‘ã‚ã‚‰ã‹ã˜ã‚ç”¨æ„ã—ã¦
+	// å‘¼ã³å‡ºã—å´ã§ãƒ¡ãƒ¢ãƒªã®ç¢ºä¿ãƒ»è§£æ”¾ã‚’è¡Œã†ã“ã¨
+	// æˆ»ã‚Šå€¤ã¯è¿‘å‚è¦ç´ ã®å€‹æ•°
 	int getElementNeighbor( const kmb::Element* element, kmb::Element** neighbors ) const;
 	int getElementNeighborFace( const kmb::Element* element, kmb::Element** neighbors, int *faces ) const;
 	// get adjacent nodes from a node

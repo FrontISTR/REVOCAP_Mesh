@@ -39,12 +39,12 @@ public:
 	Quad(kmb::nodeIdType *ary);
 	virtual ~Quad(void);
 
-	// •Ó‚ÌŒğŠ·
-	// orientation=true  abcd ‚Æ befc ‚©‚ç abed ‚Æ efcd ‚É•ÏŠ·‚·‚éi‹¤’Ê•Ó‚ğ‡•ûŒü‚É‚¸‚ç‚·j
-	// orientation=false abcd ‚Æ befc ‚©‚ç abef ‚Æ afcd ‚É•ÏŠ·‚·‚éi‹¤’Ê•Ó‚ğ‹t•ûŒü‚É‚¸‚ç‚·j
+	// è¾ºã®äº¤æ›
+	// orientation=true  abcd ã¨ befc ã‹ã‚‰ abed ã¨ efcd ã«å¤‰æ›ã™ã‚‹ï¼ˆå…±é€šè¾ºã‚’é †æ–¹å‘ã«ãšã‚‰ã™ï¼‰
+	// orientation=false abcd ã¨ befc ã‹ã‚‰ abef ã¨ afcd ã«å¤‰æ›ã™ã‚‹ï¼ˆå…±é€šè¾ºã‚’é€†æ–¹å‘ã«ãšã‚‰ã™ï¼‰
 	static bool edgeSwap(kmb::ElementBase &quad0,kmb::ElementBase &quad1,bool orientation=true);
-	// lŠpŒ`‚É“Á‰»‚µ‚½ˆê’v”»’è
-	// 1 : ˆê’v -1 : ‹tŒü‚« 0 : ‚»‚Ì‘¼
+	// å››è§’å½¢ã«ç‰¹åŒ–ã—ãŸä¸€è‡´åˆ¤å®š
+	// 1 : ä¸€è‡´ -1 : é€†å‘ã 0 : ãã®ä»–
 	static int isCoincident(kmb::nodeIdType t00,kmb::nodeIdType t01,kmb::nodeIdType t02,kmb::nodeIdType t03,
 							kmb::nodeIdType t10,kmb::nodeIdType t11,kmb::nodeIdType t12,kmb::nodeIdType t13);
 public:
@@ -65,6 +65,9 @@ public:
 	static double jacobian(double s, double t,const kmb::Point2D* points);
 	static double jacobian_ds(double s, double t,const kmb::Point2D* points);
 	static double jacobian_dt(double s, double t,const kmb::Point2D* points);
+
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 };
 
 }

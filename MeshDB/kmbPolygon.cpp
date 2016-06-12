@@ -112,8 +112,8 @@ kmb::Polygon::setEdgesByFaceGroup( const kmb::DataBindings* facegroup, const kmb
 		if( fIter.getFace(f) ){
 			kmb::ElementContainer::const_iterator eIter = patches->find( f.getElementId() );
 			kmb::Segment* segment = new kmb::Segment(
-				eIter.getBoundaryCellId(f.getLocalFaceId(),0),
-				eIter.getBoundaryCellId(f.getLocalFaceId(),1));
+				eIter.getBoundaryNodeId(f.getLocalFaceId(),0),
+				eIter.getBoundaryNodeId(f.getLocalFaceId(),1));
 			if( segment ){
 				this->edges->addElement( segment );
 			}
@@ -184,7 +184,7 @@ kmb::Polygon::getCenter(const kmb::Point2DContainer* points,kmb::Point2D &center
 	double x=0.0, y=0.0;
 	kmb::ElementContainer::iterator eIter = edges->begin();
 	while( !eIter.isFinished() ){
-		kmb::nodeIdType nodeId = eIter.getCellId(0);
+		kmb::nodeIdType nodeId = eIter.getNodeId(0);
 		points->getXY( nodeId, x, y );
 		center.addCoordinate( x, y );
 		++eIter;
@@ -203,7 +203,7 @@ kmb::Polygon::getCenter(const kmb::Point3DContainer* points,kmb::Point3D &center
 	double x=0.0, y=0.0, z=0.0;
 	kmb::ElementContainer::iterator eIter = edges->begin();
 	while( !eIter.isFinished() ){
-		kmb::nodeIdType nodeId = eIter.getCellId(0);
+		kmb::nodeIdType nodeId = eIter.getNodeId(0);
 		points->getXYZ( nodeId, x, y, z );
 		center.addCoordinate( x, y, z );
 		++eIter;
@@ -223,7 +223,7 @@ kmb::Polygon::getNearestNode(const kmb::Point2DContainer* points,kmb::Point2D &p
 	double x=0.0, y=0.0;
 	kmb::ElementContainer::iterator eIter = edges->begin();
 	while( !eIter.isFinished() ){
-		kmb::nodeIdType nodeId = eIter.getCellId(0);
+		kmb::nodeIdType nodeId = eIter.getNodeId(0);
 		if( points->getXY(nodeId,x,y) && minimizer.update( point.distanceSq(x,y) ) ){
 			nearestId = nodeId;
 		}
@@ -243,7 +243,7 @@ kmb::Polygon::getNearestNode(const kmb::Point3DContainer* points,kmb::Point3D &p
 	double x=0.0, y=0.0, z=0.0;
 	kmb::ElementContainer::iterator eIter = edges->begin();
 	while( !eIter.isFinished() ){
-		kmb::nodeIdType nodeId = eIter.getCellId(0);
+		kmb::nodeIdType nodeId = eIter.getNodeId(0);
 		if( points->getXYZ(nodeId,x,y,z) && minimizer.update( point.distanceSq(x,y,z) ) ){
 			nearestId = nodeId;
 		}
@@ -284,13 +284,13 @@ kmb::Polygon::isClosed(void) const
 	if( edges == NULL ){
 		return false;
 	}
-// ‚»‚ê‚¼‚ê‚Ì•Ó‚ÌÅ‰‚Ì’¸“_‚É‚Â‚¢‚ÄA“ü‚Á‚Ä‚­‚é•Ó‚ÌŒÂ”‚Æo‚Äs‚­•Ó‚ÌŒÂ”‚ª“™‚µ‚¢‚±‚Æ‚ğŒ¾‚¤
+// ãã‚Œãã‚Œã®è¾ºã®æœ€åˆã®é ‚ç‚¹ã«ã¤ã„ã¦ã€å…¥ã£ã¦ãã‚‹è¾ºã®å€‹æ•°ã¨å‡ºã¦è¡Œãè¾ºã®å€‹æ•°ãŒç­‰ã—ã„ã“ã¨ã‚’è¨€ã†
 	bool retVal = true;
 	kmb::ElementContainer::iterator eIter = edges->begin();
 	while( !eIter.isFinished() )
 	{
-		// ß“_‚Ì‚Ü‚í‚è‚É2‚Â‚Ì—v‘f‚ª‚ ‚é‚±‚Æ‚ğŠm”F
-		kmb::nodeIdType nodeId = eIter.getCellId(0);
+		// ç¯€ç‚¹ã®ã¾ã‚ã‚Šã«2ã¤ã®è¦ç´ ãŒã‚ã‚‹ã“ã¨ã‚’ç¢ºèª
+		kmb::nodeIdType nodeId = eIter.getNodeId(0);
 		int innerElement = 0;
 		int outerElement = 0;
 		kmb::NodeNeighbor::const_iterator nIter = neighborInfo.beginIteratorAt( nodeId );
@@ -329,8 +329,8 @@ kmb::Polygon::hasDoubleNode(void) const
 	kmb::ElementContainerMap::iterator eIter = edges->begin();
 	while( eIter != edges->end() )
 	{
-		// ß“_‚Ì‚Ü‚í‚è‚É2‚Â‚æ‚è‘½‚­‚Ì—v‘f‚ª‚ ‚é‚±‚Æ‚ğŠm”F
-		kmb::nodeIdType nodeId = eIter.getCellId(0);
+		// ç¯€ç‚¹ã®ã¾ã‚ã‚Šã«2ã¤ã‚ˆã‚Šå¤šãã®è¦ç´ ãŒã‚ã‚‹ã“ã¨ã‚’ç¢ºèª
+		kmb::nodeIdType nodeId = eIter.getNodeId(0);
 		if( neighborInfo.getElementCountAroundNode( nodeId ) > 2 ){
 			irregalNodeId = nodeId;
 			break;
@@ -375,10 +375,10 @@ kmb::Polygon::getNextNode
 	{
 		kmb::elementIdType elemID = eIter->second;
 		kmb::ElementContainer::const_iterator elem = edges->find( elemID );
-		if( !elem.isFinished() && elem.getCellId( (order) ? 0 : 1 ) == nodeID )
+		if( !elem.isFinished() && elem.getNodeId( (order) ? 0 : 1 ) == nodeID )
 		{
 			++count;
-			nextID = elem.getCellId( (order) ? 1 : 0 );
+			nextID = elem.getNodeId( (order) ? 1 : 0 );
 		}
 		++eIter;
 	}
@@ -397,12 +397,12 @@ kmb::Polygon::getNextElement
 	if( edges == NULL || !edges->isUniqueDim(1) )
 		return nextID;
 
-	// Œ»İ‚Ì—v‘f
+	// ç¾åœ¨ã®è¦ç´ 
 	kmb::ElementContainer::const_iterator nowElement = edges->find( elementID );
 	if( nowElement.isFinished() )
 		return nextID;
 
-	kmb::nodeIdType nodeID = nowElement.getCellId( (order) ? 1 : 0 );
+	kmb::nodeIdType nodeID = nowElement.getNodeId( (order) ? 1 : 0 );
 
 	int count = 0;
 	kmb::NodeNeighbor::const_iterator
@@ -411,7 +411,7 @@ kmb::Polygon::getNextElement
 	{
 		kmb::elementIdType elemID = eIter->second;
 		kmb::ElementContainer::const_iterator elem = edges->find( elemID );
-		if( !elem.isFinished() && elem.getCellId( (order) ? 0 : 1 ) == nodeID )
+		if( !elem.isFinished() && elem.getNodeId( (order) ? 0 : 1 ) == nodeID )
 		{
 			++count;
 			nextID = elemID;
@@ -440,7 +440,7 @@ kmb::Polygon::getElementByNode
 	{
 		kmb::elementIdType elemID = eIter->second;
 		kmb::ElementContainer::iterator elem = edges->find( elemID );
-		if( !elem.isFinished() && elem.getCellId( (order) ? 0 : 1 ) == nodeID )
+		if( !elem.isFinished() && elem.getNodeId( (order) ? 0 : 1 ) == nodeID )
 		{
 			++count;
 			nextID = elemID;
@@ -464,25 +464,25 @@ kmb::Polygon::dividePolygonsByDiagonals(
 	if( points == NULL ){
 		return;
 	}
-	// •Ó‚Æ‘ÎŠpü‚ğ‚·‚×‚Ä“o˜^
-	// ‘ÎŠpü‚Í—¼•û‚ÌŒü‚«‚ğ“o˜^
+	// è¾ºã¨å¯¾è§’ç·šã‚’ã™ã¹ã¦ç™»éŒ²
+	// å¯¾è§’ç·šã¯ä¸¡æ–¹ã®å‘ãã‚’ç™»éŒ²
 	std::multimap< kmb::nodeIdType, kmb::nodeIdType > nodePairs;
-	// •Ó‚ğ“o˜^
+	// è¾ºã‚’ç™»éŒ²
 	kmb::ElementContainer::iterator eIter = edges->begin();
 	while( !eIter.isFinished() )
 	{
 		nodePairs.insert( std::pair< kmb::nodeIdType, kmb::nodeIdType >
-			( eIter.getCellId(0), eIter.getCellId(1) ) );
+			( eIter.getNodeId(0), eIter.getNodeId(1) ) );
 		++eIter;
 	}
-	// ‘ÎŠpü‚Ì“o˜^
+	// å¯¾è§’ç·šã®ç™»éŒ²
 	std::vector< std::pair<kmb::nodeIdType, kmb::nodeIdType> >::iterator dIter = diagonals.begin();
 	while( dIter != diagonals.end() )
 	{
-		// “o˜^‚³‚ê‚Ä‚¢‚È‚¢‚±‚Æ‚ğŠm”F
+		// ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã“ã¨ã‚’ç¢ºèª
 		std::multimap< kmb::nodeIdType, kmb::nodeIdType >::iterator f0Iter = nodePairs.lower_bound(dIter->first);
 		std::multimap< kmb::nodeIdType, kmb::nodeIdType >::iterator f1Iter = nodePairs.upper_bound(dIter->first);
-		bool flag = false; // Šù‚É“o˜^‚³‚ê‚Ä‚¢‚½‚ç true
+		bool flag = false; // æ—¢ã«ç™»éŒ²ã•ã‚Œã¦ã„ãŸã‚‰ true
 		while( f0Iter != f1Iter ){
 			if( f0Iter->second == dIter->second ){
 				flag = true;
@@ -496,12 +496,12 @@ kmb::Polygon::dividePolygonsByDiagonals(
 		++dIter;
 	}
 
-	// nodePair ‚©‚ç Polygon ‚ğì‚é
+	// nodePair ã‹ã‚‰ Polygon ã‚’ä½œã‚‹
 	while( true ){
 		std::multimap< kmb::nodeIdType, kmb::nodeIdType >::iterator
 			nIter = nodePairs.begin();
 		if( nIter == nodePairs.end() ){
-			// nodePairs ‚ª‹óW‡
+			// nodePairs ãŒç©ºé›†åˆ
 			break;
 		}else{
 			kmb::nodeIdType prevId = nIter->first;
@@ -510,7 +510,7 @@ kmb::Polygon::dividePolygonsByDiagonals(
 			polygon = new kmb::Polygon();
 			kmb::nodeIdType startId = nodeId;
 			while( nodeId != kmb::nullNodeId ){
-				// Ÿ‚Ìß“_‚ğŒŸõ‚µ‚½‚ç—v‘f‚ğíœ
+				// æ¬¡ã®ç¯€ç‚¹ã‚’æ¤œç´¢ã—ãŸã‚‰è¦ç´ ã‚’å‰Šé™¤
 				kmb::nodeIdType nextId =
 					kmb::Polygon::getNextNode(prevId,nodeId,points,nodePairs,true);
 				if( nextId != kmb::nullNodeId ){
@@ -525,7 +525,7 @@ kmb::Polygon::dividePolygonsByDiagonals(
 			if( polygon->getSize() >= 3 && polygon->isClosed() ){
 				polygons.push_back( polygon );
 			}else{
-				// •ªŠ„‚·‚é‚Ì‚É¸”s‚µ‚½
+				// åˆ†å‰²ã™ã‚‹ã®ã«å¤±æ•—ã—ãŸ
 				delete polygon;
 			}
 		}
@@ -550,7 +550,7 @@ kmb::Polygon::getNextNode(
 	{
 		return nextId;
 	}
-	// Ÿ‚ª‚Ğ‚Æ‚Â‚µ‚©‚È‚¢‚Æ‚«‚Í–³ğŒ‚Å‚»‚ê‚ğg‚¤
+	// æ¬¡ãŒã²ã¨ã¤ã—ã‹ãªã„ã¨ãã¯ç„¡æ¡ä»¶ã§ãã‚Œã‚’ä½¿ã†
 	if( nodePairs.count(nodeId) == 1){
 		std::multimap< kmb::nodeIdType, kmb::nodeIdType >::iterator nextIter = nodePairs.find(nodeId);
 		nextId = nextIter->second;
@@ -558,7 +558,7 @@ kmb::Polygon::getNextNode(
 			nodePairs.erase( nextIter );
 		}
 	}
-	// ‚»‚¤‚Å‚È‚¢‚Æ‚«‚ÍŠp“x‚ğ’²‚×‚Ä“à‘¤‚É‚ ‚é‚à‚Ì‚ğg‚¤
+	// ãã†ã§ãªã„ã¨ãã¯è§’åº¦ã‚’èª¿ã¹ã¦å†…å´ã«ã‚ã‚‹ã‚‚ã®ã‚’ä½¿ã†
 	else{
 		kmb::Maximizer maximizer;
 		std::multimap< kmb::nodeIdType, kmb::nodeIdType >::iterator
@@ -595,11 +595,11 @@ kmb::Polygon::getEndPoints( kmb::nodeIdType &initial, kmb::nodeIdType &end ) con
 	initial = kmb::nullNodeId;
 	end = kmb::nullNodeId;
 
-	// edge ‚Ìæ“ª‚ÆÅŒã‚Ì“_‚ğ’T‚·
+	// edge ã®å…ˆé ­ã¨æœ€å¾Œã®ç‚¹ã‚’æ¢ã™
 	kmb::ElementContainer::iterator eIter = edges->begin();
 	while( !eIter.isFinished() ){
-		kmb::nodeIdType node0 = eIter.getCellId(0);
-		kmb::nodeIdType node1 = eIter.getCellId(1);
+		kmb::nodeIdType node0 = eIter.getNodeId(0);
+		kmb::nodeIdType node1 = eIter.getNodeId(1);
 		if( neighborInfo.getElementCountAroundNode(node0) == 1 ){
 			++count;
 			initial = node0;
@@ -617,6 +617,6 @@ kmb::Polygon::getEndPoints( kmb::nodeIdType &initial, kmb::nodeIdType &end ) con
 		end = kmb::nullNodeId;
 		return false;
 	}
-	// ˜AŒ‹‚È‚ç true ‚ğ•Ô‚·
+	// é€£çµãªã‚‰ true ã‚’è¿”ã™
 	return true;
 }

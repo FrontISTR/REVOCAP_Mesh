@@ -530,7 +530,7 @@ kmb::MeshDB::calcMeshProperty(const char* name,kmb::bodyIdType bodyId)
 	return -1.0;
 }
 
-//------------------- –ÊÏE‘ÌÏ --------------------------
+//------------------- é¢ç©ãƒ»ä½“ç© --------------------------
 
 double
 kmb::MeshDB::getElementArea(kmb::elementIdType triId,kmb::bodyIdType bodyId) const
@@ -559,7 +559,7 @@ double
 kmb::MeshDB::getArea(kmb::bodyIdType bodyId) const
 {
 	double area = 0.0;
-	// ‚·‚Å‚É MeshProperty ‚ª‚ ‚ê‚Î‚»‚ê‚ðŽg‚¤
+	// ã™ã§ã« MeshProperty ãŒã‚ã‚Œã°ãã‚Œã‚’ä½¿ã†
 	const kmb::ElementContainer* body = this->getBodyPtr(bodyId);
 	if( body && body->isUniqueDim(2) ){
 		const kmb::DataBindings* data = this->getDataBindingsPtr("ElementArea","MeshProperty");
@@ -593,7 +593,7 @@ double
 kmb::MeshDB::getVolume(kmb::bodyIdType bodyId) const
 {
 	double vol = 0.0;
-	// ‚·‚Å‚É MeshProperty ‚ª‚ ‚ê‚Î‚»‚ê‚ðŽg‚¤
+	// ã™ã§ã« MeshProperty ãŒã‚ã‚Œã°ãã‚Œã‚’ä½¿ã†
 	const kmb::ElementContainer* body = this->getBodyPtr(bodyId);
 	if( body && body->isUniqueDim(3) ){
 		const kmb::DataBindings* data = this->getDataBindingsPtr("ElementVolume","MeshProperty");
@@ -623,7 +623,7 @@ kmb::MeshDB::getVolume(kmb::bodyIdType bodyId) const
 	return vol;
 }
 
-//------------------- ’[“_ --------------------------
+//------------------- ç«¯ç‚¹ --------------------------
 
 kmb::nodeIdType
 kmb::MeshDB::getCornerNodeIdOfSurface(kmb::bodyIdType bodyId,kmb::Vector3D dir) const
@@ -694,18 +694,18 @@ kmb::MeshDB::getCornerNodeIdOfFaceGroup(const char* faceGroup,kmb::Vector3D dir)
 				case kmb::TRIANGLE:
 				case kmb::TRIANGLE2:
 					for(int j=0;j<3;++j){
-						if( getNode( eIter.getBoundaryCellId(i,j), point ) &&
+						if( getNode( eIter.getBoundaryNodeId(i,j), point ) &&
 							minimizer.update( dir.x()*point.x() + dir.y()*point.y() + dir.z()*point.z() ) ){
-							nodeId = eIter.getBoundaryCellId(i,j);
+							nodeId = eIter.getBoundaryNodeId(i,j);
 						}
 					}
 					break;
 				case kmb::QUAD:
 				case kmb::QUAD2:
 					for(int j=0;j<4;++j){
-						if( getNode( eIter.getBoundaryCellId(i,j), point ) &&
+						if( getNode( eIter.getBoundaryNodeId(i,j), point ) &&
 							minimizer.update( dir.x()*point.x() + dir.y()*point.y() + dir.z()*point.z() ) ){
-							nodeId = eIter.getBoundaryCellId(i,j);
+							nodeId = eIter.getBoundaryNodeId(i,j);
 						}
 					}
 					break;

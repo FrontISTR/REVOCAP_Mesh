@@ -282,7 +282,7 @@ kmb::ElementContainerTriangleArray::_iteratorTA::getType(void) const
 }
 
 kmb::nodeIdType
-kmb::ElementContainerTriangleArray::_iteratorTA::getCellId(int cellIndex) const
+kmb::ElementContainerTriangleArray::_iteratorTA::getNodeId(int cellIndex) const
 {
 	if( 0 <= cellIndex && cellIndex < 3 && elementContainer->nodeTable[ 3*index ] != unsignedNullNodeId ){
 		return elementContainer->nodeTable[ 3*index+cellIndex ];
@@ -292,7 +292,7 @@ kmb::ElementContainerTriangleArray::_iteratorTA::getCellId(int cellIndex) const
 }
 
 bool
-kmb::ElementContainerTriangleArray::_iteratorTA::setCellId(int cellIndex, kmb::nodeIdType nodeId)
+kmb::ElementContainerTriangleArray::_iteratorTA::setNodeId(int cellIndex, kmb::nodeIdType nodeId)
 {
 	if( 0 <= cellIndex && cellIndex < 3 && elementContainer->nodeTable[ 3*index ] != unsignedNullNodeId ){
 		elementContainer->nodeTable[ 3*index+cellIndex ] = nodeId;

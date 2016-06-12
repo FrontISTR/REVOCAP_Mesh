@@ -40,34 +40,34 @@ public:
 	Sphere(void);
 	virtual ~Sphere(void);
 public:
-	/// İ’èŒn
+	/// è¨­å®šç³»
 	void setCenter(Point3D &pt);
 	void setCenter(double x,double y,double z);
 	void setRadius(double r);
 	double getRadius(void) const;
 	Point3D getCenter(void) const;
-	/// ”»’èŠÖ”
+	/// åˆ¤å®šé–¢æ•°
 	virtual kmb::Region::locationType intersect(const kmb::Point3D &point) const;
 	virtual double distanceSq(const kmb::Point3D &point) const;
-	// ’†S‚©‚ç‚Ì‹——£ - ”¼Œa
+	// ä¸­å¿ƒã‹ã‚‰ã®è·é›¢ - åŠå¾„
 	virtual double distance(const kmb::Point3D &point) const;
 	virtual bool intersect(const kmb::BoxRegion& box) const;
-	// ‹…–Ê‚Ì•û’ö®‚Å‚Ì•]‰¿
-	// ’†S‚©‚ç‚Ì‹——£‚Ì‚Qæ - ”¼Œa‚Ì‚Qæ
-	// ‹…‚Ì“à•”‚È‚ç‚Î‚±‚Ì’l‚Í 0 ˆÈ‰º
+	// çƒé¢ã®æ–¹ç¨‹å¼ã§ã®è©•ä¾¡
+	// ä¸­å¿ƒã‹ã‚‰ã®è·é›¢ã®ï¼’ä¹— - åŠå¾„ã®ï¼’ä¹—
+	// çƒã®å†…éƒ¨ãªã‚‰ã°ã“ã®å€¤ã¯ 0 ä»¥ä¸‹
 	double eval(const kmb::Point3D &point) const;
-	// ¶¬ŠÖ”ŒQ
-	// “àÚ‹…
+	// ç”Ÿæˆé–¢æ•°ç¾¤
+	// å†…æ¥çƒ
 	static Sphere* createInscribedSphere(const Point3D &a,const Point3D &b,const Point3D &c,const Point3D &d);
-	// ”¼Œa
+	// åŠå¾„
 	static double getInscribedRadius(const Point3D &a,const Point3D &b,const Point3D &c,const Point3D &d);
-	// ’†S
+	// ä¸­å¿ƒ
 	static Point3D getInscribedCenter(const Point3D &a,const Point3D &b,const Point3D &c,const Point3D &d);
-	// ŠOÚ‹…
+	// å¤–æ¥çƒ
 	static Sphere* createCircumscribedSphere(const Point3D &a,const Point3D &b,const Point3D &c,const Point3D &d);
-	// ”¼Œa
+	// åŠå¾„
 	static double getCircumscribedRadius(const Point3D &a,const Point3D &b,const Point3D &c,const Point3D &d);
-	// ’†S
+	// ä¸­å¿ƒ
 	static Point3D getCircumscribedCenter(const Point3D &a,const Point3D &b,const Point3D &c,const Point3D &d);
 };
 

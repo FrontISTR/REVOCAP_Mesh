@@ -88,14 +88,14 @@ kmb::Surface3D::getMiddlePointByNearest( double u0, double v0, double u1, double
 	bool res = false;
 	double um = 0.5*(u0+u1);
 	double vm = 0.5*(v0+v1);
-	// (u,v) À•W‚Ì’†“_‚ª‘æ1Œó•â
+	// (u,v) åº§æ¨™ã®ä¸­ç‚¹ãŒç¬¬1å€™è£œ
 	if( getPoint(um,vm,pt) && minimizer.update( pm.distanceSq(pt) ) ){
 		u = um;
 		v = vm;
 		point.set(pt);
 		res = true;
 	}
-	// ‹È–Êã‚Ì“_‚Å (u,v) À•W‚Ì’†“_‚æ‚èŠô‰½Šw“I’†“_‚É‹ß‚¢‚à‚Ì‚ª‚ ‚ê‚Î’u‚«Š·‚¦
+	// æ›²é¢ä¸Šã®ç‚¹ã§ (u,v) åº§æ¨™ã®ä¸­ç‚¹ã‚ˆã‚Šå¹¾ä½•å­¦çš„ä¸­ç‚¹ã«è¿‘ã„ã‚‚ã®ãŒã‚ã‚Œã°ç½®ãæ›ãˆ
 	if( getNearest(pm,um,vm) && getPoint(um,vm,pt) && minimizer.update( pm.distanceSq(pt) ) ){
 		u = um;
 		v = vm;
@@ -163,7 +163,7 @@ kmb::Surface3D::getNearest( const kmb::Point3D& point, double &u, double &v ) co
 		bool calculated;
 		kmb::Point3D pt;
 		kmb::Vector3D uVec, vVec, uuVec, uvVec, vvVec;
-		// pt uVec vVec uuVec uvVec vvVec ‚É (u,v) ‚Å‚Ì’l‚ª“ü‚Á‚Ä‚¢‚½‚ç true
+		// pt uVec vVec uuVec uvVec vvVec ã« (u,v) ã§ã®å€¤ãŒå…¥ã£ã¦ã„ãŸã‚‰ true
 		bool calc(double u,double v){
 			if( u == t0 && v == t1 && calculated ){
 				return true;
@@ -231,7 +231,7 @@ kmb::Surface3D::getNearest( const kmb::Point3D& point, double &u, double &v ) co
 		v = opt_t[1];
 		return true;
 	}
-	// û‘©‚µ‚È‚¢ê‡‚Í‰©‹à”ä–@
+	// åæŸã—ãªã„å ´åˆã¯é»„é‡‘æ¯”æ³•
 	if( opt.calcMin_GS( dist_obj, opt_t, min_t, max_t ) ){
 		u = opt_t[0];
 		v = opt_t[1];
