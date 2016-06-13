@@ -42,7 +42,7 @@ class MeshDB;
 class PolygonPartitioner
 {
 public:
-	// y À•W monotonisity ‚ğl‚¦‚½‚Ìƒ^ƒCƒv
+	// y åº§æ¨™ monotonisity ã‚’è€ƒãˆãŸæ™‚ã®ã‚¿ã‚¤ãƒ—
 	enum vertexType{
 		kUNKNOWN,
 		kSTART,
@@ -59,27 +59,27 @@ public:
 	void setInitialPolygon(kmb::ElementContainer* edges);
 	size_t getCount(void) const;
 
-	// OŠpŒ`‰»‚µ‚Ä body ‚É“o˜^‚·‚é
+	// ä¸‰è§’å½¢åŒ–ã—ã¦ body ã«ç™»éŒ²ã™ã‚‹
 	bool partition( kmb::ElementContainer &body );
 
-	// 2D Àsƒ‹[ƒ`ƒ“
+	// 2D å®Ÿè¡Œãƒ«ãƒ¼ãƒãƒ³
 	kmb::bodyIdType partitionToTriangles(kmb::MeshDB* mesh,kmb::bodyIdType edgeId);
-	// 3D Àsƒ‹[ƒ`ƒ“
+	// 3D å®Ÿè¡Œãƒ«ãƒ¼ãƒãƒ³
 	kmb::bodyIdType partitionToTriangles(kmb::MeshDB* mesh,kmb::bodyIdType edgeId,const kmb::FramedPlane &plane);
 private:
-	// “_‚Æ y À•W‚ª“¯‚¶“_‚ğŠÜ‚Ş—v‘f‚Ì‚¤‚¿Ax À•W‚ªÅ‚à‹ß‚¢‚à‚Ì
-	// left = true ¶‘¤ixÀ•W‚ª¬‚³‚¢‚Ù‚¤jfalse ‰E‘¤‚ğ’T‚·
-	// –ß‚è’l‚Í•Ó [n,n+1] ‚ªÅ‚à‹ß‚¢•Ó‚Ì‚Ì n 
+	// ç‚¹ã¨ y åº§æ¨™ãŒåŒã˜ç‚¹ã‚’å«ã‚€è¦ç´ ã®ã†ã¡ã€x åº§æ¨™ãŒæœ€ã‚‚è¿‘ã„ã‚‚ã®
+	// left = true å·¦å´ï¼ˆxåº§æ¨™ãŒå°ã•ã„ã»ã†ï¼‰false å³å´ã‚’æ¢ã™
+	// æˆ»ã‚Šå€¤ã¯è¾º [n,n+1] ãŒæœ€ã‚‚è¿‘ã„è¾ºã®æ™‚ã® n 
 	kmb::elementIdType getNearestSegmentWithSameLevel(kmb::nodeIdType nodeId, bool left=true) const;
 
-	// helper node ‚ğ‹‚ß‚é
-	// vType nodeID ‚Ì vertex type
+	// helper node ã‚’æ±‚ã‚ã‚‹
+	// vType nodeID ã® vertex type
 	kmb::nodeIdType getHelperNode( kmb::nodeIdType nodeID, kmb::elementIdType leftID, kmb::elementIdType rightID, vertexType vType) const;
 
-	// Monotone ‘½ŠpŒ`‚ğOŠpŒ`‰»
+	// Monotone å¤šè§’å½¢ã‚’ä¸‰è§’å½¢åŒ–
 	bool triangulateMonotonePolygon(kmb::Polygon* polygon, kmb::ElementContainer &body );
 
-	const kmb::Point2DContainer* points;	// ƒ|ƒCƒ“ƒ^‚ÌƒRƒs[‚¾‚¯‚ÅA¶¬‚Æ”jŠü‚Í•Ê‚ÌƒNƒ‰ƒX‚Ås‚¤
+	const kmb::Point2DContainer* points;	// ãƒã‚¤ãƒ³ã‚¿ã®ã‚³ãƒ”ãƒ¼ã ã‘ã§ã€ç”Ÿæˆã¨ç ´æ£„ã¯åˆ¥ã®ã‚¯ãƒ©ã‚¹ã§è¡Œã†
 	kmb::Polygon* initialPolygon;
 
 	vertexType	getVertexType(kmb::Polygon* polygon,kmb::nodeIdType nodeId) const;

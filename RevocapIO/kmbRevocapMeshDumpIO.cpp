@@ -24,27 +24,27 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// RevocapMeshDumpIO d—l
+// RevocapMeshDumpIO ä»•æ§˜
 //
-// ƒoƒCƒiƒŠƒtƒ@ƒCƒ‹
-// version î•ñ i•¶š—ñ‚Í‚WŒÂ‚Ìchar + ƒo[ƒWƒ‡ƒ“”Ô†‚Í‚SƒoƒCƒg®”’lj
-// Œ^î•ñ int double “™‚Ì sizeof ‚Ì‹Lq
+// ãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«
+// version æƒ…å ± ï¼ˆæ–‡å­—åˆ—ã¯ï¼˜å€‹ã®char + ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç•ªå·ã¯ï¼”ãƒã‚¤ãƒˆæ•´æ•°å€¤ï¼‰
+// å‹æƒ…å ± int double ç­‰ã® sizeof ã®è¨˜è¿°
 // nodeCount
-// nodeId x y z (nodeCount•ªŒJ‚è•Ô‚µ)
+// nodeId x y z (nodeCountåˆ†ç¹°ã‚Šè¿”ã—)
 // bodyCount
 //  bodyName
-//  elementCount (bodyCount•ªŒJ‚è•Ô‚µj
-//   elementType elementId nodeArray (elementCount•ªŒJ‚è•Ô‚µj
+//  elementCount (bodyCountåˆ†ç¹°ã‚Šè¿”ã—ï¼‰
+//   elementType elementId nodeArray (elementCountåˆ†ç¹°ã‚Šè¿”ã—ï¼‰
 // dbCount
-//  boundingmode, idcount, name, stype, valuetype, targetbodyId (dbCount•ªŒJ‚è•Ô‚µ)
-//   variable ‚Ìê‡: (id, value : idcount•ªŒJ‚è•Ô‚µ) 
-//   group ‚Ìê‡: value, (id : idcount•ªŒJ‚è•Ô‚µ) 
-//   global ‚Ìê‡: value
+//  boundingmode, idcount, name, stype, valuetype, targetbodyId (dbCountåˆ†ç¹°ã‚Šè¿”ã—)
+//   variable ã®å ´åˆ: (id, value : idcountåˆ†ç¹°ã‚Šè¿”ã—) 
+//   group ã®å ´åˆ: value, (id : idcountåˆ†ç¹°ã‚Šè¿”ã—) 
+//   global ã®å ´åˆ: value
 //
-// •¶š—ñ‚Í len + À‘Ì(\0‚ğœ‚­)
+// æ–‡å­—åˆ—ã¯ len + å®Ÿä½“(\0ã‚’é™¤ã)
 
 #ifdef WIN32
-// ˆø”‚ÌŒ^‚ªˆá‚¤‚Ì‚Å‚±‚Ì‚Ü‚Ü‚Å‚Íg‚¦‚È‚¢
+// å¼•æ•°ã®å‹ãŒé•ã†ã®ã§ã“ã®ã¾ã¾ã§ã¯ä½¿ãˆãªã„
 // #if _MSC_VER >= 1400
 //  #define fopen fopen_s
 // #endif
@@ -128,7 +128,7 @@ kmb::RevocapMeshDumpIO::getVersion(int &ver,std::istream &input)
 		switch( ver )
 		{
 		case 1:
-			// ver 1 ‚Ì‚Íƒwƒbƒ_‚É‘‚©‚ê‚Ä‚¢‚È‚¢‚Ì‚ÅƒfƒtƒHƒ‹ƒg’l
+			// ver 1 ã®æ™‚ã¯ãƒ˜ãƒƒãƒ€ã«æ›¸ã‹ã‚Œã¦ã„ãªã„ã®ã§ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤
 			setSizeInfoVersion1();
 			break;
 		default:
@@ -303,7 +303,7 @@ kmb::RevocapMeshDumpIO::loadElementData(kmb::MeshData* mesh,std::istream &input)
 		uint32_t eCount = 0;
 		int32_t* nodes = new int32_t[kmb::Element::MAX_NODE_COUNT];
 		kmb::nodeIdType* cells = new kmb::nodeIdType[kmb::Element::MAX_NODE_COUNT];
-		size_t nCount = 0; // —v‘f‚²‚Æ‚Ìß“_ŒÂ”
+		size_t nCount = 0; // è¦ç´ ã”ã¨ã®ç¯€ç‚¹å€‹æ•°
 		for(kmb::bodyIdType bodyId=0;bodyId<bCount;++bodyId){
 			input.read( reinterpret_cast<char*>(&len), sizeof(uint32_t) );
 			if( input.fail() ){ return kmb::RevocapIO::kFileReadError; }
@@ -400,7 +400,7 @@ kmb::RevocapMeshDumpIO::saveElementData(const kmb::MeshData* mesh,std::ostream &
 						output.write( reinterpret_cast<char*>(&elementId), sizeof(int32_t) );
 						int nSize = kmb::Element::getNodeCount( static_cast<kmb::elementType>(eType) );
 						for(int j=0;j<nSize;++j){
-							nodes[j] = eIter.getCellId(j);
+							nodes[j] = eIter.getNodeId(j);
 						}
 						output.write( reinterpret_cast<char*>(nodes), sizeof(int32_t)*nSize );
 					}else{

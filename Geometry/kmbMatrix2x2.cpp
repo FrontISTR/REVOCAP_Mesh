@@ -54,12 +54,12 @@ kmb::Matrix2x2::Matrix2x2(
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 int
@@ -159,12 +159,12 @@ kmb::Matrix2x2::trace(void) const
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 double
@@ -262,7 +262,7 @@ kmb::Matrix2x2::solve(const Vector2D& b) const
 bool
 kmb::Matrix2x2::solve(const Vector2D& b,Vector2D& x) const
 {
-	// Á‹–@
+	// æ¶ˆå»æ³•
 	double coef[6] = {
 		m[0],m[1],
 		m[2],m[3],
@@ -273,7 +273,7 @@ kmb::Matrix2x2::solve(const Vector2D& b,Vector2D& x) const
 	
 	int ind = -1;
 	double m = 0.0;
-	// 0 —ñ
+	// 0 åˆ—
 	for(int i=0;i<2;++i){
 		double d = fabs(mat.get(i,0));
 		if( d > m ){
@@ -289,7 +289,7 @@ kmb::Matrix2x2::solve(const Vector2D& b,Vector2D& x) const
 	mat.row_multi(0, 1.0/mat.get(0,0));
 	mat.row_transf(0, 1, -mat.get(1,0));
 
-	// 1 —ñ
+	// 1 åˆ—
 	if( mat.get(1,1) == 0.0 ){
 		return false;
 	}
@@ -305,7 +305,7 @@ kmb::Matrix2x2::solve(const Vector2D& b,Vector2D& x) const
 bool
 kmb::Matrix2x2::solveSafely(const Vector2D& b,Vector2D& x,double thresh) const
 {
-	// Á‹–@
+	// æ¶ˆå»æ³•
 	double coef[6] = {
 		m[0],m[1],
 		m[2],m[3],
@@ -316,7 +316,7 @@ kmb::Matrix2x2::solveSafely(const Vector2D& b,Vector2D& x,double thresh) const
 	
 	int ind = -1;
 	double m = 0.0;
-	// 0 —ñ
+	// 0 åˆ—
 	for(int i=0;i<2;++i){
 		double d = fabs(mat.get(i,0));
 		if( d > m ){
@@ -332,7 +332,7 @@ kmb::Matrix2x2::solveSafely(const Vector2D& b,Vector2D& x,double thresh) const
 	mat.row_multi(0, 1.0/mat.get(0,0));
 	mat.row_transf(0, 1, -mat.get(1,0));
 
-	// 1 —ñ
+	// 1 åˆ—
 	if( fabs(mat.get(1,1)) < thresh ){
 		return false;
 	}

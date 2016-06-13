@@ -52,7 +52,7 @@ kmb::BSpline::getKnot(int index) const
 	return knots[index];
 }
 
-// ’P’²‘‰Á‚ğƒ`ƒFƒbƒN‚·‚é
+// å˜èª¿å¢—åŠ ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 void
 kmb::BSpline::setKnots(int num,double* k)
 {
@@ -105,9 +105,9 @@ kmb::BSpline::getDomainOnFrame( double origin, double unit, double &min_t,double
 	}
 }
 
-// knots ‚ª 0,0,1,1
-// ‚Ì‚Æ‚«‚É 1 ‚É‘Î‚µ‚Ä‚Ç‚¤—^‚¦‚ê‚Î‚æ‚¢‚©HH
-// ¡‚ÌÀ‘•‚Í 1 => 1 ‚ğ—^‚¦‚é
+// knots ãŒ 0,0,1,1
+// ã®ã¨ãã« 1 ã«å¯¾ã—ã¦ã©ã†ä¸ãˆã‚Œã°ã‚ˆã„ã‹ï¼Ÿï¼Ÿ
+// ä»Šã®å®Ÿè£…ã¯ 1 => 1 ã‚’ä¸ãˆã‚‹
 int
 kmb::BSpline::getInterval(double t) const
 {
@@ -148,14 +148,14 @@ kmb::BSpline::getValue(int index,int degree,double u) const
 		}
 	}else{
 		double retVal =  0.0;
-		// n[d] = index+d ”Ô–Ú‚Ì B-Spline Šî’êŠÖ”
+		// n[d] = index+d ç•ªç›®ã® B-Spline åŸºåº•é–¢æ•°
 		double* n = new double[degree+1];
-		// ’á‚¢ degree ‚©‚ç‡”Ô‚ÉŒvZ‚·‚é
-		// 0 Ÿ‚ª‰Šú’l
+		// ä½ã„ degree ã‹ã‚‰é †ç•ªã«è¨ˆç®—ã™ã‚‹
+		// 0 æ¬¡ãŒåˆæœŸå€¤
 		for(int d=0;d<degree+1;++d){
 			n[d] = (index+d==i)? 1.0 : 0.0;
 		}
-		// 1 Ÿ‚©‚ç degree Ÿ‚Ü‚Å
+		// 1 æ¬¡ã‹ã‚‰ degree æ¬¡ã¾ã§
 		for(int d=1;d<degree+1;++d){
 			for(int j=0;j<degree+1-d;++j){
 				double left = knots[index+j+d] - knots[index+j];
@@ -190,14 +190,14 @@ kmb::BSpline::getDerivative(int index,int degree,double u) const
 		return 0.0;
 	}else{
 		double retVal =  0.0;
-		// n[d] = index+d ”Ô–Ú‚Ì B-Spline Šî’êŠÖ”
+		// n[d] = index+d ç•ªç›®ã® B-Spline åŸºåº•é–¢æ•°
 		double* n = new double[degree+1];
-		// ’á‚¢ degree ‚©‚ç‡”Ô‚ÉŒvZ‚·‚é
-		// 0 Ÿ‚ª‰Šú’l
+		// ä½ã„ degree ã‹ã‚‰é †ç•ªã«è¨ˆç®—ã™ã‚‹
+		// 0 æ¬¡ãŒåˆæœŸå€¤
 		for(int d=0;d<degree+1;++d){
 			n[d] = (index+d==i)? 1.0 : 0.0;
 		}
-		// 1 Ÿ‚©‚ç degree-1 Ÿ‚Ü‚Å
+		// 1 æ¬¡ã‹ã‚‰ degree-1 æ¬¡ã¾ã§
 		for(int d=1;d<degree;++d){
 			for(int j=0;j<degree+1-d;++j){
 				double left = knots[index+j+d] - knots[index+j];
@@ -241,14 +241,14 @@ kmb::BSpline::getSecondDerivative(int index,int degree,double u) const
 		return 0.0;
 	}else{
 		double retVal =  0.0;
-		// n[d] = index+d ”Ô–Ú‚Ì B-Spline Šî’êŠÖ”
+		// n[d] = index+d ç•ªç›®ã® B-Spline åŸºåº•é–¢æ•°
 		double* n = new double[degree+1];
-		// ’á‚¢ degree ‚©‚ç‡”Ô‚ÉŒvZ‚·‚é
-		// 0 Ÿ‚ª‰Šú’l
+		// ä½ã„ degree ã‹ã‚‰é †ç•ªã«è¨ˆç®—ã™ã‚‹
+		// 0 æ¬¡ãŒåˆæœŸå€¤
 		for(int d=0;d<degree+1;++d){
 			n[d] = (index+d==i)? 1.0 : 0.0;
 		}
-		// 1 Ÿ‚©‚ç degree-2 Ÿ‚Ü‚Å
+		// 1 æ¬¡ã‹ã‚‰ degree-2 æ¬¡ã¾ã§
 		for(int d=1;d<degree;++d){
 			for(int j=0;j<degree+1-d;++j){
 				double left = knots[index+j+d] - knots[index+j];

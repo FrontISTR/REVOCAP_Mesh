@@ -32,20 +32,20 @@
 #include <vector>
 
 //
-// Face ƒNƒ‰ƒX
-// —v‘f‚Ì Id ‚Æ‹ÇŠ faceId ‚Ì‘g
-// ‚Ìƒf[ƒ^‚ğŠi”[‚·‚é
-// Data ‚ÌƒL[‚Ég‚¤
+// Face ã‚¯ãƒ©ã‚¹
+// è¦ç´ ã® Id ã¨å±€æ‰€ faceId ã®çµ„
+// ã®ãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´ã™ã‚‹
+// Data ã®ã‚­ãƒ¼ã«ä½¿ã†
 //
 
 /**
 
-Face ƒNƒ‰ƒX
+Face ã‚¯ãƒ©ã‚¹
 
 localFaceId
- -1                                             : —v‘f‘S‘Ì
- 0 ‚©‚ç boundaryCount-1                         : –Ê
- boundaryCount ‚©‚ç boundaryCount + edgeCount-1 : •Ó
+ -1                                             : è¦ç´ å…¨ä½“
+ 0 ã‹ã‚‰ boundaryCount-1                         : é¢
+ boundaryCount ã‹ã‚‰ boundaryCount + edgeCount-1 : è¾º
 
 */
 
@@ -65,7 +65,7 @@ public:
 	Face(kmb::elementIdType elementId, kmb::idType localFaceId);
 	Face(const Face &f);
 	virtual ~Face(void);
-	// std::set ‚â std::map ‚Ég‚¤‚½‚ß‚É operator< ‚ğ’è‹`‚µ‚Ä‚¨‚­
+	// std::set ã‚„ std::map ã«ä½¿ã†ãŸã‚ã« operator< ã‚’å®šç¾©ã—ã¦ãŠã
 	bool operator<(const Face &other)const{
 		return (elementId < other.elementId) ||
 			(elementId==other.elementId &&

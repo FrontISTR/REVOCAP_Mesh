@@ -20,10 +20,6 @@
 #include "Matrix/kmbMatrix_DoubleArray.h"
 #include <cmath>
 
-#ifdef _DEBUG
-int kmb::NurbsSurface3D::calcCount(0);
-#endif
-
 kmb::NurbsSurface3D::NurbsSurface3D(void)
 : kmb::Surface3D()
 , uOrder(0)
@@ -93,12 +89,32 @@ kmb::NurbsSurface3D::getOrder(unsigned int &uOrder,unsigned int &vOrder) const
 	return valid();
 }
 
+unsigned int kmb::NurbsSurface3D::getUOrder(void) const
+{
+	return this->uOrder;
+}
+
+unsigned int kmb::NurbsSurface3D::getVOrder(void) const
+{
+	return this->vOrder;
+}
+
 bool
 kmb::NurbsSurface3D::getKnotCount(unsigned int &uCount,unsigned int &vCount) const
 {
 	uCount = uBspline.getKnotCount();
 	vCount = vBspline.getKnotCount();
 	return valid();
+}
+
+unsigned int kmb::NurbsSurface3D::getUKnotCount(void) const
+{
+	return uBspline.getKnotCount();
+}
+
+unsigned int kmb::NurbsSurface3D::getVKnotCount(void) const
+{
+	return vBspline.getKnotCount();
 }
 
 void
@@ -170,7 +186,7 @@ kmb::NurbsSurface3D::getDerivative( derivativeType d, double u, double v, kmb::V
 	return false;
 }
 
-// knot ‚ÌŒÂ”‚É‰‚¶‚ÄŒvZƒRƒXƒg‚ª‚©‚©‚é
+// knot ã®å€‹æ•°ã«å¿œã˜ã¦è¨ˆç®—ã‚³ã‚¹ãƒˆãŒã‹ã‹ã‚‹
 bool
 kmb::NurbsSurface3D::getPoint( double u, double v, kmb::Point3D& point ) const
 {
@@ -182,7 +198,7 @@ kmb::NurbsSurface3D::getPoint( double u, double v, kmb::Point3D& point ) const
 	int vNum = vBspline.getKnotCount()-vOrder;
 	double weight = 0.0;
 
-	// 2dƒ‹[ƒv‚Å2d‚ÉŒvZ‚·‚é‚Ì‚ğ–h‚®‚½‚ß
+	// 2é‡ãƒ«ãƒ¼ãƒ—ã§2é‡ã«è¨ˆç®—ã™ã‚‹ã®ã‚’é˜²ããŸã‚
 	double* u0 = new double[uNum];
 	double* v0 = new double[vNum];
 	for(int i=0;i<uNum;++i){
@@ -212,7 +228,7 @@ kmb::NurbsSurface3D::getPoint( double u, double v, kmb::Point3D& point ) const
 bool
 kmb::NurbsSurface3D::getMiddlePoint( double u0, double v0, double u1, double v1, double &u, double &v, kmb::Point3D &point ) const
 {
-	// k‘Ş‚µ‚Ä‚¢‚é“_‚ª‚ ‚é‚©‚à‚µ‚ê‚È‚¢‚Ì‚ÅA‚T“_‚Å’²‚×‚é
+	// ç¸®é€€ã—ã¦ã„ã‚‹ç‚¹ãŒã‚ã‚‹ã‹ã‚‚ã—ã‚Œãªã„ã®ã§ã€ï¼•ç‚¹ã§èª¿ã¹ã‚‹
 	kmb::Point3D p0,p1,pm,pt;
 	if( !getPoint(u0,v0,p0) ){
 		return false;
@@ -265,7 +281,7 @@ kmb::NurbsSurface3D::getMiddlePoint( double u0, double v0, double u1, double v1,
 bool
 kmb::NurbsSurface3D::getMiddlePointByNearest( double u0, double v0, double u1, double v1, double &u, double &v, kmb::Point3D &point ) const
 {
-	// k‘Ş‚µ‚Ä‚¢‚é“_‚ª‚ ‚é‚©‚à‚µ‚ê‚È‚¢‚Ì‚ÅA‚T“_‚Å’²‚×‚é
+	// ç¸®é€€ã—ã¦ã„ã‚‹ç‚¹ãŒã‚ã‚‹ã‹ã‚‚ã—ã‚Œãªã„ã®ã§ã€ï¼•ç‚¹ã§èª¿ã¹ã‚‹
 	kmb::Point3D p0,p1,pm,pt;
 	if( !getPoint(u0,v0,p0) ){
 		return false;
@@ -316,7 +332,7 @@ kmb::NurbsSurface3D::getMiddlePointByNearest( double u0, double v0, double u1, d
 		res = true;
 	}
 
-	// Å‹ß“_‚Å‚à’²‚×‚é
+	// æœ€è¿‘ç‚¹ã§ã‚‚èª¿ã¹ã‚‹
 	
 	if( getNearest(pm,um,vm) && getPoint(um,vm,pt) && minimizer.update( pm.distanceSq(pt) ) ){
 		u = um;
@@ -330,7 +346,7 @@ kmb::NurbsSurface3D::getMiddlePointByNearest( double u0, double v0, double u1, d
 bool
 kmb::NurbsSurface3D::getNearest( const kmb::Point3D& point, double &u, double &v ) const
 {
-	// Nurbs (u,v) ‚Ì“_‚Æ point ‚Ì‹——£‚ÌÅ¬‰»
+	// Nurbs (u,v) ã®ç‚¹ã¨ point ã®è·é›¢ã®æœ€å°åŒ–
 	class dist_local : public kmb::OptTargetSV {
 	private:
 		const kmb::NurbsSurface3D* surface;
@@ -367,7 +383,7 @@ kmb::NurbsSurface3D::getNearest( const kmb::Point3D& point, double &u, double &v
 	};
 	dist_local dist_obj(this,point);
 
-	// Nurbs (u,v) ‚Ì“_‚Æ point ‚Ì‹——£‚Ì”÷•ª * weight ‚Ìƒ[ƒ“_
+	// Nurbs (u,v) ã®ç‚¹ã¨ point ã®è·é›¢ã®å¾®åˆ† * weight ã®ã‚¼ãƒ­ç‚¹
 	class opt_local : public kmb::OptTargetVV {
 	private:
 		const kmb::NurbsSurface3D* surface;
@@ -377,7 +393,7 @@ kmb::NurbsSurface3D::getNearest( const kmb::Point3D& point, double &u, double &v
 		double weight;
 		kmb::Point3D pt;
 		kmb::Vector3D uVec, vVec, uuVec, uvVec, vvVec;
-		// pt uVec vVec uuVec uvVec vvVec ‚É (u,v) ‚Å‚Ì’l‚ª“ü‚Á‚Ä‚¢‚½‚ç true
+		// pt uVec vVec uuVec uvVec vvVec ã« (u,v) ã§ã®å€¤ãŒå…¥ã£ã¦ã„ãŸã‚‰ true
 		bool calc(double u,double v){
 			if( u == t0 && v == t1 && calculated ){
 				return true;
@@ -440,7 +456,7 @@ kmb::NurbsSurface3D::getNearest( const kmb::Point3D& point, double &u, double &v
 	opt.setEpsilon(epsilon);
 	opt.setIterMax(iterMax);
 
-	// (1) ‰©‹à”ä–@
+	// (1) é»„é‡‘æ¯”æ³•
 	if( opt.calcMin_GS( dist_obj, opt_t, min_t, max_t ) ){
 		double d = dist_obj.f( opt_t );
 		if( d < epsilon ){
@@ -450,7 +466,7 @@ kmb::NurbsSurface3D::getNearest( const kmb::Point3D& point, double &u, double &v
 		}
 	}
 
-	// (2) Newton –@Œn‚Å‰Šú’l‚ğ‘I‚Ô
+	// (2) Newton æ³•ç³»ã§åˆæœŸå€¤ã‚’é¸ã¶
 	opt.calcMinOnGrid( dist_obj, init_t, min_t, max_t, div );
 	double d = dist_obj.f( init_t );
 	if( d < epsilon ){
@@ -459,7 +475,7 @@ kmb::NurbsSurface3D::getNearest( const kmb::Point3D& point, double &u, double &v
 		return true;
 	}
 
-	// (3) BFGS –@
+	// (3) BFGS æ³•
 	if( opt.calcMin_BFGS( dist_obj, opt_t, init_t ) && 
 		min_t[0] <= opt_t[0] && opt_t[0] <= max_t[0] &&
 		min_t[1] <= opt_t[1] && opt_t[1] <= max_t[1] )
@@ -469,7 +485,7 @@ kmb::NurbsSurface3D::getNearest( const kmb::Point3D& point, double &u, double &v
 		return true;
 	}
 
-	// (4) Œ¸‘¬ Newton –@
+	// (4) æ¸›é€Ÿ Newton æ³•
 	if( opt.calcZero_DN( opt_obj, opt_t, init_t ) && 
 		min_t[0] <= opt_t[0] && opt_t[0] <= max_t[0] &&
 		min_t[1] <= opt_t[1] && opt_t[1] <= max_t[1] )
@@ -479,7 +495,7 @@ kmb::NurbsSurface3D::getNearest( const kmb::Point3D& point, double &u, double &v
 		return true;
 	}
 	
-	// (5) CG –@
+	// (5) CG æ³•
 	if( opt.calcMin_CG( dist_obj, opt_t, min_t, max_t ) ){
 		u = opt_t[0];
 		v = opt_t[1];
@@ -489,7 +505,7 @@ kmb::NurbsSurface3D::getNearest( const kmb::Point3D& point, double &u, double &v
 	return false;
 }
 
-// S(u,v) = Q(u,v)/w(u,v) ‚Ì”÷•ª‚Ì•ªq
+// S(u,v) = Q(u,v)/w(u,v) ã®å¾®åˆ†ã®åˆ†å­
 // S'w = Q' - Sw'
 bool
 kmb::NurbsSurface3D::getSubDerivative( kmb::Surface3D::derivativeType d, double u, double v, kmb::Vector3D& tangent ) const
@@ -498,7 +514,7 @@ kmb::NurbsSurface3D::getSubDerivative( kmb::Surface3D::derivativeType d, double 
 	if( !valid() ){
 		return false;
 	}
-	// pt ‚Í weight ‚Å‚·‚Å‚ÉŠ„‚Á‚Ä‚ ‚é‚±‚Æ‚É’ˆÓ
+	// pt ã¯ weight ã§ã™ã§ã«å‰²ã£ã¦ã‚ã‚‹ã“ã¨ã«æ³¨æ„
 	kmb::Point3D pt;
 	double weight = 0.0;
 	if( !getPoint(u,v,pt) || !getWeight(u,v,weight) ){
@@ -506,7 +522,7 @@ kmb::NurbsSurface3D::getSubDerivative( kmb::Surface3D::derivativeType d, double 
 	}
 	int uNum = uBspline.getKnotCount()-uOrder;
 	int vNum = vBspline.getKnotCount()-vOrder;
-	// 2dƒ‹[ƒv‚Å2d‚ÉŒvZ‚·‚é‚Ì‚ğ–h‚®‚½‚ß
+	// 2é‡ãƒ«ãƒ¼ãƒ—ã§2é‡ã«è¨ˆç®—ã™ã‚‹ã®ã‚’é˜²ããŸã‚
 	double* u0 = NULL;
 	double* v0 = NULL;
 	double* u1 = NULL;
@@ -521,15 +537,9 @@ kmb::NurbsSurface3D::getSubDerivative( kmb::Surface3D::derivativeType d, double 
 		v0 = new double[vNum];
 		for(int i=0;i<uNum;++i){
 			u1[i] = uBspline.getDerivative(i,uOrder-1,u);
-#ifdef _DEBUG
-			++calcCount;
-#endif
 		}
 		for(int j=0;j<vNum;++j){
 			v0[j] = vBspline.getValue(j,vOrder-1,v);
-#ifdef _DEBUG
-			++calcCount;
-#endif
 		}
 		for(int j=0;j<vNum;++j){
 			for(int i=0;i<uNum;++i){
@@ -547,15 +557,9 @@ kmb::NurbsSurface3D::getSubDerivative( kmb::Surface3D::derivativeType d, double 
 		v1 = new double[vNum];
 		for(int i=0;i<uNum;++i){
 			u0[i] = uBspline.getValue(i,uOrder-1,u);
-#ifdef _DEBUG
-			++calcCount;
-#endif
 		}
 		for(int j=0;j<vNum;++j){
 			v1[j] = vBspline.getDerivative(j,vOrder-1,v);
-#ifdef _DEBUG
-			++calcCount;
-#endif
 		}
 		for(int j=0;j<vNum;++j){
 			for(int i=0;i<uNum;++i){
@@ -573,15 +577,9 @@ kmb::NurbsSurface3D::getSubDerivative( kmb::Surface3D::derivativeType d, double 
 		v0 = new double[vNum];
 		for(int i=0;i<uNum;++i){
 			u2[i] = uBspline.getSecondDerivative(i,uOrder-1,u);
-#ifdef _DEBUG
-			++calcCount;
-#endif
 		}
 		for(int j=0;j<vNum;++j){
 			v0[j] = vBspline.getValue(j,vOrder-1,v);
-#ifdef _DEBUG
-			++calcCount;
-#endif
 		}
 		for(int j=0;j<vNum;++j){
 			for(int i=0;i<uNum;++i){
@@ -606,15 +604,9 @@ kmb::NurbsSurface3D::getSubDerivative( kmb::Surface3D::derivativeType d, double 
 		v1 = new double[vNum];
 		for(int i=0;i<uNum;++i){
 			u1[i] = uBspline.getDerivative(i,uOrder-1,u);
-#ifdef _DEBUG
-			++calcCount;
-#endif
 		}
 		for(int j=0;j<vNum;++j){
 			v1[j] = vBspline.getDerivative(j,vOrder-1,v);
-#ifdef _DEBUG
-			++calcCount;
-#endif
 		}
 		{
 			kmb::Vector4D uder;
@@ -625,9 +617,6 @@ kmb::NurbsSurface3D::getSubDerivative( kmb::Surface3D::derivativeType d, double 
 						u1[i]*v1[j]*(ctrlPts[i+j*uNum].x()*ctrlPts[i+j*uNum].w() - ctrlPts[i+j*uNum].w()*pt.x()),
 						u1[i]*v1[j]*(ctrlPts[i+j*uNum].y()*ctrlPts[i+j*uNum].w() - ctrlPts[i+j*uNum].w()*pt.y()),
 						u1[i]*v1[j]*(ctrlPts[i+j*uNum].z()*ctrlPts[i+j*uNum].w() - ctrlPts[i+j*uNum].w()*pt.z()));
-#ifdef _DEBUG
-					++calcCount;
-#endif
 				}
 			}
 		}
@@ -651,15 +640,9 @@ kmb::NurbsSurface3D::getSubDerivative( kmb::Surface3D::derivativeType d, double 
 		v2 = new double[vNum];
 		for(int i=0;i<uNum;++i){
 			u0[i] = uBspline.getValue(i,uOrder-1,u);
-#ifdef _DEBUG
-			++calcCount;
-#endif
 		}
 		for(int j=0;j<vNum;++j){
 			v2[j] = vBspline.getSecondDerivative(j,vOrder-1,v);
-#ifdef _DEBUG
-			++calcCount;
-#endif
 		}
 		for(int j=0;j<vNum;++j){
 			for(int i=0;i<uNum;++i){
@@ -697,15 +680,9 @@ kmb::NurbsSurface3D::getWeight( double u, double v, double &w ) const
 	double* v0 = new double[vNum];
 	for(int i=0;i<uNum;++i){
 		u0[i] = uBspline.getValue(i,uOrder-1,u);
-#ifdef _DEBUG
-		++calcCount;
-#endif
 	}
 	for(int j=0;j<vNum;++j){
 		v0[j] = vBspline.getValue(j,vOrder-1,v);
-#ifdef _DEBUG
-		++calcCount;
-#endif
 	}
 	double weight = 0.0;
 	for(int j=0;j<vNum;++j){
@@ -727,7 +704,7 @@ kmb::NurbsSurface3D::getWeightDerivative( derivativeType d, double u, double v, 
 	}
 	int uNum = uBspline.getKnotCount()-uOrder;
 	int vNum = vBspline.getKnotCount()-vOrder;
-	// 2dƒ‹[ƒv‚Å2d‚ÉŒvZ‚·‚é‚Ì‚ğ–h‚®‚½‚ß
+	// 2é‡ãƒ«ãƒ¼ãƒ—ã§2é‡ã«è¨ˆç®—ã™ã‚‹ã®ã‚’é˜²ããŸã‚
 	double* u0 = NULL;
 	double* v0 = NULL;
 	double* u1 = NULL;
@@ -741,15 +718,9 @@ kmb::NurbsSurface3D::getWeightDerivative( derivativeType d, double u, double v, 
 		v0 = new double[vNum];
 		for(int i=0;i<uNum;++i){
 			u1[i] = uBspline.getDerivative(i,uOrder-1,u);
-#ifdef _DEBUG
-			++calcCount;
-#endif
 		}
 		for(int j=0;j<vNum;++j){
 			v0[j] = vBspline.getValue(j,vOrder-1,v);
-#ifdef _DEBUG
-			++calcCount;
-#endif
 		}
 		for(int j=0;j<vNum;++j){
 			for(int i=0;i<uNum;++i){
@@ -765,15 +736,9 @@ kmb::NurbsSurface3D::getWeightDerivative( derivativeType d, double u, double v, 
 		v1 = new double[vNum];
 		for(int i=0;i<uNum;++i){
 			u0[i] = uBspline.getValue(i,uOrder-1,u);
-#ifdef _DEBUG
-			++calcCount;
-#endif
 		}
 		for(int j=0;j<vNum;++j){
 			v1[j] = vBspline.getDerivative(j,vOrder-1,v);
-#ifdef _DEBUG
-			++calcCount;
-#endif
 		}
 		for(int j=0;j<vNum;++j){
 			for(int i=0;i<uNum;++i){

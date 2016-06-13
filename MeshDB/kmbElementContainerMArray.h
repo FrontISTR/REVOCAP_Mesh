@@ -12,8 +12,8 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-// BLArray ‚ğg‚Á‚½ƒRƒ“ƒeƒi
-// Element ‚Ìƒ|ƒCƒ“ƒ^‚ğŠi”[‚µ‚Ä‚¨‚­
+// BLArray ã‚’ä½¿ã£ãŸã‚³ãƒ³ãƒ†ãƒŠ
+// Element ã®ãƒã‚¤ãƒ³ã‚¿ã‚’æ ¼ç´ã—ã¦ãŠã
 #pragma once
 
 #include "MeshDB/kmbElementContainer.h"
@@ -53,8 +53,8 @@ public:
 		virtual const kmb::Element* getElement(void) const;
 		virtual bool getElement(kmb::elementType &etype,kmb::nodeIdType *nodes) const;
 		virtual kmb::elementType getType(void) const;
-		virtual kmb::nodeIdType getCellId(int cellIndex) const;
-		virtual bool setCellId(int cellIndex, kmb::nodeIdType nodeId);
+		virtual kmb::nodeIdType getNodeId(int cellIndex) const;
+		virtual bool setNodeId(int cellIndex, kmb::nodeIdType nodeId);
 		virtual kmb::nodeIdType operator[](const int i) const;
 		virtual ElementContainer::_iterator* operator++(void);
 		virtual ElementContainer::_iterator* operator++(int n);
@@ -71,7 +71,7 @@ public:
 	virtual iterator find(kmb::elementIdType id);
 	virtual const_iterator find(kmb::elementIdType id) const;
 protected:
-	// ƒ|ƒCƒ“ƒ^‚Í‚±‚ÌƒNƒ‰ƒX‚Åƒƒ‚ƒŠŠÇ—‚ğ‚·‚é‚±‚Æ
+	// ãƒã‚¤ãƒ³ã‚¿ã¯ã“ã®ã‚¯ãƒ©ã‚¹ã§ãƒ¡ãƒ¢ãƒªç®¡ç†ã‚’ã™ã‚‹ã“ã¨
 	BLArrayPtr<kmb::Element> elementArray;
 	BLArrayIndex aIndex;
 	size_t count;

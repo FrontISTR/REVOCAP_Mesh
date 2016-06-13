@@ -128,15 +128,15 @@ kmb::BLMGenerator::getDuplicatedNodeId(kmb::nodeIdType nodeId)
 kmb::bodyIdType
 kmb::BLMGenerator::extrude(kmb::bodyIdType &boundaryId)
 {
-	// €”õ
+	// æº–å‚™
 	kmb::ElementContainer* boundBody = this->mesh->getBodyPtr(boundaryId);
 	if( boundBody == NULL ){
 		return kmb::Body::nullBodyId;
 	}
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
 
-	// boundBody ‚ÉŠÜ‚Ü‚ê‚éß“_‚ğ‚Qd‰»
-	// V‚µ‚¢ boundaryId ‚ÉVß“_‚©‚ç‚È‚é–Ê‚ğ’Ç‰Á
+	// boundBody ã«å«ã¾ã‚Œã‚‹ç¯€ç‚¹ã‚’ï¼’é‡åŒ–
+	// æ–°ã—ã„ boundaryId ã«æ–°ç¯€ç‚¹ã‹ã‚‰ãªã‚‹é¢ã‚’è¿½åŠ 
 	kmb::nodeIdType nodeTable[8];
 	boundaryId = mesh->beginElement( boundBody->getCount() );
 	kmb::ElementContainer::iterator bIter = boundBody->begin();
@@ -150,22 +150,22 @@ kmb::BLMGenerator::extrude(kmb::bodyIdType &boundaryId)
 	}
 	mesh->endElement();
 
-	// ‹ß–Tî•ñ‚Ìì¬
+	// è¿‘å‚æƒ…å ±ã®ä½œæˆ
 	kmb::NodeNeighborInfo neighborInfo;
 	neighborInfo.appendCoboundary( boundBody );
 
-	// –@ü‚ğŒvZ‚·‚é => ƒIƒŠƒWƒiƒ‹•\–Ê
-	// “_‚ğ“®‚©‚·     => •¡»‚µ‚½•\–Ê
-	// Œ³‚Ì“_‚Ìü‚è‚Ì—v‘f‚ğ’²‚×‚Ä
-	// ‚»‚Ì–@ü•ûŒü‚Åƒ_ƒ~[ß“_‚ğŠO‘¤‚É‚¸‚ç‚·
-	// Œ³‚Ìß“_‚Í‚»‚Ì‚Ü‚Ü‚ÌêŠ‚É‚¨‚¢‚Ä‚¨‚­
+	// æ³•ç·šã‚’è¨ˆç®—ã™ã‚‹ => ã‚ªãƒªã‚¸ãƒŠãƒ«è¡¨é¢
+	// ç‚¹ã‚’å‹•ã‹ã™     => è¤‡è£½ã—ãŸè¡¨é¢
+	// å…ƒã®ç‚¹ã®å‘¨ã‚Šã®è¦ç´ ã‚’èª¿ã¹ã¦
+	// ãã®æ³•ç·šæ–¹å‘ã§ãƒ€ãƒŸãƒ¼ç¯€ç‚¹ã‚’å¤–å´ã«ãšã‚‰ã™
+	// å…ƒã®ç¯€ç‚¹ã¯ãã®ã¾ã¾ã®å ´æ‰€ã«ãŠã„ã¦ãŠã
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-		// ü•Ó—v‘f‚ğæ‚èo‚µ‚ÄA–@üƒxƒNƒgƒ‹‚ğ‹‚ß‚é
+		// å‘¨è¾ºè¦ç´ ã‚’å–ã‚Šå‡ºã—ã¦ã€æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighbor::iterator neiIter = neighborInfo.beginIteratorAt( nodeId );
@@ -183,15 +183,15 @@ kmb::BLMGenerator::extrude(kmb::bodyIdType &boundaryId)
 		}
 		normVect.normalize();
 		this->mesh->getNode(nodeId,node);
-		// “à‘¤‚Ìƒ_ƒ~[’¸“_‚ÌXV
-		// –@üƒxƒNƒgƒ‹‚É“®‚©‚·
+		// å†…å´ã®ãƒ€ãƒŸãƒ¼é ‚ç‚¹ã®æ›´æ–°
+		// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã«å‹•ã‹ã™
 		kmb::Point3D point = node + normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), dupnodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
 
-	// ƒIƒŠƒWƒiƒ‹•\–Ê‚Æ•¡»‚µ‚½“_‚Ìî•ñ‚©‚ç‘wƒƒbƒVƒ…‚Ìì¬
+	// ã‚ªãƒªã‚¸ãƒŠãƒ«è¡¨é¢ã¨è¤‡è£½ã—ãŸç‚¹ã®æƒ…å ±ã‹ã‚‰å±¤ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆ
 	kmb::bodyIdType layerId = this->mesh->beginElement( boundBody->getCount() * this->layerNum );
 	{
 		kmb::nodeIdType oldNodeId[8];
@@ -207,7 +207,7 @@ kmb::BLMGenerator::extrude(kmb::bodyIdType &boundaryId)
 	}
 	this->mesh->endElement();
 
-	// ƒƒ‚ƒŠ‰ğ•ú
+	// ãƒ¡ãƒ¢ãƒªè§£æ”¾
 	clearLayerNodes();
 	return layerId;
 }
@@ -215,13 +215,13 @@ kmb::BLMGenerator::extrude(kmb::bodyIdType &boundaryId)
 kmb::bodyIdType
 kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 {
-	// (1) body ‚Ìß“_‚Ìü‚è‚Ì‹ß–Tî•ñA‹«ŠEî•ñ
-	// (2) Œ³‚Ì body ‚Ìß“_‚ğ“ñd‰»
-	// (3) e—v‘f‚ÅŒ³‚Ìß“_‚ğŠÜ‚Ş‚à‚Ì‚ğVß“_‚É’u‚«Š·‚¦‚é
-	// (4) ß“_‚Ì–@üƒxƒNƒgƒ‹‚ğ‹‚ß‚ÄAŒ³‚Ìß“_‚ğŠO‘¤‚É“®‚©‚·
-	// (5) Œ³‚Ìß“_‚ÆVß“_‚ÌŠÔ‚ğ—v‘f‚Å–„‚ß‚é
+	// (1) body ã®ç¯€ç‚¹ã®å‘¨ã‚Šã®è¿‘å‚æƒ…å ±ã€å¢ƒç•Œæƒ…å ±
+	// (2) å…ƒã® body ã®ç¯€ç‚¹ã‚’äºŒé‡åŒ–
+	// (3) è¦ªè¦ç´ ã§å…ƒã®ç¯€ç‚¹ã‚’å«ã‚€ã‚‚ã®ã‚’æ–°ç¯€ç‚¹ã«ç½®ãæ›ãˆã‚‹
+	// (4) ç¯€ç‚¹ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã¦ã€å…ƒã®ç¯€ç‚¹ã‚’å¤–å´ã«å‹•ã‹ã™
+	// (5) å…ƒã®ç¯€ç‚¹ã¨æ–°ç¯€ç‚¹ã®é–“ã‚’è¦ç´ ã§åŸ‹ã‚ã‚‹
 
-	// €”õ
+	// æº–å‚™
 	kmb::ElementContainer* boundBody = mesh->getBodyPtr( boundaryId );
 	if( boundBody == NULL ){
 		return false;
@@ -232,8 +232,8 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 	}
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
 
-	// ‹Œß“_‚©‚ç‚È‚éƒ_ƒ~[–Ê‚ğ’Ç‰Á
-	// Œ³‚Ì–Ê‚Ìß“_”Ô†‚ğV‚µ‚¢‚à‚Ì‚É’u‚«Š·‚¦‚é
+	// æ—§ç¯€ç‚¹ã‹ã‚‰ãªã‚‹ãƒ€ãƒŸãƒ¼é¢ã‚’è¿½åŠ 
+	// å…ƒã®é¢ã®ç¯€ç‚¹ç•ªå·ã‚’æ–°ã—ã„ã‚‚ã®ã«ç½®ãæ›ãˆã‚‹
 	kmb::nodeIdType orgNodeTable[8];
 	kmb::nodeIdType nodeTable[8];
 	kmb::bodyIdType outerBoundaryId = mesh->beginElement( boundBody->getCount() );
@@ -246,51 +246,51 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 		}
 		mesh->addElement( bIter.getType(), orgNodeTable );
 		for(int i=0;i<num;++i){
-			bIter.setCellId(i,nodeTable[i]);
+			bIter.setNodeId(i,nodeTable[i]);
 		}
 		++bIter;
 	}
 	mesh->endElement();
-	// boundBody => Œ³‚Ì‹«ŠE–Ê‚Åß“_”Ô†‚ğV‚µ‚¢”Ô†‚É’u‚«Š·‚¦‚½
+	// boundBody => å…ƒã®å¢ƒç•Œé¢ã§ç¯€ç‚¹ç•ªå·ã‚’æ–°ã—ã„ç•ªå·ã«ç½®ãæ›ãˆãŸ
 
-	// –Ê‚Ìe—v‘f‚·‚×‚Ä‚É‚Â‚¢‚Ä”Ô†‚Ì•t‚¯‘Ö‚¦
+	// é¢ã®è¦ªè¦ç´ ã™ã¹ã¦ã«ã¤ã„ã¦ç•ªå·ã®ä»˜ã‘æ›¿ãˆ
 	kmb::ElementContainer::iterator eIter = parentBody->begin();
 	while( !eIter.isFinished() ){
 		int len = eIter.getNodeCount();
 		for(int i=0;i<len;++i){
 			std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( eIter[i] );
 			if( nIter != nodeMapper.end() ){
-				eIter.setCellId( i, nIter->second );
+				eIter.setNodeId( i, nIter->second );
 			}
 		}
 		++eIter;
 	}
-	// parentBody => e—Ìˆæ‚Åß“_”Ô†‚ğV‚µ‚¢”Ô†‚É’u‚«Š·‚¦‚½
+	// parentBody => è¦ªé ˜åŸŸã§ç¯€ç‚¹ç•ªå·ã‚’æ–°ã—ã„ç•ªå·ã«ç½®ãæ›ãˆãŸ
 
-	// •¡»‚µ‚½•\–ÊƒOƒ‹[ƒv
+	// è¤‡è£½ã—ãŸè¡¨é¢ã‚°ãƒ«ãƒ¼ãƒ—
 	kmb::ElementContainer* outerBoundaryBody = mesh->getBodyPtr( outerBoundaryId );
 	if( outerBoundaryBody == NULL ){
 		return false;
 	}
-	// outerBoundBody => Œ³‚Ì‹«ŠE–Ê‚ÅŒ³‚Ìß“_”Ô†‚Ì‚Ü‚Ü
+	// outerBoundBody => å…ƒã®å¢ƒç•Œé¢ã§å…ƒã®ç¯€ç‚¹ç•ªå·ã®ã¾ã¾
 
-	// ß“_‚Ì‹ß–TŠÖŒW‚Ìæ“¾
-	// boundBody ‚Ìß“_‚ğ’u‚«Š·‚¦‚Ä‚©‚ç
+	// ç¯€ç‚¹ã®è¿‘å‚é–¢ä¿‚ã®å–å¾—
+	// boundBody ã®ç¯€ç‚¹ã‚’ç½®ãæ›ãˆã¦ã‹ã‚‰
 	kmb::NodeNeighborInfo neighborInfo;
 	neighborInfo.appendCoboundary( boundBody );
 
-	// –@ü‚ğŒvZ‚·‚é => •¡»‚µ‚½ß“_   “à•”‚Ì–Ê   boundBody
-	// “_‚ğ“®‚©‚·     => ƒIƒŠƒWƒiƒ‹ß“_ ŠO‘¤‚Ì–Ê@ outerBoundaryBody
-	// •¡»‚µ‚½“_‚Ìü‚è‚Ì—v‘f‚ğ’²‚×‚Ä
-	// ‚»‚Ì–@ü•ûŒü‚ÅŒ³‚Ìß“_‚ğŠO‘¤‚É‚¸‚ç‚·
-	// •¡»‚µ‚½ß“_‚Í‚»‚Ì‚Ü‚Ü‚ÌêŠ‚É‚¨‚¢‚Ä‚¨‚­
+	// æ³•ç·šã‚’è¨ˆç®—ã™ã‚‹ => è¤‡è£½ã—ãŸç¯€ç‚¹   å†…éƒ¨ã®é¢   boundBody
+	// ç‚¹ã‚’å‹•ã‹ã™     => ã‚ªãƒªã‚¸ãƒŠãƒ«ç¯€ç‚¹ å¤–å´ã®é¢ã€€ outerBoundaryBody
+	// è¤‡è£½ã—ãŸç‚¹ã®å‘¨ã‚Šã®è¦ç´ ã‚’èª¿ã¹ã¦
+	// ãã®æ³•ç·šæ–¹å‘ã§å…ƒã®ç¯€ç‚¹ã‚’å¤–å´ã«ãšã‚‰ã™
+	// è¤‡è£½ã—ãŸç¯€ç‚¹ã¯ãã®ã¾ã¾ã®å ´æ‰€ã«ãŠã„ã¦ãŠã
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-		// •¡»“_‚Ìü•Ó—v‘f‚ğæ‚èo‚µ‚ÄA–@üƒxƒNƒgƒ‹‚ğ‹‚ß‚é
+		// è¤‡è£½ç‚¹ã®å‘¨è¾ºè¦ç´ ã‚’å–ã‚Šå‡ºã—ã¦ã€æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighbor::iterator neiIter = neighborInfo.beginIteratorAt( dupnodeId );
@@ -308,15 +308,15 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 		}
 		normVect.normalize();
 		this->mesh->getNode(nodeId,node);
-		// ’¸“_‚ÌXV
-		// –@üƒxƒNƒgƒ‹‚Ì•ûŒü‚É“®‚©‚·
+		// é ‚ç‚¹ã®æ›´æ–°
+		// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã®æ–¹å‘ã«å‹•ã‹ã™
 		kmb::Point3D point = node + normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), nodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
 
-	// V‚µ‚¢•\–Ê‚ÆƒIƒŠƒWƒiƒ‹ß“_‚Ìî•ñ‚©‚ç‘wƒƒbƒVƒ…‚Ìì¬
+	// æ–°ã—ã„è¡¨é¢ã¨ã‚ªãƒªã‚¸ãƒŠãƒ«ç¯€ç‚¹ã®æƒ…å ±ã‹ã‚‰å±¤ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆ
 	kmb::bodyIdType layerId = this->mesh->beginElement( boundBody->getCount() * this->layerNum );
 	{
 		kmb::ElementContainer::iterator bIter = outerBoundaryBody->begin();
@@ -331,9 +331,9 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 	}
 	this->mesh->endElement();
 
-	// ƒƒ‚ƒŠ‰ğ•ú
+	// ãƒ¡ãƒ¢ãƒªè§£æ”¾
 	clearLayerNodes();
-	// V‚µ‚¢•\–Êiß“_”Ô†‚ÍƒIƒŠƒWƒiƒ‹j‚ğ•Ô‚·
+	// æ–°ã—ã„è¡¨é¢ï¼ˆç¯€ç‚¹ç•ªå·ã¯ã‚ªãƒªã‚¸ãƒŠãƒ«ï¼‰ã‚’è¿”ã™
 	boundaryId = outerBoundaryId;
 	return layerId;
 }
@@ -341,13 +341,13 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 kmb::bodyIdType
 kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 {
-	// (1) body ‚Ìß“_‚Ìü‚è‚Ì‹ß–Tî•ñA‹«ŠEî•ñ
-	// (2) Œ³‚Ì body ‚Ìß“_‚ğ“ñd‰»
-	// (3) e—v‘f‚ÅŒ³‚Ìß“_‚ğŠÜ‚Ş‚à‚Ì‚ğVß“_‚É’u‚«Š·‚¦‚é
-	// (4) ß“_‚Ì–@üƒxƒNƒgƒ‹‚ğ‹‚ß‚ÄAV‚µ‚¢ß“_‚ğ“à‘¤‚É“®‚©‚·
-	// (5) Œ³‚Ìß“_‚ÆVß“_‚ÌŠÔ‚ğ—v‘f‚Å–„‚ß‚é
+	// (1) body ã®ç¯€ç‚¹ã®å‘¨ã‚Šã®è¿‘å‚æƒ…å ±ã€å¢ƒç•Œæƒ…å ±
+	// (2) å…ƒã® body ã®ç¯€ç‚¹ã‚’äºŒé‡åŒ–
+	// (3) è¦ªè¦ç´ ã§å…ƒã®ç¯€ç‚¹ã‚’å«ã‚€ã‚‚ã®ã‚’æ–°ç¯€ç‚¹ã«ç½®ãæ›ãˆã‚‹
+	// (4) ç¯€ç‚¹ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã¦ã€æ–°ã—ã„ç¯€ç‚¹ã‚’å†…å´ã«å‹•ã‹ã™
+	// (5) å…ƒã®ç¯€ç‚¹ã¨æ–°ç¯€ç‚¹ã®é–“ã‚’è¦ç´ ã§åŸ‹ã‚ã‚‹
 
-	// €”õ
+	// æº–å‚™
 	kmb::ElementContainer* boundBody = mesh->getBodyPtr( boundaryId );
 	if( boundBody == NULL ){
 		return false;
@@ -358,8 +358,8 @@ kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId
 	}
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
 
-	// ‹Œß“_‚©‚ç‚È‚éƒ_ƒ~[–Ê‚ğ’Ç‰Á
-	// Œ³‚Ì–Ê‚Ìß“_”Ô†‚ğV‚µ‚¢‚à‚Ì‚É’u‚«Š·‚¦‚é
+	// æ—§ç¯€ç‚¹ã‹ã‚‰ãªã‚‹ãƒ€ãƒŸãƒ¼é¢ã‚’è¿½åŠ 
+	// å…ƒã®é¢ã®ç¯€ç‚¹ç•ªå·ã‚’æ–°ã—ã„ã‚‚ã®ã«ç½®ãæ›ãˆã‚‹
 	kmb::nodeIdType orgNodeTable[8];
 	kmb::nodeIdType nodeTable[8];
 	kmb::bodyIdType outerBoundaryId = mesh->beginElement( boundBody->getCount() );
@@ -372,48 +372,48 @@ kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId
 		}
 		mesh->addElement( bIter.getType(), orgNodeTable );
 		for(int i=0;i<num;++i){
-			bIter.setCellId(i,nodeTable[i]);
+			bIter.setNodeId(i,nodeTable[i]);
 		}
 		++bIter;
 	}
 	mesh->endElement();
 
-	// –Ê‚Ìe—v‘f‚·‚×‚Ä‚É‚Â‚¢‚Ä”Ô†‚Ì•t‚¯‘Ö‚¦
+	// é¢ã®è¦ªè¦ç´ ã™ã¹ã¦ã«ã¤ã„ã¦ç•ªå·ã®ä»˜ã‘æ›¿ãˆ
 	kmb::ElementContainer::iterator eIter = parentBody->begin();
 	while( !eIter.isFinished() ){
 		int len = eIter.getNodeCount();
 		for(int i=0;i<len;++i){
 			std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( eIter[i] );
 			if( nIter != nodeMapper.end() ){
-				eIter.setCellId( i, nIter->second );
+				eIter.setNodeId( i, nIter->second );
 			}
 		}
 		++eIter;
 	}
 
-	// •¡»‚µ‚½•\–ÊƒOƒ‹[ƒv
+	// è¤‡è£½ã—ãŸè¡¨é¢ã‚°ãƒ«ãƒ¼ãƒ—
 	kmb::ElementContainer* outerBoundaryBody = mesh->getBodyPtr( outerBoundaryId );
 	if( outerBoundaryBody == NULL ){
 		return false;
 	}
 
-	// ß“_‚Ì‹ß–TŠÖŒW‚Ìæ“¾
-	// boundBody ‚Ìß“_‚ğ’u‚«Š·‚¦‚Ä‚©‚ç
+	// ç¯€ç‚¹ã®è¿‘å‚é–¢ä¿‚ã®å–å¾—
+	// boundBody ã®ç¯€ç‚¹ã‚’ç½®ãæ›ãˆã¦ã‹ã‚‰
 	kmb::NodeNeighborInfo neighborInfo;
 	neighborInfo.appendCoboundary( outerBoundaryBody );
 
-	// “_‚ğ“®‚©‚·     => •¡»‚µ‚½ß“_   “à•”–Ê boundBody
-	// –@ü‚ğŒvZ‚·‚é => ƒIƒŠƒWƒiƒ‹ß“_ ŠO‘¤–Ê outerBoundaryBody
-	// •¡»‚µ‚½“_‚Ìü‚è‚Ì—v‘f‚ğ’²‚×‚Ä
-	// ‚»‚Ì–@ü•ûŒü‚ÅŒ³‚Ìß“_‚ğŠO‘¤‚É‚¸‚ç‚·
-	// •¡»‚µ‚½ß“_‚Í‚»‚Ì‚Ü‚Ü‚ÌêŠ‚É‚¨‚¢‚Ä‚¨‚­
+	// ç‚¹ã‚’å‹•ã‹ã™     => è¤‡è£½ã—ãŸç¯€ç‚¹   å†…éƒ¨é¢ boundBody
+	// æ³•ç·šã‚’è¨ˆç®—ã™ã‚‹ => ã‚ªãƒªã‚¸ãƒŠãƒ«ç¯€ç‚¹ å¤–å´é¢ outerBoundaryBody
+	// è¤‡è£½ã—ãŸç‚¹ã®å‘¨ã‚Šã®è¦ç´ ã‚’èª¿ã¹ã¦
+	// ãã®æ³•ç·šæ–¹å‘ã§å…ƒã®ç¯€ç‚¹ã‚’å¤–å´ã«ãšã‚‰ã™
+	// è¤‡è£½ã—ãŸç¯€ç‚¹ã¯ãã®ã¾ã¾ã®å ´æ‰€ã«ãŠã„ã¦ãŠã
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-		// •¡»“_‚Ìü•Ó—v‘f‚ğæ‚èo‚µ‚ÄA–@üƒxƒNƒgƒ‹‚ğ‹‚ß‚é
+		// è¤‡è£½ç‚¹ã®å‘¨è¾ºè¦ç´ ã‚’å–ã‚Šå‡ºã—ã¦ã€æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighbor::iterator neiIter = neighborInfo.beginIteratorAt( nodeId );
@@ -431,15 +431,15 @@ kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId
 		}
 		normVect.normalize();
 		this->mesh->getNode(dupnodeId,node);
-		// ’¸“_‚ÌXV
-		// –@üƒxƒNƒgƒ‹‚Ì‹t•ûŒü‚É“®‚©‚·
+		// é ‚ç‚¹ã®æ›´æ–°
+		// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã®é€†æ–¹å‘ã«å‹•ã‹ã™
 		kmb::Point3D point = node - normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), dupnodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
 
-	// V‚µ‚¢•\–Ê‚ÆƒIƒŠƒWƒiƒ‹ß“_‚Ìî•ñ‚©‚ç‘wƒƒbƒVƒ…‚Ìì¬
+	// æ–°ã—ã„è¡¨é¢ã¨ã‚ªãƒªã‚¸ãƒŠãƒ«ç¯€ç‚¹ã®æƒ…å ±ã‹ã‚‰å±¤ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆ
 	kmb::bodyIdType layerId = this->mesh->beginElement( boundBody->getCount() * this->layerNum );
 	{
 		kmb::ElementContainer::iterator bIter = outerBoundaryBody->begin();
@@ -454,9 +454,9 @@ kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId
 	}
 	this->mesh->endElement();
 
-	// ƒƒ‚ƒŠ‰ğ•ú
+	// ãƒ¡ãƒ¢ãƒªè§£æ”¾
 	clearLayerNodes();
-	// V‚µ‚¢•\–Êiß“_”Ô†‚ÍƒIƒŠƒWƒiƒ‹j‚ğ•Ô‚·
+	// æ–°ã—ã„è¡¨é¢ï¼ˆç¯€ç‚¹ç•ªå·ã¯ã‚ªãƒªã‚¸ãƒŠãƒ«ï¼‰ã‚’è¿”ã™
 	boundaryId = outerBoundaryId;
 	return layerId;
 }
@@ -464,7 +464,7 @@ kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId
 kmb::bodyIdType
 kmb::BLMGenerator::extrudeFromData(const char* faceGroup)
 {
-	// (0) €”õ
+	// (0) æº–å‚™
 	kmb::DataBindings* faceData = mesh->getDataBindingsPtr(faceGroup);
 	if( faceData == NULL || faceData->getBindingMode() != kmb::DataBindings::FaceGroup ){
 		return kmb::Body::nullBodyId;
@@ -474,14 +474,14 @@ kmb::BLMGenerator::extrudeFromData(const char* faceGroup)
 		return kmb::Body::nullBodyId;
 	}
 
-	// •]‰¿ŠÖ”‚Ì€”õ
+	// è©•ä¾¡é–¢æ•°ã®æº–å‚™
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
 
-	// ‹ß–Tî•ñ‚Ìì¬
+	// è¿‘å‚æƒ…å ±ã®ä½œæˆ
 	kmb::NodeNeighborFaceInfo neighborInfo;
 	neighborInfo.appendCoboundary( faceData, parentBody );
 
-	// FaceGroup ã‚Ìß“_‚ğ“ñd‰»
+	// FaceGroup ä¸Šã®ç¯€ç‚¹ã‚’äºŒé‡åŒ–
 	kmb::DataBindings::iterator fIter = faceData->begin();
 	while( !fIter.isFinished() ){
 		kmb::Face f;
@@ -491,22 +491,22 @@ kmb::BLMGenerator::extrudeFromData(const char* faceGroup)
 			if( !eIter.isFinished() ){
 				int bnum = eIter.getBoundaryNodeCount(localId);
 				for(int i=0;i<bnum;++i){
-					getDuplicatedNodeId( eIter.getBoundaryCellId(localId,i) );
+					getDuplicatedNodeId( eIter.getBoundaryNodeId(localId,i) );
 				}
 			}
 		}
 		++fIter;
 	}
 
-	// Œ³‚Ì“_‚Ìü‚è‚Ì—v‘f‚ğ’²‚×‚Ä
-	// ‚»‚Ì–@ü•ûŒü‚Åƒ_ƒ~[ß“_‚ğ‚¸‚ç‚·
+	// å…ƒã®ç‚¹ã®å‘¨ã‚Šã®è¦ç´ ã‚’èª¿ã¹ã¦
+	// ãã®æ³•ç·šæ–¹å‘ã§ãƒ€ãƒŸãƒ¼ç¯€ç‚¹ã‚’ãšã‚‰ã™
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-		// ü•Ó—v‘f‚ğæ‚èo‚µ‚ÄA–@üƒxƒNƒgƒ‹‚ğ‹‚ß‚é
+		// å‘¨è¾ºè¦ç´ ã‚’å–ã‚Šå‡ºã—ã¦ã€æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighborFace::iterator nfIter = neighborInfo.beginIteratorAt( nodeId );
@@ -524,15 +524,15 @@ kmb::BLMGenerator::extrudeFromData(const char* faceGroup)
 		}
 		normVect.normalize();
 		this->mesh->getNode(nodeId,node);
-		// “à‘¤‚Ìƒ_ƒ~[’¸“_‚ÌXV
-		// –@üƒxƒNƒgƒ‹‚Æ‹t‚Ì•ûŒü‚É“®‚©‚·
+		// å†…å´ã®ãƒ€ãƒŸãƒ¼é ‚ç‚¹ã®æ›´æ–°
+		// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã¨é€†ã®æ–¹å‘ã«å‹•ã‹ã™
 		kmb::Point3D point = node + normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), dupnodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
 
-	// –Ê‚·‚×‚Ä‚É‚Â‚¢‚Äˆ—
+	// é¢ã™ã¹ã¦ã«ã¤ã„ã¦å‡¦ç†
 	kmb::bodyIdType layerId = this->mesh->beginElement( faceData->getIdCount() * this->layerNum );
 	{
 		kmb::DataBindings* faceData2 = mesh->createDataBindings(faceGroup,
@@ -549,7 +549,7 @@ kmb::BLMGenerator::extrudeFromData(const char* faceGroup)
 				kmb::idType localId = f.getLocalFaceId();
 				int len = elem.getBoundaryNodeCount(localId);
 				for(int i=0;i<len;++i){
-					oldNodeId[i] = elem.getBoundaryCellId(localId,i);
+					oldNodeId[i] = elem.getBoundaryNodeId(localId,i);
 				}
 				kmb::Face outerFace = appendLayerElements( elem.getBoundaryType(localId), oldNodeId, false );
 				faceData2->addId( outerFace );
@@ -577,7 +577,7 @@ kmb::BLMGenerator::extrudeFromData(const char* faceGroup)
 kmb::bodyIdType
 kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 {
-	// €”õ
+	// æº–å‚™
 	kmb::DataBindings* faceData = mesh->getDataBindingsPtr(faceGroup);
 	if( faceData == NULL || faceData->getBindingMode() != kmb::DataBindings::FaceGroup ){
 		return kmb::Body::nullBodyId;
@@ -587,8 +587,8 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 		return kmb::Body::nullBodyId;
 	}
 
-	// FaceGroup ã‚Ìß“_‚ğ“ñd‰»
-	// ƒIƒŠƒWƒiƒ‹ß“_‚Ì Boundary Body ‚ğì¬
+	// FaceGroup ä¸Šã®ç¯€ç‚¹ã‚’äºŒé‡åŒ–
+	// ã‚ªãƒªã‚¸ãƒŠãƒ«ç¯€ç‚¹ã® Boundary Body ã‚’ä½œæˆ
 	kmb::ElementContainerMap boundaryBody;
 	kmb::DataBindings::iterator fIter = faceData->begin();
 	kmb::nodeIdType nodes[8];
@@ -600,7 +600,7 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 			if( !eIter.isFinished() ){
 				int bnum = eIter.getBoundaryNodeCount(localId);
 				for(int i=0;i<bnum;++i){
-					nodes[i] = eIter.getBoundaryCellId(localId,i);
+					nodes[i] = eIter.getBoundaryNodeId(localId,i);
 					getDuplicatedNodeId( nodes[i] );
 				}
 				boundaryBody.addElement( eIter.getBoundaryType(localId), nodes );
@@ -609,35 +609,35 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 		++fIter;
 	}
 
-	// –Ê‚Ìe—v‘f‚·‚×‚Ä‚É‚Â‚¢‚Ä”Ô†‚Ì•t‚¯‘Ö‚¦
+	// é¢ã®è¦ªè¦ç´ ã™ã¹ã¦ã«ã¤ã„ã¦ç•ªå·ã®ä»˜ã‘æ›¿ãˆ
 	kmb::ElementContainer::iterator eIter = parentBody->begin();
 	while( !eIter.isFinished() ){
 		int len = eIter.getNodeCount();
 		for(int i=0;i<len;++i){
 			std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( eIter[i] );
 			if( nIter != nodeMapper.end() ){
-				eIter.setCellId( i, nIter->second );
+				eIter.setNodeId( i, nIter->second );
 			}
 		}
 		++eIter;
 	}
 
-	// •]‰¿ŠÖ”‚Ì€”õ
+	// è©•ä¾¡é–¢æ•°ã®æº–å‚™
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
 
-	// ‹ß–Tî•ñ‚Ìì¬
+	// è¿‘å‚æƒ…å ±ã®ä½œæˆ
 	kmb::NodeNeighborFaceInfo neighborInfo;
 	neighborInfo.appendCoboundary( faceData, parentBody );
 
-	// •¡»ß“_‚Ìü‚è‚Ì—v‘f‚ğ’²‚×‚Ä
-	// ‚»‚Ì–@ü•ûŒü‚ÅŒ³‚Ìß“_‚ğ‚¸‚ç‚·
+	// è¤‡è£½ç¯€ç‚¹ã®å‘¨ã‚Šã®è¦ç´ ã‚’èª¿ã¹ã¦
+	// ãã®æ³•ç·šæ–¹å‘ã§å…ƒã®ç¯€ç‚¹ã‚’ãšã‚‰ã™
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-		// ü•Ó—v‘f‚ğæ‚èo‚µ‚ÄA–@üƒxƒNƒgƒ‹‚ğ‹‚ß‚é
+		// å‘¨è¾ºè¦ç´ ã‚’å–ã‚Šå‡ºã—ã¦ã€æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighborFace::iterator nfIter = neighborInfo.beginIteratorAt( dupnodeId );
@@ -655,15 +655,15 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 		}
 		normVect.normalize();
 		this->mesh->getNode(nodeId,node);
-		// “à‘¤‚Ìƒ_ƒ~[’¸“_‚ÌXV
-		// –@üƒxƒNƒgƒ‹‚Æ‹t‚Ì•ûŒü‚É“®‚©‚·
+		// å†…å´ã®ãƒ€ãƒŸãƒ¼é ‚ç‚¹ã®æ›´æ–°
+		// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã¨é€†ã®æ–¹å‘ã«å‹•ã‹ã™
 		kmb::Point3D point = node + normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), nodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
 
-	// –Ê‚·‚×‚Ä‚É‚Â‚¢‚Äˆ—
+	// é¢ã™ã¹ã¦ã«ã¤ã„ã¦å‡¦ç†
 	kmb::bodyIdType layerId = this->mesh->beginElement( faceData->getIdCount() * this->layerNum );
 	{
 		faceData->clear();
@@ -682,7 +682,7 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 	this->mesh->endElement();
 	faceData->setTargetBodyId( layerId );
 
-	// ƒƒ‚ƒŠ‰ğ•ú
+	// ãƒ¡ãƒ¢ãƒªè§£æ”¾
 	clearLayerNodes();
 	return layerId;
 }
@@ -690,7 +690,7 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 kmb::bodyIdType
 kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 {
-	// €”õ
+	// æº–å‚™
 	kmb::DataBindings* faceData = mesh->getDataBindingsPtr(faceGroup);
 	if( faceData == NULL || faceData->getBindingMode() != kmb::DataBindings::FaceGroup ){
 		return kmb::Body::nullBodyId;
@@ -700,8 +700,8 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 		return kmb::Body::nullBodyId;
 	}
 
-	// FaceGroup ã‚Ìß“_‚ğ“ñd‰»
-	// ƒIƒŠƒWƒiƒ‹ß“_‚Ì Boundary Body ‚ğì¬
+	// FaceGroup ä¸Šã®ç¯€ç‚¹ã‚’äºŒé‡åŒ–
+	// ã‚ªãƒªã‚¸ãƒŠãƒ«ç¯€ç‚¹ã® Boundary Body ã‚’ä½œæˆ
 	kmb::ElementContainerMap outerBoundaryBody;
 	kmb::DataBindings::iterator fIter = faceData->begin();
 	kmb::nodeIdType nodes[8];
@@ -713,7 +713,7 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 			if( !eIter.isFinished() ){
 				int bnum = eIter.getBoundaryNodeCount(localId);
 				for(int i=0;i<bnum;++i){
-					nodes[i] = eIter.getBoundaryCellId(localId,i);
+					nodes[i] = eIter.getBoundaryNodeId(localId,i);
 					getDuplicatedNodeId( nodes[i] );
 				}
 				outerBoundaryBody.addElement( eIter.getBoundaryType(localId), nodes );
@@ -722,34 +722,34 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 		++fIter;
 	}
 
-	// –Ê‚Ìe—v‘f‚·‚×‚Ä‚É‚Â‚¢‚Ä”Ô†‚Ì•t‚¯‘Ö‚¦
+	// é¢ã®è¦ªè¦ç´ ã™ã¹ã¦ã«ã¤ã„ã¦ç•ªå·ã®ä»˜ã‘æ›¿ãˆ
 	kmb::ElementContainer::iterator eIter = parentBody->begin();
 	while( !eIter.isFinished() ){
 		int len = eIter.getNodeCount();
 		for(int i=0;i<len;++i){
 			std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( eIter[i] );
 			if( nIter != nodeMapper.end() ){
-				eIter.setCellId( i, nIter->second );
+				eIter.setNodeId( i, nIter->second );
 			}
 		}
 		++eIter;
 	}
 
-	// •]‰¿ŠÖ”‚Ì€”õ
+	// è©•ä¾¡é–¢æ•°ã®æº–å‚™
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
 
-	// ‹ß–Tî•ñ‚Ìì¬
+	// è¿‘å‚æƒ…å ±ã®ä½œæˆ
 	kmb::NodeNeighborInfo neighborInfo;
 	neighborInfo.appendCoboundary( &outerBoundaryBody );
 
-	// •¡»ß“_‚Ìü‚è‚Ì—v‘f‚ğ’²‚×‚Ä
-	// ‚»‚Ì–@ü•ûŒü‚ÅŒ³‚Ìß“_‚ğ‚¸‚ç‚·
+	// è¤‡è£½ç¯€ç‚¹ã®å‘¨ã‚Šã®è¦ç´ ã‚’èª¿ã¹ã¦
+	// ãã®æ³•ç·šæ–¹å‘ã§å…ƒã®ç¯€ç‚¹ã‚’ãšã‚‰ã™
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType dupnodeId = nIter->second;
-		// ü•Ó—v‘f‚ğæ‚èo‚µ‚ÄA–@üƒxƒNƒgƒ‹‚ğ‹‚ß‚é
+		// å‘¨è¾ºè¦ç´ ã‚’å–ã‚Šå‡ºã—ã¦ã€æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighbor::iterator neiIter = neighborInfo.beginIteratorAt( dupnodeId );
@@ -767,15 +767,15 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 		}
 		normVect.normalize();
 		this->mesh->getNode(dupnodeId,node);
-		// “à‘¤‚Ìƒ_ƒ~[’¸“_‚ÌXV
-		// –@üƒxƒNƒgƒ‹‚Æ‹t‚Ì•ûŒü‚É“®‚©‚·
+		// å†…å´ã®ãƒ€ãƒŸãƒ¼é ‚ç‚¹ã®æ›´æ–°
+		// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã¨é€†ã®æ–¹å‘ã«å‹•ã‹ã™
 		kmb::Point3D point = node - normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), dupnodeId );
 		++nIter;
 	}
 	neighborInfo.clear();
 
-	// –Ê‚·‚×‚Ä‚É‚Â‚¢‚Äˆ—
+	// é¢ã™ã¹ã¦ã«ã¤ã„ã¦å‡¦ç†
 	kmb::bodyIdType layerId = this->mesh->beginElement( faceData->getIdCount() * this->layerNum );
 	{
 		faceData->clear();
@@ -794,7 +794,7 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 	this->mesh->endElement();
 	faceData->setTargetBodyId( layerId );
 
-	// ƒƒ‚ƒŠ‰ğ•ú
+	// ãƒ¡ãƒ¢ãƒªè§£æ”¾
 	clearLayerNodes();
 	return layerId;
 }
@@ -802,12 +802,12 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 bool
 kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &layerId)
 {
-	// (0) €”õ
-	// (1) faceGroup ‚Ìß“_‚Ìü‚è‚Ì‹ß–Tî•ñA‹«ŠEî•ñ
-	// (2) Œ³‚Ì faceGroup ‚Ì“à•”ß“_‚ğ“ñd‰»
-	// (3) ß“_‚Ì–@üƒxƒNƒgƒ‹‚ğ‹‚ß‚ÄA“ñd‰»‚µ‚½Vß“_‚ğ“à‘¤‚É“®‚©‚·
-	// (4) Œ³‚Ìß“_‚ÆVß“_‚ÌŠÔ‚ğ—v‘f‚Å–„‚ß‚é
-	// (5) e—v‘f‚ÅŒ³‚Ìß“_‚ğŠÜ‚Ş‚à‚Ì‚ğVß“_‚É’u‚«Š·‚¦‚é
+	// (0) æº–å‚™
+	// (1) faceGroup ã®ç¯€ç‚¹ã®å‘¨ã‚Šã®è¿‘å‚æƒ…å ±ã€å¢ƒç•Œæƒ…å ±
+	// (2) å…ƒã® faceGroup ã®å†…éƒ¨ç¯€ç‚¹ã‚’äºŒé‡åŒ–
+	// (3) ç¯€ç‚¹ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã¦ã€äºŒé‡åŒ–ã—ãŸæ–°ç¯€ç‚¹ã‚’å†…å´ã«å‹•ã‹ã™
+	// (4) å…ƒã®ç¯€ç‚¹ã¨æ–°ç¯€ç‚¹ã®é–“ã‚’è¦ç´ ã§åŸ‹ã‚ã‚‹
+	// (5) è¦ªè¦ç´ ã§å…ƒã®ç¯€ç‚¹ã‚’å«ã‚€ã‚‚ã®ã‚’æ–°ç¯€ç‚¹ã«ç½®ãæ›ãˆã‚‹
 
 	// (0)
 	kmb::DataBindings* faceData = mesh->getDataBindingsPtr(faceGroup);
@@ -819,7 +819,7 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 		return false;
 	}
 	kmb::ElementEvaluator evaluator( this->mesh->getNodes() );
-	// facegroup ‚ğ—v‘f‰»‚·‚é
+	// facegroup ã‚’è¦ç´ åŒ–ã™ã‚‹
 	kmb::ElementContainer* body = new kmb::ElementContainerMap();
 	mesh->faceGroupToBody( faceGroup, body );
 
@@ -841,9 +841,9 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 			if( !eIter.isFinished() ){
 				int bnum = eIter.getBoundaryNodeCount(localId);
 				for(int i=0;i<bnum;++i){
-					kmb::nodeIdType nodeId = eIter.getBoundaryCellId(localId,i);
+					kmb::nodeIdType nodeId = eIter.getBoundaryNodeId(localId,i);
 					if( !boundNG->hasId( nodeId ) ){
-						getDuplicatedNodeId( eIter.getBoundaryCellId(localId,i) );
+						getDuplicatedNodeId( eIter.getBoundaryNodeId(localId,i) );
 					}
 				}
 			}
@@ -852,15 +852,15 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 	}
 
 	// (3)
-	// Œ³‚Ì“_‚Ìü‚è‚Ì—v‘f‚ğ’²‚×‚Ä
-	// ‚»‚Ì–@ü•ûŒü‚Åƒ_ƒ~[ß“_‚ğ‚¸‚ç‚·
+	// å…ƒã®ç‚¹ã®å‘¨ã‚Šã®è¦ç´ ã‚’èª¿ã¹ã¦
+	// ãã®æ³•ç·šæ–¹å‘ã§ãƒ€ãƒŸãƒ¼ç¯€ç‚¹ã‚’ãšã‚‰ã™
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-		// ü•Ó—v‘f‚ğæ‚èo‚µ‚ÄA–@üƒxƒNƒgƒ‹‚ğ‹‚ß‚é
+		// å‘¨è¾ºè¦ç´ ã‚’å–ã‚Šå‡ºã—ã¦ã€æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighborFace::iterator nfIter = neighborInfo.beginIteratorAt( nodeId );
@@ -878,8 +878,8 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 		}
 		normVect.normalize();
 		this->mesh->getNode(nodeId,node);
-		// “à‘¤‚Ìƒ_ƒ~[’¸“_‚ÌXV
-		// –@üƒxƒNƒgƒ‹‚Æ‹t‚Ì•ûŒü‚É“®‚©‚·
+		// å†…å´ã®ãƒ€ãƒŸãƒ¼é ‚ç‚¹ã®æ›´æ–°
+		// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã¨é€†ã®æ–¹å‘ã«å‹•ã‹ã™
 		kmb::Point3D point = node - normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), dupnodeId );
 		++nIter;
@@ -887,7 +887,7 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 	neighborInfo.clear();
 
 	// (4)
-	// –Ê‚·‚×‚Ä‚É‚Â‚¢‚Äˆ—
+	// é¢ã™ã¹ã¦ã«ã¤ã„ã¦å‡¦ç†
 	layerId = this->mesh->beginElement( faceData->getIdCount() * this->layerNum );
 	{
 		kmb::DataBindings* faceData2 = mesh->createDataBindings(faceGroup,
@@ -904,7 +904,7 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 				kmb::idType localId = f.getLocalFaceId();
 				int len = elem.getBoundaryNodeCount(localId);
 				for(int i=0;i<len;++i){
-					oldNodeId[i] = elem.getBoundaryCellId(localId,i);
+					oldNodeId[i] = elem.getBoundaryNodeId(localId,i);
 				}
 				kmb::Face outerFace = appendLayerElements( elem.getBoundaryType(localId), oldNodeId );
 				faceData2->addId( outerFace );
@@ -925,14 +925,14 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 	this->mesh->endElement();
 
 	// (5)
-	// –Ê‚Ìe—v‘f‚·‚×‚Ä‚É‚Â‚¢‚Ä”Ô†‚Ì•t‚¯‘Ö‚¦
+	// é¢ã®è¦ªè¦ç´ ã™ã¹ã¦ã«ã¤ã„ã¦ç•ªå·ã®ä»˜ã‘æ›¿ãˆ
 	kmb::ElementContainer::iterator eIter = parentBody->begin();
 	while( !eIter.isFinished() ){
 		int len = eIter.getNodeCount();
 		for(int i=0;i<len;++i){
 			std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( eIter[i] );
 			if( nIter != nodeMapper.end() ){
-				eIter.setCellId( i, nIter->second );
+				eIter.setNodeId( i, nIter->second );
 			}
 		}
 		++eIter;
@@ -948,12 +948,12 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 bool
 kmb::BLMGenerator::generateInner(kmb::bodyIdType bodyId,kmb::bodyIdType parentId,kmb::bodyIdType &layerId)
 {
-	// (0) €”õ
-	// (1) body ‚Ìß“_‚Ìü‚è‚Ì‹ß–Tî•ñA‹«ŠEî•ñ
-	// (2) Œ³‚Ì body ‚Ì“à•”ß“_‚ğ“ñd‰»
-	// (3) ß“_‚Ì–@üƒxƒNƒgƒ‹‚ğ‹‚ß‚ÄA“ñd‰»‚µ‚½Vß“_‚ğ“à‘¤‚É“®‚©‚·
-	// (4) Œ³‚Ìß“_‚ÆVß“_‚ÌŠÔ‚ğ—v‘f‚Å–„‚ß‚é
-	// (5) e—v‘f‚ÅŒ³‚Ìß“_‚ğŠÜ‚Ş‚à‚Ì‚ğVß“_‚É’u‚«Š·‚¦‚é
+	// (0) æº–å‚™
+	// (1) body ã®ç¯€ç‚¹ã®å‘¨ã‚Šã®è¿‘å‚æƒ…å ±ã€å¢ƒç•Œæƒ…å ±
+	// (2) å…ƒã® body ã®å†…éƒ¨ç¯€ç‚¹ã‚’äºŒé‡åŒ–
+	// (3) ç¯€ç‚¹ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã¦ã€äºŒé‡åŒ–ã—ãŸæ–°ç¯€ç‚¹ã‚’å†…å´ã«å‹•ã‹ã™
+	// (4) å…ƒã®ç¯€ç‚¹ã¨æ–°ç¯€ç‚¹ã®é–“ã‚’è¦ç´ ã§åŸ‹ã‚ã‚‹
+	// (5) è¦ªè¦ç´ ã§å…ƒã®ç¯€ç‚¹ã‚’å«ã‚€ã‚‚ã®ã‚’æ–°ç¯€ç‚¹ã«ç½®ãæ›ãˆã‚‹
 
 	// (0)
 	kmb::ElementContainer* boundBody = mesh->getBodyPtr( bodyId );
@@ -985,15 +985,15 @@ kmb::BLMGenerator::generateInner(kmb::bodyIdType bodyId,kmb::bodyIdType parentId
 	}
 
 	// (3)
-	// Œ³‚Ì“_‚Ìü‚è‚Ì—v‘f‚ğ’²‚×‚Ä
-	// ‚»‚Ì–@ü•ûŒü‚Å2d‰»‚µ‚½ƒ_ƒ~[ß“_‚ğ“à‘¤‚É‚¸‚ç‚·
+	// å…ƒã®ç‚¹ã®å‘¨ã‚Šã®è¦ç´ ã‚’èª¿ã¹ã¦
+	// ãã®æ³•ç·šæ–¹å‘ã§2é‡åŒ–ã—ãŸãƒ€ãƒŸãƒ¼ç¯€ç‚¹ã‚’å†…å´ã«ãšã‚‰ã™
 	kmb::Node node;
 	std::map<kmb::nodeIdType,kmb::nodeIdType>::iterator nIter = nodeMapper.begin();
 	while( nIter != nodeMapper.end() )
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::nodeIdType dupnodeId = nIter->second;
-		// ü•Ó—v‘f‚ğæ‚èo‚µ‚ÄA–@üƒxƒNƒgƒ‹‚ğ‹‚ß‚é
+		// å‘¨è¾ºè¦ç´ ã‚’å–ã‚Šå‡ºã—ã¦ã€æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹
 		kmb::Vector3D normVect(0.0,0.0,0.0);
 		kmb::Vector3D v;
 		kmb::NodeNeighbor::iterator neiIter = neighborInfo.beginIteratorAt( nodeId );
@@ -1011,8 +1011,8 @@ kmb::BLMGenerator::generateInner(kmb::bodyIdType bodyId,kmb::bodyIdType parentId
 		}
 		normVect.normalize();
 		this->mesh->getNode(nodeId,node);
-		// “à‘¤‚Ìƒ_ƒ~[’¸“_‚ÌXV
-		// –@üƒxƒNƒgƒ‹‚Æ‹t‚Ì•ûŒü‚É“®‚©‚·
+		// å†…å´ã®ãƒ€ãƒŸãƒ¼é ‚ç‚¹ã®æ›´æ–°
+		// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã¨é€†ã®æ–¹å‘ã«å‹•ã‹ã™
 		kmb::Point3D point = node - normVect.scalar(layerThick[layerNum-1]);
 		mesh->updateNode( point.x(), point.y(), point.z(), dupnodeId );
 		++nIter;
@@ -1020,7 +1020,7 @@ kmb::BLMGenerator::generateInner(kmb::bodyIdType bodyId,kmb::bodyIdType parentId
 	neighborInfo.clear();
 
 	// (4)
-	// –Ê‚·‚×‚Ä‚É‚Â‚¢‚Äˆ—
+	// é¢ã™ã¹ã¦ã«ã¤ã„ã¦å‡¦ç†
 	layerId = this->mesh->beginElement( boundBody->getCount() * this->layerNum );
 	{
 		kmb::nodeIdType oldNodeId[8];
@@ -1037,14 +1037,14 @@ kmb::BLMGenerator::generateInner(kmb::bodyIdType bodyId,kmb::bodyIdType parentId
 	this->mesh->endElement();
 
 	// (5)
-	// –Ê‚Ìe—v‘f‚·‚×‚Ä‚É‚Â‚¢‚Ä”Ô†‚Ì•t‚¯‘Ö‚¦
+	// é¢ã®è¦ªè¦ç´ ã™ã¹ã¦ã«ã¤ã„ã¦ç•ªå·ã®ä»˜ã‘æ›¿ãˆ
 	kmb::ElementContainer::iterator eIter = parentBody->begin();
 	while( !eIter.isFinished() ){
 		int len = eIter.getNodeCount();
 		for(int i=0;i<len;++i){
 			std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( eIter[i] );
 			if( nIter != nodeMapper.end() ){
-				eIter.setCellId( i, nIter->second );
+				eIter.setNodeId( i, nIter->second );
 			}
 		}
 		++eIter;
@@ -1074,12 +1074,12 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 			newNodeId[i] = oldNodeId[i];
 		}
 	}
-	// —v‘f‚Ì’¸“_‚Ì‚¤‚¿A‚Ç‚Ìß“_‚ª‚Qd‰»‚³‚ê‚Ä‚¢‚é‚©‚Åê‡•ª‚¯
+	// è¦ç´ ã®é ‚ç‚¹ã®ã†ã¡ã€ã©ã®ç¯€ç‚¹ãŒï¼’é‡åŒ–ã•ã‚Œã¦ã„ã‚‹ã‹ã§å ´åˆåˆ†ã‘
 	switch( etype ){
 	case kmb::TRIANGLE:
 		switch( flag ){
 		case 0x07:
-			// 3“_‘S‚Ä
+			// 3ç‚¹å…¨ã¦
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = getLayerNodeId( oldNodeId[0], newNodeId[0], i );
@@ -1109,7 +1109,7 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 			}
 			break;
 		case 0x03:
-			// 2“_ 0 1
+			// 2ç‚¹ 0 1
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = oldNodeId[2];
@@ -1137,7 +1137,7 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 			}
 			break;
 		case 0x05:
-			// 2“_ 2 0
+			// 2ç‚¹ 2 0
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = oldNodeId[1];
@@ -1165,7 +1165,7 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 			}
 			break;
 		case 0x06:
-			// 2“_ 1 2
+			// 2ç‚¹ 1 2
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = oldNodeId[0];
@@ -1193,7 +1193,7 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 			}
 			break;
 		case 0x01:
-			// 1“_ 0
+			// 1ç‚¹ 0
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = getLayerNodeId( oldNodeId[0], newNodeId[0], i );
@@ -1219,7 +1219,7 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 			}
 			break;
 		case 0x02:
-			// 1“_ 1
+			// 1ç‚¹ 1
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = oldNodeId[0];
@@ -1245,7 +1245,7 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 			}
 			break;
 		case 0x04:
-			// 1“_ 2
+			// 1ç‚¹ 2
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = oldNodeId[0];
@@ -1277,7 +1277,7 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 	case kmb::QUAD:
 		switch( flag ){
 		case 0x0f:
-			// 4“_‘S‚Ä
+			// 4ç‚¹å…¨ã¦
 			if( outer ){
 				for(int i=0;i<layerNum;++i){
 					nodeTable[0] = getLayerNodeId( oldNodeId[0], newNodeId[0], i );
@@ -1311,46 +1311,46 @@ kmb::BLMGenerator::appendLayerElements( kmb::elementType etype, kmb::nodeIdType*
 			}
 			break;
 		case 0x01:
-			// 1“_ 0
+			// 1ç‚¹ 0
 			break;
 		case 0x02:
-			// 1“_ 1
+			// 1ç‚¹ 1
 			break;
 		case 0x04:
-			// 1“_ 2
+			// 1ç‚¹ 2
 			break;
 		case 0x08:
-			// 1“_ 3
+			// 1ç‚¹ 3
 			break;
 		case 0x03:
-			// 2“_ 0 1
+			// 2ç‚¹ 0 1
 			break;
 		case 0x05:
-			// 2“_ 0 2
+			// 2ç‚¹ 0 2
 			break;
 		case 0x09:
-			// 2“_ 0 3
+			// 2ç‚¹ 0 3
 			break;
 		case 0x06:
-			// 2“_ 1 2
+			// 2ç‚¹ 1 2
 			break;
 		case 0x0a:
-			// 2“_ 1 3
+			// 2ç‚¹ 1 3
 			break;
 		case 0x0c:
-			// 2“_ 2 3
+			// 2ç‚¹ 2 3
 			break;
 		case 0x07:
-			// 3“_ 0 1 2
+			// 3ç‚¹ 0 1 2
 			break;
 		case 0x0b:
-			// 3“_ 0 1 3
+			// 3ç‚¹ 0 1 3
 			break;
 		case 0x0d:
-			// 3“_ 0 2 3
+			// 3ç‚¹ 0 2 3
 			break;
 		case 0x0e:
-			// 3“_ 1 2 3
+			// 3ç‚¹ 1 2 3
 			break;
 		default:
 			break;
@@ -1370,11 +1370,11 @@ kmb::BLMGenerator::getLayerNodeId(kmb::nodeIdType outerNodeId, kmb::nodeIdType i
 
 	}
 	kmb::nodeIdType* nodes = NULL;
-	// ‚ ‚ê‚Î‚»‚ê‚ğ•Ô‚·
+	// ã‚ã‚Œã°ãã‚Œã‚’è¿”ã™
 	if( this->layerNodes.find( std::pair<kmb::nodeIdType,kmb::nodeIdType>(innerNodeId,outerNodeId) ) != this->layerNodes.end() ){
 		nodes = this->layerNodes[ std::pair<kmb::nodeIdType,kmb::nodeIdType>(innerNodeId,outerNodeId) ];
 	}else{
-	// ‚È‚¯‚ê‚Îì‚é
+	// ãªã‘ã‚Œã°ä½œã‚‹
 		kmb::Node inner,outer;
 		if( !this->mesh->getNode(innerNodeId,inner)
 			|| !this->mesh->getNode(outerNodeId,outer) ){
@@ -1386,7 +1386,7 @@ kmb::BLMGenerator::getLayerNodeId(kmb::nodeIdType outerNodeId, kmb::nodeIdType i
 			dict.normalize();
 			for( int i = 0 ; i < this->layerNum-1; ++i )
 			{
-				// ’†ŠÔ’¸“_‚Ì“o˜^
+				// ä¸­é–“é ‚ç‚¹ã®ç™»éŒ²
 				kmb::Point3D pt = inner + dict.scalar( layerThick[i] );
 				nodes[i] = this->mesh->addNode(pt.x(),pt.y(),pt.z());
 			}

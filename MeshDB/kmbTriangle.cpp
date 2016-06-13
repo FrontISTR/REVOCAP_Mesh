@@ -36,15 +36,15 @@
 /********************************************************************************
 =begin
 
-=== 1ŸOŠpŒ`—v‘f (TRIANGLE)
+=== 1æ¬¡ä¸‰è§’å½¢è¦ç´  (TRIANGLE)
 
-Ú‘±s—ñ
+æ¥ç¶šè¡Œåˆ—
 
 	{  0, 1,-1},
 	{ -1, 0, 1},
 	{  1,-1, 0}
 
-•Ó
+è¾º
 
 	{ 1, 2},
 	{ 2, 0},
@@ -52,12 +52,12 @@
 
 =end
 
-Ú‘±s—ñ‚Ì (i,j) ¬•ª‚Í
- [i,j] ‚ª•Ó‚Ì‚Æ‚«‚É 1
- [j,i] ‚ª•Ó‚Ì‚Æ‚«‚É -1
-‚Æ‚·‚é
+æ¥ç¶šè¡Œåˆ—ã® (i,j) æˆåˆ†ã¯
+ [i,j] ãŒè¾ºã®ã¨ãã« 1
+ [j,i] ãŒè¾ºã®ã¨ãã« -1
+ã¨ã™ã‚‹
 
-Œ`óŠÖ”
+å½¢çŠ¶é–¢æ•°
 0 : 1-s-t => (s,t) = ( 0, 0)
 1 : s     => (s,t) = ( 1, 0)
 2 : t     => (s,t) = ( 0, 1)
@@ -103,6 +103,16 @@ kmb::Triangle::Triangle(kmb::nodeIdType i0,kmb::nodeIdType i1,kmb::nodeIdType i2
 
 kmb::Triangle::~Triangle(void)
 {
+}
+
+kmb::nodeIdType kmb::Triangle::operator()(const int index,const int i) const
+{
+	return cell[kmb::Triangle::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Triangle::operator()(const int index,const int i)
+{
+	return cell[kmb::Triangle::faceTable[index][i]];
 }
 
 void
@@ -165,50 +175,50 @@ kmb::Triangle::edgeSwap(kmb::ElementBase &triangle0,kmb::ElementBase &triangle1)
 	bool swapped = false;
 	if( triangle0.getType() == kmb::TRIANGLE && triangle1.getType() == kmb::TRIANGLE )
 	{
-		// ‹«ŠE‚Ì4“_‚ğ‡”Ô‚É•À‚×‚é
+		// å¢ƒç•Œã®4ç‚¹ã‚’é †ç•ªã«ä¸¦ã¹ã‚‹
 		kmb::nodeIdType nodes[4]
 			= {kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId};
 		int count = 0;
 		int indices[3] ={0,0,0};
 		for(int i=0;i<3;++i){
-			indices[i] = triangle1.indexOf( triangle0.getCellId(i) );
+			indices[i] = triangle1.indexOf( triangle0.getNodeId(i) );
 			if( indices[i] != -1 ){
 				++count;
 			}
 		}
-		// ‹¤—L‚·‚é 2 “_‚ğ’T‚µ‚ÄAnodes[1] ‚Æ nodes[3] ‚É“ü‚ê‚é
+		// å…±æœ‰ã™ã‚‹ 2 ç‚¹ã‚’æ¢ã—ã¦ã€nodes[1] ã¨ nodes[3] ã«å…¥ã‚Œã‚‹
 		if( count == 2 )
 		{
 			if( indices[0] == -1 )
 			{
 				int i_next = ( indices[1]+1 == 3) ? 0 : indices[1]+1;
-				nodes[0] = triangle0.getCellId( 0 );
-				nodes[1] = triangle0.getCellId( 1 );
-				nodes[2] = triangle1.getCellId( i_next );
-				nodes[3] = triangle0.getCellId( 2 );
+				nodes[0] = triangle0.getNodeId( 0 );
+				nodes[1] = triangle0.getNodeId( 1 );
+				nodes[2] = triangle1.getNodeId( i_next );
+				nodes[3] = triangle0.getNodeId( 2 );
 			}
 			else if( indices[1] == -1 )
 			{
 				int i_next = ( indices[2]+1 == 3) ? 0 : indices[2]+1;
-				nodes[0] = triangle0.getCellId( 1 );
-				nodes[1] = triangle0.getCellId( 2 );
-				nodes[2] = triangle1.getCellId( i_next );
-				nodes[3] = triangle0.getCellId( 0 );
+				nodes[0] = triangle0.getNodeId( 1 );
+				nodes[1] = triangle0.getNodeId( 2 );
+				nodes[2] = triangle1.getNodeId( i_next );
+				nodes[3] = triangle0.getNodeId( 0 );
 			}
 			else if( indices[2] == -1 )
 			{
 				int i_next = ( indices[0]+1 == 3) ? 0 : indices[0]+1;
-				nodes[0] = triangle0.getCellId( 2 );
-				nodes[1] = triangle0.getCellId( 0 );
-				nodes[2] = triangle1.getCellId( i_next );
-				nodes[3] = triangle0.getCellId( 1 );
+				nodes[0] = triangle0.getNodeId( 2 );
+				nodes[1] = triangle0.getNodeId( 0 );
+				nodes[2] = triangle1.getNodeId( i_next );
+				nodes[3] = triangle0.getNodeId( 1 );
 			}
-			triangle0.setCellId(0, nodes[0]);
-			triangle0.setCellId(1, nodes[1]);
-			triangle0.setCellId(2, nodes[2]);
-			triangle1.setCellId(0, nodes[2]);
-			triangle1.setCellId(1, nodes[3]);
-			triangle1.setCellId(2, nodes[0]);
+			triangle0.setNodeId(0, nodes[0]);
+			triangle0.setNodeId(1, nodes[1]);
+			triangle0.setNodeId(2, nodes[2]);
+			triangle1.setNodeId(0, nodes[2]);
+			triangle1.setNodeId(1, nodes[3]);
+			triangle1.setNodeId(2, nodes[0]);
 			swapped = true;
 		}
 	}
@@ -229,12 +239,12 @@ kmb::Triangle::isCoincident(kmb::nodeIdType t00,kmb::nodeIdType t01,kmb::nodeIdT
 	if( t02 == t11 )	rel |= 0x002;
 	if( t02 == t12 )	rel |= 0x004;
 	switch( rel ){
-		// “¯‚¶Œü‚«‚É3“_‹¤—L
+		// åŒã˜å‘ãã«3ç‚¹å…±æœ‰
 	case 0x124:
 	case 0x241:
 	case 0x412:
 		return 1;
-		// ‹tŒü‚«‚É3“_‹¤—L
+		// é€†å‘ãã«3ç‚¹å…±æœ‰
 	case 0x421:
 	case 0x214:
 	case 0x142:

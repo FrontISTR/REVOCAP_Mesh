@@ -325,7 +325,7 @@ void rcapGetNodeSeq32( size_t num, size_t initId, float32_t* coords );
  * num = 5;
  * nodeArray = new int32_t[4*5];
  * resultNodeArray = new int32_t[4*5*8];
- *
+ * // ここで nodeArray に初期要素の節点配列を代入する。
  * refineElement( &num, &etype, nodeArray, resultNodeArray )
  * @endcode
  *
@@ -337,13 +337,13 @@ void rcapGetNodeSeq32( size_t num, size_t initId, float32_t* coords );
  * num = 5;
  * nodeArrayTetra = new int32_t[4*5];
  * resultNodeArrayTetra = new int32_t[4*5*8];
- *
+ * // ここで nodeArrayTetra に初期要素の節点配列を代入する。
  * refineElement( &num, &etype, nodeArrayTetra, resultNodeArrayTetra )
  * etype = HEXAHEDRON;
  * num = 5;
  * nodeArrayHex = new int32_t[8*5];
  * resultNodeArrayHex = new int32_t[8*5*8];
- *
+ * // ここで nodeArrayHex に初期要素の節点配列を代入する。
  * refineElement( &num, &etype, nodeArrayHex, resultNodeArrayHex )
  * @endcode
  *
@@ -719,7 +719,7 @@ void rcapQualityReport( const char name[80], const char* filename );
  * @brief 細分後の自然座標の変換
  * 未実装
  */
-
+//int32_t rcapGetRefinedNaturalCoord( int32_t* elementId, float32_t* coords, int32_t* refinedElementId, float32_t* refinedCoords );
 
 /**
  * @brief デバッグ用ファイル入出力ルーチン

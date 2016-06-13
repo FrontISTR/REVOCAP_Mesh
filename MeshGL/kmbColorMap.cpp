@@ -50,6 +50,7 @@ kmb::ColorMap::ColorMap(int s)
 , maxVal(1.0)
 , color(NULL)
 , step(0)
+, alpha(1.0f)
 , cache(NULL)
 , cacheUpdate(true)
 {
@@ -68,21 +69,21 @@ kmb::ColorMap::~ColorMap(void)
 void
 kmb::ColorMap::setGLColor(double v)
 {
-	getRGB(v,rgb);
-	::glColor3fv( rgb );
+	getRGBA(v,rgba);
+	::glColor4fv( rgba );
 }
 
 void
 kmb::ColorMap::setGLColorByStep(int s)
 {
-	getRGBByStep(s,rgb);
-	::glColor3fv( rgb );
+	getRGBAByStep(s,rgba);
+	::glColor4fv( rgba );
 }
 
 void
 kmb::ColorMap::calcRGB(double x,float rgb[3]) const
 {
-	/* HSV ‚ÌF‘Š‚ğ—p‚¢‚é */
+	/* HSV ã®è‰²ç›¸ã‚’ç”¨ã„ã‚‹ */
 	if(x <= 0.0f){
 		rgb[0] = 0.0f;  // r
 		rgb[1] = 0.0f;  // g
@@ -108,7 +109,7 @@ kmb::ColorMap::calcRGB(double x,float rgb[3]) const
 		rgb[1] = 0.0f;  // g
 		rgb[2] = 0.0f;  // b
 	}
-	/* HSV ‚ÌF‘Š‚ğC³BŠÖ”‚ğ2Ÿ®‚É‚·‚é */
+	/* HSV ã®è‰²ç›¸ã‚’ä¿®æ­£ã€‚é–¢æ•°ã‚’2æ¬¡å¼ã«ã™ã‚‹ */
 /*
 	if(x <= 0.0f){
 		rgb[0] = 0.0f;  // r
@@ -170,7 +171,7 @@ kmb::ColorMap::getStep(void) const
 	return this->step;
 }
 
-// ¡‚Í rgba[3] ‚ğ–³‹‚µ‚Ä‚¢‚é
+// ä»Šã¯ rgba[3] ã‚’ç„¡è¦–ã—ã¦ã„ã‚‹
 void
 kmb::ColorMap::setRGBAByStep(int s,const float rgba[4])
 {
@@ -219,6 +220,16 @@ kmb::ColorMap::getStep(double x) const
 		ix = static_cast<int>( (x - minVal) / (maxVal - minVal) * step );
 	}
 	return ix;
+}
+
+float kmb::ColorMap::getAlpha(void) const
+{
+	return alpha;
+}
+
+void kmb::ColorMap::setAlpha(float a)
+{
+	this->alpha = a;
 }
 
 void
@@ -271,13 +282,13 @@ kmb::ColorMap::getRGBA(double x,float rgba[4],float ratio) const
 		rgba[0] = rgb[0] * ratio;
 		rgba[1] = rgb[1] * ratio;
 		rgba[2] = rgb[2] * ratio;
-		rgba[3] = 1.0f;
+		rgba[3] = alpha;
 	}else{
 		int ix = getStep(x);
 		rgba[0] = color[3*ix  ] * ratio;
 		rgba[1] = color[3*ix+1] * ratio;
 		rgba[2] = color[3*ix+2] * ratio;
-		rgba[3] = 1.0f;
+		rgba[3] = alpha;
 	}
 }
 
@@ -288,14 +299,14 @@ kmb::ColorMap::getRGBAByStep(int s,float rgba[4],float ratio) const
 		rgba[0] = color[3*s  ] * ratio;
 		rgba[1] = color[3*s+1] * ratio;
 		rgba[2] = color[3*s+2] * ratio;
-		rgba[3] = 1.0f;
+		rgba[3] = alpha;
 	}
 }
 
 bool
 kmb::ColorMap::createColorCache(const kmb::DataBindings* nodeValue, int comp)
 {
-	// nodeValue ‚Ìß“_”Ô†‚Í‚Æ‚Ñ‚Æ‚Ñ‚Å‚È‚¢‚±‚Æ‚ğ‰¼’è
+	// nodeValue ã®ç¯€ç‚¹ç•ªå·ã¯ã¨ã³ã¨ã³ã§ãªã„ã“ã¨ã‚’ä»®å®š
 	if( cache == NULL ){
 		cache = new kmb::Color3fValueBindings(nodeValue->getIdCount());
 	}else if( cache->getIdCount() != nodeValue->getIdCount() ){

@@ -49,7 +49,7 @@ kmb::MeshDB::getDistance(kmb::nodeIdType nodeId0, kmb::nodeIdType nodeId1) const
 	return DBL_MAX;
 }
 
-// 座標から最近点を検索
+// 蠎ｧ讓吶°繧画怙霑醍せ繧呈､懃ｴ｢
 
 double
 kmb::MeshDB::getNearestNodeInBody(double x,double y,double z,kmb::bodyIdType bodyId,kmb::nodeIdType& nearestId) const
@@ -70,7 +70,7 @@ kmb::MeshDB::getNearestNodeInBody(const kmb::Point3D& point, kmb::bodyIdType bod
 		{
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				const kmb::nodeIdType nodeId = eIter.getCellId(i);
+				const kmb::nodeIdType nodeId = eIter.getNodeId(i);
 				if( this->getNode( nodeId, node ) ){
 					if( minimizer.update( node.distanceSq( point ) ) ){
 						nearestId = nodeId;
@@ -83,7 +83,7 @@ kmb::MeshDB::getNearestNodeInBody(const kmb::Point3D& point, kmb::bodyIdType bod
 	return sqrt( minimizer.getMin() );
 }
 
-// NodeId から自分以外の最近点を検索
+// NodeId 縺九ｉ閾ｪ蛻�莉･螟悶�ｮ譛霑醍せ繧呈､懃ｴ｢
 double
 kmb::MeshDB::getNearestNode(const kmb::nodeIdType id,kmb::nodeIdType& nearestId) const
 {
@@ -117,7 +117,7 @@ kmb::MeshDB::getNearestNodeInBody(const kmb::nodeIdType id,kmb::bodyIdType bodyI
 		{
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				const kmb::nodeIdType target_nodeId = eIter.getCellId(i);
+				const kmb::nodeIdType target_nodeId = eIter.getNodeId(i);
 				if( this->getNode( target_nodeId, targetNode ) && id != target_nodeId ){
 					if( minimizer.update( targetNode.distanceSq( node ) ) ){
 						nearestId = target_nodeId;

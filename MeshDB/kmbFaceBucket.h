@@ -13,7 +13,7 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// MPC î•ñ¶¬‚Ì‚½‚ß‚Ì–‘Oˆ—ƒNƒ‰ƒX
+// MPC æƒ…å ±ç”Ÿæˆã®ãŸã‚ã®äº‹å‰å‡¦ç†ã‚¯ãƒ©ã‚¹
 //
 
 #pragma once
@@ -43,8 +43,8 @@ public:
 
 	bool getNearest(double x,double y,double z,double &dist,kmb::Face &f) const;
 protected:
-	// ‹——£‚Í‚Qæ‚Å•Ô‚·
-	// (i,j,k) ‚Ì bucket ‚Ì’†‚Å‚ÌÅ¬’l
+	// è·é›¢ã¯ï¼’ä¹—ã§è¿”ã™
+	// (i,j,k) ã® bucket ã®ä¸­ã§ã®æœ€å°å€¤
 	bool getNearestInBucket(const kmb::Point3D& pt,int i,int j,int k,double &dist,kmb::Face &f) const;
 };
 

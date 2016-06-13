@@ -17,19 +17,19 @@
 =begin
 = RevocapIO
 
-RevocapIO �Ƃ� RevocapMesh �ւ̓��o�͂��`�������W���[���ł���B
+RevocapIO とは RevocapMesh への入出力を定義したモジュールである。
 
-==���W���[���萔
+==モジュール定数
 
 ((<VERSION>))
 ((<COPYRIGHT>))
 
-== ���W���[���萔
-�ȉ��̒萔�� RevocapGL ���W���[���Œ�`����Ă���B
+== モジュール定数
+以下の定数は RevocapGL モジュールで定義されている。
 --- VERSION
-	�o�[�W�������̕�����
+	バージョン情報の文字列
 --- COPYRIGHT
-	���쌠���̕�����
+	著作権情報の文字列
 
 =end
 ---------------------------------------------------------------------*/
@@ -71,17 +71,17 @@ namespace kmb{
 /**-----------------------------------------------------------------
 =begin
 = RevocapIO::TripatchPcmIO
-== �T�v
-ADVENTURE_Tripatch �� pcm �`���t�@�C���̓ǂݏ���������
-== ���\�b�h
+== 概要
+ADVENTURE_Tripatch の pcm 形式ファイルの読み書きをする
+== メソッド
 --- TripatchPcmIO.new
-    �R���X�g���N�^
+    コンストラクタ
 --- loadFromFile(filename,mesh)
-    pcm �t�@�C�� filename �̓��e�� mesh �ɓǂݍ���
+    pcm ファイル filename の内容を mesh に読み込む
 --- saveToFile(filename,mesh,packOption=0)
-    mesh �̓��e�� filename �� pcm �`���ŏo�͂���
-     * packOption = 0 : ���̂܂܏o��
-     * packOption = 1 : ���ׂĂ���ɂ܂Ƃ߂ďo��
+    mesh の内容を filename に pcm 形式で出力する
+     * packOption = 0 : そのまま出力
+     * packOption = 1 : すべてを一つにまとめて出力
 =end
 ---------------------------------------------------------------------*/
 %include "../RevocapIO/kmbTripatchPcmIO.h"
@@ -89,16 +89,16 @@ ADVENTURE_Tripatch �� pcm �`���t�@�C���̓ǂݏ���������
 /**-----------------------------------------------------------------
 =begin
 = RevocapIO::TetMeshMIO
-== �T�v
-ADVENTURE_TetMesh �� msh �`���t�@�C���̓ǂݏ���������
-4�ʑ̂����łȂ��A6�ʑ̂ɂ��Ă� ADVENTURE �`���̃t�@�C���̓ǂݏ������\
-== ���\�b�h
+== 概要
+ADVENTURE_TetMesh の msh 形式ファイルの読み書きをする
+4面体だけでなく、6面体についても ADVENTURE 形式のファイルの読み書きが可能
+== メソッド
 --- TetMeshMIO.new
-    �R���X�g���N�^
+    コンストラクタ
 --- loadFromFile(filename,mesh)
-    msh �t�@�C�� filename �̓��e�� mesh �ɓǂݍ���
+    msh ファイル filename の内容を mesh に読み込む
 --- saveToFile(filename,mesh)
-    mesh �̓��e�� filename �� msh �`���ŏo�͂���
+    mesh の内容を filename に msh 形式で出力する
 =end
 ---------------------------------------------------------------------*/
 %include "../RevocapIO/kmbTetMeshMIO.h"
@@ -106,60 +106,60 @@ ADVENTURE_TetMesh �� msh �`���t�@�C���̓ǂݏ���������
 /**-----------------------------------------------------------------
 =begin
 = RevocapIO::HecmwIO
-== �T�v
-HEC-MW �� msh �`���Efrs �`���t�@�C���̓ǂݏ���������
-== ���\�b�h
+== 概要
+HEC-MW の msh 形式・frs 形式ファイルの読み書きをする
+== メソッド
 --- HecmwIO.new
-    �R���X�g���N�^
+    コンストラクタ
 --- loadFromFile(filename,mesh)
-    msh �t�@�C�� filename �̓��e�� mesh �ɓǂݍ���
+    msh ファイル filename の内容を mesh に読み込む
 --- loadFromFRSFile(filename,mesh)
-    frs �t�@�C�� filename �̓��e�� mesh �ɓǂݍ���
+    frs ファイル filename の内容を mesh に読み込む
 --- loadFromResFile(filename,mesh)
-    res �t�@�C�� filename �̓��e�� mesh �ɓǂݍ���
+    res ファイル filename の内容を mesh に読み込む
 --- saveToFile(filename,mesh)
-    mesh �̓��e�� filename �� msh �`���ŏo�͂���
+    mesh の内容を filename に msh 形式で出力する
 --- setSolutionType(soltype)
-    ��͂̎�ނ�ݒ肷��
-    �ݒ�\�Ȓl�́A������ "STATIC" "HEAT" "EIGEN" "DYNAMIC" ��4�ʂ�
-    �����ɂ���� msh �`���̃t�@�C���̍ޗ��ݒ�l�̏o�͕��@��؂�ւ���
+    解析の種類を設定する
+    設定可能な値は、文字列 "STATIC" "HEAT" "EIGEN" "DYNAMIC" の4通り
+    これらによって msh 形式のファイルの材料設定値の出力方法を切り替える
 --- getSolutionType
-    ���ݐݒ肳��Ă����͂̎�ނ̕������Ԃ�
+    現在設定されている解析の種類の文字列を返す
 --- setDataFlag(flag)
 --- setResElementFlag(flag)
 --- appendEquationToFile(filename,mesh,master,slave,thresh,outThresh)
-    MPC �f�[�^���o�͂���
+    MPC データを出力する
 =end
 ---------------------------------------------------------------------*/
 %include "../RevocapIO/kmbHecmwIO.h"
 /**-----------------------------------------------------------------
 =begin
 = RevocapIO::FFbIO
-== �T�v
-FrontFlow/blue GF �`���� mesh boun flow �t�@�C���̓ǂݏ���������
-== ���\�b�h
+== 概要
+FrontFlow/blue GF 形式の mesh boun flow ファイルの読み書きをする
+== メソッド
 --- FFbIO.new
-    �R���X�g���N�^
+    コンストラクタ
 --- loadFromMeshFile(filename,mesh)
-    GF �`���� mesh �t�@�C�� filename �̓��e�� mesh �ɓǂݍ���
+    GF 形式の mesh ファイル filename の内容を mesh に読み込む
 --- loadFromBoundaryFile(filename,mesh)
-    GF �`���� boundary �t�@�C�� filename �̓��e�� mesh �ɓǂݍ���
+    GF 形式の boundary ファイル filename の内容を mesh に読み込む
 --- loadPostStep(filename,mesh,step=-1)
-    GF �`���� flow �t�@�C�� filename �̓��e�� mesh �ɓǂݍ���
-    step ���w�肷�邱�Ƃ��\�B-1 �̎��͊i�[����Ă���ŏ��� step ��ǂ�
+    GF 形式の flow ファイル filename の内容を mesh に読み込む
+    step を指定することも可能。-1 の時は格納されている最初の step を読む
 --- loadHeader(filename)
-    GF �`���̃t�@�C���̃w�b�_���o�͂���
+    GF 形式のファイルのヘッダを出力する
 --- saveToMeshFile(filename,mesh)
-    mesh �̓��e�� filename �� GF �`���� mesh �t�@�C���ŏo�͂���
-    �߂�l�͎l�ʑ̃��f���������� 4�A�Z�ʑ̃��f���������� 6�A�����̏ꍇ�� 8
+    mesh の内容を filename に GF 形式の mesh ファイルで出力する
+    戻り値は四面体モデルだったら 4、六面体モデルだったら 6、混合の場合は 8
 --- saveToMeshFileVer6(filename,mesh)
-    mesh �̓��e�� filename �� FrontFlow/blue ver.6 �� GF �`���� mesh �t�@�C���ŏo�͂���
+    mesh の内容を filename に FrontFlow/blue ver.6 の GF 形式の mesh ファイルで出力する
 --- saveToBoundaryFile(filename,mesh)
-    mesh �ɒ�`���ꂽ���E������ filename �� GF �`���� boundary �t�@�C���ŏo�͂���
-    �W���ȊO�� "CUSTOM" �^�O�̐ߓ_�O���[�v���o�͂���
+    mesh に定義された境界条件を filename に GF 形式の boundary ファイルで出力する
+    標準以外に "CUSTOM" タグの節点グループも出力する
 --- saveToBoundaryFileAcoustic(filename,mesh)
-    mesh �ɒ�`���ꂽ���E������ filename �� GF �`���� boundary �t�@�C���ŏo�͂���
-    Acoustic �p
+    mesh に定義された境界条件を filename に GF 形式の boundary ファイルで出力する
+    Acoustic 用
 =end
 ---------------------------------------------------------------------*/
 %include "../RevocapIO/kmbFFbIO.h"
@@ -167,18 +167,18 @@ FrontFlow/blue GF �`���� mesh boun flow �t�@�C���̓ǂݏ���������
 /**-----------------------------------------------------------------
 =begin
 = RevocapIO::RevocapCouplerIO
-== �T�v
-REVOCAP_Coupler �̕����t�@�C���̓ǂݍ���
-== ���\�b�h
+== 概要
+REVOCAP_Coupler の分割ファイルの読み込み
+== メソッド
 --- RevocapCouplerIO.new
-    �R���X�g���N�^
+    コンストラクタ
 --- loadFromPartitionFile(filename,mesh)
-    REVOCAP_Coupler �̕����t�@�C�� filename �̓��e�� mesh �ɓǂݍ���
-    mesh �ɂ� global Id �i�[����
+    REVOCAP_Coupler の分割ファイル filename の内容を mesh に読み込む
+    mesh には global Id 格納する
 --- loadLocalNodesFromPartitionFile(filename,mesh)
-    REVOCAP_Coupler �̕����t�@�C�� filename �̐ߓ_�� mesh �ɓǂݍ���
-    mesh �ɂ� localId �Ŋi�[����
-    globalId�� Data �Ƃ��� name = "GlobalId" �ŎQ�Ƃ���
+    REVOCAP_Coupler の分割ファイル filename の節点を mesh に読み込む
+    mesh には localId で格納する
+    globalIdは Data として name = "GlobalId" で参照する
 =end
 ---------------------------------------------------------------------*/
 %include "../RevocapIO/kmbRevocapCouplerIO.h"
@@ -186,21 +186,21 @@ REVOCAP_Coupler �̕����t�@�C���̓ǂݍ���
 /**-----------------------------------------------------------------
 =begin
 = RevocapIO::MicroAVSIO
-== �T�v
-MicroAVS �� UCD �`���̓ǂݏ���
-== ���\�b�h
+== 概要
+MicroAVS の UCD 形式の読み書き
+== メソッド
 --- MicroAVSIO.new
-    �R���X�g���N�^
+    コンストラクタ
 --- loadFromFile(filename,mesh)
-    MicroAVS UCD �`���� filename �� mesh �ɓǂݍ���
+    MicroAVS UCD 形式の filename を mesh に読み込む
 --- loadPostFromFile(filename,mesh)
-    MicroAVS UCD �`���� filename �̌v�Z���ʃf�[�^������ mesh �ɓǂݍ���
+    MicroAVS UCD 形式の filename の計算結果データだけを mesh に読み込む
 --- saveToFile_V8(filename,mesh)
-    mesh �̓��e�� MicroAVS UCD Ver.8 �`���� filename �ɏo�͂���
+    mesh の内容を MicroAVS UCD Ver.8 形式で filename に出力する
 --- saveToFile(filename,mesh)
-    mesh �̓��e�� MicroAVS UCD �`���� filename �ɏo�͂���
+    mesh の内容を MicroAVS UCD 形式で filename に出力する
 --- setReadAsVector3(flag)
-    �t�@�C����ǂݍ��ނƂ���3�����v�Z���ʂ��Ȃ����Ɏ����I�Ƀx�N�g���l�Ŋi�[����
+    ファイルを読み込むときに3つしか計算結果がない時に自動的にベクトル値で格納する
 =end
 ---------------------------------------------------------------------*/
 %include "../RevocapIO/kmbMicroAVSIO.h"
@@ -208,15 +208,15 @@ MicroAVS �� UCD �`���̓ǂݏ���
 /**-----------------------------------------------------------------
 =begin
 = RevocapIO::RevocapNeutralIO
-== �T�v
-REVOCAP_PrePost �� YAML �`���j���[�g�����t�@�C���̓ǂݏ���
-== ���\�b�h
+== 概要
+REVOCAP_PrePost の YAML 形式ニュートラルファイルの読み書き
+== メソッド
 --- RevocapNeutralIO.new
-    �R���X�g���N�^
+    コンストラクタ
 --- loadFromRNFFile(filename,mesh)
-    REVOCAP_PrePost RNF �`���̃t�@�C�� filename �� mesh �ɓǂݍ���
+    REVOCAP_PrePost RNF 形式のファイル filename を mesh に読み込む
 --- saveToRNFFile(filename,mesh)
-    mesh �̓��e�� REVOCAP_PrePost RNF �`���� filename �ɏo�͂���
+    mesh の内容を REVOCAP_PrePost RNF 形式で filename に出力する
 =end
 ---------------------------------------------------------------------*/
 %include "../RevocapIO/kmbRevocapNeutralIO.h"

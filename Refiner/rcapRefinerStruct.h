@@ -30,12 +30,12 @@ namespace kmb{
 
 struct rcapRefinerInfo
 {
-	kmb::MeshData* mesh;
+	kmb::MeshData* mesh; // ×•ª‚³‚ê‚½ß“_
 	kmb::MeshRefiner* refiner;
 	kmb::MeshRefiner* boundaryRefiner;
 	kmb::MiddleNodeManager* middleMan;
 	kmb::MeshSmoother* smoother;
-	std::vector< kmb::Surface3D* > surfaces;
+	std::vector< kmb::Surface3D* > surfaces; // Œ`ó•â³‚Ì‚½‚ß‚Ìî•ñ
 	int32_t nodeOffset;
 	int32_t elementOffset;
 	int32_t maxElementId;

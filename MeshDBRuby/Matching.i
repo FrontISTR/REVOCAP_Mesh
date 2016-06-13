@@ -27,9 +27,9 @@
 =begin
 =RevocapMesh::Matching
 
-RevocapMesh::MeshDB ‚ÉŠi”[‚³‚ê‚½ƒƒbƒVƒ…‚É‘Î‚·‚éŒ`óƒ}ƒbƒ`ƒ“ƒOˆ—‚ğs‚¤‚½‚ß‚ÌƒNƒ‰ƒX‚Å‚ ‚é
+RevocapMesh::MeshDB ã«æ ¼ç´ã•ã‚ŒãŸãƒ¡ãƒƒã‚·ãƒ¥ã«å¯¾ã™ã‚‹å½¢çŠ¶ãƒãƒƒãƒãƒ³ã‚°å‡¦ç†ã‚’è¡Œã†ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã§ã‚ã‚‹
 
-==ƒƒ\ƒbƒhˆê——
+==ãƒ¡ã‚½ãƒƒãƒ‰ä¸€è¦§
 
 ((<Matching.new>))
 ((<getDistanceEdgeToNode>))
@@ -58,7 +58,7 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- Matching.new
-	Œ`óƒ}ƒbƒ`ƒ“ƒOˆ—ƒNƒ‰ƒX Matching ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬‚·‚éB
+	å½¢çŠ¶ãƒãƒƒãƒãƒ³ã‚°å‡¦ç†ã‚¯ãƒ©ã‚¹ Matching ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã™ã‚‹ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	Matching(void);
@@ -66,27 +66,27 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- getDistanceEdgeToNode( mesh, bodyId, nodeId )
-	MeshDB mesh ‚Ì bodyId ‚Å—^‚¦‚ç‚ê‚é1ŸŒ³—v‘fƒOƒ‹[ƒv‚É‘Î‚µ‚ÄA
-	ß“_ID nodeId ‚Å—^‚¦‚ç‚ê‚éß“_‚Æ‚Ì‹——£‚ğ•Ô‚·B
-	bodyId ‚Å—^‚¦‚ç‚ê‚é—v‘fƒOƒ‹[ƒv‚ª1ŸŒ³‚Å‚È‚¢AnodeId ‚Å•\‚í‚³‚ê‚é
-	ß“_‚ª‘¶İ‚µ‚È‚¢‚Æ‚«‚È‚Ç‚ÍA–³ŒÀ‘å‚ğ•Ô‚·B
+	MeshDB mesh ã® bodyId ã§ä¸ãˆã‚‰ã‚Œã‚‹1æ¬¡å…ƒè¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã«å¯¾ã—ã¦ã€
+	ç¯€ç‚¹ID nodeId ã§ä¸ãˆã‚‰ã‚Œã‚‹ç¯€ç‚¹ã¨ã®è·é›¢ã‚’è¿”ã™ã€‚
+	bodyId ã§ä¸ãˆã‚‰ã‚Œã‚‹è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ãŒ1æ¬¡å…ƒã§ãªã„æ™‚ã€nodeId ã§è¡¨ã‚ã•ã‚Œã‚‹
+	ç¯€ç‚¹ãŒå­˜åœ¨ã—ãªã„ã¨ããªã©ã¯ã€ç„¡é™å¤§ã‚’è¿”ã™ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	double getDistanceEdgeToNode( kmb::MeshDB* mesh, kmb::bodyIdType bodyId, kmb::nodeIdType nodeId );
 /**--------------------------------------------------------------------------
 =begin
 --- getDistanceEdgeToEdge( mesh, bodyId0, bodyId1 )
-	MeshDB mesh ‚Ì bodyId0, bodyId1 ‚Å—^‚¦‚ç‚ê‚é1ŸŒ³—v‘fƒOƒ‹[ƒv‚É‘Î‚µ‚ÄA
-	‚»‚ê‚ç‚Ì‚È‚·‹——£‚ğ•Ô‚·B
-	‚±‚±‚Å‚Ì1ŸŒ³—v‘fƒOƒ‹[ƒvŠÔ‚Ì‹——£‚Ì’è‹`‚Í
-	 1/2 * ( ß“_‚ÉŠÖ‚·‚é•½‹Ï (bodyId0 ‚Ìß“_‚Æ bodyId1 ‚Ì‹——£) + ß“_‚ÉŠÖ‚·‚é•½‹Ï (bodyId1 ‚Ìß“_‚Æ bodyId0 ‚Ì‹——£) )
-	‚Å‚ ‚éB
+	MeshDB mesh ã® bodyId0, bodyId1 ã§ä¸ãˆã‚‰ã‚Œã‚‹1æ¬¡å…ƒè¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã«å¯¾ã—ã¦ã€
+	ãã‚Œã‚‰ã®ãªã™è·é›¢ã‚’è¿”ã™ã€‚
+	ã“ã“ã§ã®1æ¬¡å…ƒè¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—é–“ã®è·é›¢ã®å®šç¾©ã¯
+	 1/2 * ( ç¯€ç‚¹ã«é–¢ã™ã‚‹å¹³å‡ (bodyId0 ã®ç¯€ç‚¹ã¨ bodyId1 ã®è·é›¢) + ç¯€ç‚¹ã«é–¢ã™ã‚‹å¹³å‡ (bodyId1 ã®ç¯€ç‚¹ã¨ bodyId0 ã®è·é›¢) )
+	ã§ã‚ã‚‹ã€‚
 --- getDistanceEdgeToEdge( mesh0, bodyId0, mesh1, bodyId1 )
-	MeshDB mesh0 ‚Ì bodyId0AMeshDB mesh1 ‚Ì bodyId1 ‚Å—^‚¦‚ç‚ê‚é1ŸŒ³—v‘fƒOƒ‹[ƒv‚É‘Î‚µ‚ÄA
-	‚»‚ê‚ç‚Ì‚È‚·‹——£‚ğ•Ô‚·B
-	‚±‚±‚Å‚Ì1ŸŒ³—v‘fƒOƒ‹[ƒvŠÔ‚Ì‹——£‚Ì’è‹`‚Í
-	 1/2 * ( ß“_‚ÉŠÖ‚·‚é•½‹Ï (bodyId0 ‚Ìß“_‚Æ bodyId1 ‚Ì‹——£) + ß“_‚ÉŠÖ‚·‚é•½‹Ï (bodyId1 ‚Ìß“_‚Æ bodyId0 ‚Ì‹——£) )
-	‚Å‚ ‚éB
+	MeshDB mesh0 ã® bodyId0ã€MeshDB mesh1 ã® bodyId1 ã§ä¸ãˆã‚‰ã‚Œã‚‹1æ¬¡å…ƒè¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã«å¯¾ã—ã¦ã€
+	ãã‚Œã‚‰ã®ãªã™è·é›¢ã‚’è¿”ã™ã€‚
+	ã“ã“ã§ã®1æ¬¡å…ƒè¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—é–“ã®è·é›¢ã®å®šç¾©ã¯
+	 1/2 * ( ç¯€ç‚¹ã«é–¢ã™ã‚‹å¹³å‡ (bodyId0 ã®ç¯€ç‚¹ã¨ bodyId1 ã®è·é›¢) + ç¯€ç‚¹ã«é–¢ã™ã‚‹å¹³å‡ (bodyId1 ã®ç¯€ç‚¹ã¨ bodyId0 ã®è·é›¢) )
+	ã§ã‚ã‚‹ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	double getDistanceEdgeToEdge( kmb::MeshDB* mesh, kmb::bodyIdType edgeId0, kmb::bodyIdType edgeId1 );
@@ -94,7 +94,7 @@ public:
 /**-----------------------------------------------------------------------
 =begin
 --- getDistanceDataToData(mesh,key0,key1)
-	key0 ‚Æ key1 ‚Å—^‚¦‚ç‚ê‚é Data ‚Ì BoundingBox ‚ÌŠÔ‚Ì‹——£‚ğ‹‚ß‚éB
+	key0 ã¨ key1 ã§ä¸ãˆã‚‰ã‚Œã‚‹ Data ã® BoundingBox ã®é–“ã®è·é›¢ã‚’æ±‚ã‚ã‚‹ã€‚
 =end
 --------------------------------------------------------------------------*/
 	double getDistanceDataToData(kmb::MeshDB* mesh,const char* key0,const char* key1);
@@ -102,8 +102,8 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- getMatchingEdgePair( mesh0, mesh1, tolerance )
-	MeshDB mesh0 ‚Æ mesh1 ‚ÉŠÜ‚Ü‚ê‚é1ŸŒ³—v‘fƒOƒ‹[ƒvŠÔ‚Ì‹——£‚ª tolerance ˆÈ‰º‚É‚È‚é‚æ‚¤‚È
-	‘g‚ğ’Tõ‚µ‚ÄA‚»‚ê‚ğ bodyId ‚Ì Array ‚Ì Array ‚Å•Ô‚·B
+	MeshDB mesh0 ã¨ mesh1 ã«å«ã¾ã‚Œã‚‹1æ¬¡å…ƒè¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—é–“ã®è·é›¢ãŒ tolerance ä»¥ä¸‹ã«ãªã‚‹ã‚ˆã†ãª
+	çµ„ã‚’æ¢ç´¢ã—ã¦ã€ãã‚Œã‚’ bodyId ã® Array ã® Array ã§è¿”ã™ã€‚
 =end
 ---------------------------------------------------------------------------*/
 %extend{
@@ -127,9 +127,9 @@ public:
 /**-----------------------------------------------------------------------
 =begin
 --- getSurfaceRelation( mesh, bodyID0, bodyID1 )
-	•½–Ê—v‘f‚Ì‚İ‚©‚ç‚È‚é“ñ‚Â‚Ìƒ{ƒfƒB‚É‘Î‚µ‚ÄAˆê’v‚µ‚Ä‚¢‚½‚ç 1
-	‹tŒü‚«‚È‚ç -1 ‚»‚êˆÈŠO‚È‚ç 0 ‚ğ•Ô‚·B
-	Œ`ó‚Å‚Í‚È‚­AOŠpŒ`‚ÌˆÊ‘Š‚©‚ç”»•Ê‚·‚éB
+	å¹³é¢è¦ç´ ã®ã¿ã‹ã‚‰ãªã‚‹äºŒã¤ã®ãƒœãƒ‡ã‚£ã«å¯¾ã—ã¦ã€ä¸€è‡´ã—ã¦ã„ãŸã‚‰ 1
+	é€†å‘ããªã‚‰ -1 ãã‚Œä»¥å¤–ãªã‚‰ 0 ã‚’è¿”ã™ã€‚
+	å½¢çŠ¶ã§ã¯ãªãã€ä¸‰è§’å½¢ã®ä½ç›¸ã‹ã‚‰åˆ¤åˆ¥ã™ã‚‹ã€‚
 =end
 --------------------------------------------------------------------------*/
 %extend{
@@ -149,8 +149,8 @@ public:
 /**-----------------------------------------------------------------------
 =begin
 --- getFaceRelation( mesh, face0, face1 )
-	FaceGroup ‚Ì“ñ‚Â‚Ì Data ‚É‘Î‚µ‚Ä•½–Ê‚Æ‚µ‚Äˆê’v‚µ‚Ä‚¢‚½‚ç 1
-	‹tŒü‚«‚È‚ç -1 ‚»‚êˆÈŠO‚È‚ç 0 ‚ğ•Ô‚·B
+	FaceGroup ã®äºŒã¤ã® Data ã«å¯¾ã—ã¦å¹³é¢ã¨ã—ã¦ä¸€è‡´ã—ã¦ã„ãŸã‚‰ 1
+	é€†å‘ããªã‚‰ -1 ãã‚Œä»¥å¤–ãªã‚‰ 0 ã‚’è¿”ã™ã€‚
 =end
 --------------------------------------------------------------------------*/
 %extend{
@@ -170,24 +170,24 @@ public:
 /**-----------------------------------------------------------------------
 =begin
 --- nodeMatchingOnBody(mesh0, bodyId0, mesh1, tolerance, coupleName)
-	mesh0 ‚Ì bodyId0 ã‚Ìß“_‚ğ mesh1 ‚Ì‚·‚×‚Ä‚Ìß“_‚Ì’†‚©‚ç
-	‹——£‚ª tolerance ˆÈ‰º‚Ì‚à‚Ì‚ğ’T‚µ‚ÄAmesh0 ‚Ì coupleName ‚Ì Data ‚É“o˜^‚·‚éB
-	 mesh0.setPhysicalValueAtId( coupleName, mesh0 ‚Ì nodeId, mesh1 ‚Ì nodeId )
-	coupleName ‚Ì Data ‚ª NodeVariable Integer ’l‚ÅŠù‚É‘¶İ‚·‚éê‡‚Í‚»‚Ì Data ‚É’Ç‰Á‚·‚éB
-	‘¼‚Ìƒ‚[ƒh‚â‘¼‚Ì’l‚Ì Data ‚ª‘¶İ‚·‚éê‡‚Í‰½‚à‚µ‚È‚¢B
-	–ß‚è’l‚Í“o˜^‚µ‚½’l‚ÌŒÂ”B
+	mesh0 ã® bodyId0 ä¸Šã®ç¯€ç‚¹ã‚’ mesh1 ã®ã™ã¹ã¦ã®ç¯€ç‚¹ã®ä¸­ã‹ã‚‰
+	è·é›¢ãŒ tolerance ä»¥ä¸‹ã®ã‚‚ã®ã‚’æ¢ã—ã¦ã€mesh0 ã® coupleName ã® Data ã«ç™»éŒ²ã™ã‚‹ã€‚
+	 mesh0.setPhysicalValueAtId( coupleName, mesh0 ã® nodeId, mesh1 ã® nodeId )
+	coupleName ã® Data ãŒ NodeVariable Integer å€¤ã§æ—¢ã«å­˜åœ¨ã™ã‚‹å ´åˆã¯ãã® Data ã«è¿½åŠ ã™ã‚‹ã€‚
+	ä»–ã®ãƒ¢ãƒ¼ãƒ‰ã‚„ä»–ã®å€¤ã® Data ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ä½•ã‚‚ã—ãªã„ã€‚
+	æˆ»ã‚Šå€¤ã¯ç™»éŒ²ã—ãŸå€¤ã®å€‹æ•°ã€‚
 =end
 --------------------------------------------------------------------------*/
 	int nodeMatchingOnBody(kmb::MeshDB* mesh0, kmb::bodyIdType bodyId0, kmb::MeshDB* mesh1, double tolerance, const char* coupleName);
 /**-----------------------------------------------------------------------
 =begin
 --- nodeMatchingBetweenBodies(mesh0, bodyId0, mesh1, bodyId1, tolerance, coupleName)
-	mesh0 ‚Ì bodyId0 ã‚Ìß“_‚ğ mesh1 ‚Ì bodyId1 ã‚Ìß“_‚Ì’†‚©‚ç
-	‹——£‚ª tolerance ˆÈ‰º‚Ì‚à‚Ì‚ğ’T‚µ‚ÄAmesh0 ‚Ì coupleName ‚Ì Data ‚É“o˜^‚·‚éB
-	 mesh0.setPhysicalValueAtId( coupleName, mesh0 ‚Ì nodeId, mesh1 ‚Ì nodeId )
-	coupleName ‚Ì Data ‚ª NodeVariable Integer ’l‚ÅŠù‚É‘¶İ‚·‚éê‡‚Í‚»‚Ì Data ‚É’Ç‰Á‚·‚éB
-	‘¼‚Ìƒ‚[ƒh‚â‘¼‚Ì’l‚Ì Data ‚ª‘¶İ‚·‚éê‡‚Í‰½‚à‚µ‚È‚¢B
-	–ß‚è’l‚Í“o˜^‚µ‚½’l‚ÌŒÂ”B
+	mesh0 ã® bodyId0 ä¸Šã®ç¯€ç‚¹ã‚’ mesh1 ã® bodyId1 ä¸Šã®ç¯€ç‚¹ã®ä¸­ã‹ã‚‰
+	è·é›¢ãŒ tolerance ä»¥ä¸‹ã®ã‚‚ã®ã‚’æ¢ã—ã¦ã€mesh0 ã® coupleName ã® Data ã«ç™»éŒ²ã™ã‚‹ã€‚
+	 mesh0.setPhysicalValueAtId( coupleName, mesh0 ã® nodeId, mesh1 ã® nodeId )
+	coupleName ã® Data ãŒ NodeVariable Integer å€¤ã§æ—¢ã«å­˜åœ¨ã™ã‚‹å ´åˆã¯ãã® Data ã«è¿½åŠ ã™ã‚‹ã€‚
+	ä»–ã®ãƒ¢ãƒ¼ãƒ‰ã‚„ä»–ã®å€¤ã® Data ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ä½•ã‚‚ã—ãªã„ã€‚
+	æˆ»ã‚Šå€¤ã¯ç™»éŒ²ã—ãŸå€¤ã®å€‹æ•°ã€‚
 =end
 --------------------------------------------------------------------------*/
 	int nodeMatchingBetweenBodies(kmb::MeshDB* mesh0, kmb::bodyIdType bodyId0, kmb::MeshDB* mesh1, kmb::bodyIdType bodyId1, double tolerance, const char* coupleName);
@@ -212,9 +212,9 @@ public:
 /**-----------------------------------------------------------------------
 =begin
 --- setMesh(mesh,insNodes=nil)
-	mesh ‚É“o˜^‚µ‚Ä‚ ‚é–ÊƒOƒ‹[ƒv‚Æ•\–Ê—v‘f‚Åƒ}ƒbƒ`ƒ“ƒO‚ğs‚¤B
-	insNodes ‚Íƒ_ƒ~[—v‘f‚ğ’Ç‰Á‚µ‚½‚Æ‚«‚É’Ç‰Á‚µ‚½ß“_‚ğŠo‚¦‚Ä‚¨‚­‚½‚ß‚Ìƒf[ƒ^–¼B
-	insNodes ‚Ì NodeGroup ‚ª‚È‚¯‚ê‚Î©“®“I‚Éì‚éB
+	mesh ã«ç™»éŒ²ã—ã¦ã‚ã‚‹é¢ã‚°ãƒ«ãƒ¼ãƒ—ã¨è¡¨é¢è¦ç´ ã§ãƒãƒƒãƒãƒ³ã‚°ã‚’è¡Œã†ã€‚
+	insNodes ã¯ãƒ€ãƒŸãƒ¼è¦ç´ ã‚’è¿½åŠ ã—ãŸã¨ãã«è¿½åŠ ã—ãŸç¯€ç‚¹ã‚’è¦šãˆã¦ãŠããŸã‚ã®ãƒ‡ãƒ¼ã‚¿åã€‚
+	insNodes ã® NodeGroup ãŒãªã‘ã‚Œã°è‡ªå‹•çš„ã«ä½œã‚‹ã€‚
 =end
 --------------------------------------------------------------------------*/
 	void setMesh(kmb::MeshData* mesh,const char* insNodes=NULL);

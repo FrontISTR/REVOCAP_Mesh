@@ -27,24 +27,24 @@
 =begin
 =RevocapMeshGen::BLMGenerator
 
-==�T�v
+==概要
 
-RevocapMesh �̃��b�V���Ǘ��N���X MeshDB �Ɋi�[���ꂽ�\�ʃ��b�V������
-���E�w���b�V���𐶐����邽�߂̃N���X�ł���B
+RevocapMesh のメッシュ管理クラス MeshDB に格納された表面メッシュから
+境界層メッシュを生成するためのクラスである。
 
-�g�p��F
+使用例：
  blm = BLMGenerator.new
  blm.setLayer([0.1,0.2,0.3])
  blmid = blm.generate(mesh,0)
 
-==���\�b�h�ꗗ
+==メソッド一覧
 
 ((<BLMGenerator.new>))
 ((<setLayer>))
 ((<extrude>))
 ((<intrude>))
 
-==���\�b�h
+==メソッド
 
 =end
 ------------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- BLMGenerator.new
-	���E�w�������W���[���N���X BLMGenerator �̃C���X�^���X�𐶐�����B
+	境界層生成モジュールクラス BLMGenerator のインスタンスを生成する。
 =end
 ---------------------------------------------------------------------------*/
 	BLMGenerator(void);
@@ -70,10 +70,10 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- setLayer(layers)
-	layers �Ő������鋫�E�w�̌����i�ώZ�������́j��z��ŗ^����B
-	��Fblm.setLayer([0.1,0.2,0.3])
-	���̏ꍇ�́A�\�ʃ��b�V������ 0.1 0.2 0.3 �̍����̂Ƃ���ɋ��E�w��
-	�^���悤�Ƃ��邽�߁A�����͂��ׂ� 0.1 �ƂȂ�B
+	layers で生成する境界層の厚さ（積算したもの）を配列で与える。
+	例：blm.setLayer([0.1,0.2,0.3])
+	この場合は、表面メッシュから 0.1 0.2 0.3 の高さのところに境界層を
+	与えようとするため、厚さはすべて 0.1 となる。
 =end
 ---------------------------------------------------------------------------*/
 %extend{
@@ -93,23 +93,23 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- extrude(mesh,bodyId)
-	mesh �� bodyId �ŗ^������\�ʃ��b�V���ɑ΂��ċ��E�w���b�V���𐶐�����B
-	�߂�l�͋��E�w�̊O���\�ʃ��b�V����BodyId�Ƌ��E�w���b�V����BodyId��v�f�Ɏ���
-	Array �l�ł���B
-	��Fblm.generate( mesh,0 ) => [1,2]
-	���̂Ƃ� BodyId 1 �͊O���\�ʃ��b�V���̗v�f�O���[�vId�� BodyId 2 ���O�p���v�f�ɂ�鋫�E�w�̗v�f�O���[�vId�ł���B
+	mesh の bodyId で与えられる表面メッシュに対して境界層メッシュを生成する。
+	戻り値は境界層の外部表面メッシュのBodyIdと境界層メッシュのBodyIdを要素に持つ
+	Array 値である。
+	例：blm.generate( mesh,0 ) => [1,2]
+	このとき BodyId 1 は外部表面メッシュの要素グループIdで BodyId 2 が三角柱要素による境界層の要素グループIdである。
 --- intrude(mesh,parentId,bodyId)
-	mesh �� bodyId �ŗ^������\�ʃ��b�V���ɑ΂��ċ��E�w���b�V���𐶐�����B
-	�߂�l�͋��E�w�̊O���\�ʃ��b�V����BodyId�Ƌ��E�w���b�V����BodyId��v�f�Ɏ���
-	Array �l�ł���B
-	��Fblm.generate( mesh,0 ) => [1,2]
-	���̂Ƃ� BodyId 1 �͊O���\�ʃ��b�V���̗v�f�O���[�vId�� BodyId 2 ���O�p���v�f�ɂ�鋫�E�w�̗v�f�O���[�vId�ł���B
+	mesh の bodyId で与えられる表面メッシュに対して境界層メッシュを生成する。
+	戻り値は境界層の外部表面メッシュのBodyIdと境界層メッシュのBodyIdを要素に持つ
+	Array 値である。
+	例：blm.generate( mesh,0 ) => [1,2]
+	このとき BodyId 1 は外部表面メッシュの要素グループIdで BodyId 2 が三角柱要素による境界層の要素グループIdである。
 --- intrudeB(mesh,parentId,bodyId)
-	mesh �� bodyId �ŗ^������\�ʃ��b�V���ɑ΂��ċ��E�w���b�V���𐶐�����B
-	�߂�l�͋��E�w�̊O���\�ʃ��b�V����BodyId�Ƌ��E�w���b�V����BodyId��v�f�Ɏ���
-	Array �l�ł���B
-	��Fblm.generate( mesh,0 ) => [1,2]
-	���̂Ƃ� BodyId 1 �͊O���\�ʃ��b�V���̗v�f�O���[�vId�� BodyId 2 ���O�p���v�f�ɂ�鋫�E�w�̗v�f�O���[�vId�ł���B
+	mesh の bodyId で与えられる表面メッシュに対して境界層メッシュを生成する。
+	戻り値は境界層の外部表面メッシュのBodyIdと境界層メッシュのBodyIdを要素に持つ
+	Array 値である。
+	例：blm.generate( mesh,0 ) => [1,2]
+	このとき BodyId 1 は外部表面メッシュの要素グループIdで BodyId 2 が三角柱要素による境界層の要素グループIdである。
 =end
 ---------------------------------------------------------------------------*/
 %extend{

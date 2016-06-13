@@ -25,7 +25,7 @@ namespace kmb{
 class BSplineSurface3D : public Surface3D
 {
 private:
-	// uOrder * vOrder ‚Ì§Œä“_‚ğ—^‚¦‚é
+	// uOrder * vOrder ã®åˆ¶å¾¡ç‚¹ã‚’ä¸ãˆã‚‹
 	unsigned int uOrder, vOrder;
 	kmb::BSpline uBspline, vBspline;
 	std::vector< kmb::Point3D > ctrlPts;
@@ -38,8 +38,8 @@ public:
 	virtual bool isDomain( double u, double v ) const;
 	virtual bool isUDomain( double u ) const;
 	virtual bool isVDomain( double v ) const;
-	// “o˜^Ï‚İ‚Ì§Œä“_‚ÌŒÂ”‚Æ“K‡‚·‚é‚È‚ç true ‚ğ•Ô‚·
-	// ‚»‚¤‚Å‚È‚¯‚ê‚Î false ‚ğ•Ô‚·B‚±‚Ìê‡‚Í§Œä“_‚Ìİ’è‚ª•K—v
+	// ç™»éŒ²æ¸ˆã¿ã®åˆ¶å¾¡ç‚¹ã®å€‹æ•°ã¨é©åˆã™ã‚‹ãªã‚‰ true ã‚’è¿”ã™
+	// ãã†ã§ãªã‘ã‚Œã° false ã‚’è¿”ã™ã€‚ã“ã®å ´åˆã¯åˆ¶å¾¡ç‚¹ã®è¨­å®šãŒå¿…è¦
 	bool setOrder(unsigned int uOrder,unsigned int vOrder);
 	bool getOrder(unsigned int &uOrder,unsigned int &vOrder) const;
 	bool getKnotCount(unsigned int &uCount,unsigned int &vCount) const;

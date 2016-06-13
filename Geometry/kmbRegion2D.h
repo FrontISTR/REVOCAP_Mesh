@@ -40,9 +40,9 @@ public:
 	};
 	Region2D(void);
 	virtual ~Region2D(void);
-	/// ”»’èŠÖ”
+	/// åˆ¤å®šé–¢æ•°
 	virtual locationType intersect(const Point2D &point) const = 0;
-	/// ‹——£ŠÖ”
+	/// è·é›¢é–¢æ•°
 	virtual double distanceSq(const Point2D &point) const = 0;
 	virtual double distanceSq(const double x,const double y) const;
 	virtual double distance(const Point2D& point) const;

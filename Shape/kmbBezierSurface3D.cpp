@@ -112,7 +112,7 @@ kmb::BezierSurface3D::getPoint( double u, double v, kmb::Point3D& point ) const
 	if( uOrder*vOrder != ctrlPts.size() ){
 		return false;
 	}
-	// i (u•ûŒü) ‚ª“à‘¤‚É‚È‚é‚æ‚¤‚É‰ñ‚·
+	// i (uæ–¹å‘) ãŒå†…å´ã«ãªã‚‹ã‚ˆã†ã«å›ã™
 	for(unsigned int j=0;j<vOrder;++j){
 		double v0 = kmb::Bernstein::getValue(vOrder-1,j,v);
 		for(unsigned int i=0;i<uOrder;++i){

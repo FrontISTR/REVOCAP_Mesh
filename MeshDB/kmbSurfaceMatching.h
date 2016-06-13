@@ -13,14 +13,14 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 /*
- * –Ú“I
- * Surface ‚Æ FaceGroup ‚Ì‡”Ô‚ÆŒü‚«‚Ü‚Å‚ß‚½ƒ}ƒbƒ`ƒ“ƒO
- * Surface ‚Å‘«‚è‚È‚¢‚Æ‚±‚ë‚Íƒ_ƒ~[‚Ì–Ê‚ğ’Ç‰Á‚·‚é‚±‚Æ‚à‰Â”\
- * “ü—Í
- * Surface ‚Ì bodyId
+ * ç›®çš„
+ * Surface ã¨ FaceGroup ã®é †ç•ªã¨å‘ãã¾ã§è¾¼ã‚ãŸãƒãƒƒãƒãƒ³ã‚°
+ * Surface ã§è¶³ã‚Šãªã„ã¨ã“ã‚ã¯ãƒ€ãƒŸãƒ¼ã®é¢ã‚’è¿½åŠ ã™ã‚‹ã“ã¨ã‚‚å¯èƒ½
+ * å…¥åŠ›
+ * Surface ã® bodyId
  * FaceGroup
- * o—Í
- * FaceGroup ‚Ì face ‚Æ Surface ‚Ì elementId ‚ÌŠÔ‚Ì‘Î‰
+ * å‡ºåŠ›
+ * FaceGroup ã® face ã¨ Surface ã® elementId ã®é–“ã®å¯¾å¿œ
  */
 
 #pragma once
@@ -50,7 +50,7 @@ private:
 	std::string slaveName;
 	kmb::DataBindings* slaveFaceGroup;
 	kmb::ElementContainer* slaveElements;
-	// FaceGroup ‚Ì‹ß–Tî•ñ
+	// FaceGroup ã®è¿‘å‚æƒ…å ±
 	kmb::NodeNeighborFaceInfo* neighborInfo;
 	kmb::Matrix* distanceMatrix;
 	kmb::elementIdType* elementIds;
@@ -62,35 +62,35 @@ private:
 		int index;
 	};
 	std::map< kmb::Face, rotatedElement > mapping;
-	// ”z—ñ elementIds ‚Ì index ‚É‚æ‚éÚ‘±ŠÖŒW
+	// é…åˆ— elementIds ã® index ã«ã‚ˆã‚‹æ¥ç¶šé–¢ä¿‚
 	std::set< std::pair< int, int > > connectionTable;
 public:
 	SurfaceMatching(void);
 	virtual ~SurfaceMatching(void);
 	void setMesh(kmb::MeshData* mesh,const char* insNodes=NULL);
-	// facegroup => surface ‚Ìƒ}ƒbƒ`ƒ“ƒO‚ğs‚¤
+	// facegroup => surface ã®ãƒãƒƒãƒãƒ³ã‚°ã‚’è¡Œã†
 	void setPair(kmb::bodyIdType bodyId,const char* faceGroup);
 	kmb::elementIdType getMatchingElementId(kmb::Face f,int &index);
-	// ‚·‚×‚Ä‚Ì Face ‚É‘Î‚µ‚Ä‘Î‰‚·‚é—v‘f‚ª‚ ‚é‚æ‚¤‚ÉA‚È‚¯‚ê‚Îƒ_ƒ~[‚ğ’Ç‰Á‚·‚éB
-	// MatchingElement ‚ğŒŸõ‚µ‚ÄA‚È‚¯‚ê‚Î appendDummyElement ‚ğŒÄ‚Ño‚·B
-	// ’Ç‰Á‚µ‚½ element ‚ÌŒÂ”‚ğ•Ô‚·
+	// ã™ã¹ã¦ã® Face ã«å¯¾ã—ã¦å¯¾å¿œã™ã‚‹è¦ç´ ãŒã‚ã‚‹ã‚ˆã†ã«ã€ãªã‘ã‚Œã°ãƒ€ãƒŸãƒ¼ã‚’è¿½åŠ ã™ã‚‹ã€‚
+	// MatchingElement ã‚’æ¤œç´¢ã—ã¦ã€ãªã‘ã‚Œã° appendDummyElement ã‚’å‘¼ã³å‡ºã™ã€‚
+	// è¿½åŠ ã—ãŸ element ã®å€‹æ•°ã‚’è¿”ã™
 	size_t constructDummyElements(void);
 private:
 	void clear(void);
 	void clearPairInfo(void);
-	// ‹——£‚ªÅ¬‚É‚È‚é‚æ‚¤‚È‘g‚İ‡‚í‚¹‚ğ’T‚·
+	// è·é›¢ãŒæœ€å°ã«ãªã‚‹ã‚ˆã†ãªçµ„ã¿åˆã‚ã›ã‚’æ¢ã™
 	bool calcMapping(void);
-	// f ‚É match ‚·‚é—v‘f‚ª‘¶İ‚µ‚È‚¢‚Æ‚«‚ÉA‹«ŠE‚Ì‹ß–T‚Ìß“_‚ğg‚Á‚Ä masterSurf ‚Éƒ_ƒ~[—v‘f‚Ì’Ç‰Á
-	// ’Ç‰Á‚µ‚½‚Æ‚«‚Íß“_À•W‚Í‚Qd‰»‚³‚ê‚Ä‚¢‚é‚Ì‚ÅA‚ ‚Æ‚©‚çß“_‚ğ‚¸‚ç‚·‚±‚Æ
-	// ’Ç‰Á‚µ‚½—v‘f‚ÌŒü‚«‚Í f ‚Æ‡‚¤‚æ‚¤‚É‚·‚éA‚·‚È‚í‚¿ getMatchingElementId ‚Å“¾‚ç‚ê‚é index = 0
+	// f ã« match ã™ã‚‹è¦ç´ ãŒå­˜åœ¨ã—ãªã„ã¨ãã«ã€å¢ƒç•Œã®è¿‘å‚ã®ç¯€ç‚¹ã‚’ä½¿ã£ã¦ masterSurf ã«ãƒ€ãƒŸãƒ¼è¦ç´ ã®è¿½åŠ 
+	// è¿½åŠ ã—ãŸã¨ãã¯ç¯€ç‚¹åº§æ¨™ã¯ï¼’é‡åŒ–ã•ã‚Œã¦ã„ã‚‹ã®ã§ã€ã‚ã¨ã‹ã‚‰ç¯€ç‚¹ã‚’ãšã‚‰ã™ã“ã¨
+	// è¿½åŠ ã—ãŸè¦ç´ ã®å‘ãã¯ f ã¨åˆã†ã‚ˆã†ã«ã™ã‚‹ã€ã™ãªã‚ã¡ getMatchingElementId ã§å¾—ã‚‰ã‚Œã‚‹ index = 0
 	kmb::elementIdType appendDummyElement(kmb::Face f);
-	// nodeId n0 ‚ğ•¡»‚µ‚Ä n1 ‚ğì‚Á‚Ä‚»‚ê‚ğ•Ô‚·
-	// insertedNodes ‚É“o˜^
+	// nodeId n0 ã‚’è¤‡è£½ã—ã¦ n1 ã‚’ä½œã£ã¦ãã‚Œã‚’è¿”ã™
+	// insertedNodes ã«ç™»éŒ²
 	kmb::nodeIdType duplicateNode(kmb::nodeIdType n0);
-	// ˆÊ‘Š‚ª‡‚¤‚æ‚¤‚È‘Î‰‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN‚·‚é
-	// ‡‚í‚È‚¢ê‡‚ÍˆÊ‘Š‚ª‡‚í‚È‚©‚Á‚½ perm ‚Ì index ‚Ì‚¤‚¿‚Ì‘å‚«‚¢•û‚ğ•Ô‚·
-	// ˆÊ‘Š‚ª‡‚¤ê‡‚Í -1 ‚ğ•Ô‚·
-	// ‚»‚êˆÈŠO‚ÌƒGƒ‰[‚Í -2 ‚ğ•Ô‚·
+	// ä½ç›¸ãŒåˆã†ã‚ˆã†ãªå¯¾å¿œã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+	// åˆã‚ãªã„å ´åˆã¯ä½ç›¸ãŒåˆã‚ãªã‹ã£ãŸ perm ã® index ã®ã†ã¡ã®å¤§ãã„æ–¹ã‚’è¿”ã™
+	// ä½ç›¸ãŒåˆã†å ´åˆã¯ -1 ã‚’è¿”ã™
+	// ãã‚Œä»¥å¤–ã®ã‚¨ãƒ©ãƒ¼ã¯ -2 ã‚’è¿”ã™
 	int checkTopologicalMapping( kmb::Permutation& perm ) const;
 };
 

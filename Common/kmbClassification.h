@@ -25,9 +25,9 @@
 ----------------------------------------------------------------------*/
 #pragma once
 
-// •ª—Ş—p‚Ìƒ†[ƒeƒBƒŠƒeƒBƒNƒ‰ƒX
-// W‡‚Ì“¯’lŠÖŒW‚ğ—^‚¦‚Ä‹É‘å“¯’l—Ş‚ğ•Ô‚·
-// ‚à‚Æ‚ÌW‡‚Ì—v‘f‚ÌŒ^‚Í T
+// åˆ†é¡ç”¨ã®ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ã‚¯ãƒ©ã‚¹
+// é›†åˆã®åŒå€¤é–¢ä¿‚ã‚’ä¸ãˆã¦æ¥µå¤§åŒå€¤é¡ã‚’è¿”ã™
+// ã‚‚ã¨ã®é›†åˆã®è¦ç´ ã®å‹ã¯ T
 
 
 
@@ -39,7 +39,7 @@
 
 namespace kmb{
 
-// T ‚É‚Í•s“™† < ‚Æ”äŠr == ‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚Æ‚·‚é
+// T ã«ã¯ä¸ç­‰å· < ã¨æ¯”è¼ƒ == ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã¨ã™ã‚‹
 template<typename T>
 class Classification
 {
@@ -94,15 +94,15 @@ public:
 	Classification(void) : classCount(0){}
 	virtual ~Classification(void){}
 protected:
-	typename std::map<T,T> representTable;    // —v‘f => ‘ã•\iÅ¬—v‘fj
-	typename std::multimap<T,T> eqTable;   // ‘ã•\iÅ¬—v‘fj => “¯’l—Ş‚Ì’†g
-	// x0 <= x1 ‚ª•ÛØ‚³‚ê‚Ä‚¢‚é‚Æ‚«
-	// x0 ‚ğ‘ã•\Œ³‚Æ‚µ‚Ä x1 ‚ğ“o˜^‚·‚é
+	typename std::map<T,T> representTable;    // è¦ç´  => ä»£è¡¨ï¼ˆæœ€å°è¦ç´ ï¼‰
+	typename std::multimap<T,T> eqTable;   // ä»£è¡¨ï¼ˆæœ€å°è¦ç´ ï¼‰ => åŒå€¤é¡ã®ä¸­èº«
+	// x0 <= x1 ãŒä¿è¨¼ã•ã‚Œã¦ã„ã‚‹ã¨ã
+	// x0 ã‚’ä»£è¡¨å…ƒã¨ã—ã¦ x1 ã‚’ç™»éŒ²ã™ã‚‹
 	void addPair(T x0,T x1){
 		eqTable.insert( std::pair< T, T >(x0,x1) );
 		representTable.insert( std::pair< T, T >(x1,x0) );
 	}
-	// ‘ã•\Œ³‚ğ¬‚³‚¢•û‚É‡‚í‚¹‚é
+	// ä»£è¡¨å…ƒã‚’å°ã•ã„æ–¹ã«åˆã‚ã›ã‚‹
 	void convertKey(T x0,T x1){
 		if( x0 == x1 ){
 			return;
@@ -111,7 +111,7 @@ protected:
 			x1 = x0;
 			x0 = y;
 		}
-		// x1 < x0 ‚ğ‰¼’è‚·‚é
+		// x1 < x0 ã‚’ä»®å®šã™ã‚‹
 		std::pair< typename std::multimap<T,T>::iterator, typename std::multimap<T,T>::iterator >
 				tIterPair = eqTable.equal_range( x0 );
 		typename std::multimap<T,T>::iterator tIter = tIterPair.first;
@@ -127,7 +127,7 @@ public:
 		representTable.clear();
 		classCount = 0;
 	}
-	// x ‚ğ‘¼‚Æ‚Í“¯’l‚Å‚È‚¢—v‘f‚Æ‚µ‚Ä“o˜^
+	// x ã‚’ä»–ã¨ã¯åŒå€¤ã§ãªã„è¦ç´ ã¨ã—ã¦ç™»éŒ²
 	virtual bool add(T x){
 		if( representTable.find(x) == representTable.end() ){
 			addPair( x, x );
@@ -137,8 +137,8 @@ public:
 			return false;
 		}
 	}
-	// x0 ‚Æ x1 ‚ğ“¯’l‚È—v‘f‚Æ‚µ‚Ä“o˜^
-	// Šù‚É“o˜^Ï‚İ‚Ì‚Æ‚«‚ÍA“¯’lŠÖŒW‚ğ’Ç‰Á
+	// x0 ã¨ x1 ã‚’åŒå€¤ãªè¦ç´ ã¨ã—ã¦ç™»éŒ²
+	// æ—¢ã«ç™»éŒ²æ¸ˆã¿ã®ã¨ãã¯ã€åŒå€¤é–¢ä¿‚ã‚’è¿½åŠ 
 	virtual bool equivalent(T x0,T x1){
 		if( x0 == x1 ){
 			return add(x0);
@@ -148,21 +148,21 @@ public:
 			x0 = x1;
 			x1 = x;
 		}
-		// ˆÈŒã x0 <= x1
+		// ä»¥å¾Œ x0 <= x1
 		typename std::map<T,T>::iterator r0Iter = representTable.find(x0);
 		typename std::map<T,T>::iterator r1Iter = representTable.find(x1);
-		// ‚Ç‚¿‚ç‚à“o˜^‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«
+		// ã©ã¡ã‚‰ã‚‚ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã¨ã
 		if( r0Iter == representTable.end() && r1Iter == representTable.end() ){
 			addPair( x0, x1 );
 			addPair( x0, x0 );
 			++classCount;
 		}else
-		// x0 ‚ª“o˜^Ï‚İ
+		// x0 ãŒç™»éŒ²æ¸ˆã¿
 		if( r0Iter != representTable.end() && r1Iter == representTable.end() ){
 			T x00 = r0Iter->second;
 			addPair( x00, x1 );
 		}else
-		// x1 ‚ª“o˜^Ï‚İ
+		// x1 ãŒç™»éŒ²æ¸ˆã¿
 		if( r0Iter == representTable.end() && r1Iter != representTable.end() ){
 			T x10 = r1Iter->second;
 			if( x10 < x0 ){
@@ -172,7 +172,7 @@ public:
 				addPair( x0, x0 );
 			}
 		}else
-		// —¼•û ‚ªˆÙ‚È‚éƒNƒ‰ƒX‚É“o˜^Ï‚İ
+		// ä¸¡æ–¹ ãŒç•°ãªã‚‹ã‚¯ãƒ©ã‚¹ã«ç™»éŒ²æ¸ˆã¿
 		if( r0Iter->second != r1Iter->second ){
 			T x00 = r0Iter->second;
 			T x10 = r1Iter->second;
@@ -181,13 +181,13 @@ public:
 		}
 		return true;
 	}
-	// t0 ‚Æ t1 ‚ª“¯’l‚©‚Ç‚¤‚©‚ğ”»’è
+	// t0 ã¨ t1 ãŒåŒå€¤ã‹ã©ã†ã‹ã‚’åˆ¤å®š
 	virtual bool isEquivalent(T x0,T x1) const{
 		typename std::map<T,T>::const_iterator r0Iter = representTable.find(x0);
 		typename std::map<T,T>::const_iterator r1Iter = representTable.find(x1);
 		return ( r0Iter != representTable.end() && r1Iter != representTable.end() && r0Iter->second == r1Iter->second );
 	}
-	// ‘ã•\Œ³
+	// ä»£è¡¨å…ƒ
 	virtual T getClassId(T x) const{
 		typename std::map<T,T>::const_iterator rIter = representTable.find(x);
 		if( rIter != representTable.end() ){
@@ -197,7 +197,7 @@ public:
 		}
 	}
 public:
-	// ‘S‘Ì‚ÌƒCƒeƒŒ[ƒ^
+	// å…¨ä½“ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿
 	virtual iterator begin(void) const{
 		typename Classification<T>::iterator it;
 		it.cIter = this->eqTable.begin();
@@ -210,9 +210,9 @@ public:
 		it.endIter = this->eqTable.end();
 		return it;
 	}
-	// x ‚ğŠÜ‚Ş“¯’l—Ş‚ÌƒCƒeƒŒ[ƒ^
-	// x ‚ªŠÜ‚Ü‚ê‚È‚¢‚Æ‚«‚Í end() ‚ğ•Ô‚·
-	// end(x) = begin( x ‚ÌŸ‚Ì‘ã•\ ) ‚Æ“¯‚¶
+	// x ã‚’å«ã‚€åŒå€¤é¡ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿
+	// x ãŒå«ã¾ã‚Œãªã„ã¨ãã¯ end() ã‚’è¿”ã™
+	// end(x) = begin( x ã®æ¬¡ã®ä»£è¡¨ ) ã¨åŒã˜
 	virtual iterator begin(T x) const{
 		T x0 = getClassId(x);
 		typename Classification<T>::iterator it;

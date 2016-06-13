@@ -16,16 +16,16 @@
 =begin
 =RevocapMeshGen::PatchModifier
 
-==�T�v
+==概要
 
-�\�ʃp�b�`�̏C�����s�����߂̃N���X�B
+表面パッチの修正を行うためのクラス。
 
-==���\�b�h�ꗗ
+==メソッド一覧
 
 ((<PatchModifier.new>))
 
 
-==���\�b�h
+==メソッド
 
 =end
 ------------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- PatchModifier.new(mesh,bodyId)
-    mesh �� bodyId ��^���āA�\�ʃp�b�`�̏������s���B
+    mesh の bodyId を与えて、表面パッチの処理を行う。
 =end
 ---------------------------------------------------------------------------*/
 	PatchModifier(kmb::MeshData* mesh,kmb::bodyIdType bodyId);
@@ -51,25 +51,25 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- triangleEdgeSwap(triangle0,triangle1)
-	�O�p�` triangle0 �� triangle1 �ɂ��āA����炪�ڂ��Ă��鎞��
-	�ڂ��Ă���ӂƑΊp������������B
+	三角形 triangle0 と triangle1 について、これらが接している時に
+	接している辺と対角線を交換する。
 	[0,1,3] + [1,2,3] => [0,1,2] + [2,3,0]
-	�����ł������̌��ʂ� true / false �ŕԂ��B
+	交換できたかの結果を true / false で返す。
 =end
 -----------------------------------------------------------------------------*/
 	bool triangleEdgeSwap(kmb::elementIdType tri0, kmb::elementIdType tri1 );
 /**--------------------------------------------------------------------------
 =begin
 --- edgeContract(nodeId0,nodeId1)
-	nodeId1 �� nodeId0 �ɒׂ�
+	nodeId1 を nodeId0 に潰す
 =end
 -----------------------------------------------------------------------------*/
 	bool edgeContract(kmb::nodeIdType node0, kmb::nodeIdType node1);
 /**--------------------------------------------------------------------------
 =begin
 --- quadEdgeSwap(quad0, quad1, orientation=true)
-	�l�p�` quad0 �� quad1 �ɂ��āA����炪�ڂ��Ă��鎞�ɁA�ӂ���������B
-	�ӂ̌����̎d���͂Q�ʂ肠�邽�߁Aorientation �ŋ�ʂ���B
+	四角形 quad0 と quad1 について、これらが接している時に、辺を交換する。
+	辺の交換の仕方は２通りあるため、orientation で区別する。
 	[0,1,2,3] + [0,3,4,5] => [1,2,3,4] + [0,1,4,5]  (orientation=true)
                           => [0,1,2,5] + [2,3,4,5]  (orientation=false)
 =end
@@ -79,9 +79,9 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- uniformOrientation(elemId=-1)
-    �p�b�`�̖ʂ̌��������낦��B
-    elemId �Ŋ�ƂȂ�O�p�`�� Id ��^����B
-    �߂�l�͗��Ԃ����v�f�̌��B
+    パッチの面の向きをそろえる。
+    elemId で基準となる三角形の Id を与える。
+    戻り値は裏返した要素の個数。
 =end
 -----------------------------------------------------------------------------*/
 	int uniformOrientation(kmb::elementIdType elementId=kmb::Element::nullElementId);

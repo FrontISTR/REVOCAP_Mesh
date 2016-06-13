@@ -34,8 +34,8 @@ public:
 	int saveToFile(const char* filename,const kmb::MeshData* mesh);
 protected:
 	fileType checkFormat(const char* filename);
-	int loadFromBinaryFile(const char* filename,kmb::MeshData* mesh);
-	int loadFromAsciiFile(const char* filename,kmb::MeshData* mesh);
+	int loadBinaryFile(const char* filename,kmb::MeshData* mesh);
+	int loadAsciiFile(const char* filename,kmb::MeshData* mesh);
 };
 
 }

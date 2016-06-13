@@ -24,8 +24,8 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// Segment ‚ÌW‡‚Æ‚µ‚Ä‚Ì‘½ŠpŒ`‚ğˆµ‚¤
-// ‘ÎŠpü‚ğ—^‚¦‚Ä•ªŠ„‚·‚é‚±‚Æ‚È‚Ç‚ğs‚¤
+// Segment ã®é›†åˆã¨ã—ã¦ã®å¤šè§’å½¢ã‚’æ‰±ã†
+// å¯¾è§’ç·šã‚’ä¸ãˆã¦åˆ†å‰²ã™ã‚‹ã“ã¨ãªã©ã‚’è¡Œã†
 //
 
 #pragma once
@@ -64,11 +64,11 @@ public:
 	bool include(kmb::nodeIdType nodeId) const;
 	kmb::nodeIdType getNodeId(kmb::nodeIdType nodeId,int offset=0) const;
 
-	// setEdges ‚Í clone = true ‚Ì‚Æ‚«‚·‚×‚Ä‚Ì—v‘f‚Ì•¡»‚ğì‚Á‚Ä“o˜^‚·‚é
+	// setEdges ã¯ clone = true ã®ã¨ãã™ã¹ã¦ã®è¦ç´ ã®è¤‡è£½ã‚’ä½œã£ã¦ç™»éŒ²ã™ã‚‹
 	void setEdges(kmb::ElementContainer *edges,bool clone=true);
-	// const ‚Ì‚Í–³ğŒ‚Å•¡»‚ğì‚é
+	// const ã®æ™‚ã¯ç„¡æ¡ä»¶ã§è¤‡è£½ã‚’ä½œã‚‹
 	void setEdges(const kmb::ElementContainer *edges);
-	// FACE GROUP ‚©‚ç“o˜^‚·‚é
+	// FACE GROUP ã‹ã‚‰ç™»éŒ²ã™ã‚‹
 	void setEdgesByFaceGroup(const kmb::DataBindings* facegroup,const kmb::ElementContainer* patches);
 	const kmb::ElementContainer* getEdges(void) const;
 
@@ -81,19 +81,19 @@ public:
 		( const kmb::Point2DContainer* points,
 		  std::vector< std::pair<kmb::nodeIdType, kmb::nodeIdType> > &diagonals,
 		  std::vector< kmb::Polygon* > &polygons);
-	// •Â‚¶‚Ä‚¢‚é‚©‚ğŠm”F
+	// é–‰ã˜ã¦ã„ã‚‹ã‹ã‚’ç¢ºèª
 	bool isClosed(void) const;
-	// ’[“_‚Ìæ“¾
-	// ˜AŒ‹‚È‚ç true ‚ğ•Ô‚·B”ñ˜AŒ‹‚È‚ç false ‚ğ•Ô‚·B
-	// loop ‚Ì‚Æ‚«‚Í initial ‚Æ end ‚Í‚Æ‚à‚É kmb::nullNodeId
+	// ç«¯ç‚¹ã®å–å¾—
+	// é€£çµãªã‚‰ true ã‚’è¿”ã™ã€‚éé€£çµãªã‚‰ false ã‚’è¿”ã™ã€‚
+	// loop ã®ã¨ãã¯ initial ã¨ end ã¯ã¨ã‚‚ã« kmb::nullNodeId
 	bool getEndPoints( kmb::nodeIdType &initial, kmb::nodeIdType &end ) const;
-	// “ñd“_‚ª‚ ‚é‚©‚Ç‚¤‚©
+	// äºŒé‡ç‚¹ãŒã‚ã‚‹ã‹ã©ã†ã‹
 	kmb::nodeIdType hasDoubleNode(void) const;
 private:
 
-	// prevId, nodeId, nodePairs ‚ª—^‚¦‚ç‚ê‚½‚É
-	// Ÿ‚Ìß“_ nextId ‚ğŠp“x‚ğl—¶‚µ‚Ä‹‚ß‚ÄA
-	// deleteflag = true ‚Ì‚Æ‚«‚Í ‚»‚Ì•Ó [nodeId, nextId] ‚ğ nodePair ‚©‚çíœ‚·‚é
+	// prevId, nodeId, nodePairs ãŒä¸ãˆã‚‰ã‚ŒãŸæ™‚ã«
+	// æ¬¡ã®ç¯€ç‚¹ nextId ã‚’è§’åº¦ã‚’è€ƒæ…®ã—ã¦æ±‚ã‚ã¦ã€
+	// deleteflag = true ã®ã¨ãã¯ ãã®è¾º [nodeId, nextId] ã‚’ nodePair ã‹ã‚‰å‰Šé™¤ã™ã‚‹
 	static kmb::nodeIdType getNextNode(
 			kmb::nodeIdType prevId,
 			kmb::nodeIdType nodeId,
@@ -102,13 +102,13 @@ private:
 			bool deleteflag);
 
 public:
-	// topology ‚¾‚¯‚©‚ç”»’f‚·‚é
+	// topology ã ã‘ã‹ã‚‰åˆ¤æ–­ã™ã‚‹
 	static kmb::nodeIdType getNextNode
 		( const kmb::ElementContainer* edges, const kmb::NodeNeighborInfo& neighborInfo, kmb::nodeIdType nodeID, bool order=true );
 	static kmb::elementIdType getNextElement
 		( const kmb::ElementContainer* edges, const kmb::NodeNeighborInfo& neighborInfo, kmb::elementIdType elementID, bool order=true );
-	// order = true n“_‚ª nodeID ‚Ì—v‘f‚ğŒŸõ
-	//         false I“_‚ª nodeID ‚Ì—v‘f‚ğŒŸõ
+	// order = true å§‹ç‚¹ãŒ nodeID ã®è¦ç´ ã‚’æ¤œç´¢
+	//         false çµ‚ç‚¹ãŒ nodeID ã®è¦ç´ ã‚’æ¤œç´¢
 	static kmb::elementIdType getElementByNode
 		( kmb::ElementContainer* edges, kmb::NodeNeighborInfo& neighborInfo, kmb::nodeIdType nodeID, bool order=true );
 };

@@ -81,7 +81,7 @@ kmb::Tuple4D::operator =(const Tuple4D& other)
 	return *this;
 }
 
-/// ƒXƒJƒ‰[Ï
+/// ã‚¹ã‚«ãƒ©ãƒ¼ç©
 
 kmb::Vector4D
 kmb::Vector4D::scalar(const double s) const{

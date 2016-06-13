@@ -85,6 +85,8 @@ kmb::EnvInfo::printSize(void)
 	std::cout << "sizeof(double) = " << sizeof(double) << std::endl;
 }
 
+// Windows ‚Ìê‡
+// ŠÂ‹«•Ï” TZ=JST-9 ‚ÌŽž‚Í³‚µ‚­“®ì‚·‚é‚ªATZ=Asia/Tokyo ‚Å‚Í³‚µ‚­“®ì‚µ‚È‚¢
 void kmb::EnvInfo::getCurrentTimeString(std::string& str)
 {
 	std::time_t t = std::time(NULL);

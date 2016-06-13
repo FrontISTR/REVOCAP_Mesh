@@ -33,16 +33,16 @@ public:
 		);
 		return t;
 	}
-	// "key0 = val0, key1 = val1, ..." ‚Æ‚¢‚¤•¶š—ñ‚Å key0 ‚ğ—^‚¦‚Ä val0 ‚ğ•Ô‚·
-	// keyCaseSensitive = false ‚Ì‚ÍAkey ‚ğ¬•¶š‚É•Ï‚¦‚Ä’²‚×‚é
+	// "key0 = val0, key1 = val1, ..." ã¨ã„ã†æ–‡å­—åˆ—ã§ key0 ã‚’ä¸ãˆã¦ val0 ã‚’è¿”ã™
+	// keyCaseSensitive = false ã®æ™‚ã¯ã€key ã‚’å°æ–‡å­—ã«å¤‰ãˆã¦èª¿ã¹ã‚‹
 	static std::string getValue( std::string exp, std::string key, bool keyCaseSensitive=true );
-	// "key0, key1 = val1, ..." ‚Æ‚¢‚¤•¶š—ñ‚Å key0 ‚Ü‚½‚Í key1 ‚ª‚ ‚é‚©‚Ç‚¤‚©‚ğ’²‚×‚é
-	// keyCaseSensitive = false ‚Ì‚ÍAkey ‚ğ¬•¶š‚É•Ï‚¦‚Ä’²‚×‚é
+	// "key0, key1 = val1, ..." ã¨ã„ã†æ–‡å­—åˆ—ã§ key0 ã¾ãŸã¯ key1 ãŒã‚ã‚‹ã‹ã©ã†ã‹ã‚’èª¿ã¹ã‚‹
+	// keyCaseSensitive = false ã®æ™‚ã¯ã€key ã‚’å°æ–‡å­—ã«å¤‰ãˆã¦èª¿ã¹ã‚‹
 	static bool hasKey( std::string exp, std::string key, bool keyCaseSensitive=true );
-	// stl ‚Ì stl::getline ‚Ì safe ”Å
-	// linux ŠÂ‹«‚Å \r ‚ªc‚Á‚Ä‚µ‚Ü‚¤ƒoƒO‚ğœ‹
+	// stl ã® stl::getline ã® safe ç‰ˆ
+	// linux ç’°å¢ƒã§ \r ãŒæ®‹ã£ã¦ã—ã¾ã†ãƒã‚°ã‚’é™¤å»
 	static std::istream& readOneLine(std::istream &input, std::string &str);
-	// ƒRƒ“ƒ}‚ÆƒXƒy[ƒX‚ğƒXƒLƒbƒv‚·‚é
+	// ã‚³ãƒ³ãƒã¨ã‚¹ãƒšãƒ¼ã‚¹ã‚’ã‚¹ã‚­ãƒƒãƒ—ã™ã‚‹
 	static std::istringstream& skipComma(std::istringstream &tokenizer);
 };
 

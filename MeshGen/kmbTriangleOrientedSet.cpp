@@ -111,8 +111,8 @@ kmb::TriangleOrientedSet::clear(void)
 	while( tIter != triangles.end() ){
 		kmb::nodeIdType nodeId = tIter->first;
 		kmb::Triangle* triangle = tIter->second;
-		// ß“_”Ô†‚Ìˆê”Ô‘å‚«‚¢‚É delete ‚·‚é
-		if( triangle && triangle->getCellId(0) <= nodeId && triangle->getCellId(1) <= nodeId && triangle->getCellId(2) <= nodeId ){
+		// ç¯€ç‚¹ç•ªå·ã®ä¸€ç•ªå¤§ãã„æ™‚ã« delete ã™ã‚‹
+		if( triangle && triangle->getNodeId(0) <= nodeId && triangle->getNodeId(1) <= nodeId && triangle->getNodeId(2) <= nodeId ){
 			delete triangle;
 			triangle = NULL;
 		}
@@ -147,14 +147,14 @@ kmb::TriangleOrientedSet::appendItem(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb
 				++tIter;
 				continue;
 			}
-			switch( kmb::Triangle::isCoincident( n0, n1, n2, other->getCellId(0), other->getCellId(1), other->getCellId(2) ) )
+			switch( kmb::Triangle::isCoincident( n0, n1, n2, other->getNodeId(0), other->getNodeId(1), other->getNodeId(2) ) )
 			{
 			case 1:
-				// d•¡‚µ‚Ä“o˜^‚Í‚µ‚È‚¢
+				// é‡è¤‡ã—ã¦ç™»éŒ²ã¯ã—ãªã„
 				return NULL;
 			case -1:
 			{
-				// ‹tŒü‚«‚ª‚ ‚Á‚½‚çíœ
+				// é€†å‘ããŒã‚ã£ãŸã‚‰å‰Šé™¤
 				triangles.erase( tIter );
 				// n1
 				NodeTriMap::iterator tIter1 = triangles.lower_bound(n1);
@@ -162,7 +162,7 @@ kmb::TriangleOrientedSet::appendItem(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb
 				while( tIter1 != endIter1 )
 				{
 					kmb::Triangle* other1 = tIter1->second;
-					if( kmb::Triangle::isCoincident( n0, n1, n2, other1->getCellId(0), other1->getCellId(1), other1->getCellId(2) ) == -1 )
+					if( kmb::Triangle::isCoincident( n0, n1, n2, other1->getNodeId(0), other1->getNodeId(1), other1->getNodeId(2) ) == -1 )
 					{
 						triangles.erase( tIter1 );
 						break;
@@ -175,7 +175,7 @@ kmb::TriangleOrientedSet::appendItem(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb
 				while( tIter2 != endIter2 )
 				{
 					kmb::Triangle* other2 = tIter2->second;
-					if( kmb::Triangle::isCoincident( n0, n1, n2, other2->getCellId(0), other2->getCellId(1), other2->getCellId(2) ) == -1 )
+					if( kmb::Triangle::isCoincident( n0, n1, n2, other2->getNodeId(0), other2->getNodeId(1), other2->getNodeId(2) ) == -1 )
 					{
 						triangles.erase( tIter2 );
 						break;
@@ -210,7 +210,7 @@ kmb::TriangleOrientedSet::include(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::n
 	}else{
 		while( tIter != endIter ){
 			kmb::Triangle* other = tIter->second;
-			switch( kmb::Triangle::isCoincident( n0, n1, n2, other->getCellId(0), other->getCellId(1), other->getCellId(2) ) )
+			switch( kmb::Triangle::isCoincident( n0, n1, n2, other->getNodeId(0), other->getNodeId(1), other->getNodeId(2) ) )
 			{
 			case 1:
 				return other;
@@ -231,24 +231,24 @@ kmb::TriangleOrientedSet::getElementNeighbor( const kmb::Triangle* tri, kmb::Tri
 
 	int count = 0;
 
-	// coboundaries ‚©‚çŒvZ‚·‚é
-	// ©•ª©g‚Ì’¸“_”z—ñ‚©‚ç
-	// ü•Ó—v‘f‚ğæ‚èo‚µ‚ÄA
-	// ‚»‚ê‚Æ‚Ì—v‘fŠÔŠÖŒW‚ğŒvZ‚·‚é
+	// coboundaries ã‹ã‚‰è¨ˆç®—ã™ã‚‹
+	// è‡ªåˆ†è‡ªèº«ã®é ‚ç‚¹é…åˆ—ã‹ã‚‰
+	// å‘¨è¾ºè¦ç´ ã‚’å–ã‚Šå‡ºã—ã¦ã€
+	// ãã‚Œã¨ã®è¦ç´ é–“é–¢ä¿‚ã‚’è¨ˆç®—ã™ã‚‹
 
 	int index = -1;
 	int otherIndex = -1;
 	for(int i=0;i<3;++i){
 		neighbors[i] = NULL;
-		// Face ‚ÌÅ‰‚Ì’¸“_‚Å’T‚·
-		kmb::nodeIdType nodeId = tri->getBoundaryCellId(i,0);
-		// ’¸“_‚²‚Æ‚Ìü•Ó—v‘f‚Æ‚ÌŠÖŒW‚ğ’²‚×‚é
+		// Face ã®æœ€åˆã®é ‚ç‚¹ã§æ¢ã™
+		kmb::nodeIdType nodeId = tri->getBoundaryNodeId(i,0);
+		// é ‚ç‚¹ã”ã¨ã®å‘¨è¾ºè¦ç´ ã¨ã®é–¢ä¿‚ã‚’èª¿ã¹ã‚‹
 		std::pair< NodeTriMap::const_iterator, NodeTriMap::const_iterator >
 			eIterPair = triangles.equal_range( nodeId );
 		NodeTriMap::const_iterator eIter = eIterPair.first;
 		while( eIter != eIterPair.second && neighbors[i] == NULL )
 		{
-			// ˆÙ‚È‚é—v‘f‚ªÚ‚µ‚Ä‚¢‚½‚ç“o˜^‚·‚é
+			// ç•°ãªã‚‹è¦ç´ ãŒæ¥ã—ã¦ã„ãŸã‚‰ç™»éŒ²ã™ã‚‹
 			kmb::Triangle* other = eIter->second;
 			if( other && tri != other ){
 				kmb::ElementRelation::relationType rel =
@@ -283,8 +283,8 @@ kmb::TriangleOrientedSet::getAllEdges( std::set< std::pair< kmb::Triangle*, kmb:
 	{
 		kmb::nodeIdType nodeId = nIter->first;
 		kmb::Triangle* tri = nIter->second;
-		// OŠpŒ`‚ÌŠe’¸“_‚²‚Æ‚É‹¤—L‚µ‚Ä‚¢‚éOŠpŒ`‚ğ’²‚×‚é
-		// 0 ”Ô–Ú‚Ìß“_‚ÆƒL[‚ª“™‚µ‚¢‚Æ‚«‚ÉÀs‚·‚é
+		// ä¸‰è§’å½¢ã®å„é ‚ç‚¹ã”ã¨ã«å…±æœ‰ã—ã¦ã„ã‚‹ä¸‰è§’å½¢ã‚’èª¿ã¹ã‚‹
+		// 0 ç•ªç›®ã®ç¯€ç‚¹ã¨ã‚­ãƒ¼ãŒç­‰ã—ã„ã¨ãã«å®Ÿè¡Œã™ã‚‹
 		if( tri != NULL && (*tri)[0] == nodeId ){
 			int len = tri->getNodeCount();
 			for(int i=0;i<len;++i){
@@ -322,8 +322,8 @@ kmb::TriangleOrientedSet::getAllEdges( std::set< std::pair< kmb::nodeIdType, kmb
 	{
 		nodeId0 = nIter->first;
 		kmb::Triangle* tri = nIter->second;
-		// OŠpŒ`‚ÌŠe’¸“_‚²‚Æ‚É‹¤—L‚µ‚Ä‚¢‚éOŠpŒ`‚ğ’²‚×‚é
-		// 0 ”Ô–Ú‚Ìß“_‚ÆƒL[‚ª“™‚µ‚¢‚Æ‚«‚ÉÀs‚·‚é
+		// ä¸‰è§’å½¢ã®å„é ‚ç‚¹ã”ã¨ã«å…±æœ‰ã—ã¦ã„ã‚‹ä¸‰è§’å½¢ã‚’èª¿ã¹ã‚‹
+		// 0 ç•ªç›®ã®ç¯€ç‚¹ã¨ã‚­ãƒ¼ãŒç­‰ã—ã„ã¨ãã«å®Ÿè¡Œã™ã‚‹
 		if( tri != NULL && (*tri)[0] == nodeId0 ){
 			nodeId1 = (*tri)[1];
 			nodeId2 = (*tri)[2];
@@ -488,7 +488,7 @@ kmb::TriangleOrientedSet::_iterator::getElement(kmb::elementType &etype,kmb::nod
 	if( tri ){
 		etype = kmb::TRIANGLE;
 		for(int i=0;i<3;++i){
-			nodes[i] = tri->getCellId(i);
+			nodes[i] = tri->getNodeId(i);
 		}
 		return true;
 	}else{
@@ -520,22 +520,22 @@ kmb::TriangleOrientedSet::_iterator::getType(void) const
 }
 
 kmb::nodeIdType
-kmb::TriangleOrientedSet::_iterator::getCellId(int cellIndex) const
+kmb::TriangleOrientedSet::_iterator::getNodeId(int cellIndex) const
 {
 	kmb::Triangle* tri = tIter->second;
 	if( tri ){
-		return tri->getCellId(cellIndex);
+		return tri->getNodeId(cellIndex);
 	}else{
 		return kmb::nullNodeId;
 	}
 }
 
 bool
-kmb::TriangleOrientedSet::_iterator::setCellId(int cellIndex, kmb::nodeIdType nodeId)
+kmb::TriangleOrientedSet::_iterator::setNodeId(int cellIndex, kmb::nodeIdType nodeId)
 {
 	kmb::Triangle* tri = tIter->second;
 	if( tri ){
-		return tri->setCellId(cellIndex,nodeId);
+		return tri->setNodeId(cellIndex,nodeId);
 	}else{
 		return false;
 	}
@@ -555,13 +555,13 @@ kmb::TriangleOrientedSet::_iterator::operator[](const int cellIndex) const
 kmb::ElementContainer::_iterator*
 kmb::TriangleOrientedSet::_iterator::operator++(void)
 {
-	// “¯‚¶—v‘f‚Í‚R‰ñ“o˜^‚³‚ê‚Ä‚¢‚é‚Ì‚Å
-	// tIter->second ‚Ìß“_”Ô†‚ÌÅ¬’l‚ªƒL[‚É‚È‚Á‚Ä‚¢‚é‚à‚Ì‚ğ’T‚·
+	// åŒã˜è¦ç´ ã¯ï¼“å›ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã®ã§
+	// tIter->second ã®ç¯€ç‚¹ç•ªå·ã®æœ€å°å€¤ãŒã‚­ãƒ¼ã«ãªã£ã¦ã„ã‚‹ã‚‚ã®ã‚’æ¢ã™
 	tIter++;
 	while( tIter != endIter ){
 		kmb::nodeIdType nodeId = tIter->first;
 		kmb::Triangle* tri = tIter->second;
-		if( tri && tri->getCellId(0) >= nodeId && tri->getCellId(1) >= nodeId && tri->getCellId(2) >= nodeId ){
+		if( tri && tri->getNodeId(0) >= nodeId && tri->getNodeId(1) >= nodeId && tri->getNodeId(2) >= nodeId ){
 			break;
 		}
 		tIter++;
@@ -581,7 +581,7 @@ kmb::TriangleOrientedSet::_iterator::operator++(int n)
 	while( tIter != endIter ){
 		kmb::nodeIdType nodeId = tIter->first;
 		kmb::Triangle* tri = tIter->second;
-		if( tri && tri->getCellId(0) >= nodeId && tri->getCellId(1) >= nodeId && tri->getCellId(2) >= nodeId ){
+		if( tri && tri->getNodeId(0) >= nodeId && tri->getNodeId(1) >= nodeId && tri->getNodeId(2) >= nodeId ){
 			break;
 		}
 		++tIter;

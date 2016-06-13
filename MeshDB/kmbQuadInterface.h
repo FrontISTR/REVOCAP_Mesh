@@ -30,8 +30,11 @@ public:
 	static const int connectionTable[9][9];
 	static const int faceTable[5][4];
 	static const int edgeTable[16][2];
-	// 2“_‚©‚çŒˆ‚Ü‚é–Ê”Ô†‚ğ•Ô‚·
+	// 2ç‚¹ã‹ã‚‰æ±ºã¾ã‚‹é¢ç•ªå·ã‚’è¿”ã™
 	static const int faceIndexTable[9][9];
+
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 };
 
 }

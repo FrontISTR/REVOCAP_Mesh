@@ -70,7 +70,7 @@ kmb::GmshIO::gmshFormat kmb::GmshIO::getVersion(std::ifstream &input) const
 	return kmb::GmshIO::kUndefined;
 }
 
-// $Nodes ‚ÌŸ‚Ìs‚©‚ç
+// $Nodes ã®æ¬¡ã®è¡Œã‹ã‚‰
 int kmb::GmshIO::readNodes_2_2(std::ifstream &input,kmb::MeshData* mesh)
 {
 	int nodeCount = 0;
@@ -98,8 +98,8 @@ int kmb::GmshIO::readNodes_2_2(std::ifstream &input,kmb::MeshData* mesh)
 	return nodeCount;
 }
 
-// $Elements ‚ÌŸ‚Ìs‚©‚ç
-// ŸŒ³‚²‚Æ‚É‚Ü‚Æ‚ß‚é
+// $Elements ã®æ¬¡ã®è¡Œã‹ã‚‰
+// æ¬¡å…ƒã”ã¨ã«ã¾ã¨ã‚ã‚‹
 int kmb::GmshIO::readElements_2_2(std::ifstream &input,kmb::MeshData* mesh)
 {
 	int elementCount = 0;

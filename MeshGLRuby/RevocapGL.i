@@ -28,21 +28,21 @@
 =begin
 = RevocapGL
 
-RevocapGL �Ƃ� RevocapMesh �̃f�[�^�\���ɑΉ����āA
-RevocapVisual �ɂ����� FXRuby �ł� OpenGL �̕`�������������ړI�ō��ꂽ
-���W���[���ł���B
+RevocapGL とは RevocapMesh のデータ構造に対応して、
+RevocapVisual における FXRuby での OpenGL の描画を高速化する目的で作られた
+モジュールである。
 
-==���W���[���萔
+==モジュール定数
 
 ((<VERSION>))
 ((<COPYRIGHT>))
 
-== ���W���[���萔
-�ȉ��̒萔�� RevocapGL ���W���[���Œ�`����Ă���B
+== モジュール定数
+以下の定数は RevocapGL モジュールで定義されている。
 --- VERSION
-	�o�[�W�������̕�����
+	バージョン情報の文字列
 --- COPYRIGHT
-	���쌠���̕�����
+	著作権情報の文字列
 
 =end
 ---------------------------------------------------------------*/
@@ -81,7 +81,7 @@ namespace kmb{
 %include "../Geometry/kmbIdTypes.h"
 %include "../Common/kmbCommon.h"
 
-// ���Ԃ͏d�v�I
+// 順番は重要！
 %include "MeshGL.i"
 %include "ColorMap.i"
 %include "FBORendering.i"

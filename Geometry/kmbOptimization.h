@@ -14,7 +14,7 @@
 ----------------------------------------------------------------------*/
 /**
  *
- * ”ñüŒ`ŠÖ”‚ÌÅ“K‰»‚ğs‚¤‚½‚ß‚ÌƒAƒ‹ƒSƒŠƒYƒ€W
+ * éç·šå½¢é–¢æ•°ã®æœ€é©åŒ–ã‚’è¡Œã†ãŸã‚ã®ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ é›†
  *
  */
 #pragma once
@@ -30,7 +30,7 @@ class ColumnVector;
 class Region;
 
 // scalar => scalar
-// ”÷•ª‚È‚µ
+// å¾®åˆ†ãªã—
 class OptTargetSS_0{
 public:
 	virtual ~OptTargetSS_0(void){};
@@ -38,7 +38,7 @@ public:
 };
 
 // vector => scalar
-// ”÷•ª‚È‚µ
+// å¾®åˆ†ãªã—
 class OptTargetSV_0{
 public:
 	virtual ~OptTargetSV_0(void){};
@@ -47,7 +47,7 @@ public:
 };
 
 // vector => vector
-// ”÷•ª‚È‚µ
+// å¾®åˆ†ãªã—
 class OptTargetVV_0{
 public:
 	virtual ~OptTargetVV_0(void){};
@@ -83,10 +83,10 @@ public:
 	typedef double (*FuncSS)(double);
 private:
 	int iterCount;
-	// f(x) = 0 ‚ğ‹‚ß‚éê‡‚ÉAf(x) ‚Ì’l
-	// ‚Ü‚½‚Í f(x) ‚ÌÅ¬’l‚ğ‹‚ß‚é‚Æ‚«‚É df(x) ‚Ì’l
+	// f(x) = 0 ã‚’æ±‚ã‚ã‚‹å ´åˆã«ã€f(x) ã®å€¤
+	// ã¾ãŸã¯ f(x) ã®æœ€å°å€¤ã‚’æ±‚ã‚ã‚‹ã¨ãã« df(x) ã®å€¤
 	double residual;
-	// f(x) ‚ÌÅ¬’l‚ğ‹‚ß‚éê‡‚ÉAx_n - x_(n-1)
+	// f(x) ã®æœ€å°å€¤ã‚’æ±‚ã‚ã‚‹å ´åˆã«ã€x_n - x_(n-1)
 	double diff;
 	int iterMax;
 	double epsilon;
@@ -101,44 +101,44 @@ public:
 	void setEpsilon(double e);
 	
 
-	// min_t, max_t ‚Ì—Ìˆæ‚ğ div ‚Å•ªŠ„‚µ‚½ grid ‚Ì’¸“_‚ÅÅ¬‚Ì‚Æ‚±‚ë‚ğ’T‚·
-	// –ß‚è’l‚Í grid ‚Ì’¸“_‚ÌÀ•W
-	// 1ŸŒ³‚Ì‹æŠÔã‚Ì“™ŠÔŠu‚Ì“_‚Ì’†‚©‚çÅ¬‚ğ’T‚·
+	// min_t, max_t ã®é ˜åŸŸã‚’ div ã§åˆ†å‰²ã—ãŸ grid ã®é ‚ç‚¹ã§æœ€å°ã®ã¨ã“ã‚ã‚’æ¢ã™
+	// æˆ»ã‚Šå€¤ã¯ grid ã®é ‚ç‚¹ã®åº§æ¨™
+	// 1æ¬¡å…ƒã®åŒºé–“ä¸Šã®ç­‰é–“éš”ã®ç‚¹ã®ä¸­ã‹ã‚‰æœ€å°ã‚’æ¢ã™
 	double calcMinOnGrid( OptTargetSS_0 &obj, double& opt_t, const double min_t, const double max_t, const int div );
-	// 2,3ŸŒ³‹óŠÔ‚ÌŠiqó‚Ì“_‚Ì’†‚©‚çÅ¬‚ğ’T‚·
+	// 2,3æ¬¡å…ƒç©ºé–“ã®æ ¼å­çŠ¶ã®ç‚¹ã®ä¸­ã‹ã‚‰æœ€å°ã‚’æ¢ã™
 	bool calcMinOnGrid( OptTargetSV_0 &obj, double* opt_t, const double* min_t, const double* max_t, const int* div );
-	// 3ŸŒ³‹óŠÔ‚Ì—Ìˆæ§ŒÀ‚Â‚«‚ÅÅ¬‚ğ’T‚·
+	// 3æ¬¡å…ƒç©ºé–“ã®é ˜åŸŸåˆ¶é™ã¤ãã§æœ€å°ã‚’æ¢ã™
 	bool calcMinOnGridWithRegion( OptTargetSV_0 &obj, double* opt_t, const double* min_t, const double* max_t, const int* div, const kmb::Region *region );
-	// min_t, max_t ‚Ì—Ìˆæ‚ğ div ‚Å•ªŠ„‚µ‚½ grid ‚Ì’†S‚ÅÅ¬‚Ì‚Æ‚±‚ë‚ğ’T‚·
+	// min_t, max_t ã®é ˜åŸŸã‚’ div ã§åˆ†å‰²ã—ãŸ grid ã®ä¸­å¿ƒã§æœ€å°ã®ã¨ã“ã‚ã‚’æ¢ã™
 	bool calcMinOnCell( OptTargetSV_0 &obj, double* optmin_t, double* optmax_t, const double* min_t, const double* max_t, const int* div );
 
 
-	// Newton-Raphson –@
+	// Newton-Raphson æ³•
 	double calcZero_NR( FuncSS f, FuncSS df, double min_t, double max_t, double init_t=-DBL_MAX );
 	double calcZero_NR( OptTargetSS &obj, double min_t, double max_t, double init_t=-DBL_MAX );
 	bool calcZero_NR( OptTargetVV &obj, double* opt_t, const double* min_t, const double* max_t, const double* init_t=NULL );
 
-	// Damped Newton Method Œ¸‘¬ƒjƒ…[ƒgƒ“–@
+	// Damped Newton Method æ¸›é€Ÿãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ³æ³•
 	double calcZero_DN( OptTargetSS &obj, double init_t );
 	bool calcZero_DN( OptTargetVV &obj, double* opt_t, const double* init_t );
 	
-	// ƒZƒJƒ“ƒg–@
-	// init_t0 ‚Æ init_t1 ‚ÌŠÔ‚É‰ğ‚ª‚ ‚é
+	// ã‚»ã‚«ãƒ³ãƒˆæ³•
+	// init_t0 ã¨ init_t1 ã®é–“ã«è§£ãŒã‚ã‚‹
 	double calcZero_secant( OptTargetSS_0 &obj, double init_t0, double init_t1 );
 
-	// Golden Section ‰©‹à•ªŠ„–@
-	// min_t ‚Æ max_t ‚ÌŠÔ‚ÉÅ¬’l‚ª1‚Â‚¾‚¯‚ ‚é‚±‚Æi’P•ô«j‚ğ‰¼’è
+	// Golden Section é»„é‡‘åˆ†å‰²æ³•
+	// min_t ã¨ max_t ã®é–“ã«æœ€å°å€¤ãŒ1ã¤ã ã‘ã‚ã‚‹ã“ã¨ï¼ˆå˜å³°æ€§ï¼‰ã‚’ä»®å®š
 	double calcMin_GS( FuncSS f, double min_t, double max_t );
 	double calcMin_GS( OptTargetSS_0 &obj, double min_t, double max_t );
 	bool calcMin_GS( OptTargetSV_0 &obj, double* opt_t, const double* min_t, const double* max_t );
 
-	// Conjugate Gradient ‹¤–ğŒù”z–@
+	// Conjugate Gradient å…±å½¹å‹¾é…æ³•
 	bool calcMin_CG( OptTargetSV &obj, double* opt_t, const double* min_t, const double* max_t, const double* init_t=NULL );
 
-	// €ƒjƒ…[ƒgƒ“(BFGS)–@
+	// æº–ãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ³(BFGS)æ³•
 	bool calcMin_BFGS( OptTargetSV &obj, double* opt_t, double* init_t );
 private:
-	// ‰©‹à”ä rho = 1 + (1-tau)
+	// é»„é‡‘æ¯” rho = 1 + (1-tau)
 	static const double tau;
 };
 

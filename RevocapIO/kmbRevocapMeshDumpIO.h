@@ -38,23 +38,23 @@ class DataBindings;
 class RevocapMeshDumpIO
 {
 public:
-	// •¶š char ‚Æ•¶š—ñ‚Ì’·‚³‚ğ•\‚· int4 ‚ÍŠÂ‹«‚É‚æ‚ç‚È‚¢‚Æ‚·‚é
+	// æ–‡å­— char ã¨æ–‡å­—åˆ—ã®é•·ã•ã‚’è¡¨ã™ int4 ã¯ç’°å¢ƒã«ã‚ˆã‚‰ãªã„ã¨ã™ã‚‹
 	struct SizeInfo{
-		unsigned char nodeCount;    // •„†‚È‚µ®”
-		unsigned char nodeId;       // •„†•t‚«®”
-		unsigned char xyz;          // •‚“®“_¬”
-		unsigned char bodyCount;    // •„†‚È‚µ®”
-		unsigned char bodyId;       // •„†•t‚«®”
-		unsigned char elementCount; // •„†‚È‚µ®”
-		unsigned char elementId;    // •„†•t‚«®”
-		unsigned char elementType;  // •„†•t‚«®”
-		unsigned char dataCount;    // •„†‚È‚µ®”
-		unsigned char bindingMode;  // •„†•t‚«®”
-		unsigned char idCount;      // •„†‚È‚µ®”
-		unsigned char valueType;    // •„†•t‚«®”
-		unsigned char value;        // •‚“®“_¬”
-		unsigned char intValue;     // •„†•t‚«®”
-		unsigned char faceId;       // •„†•t‚«®”
+		unsigned char nodeCount;    // ç¬¦å·ãªã—æ•´æ•°
+		unsigned char nodeId;       // ç¬¦å·ä»˜ãæ•´æ•°
+		unsigned char xyz;          // æµ®å‹•ç‚¹å°æ•°
+		unsigned char bodyCount;    // ç¬¦å·ãªã—æ•´æ•°
+		unsigned char bodyId;       // ç¬¦å·ä»˜ãæ•´æ•°
+		unsigned char elementCount; // ç¬¦å·ãªã—æ•´æ•°
+		unsigned char elementId;    // ç¬¦å·ä»˜ãæ•´æ•°
+		unsigned char elementType;  // ç¬¦å·ä»˜ãæ•´æ•°
+		unsigned char dataCount;    // ç¬¦å·ãªã—æ•´æ•°
+		unsigned char bindingMode;  // ç¬¦å·ä»˜ãæ•´æ•°
+		unsigned char idCount;      // ç¬¦å·ãªã—æ•´æ•°
+		unsigned char valueType;    // ç¬¦å·ä»˜ãæ•´æ•°
+		unsigned char value;        // æµ®å‹•ç‚¹å°æ•°
+		unsigned char intValue;     // ç¬¦å·ä»˜ãæ•´æ•°
+		unsigned char faceId;       // ç¬¦å·ä»˜ãæ•´æ•°
 	};
 
 	RevocapMeshDumpIO(void);
@@ -70,7 +70,7 @@ protected:
 	struct SizeInfo sInfo;
 	bool getVersion(int &ver);
 	bool setVersion(const int ver);
-	// stream ”Å
+	// stream ç‰ˆ
 	kmb::RevocapIO::ErrorCode getVersion(int &ver,std::istream &input);
 	kmb::RevocapIO::ErrorCode setVersion(const int ver,std::ostream &output);
 	kmb::RevocapIO::ErrorCode loadNodeData(kmb::MeshData* mesh,std::istream &input);

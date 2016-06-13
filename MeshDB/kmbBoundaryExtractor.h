@@ -41,72 +41,72 @@ class BoundaryExtractor
 {
 protected:
 	kmb::MeshData* mesh;
-	// — •Ô‚Á‚Ä‚¢‚é—v‘f‚ğ‹–‚·‚©‚Ç‚¤‚©
+	// è£è¿”ã£ã¦ã„ã‚‹è¦ç´ ã‚’è¨±ã™ã‹ã©ã†ã‹
 	bool reverseMode;
-	// ß“_‚ğŠÜ‚Ş‚æ‚¤‚È–Ê‚Ì‘Î‰ƒe[ƒuƒ‹
+	// ç¯€ç‚¹ã‚’å«ã‚€ã‚ˆã†ãªé¢ã®å¯¾å¿œãƒ†ãƒ¼ãƒ–ãƒ«
 	std::multimap< kmb::nodeIdType, kmb::Face > facemap;
-	// ‚·‚×‚Ä‚Ì Face ‚É‚Â‚¢‚Ä facemap ‚É“o˜^‚·‚é
-	// elements == NULL ‚Ì‚Æ‚«‚ÍŠÖŒW‚Í“o˜^Ï‚İ‚Ì mesh ‚Ì‚·‚×‚Ä‚Ì—v‘f‚ğ’²‚×‚é
+	// ã™ã¹ã¦ã® Face ã«ã¤ã„ã¦ facemap ã«ç™»éŒ²ã™ã‚‹
+	// elements == NULL ã®ã¨ãã¯é–¢ä¿‚ã¯ç™»éŒ²æ¸ˆã¿ã® mesh ã®ã™ã¹ã¦ã®è¦ç´ ã‚’èª¿ã¹ã‚‹
 	void appendElement(kmb::elementIdType elementId,kmb::ElementBase &element,const kmb::ElementContainer* elements=NULL);
-	// facemap ‚É“o˜^‚·‚é
+	// facemap ã«ç™»éŒ²ã™ã‚‹
 	void appendFaceMap(kmb::elementIdType elementId,kmb::ElementBase &element,kmb::idType faceId,const kmb::ElementContainer* elements=NULL);
-	// facemap ‚É“o˜^‚³‚ê‚Ä‚¢‚½‚çíœ‚·‚é
-	// ‚±‚±‚Å‚Ìˆø” reverse ‚Íƒƒ“ƒo•Ï”‚Ì reverseMode ‚Æ‚Í•ÊBreverseMode = false ‚ğ‘O’ñ‚Æ‚·‚éB
-	// reverse = false ‚È‚ç‚ÎA“¯‚¶Œü‚«‚É“o˜^‚³‚ê‚Ä‚¢‚é‚à‚Ì‚ğíœi“o˜^Ï‚İ‚Ì—v‘f‚Åíœ‚·‚éê‡j
-	// reverse = true ‚È‚ç‚ÎA‹tŒü‚«‚É“o˜^‚³‚ê‚Ä‚¢‚é‚à‚Ì‚ğíœiÚ‚µ‚Ä‚¢‚é—v‘f‚Åíœ‚·‚éê‡j
+	// facemap ã«ç™»éŒ²ã•ã‚Œã¦ã„ãŸã‚‰å‰Šé™¤ã™ã‚‹
+	// ã“ã“ã§ã®å¼•æ•° reverse ã¯ãƒ¡ãƒ³ãƒå¤‰æ•°ã® reverseMode ã¨ã¯åˆ¥ã€‚reverseMode = false ã‚’å‰æã¨ã™ã‚‹ã€‚
+	// reverse = false ãªã‚‰ã°ã€åŒã˜å‘ãã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã‚’å‰Šé™¤ï¼ˆç™»éŒ²æ¸ˆã¿ã®è¦ç´ ã§å‰Šé™¤ã™ã‚‹å ´åˆï¼‰
+	// reverse = true ãªã‚‰ã°ã€é€†å‘ãã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã‚’å‰Šé™¤ï¼ˆæ¥ã—ã¦ã„ã‚‹è¦ç´ ã§å‰Šé™¤ã™ã‚‹å ´åˆï¼‰
 	void eraseFaceMap(kmb::ElementBase &element,kmb::idType faceId,bool reverse=false,const kmb::ElementContainer* elements=NULL);
-	// ƒ|ƒCƒ“ƒ^‚ÅŒÄ‚Î‚ê‚é
+	// ãƒã‚¤ãƒ³ã‚¿ã§å‘¼ã°ã‚Œã‚‹
 	void appendElementContainer(const kmb::ElementContainer* body);
-	// “à•”ŒÄ‚Ño‚µ—pƒ‹[ƒ`ƒ“
+	// å†…éƒ¨å‘¼ã³å‡ºã—ç”¨ãƒ«ãƒ¼ãƒãƒ³
 	kmb::ElementRelation::relationType getFaceRelation(kmb::ElementBase &e0,kmb::idType f0,kmb::ElementBase &e1,kmb::idType f1) const;
 public:
 	BoundaryExtractor(void);
 	virtual ~BoundaryExtractor(void);
 	void setMesh(kmb::MeshData* mesh);
 	void appendBody(kmb::bodyIdType bodyId);
-	// ‹«ŠE‚Ì’Tõ‘ÎÛ‚ğ©•ª©g‚Ì‚İ‚Æ‚·‚é
+	// å¢ƒç•Œã®æ¢ç´¢å¯¾è±¡ã‚’è‡ªåˆ†è‡ªèº«ã®ã¿ã¨ã™ã‚‹
 	void appendUnitBody(const kmb::ElementContainer* body);
-	// —v‘fƒOƒ‹[ƒv‚È‚çA‚»‚Ì—v‘f‚Ì–Ê‚ğ“o˜^
-	// –ÊƒOƒ‹[ƒv‚È‚çA‚»‚Ì–Ê‚ğ‚»‚Ì‚Ü‚Ü facemap ‚É“o˜^
+	// è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ãªã‚‰ã€ãã®è¦ç´ ã®é¢ã‚’ç™»éŒ²
+	// é¢ã‚°ãƒ«ãƒ¼ãƒ—ãªã‚‰ã€ãã®é¢ã‚’ãã®ã¾ã¾ facemap ã«ç™»éŒ²
 	void appendData(const char* name);
 	void appendData(const kmb::DataBindings* data);
 	void eraseData(const char* name,bool reverse=false);
-	// ‹«ŠE‚ğ’Šo‚µ‚ÄAmesh ‚É“o˜^‚µAbodyId ‚ğ•Ô‚·
-	// MeshData ‚Ì bindingsStack ‚É‘©”›‚³‚ê‚½ƒf[ƒ^‚ª“o˜^‚³‚ê‚Ä‚¢‚½‚çA‚»‚ê‚ğ‹«ŠE‚É‚à“o˜^‚·‚é
-	// bodyId ‚É‘®‚·‚é Face ‚ğ facemap ‚©‚çæ‚èo‚µ‚Ä’Šo
+	// å¢ƒç•Œã‚’æŠ½å‡ºã—ã¦ã€mesh ã«ç™»éŒ²ã—ã€bodyId ã‚’è¿”ã™
+	// MeshData ã® bindingsStack ã«æŸç¸›ã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ãŒç™»éŒ²ã•ã‚Œã¦ã„ãŸã‚‰ã€ãã‚Œã‚’å¢ƒç•Œã«ã‚‚ç™»éŒ²ã™ã‚‹
+	// bodyId ã«å±ã™ã‚‹ Face ã‚’ facemap ã‹ã‚‰å–ã‚Šå‡ºã—ã¦æŠ½å‡º
 	kmb::bodyIdType getBoundary(kmb::bodyIdType bodyId) const;
-	// facemap ‚ÉŠÜ‚Ü‚ê‚é Face ‚ğ‚·‚×‚Äæ‚èo‚µ‚Ä’Šo
+	// facemap ã«å«ã¾ã‚Œã‚‹ Face ã‚’ã™ã¹ã¦å–ã‚Šå‡ºã—ã¦æŠ½å‡º
 	kmb::bodyIdType getBoundary(void) const;
-	// ‘¼‚Ì BoundaryExtractor ‚É“o˜^‚³‚ê‚Ä‚¢‚é Face ‚ğæ‚èo‚µ‚Ä’Šo
+	// ä»–ã® BoundaryExtractor ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ Face ã‚’å–ã‚Šå‡ºã—ã¦æŠ½å‡º
 	kmb::bodyIdType getBoundary(kmb::BoundaryExtractor& other) const;
 
-	// ‹«ŠE‚ğ‚ ‚ç‚©‚¶‚ßŠm•Û‚µ‚½ƒRƒ“ƒeƒi‚ÉŠi”[‚·‚é (mesh == NULL ‚Ì‚Æ‚«‚Å‚àg‚¦‚é)
+	// å¢ƒç•Œã‚’ã‚ã‚‰ã‹ã˜ã‚ç¢ºä¿ã—ãŸã‚³ãƒ³ãƒ†ãƒŠã«æ ¼ç´ã™ã‚‹ (mesh == NULL ã®ã¨ãã§ã‚‚ä½¿ãˆã‚‹)
 	size_t getBoundary(const kmb::ElementContainer* parent,kmb::ElementContainer* boundary) const;
-	// ‹«ŠE‚ğ‚ ‚ç‚©‚¶‚ßŠm•Û‚µ‚½ß“_ƒOƒ‹[ƒv‚ÉŠi”[‚·‚é (mesh == NULL ‚Ì‚Æ‚«‚Å‚àg‚¦‚é)
-	// ‹«ŠEî•ñ‚ğ—v‘f‚Å‚È‚­Aß“_ƒOƒ‹[ƒv‚Å‚Ù‚µ‚¢‚Æ‚«‚Ég‚¤
+	// å¢ƒç•Œã‚’ã‚ã‚‰ã‹ã˜ã‚ç¢ºä¿ã—ãŸç¯€ç‚¹ã‚°ãƒ«ãƒ¼ãƒ—ã«æ ¼ç´ã™ã‚‹ (mesh == NULL ã®ã¨ãã§ã‚‚ä½¿ãˆã‚‹)
+	// å¢ƒç•Œæƒ…å ±ã‚’è¦ç´ ã§ãªãã€ç¯€ç‚¹ã‚°ãƒ«ãƒ¼ãƒ—ã§ã»ã—ã„ã¨ãã«ä½¿ã†
 	size_t getBoundaryNodeGroup(const kmb::ElementContainer* parent,kmb::DataBindings* nodeGroup) const;
-	// ‹«ŠE‚ğ¬•ª‚É•ªŠ„‚µ‚Ä•Ô‚·
+	// å¢ƒç•Œã‚’æˆåˆ†ã«åˆ†å‰²ã—ã¦è¿”ã™
 	int getBoundaryComponents(kmb::bodyIdType bodyId,kmb::bodyIdType* &boundaryIds) const;
-	// “o˜^‚µ‚Ä‚ ‚é‹«ŠEî•ñ‚©‚ç bodyId ‚ÉŠÜ‚Ü‚ê‚é‚à‚Ì‚ğ FaceGroup ‚Æ‚µ‚Ä
-	// name ‚ğ‚Â‚¯‚Äæ‚èo‚·B‚±‚Ì‚Æ‚«Astype = "Brep" ‚É‚·‚éB
+	// ç™»éŒ²ã—ã¦ã‚ã‚‹å¢ƒç•Œæƒ…å ±ã‹ã‚‰ bodyId ã«å«ã¾ã‚Œã‚‹ã‚‚ã®ã‚’ FaceGroup ã¨ã—ã¦
+	// name ã‚’ã¤ã‘ã¦å–ã‚Šå‡ºã™ã€‚ã“ã®ã¨ãã€stype = "Brep" ã«ã™ã‚‹ã€‚
 	bool getBoundaryFace(kmb::bodyIdType bodyId,const char* name) const;
-	// “o˜^‚µ‚Ä‚ ‚é‹«ŠEî•ñ‚©‚ç Element ‚Æˆê’v‚·‚é Face ‚ğæ‚èo‚·
+	// ç™»éŒ²ã—ã¦ã‚ã‚‹å¢ƒç•Œæƒ…å ±ã‹ã‚‰ Element ã¨ä¸€è‡´ã™ã‚‹ Face ã‚’å–ã‚Šå‡ºã™
 	bool getBoundaryFace(const kmb::ElementBase& elem,kmb::Face &f) const;
 
-	// ‚·‚Å‚É“o˜^‚³‚ê‚Ä‚¢‚é‹«ŠE–Ê‚ÆÚ‚·‚é‚æ‚¤‚È–Ê‚ğ’Šo
-	// bodyId = 0 ‚Æ bodyId = 1 ‚ÌƒCƒ“ƒ^[ƒtƒFƒCƒX–Ê‚ğæ‚èo‚·‚É‚Í
-	// appendBody(0) ‚µ‚Ä‚©‚ç getInterfaceBoundary(1) ‚·‚é
-	// Ši”[‚³‚ê‚é‚Ì‚Í bodyId = 1 ‚Ì–Ê
+	// ã™ã§ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å¢ƒç•Œé¢ã¨æ¥ã™ã‚‹ã‚ˆã†ãªé¢ã‚’æŠ½å‡º
+	// bodyId = 0 ã¨ bodyId = 1 ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹é¢ã‚’å–ã‚Šå‡ºã™ã«ã¯
+	// appendBody(0) ã—ã¦ã‹ã‚‰ getInterfaceBoundary(1) ã™ã‚‹
+	// æ ¼ç´ã•ã‚Œã‚‹ã®ã¯ bodyId = 1 ã®é¢
 	kmb::bodyIdType getInterfaceBoundary(kmb::bodyIdType bodyId) const;
 	bool getInterfaceBoundaryFace(kmb::bodyIdType bodyId,const char* name) const;
 
-	// boundary ‚ª‚È‚¢ó‘Ô = closed ‚©‚Ç‚¤‚©‚Ì”»’è
-	// ”»’è‚Ì‚½‚ß‚É‚Í‚ ‚ç‚©‚¶‚ß appendBody ‚µ‚Ä‚¨‚­‚±‚Æ‚ª•K—v
-	// ‹«ŠE–Ê‚Å body ‚É‘®‚µ‚Ä‚¢‚é‚à‚Ì‚à‚ª‚ ‚é‚©‚ğƒ`ƒFƒbƒN‚·‚é
+	// boundary ãŒãªã„çŠ¶æ…‹ = closed ã‹ã©ã†ã‹ã®åˆ¤å®š
+	// åˆ¤å®šã®ãŸã‚ã«ã¯ã‚ã‚‰ã‹ã˜ã‚ appendBody ã—ã¦ãŠãã“ã¨ãŒå¿…è¦
+	// å¢ƒç•Œé¢ã§ body ã«å±ã—ã¦ã„ã‚‹ã‚‚ã®ã‚‚ãŒã‚ã‚‹ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 	bool isClosed(kmb::bodyIdType bodyId) const;
-	// ’[‚É‹«ŠE–Ê‚ÌW‡‚ª‹ó‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN‚·‚é
+	// ç«¯ã«å¢ƒç•Œé¢ã®é›†åˆãŒç©ºã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 	bool isClosed(void) const;
-	// ‰Šúó‘Ô‚É–ß‚·
+	// åˆæœŸçŠ¶æ…‹ã«æˆ»ã™
 	void clear(void);
 	void eraseData(const kmb::DataBindings* data,bool reverse);
 	void setReverseMode(bool mode);

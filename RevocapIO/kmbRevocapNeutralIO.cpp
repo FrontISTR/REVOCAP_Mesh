@@ -149,7 +149,7 @@ kmb::RevocapNeutralIO::saveToRNFFile(const char* filename,kmb::MeshData* mesh)
 					output << eIter.getTypeString();
 					int num = eIter.getNodeCount();
 					for(int i=0;i<num;++i){
-						output << ", " << eIter.getCellId(i);
+						output << ", " << eIter.getNodeId(i);
 					}
 					output << "]" << std::endl;
 					++eIter;
@@ -194,7 +194,7 @@ kmb::RevocapNeutralIO::readNode(std::ifstream &input,kmb::MeshData* mesh)
 	mesh->beginNode( static_cast<size_t>(size) );
 	double x, y, z;
 	kmb::nodeIdType id;
-	char c; // [ ‚â , ‚ğ“Ç‚İ‚Ş‚½‚ß
+	char c; // [ ã‚„ , ã‚’èª­ã¿è¾¼ã‚€ãŸã‚
 	long nodeCounter=0;
 	while( !std::getline( input, line ).eof() ){
 		if( line.size() == 0 || line[0] == '#' ){
@@ -213,15 +213,15 @@ kmb::RevocapNeutralIO::readNode(std::ifstream &input,kmb::MeshData* mesh)
 	return 0;
 }
 
-// element ‚Í element: ƒ^ƒO‚Ì‰º‚Ì”z—ñ—v‘f
-// input.seekg( pos ); ‚Å“Ç‚İ‚ñ‚¾ƒ^ƒO‚Í–ß‚µ‚Ä‚¨‚­
+// element ã¯ element: ã‚¿ã‚°ã®ä¸‹ã®é…åˆ—è¦ç´ 
+// input.seekg( pos ); ã§èª­ã¿è¾¼ã‚“ã ã‚¿ã‚°ã¯æˆ»ã—ã¦ãŠã
 int
 kmb::RevocapNeutralIO::readElement(std::ifstream &input,kmb::MeshData* mesh)
 {
 	std::string line;
 	std::string tag;
 	std::string name;
-	char c; // [ ‚â , ‚ğ“Ç‚İ‚Ş‚½‚ß
+	char c; // [ ã‚„ , ã‚’èª­ã¿è¾¼ã‚€ãŸã‚
 	long size=0L;
 	kmb::elementIdType id;
 	kmb::nodeIdType nodes[20];
@@ -291,10 +291,10 @@ kmb::RevocapNeutralIO::readElement(std::ifstream &input,kmb::MeshData* mesh)
 	return 0;
 }
 
-// data: ƒ^ƒO‚Ì‰º‚Ì”z—ñ—v‘f
-// input.seekg( pos ); ‚Å“Ç‚İ‚ñ‚¾ƒ^ƒO‚Í–ß‚µ‚Ä‚¨‚­
-// Group Œn‚Ì‚İÀ‘•
-// Variable Œn‚Í Vector2Int ‚Ì‚İ
+// data: ã‚¿ã‚°ã®ä¸‹ã®é…åˆ—è¦ç´ 
+// input.seekg( pos ); ã§èª­ã¿è¾¼ã‚“ã ã‚¿ã‚°ã¯æˆ»ã—ã¦ãŠã
+// Group ç³»ã®ã¿å®Ÿè£…
+// Variable ç³»ã¯ Vector2Int ã®ã¿
 int
 kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 {
@@ -304,7 +304,7 @@ kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 	std::string mode;
 	std::string vtype;
 	std::string stype;
-	char c; // [ ‚â , ‚ğ“Ç‚İ‚Ş‚½‚ß
+	char c; // [ ã‚„ , ã‚’èª­ã¿è¾¼ã‚€ãŸã‚
 	long size=0L;
 	kmb::elementIdType elementId;
 	kmb::idType localId;
@@ -322,7 +322,7 @@ kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 			input.seekg( pos );
 			return 0;
 		}
-		// ”z—ñ—v‘f‚ªn‚Ü‚é
+		// é…åˆ—è¦ç´ ãŒå§‹ã¾ã‚‹
 		if( line[2] == '-' ){
 			name = "";
 			mode = "";
@@ -402,7 +402,7 @@ kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 							++dataCounter;
 						}
 					}else{
-						// GROUP Œn‚Ì’l‚Ìæ“¾
+						// GROUP ç³»ã®å€¤ã®å–å¾—
 						switch( kmb::PhysicalValue::string2valueType( vtype ) )
 						{
 						case kmb::PhysicalValue::Scalar:
@@ -523,7 +523,7 @@ kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 							++dataCounter;
 						}
 					}else{
-						// ‹ó“Ç‚İ
+						// ç©ºèª­ã¿
 						while( !std::getline( input, line ).eof() ){
 							if( line.size() == 0 || line[0] == '#' ){
 								continue;
@@ -541,7 +541,7 @@ kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 			}
 			if( data != NULL && value != NULL && value->getType() == data->getValueType() ){
 				data->setPhysicalValue( value );
-				// ˆÈŒã value ‚Ìƒƒ‚ƒŠ‚Í data ‚ªŠÇ—‚·‚é
+				// ä»¥å¾Œ value ã®ãƒ¡ãƒ¢ãƒªã¯ data ãŒç®¡ç†ã™ã‚‹
 				value = NULL;
 			}
 			input.seekg( pos );

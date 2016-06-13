@@ -42,19 +42,19 @@ public:
 	int append(kmb::elementIdType elementId);
 	int appendAll(void);
 
-	// “o˜^‚³‚ê‚Ä‚¢‚éƒRƒ“ƒeƒi‚ğæ‚è‘Ö‚¦‚ÄA
-	// ‚±‚ÌƒRƒ“ƒeƒi‚ÉŠi”[‚³‚ê‚Ä‚¢‚é—v‘f‚ğ‚·‚×‚Ä“o˜^‚·‚é
-	// ‚½‚¾‚µŠù‘¶‚Ì“o˜^Ï‚İ‚Ì—v‘f‚Í‚»‚Ì‚Ü‚Ü
+	// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚³ãƒ³ãƒ†ãƒŠã‚’å–ã‚Šæ›¿ãˆã¦ã€
+	// ã“ã®ã‚³ãƒ³ãƒ†ãƒŠã«æ ¼ç´ã•ã‚Œã¦ã„ã‚‹è¦ç´ ã‚’ã™ã¹ã¦ç™»éŒ²ã™ã‚‹
+	// ãŸã ã—æ—¢å­˜ã®ç™»éŒ²æ¸ˆã¿ã®è¦ç´ ã¯ãã®ã¾ã¾
 	int appendAllElement(const kmb::ElementContainer* body);
 
-	// “o˜^‚³‚ê‚Ä‚¢‚éƒRƒ“ƒeƒi‚©‚ç’T‚·
-	// —^‚¦‚ç‚ê‚½“_‚ğ“à•”‚ÉŠÜ‚Ş‚æ‚¤‚È—v‘f‚ğ•Ô‚·
-	// —^‚¦‚ç‚ê‚½“_‚Æ—v‘f‚Ì–Ê‚©‚ç‚È‚é‘Ì‚Ì‘ÌÏ‚ª tolerance ‚Ì’l‚æ‚è‚à¬‚³‚¢ê‡‚ğœ‚­
+	// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚³ãƒ³ãƒ†ãƒŠã‹ã‚‰æ¢ã™
+	// ä¸ãˆã‚‰ã‚ŒãŸç‚¹ã‚’å†…éƒ¨ã«å«ã‚€ã‚ˆã†ãªè¦ç´ ã‚’è¿”ã™
+	// ä¸ãˆã‚‰ã‚ŒãŸç‚¹ã¨è¦ç´ ã®é¢ã‹ã‚‰ãªã‚‹éŒä½“ã®ä½“ç©ãŒ tolerance ã®å€¤ã‚ˆã‚Šã‚‚å°ã•ã„å ´åˆã‚’é™¤ã
 	kmb::elementIdType searchElement(double x,double y,double z,double tolerance=0.0) const;
 
-	// body ‚ğ—^‚¦‚Ä‚»‚Ì’†‚©‚ç’T‚·
+	// body ã‚’ä¸ãˆã¦ãã®ä¸­ã‹ã‚‰æ¢ã™
 	kmb::elementIdType searchElementInBody(const kmb::ElementContainer* body,double x,double y,double z,double tolerance=0.0) const;
-	// element group ‚Ü‚½‚Í face group  ‚ğ—^‚¦‚Ä‚»‚Ì’†‚©‚ç’T‚·
+	// element group ã¾ãŸã¯ face group  ã‚’ä¸ãˆã¦ãã®ä¸­ã‹ã‚‰æ¢ã™
 	kmb::elementIdType searchElementInData(const kmb::DataBindings* data,const kmb::ElementContainer* body,double x,double y,double z,double tolerance=0.0) const;
 };
 

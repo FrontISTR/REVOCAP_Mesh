@@ -52,12 +52,12 @@ private:
 		size_t egrpCount;
 		kmb::bodyIdType bodyId;
 	};
-	// “Ç‚İ‚Ş‚Æ‚«‚Éˆø‚¢‚ÄA‘‚«‚Ş‚Æ‚«‚É‘«‚·
-	// ƒtƒ@ƒCƒ‹‚Ì id ‚ª 1 ‚©‚çn‚Ü‚é‚ÍA‚±‚ê‚ç‚Ì offset ‚Í 1 ‚É‚·‚é
+	// èª­ã¿è¾¼ã‚€ã¨ãã«å¼•ã„ã¦ã€æ›¸ãè¾¼ã‚€ã¨ãã«è¶³ã™
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã® id ãŒ 1 ã‹ã‚‰å§‹ã¾ã‚‹æ™‚ã¯ã€ã“ã‚Œã‚‰ã® offset ã¯ 1 ã«ã™ã‚‹
 	kmb::nodeIdType offsetNodeId;
 	kmb::elementIdType offsetElementId;
 	solutionType soltype;
-	// true ‚Ì‚Æ‚«‚Í spectype ‚ÉˆË‚ç‚¸‚Éo—Í‚·‚é
+	// true ã®ã¨ãã¯ spectype ã«ä¾ã‚‰ãšã«å‡ºåŠ›ã™ã‚‹
 	bool dataFlag;
 	bool resElementFlag;
 	bool dummySectionFlag;
@@ -68,17 +68,17 @@ public:
 	~HecmwIO(void);
 	void clear(void);
 
-	// HEC msh ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
-	// ‚·‚×‚Ä‚Ì element ‚Í‚Ç‚±‚©‚Ì section ‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é‚Æ‚·‚é
-	// SECTION ‚Å’è‹`‚³‚ê‚Ä‚¢‚é EGRP ‚ğ MeshData ‚Ì Body ‚Ì’PˆÊ‚É‚·‚é
-	// MATERIAL => BodyGroup, Hash’l (Data ‚Ì–¼‘O‚Í MATERIAL ‚Ì–¼‘O‚Å“o˜^)
+	// HEC msh ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
+	// ã™ã¹ã¦ã® element ã¯ã©ã“ã‹ã® section ã«å«ã¾ã‚Œã¦ã„ã‚‹ã¨ã™ã‚‹
+	// SECTION ã§å®šç¾©ã•ã‚Œã¦ã„ã‚‹ EGRP ã‚’ MeshData ã® Body ã®å˜ä½ã«ã™ã‚‹
+	// MATERIAL => BodyGroup, Hashå€¤ (Data ã®åå‰ã¯ MATERIAL ã®åå‰ã§ç™»éŒ²)
 	//             young
 	//             poisson
 	//             density
 	//             linear_exp
 	//             specific_heat
 	//             heat_conductivity
-	// SECTION => BodyVariable, Hash’l (Data ‚Ì–¼‘O‚à SpecType ‚à SECTION)
+	// SECTION => BodyVariable, Hashå€¤ (Data ã®åå‰ã‚‚ SpecType ã‚‚ SECTION)
 	//         TYPE => "SOLID" or "SHELL" or "INTERFACE"
 	//         THICKNESS => float
 	//         INTEGPOINTS => integer
@@ -90,34 +90,34 @@ public:
 	int loadFromFRSFile(const char* filename,kmb::MeshData* mesh) const;
 	int loadFromResFile(const char* filename,kmb::MeshData* mesh) const;
 	int loadFromResFileItem(const char* filename,kmb::DataBindings* data,const char* name) const;
-	// ƒAƒXƒL[ƒf[ƒ^‚Ì“Ç‚İ‚İ
+	// ã‚¢ã‚¹ã‚­ãƒ¼ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
 	int loadFromResAsciiFile(const char* filename,kmb::MeshData* mesh) const;
-	// ƒoƒCƒiƒŠƒf[ƒ^‚Ì“Ç‚İ‚İ
+	// ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
 	int loadFromResBinFile(const char* filename,kmb::MeshData* mesh) const;
-	// ƒƒbƒVƒ…ƒtƒ@ƒCƒ‹o—Í
+	// ãƒ¡ãƒƒã‚·ãƒ¥ãƒ•ã‚¡ã‚¤ãƒ«å‡ºåŠ›
 	int saveToFile(const char* filename,const kmb::MeshData* mesh) const;
-	// ƒoƒCƒiƒŠŒ`®‚Åo—Í
+	// ãƒã‚¤ãƒŠãƒªå½¢å¼ã§å‡ºåŠ›
 	int saveToResFile(const char* filename,kmb::MeshData* mesh) const;
-	// MW3 Œ`®‚Åo—Í
+	// MW3 å½¢å¼ã§å‡ºåŠ›
 	int saveToFileMW3(const char* filename,const kmb::MeshData* mesh,const char* partName) const;
-	// Ver.3.6 Œ`®
+	// Ver.3.6 å½¢å¼
 	int saveToMeshFile_3_6(const char* filename,const kmb::MeshData* mesh) const;
-	// Ver.4.4 Œ`®
+	// Ver.4.4 å½¢å¼
 	int saveToMeshFile_4_4(const char* filename,const kmb::MeshData* mesh,const char* partName) const;
-	// master ‚Ìß“_‚ğ slave ‚Ì—v‘f‚Å•]‰¿‚µ‚Ä equation data ‚ğo—Í‚·‚é
-	// â‘Î’l‚ª thresh ˆÈ‰º‚Ì€‚Ío—Í‚µ‚È‚¢
-	// —v‘fÀ•W‚ª outThresh ˆÈ‰º‚Ì€‚ª‚ ‚ê‚Î•û’ö®‚ğo—Í‚µ‚È‚¢
+	// master ã®ç¯€ç‚¹ã‚’ slave ã®è¦ç´ ã§è©•ä¾¡ã—ã¦ equation data ã‚’å‡ºåŠ›ã™ã‚‹
+	// çµ¶å¯¾å€¤ãŒ thresh ä»¥ä¸‹ã®é …ã¯å‡ºåŠ›ã—ãªã„
+	// è¦ç´ åº§æ¨™ãŒ outThresh ä»¥ä¸‹ã®é …ãŒã‚ã‚Œã°æ–¹ç¨‹å¼ã‚’å‡ºåŠ›ã—ãªã„
 	int appendEquationToFile(const char* filename,const kmb::MeshData* mesh,const char* master,const char* slave,double thresh=1.0e-10,double outThresh=-1.0e-6) const;
-	// SGROUP ‚ğ msh ƒtƒ@ƒCƒ‹‚É’Ç‰Á‚·‚é
+	// SGROUP ã‚’ msh ãƒ•ã‚¡ã‚¤ãƒ«ã«è¿½åŠ ã™ã‚‹
 	int appendSgroupToFile(const char* filename,const kmb::MeshData* mesh,const char* sgroup,const char* stype=NULL) const;
 	int appendFooterToFile(const char* filename) const;
 	solutionType setSolutionType( const char* soltype );
 	const char* getSolutionType( void ) const;
-	// NGROUP EGROUP SGROUP ‚ğ“Ç‚İ‘‚«‚·‚éê‡‚Í true
+	// NGROUP EGROUP SGROUP ã‚’èª­ã¿æ›¸ãã™ã‚‹å ´åˆã¯ true
 	void setDataFlag(bool flag);
-	// res ƒtƒ@ƒCƒ‹‚Å element ‚ÌŒ‹‰Ê‚ğ“Ç‚Şê‡‚Í true
+	// res ãƒ•ã‚¡ã‚¤ãƒ«ã§ element ã®çµæœã‚’èª­ã‚€å ´åˆã¯ true
 	void setResElementFlag(bool flag);
-	// ƒ_ƒ~[‚Ì SECTION ‚ğ’Ç‰Á‚·‚éê‡‚Í true
+	// ãƒ€ãƒŸãƒ¼ã® SECTION ã‚’è¿½åŠ ã™ã‚‹å ´åˆã¯ true
 	void setDummySectionFlag(bool flag);
 
 	void setResHeader(const char* header);
@@ -126,35 +126,35 @@ public:
 	kmb::elementIdType getOffsetElementId(void) const;
 	kmb::nodeIdType getOffsetNodeId(void) const;
 
-	// ‹ÇŠ–Ê”Ô†‚Ì•ÏŠ·
+	// å±€æ‰€é¢ç•ªå·ã®å¤‰æ›
 	int correctLocalFaceId( kmb::MeshData* mesh, const char* faceName, const char* stype=NULL );
 protected:
-	// type ‚Ì•ÏŠ·
+	// type ã®å¤‰æ›
 	// TETRAHEDRON <=> 341
 	static int getHECType( kmb::elementType etype );
 	static kmb::elementType getRevocapType( int etype );
 
-	// ƒJ[ƒh(!KEYWORD) ‚ÌŸ‚Ìs‚©‚ç“Ç‚ñ‚ÅAŸ‚ÌƒJ[ƒh‚ğ“Ç‚İ‚ñ‚¾‚ç‚»‚Ìs‚ğ line ‚É‘ã“ü‚µ‚Ä•Ô‚·
+	// ã‚«ãƒ¼ãƒ‰(!KEYWORD) ã®æ¬¡ã®è¡Œã‹ã‚‰èª­ã‚“ã§ã€æ¬¡ã®ã‚«ãƒ¼ãƒ‰ã‚’èª­ã¿è¾¼ã‚“ã ã‚‰ãã®è¡Œã‚’ line ã«ä»£å…¥ã—ã¦è¿”ã™
 	// Header
 	int readHeader( std::ifstream &input, std::string &line ) const;
-	// Node : mesh = NULL ‚Ì‚ÍŒÂ”‚¾‚¯‚ğ•Ô‚·
+	// Node : mesh = NULL ã®æ™‚ã¯å€‹æ•°ã ã‘ã‚’è¿”ã™
 	size_t readNode( std::ifstream &input, std::string &line, kmb::MeshData* mesh ) const;
-	// Element : body = NULL ‚Ì‚ÍŒÂ”‚¾‚¯‚ğ•Ô‚·
+	// Element : body = NULL ã®æ™‚ã¯å€‹æ•°ã ã‘ã‚’è¿”ã™
 	size_t readElement( std::ifstream &input, std::string &line, kmb::ElementContainer* body ) const;
-	// Section : mesh = NULL ‚Ì‚Í‹ó“Ç‚İ
-	// “Ç‚Ş‚Æ‚«‚Í mesh ‚É bodyId => Hash ‚Ì DataVariable "SECTION" ‚ğì¬‚·‚é
-	// SECTION ‚Ì‚½‚Ñ‚É Body ‚ğ¶¬‚µ‚ÄAbodyId ‚ğ”­s‚·‚é
-	// Hash ‚Ì“à—e‚Í
+	// Section : mesh = NULL ã®æ™‚ã¯ç©ºèª­ã¿
+	// èª­ã‚€ã¨ãã¯ mesh ã« bodyId => Hash ã® DataVariable "SECTION" ã‚’ä½œæˆã™ã‚‹
+	// SECTION ã®ãŸã³ã« Body ã‚’ç”Ÿæˆã—ã¦ã€bodyId ã‚’ç™ºè¡Œã™ã‚‹
+	// Hash ã®å†…å®¹ã¯
 	//  TYPE => "SOLID" or "SHELL" or "INTERFACE"
-	//  THICKNESS => ƒXƒJƒ‰[’l
-	//  INTEGPOINTS => ®”’l
-	//  GAPCON => ƒXƒJƒ‰[’l
-	//  GAPRAD1 => ƒXƒJƒ‰[’l
-	//  GAPRAD2 => ƒXƒJƒ‰[’l
+	//  THICKNESS => ã‚¹ã‚«ãƒ©ãƒ¼å€¤
+	//  INTEGPOINTS => æ•´æ•°å€¤
+	//  GAPCON => ã‚¹ã‚«ãƒ©ãƒ¼å€¤
+	//  GAPRAD1 => ã‚¹ã‚«ãƒ©ãƒ¼å€¤
+	//  GAPRAD2 => ã‚¹ã‚«ãƒ©ãƒ¼å€¤
 	kmb::bodyIdType readSection( std::ifstream &input, std::string &line, kmb::MeshData* mesh );
-	// Material : mesh = NULL ‚Ì‚Í‹ó“Ç‚İ
+	// Material : mesh = NULL ã®æ™‚ã¯ç©ºèª­ã¿
 	int readMaterial( std::ifstream &input, std::string &line, kmb::MeshData* mesh ) const;
-	// EGroup : mesh = NULL ‚Ì‚Í egrpInfo ‚Ö‚Ì“o˜^‚Ì‚İ
+	// EGroup : mesh = NULL ã®æ™‚ã¯ egrpInfo ã¸ã®ç™»éŒ²ã®ã¿
 	size_t readEGroup( std::ifstream &input, std::string &line, kmb::MeshData* mesh, kmb::ElementContainer* parentBody=NULL );
 	size_t readNGroup( std::ifstream &input, std::string &line, kmb::MeshData* mesh ) const;
 	size_t readSGroup( std::ifstream &input, std::string &line, kmb::MeshData* mesh ) const;
@@ -176,12 +176,12 @@ protected:
 	int getEgrpInfoIndex( std::string name ) const;
 	int createEgrpInfo( std::string name, std::string matname );
 
-	// –Ê‚Ì•ÏŠ· Fstr => Revo
+	// é¢ã®å¤‰æ› Fstr => Revo
 	static int tetRmap[];
 	static int wedRmap[];
 	static int hexRmap[];
 	static int pyrRmap[];
-	// –Ê‚Ì•ÏŠ· Revo => Fstr
+	// é¢ã®å¤‰æ› Revo => Fstr
 	static int tetFmap[];
 	static int wedFmap[];
 	static int hexFmap[];

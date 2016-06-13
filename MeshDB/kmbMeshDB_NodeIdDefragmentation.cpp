@@ -35,10 +35,10 @@
 #include <map>
 #include <cstring>
 
-// nodeID ‚ğ initId ‚©‚çn‚Ü‚é‚æ‚¤‚É˜A‘±‰»‚·‚é
-// È—ª‚·‚ê‚Î 0 ‚©‚ç‡‚É–„‚ß‚Ä‚¢‚­
-// ‚½‚¾‚µ‡˜‚Í•Û‘¶‚µ‚È‚¢
-// ”ñí‚É’·ŠÔ‚©‚©‚é‚±‚Æ‚ª‚ ‚é‚Ì‚Å’ˆÓ
+// nodeID ã‚’ initId ã‹ã‚‰å§‹ã¾ã‚‹ã‚ˆã†ã«é€£ç¶šåŒ–ã™ã‚‹
+// çœç•¥ã™ã‚Œã° 0 ã‹ã‚‰é †ã«åŸ‹ã‚ã¦ã„ã
+// ãŸã ã—é †åºã¯ä¿å­˜ã—ãªã„
+// éå¸¸ã«é•·æ™‚é–“ã‹ã‹ã‚‹ã“ã¨ãŒã‚ã‚‹ã®ã§æ³¨æ„
 
 
 void
@@ -50,21 +50,21 @@ kmb::MeshDB::nodeIdDefragmentation(nodeIdType initId)
 		return;
 	}
 
-	// ‹ß–Tî•ñ‚ÌƒNƒŠƒA
+	// è¿‘å‚æƒ…å ±ã®ã‚¯ãƒªã‚¢
 	this->neighborInfo.clear();
 
-	// V‚µ‚¢ nodeId ‚ÆŒÃ‚¢ nodeId ‚Ì‘Î‰ŠÖŒW‚ğŠo‚¦‚Ä‚¨‚­
+	// æ–°ã—ã„ nodeId ã¨å¤ã„ nodeId ã®å¯¾å¿œé–¢ä¿‚ã‚’è¦šãˆã¦ãŠã
 	// idmap[oldid] = newid
 	std::map<kmb::nodeIdType,kmb::nodeIdType> idmap;
 
 	static_cast< kmb::Point3DContainerMap*>(this->node3Ds)->idDefragment(initId,idmap);
 
-	// •ÏX‚ª‚È‚¯‚ê‚Î‚±‚ê‚ÅI‚í‚è
+	// å¤‰æ›´ãŒãªã‘ã‚Œã°ã“ã‚Œã§çµ‚ã‚ã‚Š
 	if( idmap.size() == 0 ){
 		return;
 	}
 
-	// —v‘fî•ñ‚ÌXV
+	// è¦ç´ æƒ…å ±ã®æ›´æ–°
 	for(std::vector<kmb::ElementContainer*>::iterator cIter = this->bodies.begin();
 		cIter != this->bodies.end();
 		++cIter)
@@ -75,9 +75,9 @@ kmb::MeshDB::nodeIdDefragmentation(nodeIdType initId)
 			while( eIter != body->end() ){
 				int len = eIter.getNodeCount();
 				for(int i=0;i<len;++i){
-					nodeIdType oldId = eIter.getCellId(i);
+					nodeIdType oldId = eIter.getNodeId(i);
 					if( idmap.find(oldId) != idmap.end() ){
-						eIter.setCellId(i,idmap[oldId]);
+						eIter.setNodeId(i,idmap[oldId]);
 					}
 				}
 				++eIter;
@@ -85,7 +85,7 @@ kmb::MeshDB::nodeIdDefragmentation(nodeIdType initId)
 		}
 	}
 
-	// •¨——Ê‚ÌXV
+	// ç‰©ç†é‡ã®æ›´æ–°
 	std::multimap< std::string, kmb::DataBindings*>::iterator bIter = this->bindings.begin();
 	while( bIter != this->bindings.end() )
 	{
@@ -120,9 +120,9 @@ kmb::MeshDB::replaceNodeId(kmb::nodeIdType oldId, kmb::nodeIdType newId)
 	if( this->node3Ds
 		&& strcmp( node3Ds->getContainerType(), kmb::Point3DContainerMap::CONTAINER_TYPE ) == 0
 		&& static_cast< kmb::Point3DContainerMap*>(this->node3Ds)->replaceId(oldId,newId) ){
-		// ŒÃ‚¢ Id ‚Ìü•Ó—v‘f‚ğ’²‚×‚é
+		// å¤ã„ Id ã®å‘¨è¾ºè¦ç´ ã‚’èª¿ã¹ã‚‹
 		std::vector<elementIdType> coboundary;
-		// ‹t‘Î‰‚ª“o˜^‚³‚ê‚Ä‚¢‚È‚©‚Á‚½‚ç cache ‚È‚µƒo[ƒWƒ‡ƒ“‚ğg‚¤
+		// é€†å¯¾å¿œãŒç™»éŒ²ã•ã‚Œã¦ã„ãªã‹ã£ãŸã‚‰ cache ãªã—ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’ä½¿ã†
 		getSurroundingElements(oldId,coboundary,false);
 
 		std::vector<elementIdType>::iterator eIter = coboundary.begin();
@@ -136,7 +136,7 @@ kmb::MeshDB::replaceNodeId(kmb::nodeIdType oldId, kmb::nodeIdType newId)
 			}
 			++eIter;
 		}
-		// •¨——Ê‚É‚Â‚¢‚Ä‚à•ÏŠ·‚·‚é
+		// ç‰©ç†é‡ã«ã¤ã„ã¦ã‚‚å¤‰æ›ã™ã‚‹
 		std::multimap< std::string, kmb::DataBindings*>::iterator iterBind = this->bindings.begin();
 		while( iterBind != this->bindings.end() )
 		{
@@ -155,14 +155,14 @@ kmb::MeshDB::replaceNodeId(kmb::nodeIdType oldId, kmb::nodeIdType newId)
 	}
 }
 
-// g‚í‚ê‚Ä‚¢‚È‚¢ß“_‚ğíœ‚·‚é
-// íœ‚µ‚½ß“_‚ÌŒÂ”‚ğ•Ô‚·
+// ä½¿ã‚ã‚Œã¦ã„ãªã„ç¯€ç‚¹ã‚’å‰Šé™¤ã™ã‚‹
+// å‰Šé™¤ã—ãŸç¯€ç‚¹ã®å€‹æ•°ã‚’è¿”ã™
 int
 kmb::MeshDB::deleteUselessNodes(void)
 {
 	int count = 0;
 	kmb::NodeNeighborInfo neighborInfo;
-	// ‚·‚×‚Ä‚Ì Body ‚Ì‹ß–Tî•ñ
+	// ã™ã¹ã¦ã® Body ã®è¿‘å‚æƒ…å ±
 	neighborInfo.appendCoboundary( this );
 
 	if( this->node3Ds
@@ -201,7 +201,7 @@ kmb::MeshDB::reverseElement(kmb::elementIdType elementID,kmb::bodyIdType bodyID)
 	return elem.reverse();
 }
 
-// ’u‚«Š·‚¦‚ÌŒÂ”‚ğ•Ô‚·
+// ç½®ãæ›ãˆã®å€‹æ•°ã‚’è¿”ã™
 int
 kmb::MeshDB::replaceNodeIdOfBody(kmb::bodyIdType bodyId,kmb::nodeIdType oldNodeId,kmb::nodeIdType newNodeId)
 {
@@ -213,7 +213,7 @@ kmb::MeshDB::replaceNodeIdOfBody(kmb::bodyIdType bodyId,kmb::nodeIdType oldNodeI
 	return count;
 }
 
-// ’u‚«Š·‚¦‚ÌŒÂ”‚ğ•Ô‚·
+// ç½®ãæ›ãˆã®å€‹æ•°ã‚’è¿”ã™
 int
 kmb::MeshDB::replaceNodeIdOfBody(kmb::bodyIdType bodyId,std::map<kmb::nodeIdType,kmb::nodeIdType>& nodeMapper)
 {
@@ -244,7 +244,7 @@ kmb::MeshDB::replaceNodeIdOfBody(kmb::bodyIdType bodyId,const char* coupleName)
 				orgNodeId = eIter[i];
 				if( data->hasId( orgNodeId ) && data->getPhysicalValue( orgNodeId, &l ) ){
 					newNodeId = static_cast<kmb::nodeIdType>(l);
-					eIter.setCellId(i,newNodeId);
+					eIter.setNodeId(i,newNodeId);
 				}
 			}
 			++eIter;
@@ -274,7 +274,7 @@ size_t kmb::MeshDB::countCommonNode(kmb::bodyIdType bodyId0,kmb::bodyIdType body
 	if( body0 == NULL || body1 == NULL ){
 		return 0;
 	}
-	// ß“_W‡‚ğ’²‚×‚Ä‚¨‚­
+	// ç¯€ç‚¹é›†åˆã‚’èª¿ã¹ã¦ãŠã
 	kmb::DataBindings* nodeGroup0 = kmb::DataBindings::createDataBindings(kmb::DataBindings::NodeGroup,kmb::PhysicalValue::None,"",bodyId0);
 	kmb::DataBindings* nodeGroup1 = kmb::DataBindings::createDataBindings(kmb::DataBindings::NodeGroup,kmb::PhysicalValue::None,"",bodyId0);
 	kmb::ElementContainer::const_iterator eIter0 = body0->begin();

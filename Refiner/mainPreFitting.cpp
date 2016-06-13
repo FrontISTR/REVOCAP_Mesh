@@ -202,11 +202,11 @@ int main(int argc, char* argv[])
 	kmb::Vector2WithIntBindings<kmb::nodeIdType>* fittingData =
 		reinterpret_cast< kmb::Vector2WithIntBindings<kmb::nodeIdType>* >( mesh.createDataBindings("fitting",kmb::DataBindings::NodeVariable,kmb::PhysicalValue::Vector2withInt) );
 
-
+	// ファイルヘッダ出力
 	rnfIO.saveHeader( outputfile );
 
 	{
-
+		// Newton法閾値
 		double epsilon = 1.0e-8;
 		int iterMax = 1000;
 		const char* tags[1];
@@ -219,7 +219,7 @@ int main(int argc, char* argv[])
 		kmb::RnfShapeIO rnfshape;
 		rnfshape.appendSurfaceHeaderToFile( outputfile );
 		rnfshape.loadFromFile( shapefile, surfaces );
-
+		// surface Id は 0 番目からつけ直す
 		long surfaceId = 0;
 		std::cout << "surface count = " << surfaces.size() << std::endl;
 
@@ -265,9 +265,9 @@ int main(int argc, char* argv[])
 							mesh.getNode(nodeId,pt);
 							printf("fitting %d => ", nodeId);
 							if( bbox.intersect(pt) != kmb::Region::OUTSIDE ){
-
+								// ここで NURBS 曲面上の最も近い点を求める
 								if( nurbs->getNearest(pt,u,v) ){
-
+									// pt0 => 曲面上の点
 									nurbs->getPoint(u,v,pt0);
 									if( pt.distance(pt0) < distthresh ){
 										printf("%f %f\n", u, v);
@@ -288,7 +288,7 @@ int main(int argc, char* argv[])
 				default:
 					break;
 				}
-
+				// ファイル出力
 				rnfshape.appendSurfaceToFile( outputfile, surf );
 				++surfaceId;
 			}
@@ -296,7 +296,7 @@ int main(int argc, char* argv[])
 		}
 	}
 
-
+	// 複数の曲面に適合しているもので、自明でないものを除去
 	{
 		kmb::DataBindings::iterator dIter = fittingData->begin();
 		while( !dIter.isFinished() ){
@@ -317,10 +317,10 @@ int main(int argc, char* argv[])
 		}
 	}
 
-
+	// ファイル出力
 	rnfIO.appendDataToRNFFile( outputfile, &mesh, "fitting" );
 
-
+	// 終了処理
 	std::vector< kmb::Surface3D* >::iterator sIter = surfaces.begin();
 	while( sIter != surfaces.end () ){
 		kmb::Surface3D* surf = *sIter;

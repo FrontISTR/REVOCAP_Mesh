@@ -80,8 +80,8 @@ kmb::Optimization::calcMinOnGrid( OptTargetSS_0 &obj, double& opt_t, const doubl
 	return minimizer.getMin();
 }
 
-// 0 <= n[i] <= div[i] ‚Å•ªŠ„‚·‚é
-// “_‚ÌŒÂ”‚Í ƒ®(div[i]+1) ‚Å‚ ‚é‚±‚Æ‚É’ˆÓ
+// 0 <= n[i] <= div[i] ã§åˆ†å‰²ã™ã‚‹
+// ç‚¹ã®å€‹æ•°ã¯ Î (div[i]+1) ã§ã‚ã‚‹ã“ã¨ã«æ³¨æ„
 bool
 kmb::Optimization::calcMinOnGrid( OptTargetSV_0 &obj, double* opt_t, const double* min_t, const double* max_t, const int* div )
 {
@@ -153,7 +153,7 @@ kmb::Optimization::calcMinOnGridWithRegion( OptTargetSV_0 &obj, double* opt_t, c
 }
 
 
-// ƒ®div[i] ŒÂ‚ÌƒZƒ‹‚Ì’†S‚Å‚Ì•]‰¿’l‚ğg‚¤
+// Î div[i] å€‹ã®ã‚»ãƒ«ã®ä¸­å¿ƒã§ã®è©•ä¾¡å€¤ã‚’ä½¿ã†
 bool
 kmb::Optimization::calcMinOnCell( OptTargetSV_0 &obj, double* optmin_t, double* optmax_t, const double* min_t, const double* max_t, const int* div )
 {
@@ -315,7 +315,7 @@ kmb::Optimization::calcZero_DN( OptTargetSS &obj, double init_t )
 		}
 		d = obj.df(t0);
 		if( fabs(d) < epsilon ){
-			// ¸”s
+			// å¤±æ•—
 			break;
 		}
 		d = - residual / d;
@@ -336,13 +336,13 @@ kmb::Optimization::calcZero_DN( OptTargetVV &obj, double* opt_t, const double* i
 		return false;
 	}
 	int dim = obj.getDomainDim();
-	kmb::ColumnVector_DoubleArray t(dim);  // Œ»İ‚Ì“_
-	kmb::ColumnVector_DoubleArray t0(dim); // Ÿ‚Ì“_
-	kmb::ColumnVector_DoubleArray y(dim);  // ŠÖ”’l
-	kmb::ColumnVector_DoubleArray y0(dim); // ŠÖ”’l
-	kmb::ColumnVector_DoubleArray d(dim);  // •ûŒü
-	kmb::SquareMatrix_DoubleArray j(dim);  // s—ñ
-	// ‰Šú’l
+	kmb::ColumnVector_DoubleArray t(dim);  // ç¾åœ¨ã®ç‚¹
+	kmb::ColumnVector_DoubleArray t0(dim); // æ¬¡ã®ç‚¹
+	kmb::ColumnVector_DoubleArray y(dim);  // é–¢æ•°å€¤
+	kmb::ColumnVector_DoubleArray y0(dim); // é–¢æ•°å€¤
+	kmb::ColumnVector_DoubleArray d(dim);  // æ–¹å‘
+	kmb::SquareMatrix_DoubleArray j(dim);  // è¡Œåˆ—
+	// åˆæœŸå€¤
 	for(int i=0;i<dim;++i){
 		t0[i] = init_t[i];
 	}
@@ -372,7 +372,7 @@ kmb::Optimization::calcZero_DN( OptTargetVV &obj, double* opt_t, const double* i
 			obj.f(t,y);
 		}while( y.normSq() > ( 1 - 0.5*r ) * ( 1 - 0.5*r ) * residual );
 		if( t0.distanceSq(t) < epsilon*epsilon ){
-			// û‘©‚¹‚¸‚É’â—¯‚µ‚Ä‚µ‚Ü‚Á‚½ê‡
+			// åæŸã›ãšã«åœç•™ã—ã¦ã—ã¾ã£ãŸå ´åˆ
 			break;
 		}
 		t0 = t;
@@ -420,12 +420,12 @@ kmb::Optimization::calcMin_BFGS( OptTargetSV &obj, double* opt_t, double* init_t
 		return false;
 	}
 	int dim = obj.getDomainDim();
-	double* t0 = new double[dim]; // Œ»İ‚Ì“_
-	double* t  = new double[dim];  // Ÿ‚Ì“_
-	double* d  = new double[dim];  // ’Tõ•ûŒü
-	double alpha = 0.0; // d •ûŒü‚ÌƒXƒeƒbƒv•
-	double* u  = new double[dim];  // Œù”z•Ï‰»—Ê
-	kmb::SquareMatrix_DoubleArray b(dim);  // s—ñ
+	double* t0 = new double[dim]; // ç¾åœ¨ã®ç‚¹
+	double* t  = new double[dim];  // æ¬¡ã®ç‚¹
+	double* d  = new double[dim];  // æ¢ç´¢æ–¹å‘
+	double alpha = 0.0; // d æ–¹å‘ã®ã‚¹ãƒ†ãƒƒãƒ—å¹…
+	double* u  = new double[dim];  // å‹¾é…å¤‰åŒ–é‡
+	kmb::SquareMatrix_DoubleArray b(dim);  // è¡Œåˆ—
 	bool res = false;
 
 	b.identity();
@@ -434,7 +434,7 @@ kmb::Optimization::calcMin_BFGS( OptTargetSV &obj, double* opt_t, double* init_t
 	}
 	iterCount = 0;
 	while( iterCount < iterMax ){
-		// ’Tõ•ûŒü d ‚ÌŒˆ’è
+		// æ¢ç´¢æ–¹å‘ d ã®æ±ºå®š
 		obj.df( t0, u );
 		for(int i=0;i<dim;++i){
 			u[i] *= -1.0;
@@ -442,8 +442,8 @@ kmb::Optimization::calcMin_BFGS( OptTargetSV &obj, double* opt_t, double* init_t
 		if( !b.solve( u, d ) ){
 			break;
 		}
-		// t0 + alpha * d ‚Ì’¼ü’Tõ
-		// Armijo ğŒ with xi = 0.5, Œ¸­—¦ = 0.8
+		// t0 + alpha * d ã®ç›´ç·šæ¢ç´¢
+		// Armijo æ¡ä»¶ with xi = 0.5, æ¸›å°‘ç‡ = 0.8
 		alpha = 1.0 / 0.8;
 		double v = - kmb::ColumnVector::inner( d, u, dim );
 		double y = obj.f(t0);
@@ -453,7 +453,7 @@ kmb::Optimization::calcMin_BFGS( OptTargetSV &obj, double* opt_t, double* init_t
 				t[i] = t0[i] + alpha * d[i];
 			}
 		}while( obj.f(t) > y + 0.5 * alpha * v && alpha > DBL_MIN );
-		// I—¹”»’è
+		// çµ‚äº†åˆ¤å®š
 		obj.df( t, d );
 		residual = kmb::ColumnVector::normSq( d, dim );
 		if( residual < epsilon*epsilon ){
@@ -463,13 +463,13 @@ kmb::Optimization::calcMin_BFGS( OptTargetSV &obj, double* opt_t, double* init_t
 			res = true;
 			break;
 		}
-		// b ‚ÌXV‚Ì€”õ
+		// b ã®æ›´æ–°ã®æº–å‚™
 		for(int i=0;i<dim;++i){
 			u[i] += d[i];
 			d[i] = t[i] - t0[i];
 			t0[i] = t[i];
 		}
-		// b ‚ÌXV
+		// b ã®æ›´æ–°
 		// u = df(t) - df(t0)
 		// d = t - t0
 		// t : temp
@@ -551,7 +551,7 @@ kmb::Optimization::calcMin_GS( OptTargetSS_0 &obj, double min_t, double max_t )
 	}
 }
 
-// À‘•‚µ‚Ä‚¢‚é‚Ì‚Í DomainDim == 2 or 3 ‚Ì‚Æ‚«
+// å®Ÿè£…ã—ã¦ã„ã‚‹ã®ã¯ DomainDim == 2 or 3 ã®ã¨ã
 bool
 kmb::Optimization::calcMin_GS( OptTargetSV_0 &obj, double* opt_t, const double* min_t, const double* max_t )
 {
@@ -585,7 +585,7 @@ kmb::Optimization::calcMin_GS( OptTargetSV_0 &obj, double* opt_t, const double* 
 		if( diff < n*kmb::Optimization::epsilon ){
 			break;
 		}
-		// m = 2^n ŒÂ‚Ì“_‚ğ’²‚×‚ÄÅ‘å’l‚ğ‚Æ‚é‚Æ‚±‚ë‚ğ’T‚·
+		// m = 2^n å€‹ã®ç‚¹ã‚’èª¿ã¹ã¦æœ€å¤§å€¤ã‚’ã¨ã‚‹ã¨ã“ã‚ã‚’æ¢ã™
 		if( n == 2 ){
 			for(int i=0;i<n;++i){
 				s0[i] = (1.0-tau) * t0[i] + tau * t1[i];
@@ -722,7 +722,7 @@ kmb::Optimization::calcMin_CG( OptTargetSV &obj, double* opt_t, const double* mi
 	double* grad = new double[n];
 	double* grad_prev = new double[n];
 	double* conj = new double[n];
-	// ‰Šú’l
+	// åˆæœŸå€¤
 	if( init_t != NULL ){
 		for(int i=0;i<n;++i){
 			t[i] = init_t[i];
@@ -732,7 +732,7 @@ kmb::Optimization::calcMin_CG( OptTargetSV &obj, double* opt_t, const double* mi
 			t[i] = 0.5*(min_t[i] + max_t[i]);
 		}
 	}
-	// ‚PŸŒ³’Tõ‚Ì‚½‚ß‚ÌƒTƒuƒNƒ‰ƒX
+	// ï¼‘æ¬¡å…ƒæ¢ç´¢ã®ãŸã‚ã®ã‚µãƒ–ã‚¯ãƒ©ã‚¹
 	class cg_local : public kmb::OptTargetSS_0 {
 	private:
 		int n;
@@ -763,7 +763,7 @@ kmb::Optimization::calcMin_CG( OptTargetSV &obj, double* opt_t, const double* mi
 	double epsilonSq = epsilon * epsilon;
 	iterCount = 0;
 	double lenSq = 0.0;
-	// beta ‚ÅA‚Ğ‚Æ‚Â‘O‚Ì 1.0/lenSq ‚àŠo‚¦‚Ä‚¨‚­
+	// beta ã§ã€ã²ã¨ã¤å‰ã® 1.0/lenSq ã‚‚è¦šãˆã¦ãŠã
 	double beta = 0.0;
 	double sub_opt = 0.0;
 	double sub_min = 0.0;
@@ -798,8 +798,8 @@ kmb::Optimization::calcMin_CG( OptTargetSV &obj, double* opt_t, const double* mi
 			}
 		}
 		beta = 1.0 / lenSq;
-		// ‚PŸŒ³’Tõ‚µ‚½Œ‹‰Ê‚ğ sub_opt ‚Æ‚·‚éB
-		// t ‚©‚ç conj •ûŒü‚É“®‚©‚µ‚½‚Ì’è‹`ˆæ‚ğ sub_min sub_max ‚Å‹‚ß‚é
+		// ï¼‘æ¬¡å…ƒæ¢ç´¢ã—ãŸçµæœã‚’ sub_opt ã¨ã™ã‚‹ã€‚
+		// t ã‹ã‚‰ conj æ–¹å‘ã«å‹•ã‹ã—ãŸæ™‚ã®å®šç¾©åŸŸã‚’ sub_min sub_max ã§æ±‚ã‚ã‚‹
 		minimizer.initialize();
 		maximizer.initialize();
 		for(int i=0;i<n;++i){

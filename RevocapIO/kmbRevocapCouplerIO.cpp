@@ -101,9 +101,9 @@ kmb::RevocapCouplerIO::loadFromPartitionFile(const char* filename,kmb::MeshData*
 	return 0;
 }
 
-// ß“_‚Ì‚İ‚ğ“Ç‚İ‚Ş
-// Id ‚ÍlocalId‚ÅŠi”[‚·‚é
-// globalId‚Í Data ‚Æ‚µ‚Ä name = "GlobalId" ‚ÅQÆ
+// ç¯€ç‚¹ã®ã¿ã‚’èª­ã¿è¾¼ã‚€
+// Id ã¯localIdã§æ ¼ç´ã™ã‚‹
+// globalIdã¯ Data ã¨ã—ã¦ name = "GlobalId" ã§å‚ç…§
 int
 kmb::RevocapCouplerIO::loadLocalNodesFromPartitionFile(const char* filename,kmb::MeshData* mesh)
 {
@@ -142,7 +142,7 @@ kmb::RevocapCouplerIO::loadLocalNodesFromPartitionFile(const char* filename,kmb:
 			}
 		}
 		else if( line.find("Element_Type") == 0 ){
-			// —v‘f“Ç‚İ‚İ‚Íƒ_ƒ~[
+			// è¦ç´ èª­ã¿è¾¼ã¿ã¯ãƒ€ãƒŸãƒ¼
 		}
 		else if( line.find("Number_of_Elemen_Ids") == 0 ){
 			std::istringstream tokenizer(line);
@@ -160,7 +160,7 @@ kmb::RevocapCouplerIO::loadLocalNodesFromPartitionFile(const char* filename,kmb:
 			tokenizer >> dummy;
 			size_t nodeCount = 0;
 			tokenizer >> nodeCount;
-			// loadlocalNode ƒƒ\ƒbƒh‚Ì’†‚Å GlobalId ‚ğ“Ç‚İ‚Ş
+			// loadlocalNode ãƒ¡ã‚½ãƒƒãƒ‰ã®ä¸­ã§ GlobalId ã‚’èª­ã¿è¾¼ã‚€
 			loadLocalNode( input, nodeCount, mesh );
 		}
 	}
@@ -168,9 +168,9 @@ kmb::RevocapCouplerIO::loadLocalNodesFromPartitionFile(const char* filename,kmb:
 	return 0;
 }
 
-// —v‘f‚²‚Æ‚É Coupler ‚Ìß“_‚Ì•À‚×•û‚Æ
-// RevocapMesh ‚Ìß“_‚Ì•À‚×•û‚Íˆá‚¤‚©‚à‚µ‚ê‚È‚¢‚Ì‚Å’ˆÓ
-// ‚Ü‚¾ƒ`ƒFƒbƒN‚µ‚Ä‚¢‚È‚¢
+// è¦ç´ ã”ã¨ã« Coupler ã®ç¯€ç‚¹ã®ä¸¦ã¹æ–¹ã¨
+// RevocapMesh ã®ç¯€ç‚¹ã®ä¸¦ã¹æ–¹ã¯é•ã†ã‹ã‚‚ã—ã‚Œãªã„ã®ã§æ³¨æ„
+// ã¾ã ãƒã‚§ãƒƒã‚¯ã—ã¦ã„ãªã„
 kmb::bodyIdType
 kmb::RevocapCouplerIO::loadElement( std::ifstream &input, kmb::elementType etype, size_t elementCount, kmb::MeshData* mesh )
 {
@@ -188,7 +188,7 @@ kmb::RevocapCouplerIO::loadElement( std::ifstream &input, kmb::elementType etype
 		for(size_t j=0;j<nodeCount;++j){
 			input >> nodes[j];
 		}
-		std::getline( input, line ); // ‰üs
+		std::getline( input, line ); // æ”¹è¡Œ
 		mesh->addElementWithId( etype, nodes, elementId );
 	}
 	mesh->endElement();
@@ -209,15 +209,15 @@ kmb::RevocapCouplerIO::loadNode( std::ifstream &input, size_t nodeCount, kmb::Me
 	for(size_t i =0;i<nodeCount;++i){
 		input >> nodeId;
 		input >> x >> y >> z;
-		std::getline( input, line ); // ‰üs
+		std::getline( input, line ); // æ”¹è¡Œ
 		mesh->addNodeWithId( x, y, z, nodeId );
 	}
 	mesh->endNode();
 	return mesh->getNodeCount();
 }
 
-// GlobalId ƒf[ƒ^‚É
-// localId => globalId ‚Ì‘Î‰‚ğŠi”[‚·‚é
+// GlobalId ãƒ‡ãƒ¼ã‚¿ã«
+// localId => globalId ã®å¯¾å¿œã‚’æ ¼ç´ã™ã‚‹
 size_t
 kmb::RevocapCouplerIO::loadLocalNode( std::ifstream &input, size_t nodeCount, kmb::MeshData* mesh )
 {
@@ -227,7 +227,7 @@ kmb::RevocapCouplerIO::loadLocalNode( std::ifstream &input, size_t nodeCount, km
 	}
 	if( mesh == NULL ){
 		for(size_t i =0;i<nodeCount;++i){
-			std::getline( input, line ); // ‰üs
+			std::getline( input, line ); // æ”¹è¡Œ
 		}
 		return 0;
 	}
@@ -238,7 +238,7 @@ kmb::RevocapCouplerIO::loadLocalNode( std::ifstream &input, size_t nodeCount, km
 		}
 		data = NULL;
 		for(size_t i =0;i<nodeCount;++i){
-			std::getline( input, line ); // ‰üs
+			std::getline( input, line ); // æ”¹è¡Œ
 		}
 		return 0;
 	}
@@ -249,7 +249,7 @@ kmb::RevocapCouplerIO::loadLocalNode( std::ifstream &input, size_t nodeCount, km
 	for(size_t i =0;i<nodeCount;++i){
 		input >> globalId;
 		input >> x >> y >> z;
-		std::getline( input, line ); // ‰üs
+		std::getline( input, line ); // æ”¹è¡Œ
 		localId = mesh->addNode( x, y, z );
 		data->setPhysicalValue( localId, &globalId );
 	}

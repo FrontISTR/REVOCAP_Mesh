@@ -25,9 +25,9 @@ public:
 	virtual ~DiagonalMatrix(void);
 	virtual bool solve(const kmb::ColumnVector &b, kmb::ColumnVector &x) const;
 	virtual double determinant(void) const;
-	// ‰½‚à‚µ‚È‚¢‚­‚Ä‚à‚æ‚¢itranspose‚Å•s•Ï‚¾‚©‚çj
+	// ä½•ã‚‚ã—ãªã„ãã¦ã‚‚ã‚ˆã„ï¼ˆtransposeã§ä¸å¤‰ã ã‹ã‚‰ï¼‰
 	virtual bool transpose(void);
-	// ‰½‚à‚µ‚È‚¢‚æ‚¤‚É‚·‚éiDiagonal‚Å‚È‚­‚È‚Á‚Ä‚µ‚Ü‚¤‚½‚ßj
+	// ä½•ã‚‚ã—ãªã„ã‚ˆã†ã«ã™ã‚‹ï¼ˆDiagonalã§ãªããªã£ã¦ã—ã¾ã†ãŸã‚ï¼‰
 	virtual bool row_exchange(int i0,int i1);
 	virtual bool row_transf(int i0,int i1,double r);
 };
@@ -46,7 +46,7 @@ protected:
 	void clear(void);
 };
 
-// SquareMatrix ‚Ì‘ÎŠp¬•ª‚¾‚¯‚ğ—LŒø‚É‚·‚é
+// SquareMatrix ã®å¯¾è§’æˆåˆ†ã ã‘ã‚’æœ‰åŠ¹ã«ã™ã‚‹
 class DiagonalMatrix_Wrapper : public DiagonalMatrix
 {
 private:

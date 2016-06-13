@@ -64,7 +64,7 @@ public:
 	};
 protected:
 	const MeshData* mesh;
-	// DisplayList ‚Ì”z—ñ
+	// DisplayList ã®é…åˆ—
 	std::vector< GLuint > lists;
 	bool updateList;
 private:
@@ -83,7 +83,7 @@ public:
 	MeshGL(size_t listSize=1);
 	virtual ~MeshGL(void);
 
-	// OpenGL Display List ‚Ìˆ—
+	// OpenGL Display List ã®å‡¦ç†
 	size_t getListSize(void) const;
 	void setList(size_t index,GLuint list);
 	GLuint getList(size_t index) const;
@@ -91,72 +91,72 @@ public:
 	bool isUpdate(void) const;
 	void clearCache(void);
 
-	// —Dæ“x‚Ìˆ—
+	// å„ªå…ˆåº¦ã®å‡¦ç†
 	void setPreferenceMode(drawingPreference mode);
 	drawingPreference getPreferenceMode(void) const;
 
 	void setMesh(const kmb::MeshData* mesh);
-	// ü•ª‚©‚ç‚È‚é—v‘fƒOƒ‹[ƒv‚Ì•\¦
+	// ç·šåˆ†ã‹ã‚‰ãªã‚‹è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã®è¡¨ç¤º
 	void drawEdge(kmb::bodyIdType bodyId);
-	// ’†S‚©‚çŠg‘åEk¬•\¦‚ğ‚·‚é
+	// ä¸­å¿ƒã‹ã‚‰æ‹¡å¤§ãƒ»ç¸®å°è¡¨ç¤ºã‚’ã™ã‚‹
 	void drawEdgeWithScale(kmb::bodyIdType bodyId,double x,double y,double z,double scale);
 
-	// –Ê‚Ì•`‰æ
+	// é¢ã®æç”»
 	void drawSurface(kmb::bodyIdType bodyId);
 	void drawFaceGroup(const char* faceName);
 	void drawSurface2D(kmb::bodyIdType bodyId);
 
-	// •ÏŒ`
+	// å¤‰å½¢
 	void deformSurface(kmb::bodyIdType bodyId, const char* displacement, double factor);
 	void deformFaceGroup(const char* faceName, const char* displacement, double factor);
 	void deformXYZFaceGroup(const char* faceName, const char* displacementX, const char* displacementY, const char* displacementZ, double factor);
 
-	// ƒRƒ“ƒ^[
-	// element value ‚ÅƒRƒ“ƒ^[•\¦
+	// ã‚³ãƒ³ã‚¿ãƒ¼
+	// element value ã§ã‚³ãƒ³ã‚¿ãƒ¼è¡¨ç¤º
 	void drawSurfaceContour(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
 	void drawSurfaceContour2D(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
-	// e‚Ì element ‚É’l‚ª“ü‚Á‚Ä‚¢‚é
+	// è¦ªã® element ã«å€¤ãŒå…¥ã£ã¦ã„ã‚‹æ™‚
 	void drawFaceGroupContour(const char* faceName, const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
-	// node value ‚ÅƒRƒ“ƒ^[•\¦
+	// node value ã§ã‚³ãƒ³ã‚¿ãƒ¼è¡¨ç¤º
 	void drawSurfaceNodeContour(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
 	void drawSurfaceNodeContour2D(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
 	void drawFaceGroupNodeContour(const char* faceName, const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
-	// node value ‚Åß“_‚ğF•t‚¯•\¦
+	// node value ã§ç¯€ç‚¹ã‚’è‰²ä»˜ã‘è¡¨ç¤º
 	void drawNodeContourOnSurface(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
 	void drawNodeContour2DOnSurface(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
 	void drawNodeContourOnFaceGroup(const char* faceName, const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
 
-	// ƒRƒ“ƒ^[‚Æ•ÏŒ`‚Ì“¯•\¦
+	// ã‚³ãƒ³ã‚¿ãƒ¼ã¨å¤‰å½¢ã®åŒæ™‚è¡¨ç¤º
 	void deformSurfaceNodeContour(kmb::bodyIdType bodyId, const char* displacement, double factor, const char* physicalValue, kmb::ColorMap* colorMap, int ccomp=-1);
 	void deformSurfaceContour(kmb::bodyIdType bodyId, const char* displacement, double factor, const char* physicalValue, kmb::ColorMap* colorMap, int ccomp=-1);
 	void deformFaceGroupNodeContour(const char* faceName, const char* displacement, double factor, const char* physicalValue, kmb::ColorMap* colorMap, int comp=-1);
 	void deformXYZFaceGroupNodeContour(const char* faceName, const char* displacementX, const char* displacementY, const char* displacementZ, double factor, const char* physicalValue, kmb::ColorMap* colorMap, int comp=-1);
 
-	// ß“_‚Ì•\¦
+	// ç¯€ç‚¹ã®è¡¨ç¤º
 	void drawAllNodes(double r=-1.0);
 	void drawNodeContourAllNodes(const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
 
-	// ƒxƒNƒgƒ‹iƒ|ƒXƒgj‚Ì•\¦
+	// ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆãƒã‚¹ãƒˆï¼‰ã®è¡¨ç¤º
 	void drawVector(const char* vectorName, double factor, kmb::ColorMap* colorMap);
 	void drawSurfaceVector(kmb::bodyIdType bodyId,const char* vectorName, double factor, kmb::ColorMap* colorMap);
 	void drawFaceGroupVector(const char* faceName,const char* vectorName, double factor, kmb::ColorMap* colorMap);
-	// Œü‚«‚ğ•\¦‚µ‚ÄA‘å‚«‚³‚ÍF‚Å•\Œ»‚·‚é
+	// å‘ãã‚’è¡¨ç¤ºã—ã¦ã€å¤§ãã•ã¯è‰²ã§è¡¨ç¾ã™ã‚‹
 	void drawField(const char* vectorName, double arrowSize, kmb::ColorMap* colorMap);
 	void drawSurfaceField(kmb::bodyIdType bodyId,const char* vectorName, double arrowSize, kmb::ColorMap* colorMap);
 
 	void drawIsosurface(kmb::bodyIdType bodyId, const char* nodeValue, double val);
 
-	// ’f–Ê‚Ì•\¦
+	// æ–­é¢ã®è¡¨ç¤º
 	void drawSection(kmb::bodyIdType bodyId,kmb::Plane* plane);
-	// ß“_ã‚Ì•¨——Ê‚É‚Â‚¢‚Ä
+	// ç¯€ç‚¹ä¸Šã®ç‰©ç†é‡ã«ã¤ã„ã¦
 	void drawSectionNodeContour(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
-	// —v‘fã‚Ì•¨——Ê‚É‚Â‚¢‚Ä
+	// è¦ç´ ä¸Šã®ç‰©ç†é‡ã«ã¤ã„ã¦
 	void drawSectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
 	void drawSectionVector(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* vectorName, double factor, kmb::ColorMap* colorMap);
 	void drawSectionField(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* vectorName, double arrowSize, kmb::ColorMap* colorMap);
-	// •½–Ê‚ÆŒğ‚í‚é–Ê‚ğ‚»‚Ì‚Ü‚Ü•\¦i‚Å‚±‚Ú‚±‚µ‚½‚Ü‚Üj
+	// å¹³é¢ã¨äº¤ã‚ã‚‹é¢ã‚’ãã®ã¾ã¾è¡¨ç¤ºï¼ˆã§ã“ã¼ã“ã—ãŸã¾ã¾ï¼‰
 	void drawIntersection(kmb::bodyIdType bodyId,kmb::Plane* plane);
-	// element value ‚ÅŒğ·–Ê‚ÌƒRƒ“ƒ^[•\¦
+	// element value ã§äº¤å·®é¢ã®ã‚³ãƒ³ã‚¿ãƒ¼è¡¨ç¤º
 	void drawIntersectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
 
 	void getDeformFaceGroupBoundingBox(kmb::BoundingBox& bbox,const char* faceName, const char* displacement, double factor) const;
@@ -167,25 +167,25 @@ public:
 	void volumeRendering(const char* physicalValue, kmb::ColorMap* colorMap,int repeatLevel,int numParticle,bool volCorrect=true,int comp=-1);
 
 	/**
-	 * condName : data ‚Ì–¼‘O
-	 * mode : marker ‚Ìí—Ş
-	 * VECTOR ß“_ã‚É–îˆó
-	 * TENSOR ß“_ã‚ÉŒğ·–Ê
-	 * DOT ß“_ã‚É“_
-	 * CROSS ß“_ã‚É\š
-	 * CDOT —v‘f‚Ì’†S‚É“_
-	 * CCROSS —v‘f‚Ì’†S‚É\š
-	 * CTENSOR —v‘f‚Ì’†S‚ÉŒğ·–Ê
-	 * CSQUARE —v‘f‚Ì’†S‚ÉlŠp
-	 * EDGE —v‘f‚Ì•Ó‚ğ•\¦
-	 * DAGGER ß“_ã‚É\š
-	 * CIRCLE ß“_ã‚ÉŠÛˆó
-	 * DELTA ß“_ã‚ÉOŠp
-	 * SQUARE ß“_ã‚ÉlŠp
-	 * LEFT ß“_ã‚Éƒ
-	 * RIGHT ß“_ã‚É„
-	 * NCOUPLE ß“_vsß“_ƒ}ƒbƒsƒ“ƒO‚É‘Î‚µ‚Ä‘Î‰ß“_ã‚É\š
-	 *  “¯‚¶ Data ‚Å‚à DOT ‚Å‚Í masteri©ß“_j‚Éƒ}[ƒNANCOUPLE ‚Å‚Í slavei‘Šèß“_j‚Éƒ}[ƒN
+	 * condName : data ã®åå‰
+	 * mode : marker ã®ç¨®é¡
+	 * VECTOR ç¯€ç‚¹ä¸Šã«çŸ¢å°
+	 * TENSOR ç¯€ç‚¹ä¸Šã«äº¤å·®é¢
+	 * DOT ç¯€ç‚¹ä¸Šã«ç‚¹
+	 * CROSS ç¯€ç‚¹ä¸Šã«åå­—
+	 * CDOT è¦ç´ ã®ä¸­å¿ƒã«ç‚¹
+	 * CCROSS è¦ç´ ã®ä¸­å¿ƒã«åå­—
+	 * CTENSOR è¦ç´ ã®ä¸­å¿ƒã«äº¤å·®é¢
+	 * CSQUARE è¦ç´ ã®ä¸­å¿ƒã«å››è§’
+	 * EDGE è¦ç´ ã®è¾ºã‚’è¡¨ç¤º
+	 * DAGGER ç¯€ç‚¹ä¸Šã«åå­—
+	 * CIRCLE ç¯€ç‚¹ä¸Šã«ä¸¸å°
+	 * DELTA ç¯€ç‚¹ä¸Šã«ä¸‰è§’
+	 * SQUARE ç¯€ç‚¹ä¸Šã«å››è§’
+	 * LEFT ç¯€ç‚¹ä¸Šã«ï¼œ
+	 * RIGHT ç¯€ç‚¹ä¸Šã«ï¼
+	 * NCOUPLE ç¯€ç‚¹vsç¯€ç‚¹ãƒãƒƒãƒ”ãƒ³ã‚°ã«å¯¾ã—ã¦å¯¾å¿œç¯€ç‚¹ä¸Šã«åå­—
+	 *  åŒã˜ Data ã§ã‚‚ DOT ã§ã¯ masterï¼ˆè‡ªç¯€ç‚¹ï¼‰ã«ãƒãƒ¼ã‚¯ã€NCOUPLE ã§ã¯ slaveï¼ˆç›¸æ‰‹ç¯€ç‚¹ï¼‰ã«ãƒãƒ¼ã‚¯
 	 */
 	void drawMarking(const char* condName,const char* mode);
 	void drawMarkingEdgeWithScale(kmb::bodyIdType bodyId,const char* mode,double x,double y,double z,double scale);
@@ -206,10 +206,10 @@ public:
 	int getElementOffset(void) const;
 
 private:
-	// l–Ê‘Ì‚Ìƒ}[ƒJ[
+	// å››é¢ä½“ã®ãƒãƒ¼ã‚«ãƒ¼
 	void drawTensorMark(kmb::Point3D& point);
 	void drawTensorMark(double x,double y,double z);
-	// Œğ·‚µ‚½lŠpŒ`
+	// äº¤å·®ã—ãŸå››è§’å½¢
 	void drawCrossMark(kmb::Point3D& point);
 	void drawCrossMark(double x,double y,double z);
 	void drawDotMark(kmb::Point3D& point);
@@ -226,7 +226,7 @@ private:
 	void drawElementEdge(kmb::ElementBase& element);
 	void drawFaceEdge(kmb::ElementBase& element,int index);
 	void drawVector(double x,double y,double z,double v0,double v1,double v2,double factor,kmb::ColorMap* colorMap);
-	// Œü‚«‚ğOŠpŒ`‚Å•\‚µA‘å‚«‚³‚ğF‚Å•\‚·
+	// å‘ãã‚’ä¸‰è§’å½¢ã§è¡¨ã—ã€å¤§ãã•ã‚’è‰²ã§è¡¨ã™
 	void drawArrow(double x,double y,double z,double v0,double v1,double v2,double arrowSize,kmb::ColorMap* colorMap);
 
 	void drawTriangle
@@ -308,10 +308,10 @@ private:
 	void drawInterpolatedVector(kmb::Node& n0,kmb::Node& n1,double t0, double t1,double v0[3], double v1[3],double factor,kmb::ColorMap* colorMap);
 	void drawInterpolatedField(kmb::Node& n0,kmb::Node& n1,double t0, double t1,double v0[3], double v1[3],double arrowSize,kmb::ColorMap* colorMap);
 
-	// –îˆó‚Ìæ‚ÌOŠp‚ğ—^‚¦‚é‚½‚ß [v0,v1,v2] ‚Æ’¼Œğ‚·‚éƒxƒNƒgƒ‹‚ğŒvZ
-	// –ß‚è’l‚Í [v0,v1,v2] ‚Ì’·‚³‚Ì‚Qæ
+	// çŸ¢å°ã®å…ˆã®ä¸‰è§’ã‚’ä¸ãˆã‚‹ãŸã‚ [v0,v1,v2] ã¨ç›´äº¤ã™ã‚‹ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
+	// æˆ»ã‚Šå€¤ã¯ [v0,v1,v2] ã®é•·ã•ã®ï¼’ä¹—
 	double calcPerpendicular(double v0,double v1,double v2,kmb::Vector3D &normal);
-	// (v0,v1,v2) normal0, normal1 ‚ªŒü‚«•t‚«‚Ì³‹K’¼ŒğŠî’ê‚É‚È‚é‚æ‚¤‚É‚·‚é
+	// (v0,v1,v2) normal0, normal1 ãŒå‘ãä»˜ãã®æ­£è¦ç›´äº¤åŸºåº•ã«ãªã‚‹ã‚ˆã†ã«ã™ã‚‹
 	double calcFrame(double v0,double v1,double v2,kmb::Vector3D &normal0,kmb::Vector3D &normal1);
 
 	double getMeanLengthVector

@@ -70,12 +70,12 @@ kmb::Matrix4x4::Matrix4x4(const Matrix3x3 &other)
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 int
@@ -299,7 +299,7 @@ kmb::Matrix4x4::zero(void)
 double 
 kmb::Matrix4x4::determinant(void) const 
 {
-	// ¬s—ñ‚ğ‹‚ß‚é
+	// å°è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹
 	double det = 0.0;
 	if(m[3] != 0.0){
 		kmb::Matrix3x3 m3 =
@@ -338,12 +338,12 @@ kmb::Matrix4x4::determinant(void) const
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 double
@@ -373,7 +373,7 @@ kmb::Matrix4x4::determinant(
 	double m20,double m21,double m22,double m23,
 	double m30,double m31,double m32,double m33)
 {
-	// ¬s—ñ‚ğ‹‚ß‚é
+	// å°è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹
 	double det = 0.0;
 	if(m30 != 0.0){
 		det -= m30 *
@@ -433,7 +433,7 @@ kmb::Matrix4x4::solve(const Vector4D& b,Vector4D& x) const
 
 	int ind = -1;
 	double m = 0.0;
-	// 0 —ñ
+	// 0 åˆ—
 	for(int i=0;i<4;++i){
 		double d = fabs(mat.get(i,0));
 		if( d > m ){
@@ -451,7 +451,7 @@ kmb::Matrix4x4::solve(const Vector4D& b,Vector4D& x) const
 	mat.row_transf(0, 2, -mat.get(2,0));
 	mat.row_transf(0, 3, -mat.get(3,0));
 
-	// 1 —ñ
+	// 1 åˆ—
 	ind = -1;
 	m = 0.0;
 	for(int i=1;i<4;++i){
@@ -471,7 +471,7 @@ kmb::Matrix4x4::solve(const Vector4D& b,Vector4D& x) const
 	mat.row_transf(1, 3, -mat.get(3,1));
 	mat.row_transf(1, 0, -mat.get(0,1));
 
-	// 2 —ñ
+	// 2 åˆ—
 	ind = -1;
 	m = 0.0;
 	for(int i=2;i<4;++i){
@@ -491,7 +491,7 @@ kmb::Matrix4x4::solve(const Vector4D& b,Vector4D& x) const
 	mat.row_transf(2, 0, -mat.get(0,2));
 	mat.row_transf(2, 1, -mat.get(1,2));
 
-	// 3 —ñ
+	// 3 åˆ—
 	if( mat.get(3,3) == 0.0 ){
 		return false;
 	}
@@ -522,7 +522,7 @@ kmb::Matrix4x4::solveSafely(const Vector4D& b,Vector4D& x,double thresh) const
 	
 	int ind = -1;
 	double m = 0.0;
-	// 0 —ñ
+	// 0 åˆ—
 	for(int i=0;i<4;++i){
 		double d = fabs(mat.get(i,0));
 		if( d > m ){
@@ -540,7 +540,7 @@ kmb::Matrix4x4::solveSafely(const Vector4D& b,Vector4D& x,double thresh) const
 	mat.row_transf(0, 2, -mat.get(2,0));
 	mat.row_transf(0, 3, -mat.get(3,0));
 
-	// 1 —ñ
+	// 1 åˆ—
 	ind = -1;
 	m = 0.0;
 	for(int i=1;i<4;++i){
@@ -560,7 +560,7 @@ kmb::Matrix4x4::solveSafely(const Vector4D& b,Vector4D& x,double thresh) const
 	mat.row_transf(1, 3, -mat.get(3,1));
 	mat.row_transf(1, 0, -mat.get(0,1));
 
-	// 2 —ñ
+	// 2 åˆ—
 	ind = -1;
 	m = 0.0;
 	for(int i=2;i<4;++i){
@@ -580,7 +580,7 @@ kmb::Matrix4x4::solveSafely(const Vector4D& b,Vector4D& x,double thresh) const
 	mat.row_transf(2, 0, -mat.get(0,2));
 	mat.row_transf(2, 1, -mat.get(1,2));
 
-	// 3 —ñ
+	// 3 åˆ—
 	if( fabs(mat.get(3,3)) < thresh ){
 		return false;
 	}

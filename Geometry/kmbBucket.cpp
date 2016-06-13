@@ -110,7 +110,7 @@ kmb::Bucket3DGrid::getNearPoints(kmb::nodeIdType nodeId,double thresh,std::vecto
 	double y = pt.y();
 	double z = pt.z();
 
-	// ©•ª©g‚Æ‚»‚Ì—×ÚƒoƒPƒbƒg‚¾‚¯’T‚·
+	// è‡ªåˆ†è‡ªèº«ã¨ãã®éš£æ¥ãƒã‚±ãƒƒãƒˆã ã‘æ¢ã™
 	int i0,j0,k0;
 	getSubIndices(x,y,z,i0,j0,k0);
 	int i1=i0, j1=j0, k1=k0;
@@ -165,7 +165,7 @@ kmb::Bucket3DGrid::getNearest(const double x,const double y,const double z,kmb::
 	kmb::nodeIdType n0 = kmb::nullNodeId;
 
 /*
-	// ŠÜ‚Ü‚ê‚éƒoƒPƒbƒg‚Ì’†‚ÅÅ¬‚ğ’T‚·
+	// å«ã¾ã‚Œã‚‹ãƒã‚±ãƒƒãƒˆã®ä¸­ã§æœ€å°ã‚’æ¢ã™
 	int i0=0,j0=0,k0=0;
 
 	if( getSubIndices(x,y,z,i0,j0,k0) && this->getCount(i0,j0,k0) > 0){
@@ -173,10 +173,10 @@ kmb::Bucket3DGrid::getNearest(const double x,const double y,const double z,kmb::
 			nearestId = n0;
 		}
 	}
-	// —×‚ğ’T‚·‚×‚«‚©‚Ì”»’è
+	// éš£ã‚’æ¢ã™ã¹ãã‹ã®åˆ¤å®š
 	int i1=0,j1=0,k1=0,i2=0,j2=0,k2=0;
 	if( nearestId == kmb::nullNodeId ){
-		// ¡‚ÌÀ‘•‚ÍŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚ç‘S•”’T‚·
+		// ä»Šã®å®Ÿè£…ã¯è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸã‚‰å…¨éƒ¨æ¢ã™
 		i2 = xnum-1;
 		j2 = ynum-1;
 		k2 = znum-1;
@@ -186,7 +186,7 @@ kmb::Bucket3DGrid::getNearest(const double x,const double y,const double z,kmb::
 		getSubIndices(x+d,y+d,z+d,i2,j2,k2);
 	}
 
-	// (i0,j0,k0) ˆÈŠO‚ğ’T‚·
+	// (i0,j0,k0) ä»¥å¤–ã‚’æ¢ã™
 	for(int i=i1;i<=i2;++i){
 		for(int j=j1;j<=j2;++j){
 			for(int k=k1;k<=k2;++k){
@@ -201,13 +201,13 @@ kmb::Bucket3DGrid::getNearest(const double x,const double y,const double z,kmb::
 	return minimizer.getMin();
 */
 
-	// ‚±‚ê‚©‚ç’T‚·”ÍˆÍ imin <= i < imax
+	// ã“ã‚Œã‹ã‚‰æ¢ã™ç¯„å›² imin <= i < imax
 	int imax=0,jmax=0,kmax=0,imin=0,jmin=0,kmin=0;
-	// Šù‚É’T‚µ‚½”ÍˆÍ‚ÍœŠO
-	// min > max ‚Ì‚Í‚Ü‚¾’T‚µ‚Ä‚¢‚È‚¢
+	// æ—¢ã«æ¢ã—ãŸç¯„å›²ã¯é™¤å¤–
+	// min > max ã®æ™‚ã¯ã¾ã æ¢ã—ã¦ã„ãªã„
 	int imax_ex=-1,jmax_ex=-1,kmax_ex=-1,imin_ex=xnum,jmin_ex=ynum,kmin_ex=znum;
 
-	// ©•ª‚ÌŠÜ‚Ü‚ê‚éƒoƒPƒbƒg‚©‚çn‚ß‚Ä‚È‚¯‚ê‚Î­‚µ‚¸‚ÂL‚°‚Ä‚¢‚­
+	// è‡ªåˆ†ã®å«ã¾ã‚Œã‚‹ãƒã‚±ãƒƒãƒˆã‹ã‚‰å§‹ã‚ã¦ãªã‘ã‚Œã°å°‘ã—ãšã¤åºƒã’ã¦ã„ã
 	getSubIndices(x,y,z,imin,jmin,kmin);
 	imax = imin+1; jmax = jmin+1; kmax = kmin+1;
 	while( nearestId == kmb::nullNodeId ){
@@ -225,13 +225,13 @@ kmb::Bucket3DGrid::getNearest(const double x,const double y,const double z,kmb::
 		if( jmax < ynum-1 ){ ++jmax; breakFlag = false; }
 		if( kmax < znum-1 ){ ++kmax; breakFlag = false; }
 		if( breakFlag ){
-			// ‚à‚¤L‚ª‚ç‚È‚¢
+			// ã‚‚ã†åºƒãŒã‚‰ãªã„
 			break;
 		}
 	}
 
 	if( nearestId == kmb::nullNodeId ){
-		// “_‚ª‚È‚©‚Á‚½
+		// ç‚¹ãŒãªã‹ã£ãŸ
 		return minimizer.getMin();
 	}else{
 		double d = minimizer.getMin();

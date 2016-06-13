@@ -12,18 +12,18 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-// s—ñˆ—ŠÖ”‚ÌŠî’êƒNƒ‰ƒX
+// è¡Œåˆ—å‡¦ç†é–¢æ•°ã®åŸºåº•ã‚¯ãƒ©ã‚¹
 
 #pragma once
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 #ifndef NULL
@@ -38,7 +38,7 @@ class LowerTriangularMatrix;
 class UpperTriangularMatrix;
 class DiagonalMatrix;
 
-// ‡˜‚Í Row Major
+// é †åºã¯ Row Major
 // i*colSize+j
 class MatrixIndex{
 public:
@@ -57,7 +57,7 @@ public:
 class Matrix
 {
 public:
-	// s—ñÏ‚ğŒvZ‚·‚é‚Æ‚«‚Ì¬•ª‚Ìƒ}ƒXƒNğŒ
+	// è¡Œåˆ—ç©ã‚’è¨ˆç®—ã™ã‚‹ã¨ãã®æˆåˆ†ã®ãƒã‚¹ã‚¯æ¡ä»¶
 	typedef bool (*MASK)(int,int);
 	static bool upper(int i,int j){
 		return (i<j);
@@ -80,31 +80,31 @@ public:
 	virtual bool add(int i,int j,double val) = 0;
 	virtual bool zero(void);
 
-	// ©•ª‚ğ¶‚©‚çŠ|‚¯‚é this * a = x
+	// è‡ªåˆ†ã‚’å·¦ã‹ã‚‰æ›ã‘ã‚‹ this * a = x
 	virtual bool multiply_left( const kmb::Matrix &a, kmb::Matrix &x ) const;
 	virtual bool multiply_left_mask( const kmb::Matrix &a, kmb::Matrix &x, kmb::Matrix::MASK m ) const;
-	// ©•ª‚ğ‰E‚©‚çŠ|‚¯‚é a * this  = x
+	// è‡ªåˆ†ã‚’å³ã‹ã‚‰æ›ã‘ã‚‹ a * this  = x
 	virtual bool multiply_right( const kmb::Matrix &a, kmb::Matrix &x ) const;
 
-	// ƒxƒNƒgƒ‹ê—p
-	// ©•ª‚ğ¶‚©‚çŠ|‚¯‚é this * a = x
+	// ãƒ™ã‚¯ãƒˆãƒ«å°‚ç”¨
+	// è‡ªåˆ†ã‚’å·¦ã‹ã‚‰æ›ã‘ã‚‹ this * a = x
 	virtual bool multiply_vect_left(const double* a, double* x) const;
 	virtual bool multiply_vect_left_mask(const double* a, double* x, kmb::Matrix::MASK m ) const;
-	// ©•ª‚ğ‰E‚©‚çŠ|‚¯‚é a * this = x
+	// è‡ªåˆ†ã‚’å³ã‹ã‚‰æ›ã‘ã‚‹ a * this = x
 	virtual bool multiply_vect_right(const double* a, double* x) const;
 
-	// ‘ã“ü this = a
+	// ä»£å…¥ this = a
 	virtual bool substitute( const kmb::Matrix &a );
-	// Š|‚¯Z‘ã“ü this = a * b
+	// æ›ã‘ç®—ä»£å…¥ this = a * b
 	virtual bool product( const kmb::Matrix &a, const kmb::Matrix &b );
 	
-	// i s‚Æ—ñƒxƒNƒgƒ‹‚Ì“àÏ
+	// i è¡Œã¨åˆ—ãƒ™ã‚¯ãƒˆãƒ«ã®å†…ç©
 	virtual double rowProduct(int i, const kmb::ColumnVector &vec) const;
 	virtual double rowProduct_mask(int i, const kmb::ColumnVector &vec, kmb::Matrix::MASK m) const;
-	// i —ñ‚ÆsƒxƒNƒgƒ‹‚Ì“àÏ
+	// i åˆ—ã¨è¡Œãƒ™ã‚¯ãƒˆãƒ«ã®å†…ç©
 	virtual double colProduct(int i, const kmb::RowVector &vec) const;
 
-	// i0 s‚Æ i1 s‚ÌŒğŠ·
+	// i0 è¡Œã¨ i1 è¡Œã®äº¤æ›
 	virtual bool row_exchange(int i0,int i1){
 		int colSize = getColSize();
 		for(int j=0;j<colSize;++j){
@@ -116,7 +116,7 @@ public:
 		return true;
 	}
 
-	// i0 s‚ğ r ”{‚µ‚Ä i1 s‚É‰Á‚¦‚é
+	// i0 è¡Œã‚’ r å€ã—ã¦ i1 è¡Œã«åŠ ãˆã‚‹
 	virtual bool row_transf(int i0,int i1,double r){
 		int colSize = getColSize();
 		for(int j=0;j<colSize;++j){
@@ -127,7 +127,7 @@ public:
 		return true;
 	}
 
-	// i0 s‚ğ r ”{
+	// i0 è¡Œã‚’ r å€
 	virtual bool row_multi(int i0,double r){
 		int colSize = getColSize();
 		for(int j=0;j<colSize;++j){
@@ -138,7 +138,7 @@ public:
 		return true;
 	}
 
-	// j0 —ñ‚Æ j1 —ñ‚ÌŒğŠ·
+	// j0 åˆ—ã¨ j1 åˆ—ã®äº¤æ›
 	virtual bool column_exchange(int j0,int j1){
 		int rowSize = getRowSize();
 		for(int i=0;i<rowSize;++i){
@@ -150,7 +150,7 @@ public:
 		return true;
 	}
 
-	// j0 —ñ‚ğ r ”{‚µ‚Ä j1 —ñ‚É‰Á‚¦‚é
+	// j0 åˆ—ã‚’ r å€ã—ã¦ j1 åˆ—ã«åŠ ãˆã‚‹
 	virtual bool column_transf(int j0,int j1,double r){
 		int rowSize = getRowSize();
 		for(int i=0;i<rowSize;++i){
@@ -161,7 +161,7 @@ public:
 		return true;
 	}
 
-	// j0 —ñ‚ğ r ”{
+	// j0 åˆ—ã‚’ r å€
 	virtual bool column_multi(int j0,double r){
 		int rowSize = getRowSize();
 		for(int i=0;i<rowSize;++i){
@@ -172,25 +172,25 @@ public:
 		return true;
 	}
 
-	// sƒxƒNƒgƒ‹‚Ìæ“¾‚Æ‘ã“ü
+	// è¡Œãƒ™ã‚¯ãƒˆãƒ«ã®å–å¾—ã¨ä»£å…¥
 	virtual bool getRowVector(int i,kmb::RowVector& row) const;
 	virtual bool setRowVector(int i,const kmb::RowVector& row);
-	// —ñƒxƒNƒgƒ‹‚Ìæ“¾‚Æ‘ã“ü
+	// åˆ—ãƒ™ã‚¯ãƒˆãƒ«ã®å–å¾—ã¨ä»£å…¥
 	virtual bool getColumnVector(int j,kmb::ColumnVector& col) const;
 	virtual bool setColumnVector(int j,const kmb::ColumnVector& col);
 
-	// —ñ‚²‚Æ‚É¬•ª‚Ìâ‘Î’l‚Ì˜a‚ğŒvZ‚µ‚½‚¤‚¿‚Å‚»‚ÌÅ‘å‚Ì‚à‚Ì
+	// åˆ—ã”ã¨ã«æˆåˆ†ã®çµ¶å¯¾å€¤ã®å’Œã‚’è¨ˆç®—ã—ãŸã†ã¡ã§ãã®æœ€å¤§ã®ã‚‚ã®
 	virtual double norm_1(void) const;
-	// s‚²‚Æ‚É¬•ª‚Ìâ‘Î’l‚Ì˜a‚ğŒvZ‚µ‚½‚¤‚¿‚Å‚»‚ÌÅ‘å‚Ì‚à‚Ì
+	// è¡Œã”ã¨ã«æˆåˆ†ã®çµ¶å¯¾å€¤ã®å’Œã‚’è¨ˆç®—ã—ãŸã†ã¡ã§ãã®æœ€å¤§ã®ã‚‚ã®
 	virtual double norm_inf(void) const;
-	// ¬•ª‚Ì‚Qæ‚Ì˜a‚Ì•½•ûª
+	// æˆåˆ†ã®ï¼’ä¹—ã®å’Œã®å¹³æ–¹æ ¹
 	virtual double norm_f(void) const;
 
-	// ¬•ª‚ÌÅ‘åÅ¬
+	// æˆåˆ†ã®æœ€å¤§æœ€å°
 	virtual double getMax(void) const;
 	virtual double getMin(void) const;
 
-	// ”ñ—ë¬•ª‚ÌŒÂ”
+	// éé›¶æˆåˆ†ã®å€‹æ•°
 	virtual int countNonZero(void) const;
 	virtual int countNonZeroBlock(int unitBSize) const;
 };
@@ -214,13 +214,13 @@ public:
 	virtual double trace(void) const;
 	double minorDeterminant(int msize,int cIndices[],int rIndices[]) const;
 
-	// ƒxƒNƒgƒ‹ê—p
-	// ©•ª‚ğ¶‚©‚çŠ|‚¯‚é this * a = x
+	// ãƒ™ã‚¯ãƒˆãƒ«å°‚ç”¨
+	// è‡ªåˆ†ã‚’å·¦ã‹ã‚‰æ›ã‘ã‚‹ this * a = x
 	virtual bool multiply_vect_left(const double* a, double* x) const;
-	// ©•ª‚ğ‰E‚©‚çŠ|‚¯‚é a * this = x
+	// è‡ªåˆ†ã‚’å³ã‹ã‚‰æ›ã‘ã‚‹ a * this = x
 	virtual bool multiply_vect_right(const double* a, double* x) const;
 
-	// 2ŸŒ`®
+	// 2æ¬¡å½¢å¼
 	// T = kmb::ColumnVector&, double*
 	template <typename T> double quadratic(const T x,const T y) const
 	{
@@ -234,22 +234,22 @@ public:
 		return sum;
 	}
 
-	// this * x = b ‚ğƒKƒEƒXÁ‹–@‚Å‰ğ‚­
-	// ƒR[ƒh‚Í“¯‚¶‚¾‚¯‚ÇA‰¼‘zŠÖ”‚È‚Ì‚Åƒeƒ“ƒvƒŒ[ƒg‚ªg‚¦‚È‚¢
+	// this * x = b ã‚’ã‚¬ã‚¦ã‚¹æ¶ˆå»æ³•ã§è§£ã
+	// ã‚³ãƒ¼ãƒ‰ã¯åŒã˜ã ã‘ã©ã€ä»®æƒ³é–¢æ•°ãªã®ã§ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãŒä½¿ãˆãªã„
 	virtual bool solve(const kmb::ColumnVector &b, kmb::ColumnVector &x) const;
 	virtual bool solve(const double* b, double* x) const;
 
-	// ‚±‚ÌƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğQÆ‚µ‚ÄA‰ºOŠpAãOŠpA‘ÎŠp¬•ª‚¾‚¯‚ğg‚¤‚½‚ß‚Ìƒ‰ƒbƒp‚Ì¶¬
+	// ã“ã®ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å‚ç…§ã—ã¦ã€ä¸‹ä¸‰è§’ã€ä¸Šä¸‰è§’ã€å¯¾è§’æˆåˆ†ã ã‘ã‚’ä½¿ã†ãŸã‚ã®ãƒ©ãƒƒãƒ‘ã®ç”Ÿæˆ
 	virtual const kmb::LowerTriangularMatrix* createLowerTriangular(void) const;
 	virtual const kmb::UpperTriangularMatrix* createUpperTriangular(void) const;
 	virtual const kmb::DiagonalMatrix* createDiagonal(void) const;
 
-	// ‘ÎŠp—DˆÊ‚Å‚ ‚é‚±‚Æ‚Æ‚±‚Ì’l‚ª1‚æ‚è‘å‚«‚¢‚±‚Æ‚Í“¯’l
+	// å¯¾è§’å„ªä½ã§ã‚ã‚‹ã“ã¨ã¨ã“ã®å€¤ãŒ1ã‚ˆã‚Šå¤§ãã„ã“ã¨ã¯åŒå€¤
 	// min |a_ii| / \sum_{i \neq j} |a_ij| 
 	double diagonal_dominance(void) const;
 };
 
-// “]’us—ñ
+// è»¢ç½®è¡Œåˆ—
 class TransposeMatrix_Wrapper : public SquareMatrix
 {
 private:

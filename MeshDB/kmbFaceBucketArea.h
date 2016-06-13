@@ -41,11 +41,11 @@ public:
 	bool getNearest(double x,double y,double z,double &dist,kmb::Face &f) const;
 	double getArea(kmb::Face f) const;
 protected:
-	// ‹——£‚Í‚Qæ‚Å•Ô‚·
+	// è·é›¢ã¯ï¼’ä¹—ã§è¿”ã™
 	bool getNearestInBucket(const kmb::Point3D& pt,int i,int j,int k,double &dist,kmb::Face &f) const;
-	// [i0,i1] x [j0,j1] x [k0,k1] ‚Ì•”•ªŠiq‚ÉOŠpŒ` a b c ‚ªŠÜ‚Ü‚ê‚é‚©‚Ç‚¤‚©
-	// •K‚¸‚Ç‚±‚©‚ÌŠiq•”ŠÜ‚Ü‚ê‚é‚à‚Ì‚Æ‚·‚é
-	// –ß‚è’l‚ÍƒoƒPƒbƒg‚É’Ç‰Á‚µ‚½ŒÂ”
+	// [i0,i1] x [j0,j1] x [k0,k1] ã®éƒ¨åˆ†æ ¼å­ã«ä¸‰è§’å½¢ a b c ãŒå«ã¾ã‚Œã‚‹ã‹ã©ã†ã‹
+	// å¿…ãšã©ã“ã‹ã®æ ¼å­éƒ¨å«ã¾ã‚Œã‚‹ã‚‚ã®ã¨ã™ã‚‹
+	// æˆ»ã‚Šå€¤ã¯ãƒã‚±ãƒƒãƒˆã«è¿½åŠ ã—ãŸå€‹æ•°
 	int appendSubBucket(int i0,int i1,int j0,int j1,int k0,int k1,const kmb::Point3D &a,const kmb::Point3D &b,const kmb::Point3D &c,const kmb::Face &f);
 };
 

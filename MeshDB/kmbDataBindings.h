@@ -109,51 +109,51 @@ protected:
 public:
 	virtual ~DataBindings(void){}
 	virtual const char* getContainerType(void) const = 0;
-	//------------- ’l‚ÌŒ^ -----------------------
+	//------------- å€¤ã®å‹ -----------------------
 protected:
 	PhysicalValue::valueType type;
 public:
 	PhysicalValue::valueType getValueType(void) const { return type; }
 	virtual int getDimension(void) const { return kmb::PhysicalValue::getDimension(type); };
-	//------------- ’l‚ÌŒ‹‡ƒ‚[ƒh ----------------
+	//------------- å€¤ã®çµåˆãƒ¢ãƒ¼ãƒ‰ ----------------
 protected:
 	bindingMode bMode;
 public:
 	bindingMode getBindingMode(void) const { return bMode; };
-//----------------- ƒf[ƒ^‚Ìƒ^ƒO ----------
+//----------------- ãƒ‡ãƒ¼ã‚¿ã®ã‚¿ã‚° ----------
 protected:
 	std::string specType;
 public:
 	std::string getSpecType(void) const { return specType; };
 	void setSpecType(std::string sname){ specType = sname; };
-//----------------- ‘ÎÛ‚Æ‚È‚é BodyId (—v‘fƒRƒ“ƒeƒi‚ÌId) ----------
+//----------------- å¯¾è±¡ã¨ãªã‚‹ BodyId (è¦ç´ ã‚³ãƒ³ãƒ†ãƒŠã®Id) ----------
 protected:
 	kmb::bodyIdType targetBodyId;
 public:
 	kmb::bodyIdType getTargetBodyId(void) const { return targetBodyId; };
 	void setTargetBodyId(kmb::bodyIdType bodyId){ targetBodyId = bodyId; };
-//----------------- Id ‘€ìŠÖ” -------------------
+//----------------- Id æ“ä½œé–¢æ•° -------------------
 public:
-	// “o˜^‚³‚ê‚Ä‚¢‚é Id ‚Ü‚½‚Í Id ‚Æ’l‚Ì‘g‚ğíœ‚·‚é
-	// ƒXƒ}[ƒgƒ|ƒCƒ“ƒ^‚Ìê‡‚Íƒƒ‚ƒŠ‚ğŠJ•ú‚µ‚È‚¢
+	// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ Id ã¾ãŸã¯ Id ã¨å€¤ã®çµ„ã‚’å‰Šé™¤ã™ã‚‹
+	// ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿ã®å ´åˆã¯ãƒ¡ãƒ¢ãƒªã‚’é–‹æ”¾ã—ãªã„
 	virtual void clear(void);
-	// “o˜^‚³‚ê‚Ä‚¢‚é Id ‚ÌŒÂ”‚ğ•Ô‚·
+	// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ Id ã®å€‹æ•°ã‚’è¿”ã™
 	virtual size_t getIdCount(void) const = 0;
-	// Id ‚ğ“o˜^‚·‚é
+	// Id ã‚’ç™»éŒ²ã™ã‚‹
 	virtual bool addId(kmb::idType id);
 	virtual bool addId(kmb::Face id);
-	// Id ‚ª“o˜^‚³‚ê‚Ä‚¢‚é‚©‚ğ•Ô‚·
+	// Id ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ã‚’è¿”ã™
 	virtual bool hasId(kmb::idType id) const;
 	virtual bool hasId(kmb::Face id) const;
-	// “o˜^‚³‚ê‚Ä‚¢‚é Id ‚ğíœ‚·‚é
+	// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ Id ã‚’å‰Šé™¤ã™ã‚‹
 	virtual bool deleteId(kmb::idType id);
 	virtual bool deleteId(kmb::Face id);
-	// “o˜^‚³‚ê‚Ä‚¢‚é Id ‚ğ’u‚«Š·‚¦‚é
+	// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ Id ã‚’ç½®ãæ›ãˆã‚‹
 	virtual bool replaceId(kmb::idType old_id,kmb::idType new_id);
 	virtual bool replaceId(kmb::Face old_id,kmb::Face new_id);
 	virtual int replaceNodeId( std::map< kmb::nodeIdType, kmb::nodeIdType> &idmap );
-//------------------ •¨——Ê‘€ì -------------------
-	// ‚·‚Å‚É—^‚¦‚ç‚ê‚Ä‚¢‚éê‡‚àã‘‚«‚·‚é
+//------------------ ç‰©ç†é‡æ“ä½œ -------------------
+	// ã™ã§ã«ä¸ãˆã‚‰ã‚Œã¦ã„ã‚‹å ´åˆã‚‚ä¸Šæ›¸ãã™ã‚‹
 	virtual bool setPhysicalValue(kmb::PhysicalValue* val);
 	virtual bool setPhysicalValue(kmb::idType id, kmb::PhysicalValue* value);
 	virtual bool setPhysicalValue(kmb::Face f, kmb::PhysicalValue* value);
@@ -161,12 +161,12 @@ public:
 	virtual bool setPhysicalValue(kmb::Face f, double *value);
 	virtual bool setPhysicalValue(kmb::idType id, long *value);
 	virtual bool setPhysicalValue(kmb::Face f, long *value);
-	// ¬•ª‚²‚Æ
+	// æˆåˆ†ã”ã¨
 	virtual bool setValue(kmb::idType id, double value,int index=0);
 	virtual bool setValue(kmb::Face f, double value,int index=0);
 	virtual bool setValue(kmb::idType id, long value,int index=0);
 	virtual bool setValue(kmb::Face f, long value,int index=0);
-	// •‚“®¬”“_’l‚Ìê‡‚ÉƒXƒJƒ‰[”{‚·‚é
+	// æµ®å‹•å°æ•°ç‚¹å€¤ã®å ´åˆã«ã‚¹ã‚«ãƒ©ãƒ¼å€ã™ã‚‹
 	virtual bool scalar(double r);
 
 	virtual kmb::PhysicalValue* getPhysicalValue(void) const;
@@ -176,10 +176,10 @@ public:
 	virtual bool getPhysicalValue(kmb::Face f, double *value) const;
 	virtual bool getPhysicalValue(kmb::idType id, long *value) const;
 	virtual bool getPhysicalValue(kmb::Face f, long *value) const;
-//------------------ ƒCƒeƒŒ[ƒ^ -------------------
+//------------------ ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ -------------------
 public:
-	// À‘Ô
-	// Œp³‚µ‚½ƒNƒ‰ƒX‚Å‚Í‚±‚ê‚ğŠg’£‚·‚é
+	// å®Ÿæ…‹
+	// ç¶™æ‰¿ã—ãŸã‚¯ãƒ©ã‚¹ã§ã¯ã“ã‚Œã‚’æ‹¡å¼µã™ã‚‹
 	class _iterator
 	{
 	public:
@@ -193,11 +193,11 @@ public:
 		virtual bool setValue(long *value){ return false; };
 		virtual _iterator* operator++(void) = 0;
 		virtual _iterator* operator++(int n) = 0;
-		virtual _iterator* clone(void) = 0; // ‘ã“ü‰‰Zq‚Ì’è‹`‚É•K—v
+		virtual _iterator* clone(void) = 0; // ä»£å…¥æ¼”ç®—å­ã®å®šç¾©ã«å¿…è¦
 	};
 
 public:
-	// ƒ‰ƒbƒp
+	// ãƒ©ãƒƒãƒ‘
 	class const_iterator;
 	class iterator
 	{
@@ -217,13 +217,13 @@ public:
 		bool getValue(long *value) const;
 		bool setValue(double *value);
 		bool setValue(long *value);
-		// ‘ã“ü
+		// ä»£å…¥
 		iterator& operator=(const iterator& other);
-		iterator& operator++(void);  // ‘O’u ++
-		iterator  operator++(int n); // Œã’u ++
+		iterator& operator++(void);  // å‰ç½® ++
+		iterator  operator++(int n); // å¾Œç½® ++
 		bool operator==(const iterator &other) const;
 		bool operator!=(const iterator &other) const;
-		// I—¹”»’è == end() ‚Å‚à‚¢‚¢‚¯‚ÇA‚±‚Á‚¿‚Ì•û‚ª‘¬‚¢
+		// çµ‚äº†åˆ¤å®š == end() ã§ã‚‚ã„ã„ã‘ã©ã€ã“ã£ã¡ã®æ–¹ãŒé€Ÿã„
 		bool isFinished(void) const{ return (_iter==NULL); }
 	};
 
@@ -243,23 +243,23 @@ public:
 		const kmb::PhysicalValue* getValue(void) const;
 		bool getValue(double *value)  const;
 		bool getValue(long *value)  const;
-		// ‘ã“ü
+		// ä»£å…¥
 		const_iterator& operator=(const const_iterator& other);
 		const_iterator& operator=(const iterator& other);
-		const_iterator& operator++(void);  // ‘O’u ++
-		const_iterator  operator++(int n); // Œã’u ++
+		const_iterator& operator++(void);  // å‰ç½® ++
+		const_iterator  operator++(int n); // å¾Œç½® ++
 		bool operator==(const const_iterator &other) const;
 		bool operator!=(const const_iterator &other) const;
-		// I—¹”»’è == end() ‚Å‚à‚¢‚¢‚¯‚ÇA‚±‚Á‚¿‚Ì•û‚ª‘¬‚¢
+		// çµ‚äº†åˆ¤å®š == end() ã§ã‚‚ã„ã„ã‘ã©ã€ã“ã£ã¡ã®æ–¹ãŒé€Ÿã„
 		bool isFinished(void) const{ return (_iter==NULL); }
 	};
 
 	virtual iterator begin(void) = 0;
 	virtual const_iterator begin(void) const = 0;
-	// ’l‚ğ•Ô‚·‚Æ•Ô‚·‚½‚Ñ‚ÉƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^‚ªŒÄ‚Î‚ê‚é‚æ
-	// QÆ•Ô‚µ‚É‚·‚é
-	static const iterator endIterator; // NULL ’l
-	static const const_iterator endConstIterator; // NULL ’l
+	// å€¤ã‚’è¿”ã™ã¨è¿”ã™ãŸã³ã«ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒå‘¼ã°ã‚Œã‚‹ã‚ˆ
+	// å‚ç…§è¿”ã—ã«ã™ã‚‹
+	static const iterator endIterator; // NULL å€¤
+	static const const_iterator endConstIterator; // NULL å€¤
 	const iterator& end(void){
 		return DataBindings::endIterator;
 	};
@@ -285,7 +285,7 @@ public:
 		return "DataBindingsGlobal";
 	};
 protected:
-	// ’è”’l‚ğ—^‚¦‚é
+	// å®šæ•°å€¤ã‚’ä¸ãˆã‚‹
 	kmb::PhysicalValue* value;
 public:
 	virtual bool setPhysicalValue(kmb::PhysicalValue* val){
@@ -341,7 +341,7 @@ public:
 	};
 protected:
 	std::set<T> group;
-	// ’è”’l‚ğ—^‚¦‚éê‡
+	// å®šæ•°å€¤ã‚’ä¸ãˆã‚‹å ´åˆ
 	kmb::PhysicalValue* value;
 public:
 	virtual bool setPhysicalValue(kmb::PhysicalValue* val){
@@ -373,7 +373,7 @@ public:
 	virtual void clear(void){
 		group.clear();
 	};
-	// Id ‚ğ•ÏŠ·‚·‚é
+	// Id ã‚’å¤‰æ›ã™ã‚‹
 	virtual bool replaceId(kmb::idType old_id,kmb::idType new_id){
 		T old_t = static_cast<T>(old_id);
 		T new_t = static_cast<T>(new_id);
@@ -413,7 +413,7 @@ public:
 	virtual size_t getIdCount(void) const{
 		return group.size();
 	};
-//------------------ ƒCƒeƒŒ[ƒ^ -------------------
+//------------------ ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ -------------------
 public:
 	class _iterator : public DataBindings::_iterator
 	{
@@ -501,7 +501,7 @@ public:
 	};
 protected:
 	std::set<kmb::Face> group;
-	// ’è”’l‚ğ—^‚¦‚éê‡
+	// å®šæ•°å€¤ã‚’ä¸ãˆã‚‹å ´åˆ
 	kmb::PhysicalValue* value;
 public:
 	virtual bool setPhysicalValue(kmb::PhysicalValue* val){
@@ -571,7 +571,7 @@ public:
 			++jIter;
 		}
 	};
-//------------------ ƒCƒeƒŒ[ƒ^ -------------------
+//------------------ ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ -------------------
 public:
 	class _iterator : public DataBindings::_iterator
 	{
@@ -640,8 +640,8 @@ public:
 	}
 };
 
-// domain ‚ª T, range ‚ª V
-// V ‚Í kmb::PhysicalValue ‚ğŒp³‚µ‚½ƒNƒ‰ƒX
+// domain ãŒ T, range ãŒ V
+// V ã¯ kmb::PhysicalValue ã‚’ç¶™æ‰¿ã—ãŸã‚¯ãƒ©ã‚¹
 template<typename T,typename V>
 class DataVariable : public DataBindings
 {
@@ -691,7 +691,7 @@ public:
 			if( dIter != mapper.end() ){
 				dIter->second->setValue(value);
 			}else{
-				// V ‚ÌŒ^‚ª double* ‚ğó‚¯‚ç‚ê‚È‚¯‚ê‚Î‰Šú’l‚ª“ü‚é
+				// V ã®å‹ãŒ double* ã‚’å—ã‘ã‚‰ã‚Œãªã‘ã‚Œã°åˆæœŸå€¤ãŒå…¥ã‚‹
 				kmb::PhysicalValue* v = new V();
 				v->setValue(value);
 				mapper.insert( std::pair<T,kmb::PhysicalValue*>(t,v) );
@@ -706,7 +706,7 @@ public:
 			if( dIter != mapper.end() ){
 				dIter->second->setValue(value);
 			}else{
-				// V ‚ÌŒ^‚ª long* ‚ğó‚¯‚ç‚ê‚È‚¯‚ê‚Î‰Šú’l‚ª“ü‚é
+				// V ã®å‹ãŒ long* ã‚’å—ã‘ã‚‰ã‚Œãªã‘ã‚Œã°åˆæœŸå€¤ãŒå…¥ã‚‹
 				kmb::PhysicalValue* v = new V();
 				v->setValue(value);
 				mapper.insert( std::pair<T,kmb::PhysicalValue*>(t,v) );
@@ -718,11 +718,11 @@ public:
 	virtual bool setValue(T t, double value,int index=0){
 		typename std::map<T,kmb::PhysicalValue*>::iterator dIter = mapper.find(t);
 		if( dIter != mapper.end() ){
-			// V ‚ª double ‚ÌŒ^‚ğ index ‚Åó‚¯‚ç‚ê‚é‚Æ‚«‚¾‚¯
+			// V ãŒ double ã®å‹ã‚’ index ã§å—ã‘ã‚‰ã‚Œã‚‹ã¨ãã ã‘
 			dIter->second->setValue( value, index );
 			return true;
 		}else{
-			// V ‚ª double ‚ÌŒ^‚ğ index ‚Åó‚¯‚ç‚ê‚È‚¢‚Æ‚«‚Í‰Šú’l‚ª“ü‚é
+			// V ãŒ double ã®å‹ã‚’ index ã§å—ã‘ã‚‰ã‚Œãªã„ã¨ãã¯åˆæœŸå€¤ãŒå…¥ã‚‹
 			kmb::PhysicalValue* v = new V();
 			v->setValue( value, index );
 			mapper.insert( std::pair<T,kmb::PhysicalValue*>(t,v) );
@@ -732,11 +732,11 @@ public:
 	virtual bool setValue(T t, long value,int index=0){
 		typename std::map<T,kmb::PhysicalValue*>::iterator dIter = mapper.find(t);
 		if( dIter != mapper.end() ){
-			// V ‚ª long ‚ÌŒ^‚ğ index ‚Åó‚¯‚ç‚ê‚é‚Æ‚«‚¾‚¯
+			// V ãŒ long ã®å‹ã‚’ index ã§å—ã‘ã‚‰ã‚Œã‚‹ã¨ãã ã‘
 			dIter->second->setValue( value, index );
 			return true;
 		}else{
-			// V ‚ª long ‚ÌŒ^‚ğ index ‚Åó‚¯‚ç‚ê‚È‚¢‚Æ‚«‚Í‰Šú’l‚ª“ü‚é
+			// V ãŒ long ã®å‹ã‚’ index ã§å—ã‘ã‚‰ã‚Œãªã„ã¨ãã¯åˆæœŸå€¤ãŒå…¥ã‚‹
 			kmb::PhysicalValue* v = new V();
 			v->setValue( value, index );
 			mapper.insert( std::pair<T,kmb::PhysicalValue*>(t,v) );
@@ -819,7 +819,7 @@ public:
 			}
 			++pIter;
 		}
-		// ’†‚Ìƒ|ƒCƒ“ƒ^‚ğ delete ‚¹‚¸‚ÉƒRƒ“ƒeƒi‚¾‚¯‚ğ‰Šú‰»‚·‚é
+		// ä¸­ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ delete ã›ãšã«ã‚³ãƒ³ãƒ†ãƒŠã ã‘ã‚’åˆæœŸåŒ–ã™ã‚‹
 		mapper.clear();
 		typename std::map<T,kmb::PhysicalValue*>::iterator qIter = tempMap.begin();
 		while( qIter != tempMap.end() )
@@ -851,7 +851,7 @@ public:
 				}
 				++pIter;
 			}
-			// ’†‚Ìƒ|ƒCƒ“ƒ^‚ğ delete ‚¹‚¸‚ÉƒRƒ“ƒeƒi‚¾‚¯‚ğ‰Šú‰»‚·‚é
+			// ä¸­ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ delete ã›ãšã«ã‚³ãƒ³ãƒ†ãƒŠã ã‘ã‚’åˆæœŸåŒ–ã™ã‚‹
 			mapper.clear();
 			typename std::map<T,kmb::PhysicalValue*>::iterator qIter = tempMap.begin();
 			while( qIter != tempMap.end() )
@@ -868,7 +868,7 @@ public:
 	virtual size_t getIdCount() const{
 		return mapper.size();
 	};
-//------------------ ƒCƒeƒŒ[ƒ^ -------------------
+//------------------ ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ -------------------
 public:
 	class _iterator : public DataBindings::_iterator
 	{
@@ -997,7 +997,7 @@ public:
 			if( dIter != mapper.end() ){
 				dIter->second->setValue(value);
 			}else{
-				// V ‚ÌŒ^‚ª double* ‚ğó‚¯‚ç‚ê‚È‚¯‚ê‚Î‰Šú’l‚ª“ü‚é
+				// V ã®å‹ãŒ double* ã‚’å—ã‘ã‚‰ã‚Œãªã‘ã‚Œã°åˆæœŸå€¤ãŒå…¥ã‚‹
 				kmb::PhysicalValue* v = new V();
 				v->setValue(value);
 				mapper.insert( std::pair<kmb::Face,kmb::PhysicalValue*>(t,v) );
@@ -1012,7 +1012,7 @@ public:
 			if( dIter != mapper.end() ){
 				dIter->second->setValue(value);
 			}else{
-				// V ‚ÌŒ^‚ª long* ‚ğó‚¯‚ç‚ê‚È‚¯‚ê‚Î‰Šú’l‚ª“ü‚é
+				// V ã®å‹ãŒ long* ã‚’å—ã‘ã‚‰ã‚Œãªã‘ã‚Œã°åˆæœŸå€¤ãŒå…¥ã‚‹
 				kmb::PhysicalValue* v = new V();
 				v->setValue(value);
 				mapper.insert( std::pair<kmb::Face,kmb::PhysicalValue*>(t,v) );
@@ -1024,11 +1024,11 @@ public:
 	virtual bool setValue(kmb::Face t, double value,int index=0){
 		typename std::map<kmb::Face,kmb::PhysicalValue*>::iterator dIter = mapper.find(t);
 		if( dIter != mapper.end() ){
-			// V ‚ª double ‚ÌŒ^‚ğ index ‚Åó‚¯‚ç‚ê‚é‚Æ‚«‚¾‚¯
+			// V ãŒ double ã®å‹ã‚’ index ã§å—ã‘ã‚‰ã‚Œã‚‹ã¨ãã ã‘
 			dIter->second->setValue( value, index );
 			return true;
 		}else{
-			// V ‚ª double ‚ÌŒ^‚ğ index ‚Åó‚¯‚ç‚ê‚È‚¢‚Æ‚«‚Í‰Šú’l‚ª“ü‚é
+			// V ãŒ double ã®å‹ã‚’ index ã§å—ã‘ã‚‰ã‚Œãªã„ã¨ãã¯åˆæœŸå€¤ãŒå…¥ã‚‹
 			kmb::PhysicalValue* v = new V();
 			v->setValue( value, index );
 			mapper.insert( std::pair<kmb::Face,kmb::PhysicalValue*>(t,v) );
@@ -1038,11 +1038,11 @@ public:
 	virtual bool setValue(kmb::Face t, long value,int index=0){
 		typename std::map<kmb::Face,kmb::PhysicalValue*>::iterator dIter = mapper.find(t);
 		if( dIter != mapper.end() ){
-			// V ‚ª long ‚ÌŒ^‚ğ index ‚Åó‚¯‚ç‚ê‚é‚Æ‚«‚¾‚¯
+			// V ãŒ long ã®å‹ã‚’ index ã§å—ã‘ã‚‰ã‚Œã‚‹ã¨ãã ã‘
 			dIter->second->setValue( value, index );
 			return true;
 		}else{
-			// V ‚ª long ‚ÌŒ^‚ğ index ‚Åó‚¯‚ç‚ê‚È‚¢‚Æ‚«‚Í‰Šú’l‚ª“ü‚é
+			// V ãŒ long ã®å‹ã‚’ index ã§å—ã‘ã‚‰ã‚Œãªã„ã¨ãã¯åˆæœŸå€¤ãŒå…¥ã‚‹
 			kmb::PhysicalValue* v = new V();
 			v->setValue( value, index );
 			mapper.insert( std::pair<kmb::Face,kmb::PhysicalValue*>(t,v) );
@@ -1125,7 +1125,7 @@ public:
 			}
 			++pIter;
 		}
-		// ’†‚Ìƒ|ƒCƒ“ƒ^‚ğ delete ‚¹‚¸‚ÉƒRƒ“ƒeƒi‚¾‚¯‚ğ‰Šú‰»‚·‚é
+		// ä¸­ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ delete ã›ãšã«ã‚³ãƒ³ãƒ†ãƒŠã ã‘ã‚’åˆæœŸåŒ–ã™ã‚‹
 		mapper.clear();
 		typename std::map<kmb::Face,kmb::PhysicalValue*>::iterator qIter = tempMap.begin();
 		while( qIter != tempMap.end() )
@@ -1140,7 +1140,7 @@ public:
 	virtual size_t getIdCount() const{
 		return mapper.size();
 	};
-//------------------ ƒCƒeƒŒ[ƒ^ -------------------
+//------------------ ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ -------------------
 public:
 	class _iterator : public DataBindings::_iterator
 	{

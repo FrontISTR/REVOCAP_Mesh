@@ -158,7 +158,7 @@ kmb::ElementContainerOpenGLDraw::calcNormals(kmb::Point3DContainer* points)
 		return res;
 	}
 	if( (triSize > 0 && triNormals) || (quadSize > 0 && quadNormals) ){
-		// ¶¬Ï‚İ
+		// ç”Ÿæˆæ¸ˆã¿
 		res = 0;
 		return res;
 	}
@@ -176,7 +176,7 @@ kmb::ElementContainerOpenGLDraw::calcNormals(kmb::Point3DContainer* points)
 	}
 	if( quadSize > 0 ){
 		if( quadNormals == NULL ){
-			// 3 ‚ÍŸŒ³
+			// 3 ã¯æ¬¡å…ƒ
 			quadNormals = new float[3*quadSize];
 		}
 		for(size_t i=0;i<quadSize;++i){
@@ -225,7 +225,7 @@ kmb::ElementContainerOpenGLDraw::addElement(kmb::elementType etype, const kmb::n
 			return elemId;
 		}
 	}else if( etype == kmb::TRIANGLE2 && triNodes != NULL ){
-		// 2Ÿ—v‘f‚Ìê‡
+		// 2æ¬¡è¦ç´ ã®å ´åˆ
 		if( tri2Nodes == NULL ){
 			initSecondTri();
 		}
@@ -244,7 +244,7 @@ kmb::ElementContainerOpenGLDraw::addElement(kmb::elementType etype, const kmb::n
 			return elemId;
 		}
 	}else if( etype == kmb::QUAD2 && quadNodes != NULL ){
-		// 2Ÿ—v‘f‚Ìê‡
+		// 2æ¬¡è¦ç´ ã®å ´åˆ
 		if( quad2Nodes == NULL ){
 			initSecondQuad();
 		}
@@ -273,7 +273,7 @@ kmb::ElementContainerOpenGLDraw::addElement(kmb::elementType etype, const kmb::n
 		return kmb::Element::nullElementId;
 	}
 	if( elementIdMap.find(id) != elementIdMap.end() ){
-		// Šù‚É id ‚ªg‚í‚ê‚Ä‚¢‚éê‡
+		// æ—¢ã« id ãŒä½¿ã‚ã‚Œã¦ã„ã‚‹å ´åˆ
 		return kmb::Element::nullElementId;
 	}
 	if( etype == kmb::TRIANGLE && triNodes != NULL ){
@@ -303,7 +303,7 @@ kmb::ElementContainerOpenGLDraw::addElement(kmb::elementType etype, const kmb::n
 			return id;
 		}
 	}else if( etype == kmb::TRIANGLE2 && triNodes != NULL ){
-		// 2Ÿ—v‘f‚Ìê‡
+		// 2æ¬¡è¦ç´ ã®å ´åˆ
 		if( tri2Nodes == NULL ){
 			initSecondTri();
 		}
@@ -321,7 +321,7 @@ kmb::ElementContainerOpenGLDraw::addElement(kmb::elementType etype, const kmb::n
 			return id;
 		}
 	}else if( etype == kmb::QUAD2 && quadNodes != NULL ){
-		// 2Ÿ—v‘f‚Ìê‡
+		// 2æ¬¡è¦ç´ ã®å ´åˆ
 		if( quad2Nodes == NULL ){
 			initSecondQuad();
 		}
@@ -436,7 +436,7 @@ kmb::ElementContainerOpenGLDraw::includeElement(const kmb::elementIdType id) con
 	return ( eiter != elementIdMap.end() );
 }
 
-// stl::map ‚É‚Í‡”Ô‚ÉŠi”[‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ğ‰¼’è
+// stl::map ã«ã¯é †ç•ªã«æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ã“ã¨ã‚’ä»®å®š
 kmb::elementIdType
 kmb::ElementContainerOpenGLDraw::getMaxId(void) const
 {
@@ -453,7 +453,7 @@ kmb::ElementContainerOpenGLDraw::getMinId(void) const
 {
 	kmb::elementIdType minId = kmb::Element::nullElementId;
 	std::map< kmb::elementIdType, size_t >::const_iterator eiter = elementIdMap.begin();
-	// Å‰‚Ìid
+	// æœ€åˆã®id
 	if( eiter != elementIdMap.end() ){
 		minId = eiter->first + offsetId;
 	}
@@ -663,7 +663,7 @@ kmb::ElementContainerOpenGLDraw::_iteratorOG::getType(void) const
 }
 
 kmb::nodeIdType
-kmb::ElementContainerOpenGLDraw::_iteratorOG::getCellId(int cellIndex) const
+kmb::ElementContainerOpenGLDraw::_iteratorOG::getNodeId(int cellIndex) const
 {
 	size_t index = elementIter->second;
 	if( index < elementContainer->triSize && elementContainer->triNodes[ 3*index ] != unsignedNullNodeId ){
@@ -698,7 +698,7 @@ kmb::ElementContainerOpenGLDraw::_iteratorOG::getCellId(int cellIndex) const
 }
 
 bool
-kmb::ElementContainerOpenGLDraw::_iteratorOG::setCellId(int cellIndex, kmb::nodeIdType nodeId)
+kmb::ElementContainerOpenGLDraw::_iteratorOG::setNodeId(int cellIndex, kmb::nodeIdType nodeId)
 {
 	size_t index = elementIter->second;
 	if( index < elementContainer->triSize && elementContainer->triNodes[ 3*index ] != unsignedNullNodeId ){
