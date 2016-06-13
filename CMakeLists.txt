@@ -31,12 +31,8 @@ add_executable(sampleMultiF Refiner/mainMulti.F90)
 target_link_libraries(sampleMultiF RcapRefiner)
 add_executable(test.rcap Refiner/test.rcap.f)
 target_link_libraries(test.rcap RcapRefiner)
-#install(TARGETS RcapRefiner LIBRARY DESTINATION lib)
-#install(FILES Refiner/rcapRefiner.h DESTINATION include)
-#install(TARGETS RcapRefiner
-#   ARCHIVE
-#   DESTINATION lib
-#   COMPONENT libraries)
+install(TARGETS RcapRefiner LIBRARY DESTINATION lib)
+install(FILES Refiner/rcapRefiner.h DESTINATION include)
 include(InstallRequiredSystemLibraries)
 set(CPACK_PACKAGE_NAME "REVOCAP_Refiner")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "FEM Mesh Refine Tool")
@@ -46,8 +42,9 @@ set(CPACK_PACKAGE_VERSION "${REVOCAP_REFINER_VERSION}")
 set(CPACK_PACKAGE_VERSION_MAJOR "1")
 set(CPACK_PACKAGE_VERSION_MINOR "2")
 set(CPACK_PACKAGE_VERSION_PATCH "0")
-set(CPACK_SOURCE_IGNORE_FILES "/MeshGL/;/MeshDBRuby/;/MeshGenRuby/;/MeshGLRuby/;/RevocapIORuby/;/ShapeRuby/;/ThirdParty/;/VS2012/;/build/;/lib/;/config/;/MakefileRuby.in;/.git/;~$;${CPACK_SOURCE_IGNORE_FILES}")
+set(CPACK_SOURCE_IGNORE_FILES "/MeshGL/;/MeshDBRuby/;/MeshGenRuby/;/MeshGLRuby/;/RevocapIORuby/;/ShapeRuby/;/Test/;/ThirdParty/;/VS2012/;/build/;/lib/;/config/;/MakefileRuby.in;/.git/;~$;${CPACK_SOURCE_IGNORE_FILES}")
 set(CPACK_SOURCE_GENERATOR TGZ)
-
 include(CPack)
-	
+
+enable_testing()
+add_subdirectory(Test)
