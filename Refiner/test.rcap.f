@@ -1,4 +1,4 @@
-      PROGRAM XXX
+﻿      PROGRAM XXX
       IMPLICIT NONE
       INCLUDE "rcapRefiner.inc"
 

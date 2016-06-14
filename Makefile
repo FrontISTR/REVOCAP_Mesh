@@ -5,6 +5,7 @@
 include OPTIONS
 include MakefileConfig.in
 include MakefileRuby.in
+include MakefileRefiner.in
 
 export ARCH
 export CXXFLAG

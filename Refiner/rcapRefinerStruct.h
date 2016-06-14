@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_Refiner version 1.1                          #
 # Program Name : rcapRefinerStruct                                     #
@@ -30,12 +30,12 @@ namespace kmb{
 
 struct rcapRefinerInfo
 {
-	kmb::MeshData* mesh; // ×•ª‚³‚ê‚½ß“_
+	kmb::MeshData* mesh; // ç´°åˆ†ã•ã‚ŒãŸç¯€ç‚¹
 	kmb::MeshRefiner* refiner;
 	kmb::MeshRefiner* boundaryRefiner;
 	kmb::MiddleNodeManager* middleMan;
 	kmb::MeshSmoother* smoother;
-	std::vector< kmb::Surface3D* > surfaces; // Œ`ó•â³‚Ì‚½‚ß‚Ìî•ñ
+	std::vector< kmb::Surface3D* > surfaces; // å½¢çŠ¶è£œæ­£ã®ãŸã‚ã®æƒ…å ±
 	int32_t nodeOffset;
 	int32_t elementOffset;
 	int32_t maxElementId;

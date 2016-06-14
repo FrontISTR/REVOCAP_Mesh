@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : EnvInfo                                                 #
@@ -85,8 +85,8 @@ kmb::EnvInfo::printSize(void)
 	std::cout << "sizeof(double) = " << sizeof(double) << std::endl;
 }
 
-// Windows ‚Ìê‡
-// ŠÂ‹«•Ï” TZ=JST-9 ‚ÌŽž‚Í³‚µ‚­“®ì‚·‚é‚ªATZ=Asia/Tokyo ‚Å‚Í³‚µ‚­“®ì‚µ‚È‚¢
+// Windows ã®å ´åˆ
+// ç’°å¢ƒå¤‰æ•° TZ=JST-9 ã®æ™‚ã¯æ­£ã—ãå‹•ä½œã™ã‚‹ãŒã€TZ=Asia/Tokyo ã§ã¯æ­£ã—ãå‹•ä½œã—ãªã„
 void kmb::EnvInfo::getCurrentTimeString(std::string& str)
 {
 	std::time_t t = std::time(NULL);

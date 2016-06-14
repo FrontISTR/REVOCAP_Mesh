@@ -1,4 +1,4 @@
-#define BOOST_TEST_MAIN
+﻿#define BOOST_TEST_MAIN
 #include <boost/test/included/unit_test.hpp>
 #include "Matrix/kmbMatrix.h"
 #include "Matrix/kmbMatrix_DoubleArray.h"

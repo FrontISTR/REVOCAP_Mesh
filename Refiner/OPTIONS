@@ -1,4 +1,4 @@
-# This is the file describing options for REVOCAP_Refiner makefile.
+﻿# This is the file describing options for REVOCAP_Refiner makefile.
 
 export ARCH
 
