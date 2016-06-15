@@ -1,11 +1,24 @@
-﻿#define BOOST_TEST_MAIN
-#include <boost/test/included/unit_test.hpp>
+﻿#define BOOST_TEST_MODULE GeometryTest
+#define BOOST_TEST_DYN_LINK
+#include <boost/test/unit_test.hpp>
 
 #include "Geometry/kmbGeometry3D.h"
+#include "Geometry/kmbLine.h"
 #include "Geometry/kmbBucket.h"
 #include "Geometry/kmbBoxRegion.h"
 #include "Geometry/kmbPoint3DContainerMArray.h"
 #include "Test/Test_Common.h"
+
+class Fixture{
+public:
+	Fixture(){
+		irand();
+	}
+	~Fixture(){
+	}
+};
+
+BOOST_GLOBAL_FIXTURE( Fixture );
 
 BOOST_AUTO_TEST_CASE(Volume_Simplex)
 {
@@ -81,6 +94,7 @@ BOOST_AUTO_TEST_CASE( CircumCenter4 )
 		BOOST_CHECK_CLOSE( r0, r3, 1.0e-8 );
 	}
 }
+
 BOOST_AUTO_TEST_CASE( Point_Bucket_Index )
 {
 	kmb::Point3DContainerMArray points;
@@ -104,5 +118,85 @@ BOOST_AUTO_TEST_CASE( Point_Bucket_Index )
 		points.getPoint(i,pt);
 		int index = bucket.getIndex( pt.x(), pt.y(), pt.z() );
 		BOOST_CHECK( index >= 0 );
+	}
+}
+
+BOOST_AUTO_TEST_CASE( PointToLine )
+{
+	int loopCount = 10;
+	for(int k=0;k<loopCount;++k){
+		double u = 0.0;
+		kmb::Point3D x(drand(),drand(),drand());
+		kmb::Point3D base(drand(),drand(),drand());
+		kmb::Vector3D dir(drand(),drand(),drand());
+		kmb::Line3D* line = kmb::Line3D::createFromBaseDirection(base,dir);
+		double distSq = line->distanceSq(x);
+		// -10.0 <= s <= 10.0
+		int num = 200;
+		for(int i=0;i<=num;++i){
+			double s = -10.0 + 20.0 * i / static_cast<double>(num);
+			kmb::Point3D p = base + s * dir;
+			BOOST_CHECK( distSq <= p.distanceSq(x) + 1.0e-10 );
+		}
+		delete line;
+	}
+}
+
+// 線分と点との距離
+BOOST_AUTO_TEST_CASE( PointToSegment )
+{
+	int loopCount = 10;
+	for(int k=0;k<loopCount;++k){
+		double u = 0.0;
+		kmb::Point3D a0(drand(),drand(),drand());
+		kmb::Point3D a1(drand(),drand(),drand());
+		kmb::Point3D q(drand(),drand(),drand());
+		double distSq = q.distanceSqToSegment(a0,a1,u);
+		// 線分上を 100 分割して、その点からの距離以下であることを確認する
+		// 0.0 <= s <= 1.0
+		int num = 100;
+		for(int i=0;i<=num;++i){
+			double s = i / static_cast<double>(num);
+			BOOST_CHECK( 0.0 <= s );
+			BOOST_CHECK( s <= 1.0 );
+			kmb::Point3D p = a0.proportionalPoint(a1,s);
+			BOOST_CHECK_CLOSE( p.x(), (1.0-s)*a0.x() + s*a1.x(), 1.0e-10 );
+			BOOST_CHECK_CLOSE( p.y(), (1.0-s)*a0.y() + s*a1.y(), 1.0e-10 );
+			BOOST_CHECK_CLOSE( p.z(), (1.0-s)*a0.z() + s*a1.z(), 1.0e-10 );
+			BOOST_CHECK( distSq <= p.distanceSq(q) + 1.0e-10 );
+		}
+	}
+}
+
+BOOST_AUTO_TEST_CASE( PointToTriangle )
+{
+	int loopCount = 10;
+	for(int k=0;k<loopCount;++k){
+		double u0[2] = { 0.0, 0.0 };
+		kmb::Point3D a0(drand(),drand(),drand());
+		kmb::Point3D a1(drand(),drand(),drand());
+		kmb::Point3D a2(drand(),drand(),drand());
+		kmb::Point3D q(drand(),drand(),drand());
+		// 三角形 a0 a1 a2 と q との最短距離
+		double distSq0 = q.distanceSqToTriangle(a0,a1,a2,u0);
+		// 0.0 <= s <= 1.0
+		// 0.0 <= t <= 1.0
+		// s+t <= 1.0
+		int num = 100;
+		for(int i=0;i<=num;++i){
+			for(int j=0;j<=num-i;++j){
+				double s = i / static_cast<double>(num);
+				double t = j / static_cast<double>(num);
+				BOOST_CHECK( 0.0 <= s );
+				BOOST_CHECK( 0.0 <= t );
+				BOOST_CHECK( s + t <= 1.0 );
+				kmb::Point3D p = a0 + s * kmb::Vector3D(a1,a0) + t * kmb::Vector3D(a2,a0);
+				BOOST_CHECK_CLOSE( p.x(), (1.0-s-t)*a0.x() + s*a1.x() + t*a2.x(), 1.0e-10 );
+				BOOST_CHECK_CLOSE( p.y(), (1.0-s-t)*a0.y() + s*a1.y() + t*a2.y(), 1.0e-10 );
+				BOOST_CHECK_CLOSE( p.z(), (1.0-s-t)*a0.z() + s*a1.z() + t*a2.z(), 1.0e-10 );
+				// 三角形 a0 a1 a2 上の点 p と q との距離
+				BOOST_CHECK( distSq0 <= p.distanceSq(q) + 1.0e-10 );
+			}
+		}
 	}
 }

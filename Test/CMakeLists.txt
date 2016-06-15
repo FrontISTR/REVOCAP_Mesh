@@ -14,6 +14,7 @@ add_test(
 
 add_executable(Common_Test Common_Test.cpp)
 target_link_libraries(Common_Test RcapRefiner)
+target_link_libraries(Common_Test boost_unit_test_framework-mt)
 add_test(
  NAME Common_Test
  COMMAND $<TARGET_FILE:Common_Test>
@@ -22,6 +23,7 @@ add_test(
 
 add_executable(Geometry_Test Geometry_Test.cpp)
 target_link_libraries(Geometry_Test RcapRefiner)
+target_link_libraries(Geometry_Test boost_unit_test_framework-mt)
 add_test(
  NAME Geometry_Test
  COMMAND $<TARGET_FILE:Geometry_Test>
@@ -30,6 +32,7 @@ add_test(
 
 add_executable(Matrix_Test Matrix_Test.cpp)
 target_link_libraries(Matrix_Test RcapRefiner)
+target_link_libraries(Matrix_Test boost_unit_test_framework-mt)
 add_test(
  NAME Matrix_Test
  COMMAND $<TARGET_FILE:Matrix_Test>
@@ -38,6 +41,7 @@ add_test(
 
 add_executable(RevocapIO_Test RevocapIO_Test.cpp)
 target_link_libraries(RevocapIO_Test RcapRefiner)
+target_link_libraries(RevocapIO_Test boost_unit_test_framework-mt)
 add_test(
  NAME RevocapIO_Test
  COMMAND $<TARGET_FILE:RevocapIO_Test>

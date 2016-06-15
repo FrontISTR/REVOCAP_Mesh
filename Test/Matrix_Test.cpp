@@ -1,5 +1,7 @@
-﻿#define BOOST_TEST_MAIN
-#include <boost/test/included/unit_test.hpp>
+﻿#define BOOST_TEST_MODULE MatrixTest
+#define BOOST_TEST_DYN_LINK
+#include <boost/test/unit_test.hpp>
+
 #include "Matrix/kmbMatrix.h"
 #include "Matrix/kmbMatrix_DoubleArray.h"
 #include "Test/Test_Common.h"
