@@ -1,4 +1,5 @@
 ﻿      PROGRAM XXX
+	  USE RcapRefiner
       IMPLICIT NONE
       INCLUDE "rcapRefiner.inc"
 
@@ -23,6 +24,9 @@ C
      *           1.0, 1.0, 1.0,
      *           0.0, 1.0, 1.0/
 C
+      INTEGER*4 NULLIDS(1)
+      DATA NULLIDS /0/
+C
       INTEGER*4 NEDUM,I,J,IE
 C
       INTEGER(KIND=1) ITYPE(1),ITYPER(8)
@@ -33,7 +37,7 @@ C
 C
       WRITE(6,*)
       WRITE(6,*) '[2]: SET COORDINATE'
-      CALL RCAPSETNODE32(NP,CORD,-1,0)
+      CALL RCAPSETNODE32(NP,CORD,NULLIDS,NULLIDS)
 C
       WRITE(6,*)
       WRITE(6,*) '[3]: REFINE ELEMENT'

@@ -155,7 +155,7 @@ void rcapGetVersion( void );
  * @param[in] elementOffset 呼び出し側の節点番号の初期値（C言語なら0、Fortran言語なら1など）
  * @note これらのオフセット値よりも小さい値を節点番号や要素番号で与えた場合は無効となる。
  */
-void rcapInitRefiner( int32_t nodeOffset, int32_t elementOffset );
+void rcapInitRefiner( const int32_t &nodeOffset, const int32_t &elementOffset );
 
 /**
  * @brief Refiner が内部で保持している中間節点データのキャッシュをクリアする。
@@ -213,14 +213,14 @@ void rcapWriteFittingFile( const char* filename );
  * @param[in] flag 非零の時に有効にし、零の時に無効にします
  *
  */
-void rcapSetSecondFitting( int32_t flag );
+void rcapSetSecondFitting( const int32_t &flag );
 
 /**
  * @brief 中間節点を Laplacian Smoothing するかどうかを設定する。
  * @param[in] flag 非零の時に有効にし、零の時に無効にします
  *
  */
-void rcapSetSmoothing( int32_t flag );
+void rcapSetSmoothing( const int32_t &flag );
 
 /**
  * @brief 節点の globalID と localID の対応関係を記述したファイルを指定する。\n
@@ -252,7 +252,7 @@ void rcapSetPartitionFilename( const char* filename );
  * @note CADファイルを与えずに形状補正をしない場合は、局所節点番号と大域節点番号の対応は必要ない。
  * @note Fortran から呼ぶ場合には NULL アドレスの代わりに最初の値が nodeOffset よりも小さい配列を与える。
  */
-void rcapSetNode64( size_t num, float64_t* coords, int32_t* globalIds, int32_t* localIds );
+void rcapSetNode64( const int32_t &num, float64_t* coords, int32_t* globalIds, int32_t* localIds );
 
 /**
  * @brief 節点座標を Refiner に与える
@@ -263,7 +263,7 @@ void rcapSetNode64( size_t num, float64_t* coords, int32_t* globalIds, int32_t* 
  *
  * @note 詳細は rcapSetNode64 に準ずる
  */
-void rcapSetNode32( size_t num, float32_t* coords, int32_t* globalIds, int32_t* localIds );
+void rcapSetNode32( const int32_t &num, float32_t* coords, int32_t* globalIds, int32_t* localIds );
 
 /**
  * @brief 現在 Refiner が保持している節点の個数を返す。細分したら増える。
@@ -417,7 +417,7 @@ size_t rcapRefineElement( size_t num, int8_t etype, int32_t* nodeArray, int32_t*
  * @param[in] etype 入力要素の型
  * @return 細分した結果の要素の個数
  */
-size_t rcapGetRefineElementCount( size_t num, int8_t etype );
+int32_t rcapGetRefineElementCount( const int32_t &num, const int8_t &etype );
 
 /**
  * @brief 複数の種類の型が混在しているモデルを一度に細分する
@@ -515,7 +515,7 @@ void rcapCommit(void);
  * getNodeGroup("CL",s,resultcl);
  * @endcode
  */
-void rcapAppendNodeGroup( const char dataname[80], size_t num, int32_t* nodeArray );
+void rcapAppendNodeGroup( const char dataname[80], const int32_t &num, const int32_t* nodeArray );
 
 /**
  * @brief Refiner に登録されている節点グループの節点の個数を返す
@@ -523,7 +523,7 @@ void rcapAppendNodeGroup( const char dataname[80], size_t num, int32_t* nodeArra
  * @return 節点グループの節点の個数
  * @note refineElement を呼ぶ前は、appendNodeGroup で登録した個数そのものを返す。
  */
-size_t rcapGetNodeGroupCount( const char dataname[80] );
+int32_t rcapGetNodeGroupCount( const char dataname[80] );
 
 /**
  * @brief Refiner に登録されている節点グループを返す
@@ -765,31 +765,31 @@ int32_t rcapSaveRNFFile( const char* rnffile );
 /* rcapxxx_  すべて小文字 */
 /* gfortran, intel fortran, pgi fortran はこれでよい */
 #if defined FORTRAN90 || defined FORTRAN_CALL_C_DOWNCASE_
-void rcapgetversion_( void );
-void rcapinitrefiner_( int32_t* nodeOffset, int32_t* elementOffset );
-void rcapclearrefiner_( void );
-void rcaptermrefiner_( void );
-void rcapsetcadfilename_( const char* filename );
-void rcapsetsecondfitting_( int32_t* flag );
-void rcapsetsmoothing_( int32_t* flag );
-void rcapsetpartitionfilename_( const char* filename );
+//void rcapgetversion_( void );
+//void rcapinitrefiner_( int32_t* nodeOffset, int32_t* elementOffset );
+//void rcapclearrefiner_( void );
+//void rcaptermrefiner_( void );
+//void rcapsetcadfilename_( const char* filename );
+//void rcapsetsecondfitting_( int32_t* flag );
+//void rcapsetsmoothing_( int32_t* flag );
+//void rcapsetpartitionfilename_( const char* filename );
 
-void rcapsetnode64_( int32_t* num, float64_t* coords, int32_t* globalIds, int32_t* localIds );
-void rcapsetnode32_( int32_t* num, float32_t* coords, int32_t* globalIds, int32_t* localIds );
-int32_t rcapgetnodecount_( void );
+void rcapsetnode64_( const int32_t &num, float64_t* coords, int32_t* globalIds, int32_t* localIds );
+void rcapsetnode32_( const int32_t &num, float32_t* coords, int32_t* globalIds, int32_t* localIds );
+//int32_t rcapgetnodecount_( void );
 void rcapgetnode64_( int32_t* num, int32_t* localIds, float64_t* coords );
 void rcapgetnode32_( int32_t* num, int32_t* localIds, float32_t* coords );
 void rcapgetnodeseq64_( int32_t* num, int32_t* initId, float64_t* coords );
 void rcapgetnodeseq32_( int32_t* num, int32_t* initId, float32_t* coords );
 
-int32_t rcapgetrefineelementcount_( int32_t* num, int8_t* etype );
+//int32_t rcapgetrefineelementcount_( int32_t* num, int8_t* etype );
 int32_t rcaprefineelement_( int32_t* num, int8_t* etype, int32_t* nodeArray, int32_t* resultNodeArray );
 int32_t rcapgetrefineelementmulticount_( int32_t* num, int8_t* etypeArray, int32_t* refinedNum );
 int32_t rcaprefineelementmulti_( int32_t* num, int8_t* etypeArray, int32_t* nodeArray, int32_t* refinedNum, int8_t* resultEtypeArray, int32_t* resultNodeArray );
-void rcapcommit_( void );
+//void rcapcommit_( void );
 
-void rcapappendnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray );
-int32_t rcapgetnodegroupcount_( const char dataname[80] );
+void rcapappendnodegroup_( const char dataname[80], const int32_t &num, const int32_t* nodeArray );
+//int32_t rcapgetnodegroupcount_( const char dataname[80] );
 void rcapgetnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray );
 
 void rcapappendbnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray );
@@ -811,8 +811,8 @@ void rcapgetfacegroup_( const char dataname[80], int32_t* num, int32_t* faceArra
 int8_t rcapgetoriginal_( int32_t* localNodeId, int32_t* originalNodeArray );
 int32_t rcapgetmiddle_( int8_t *etype, int32_t* originalNodeArray );
 
-void rcapsetinterpolatemode_( const char mode[32] );
-void rcapgetinterpolatemode_( char mode[32] );
+//void rcapsetinterpolatemode_( const char mode[32] );
+//void rcapgetinterpolatemode_( char mode[32] );
 
 void rcapqualityreport_( const char mode[80], const char* filename );
 

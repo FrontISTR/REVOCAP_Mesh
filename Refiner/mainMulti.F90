@@ -24,6 +24,7 @@
 !
 !
 PROGRAM RefinerSampleMulti
+  USE RcapRefiner
   IMPLICIT NONE
   INCLUDE "rcapRefiner.inc"
   INTEGER*4 :: I,J,K
@@ -91,7 +92,7 @@ PROGRAM RefinerSampleMulti
   nv0 = (/ 1, 1, 2, 1, 2, 2 /)
 
 ! global Id と座標値を Refiner に教える
-  CALL rcapSetNode64( nodeCount, coords, globalIds, 0 )
+  CALL rcapSetNode64( nodeCount, coords, globalIds, nullIds )
   PRINT *, "----- Original Model -----"
 
   nodeCount = rcapGetNodeCount()

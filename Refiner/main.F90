@@ -17,6 +17,7 @@
 !
 
 PROGRAM RefinerSample
+  USE RcapRefiner
   IMPLICIT NONE
   INCLUDE "rcapRefiner.inc"
   INTEGER*4 :: I,J,K
@@ -65,7 +66,7 @@ PROGRAM RefinerSample
   ng0 = (/ 1, 2, 3 /)
 
 ! set global node id and coordinates
-  CALL rcapSetNode64( nodeCount, coords, globalIds, 0 )
+  CALL rcapSetNode64( nodeCount, coords, globalIds, nullIds )
 
   PRINT *, "----- Original Model -----"
 

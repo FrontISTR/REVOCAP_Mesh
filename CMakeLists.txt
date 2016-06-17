@@ -16,6 +16,7 @@ file(GLOB revocapio_sources   "RevocapIO/*.cpp")
 file(GLOB shape_sources   "Shape/*.cpp")
 add_library(RcapRefiner STATIC
 	Refiner/rcapRefiner.cpp
+	Refiner/rcapRefinerInterface.F90
 	${common_sources}
 	${matrix_sources}
 	${geometry_sources}

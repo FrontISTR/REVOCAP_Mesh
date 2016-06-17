@@ -77,7 +77,7 @@ void rcapGetVersion( void )
 	puts("REVOCAP_Refiner Version 1.1.02 (2013/06/14)");
 }
 
-void rcapInitRefiner(int32_t node_Offset,int32_t element_Offset)
+void rcapInitRefiner(const int32_t &node_Offset,const int32_t &element_Offset)
 {
 	REVOCAP_Debug("rcapInitRefiner start\n");
 	rcapRefinerDoc.mesh = NULL;
@@ -164,7 +164,7 @@ void rcapTermRefiner( void )
 	REVOCAP_Debug("rcapTermRefiner finish\n");
 }
 
-void rcapSetNode64( size_t num, float64_t* coords, int32_t* globalIds, int32_t* localIds )
+void rcapSetNode64( const int32_t &num, float64_t* coords, int32_t* globalIds, int32_t* localIds )
 {
 	REVOCAP_Debug("rcapSetNode64 start\n");
 	if(rcapRefinerDoc.mesh == NULL){
@@ -191,6 +191,7 @@ void rcapSetNode64( size_t num, float64_t* coords, int32_t* globalIds, int32_t* 
 		}
 	}else{
 		// localId が定義されているときはその番号で節点を格納する
+		printf("rcapSetNode64 localIds is defined\n");
 		for(unsigned int i=0;i<num;++i){
 			rcapRefinerDoc.mesh->insertNodeWithId(coords[3*i],coords[3*i+1],coords[3*i+2],localIds[i]-rcapRefinerDoc.nodeOffset);
 		}
@@ -229,7 +230,7 @@ void rcapSetNode64( size_t num, float64_t* coords, int32_t* globalIds, int32_t* 
 	REVOCAP_Debug("rcapSetNode64 finish\n");
 }
 
-void rcapSetNode32( size_t num, float32_t* coords, int32_t* globalIds, int32_t* localIds )
+void rcapSetNode32( const int32_t &num, float32_t* coords, int32_t* globalIds, int32_t* localIds )
 {
 	REVOCAP_Debug("rcapSetNode32 start\n");
 	if(rcapRefinerDoc.mesh == NULL){
@@ -429,7 +430,7 @@ void rcapWriteFittingFile( const char* filename )
 	rnfIO.appendDataToRNFFile( filename, rcapRefinerDoc.mesh, "fitting" );
 }
 
-void rcapSetSecondFitting( int32_t flag )
+void rcapSetSecondFitting( const int32_t &flag )
 {
 	if( flag != 0 ){
 		rcapRefinerDoc.refiner->setSecondFitting(true);
@@ -440,7 +441,7 @@ void rcapSetSecondFitting( int32_t flag )
 	}
 }
 
-void rcapSetSmoothing( int32_t flag )
+void rcapSetSmoothing( const int32_t &flag )
 {
 	if( flag != 0 ){
 		rcapRefinerDoc.smoother = new kmb::MeshSmoother( rcapRefinerDoc.mesh );
@@ -515,9 +516,9 @@ size_t rcapRefineElement( size_t num, int8_t etype, int32_t* nodeArray, int32_t*
 	return count;
 }
 
-size_t rcapGetRefineElementCount( size_t num, int8_t etype )
+int32_t rcapGetRefineElementCount( const int32_t &num, const int8_t &etype )
 {
-	size_t refinedNum = 0;
+	int32_t refinedNum = 0;
 	switch( etype ){
 		case kmb::SEGMENT:		refinedNum = 2*num;	break;
 		case kmb::SEGMENT2:		refinedNum = 2*num;	break;
@@ -740,21 +741,21 @@ int32_t rcapGetMiddle( int8_t etype, int32_t* originalNodeArray )
 	}
 }
 
-void rcapAppendNodeGroup( const char dataname[80], size_t num, int32_t* nodeArray )
+void rcapAppendNodeGroup( const char dataname[80], const int32_t &num, const int32_t* nodeArray )
 {
-	REVOCAP_Debug("Append Node Group [%s]\n",dataname);
+	REVOCAP_Debug("Append Node Group [%s] %d\n",dataname,num);
 	kmb::DataBindings* data = rcapRefinerDoc.mesh->createDataBindings( dataname, kmb::DataBindings::NodeGroup, kmb::PhysicalValue::None, "NG" );
 	if( data ){
-		for(size_t i=0;i<num;++i){
+		for(int i=0;i<num;++i){
 			data->addId( static_cast<kmb::nodeIdType>(nodeArray[i]) - rcapRefinerDoc.nodeOffset );
 		}
 		rcapRefinerDoc.refiner->appendData( dataname, "NG" );
 	}
 }
 
-size_t rcapGetNodeGroupCount( const char dataname[80] )
+int32_t rcapGetNodeGroupCount( const char dataname[80] )
 {
-	return rcapRefinerDoc.mesh->getIdCount( dataname, "NG" );
+	return static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( dataname, "NG" ));
 }
 
 void rcapGetNodeGroup( const char dataname[80], size_t num, int32_t* nodeArray )
@@ -980,23 +981,23 @@ void rcapQualityReport( const char mode[80], const char* filename )
 
 /* rcapxxx_  すべて小文字 */
 #if defined FORTRAN90 || defined FORTRAN_CALL_C_DOWNCASE_
-void rcapgetversion_( void ){ rcapGetVersion(); }
-void rcapinitrefiner_( int32_t* nodeOffset, int32_t* elementOffset ){ rcapInitRefiner(*nodeOffset,*elementOffset); }
-void rcapclearrefiner_( void ){ rcapClearRefiner(); }
-void rcaptermrefiner_( void ){ rcapTermRefiner(); }
+//void rcapgetversion_( void ){ rcapGetVersion(); }
+//void rcapinitrefiner_( int32_t* nodeOffset, int32_t* elementOffset ){ rcapInitRefiner(*nodeOffset,*elementOffset); }
+//void rcapclearrefiner_( void ){ rcapClearRefiner(); }
+//void rcaptermrefiner_( void ){ rcapTermRefiner(); }
 
-void rcapsetcadfilename_( const char* filename ){ rcapSetCADFilename( filename ); }
-void rcapsetsecondfitting_( int32_t* flag ){ rcapSetSecondFitting( *flag ); }
-void rcapsetsmoothing_( int32_t* flag ){ rcapSetSmoothing( *flag ); }
-void rcapsetpartitionfilename_( const char* filename ){ rcapSetPartitionFilename( filename ); }
+//void rcapsetcadfilename_( const char* filename ){ rcapSetCADFilename( filename ); }
+//void rcapsetsecondfitting_( int32_t* flag ){ rcapSetSecondFitting( *flag ); }
+//void rcapsetsmoothing_( int32_t* flag ){ rcapSetSmoothing( *flag ); }
+//void rcapsetpartitionfilename_( const char* filename ){ rcapSetPartitionFilename( filename ); }
 
-void rcapsetnode64_( int32_t* num, float64_t* coords, int32_t* globalIds, int32_t* localIds ){
-	rcapSetNode64(static_cast<size_t>(*num),coords,globalIds,localIds);
+void rcapsetnode64_( const int32_t &num, float64_t* coords, int32_t* globalIds, int32_t* localIds ){
+	rcapSetNode64(num,coords,globalIds,localIds);
 }
-void rcapsetnode32_( int32_t* num, float32_t* coords, int32_t* globalIds, int32_t* localIds ){
-	rcapSetNode32(static_cast<size_t>(*num),coords,globalIds,localIds);
+void rcapsetnode32_( const int32_t &num, float32_t* coords, int32_t* globalIds, int32_t* localIds ){
+	rcapSetNode32(num,coords,globalIds,localIds);
 }
-int32_t rcapgetnodecount_( void ){ return static_cast<int32_t>(rcapGetNodeCount()); }
+//int32_t rcapgetnodecount_( void ){ return static_cast<int32_t>(rcapGetNodeCount()); }
 void rcapgetnode64_( int32_t* num, int32_t* localIds, float64_t* coords ){
 	rcapGetNode64(static_cast<size_t>(*num),localIds,coords);
 }
@@ -1010,9 +1011,9 @@ void rcapgetnodeseq32_( int32_t* num, int32_t* initId, float32_t* coords ){
 	rcapGetNodeSeq32(static_cast<size_t>(*num),static_cast<size_t>(*initId),coords);
 }
 
-int32_t rcapgetrefineelementcount_( int32_t* num, int8_t* etype ){
-	return static_cast<int32_t>(rcapGetRefineElementCount(static_cast<size_t>(*num),*etype));
-}
+//int32_t rcapgetrefineelementcount_( int32_t* num, int8_t* etype ){
+//	return static_cast<int32_t>(rcapGetRefineElementCount(static_cast<size_t>(*num),*etype));
+//}
 
 
 int32_t rcaprefineelement_( int32_t* num, int8_t* etype, int32_t* nodeArray, int32_t* resultNodeArray ){
@@ -1033,12 +1034,12 @@ int32_t rcaprefineelementmulti_( int32_t* num, int8_t* etypeArray, int32_t* node
 	return res;
 }
 
-void rcapcommit_( void ){
-	rcapCommit();
-}
+//void rcapcommit_( void ){
+//	rcapCommit();
+//}
 
-void rcapappendnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray ){
-	rcapAppendNodeGroup(dataname,static_cast<size_t>(*num),nodeArray);
+void rcapappendnodegroup_( const char dataname[80], const int32_t &num, const int32_t* nodeArray ){
+	rcapAppendNodeGroup(dataname,num,nodeArray);
 }
 int32_t rcapgetnodegroupcount_( const char dataname[80] ){
 	return static_cast<int32_t>(rcapGetNodeGroupCount(dataname));
@@ -1051,9 +1052,9 @@ void rcapappendbnodegroup_( const char dataname[80], int32_t* num, int32_t* node
 	rcapAppendBNodeGroup( dataname, static_cast<size_t>(*num), nodeArray );
 }
 
-int32_t rcapgetbnodegroupcount_( const char dataname[80] ){
-	return static_cast< int32_t >(rcapGetBNodeGroupCount( dataname ));
-}
+//int32_t rcapgetbnodegroupcount_( const char dataname[80] ){
+//	return static_cast< int32_t >(rcapGetBNodeGroupCount( dataname ));
+//}
 
 void rcapgetbnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray ){
 	rcapGetBNodeGroup( dataname, static_cast<size_t>(*num), nodeArray );
@@ -1094,12 +1095,12 @@ void rcapgetfacegroup_( const char dataname[80], int32_t* num, int32_t* faceArra
 	rcapGetElementGroup( dataname, static_cast<size_t>(*num), faceArray );
 }
 
-void rcapsetinterpolatemode_( const char mode[32] ){
-	rcapSetInterpolateMode(mode);
-}
-void rcapgetinterpolatemode_( char mode[32] ){
-	rcapGetInterpolateMode(mode);
-}
+//void rcapsetinterpolatemode_( const char mode[32] ){
+//	rcapSetInterpolateMode(mode);
+//}
+//void rcapgetinterpolatemode_( char mode[32] ){
+//	rcapGetInterpolateMode(mode);
+//}
 
 int8_t rcapgetoriginal_( int32_t* localNodeId, int32_t* originalNodeArray ){
 	return rcapGetOriginal(*localNodeId,originalNodeArray);

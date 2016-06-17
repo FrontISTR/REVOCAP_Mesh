@@ -60,29 +60,29 @@
 !     *  2, 3, 6, 5,
 !     *  3, 1, 4, 6 /)
 
-      external :: rcapGetVersion
-      external :: rcapInitRefiner
-      external :: rcapClearRefiner
-      external :: rcapTermRefiner
-      external :: rcapSetCADFilename
-      external :: rcapSetSecondFitting
-      external :: rcapSetSmoothing
-      external :: rcapSetPartitionFilename
-      external :: rcapSetNode64
-      external :: rcapSetNode32
+!      external :: rcapGetVersion
+!      external :: rcapInitRefiner
+!      external :: rcapClearRefiner
+!      external :: rcapTermRefiner
+!      external :: rcapSetCADFilename
+!      external :: rcapSetSecondFitting
+!      external :: rcapSetSmoothing
+!      external :: rcapSetPartitionFilename
+!      external :: rcapSetNode64
+!      external :: rcapSetNode32
       external :: rcapGetNode64
       external :: rcapGetNode32
       external :: rcapGetNodeSeq64
       external :: rcapGetNodeSeq32
-      external :: rcapCommit
-      integer(kind=4) :: rcapGetNodeCount
-      integer(kind=4) :: rcapGetRefineElementCount
+!      external :: rcapCommit
+!      integer(kind=4) :: rcapGetNodeCount
+!      integer(kind=4) :: rcapGetRefineElementCount
       integer(kind=4) :: rcapRefineElement
       integer(kind=4) :: rcapGetRefineElementMultiCount
       integer(kind=4) :: rcapRefineElementMulti
 
-      external :: rcapAppendNodeGroup
-      integer(kind=4) :: rcapGetNodeGroupCount
+!      external :: rcapAppendNodeGroup
+!      integer(kind=4) :: rcapGetNodeGroupCount
       external :: rcapGetNodeGroup
 
       external :: rcapAppendBNodeGroup
@@ -104,6 +104,6 @@
       integer(kind=2) :: rcapGetOriginal
       integer(kind=4) :: rcapGetMiddle
 
-      external :: rcapGetInterpolateMode
-      external :: rcapSetInterpolateMode
+!      external :: rcapGetInterpolateMode
+!      external :: rcapSetInterpolateMode
 
