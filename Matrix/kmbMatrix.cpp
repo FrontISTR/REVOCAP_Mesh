@@ -763,8 +763,8 @@ kmb::SquareMatrix::diagonal_dominance(void) const
 	return minimizer.getMin();
 }
 
-kmb::TransposeMatrix_Wrapper::TransposeMatrix_Wrapper(const kmb::SquareMatrix* mtx)
-: SquareMatrix(mtx->getSize())
+kmb::TransposeMatrix_Wrapper::TransposeMatrix_Wrapper(const kmb::Matrix* mtx)
+: Matrix(mtx->getColSize(),mtx->getRowSize())
 , matrix(mtx)
 {
 }
@@ -777,6 +777,16 @@ const char*
 kmb::TransposeMatrix_Wrapper::getContainerType(void) const
 {
 	return "transpose_wrapper";
+}
+
+int kmb::TransposeMatrix_Wrapper::getRowSize(void) const
+{
+	return matrix->getColSize();
+}
+
+int kmb::TransposeMatrix_Wrapper::getColSize(void) const
+{
+	return matrix->getRowSize();
 }
 
 int
@@ -803,3 +813,42 @@ kmb::TransposeMatrix_Wrapper::add(int i,int j,double val)
 	return false;
 }
 
+kmb::TransposeSquareMatrix_Wrapper::TransposeSquareMatrix_Wrapper(const kmb::SquareMatrix* mtx)
+	: SquareMatrix(mtx->getSize())
+	, matrix(mtx)
+{
+}
+
+kmb::TransposeSquareMatrix_Wrapper::~TransposeSquareMatrix_Wrapper(void)
+{
+}
+
+const char*
+kmb::TransposeSquareMatrix_Wrapper::getContainerType(void) const
+{
+	return "transpose_square_wrapper";
+}
+
+int
+kmb::TransposeSquareMatrix_Wrapper::init(int rowSize, int colSize)
+{
+	return -1;
+}
+
+double
+kmb::TransposeSquareMatrix_Wrapper::get(int i, int j) const
+{
+	return matrix->get(j, i);
+}
+
+bool
+kmb::TransposeSquareMatrix_Wrapper::set(int i, int j, double val)
+{
+	return false;
+}
+
+bool
+kmb::TransposeSquareMatrix_Wrapper::add(int i, int j, double val)
+{
+	return false;
+}

@@ -2227,14 +2227,28 @@ kmb::ElementEvaluator::getDistanceSq(const kmb::ElementBase &element,const doubl
 	return DBL_MAX;
 }
 
-int
-kmb::ElementEvaluator::getDuplicationNodeIdCount(const kmb::ElementBase &element) const
+int kmb::ElementEvaluator::getDuplicationNodeIdCount(const kmb::ElementBase &element) const
 {
 	int count = 0;
 	int len = element.getNodeCount();
 	for(int i=0;i<len;++i){
 		for(int j=i+1;j<len;++j){
 			if( element[i] == element[j] ){
+				++count;
+			}
+		}
+	}
+	return count;
+}
+
+int kmb::ElementEvaluator::getCommonNodeCount(const kmb::ElementBase &element0, const kmb::ElementBase &element1) const
+{
+	int count = 0;
+	int len0 = element0.getNodeCount();
+	int len1 = element1.getNodeCount();
+	for (int i0 = 0; i0<len0; ++i0) {
+		for (int i1 = 0; i1<len1; ++i1) {
+			if (element0[i0] == element1[i1]) {
 				++count;
 			}
 		}

@@ -72,10 +72,14 @@ kmb::Point3D::operator-=(const Vector3D& other)
 	return *this;
 }
 
-bool
-kmb::Point3D::operator==(const Point3D& other) const
+bool kmb::Point3D::operator==(const Point3D& other) const
 {
 	return (this->x() == other.x()) && (this->y() == other.y()) && (this->z() == other.z());
+}
+
+bool kmb::Point3D::operator!=(const Point3D& other) const
+{
+	return (this->x() != other.x()) || (this->y() != other.y()) || (this->z() != other.z());
 }
 
 kmb::Point3D&
@@ -157,18 +161,16 @@ kmb::Point3D::getFootOfPerpendicular( const Point3D &origin, const Vector3D &u, 
 	kmb::Vector3D w( *this, origin );
 	double q = u * v;
 	kmb::Matrix2x2 mat(u.lengthSq(),q,q,v.lengthSq());
-	kmb::Vector2D* t = mat.solve( kmb::Vector2D(u*w,v*w) );
-	if( t ){
-		a = t->getCoordinate(0);
-		b = t->getCoordinate(1);
-		delete t;
+	kmb::Vector2D t;
+	if( mat.solve(kmb::Vector2D(u*w, v*w),t) ){
+		a = t[0];
+		b = t[1];
 		return true;
 	}
 	return false;
 }
 
-double
-kmb::Point3D::distanceSqToTriangle(const Point3D& a,const Point3D& b,const Point3D& c,double *t) const
+double kmb::Point3D::distanceSqToTriangle(const Point3D& a,const Point3D& b,const Point3D& c,double* t) const
 {
 	// this と a + t1(b-a) + t2(c-a) との距離の最小化
 	// u0 + t1*u1 + t2*u2 の長さの最小化
@@ -179,17 +181,16 @@ kmb::Point3D::distanceSqToTriangle(const Point3D& a,const Point3D& b,const Point
 		u1*u1, u1*u2,
 		u2*u1, u2*u2);
 	kmb::Vector2D v(-(u1*u0),-(u2*u0));
-	kmb::Vector2D* tmp = mat.solve(v);
-	if( tmp && 
-		0.0 < tmp->x() && 0.0 < tmp->y() &&
-		tmp->x() + tmp->y() < 1.0 )
+	kmb::Vector2D tmp;
+	if(mat.solve(v,tmp) &&
+		0.0 < tmp.x() && 0.0 < tmp.y() &&
+		tmp.x() + tmp.y() < 1.0 )
 	{
 		if( t != NULL ){
-			t[0] = (*tmp)[0];
-			t[1] = (*tmp)[1];
+			t[0] = tmp[0];
+			t[1] = tmp[1];
 		}
-		double distSq = (u0 + u1.scalar((*tmp)[0]) + u2.scalar((*tmp)[1])).lengthSq();
-		delete tmp;
+		double distSq = (u0 + u1.scalar(tmp[0]) + u2.scalar(tmp[1])).lengthSq();
 		return distSq;
 	}else{
 		// 境界で最小を取る
@@ -214,17 +215,27 @@ kmb::Point3D::distanceSqToTriangle(const Point3D& a,const Point3D& b,const Point
 				t[1] = 1.0-s;
 			}
 		}
-		if( tmp ){
-			delete tmp;
-		}
 		return min.getMin();
 	}
 }
 
-double
-kmb::Point3D::distanceToTriangle(const Point3D& a,const Point3D& b,const Point3D& c) const
+double kmb::Point3D::distanceToTriangle(const Point3D& a,const Point3D& b,const Point3D& c) const
 {
 	return sqrt( distanceSqToTriangle(a,b,c) );
+}
+
+double kmb::Point3D::distanceToTriangle(const Point3D& a, const Point3D& b, const Point3D& c, Point3D& nearest,int &flag) const
+{
+	double t[2];
+	double distSq = distanceSqToTriangle(a, b, c, t);
+	flag = 0;
+	if (t[0] != 0.0) flag |= 0x01;
+	if (t[1] != 0.0) flag |= 0x02;
+	if (t[2] != 0.0) flag |= 0x04;
+	nearest.x((1.0 - t[0] - t[1])*a.x() + t[0] * b.x() + t[1] * c.x());
+	nearest.y((1.0 - t[0] - t[1])*a.y() + t[0] * b.y() + t[1] * c.y());
+	nearest.z((1.0 - t[0] - t[1])*a.z() + t[0] * b.z() + t[1] * c.z());
+	return sqrt(distSq);
 }
 
 // 内分点

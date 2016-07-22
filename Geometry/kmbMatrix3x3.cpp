@@ -358,18 +358,6 @@ kmb::Matrix3x3::createSchmidtRotation(const Vector3D v0,const Vector3D v1,bool c
 	}
 }
 
-kmb::Vector3D*
-kmb::Matrix3x3::solve(const Vector3D& b) const
-{
-	kmb::Vector3D* answer = new kmb::Vector3D();
-	if( solve(b,*answer) ){
-		return answer;
-	}else{
-		delete answer;
-		return NULL;
-	}
-}
-
 bool
 kmb::Matrix3x3::solve(const Vector3D& b,Vector3D& x) const
 {

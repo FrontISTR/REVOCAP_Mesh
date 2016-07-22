@@ -250,13 +250,29 @@ public:
 };
 
 // 転置行列
-class TransposeMatrix_Wrapper : public SquareMatrix
+class TransposeMatrix_Wrapper : public Matrix
+{
+private:
+	const kmb::Matrix* matrix;
+public:
+	TransposeMatrix_Wrapper(const kmb::Matrix* mtx);
+	virtual ~TransposeMatrix_Wrapper(void);
+	virtual const char* getContainerType(void) const;
+	virtual int getRowSize(void) const;
+	virtual int getColSize(void) const;
+	virtual int init(int rowSize, int colSize);
+	virtual double get(int i, int j) const;
+	virtual bool set(int i, int j, double val);
+	virtual bool add(int i, int j, double val);
+};
+
+class TransposeSquareMatrix_Wrapper : public SquareMatrix
 {
 private:
 	const kmb::SquareMatrix* matrix;
 public:
-	TransposeMatrix_Wrapper(const kmb::SquareMatrix* mtx);
-	virtual ~TransposeMatrix_Wrapper(void);
+	TransposeSquareMatrix_Wrapper(const kmb::SquareMatrix* mtx);
+	virtual ~TransposeSquareMatrix_Wrapper(void);
 	virtual const char* getContainerType(void) const;
 	virtual int init(int rowSize, int colSize);
 	virtual double get(int i,int j) const;

@@ -34,26 +34,22 @@ kmb::Polygon2D::~Polygon2D(void)
 {
 }
 
-void
-kmb::Polygon2D::clear(void)
+void kmb::Polygon2D::clear(void)
 {
 	this->nodeArray.clear();
 }
 
-void
-kmb::Polygon2D::setPointContainer(const kmb::Point2DContainer* points)
+void kmb::Polygon2D::setPointContainer(const kmb::Point2DContainer* points)
 {
 	this->points = points;
 }
 
-int
-kmb::Polygon2D::getSize(void) const
+int kmb::Polygon2D::getSize(void) const
 {
 	return static_cast<int>( this->nodeArray.size() );
 }
 
-int
-kmb::Polygon2D::getNodeIndex( kmb::nodeIdType nodeId ) const
+int kmb::Polygon2D::getNodeIndex( kmb::nodeIdType nodeId ) const
 {
 	int ind = -1;
 	const int len = getSize();
@@ -66,8 +62,7 @@ kmb::Polygon2D::getNodeIndex( kmb::nodeIdType nodeId ) const
 	return ind;
 }
 
-kmb::nodeIdType
-kmb::Polygon2D::getNodeId( int index ) const
+kmb::nodeIdType kmb::Polygon2D::getNodeId( int index ) const
 {
 	const int len = getSize();
 	if( len == 0 ){
@@ -80,15 +75,13 @@ kmb::Polygon2D::getNodeId( int index ) const
 	return nodeArray[i];
 }
 
-kmb::nodeIdType
-kmb::Polygon2D::getNode( kmb::nodeIdType nodeId, int offset ) const
+kmb::nodeIdType kmb::Polygon2D::getNode( kmb::nodeIdType nodeId, int offset ) const
 {
 	int ind = getNodeIndex( nodeId );
 	return getNodeId( ind+offset );
 }
 
-kmb::Polygon2D::orientation
-kmb::Polygon2D::getOrientation(void) const
+kmb::Polygon2D::orientation kmb::Polygon2D::getOrientation(void) const
 {
 	if( this->nodeArray.empty() ){
 		return kmb::Polygon2D::UNKNOWN;
@@ -114,8 +107,7 @@ kmb::Polygon2D::getOrientation(void) const
 	return kmb::Polygon2D::UNKNOWN;
 }
 
-kmb::Region::locationType
-kmb::Polygon2D::intersect( kmb::Point2D &point ) const
+kmb::Region::locationType kmb::Polygon2D::intersect( kmb::Point2D &point ) const
 {
 	if( this->nodeArray.empty() ){
 		return kmb::Region::UNKNOWN;
@@ -140,14 +132,12 @@ kmb::Polygon2D::intersect( kmb::Point2D &point ) const
 	}
 }
 
-void
-kmb::Polygon2D::appendNodeId( kmb::nodeIdType nodeId )
+void kmb::Polygon2D::appendNodeId( kmb::nodeIdType nodeId )
 {
 	this->nodeArray.push_back( nodeId );
 }
 
-void
-kmb::Polygon2D::dividePolygon(kmb::nodeIdType n0,kmb::nodeIdType n1,Polygon2D* &p0,Polygon2D* &p1)
+void kmb::Polygon2D::dividePolygon(kmb::nodeIdType n0,kmb::nodeIdType n1,Polygon2D* &p0,Polygon2D* &p1)
 {
 	// n0 と n1 のある場所を探す
 	int i0 = getNodeIndex( n0 );
@@ -176,8 +166,7 @@ kmb::Polygon2D::dividePolygon(kmb::nodeIdType n0,kmb::nodeIdType n1,Polygon2D* &
 	}
 }
 
-void
-kmb::Polygon2D::branchPolygon(kmb::nodeIdType n0,kmb::nodeIdType n1,Polygon2D &negative,Polygon2D* &cancel)
+void kmb::Polygon2D::branchPolygon(kmb::nodeIdType n0,kmb::nodeIdType n1,Polygon2D &negative,Polygon2D* &cancel)
 {
 	// n0 と n1 のある場所を探す
 	int i0 = this->getNodeIndex( n0 );

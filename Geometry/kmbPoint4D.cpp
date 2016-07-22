@@ -50,10 +50,14 @@ kmb::Point4D::operator-=(const Vector4D& other)
 	return *this;
 }
 
-bool
-kmb::Point4D::operator==(const Point4D& other) const
+bool kmb::Point4D::operator==(const Point4D& other) const
 {
 	return (this->x() == other.x()) && (this->y() == other.y()) && (this->z() == other.z()) && (this->w() == other.w());
+}
+
+bool kmb::Point4D::operator!=(const Point4D& other) const
+{
+	return (this->x() != other.x()) || (this->y() != other.y()) || (this->z() != other.z()) || (this->w() != other.w());
 }
 
 double

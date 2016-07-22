@@ -76,6 +76,7 @@ public:
 	Point2D& operator+=(const Vector2D& other);
 	Point2D& operator-=(const Vector2D& other);
 	bool operator==(const Point2D& other) const;
+	bool operator!=(const Point2D& other) const;
 	double distance(const Point2D& other) const;
 	double distance(double x,double y) const;
 	double distanceSq(const Point2D& other) const;
@@ -217,7 +218,6 @@ public:
 	// get inverse matrix
 	Matrix2x2* getInverse(void) const;
 	/// this * x = b なる方程式の解の x を返す
-	Vector2D* solve(const Vector2D& b) const;
 	bool solve(const Vector2D& b,Vector2D& x) const;
 	bool solveSafely(const Vector2D& b,Vector2D& x,double thresh=1.0e-6) const;
 	/// 行列の掛け算

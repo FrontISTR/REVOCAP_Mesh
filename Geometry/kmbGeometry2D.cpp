@@ -146,6 +146,11 @@ kmb::Point2D::operator==(const Point2D& other) const
 	return (this->x() == other.x()) && (this->y() == other.y());
 }
 
+bool kmb::Point2D::operator!=(const Point2D& other) const
+{
+	return (this->x() != other.x()) || (this->y() != other.y());
+}
+
 double
 kmb::Point2D::distanceSqToSegment(const Point2D& a,const Point2D& b) const
 {

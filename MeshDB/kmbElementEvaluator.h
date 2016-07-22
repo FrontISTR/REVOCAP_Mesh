@@ -115,6 +115,7 @@ public:
 	// 重複節点番号の個数
 	// 全ての組み合わせの比較のうち等号になったものの個数
 	int getDuplicationNodeIdCount(const kmb::ElementBase &element) const;
+	int getCommonNodeCount(const kmb::ElementBase &element0, const kmb::ElementBase &element1) const;
 
 	// 要素剛性マトリクス
 	// 節点の個数大きさのマトリクスに代入（インデックスは節点番号ではないことに注意）

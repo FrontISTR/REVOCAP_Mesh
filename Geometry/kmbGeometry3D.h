@@ -82,6 +82,7 @@ public:
 	Point3D& operator+=(const Vector3D& other);
 	Point3D& operator-=(const Vector3D& other);
 	virtual bool operator==(const Point3D& other) const;
+	virtual bool operator!=(const Point3D& other) const;
 	Point3D& operator=(const Point3D& other);
 	// this と other を m:n に内分した点を返す
 	Point3D dividingPoint(const Point3D& other,double m,double n) const;
@@ -103,6 +104,7 @@ public:
 	// 三角形 ABC との距離
 	double distanceSqToTriangle(const Point3D& a,const Point3D& b,const Point3D& c,double* t=NULL) const;
 	double distanceToTriangle(const Point3D& a,const Point3D& b,const Point3D& c) const;
+	double distanceToTriangle(const Point3D& a, const Point3D& b, const Point3D& c, Point3D& nearest,int &flag) const;
 	// 垂線の足
 	// この点を origin を原点とする uv 平面に射影した垂線の足が au + bv 
 	bool getFootOfPerpendicular( const Point3D &origin, const Vector3D &u, const Vector3D &v, double &a, double &b) const;
@@ -275,7 +277,6 @@ public:
 	// get inverse matrix
 	Matrix3x3* getInverse(void) const;
 	/// this * x = b なる方程式の解の x を返す
-	Vector3D* solve(const Vector3D& b) const;
 	bool solve(const Vector3D& b,Vector3D& x) const;
 	bool solveSafely(const Vector3D& b,Vector3D& x,double thresh=1.0e-6) const;
 	/// 行列の掛け算（射影変換を施す）
