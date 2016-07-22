@@ -1,7 +1,6 @@
 ﻿      PROGRAM XXX
 	  USE RcapRefiner
       IMPLICIT NONE
-      INCLUDE "rcapRefiner.inc"
 
 C
       INTEGER*4 NOFSTP,NOFSTE

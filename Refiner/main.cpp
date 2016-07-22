@@ -23,7 +23,6 @@
 #ifdef _CONSOLE
 
 #include "rcapRefiner.h"
-#include "rcapRefinerMacros.h"
 #include <stdio.h>
 #include <stdlib.h>  /* for calloc, free */
 #include <assert.h>
@@ -64,25 +63,25 @@ int main(void)
 	/* 細分する要素の型(定数値) */
 	int8_t etype = RCAP_TETRAHEDRON;
 	/* 初期節点の個数 */
-	size_t nodeCount = 5;
+	int32_t nodeCount = 5;
 	/* 初期要素の個数 */
-	size_t elementCount = 2;
+	int32_t elementCount = 2;
 	/* 細分後の要素の個数 */
-	size_t refineElementCount = 0;
+	int32_t refineElementCount = 0;
 	/* 細分後の節点の個数 */
-	size_t refineNodeCount = 0;
+	int32_t refineNodeCount = 0;
 	/* 要素の細分と同時に更新する節点グループ */
 	int32_t ng0[3] = {1,2,3};
-	size_t ngCount = 3;
+	int32_t ngCount = 3;
 	int32_t* result_ng0 = NULL;
 	/* 要素の細分と同時に更新する面グループ */
 	/* 要素番号と要素内面番号の順に交互に並べる */
 	int32_t fg0[4] = {1,3,2,1};   /* [1,2,3] と [2,5,4] */
-	size_t fgCount = 2;
+	int32_t fgCount = 2;
 	int32_t* result_fg0 = NULL;
 	/* 要素の細分と同時に更新する要素グループ */
 	int32_t eg0[1] = {2};
-	size_t egCount = 1;
+	int32_t egCount = 1;
 	int32_t* result_eg0 = NULL;
 	/* 関数の戻り値格納用 */
 	int32_t seg[2] = {-1,-1};

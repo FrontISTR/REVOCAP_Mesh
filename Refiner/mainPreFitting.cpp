@@ -37,7 +37,6 @@
 #include "RevocapIO/kmbHecmwIO.h"
 #include "RevocapIO/kmbFFbIO.h"
 #include "RevocapIO/kmbRevocapNeutralIO.h"
-#include "Refiner/rcapRefinerMacros.h"
 
 enum meshformat{
 	ADVENTURE_TETMESH,

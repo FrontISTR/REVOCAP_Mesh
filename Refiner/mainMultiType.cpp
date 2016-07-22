@@ -22,7 +22,6 @@
 #ifdef _CONSOLE
 
 #include "rcapRefiner.h"
-#include "rcapRefinerMacros.h"
 #include <stdio.h>
 #include <stdlib.h>  /* for calloc, free */
 #include <assert.h>
@@ -42,7 +41,7 @@ int main(void)
 		0.5, 0.0,  1.0,
 		0.5, 1.0,  1.0,
 	};
-	size_t refineNodeCount = 0;
+	int32_t refineNodeCount = 0;
 	float64_t* resultCoords = NULL;
 	int32_t nodes[14] = {
 		1, 2, 3, 4, 5, 6, 7, 8,
@@ -59,18 +58,18 @@ int main(void)
 	int32_t nodeOffset = 1;
 	int32_t elementOffset = 1;
 	/* 初期節点の個数 */
-	size_t nodeCount = 10;
+	int32_t nodeCount = 10;
 	/* 初期要素の個数 */
-	size_t elementCount = 2;
+	int32_t elementCount = 2;
 	/* 細分後の要素の個数 */
-	size_t refineElementCount = 0;
+	int32_t refineElementCount = 0;
 	/* 細分後の節点配列の大きさ */
-	size_t refineNodesArraySize = 0;
+	int32_t refineNodesArraySize = 0;
 
 	/* 境界条件（節点グループ） */
 	int32_t ng0[5] = {1,2,5,6,9};
 	int32_t* result_ng0 = NULL;
-	size_t ng0Count = 5;
+	int32_t ng0Count = 5;
 
 	/* カウンタ */
 	int32_t i,j;
@@ -134,7 +133,7 @@ int main(void)
 	printf("---\n");
 
 	/* 細分後の要素を格納するのに必要な節点配列の大きさの取得 */
-	refineNodesArraySize = rcapGetRefineElementMultiCount( elementCount, etypes, &refineElementCount );
+	refineNodesArraySize = rcapGetRefineElementMultiCount( elementCount, etypes, refineElementCount );
 	if( refineNodesArraySize == 0 ){
 		rcapTermRefiner();
 		return 0;
@@ -142,7 +141,7 @@ int main(void)
 	refineNodes = (int32_t*)calloc( refineNodesArraySize, sizeof(int32_t) );
 	/* 要素の型も受け取る場合 */
 	resultEtypes = (int8_t*)calloc( refineElementCount, sizeof(int8_t) );
-	rcapRefineElementMulti( elementCount, etypes, nodes, &refineElementCount, resultEtypes, refineNodes );
+	rcapRefineElementMulti( elementCount, etypes, nodes, refineElementCount, resultEtypes, refineNodes );
 	rcapCommit();
 
 	/* 細分後の節点 */

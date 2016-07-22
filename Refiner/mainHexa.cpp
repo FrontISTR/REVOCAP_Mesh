@@ -1,7 +1,7 @@
 ﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_Refiner version 1.1                          #
-# Sample Program NodeVariable                                          #
+# Sample Program Hexahedron                                            #
 #                                                                      #
 #                                Written by                            #
 #                                           K. Tokunaga 2012/03/23     #
@@ -15,22 +15,21 @@
 /*
  *
  * サンプル実行例＆テスト用プログラム
- * BoundaryNodeGroup と BoundaryNodeVariable の挙動チェック用
+ * 六面体の細分チェック用
+ * 節点グループと境界節点グループの細分機能
  *
  */
 
 #ifdef _CONSOLE
 
 #include "rcapRefiner.h"
-#include "rcapRefinerMacros.h"
 #include <stdio.h>
 #include <stdlib.h>  /* for calloc, free */
 #include <assert.h>
-#include <string.h>
 
 int main(void)
 {
-	/* 六面体を５分割したものを2つ並べる */
+	/* 六面体を2つ並べる */
 	float64_t coords[36] = {
 		0.0, 0.0, -1.0,
 		1.0, 0.0, -1.0,
@@ -45,67 +44,44 @@ int main(void)
 		1.0, 1.0,  1.0,
 		0.0, 1.0,  1.0,
 	};
-	/* 細分後の座標：必要に応じて calloc する */
+	size_t refineNodeCount = 0;
 	float64_t* resultCoords = NULL;
-	int32_t tetras[40] = {
-		1, 2, 4, 5,
-		2, 3, 4, 7,
-		4, 5, 7, 8,
-		2, 4, 5, 7,
-		6, 2, 5, 7,
-		5, 6, 7,10,
-		7,10,11,12,
-		5, 9,10,12,
-		5, 7, 8,12,
-		5,10, 7,12
+	int32_t hexas[16] = {
+		1, 2, 3, 4, 5, 6, 7, 8,
+		5, 6, 7, 8, 9,10,11,12
 	};
-	/* 細分後の四面体の節点配列：出力は10*8=80個 */
-	int32_t* refineTetras = NULL;
+	/* 細分後の六面体の節点配列：出力は2*8=16個 */
+	int32_t* refineHexas = NULL;
 	/* 細分する要素の型(定数値) */
-	int8_t etype = RCAP_TETRAHEDRON;
+	int8_t etype = RCAP_HEXAHEDRON;
 	int32_t nodeOffset = 1;
 	int32_t elementOffset = 1;
 	/* 初期節点の個数 */
 	size_t nodeCount = 12;
 	/* 初期要素の個数 */
-	size_t elementCount = 10;
+	size_t elementCount = 2;
 	/* 細分後の要素の個数 */
 	size_t refineElementCount = 0;
-	/* 細分後の節点の個数 */
-	size_t refineNodeCount = 0;
 
-	/* 元の線分の取得 */
-	int32_t seg[2] = {-1,-1};
-	int8_t orgtype = RCAP_UNKNOWNTYPE;
-
-	/* 境界条件 */
+	/* 境界条件（節点グループ） */
 	int32_t ng0[4] = {1,2,5,6};
 	int32_t* result_ng0 = NULL;
 	size_t ng0Count = 4;
+	/* 境界条件（境界節点グループ） */
 	int32_t bng0[3] = {5,6,7};
 	int32_t* result_bng0 = NULL;
 	size_t bng0Count = 3;
-	int32_t bnv0[3] = {5,6,7};  /* 節点 */
-	int32_t bnv1[3] = {1,2,3};  /* 節点上の値 */
-	int32_t* result_bnv0 = NULL;
-	int32_t* result_bnv1 = NULL;
-	size_t bnv0Count = 3;
-	int32_t i = 0;
-	int32_t j = 0;
-	int32_t middle = -1;
-	int32_t flag = 0;
-	char mode[32];
+
+	/* カウンタ */
+	int32_t i;
+
 	/* 節点番号のオフセット値を与える */
 	rcapInitRefiner( nodeOffset, elementOffset );
-	/* 中点の Variable は小さい方を与える */
-	rcapSetInterpolateMode( "MIN" );
-	rcapGetInterpolateMode( mode );
-	assert( strncmp( "MIN", mode, 3 )==0 );
 
-	printf("REVOCAP_Refiner sample program : Boundary Node Variable Refine\n");
+	printf("REVOCAP_Refiner sample program : Hexa Refine\n");
 	printf("----- Original Model -----\n");
 	printf("---\n");
-	/* 座標値を Refiner に教える */
+	/* 座標値を Refiner に与える */
 	rcapSetNode64( nodeCount, coords, NULL, NULL );
 	/* 細分前の節点数 */
 	nodeCount = rcapGetNodeCount();
@@ -118,13 +94,13 @@ int main(void)
 	}
 
 	/* 細分前の要素数 */
-	assert( elementCount == 10 );
 	printf("element:\n");
 	printf("  - size: %zu\n", elementCount );
 	printf("    connectivity:\n");
 	for(i=0;(size_t)i<elementCount;++i){
-		printf("      - [%d, TETRAHEDRON, %d, %d, %d, %d]\n", i+elementOffset,
-			tetras[4*i], tetras[4*i+1], tetras[4*i+2], tetras[4*i+3] );
+		printf("      - [%d, HEXAHEDRON, %d, %d, %d, %d, %d, %d, %d, %d]\n", i+elementOffset,
+			hexas[8*i], hexas[8*i+1], hexas[8*i+2], hexas[8*i+3],
+			hexas[8*i+4], hexas[8*i+5], hexas[8*i+6], hexas[8*i+7]);
 	}
 
 	/* 節点グループの登録 */
@@ -141,42 +117,26 @@ int main(void)
 		printf("    - %d\n", ng0[i]);
 	}
 
-	/* 境界節点グループの登録 */
 	rcapAppendBNodeGroup("bng0",bng0Count,bng0);
 	bng0Count = rcapGetBNodeGroupCount("bng0");
 	assert( bng0Count == 3 );
 	printf("  - name: bng0\n");
 	printf("    mode: NODEGROUP\n");
 	printf("    vtype: NONE\n");
-	printf("    size: %zu\n",bng0Count);
+	printf("    size: %zu\n",ng0Count);
 	printf("    id:\n");
-	for(i=0;(size_t)i<ng0Count;++i){
+	for(i=0;(size_t)i<bng0Count;++i){
 		printf("    - %d\n", bng0[i]);
 	}
 
-	/* 境界節点変数の登録 */
-	rcapAppendBNodeVarInt("bnv0",bnv0Count,bnv0,bnv1);
-	bnv0Count = rcapGetBNodeVarIntCount("bnv0");
-	assert( bnv0Count == 3 );
-	printf("  - name: bnv0\n");
-	printf("    mode: NODEVARIABLE\n");
-	printf("    vtype: INTEGER\n");
-	printf("    size: %zu\n",bnv0Count);
-	printf("    value:\n");
-	for(i=0;(size_t)i<bnv0Count;++i){
-		printf("    - [%d, %d]\n", bnv0[i], bnv1[i]);
-	}
-
-	/*---------------------- REFINE -----------------------------------------*/
+	printf("----- Refined Model -----\n");
+	printf("---\n");
 
 	/* 要素の細分 */
 	refineElementCount = rcapGetRefineElementCount( elementCount, etype );
-	refineTetras = (int32_t*)calloc( 4*refineElementCount, sizeof(int32_t) );
-	elementCount = rcapRefineElement( elementCount, etype, tetras, refineTetras );
+	refineHexas = (int32_t*)calloc( 8*refineElementCount, sizeof(int32_t) );
+	elementCount = rcapRefineElement( elementCount, etype, hexas, refineHexas );
 	rcapCommit();
-
-	printf("----- Refined Model -----\n");
-	printf("---\n");
 
 	/* 細分後の節点 */
 	refineNodeCount = rcapGetNodeCount();
@@ -195,15 +155,16 @@ int main(void)
 	printf("  - size: %zu\n", refineElementCount );
 	printf("    connectivity:\n");
 	for(i=0;(size_t)i<refineElementCount;++i){
-		printf("      - [%d, TETRAHEDRON, %d, %d, %d, %d]\n", i+elementOffset,
-			refineTetras[4*i], refineTetras[4*i+1], refineTetras[4*i+2], refineTetras[4*i+3] );
+		printf("      - [%d, HEXAHEDRON, %d, %d, %d, %d, %d, %d, %d, %d]\n", i+elementOffset,
+			refineHexas[8*i], refineHexas[8*i+1], refineHexas[8*i+2], refineHexas[8*i+3],
+			refineHexas[8*i+4], refineHexas[8*i+5], refineHexas[8*i+6], refineHexas[8*i+7] );
 	}
 
 	/* 細分後の節点グループの更新 */
 	ng0Count = rcapGetNodeGroupCount("ng0");
-	assert( ng0Count > 0 );
 	result_ng0 = (int32_t*)calloc( ng0Count, sizeof(int32_t) );
 	rcapGetNodeGroup("ng0",ng0Count,result_ng0);
+	printf("Refined Node Group : Count = %zu\n", ng0Count );
 	printf("data:\n");
 	printf("  - name: ng0\n");
 	printf("    mode: NODEGROUP\n");
@@ -214,9 +175,7 @@ int main(void)
 		printf("    - %d\n", result_ng0[i]);
 	}
 	free( result_ng0 );
-	result_ng0 = NULL;
 
-	/* 境界節点グループの登録 */
 	bng0Count = rcapGetBNodeGroupCount("bng0");
 	result_bng0 = (int32_t*)calloc( bng0Count, sizeof(int32_t) );
 	rcapGetBNodeGroup("bng0",bng0Count,result_bng0);
@@ -230,48 +189,8 @@ int main(void)
 	}
 	free( result_bng0 );
 
-	/* 境界節点変数の登録 */
-	bnv0Count = rcapGetBNodeVarIntCount("bnv0");
-	result_bnv0 = (int32_t*)calloc( bnv0Count, sizeof(int32_t) );
-	result_bnv1 = (int32_t*)calloc( bnv0Count, sizeof(int32_t) );
-	rcapGetBNodeVarInt("bnv0",bnv0Count,result_bnv0,result_bnv1);
-	printf("  - name: bnv0\n");
-	printf("    mode: NODEVARIABLE\n");
-	printf("    vtype: INTEGER\n");
-	printf("    size: %zu\n",bnv0Count);
-	printf("    value:\n");
-	for(i=0;(size_t)i<bnv0Count;++i){
-		printf("    - [%d, %d]\n", result_bnv0[i], result_bnv1[i]);
-	}
+	free( refineHexas );
 
-	/* ここでチェック！ */
-	for(i=0;(size_t)i<bnv0Count;++i){
-		orgtype = rcapGetOriginal( result_bnv0[i], seg );
-		if( orgtype == RCAP_SEGMENT ){
-			middle = rcapGetMiddle( orgtype, seg );
-			assert( middle == result_bnv0[i] );
-			/* 小さい方になっていることを確かめる */
-			flag = 0;
-			for(j=0;(size_t)j<bnv0Count;++j){
-				if( bnv0[j] == seg[0] ){
-					assert( bnv1[j] >= result_bnv1[i] );
-					if( bnv1[j] == result_bnv1[i] ){
-						flag = 1;
-					}
-				}
-				if( bnv0[j] == seg[1] ){
-					assert( bnv1[j] >= result_bnv1[i] );
-					if( bnv1[j] == result_bnv1[i] ){
-						flag = 1;
-					}
-				}
-			}
-			assert( flag == 1 );
-		}
-	}
-	free( result_bnv0 );
-	free( result_bnv1 );
-	free( refineTetras );
 	rcapTermRefiner();
 	return 0;
 }

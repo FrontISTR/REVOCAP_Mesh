@@ -27,7 +27,6 @@
 #ifdef _CONSOLE
 
 #include "rcapRefiner.h"
-#include "rcapRefinerMacros.h"
 #include <stdio.h>
 #include <stdlib.h>  /* for calloc, free */
 #include <assert.h>

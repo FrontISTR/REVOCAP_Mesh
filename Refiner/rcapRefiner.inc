@@ -14,21 +14,21 @@
 !----------------------------------------------------------------------*/
 !C constants and external functions for REVOCAP Refiner
 
-      integer(kind=1), parameter :: RCAP_UNKNOWNTYPE = -1
-      integer(kind=1), parameter :: RCAP_SEGMENT = 0
-      integer(kind=1), parameter :: RCAP_SEGMENT2 = 1
-      integer(kind=1), parameter :: RCAP_TRIANGLE = 2
-      integer(kind=1), parameter :: RCAP_TRIANGLE2 = 3
-      integer(kind=1), parameter :: RCAP_QUAD = 4
-      integer(kind=1), parameter :: RCAP_QUAD2 = 5
-      integer(kind=1), parameter :: RCAP_TETRAHEDRON = 6
-      integer(kind=1), parameter :: RCAP_TETRAHEDRON2 = 7
-      integer(kind=1), parameter :: RCAP_WEDGE = 8
-      integer(kind=1), parameter :: RCAP_WEDGE2 = 9
-      integer(kind=1), parameter :: RCAP_PYRAMID = 10
-      integer(kind=1), parameter :: RCAP_PYRAMID2 = 11
-      integer(kind=1), parameter :: RCAP_HEXAHEDRON = 12
-      integer(kind=1), parameter :: RCAP_HEXAHEDRON2 = 13
+!      integer(kind=1), parameter :: RCAP_UNKNOWNTYPE = -1
+!      integer(kind=1), parameter :: RCAP_SEGMENT = 0
+!      integer(kind=1), parameter :: RCAP_SEGMENT2 = 1
+!      integer(kind=1), parameter :: RCAP_TRIANGLE = 2
+!      integer(kind=1), parameter :: RCAP_TRIANGLE2 = 3
+!      integer(kind=1), parameter :: RCAP_QUAD = 4
+!      integer(kind=1), parameter :: RCAP_QUAD2 = 5
+!      integer(kind=1), parameter :: RCAP_TETRAHEDRON = 6
+!      integer(kind=1), parameter :: RCAP_TETRAHEDRON2 = 7
+!      integer(kind=1), parameter :: RCAP_WEDGE = 8
+!      integer(kind=1), parameter :: RCAP_WEDGE2 = 9
+!      integer(kind=1), parameter :: RCAP_PYRAMID = 10
+!      integer(kind=1), parameter :: RCAP_PYRAMID2 = 11
+!      integer(kind=1), parameter :: RCAP_HEXAHEDRON = 12
+!      integer(kind=1), parameter :: RCAP_HEXAHEDRON2 = 13
 
 !C elements face relation table lists for REVOCAP Refiner
 
@@ -70,39 +70,39 @@
 !      external :: rcapSetPartitionFilename
 !      external :: rcapSetNode64
 !      external :: rcapSetNode32
-      external :: rcapGetNode64
-      external :: rcapGetNode32
-      external :: rcapGetNodeSeq64
-      external :: rcapGetNodeSeq32
+!      external :: rcapGetNode64
+!      external :: rcapGetNode32
+!      external :: rcapGetNodeSeq64
+!      external :: rcapGetNodeSeq32
 !      external :: rcapCommit
 !      integer(kind=4) :: rcapGetNodeCount
 !      integer(kind=4) :: rcapGetRefineElementCount
-      integer(kind=4) :: rcapRefineElement
-      integer(kind=4) :: rcapGetRefineElementMultiCount
-      integer(kind=4) :: rcapRefineElementMulti
+!      integer(kind=4) :: rcapRefineElement
+!      integer(kind=4) :: rcapGetRefineElementMultiCount
+!      integer(kind=4) :: rcapRefineElementMulti
 
 !      external :: rcapAppendNodeGroup
 !      integer(kind=4) :: rcapGetNodeGroupCount
-      external :: rcapGetNodeGroup
+!      external :: rcapGetNodeGroup
 
-      external :: rcapAppendBNodeGroup
-      integer(kind=4) :: rcapGetBNodeGroupCount
-      external :: rcapGetBNodeGroup
+!      external :: rcapAppendBNodeGroup
+!      integer(kind=4) :: rcapGetBNodeGroupCount
+!      external :: rcapGetBNodeGroup
 
-      external :: rcapAppendBNodeVarInt
-      integer(kind=4) :: rcapGetBNodeVarIntCount
-      external :: rcapGetBNodeVarInt
+!      external :: rcapAppendBNodeVarInt
+!      integer(kind=4) :: rcapGetBNodeVarIntCount
+!      external :: rcapGetBNodeVarInt
 
-      external :: rcapAppendElementGroup
-      integer(kind=4) :: rcapGetElementGroupCount
-      external :: rcapGetElementGroup
+!      external :: rcapAppendElementGroup
+!      integer(kind=4) :: rcapGetElementGroupCount
+!      external :: rcapGetElementGroup
 
-      external :: rcapAppendFaceGroup
-      integer(kind=4) :: rcapGetFaceGroupCount
-      external :: rcapGetFaceGroup
+!      external :: rcapAppendFaceGroup
+!      integer(kind=4) :: rcapGetFaceGroupCount
+!      external :: rcapGetFaceGroup
 
-      integer(kind=2) :: rcapGetOriginal
-      integer(kind=4) :: rcapGetMiddle
+!      integer(kind=2) :: rcapGetOriginal
+!      integer(kind=4) :: rcapGetMiddle
 
 !      external :: rcapGetInterpolateMode
 !      external :: rcapSetInterpolateMode

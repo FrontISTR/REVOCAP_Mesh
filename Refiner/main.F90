@@ -19,7 +19,6 @@
 PROGRAM RefinerSample
   USE RcapRefiner
   IMPLICIT NONE
-  INCLUDE "rcapRefiner.inc"
   INTEGER*4 :: I,J,K
 
 ! 節点配列

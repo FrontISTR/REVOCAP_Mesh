@@ -65,12 +65,12 @@ int32_t rcapSaveRNFFile( const char* rnffile );
 /* rcapxxx_  すべて小文字 */
 /* gfortran, intel fortran, pgi fortran はこれでよい */
 #ifdef FORTRAN90
-int32_t rcaploadgffile_( const char* gffile, const char* bounfile );
-int32_t rcaploadhecfile_( const char* hecfile );
-int32_t rcapsavegffile_( const char* gffile, const char* bounfile );
-int32_t rcapsavehecfile_( const char* hecfile );
-int32_t rcapsavernffile_( const char* rnffile );
-void rcaprefineffbmodel_(void);
+//int32_t rcaploadgffile_( const char* gffile, const char* bounfile );
+//int32_t rcaploadhecfile_( const char* hecfile );
+//int32_t rcapsavegffile_( const char* gffile, const char* bounfile );
+//int32_t rcapsavehecfile_( const char* hecfile );
+//int32_t rcapsavernffile_( const char* rnffile );
+//void rcaprefineffbmodel_(void);
 #endif
 
 #ifdef FORTRAN77

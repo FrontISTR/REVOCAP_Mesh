@@ -15,7 +15,7 @@
 !
 ! REVOCAP_Refiner サンプルプログラム
 !
-! g++ -c -DGFORTRAN rcapRefiner.cpp
+! g++ -c rcapRefiner.cpp
 ! gfortran mainMulti.F90 rcapRefiner.o -lstdc++ -lRcapRefiner -L../lib/i486-linux/
 !
 ! 拡張子を F90 にすると、gfortran でプリプロセッサをかけてくれる
@@ -26,7 +26,6 @@
 PROGRAM RefinerSampleMulti
   USE RcapRefiner
   IMPLICIT NONE
-  INCLUDE "rcapRefiner.inc"
   INTEGER*4 :: I,J,K
 
 ! 節点配列
