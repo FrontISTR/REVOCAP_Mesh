@@ -175,7 +175,7 @@ void rcapSetNode64( const int32_t &num, float64_t* coords, int32_t* globalIds, i
 	if( localIds==NULL || localIds[0] < rcapRefinerDoc.nodeOffset ){
 		// localId が定義されていないときは 0 から順に局所節点番号を付与する
 		REVOCAP_Debug("rcapSetNode64 localIds is NULL\n");
-		for(unsigned int i=0;i<num;++i){
+		for(int i=0;i<num;++i){
 			rcapRefinerDoc.mesh->insertNode(coords[3*i],coords[3*i+1],coords[3*i+2]);
 		}
 		if( globalIds != NULL && globalIds[0] >= rcapRefinerDoc.nodeOffset ){
@@ -183,7 +183,7 @@ void rcapSetNode64( const int32_t &num, float64_t* coords, int32_t* globalIds, i
 				// fitting data があるときは
 				// globalId => localId に変換
 				std::map< kmb::nodeIdType, kmb::nodeIdType > imapper;
-				for(unsigned int i=0;i<num;++i){
+				for(int i=0;i<num;++i){
 					imapper.insert( std::pair< kmb::nodeIdType, kmb::nodeIdType >( globalIds[i]-rcapRefinerDoc.nodeOffset, static_cast<kmb::nodeIdType>(i) ) );
 				}
 				middleNodeManagerWithShape->replaceNodeIds( imapper );
@@ -191,7 +191,7 @@ void rcapSetNode64( const int32_t &num, float64_t* coords, int32_t* globalIds, i
 		}
 	}else{
 		// localId が定義されているときはその番号で節点を格納する
-		for(unsigned int i=0;i<num;++i){
+		for(int i=0;i<num;++i){
 			rcapRefinerDoc.mesh->insertNodeWithId(coords[3*i],coords[3*i+1],coords[3*i+2],localIds[i]-rcapRefinerDoc.nodeOffset);
 		}
 		if( globalIds != NULL && globalIds[0] >= rcapRefinerDoc.nodeOffset ){
@@ -199,7 +199,7 @@ void rcapSetNode64( const int32_t &num, float64_t* coords, int32_t* globalIds, i
 				// fitting data があるときは
 				// globalId => localId に変換
 				std::map< kmb::nodeIdType, kmb::nodeIdType > imapper;
-				for(unsigned int i=0;i<num;++i){
+				for(int i=0;i<num;++i){
 					imapper.insert( std::pair< kmb::nodeIdType, kmb::nodeIdType >( globalIds[i]-rcapRefinerDoc.nodeOffset, localIds[i]-rcapRefinerDoc.nodeOffset ) );
 				}
 				middleNodeManagerWithShape->replaceNodeIds( imapper );
@@ -239,7 +239,7 @@ void rcapSetNode32( const int32_t &num, float32_t* coords, int32_t* globalIds, i
 		= dynamic_cast<kmb::MiddleNodeManagerWithShape*>( rcapRefinerDoc.middleMan );
 	if( localIds==NULL || localIds[0] < rcapRefinerDoc.nodeOffset ){
 		REVOCAP_Debug("rcapSetNode32 localIds is NULL\n");
-		for(unsigned int i=0;i<num;++i){
+		for(int i=0;i<num;++i){
 			rcapRefinerDoc.mesh->insertNode(coords[3*i],coords[3*i+1],coords[3*i+2]);
 		}
 		if( globalIds != NULL && globalIds[0] >= rcapRefinerDoc.nodeOffset ){
@@ -248,14 +248,14 @@ void rcapSetNode32( const int32_t &num, float32_t* coords, int32_t* globalIds, i
 				// globalId => localId に変換
 				printf("REVOCAP_Refiner : convert fitting data to global Ids\n");
 				std::map< kmb::nodeIdType, kmb::nodeIdType > imapper;
-				for(unsigned int i=0;i<num;++i){
+				for(int i=0;i<num;++i){
 					imapper.insert( std::pair< kmb::nodeIdType, kmb::nodeIdType >( globalIds[i]-rcapRefinerDoc.nodeOffset, static_cast<kmb::nodeIdType>(i) ) );
 				}
 				middleNodeManagerWithShape->replaceNodeIds( imapper );
 			}
 		}
 	}else{
-		for(unsigned int i=0;i<num;++i){
+		for(int i=0;i<num;++i){
 			rcapRefinerDoc.mesh->insertNodeWithId(coords[3*i],coords[3*i+1],coords[3*i+2],localIds[i]-rcapRefinerDoc.nodeOffset);
 		}
 		if( globalIds != NULL && globalIds[0] >= rcapRefinerDoc.nodeOffset ){
@@ -264,7 +264,7 @@ void rcapSetNode32( const int32_t &num, float32_t* coords, int32_t* globalIds, i
 				// globalId => localId に変換
 				printf("REVOCAP_Refiner : convert fitting data to global Ids\n");
 				std::map< kmb::nodeIdType, kmb::nodeIdType > imapper;
-				for(unsigned int i=0;i<num;++i){
+				for(int i=0;i<num;++i){
 					imapper.insert( std::pair< kmb::nodeIdType, kmb::nodeIdType >( globalIds[i]-rcapRefinerDoc.nodeOffset, localIds[i]-rcapRefinerDoc.nodeOffset ) );
 				}
 				middleNodeManagerWithShape->replaceNodeIds( imapper );
@@ -581,7 +581,7 @@ int32_t rcapRefineElementMulti( const int32_t &num, int8_t* etypeArray, int32_t*
 
 		rcapRefinerDoc.maxElementId = orgElements->getMaxId();
 		rcapRefinerDoc.maxRefinedElementId = refineElements->getMaxId();
-		refinedNodeArraySize = refineElements->getNodeTableSize();
+		refinedNodeArraySize = static_cast<int32_t>(refineElements->getNodeTableSize());
 		delete refineElements;
 	}else{
 		// resultEtypeArray は無視する場合。
@@ -603,7 +603,7 @@ int32_t rcapRefineElementMulti( const int32_t &num, int8_t* etypeArray, int32_t*
 
 		rcapRefinerDoc.maxElementId = orgElements->getMaxId();
 		rcapRefinerDoc.maxRefinedElementId = refineElements->getMaxId();
-		refinedNodeArraySize = refineElements->getNodeTableSize();
+		refinedNodeArraySize = static_cast<int32_t>(refineElements->getNodeTableSize());
 		delete refineElements;
 		delete[] rEtypeArray;
 	}

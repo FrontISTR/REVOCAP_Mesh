@@ -79,13 +79,13 @@ void rcapRefineFFbModel( void )
 	REVOCAP_Debug("inlt data size => %d\n", rcapRefinerDoc.mesh->getIdCount("BC_INLT") );
 	REVOCAP_Debug("wall data size => %d\n", rcapRefinerDoc.mesh->getIdCount("BC_WALL") );
 	REVOCAP_Debug("free data size => %d\n", rcapRefinerDoc.mesh->getIdCount("BC_FREE") );
-	size_t dataNum = 0;
-	dataNum += rcapRefinerDoc.mesh->getIdCount( "BC_INLT" );
-	dataNum += rcapRefinerDoc.mesh->getIdCount( "BC_WALL" );
-	dataNum += rcapRefinerDoc.mesh->getIdCount( "BC_FREE" );
+	int32_t dataNum = 0;
+	dataNum += static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( "BC_INLT" ));
+	dataNum += static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( "BC_WALL" ));
+	dataNum += static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( "BC_FREE" ));
 	int32_t* nodeArray = new int32_t[dataNum];
 	int32_t* nodeVars = new int32_t[dataNum];
-	unsigned int i= 0,j=0;
+	int i= 0,j=0;
 	double inlet_v[3] = {0.0, 0.0, 1.0};
 	kmb::DataBindings::iterator dIterInlt = rcapRefinerDoc.mesh->getDataBindingsPtr( "BC_INLT" )->begin();
 	while( !dIterInlt.isFinished() ){
@@ -115,7 +115,7 @@ void rcapRefineFFbModel( void )
 	REVOCAP_Debug("data size = %d\n", rcapGetBNodeVarIntCount("BC") );
 
 	// element
-	size_t elementCount = rcapRefinerDoc.mesh->getElementCount(0);
+	int32_t elementCount = static_cast<int32_t>(rcapRefinerDoc.mesh->getElementCount(0));
 	REVOCAP_Debug("refine element count = %d\n", elementCount );
 	int32_t* nodeTable = new int32_t[elementCount*8];
 	int8_t* typeTable = new int8_t[elementCount];
@@ -125,7 +125,7 @@ void rcapRefineFFbModel( void )
 	while( !eIter.isFinished() ){
 		int num = eIter.getNodeCount();
 		for(int k=0;k<num;++k){
-			nodeTable[i+k] = eIter.getCellId(k);
+			nodeTable[i+k] = eIter.getNodeId(k);
 		}
 		typeTable[j] = eIter.getType();
 		i += num;
@@ -134,15 +134,15 @@ void rcapRefineFFbModel( void )
 	}
 	REVOCAP_Debug("input data generated.\n");
 	// count refined node table
-	size_t refineNum = 0;
-	size_t refineNodeCount = 0;
-	refineNodeCount = rcapRefineElementMulti( elementCount, typeTable, nodeTable, &refineNum, NULL, NULL );
+	int32_t refineNum = 0;
+	int32_t refineNodeCount = 0;
+	refineNodeCount = static_cast<int32_t>(rcapRefineElementMulti( elementCount, typeTable, nodeTable, refineNum, NULL, NULL ));
 	REVOCAP_Debug("refineElementCount = %d, refineNodeTableSize = %d\n", refineNum, refineNodeCount);
 	int32_t* refineNodeTable = new int32_t[refineNodeCount];
 	int8_t* refineTypeTable = new int8_t[refineNum];
 	refineNodeTable[0] = 0;
 	REVOCAP_Debug("RefineElement\n");
-	rcapRefineElementMulti( elementCount, typeTable, nodeTable, &refineNum, refineTypeTable, refineNodeTable );
+	rcapRefineElementMulti( elementCount, typeTable, nodeTable, refineNum, refineTypeTable, refineNodeTable );
 	REVOCAP_Debug("Commit\n");
 	rcapCommit();
 
