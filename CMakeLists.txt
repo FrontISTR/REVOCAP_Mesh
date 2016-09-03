@@ -8,9 +8,9 @@ option(WITH_OPENMP "Enable OpenMP feature" ON)
 option(WITH_TEST "Enable tests" ON)
 
 if(WITH_EXTENSION)
-  find_package(SWIG REQUIRED)
-  find_package(Ruby REQUIRED)
   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+  message(STATUS "WITH_EXTENSION=ON")
+  message(STATUS "CMAKE_POSITION_INDEPENDENT_CODE=ON")
 endif()
 
 if(WITH_OPENCASCADE)
@@ -39,6 +39,7 @@ endif()
 if(WITH_OPENMP)
   find_package(OpenMP)
   if(OPENMP_FOUND)
+    message(STATUS "WITH_OPENMP=ON")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
   endif()
@@ -72,20 +73,27 @@ add_dependencies(RcapRefiner RcapCommon RcapMatrix RcapGeometry RcapMeshDB RcapI
 
 # Build swig modules
 if(WITH_EXTENSION)
-  add_subdirectory(MeshDBRuby)    # RcapMesh target, swig module
-  add_dependencies(RevocapMesh RcapMeshDB RcapGeometry RcapMatrix RcapCommon)
-  add_subdirectory(RevocapIORuby) # RevocapIO target, swig module
-  add_dependencies(RevocapIO RcapIO RcapMeshDB RcapGeometry RcapMatrix RcapCommon)
-  add_subdirectory(MeshGLRuby)    # RevocapGL target, swig module
-  add_dependencies(RevocapGL RcapMeshGL RcapMeshDB RcapMeshDB RcapGeometry RcapMatrix RcapCommon)
-  add_subdirectory(MeshGenRuby)   # RevocapMeshGen target, swig module
-  add_dependencies(RevocapMeshGen RcapMeshGen RcapMeshDB RcapGeometry RcapMatrix RcapCommon)
-  add_subdirectory(ShapeRuby)     # RevocapShape target, swig module
-  add_dependencies(RevocapShape RcapShape RcapMeshDB RcapGeometry RcapMatrix RcapCommon)
+  find_package(SWIG REQUIRED)
+  find_package(Ruby REQUIRED)
+  if(RUBY_FOUND AND SWIG_FOUND)
+    message(STATUS "Found ${RUBY_EXECUTABLE} (${RUBY_VERSION})")
+    message(STATUS "Found ${SWIG_EXECUTABLE} (${SWIG_VERSION})")
+    add_subdirectory(MeshDBRuby)    # RcapMesh target, swig module
+    add_dependencies(RevocapMesh RcapMeshDB RcapGeometry RcapMatrix RcapCommon)
+    add_subdirectory(RevocapIORuby) # RevocapIO target, swig module
+    add_dependencies(RevocapIO RcapIO RcapMeshDB RcapGeometry RcapMatrix RcapCommon)
+    add_subdirectory(MeshGLRuby)    # RevocapGL target, swig module
+    add_dependencies(RevocapGL RcapMeshGL RcapMeshDB RcapMeshDB RcapGeometry RcapMatrix RcapCommon)
+    add_subdirectory(MeshGenRuby)   # RevocapMeshGen target, swig module
+    add_dependencies(RevocapMeshGen RcapMeshGen RcapMeshDB RcapGeometry RcapMatrix RcapCommon)
+    add_subdirectory(ShapeRuby)     # RevocapShape target, swig module
+    add_dependencies(RevocapShape RcapShape RcapMeshDB RcapGeometry RcapMatrix RcapCommon)
+  endif()
 endif()
 
 # Test
 if(WITH_TEST)
+  message(STATUS "WITH_TEST=ON")
   enable_testing()
   add_subdirectory(Test)
 endif()

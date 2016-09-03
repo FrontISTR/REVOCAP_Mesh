@@ -25,8 +25,6 @@ include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-message("${RCAP_LIBRARIES}")
-
 add_executable(sampleC main.cpp)
 target_link_libraries(sampleC ${RCAP_LIBRARIES})
 add_executable(sampleMultiStage mainMultiStage.cpp)
