@@ -64,3 +64,4 @@ install(TARGETS RcapRefiner
   LIBRARY DESTINATION lib
   COMPONENT DESTINATION lib
 )
+install(FILES rcapRefiner.h DESTINATION include)

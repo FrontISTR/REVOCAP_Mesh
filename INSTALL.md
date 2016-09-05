@@ -57,3 +57,14 @@ OpenCASCADE(oce)をインストールする際、パスが通っているディ�
 % export OCE_DIR="/usr/lib/x86_64-linux-gnu"
 ```
 
+### Doxygen
+
+予め`doxygen`と`graphviz`をインストールする必要があります。
+
+```txt
+% cmake -DBUILD_DOC ..
+% make doc
+% firefox doc/html/index.html
+```
+
+で参照することが出来ます。

@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 3.0)
 
+project(REVOCAP CXX C Fortran)
+
 set(CMAKE_BUILD_TYPE "RELEASE")
 
 option(WITH_EXTENSION "Build with ruby extension libraries" ON)
 option(WITH_OPENCASCADE "Build with OpenCASCADE feature" ON)
 option(WITH_OPENMP "Enable OpenMP feature" ON)
 option(WITH_TEST "Enable tests" ON)
+option(BUILD_DOC "Generate API documents." ON)
 
 if(WITH_EXTENSION)
   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -96,6 +99,27 @@ if(WITH_TEST)
   message(STATUS "WITH_TEST=ON")
   enable_testing()
   add_subdirectory(Test)
+endif()
+
+# -DBUILD_DOC
+if(BUILD_DOC)
+  find_package(Doxygen)
+  if(DOXYGEN_FOUND)
+    message(STATUS "Generate API documents. Please type \"make doc\"")
+    set(doxy_main_page "${CMAKE_SOURCE_DIR}/INSTALL.md")
+    set(doxyfile_in ${CMAKE_SOURCE_DIR}/doc/Doxyfile.in)
+    set(doxyfile ${CMAKE_BINARY_DIR}/doc/Doxyfile)
+    configure_file(${doxyfile_in} ${doxyfile} @ONLY)
+
+    add_custom_target(doc
+      COMMAND ${DOXYGEN_EXECUTABLE} ${doxyfile}
+      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+      COMMENT "Generate API documents."
+      VERBATIM
+    )
+  else()
+    message(WARNING "doxygen not found.")
+  endif()
 endif()
 
 # Package
