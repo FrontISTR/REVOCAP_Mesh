@@ -11,13 +11,16 @@ set(RevocapIORuby_INTERFACE
   RevocapIO.i
 )
 
-set_source_files_properties(${RevocapIORuby_INTERFACE} PROPERTIES CPLUSPLUS ON)
+set_property(SOURCE ${RevocapIORuby_INTERFACE}
+  PROPERTY CPLUSPLUS ON
+)
+
 swig_add_module(RevocapIO
   ruby
   ${RevocapIORuby_INTERFACE}
 )
 swig_link_libraries(RevocapIO
-  ${RUBY_LIBRARIES}
+  ${RUBY_LIBRARY}
   RcapIO
   RcapMeshDB
   RcapGeometry

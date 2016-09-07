@@ -14,17 +14,25 @@ set(RevocapGL_INTERFACE
   RevocapGL.i
 )
 
-add_definitions(
-  -DREVOCAP_SUPPORT_RUBY
+#add_definitions(
+#  -DREVOCAP_SUPPORT_RUBY
+#)
+
+set_property(SOURCE ${RevocapGL_INTERFACE}
+  PROPERTY CPLUSPLUS ON
 )
 
-set_source_files_properties(${RevocapGL_INTERFACE} PROPERTIES CPLUSPLUS ON)
+set_property(SOURCE ${RevocapGL_INTERFACE}
+  PROPERTY SWIG_FLAGS
+  "-DREVOCAP_SUPPORT_RUBY"
+)
+
 swig_add_module(RevocapGL
   ruby
   ${RevocapGL_INTERFACE}
 )
 swig_link_libraries(RevocapGL
-  ${RUBY_LIBRARIES}
+  ${RUBY_LIBRARY}
   RcapMeshGL
   RcapMeshDB
   RcapGeometry

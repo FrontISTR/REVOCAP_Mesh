@@ -12,13 +12,16 @@ set(RevocapMeshGen_INTERFACE
   RevocapMeshGen.i
 )
 
-set_source_files_properties(${RevocapMeshGen_INTERFACE} PROPERTIES CPLUSPLUS ON)
+set_property(SOURCE ${RevocapMeshGen_INTERFACE}
+  PROPERTY CPLUSPLUS ON
+)
+
 swig_add_module(RevocapMeshGen
   ruby
   ${RevocapMeshGen_INTERFACE}
 )
 swig_link_libraries(RevocapMeshGen
-  ${RUBY_LIBRARIES}
+  ${RUBY_LIBRARY}
   RcapMeshGen
   RcapMeshDB
   RcapGeometry
