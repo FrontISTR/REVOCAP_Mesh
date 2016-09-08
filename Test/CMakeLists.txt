@@ -21,6 +21,15 @@ add_test(
  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/Test
 )
 
+add_executable(Array_Test Array_Test.cpp)
+target_link_libraries(Array_Test RcapRefiner)
+target_link_libraries(Array_Test boost_unit_test_framework-mt)
+add_test(
+ NAME Array_Test
+ COMMAND $<TARGET_FILE:Array_Test>
+ WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/Test
+)
+
 add_executable(Geometry_Test Geometry_Test.cpp)
 target_link_libraries(Geometry_Test RcapRefiner)
 target_link_libraries(Geometry_Test boost_unit_test_framework-mt)
