@@ -102,7 +102,7 @@ int main(void)
 	assert( sizeof(float64_t) == 8 );
 
 	/* 節点番号のオフセット値を与える */
-	rcapInitRefiner( nodeOffset, elementOffset );
+	rcapInitRefiner( &nodeOffset, &elementOffset );
 
 	printf("----- Original Model -----\n");
 	printf("---\n");
@@ -110,68 +110,68 @@ int main(void)
 	 * globalId と座標値を Refiner に教える
 	 * localIds は NULL をあたえると coords は nodeOffset から順番に並んでいるものと解釈する
 	 */
-	rcapSetNode64( nodeCount, coords, globalIds, NULL );
+	rcapSetNode64( &nodeCount, coords, globalIds, NULL );
 	/* 細分前の節点数 */
 	nodeCount = rcapGetNodeCount();
 	assert( nodeCount == 5 );
 	printf("node:\n");
-	printf("  size: %zu\n", nodeCount );
+	printf("  size: %d\n", nodeCount );
 	printf("  coordinate:\n");
-	for(i=0;(size_t)i<nodeCount;++i){
+	for(i=0;i<nodeCount;++i){
 		printf("  - [%d, %f, %f, %f]\n", i+nodeOffset, coords[3*i], coords[3*i+1], coords[3*i+2] );
 	}
 	/* 細分前の要素数 */
 	assert( elementCount == 2 );
 	printf("element:\n");
-	printf("  - size: %zu\n", elementCount );
+	printf("  - size: %d\n", elementCount );
 	printf("    connectivity:\n");
 	for(i=0;i<elementCount;++i){
 		printf("      - [%d, TETRAHEDRON, %d, %d, %d, %d]\n", i+elementOffset,
 			tetras[4*i], tetras[4*i+1], tetras[4*i+2], tetras[4*i+3] );
 	}
 	/* 節点グループの登録 */
-	rcapAppendNodeGroup("innovate",ngCount,ng0);
+	rcapAppendNodeGroup("innovate",&ngCount,ng0);
 	ngCount = rcapGetNodeGroupCount("innovate");
 	assert( ngCount == 3 );
 	printf("data:\n");
 	printf("  - name: innovate\n");
 	printf("    mode: NODEGROUP\n");
 	printf("    vtype: NONE\n");
-	printf("    size: %zu\n",ngCount);
+	printf("    size: %d\n",ngCount);
 	printf("    id:\n");
-	for(i=0;(size_t)i<ngCount;++i){
+	for(i=0;i<ngCount;++i){
 		printf("    - %d\n", ng0[i]);
 	}
 	/* 面グループの登録 */
-	rcapAppendFaceGroup("revolute",fgCount,fg0);
+	rcapAppendFaceGroup("revolute",&fgCount,fg0);
 	fgCount = rcapGetFaceGroupCount("revolute");
 	assert( fgCount == 2 );
 	printf("  - name: revolute\n");
 	printf("    mode: FACEGROUP\n");
 	printf("    vtype: NONE\n");
-	printf("    size: %zu\n",fgCount);
+	printf("    size: %d\n",fgCount);
 	printf("    id:\n");
-	for(i=0;(size_t)i<fgCount;++i){
+	for(i=0;i<fgCount;++i){
 		printf("    - [%d, %d]\n", fg0[2*i], fg0[2*i+1]);
 	}
 	/* 要素グループの登録 */
-	rcapAppendElementGroup("eg",egCount,eg0);
+	rcapAppendElementGroup("eg",&egCount,eg0);
 	egCount = rcapGetElementGroupCount("eg");
 	assert( egCount == 1 );
 	printf("  - name: eg\n");
 	printf("    mode: ELEMENTGROUP\n");
 	printf("    vtype: NONE\n");
-	printf("    size: %zu\n",egCount);
+	printf("    size: %d\n",egCount);
 	printf("    id:\n");
-	for(i=0;(size_t)i<egCount;++i){
+	for(i=0;i<egCount;++i){
 		printf("    - %d\n", eg0[i]);
 	}
 
 	/* 要素の細分 */
-	refineElementCount = rcapGetRefineElementCount( elementCount, etype );
+	refineElementCount = rcapGetRefineElementCount( &elementCount, &etype );
 	assert( refineElementCount == 16 );
 	refineTetras = (int32_t*)calloc( 4*refineElementCount, sizeof(int32_t) );
-	refineElementCount = rcapRefineElement( elementCount, etype, tetras, refineTetras );
+	refineElementCount = rcapRefineElement( &elementCount, &etype, tetras, refineTetras );
 	assert( refineElementCount == 16 );
 	rcapCommit();
 
@@ -181,11 +181,11 @@ int main(void)
 	/* 細分後の節点 */
 	refineNodeCount = rcapGetNodeCount();
 	resultCoords = (float64_t*)calloc( 3*refineNodeCount, sizeof(float64_t) );
-	rcapGetNodeSeq64( refineNodeCount, nodeOffset, resultCoords );
+	rcapGetNodeSeq64( &refineNodeCount, &nodeOffset, resultCoords );
 	printf("node:\n");
-	printf("  size: %zu\n", refineNodeCount );
+	printf("  size: %d\n", refineNodeCount );
 	printf("  coordinate:\n");
-	for(j=0;(size_t)j<refineNodeCount;++j){
+	for(j=0;j<refineNodeCount;++j){
 		printf("  - [%d, %f, %f, %f]\n", j+nodeOffset, resultCoords[3*j], resultCoords[3*j+1], resultCoords[3*j+2] );
 		orgtype = rcapGetOriginal( j+nodeOffset, seg );
 		if( orgtype == RCAP_SEGMENT ){
@@ -196,7 +196,7 @@ int main(void)
 	}
 
 	/* 中間節点のチェック */
-	for(j=0;(size_t)j<4*refineElementCount;++j){
+	for(j=0;j<4*refineElementCount;++j){
 		orgtype = rcapGetOriginal( refineTetras[j], seg );
 		if( orgtype == RCAP_SEGMENT ){
 			middle = rcapGetMiddle( orgtype, seg );
@@ -210,9 +210,9 @@ int main(void)
 
 	/* 細分後の要素 */
 	printf("element:\n");
-	printf("  - size: %zu\n", refineElementCount );
+	printf("  - size: %d\n", refineElementCount );
 	printf("    connectivity:\n");
-	for(i=0;(size_t)i<refineElementCount;++i){
+	for(i=0;i<refineElementCount;++i){
 		printf("      - [%d, TETRAHEDRON, %d, %d, %d, %d]\n", i+elementOffset,
 			refineTetras[4*i], refineTetras[4*i+1], refineTetras[4*i+2], refineTetras[4*i+3] );
 	}
@@ -221,7 +221,7 @@ int main(void)
 	ngCount = rcapGetNodeGroupCount("innovate");
 	assert( ngCount > 0 );
 	result_ng0 = (int32_t*)calloc( ngCount, sizeof(int32_t) );
-	rcapGetNodeGroup("innovate",ngCount,result_ng0);
+	rcapGetNodeGroup("innovate",&ngCount,result_ng0);
 	printf("data:\n");
 	printf("  - name: innovate\n");
 	printf("    mode: NODEGROUP\n");
@@ -233,7 +233,7 @@ int main(void)
 	/* 元の節点グループを含む */
 	for(i=0;i<3;++i){
 		flag = 0;
-		for(j=0;(size_t)j<ngCount;++j){
+		for(j=0;j<ngCount;++j){
 			if( result_ng0[j] == ng0[i] ){
 				flag = 1;
 			}
@@ -241,7 +241,7 @@ int main(void)
 		assert( flag == 1 );
 	}
 	/* 細分後の節点グループの確認 */
-	for(j=0;(size_t)j<ngCount;++j){
+	for(j=0;j<ngCount;++j){
 		printf("    - %d\n", result_ng0[j]);
 		orgtype = rcapGetOriginal( result_ng0[j], seg );
 		if( orgtype == RCAP_SEGMENT ){
@@ -278,13 +278,13 @@ int main(void)
 	printf("  - name: revolute\n");
 	printf("    mode: FACEGROUP\n");
 	printf("    vtype: NONE\n");
-	printf("    size: %zu\n",fgCount);
+	printf("    size: %d\n",fgCount);
 	printf("    id:\n");
 	if( fgCount > 0 ){
 		result_fg0 = (int32_t*)calloc( fgCount*2, sizeof(int32_t) );
-		rcapGetFaceGroup("revolute",fgCount,result_fg0);
+		rcapGetFaceGroup("revolute",&fgCount,result_fg0);
 		assert( fgCount == 8 );
-		for(i=0;(size_t)i<fgCount;++i){
+		for(i=0;i<fgCount;++i){
 			printf("    - [%d, %d]\n", result_fg0[2*i], result_fg0[2*i+1]);
 		}
 		free( result_fg0 );
@@ -295,11 +295,11 @@ int main(void)
 	printf("  - name: eg\n");
 	printf("    mode: ELEMENTGROUP\n");
 	printf("    vtype: NONE\n");
-	printf("    size: %zu\n",egCount);
+	printf("    size: %d\n",egCount);
 	printf("    id:\n");
 	if( egCount > 0 ){
 		result_eg0 = (int32_t*)calloc( egCount, sizeof(int32_t) );
-		rcapGetElementGroup("eg",egCount,result_eg0);
+		rcapGetElementGroup("eg",&egCount,result_eg0);
 		assert( egCount == 8 );
 		flag = 1;
 		for(i=0;i<egCount;++i){

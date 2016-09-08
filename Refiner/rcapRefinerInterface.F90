@@ -59,8 +59,8 @@ interface
   end subroutine
   subroutine rcapInitRefiner(nodeOffset,elementOffset) BIND(C,Name='rcapInitRefiner')
     implicit none
-	integer(kind=4), intent(in) :: nodeOffset
-	integer(kind=4), intent(in) :: elementOffset
+    integer(kind=4), intent(in) :: nodeOffset
+    integer(kind=4), intent(in) :: elementOffset
   end subroutine
   subroutine rcapClearRefiner() BIND(C,Name='rcapClearRefiner')
   end subroutine
@@ -68,19 +68,19 @@ interface
   end subroutine
   subroutine rcapSetCADFilename(filename) BIND(C,Name='rcapSetCADFilename')
     implicit none
-	character(len=1), intent(in) :: filename
+    character(len=1), intent(in) :: filename
   end subroutine
   subroutine rcapSetSecondFitting(flag) BIND(C,Name='rcapSetSecondFitting')
     implicit none
-	integer(kind=4), intent(in) :: flag
+    integer(kind=4), intent(in) :: flag
   end subroutine
   subroutine rcapSetSmoothing(flag) BIND(C,Name='rcapSetSmoothing')
     implicit none
-	integer(kind=4), intent(in) :: flag
+    integer(kind=4), intent(in) :: flag
   end subroutine
   subroutine rcapSetPartitionFilename(filename) BIND(C,Name='rcapSetPartitionFilename')
     implicit none
-	character(len=1), intent(in) :: filename
+    character(len=1), intent(in) :: filename
   end subroutine
   subroutine rcapSetNode64(num,coords,globalIds,localIds) BIND(C,Name='rcapSetNode64')
     implicit none
@@ -135,7 +135,7 @@ interface
     integer(kind=1), intent(in) :: etype
   end function
   function rcapRefineElementMulti(num,etypeArray,nodeArray,refinedNum, &
-	resultEtypeArray,resultNodeArray) BIND(C,Name='rcapRefineElementMulti')
+    resultEtypeArray,resultNodeArray) BIND(C,Name='rcapRefineElementMulti')
     implicit none
     integer(kind=4) rcapRefineElementMulti
     integer(kind=4), intent(in) :: num
@@ -160,7 +160,7 @@ interface
   end subroutine
   subroutine rcapAppendNodeGroup_C(dataname,num,nodeArray) BIND(C,Name='rcapAppendNodeGroup')
     implicit none
-	character(len=1), intent(in) :: dataname
+    character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(in) :: nodeArray
   end subroutine
@@ -171,7 +171,7 @@ interface
   end function
   subroutine rcapGetNodeGroup_C(dataname,num,nodeArray) BIND(C,Name='rcapGetNodeGroup')
     implicit none
-	character(len=1), intent(in) :: dataname
+    character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(out) :: nodeArray
   end subroutine
@@ -188,7 +188,7 @@ interface
   end function
   subroutine rcapGetBNodeGroup_C(dataname,num,nodeArray) BIND(C,Name='rcapGetBNodeGroup')
     implicit none
-	character(len=1), intent(in) :: dataname
+    character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(out) :: nodeArray
   end subroutine
@@ -206,14 +206,14 @@ interface
   end function
   subroutine rcapGetBNodeVarInt_C(dataname,num,nodeArray,nodeVars) BIND(C,Name='rcapGetBNodeVarInt')
     implicit none
-	character(len=1), intent(in) :: dataname
+    character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(out) :: nodeArray
     integer(kind=4), dimension(num), intent(in) :: nodeVars
   end subroutine
   subroutine rcapAppendElementGroup_C(dataname,num,elementArray) BIND(C,Name='rcapAppendElementGroup')
     implicit none
-	character(len=1), intent(in) :: dataname
+    character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(in) :: elementArray
   end subroutine
@@ -224,7 +224,7 @@ interface
   end function
   subroutine rcapGetElementGroup_C(dataname,num,elementArray) BIND(C,Name='rcapGetElementGroup')
     implicit none
-	character(len=1), intent(in) :: dataname
+    character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(out) :: elementArray
   end subroutine
@@ -241,7 +241,7 @@ interface
   end function
   subroutine rcapGetFaceGroup_C(dataname,num,faceArray) BIND(C,Name='rcapGetFaceGroup')
     implicit none
-	character(len=1), intent(in) :: dataname
+    character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(2*num), intent(out) :: faceArray
   end subroutine
@@ -272,29 +272,29 @@ interface
   end subroutine
   function rcapLoadGFFile_C(gffile,bounfile) BIND(C,Name='rcapLoadGFFile')
     implicit none
-	integer(kind=4) rcapLoadGFFile_C 
+    integer(kind=4) rcapLoadGFFile_C 
     character(len=1), intent(in) :: gffile
     character(len=1), intent(in) :: bounfile
   end function
   function rcapLoadHECFile_C(hecfile) BIND(C,Name='rcapLoadHECFile')
     implicit none
-	integer(kind=4) rcapLoadHECFile_C 
+    integer(kind=4) rcapLoadHECFile_C 
     character(len=1), intent(in) :: hecfile
   end function
   function rcapSaveGFFile_C(gffile,bounfile) BIND(C,Name='rcapSaveGFFile')
     implicit none
-	integer(kind=4) rcapSaveGFFile_C 
+    integer(kind=4) rcapSaveGFFile_C 
     character(len=1), intent(in) :: gffile
     character(len=1), intent(in) :: bounfile
   end function
   function rcapSaveHECFile_C(hecfile) BIND(C,Name='rcapSaveHECFile')
     implicit none
-	integer(kind=4) rcapSaveHECFile_C 
+    integer(kind=4) rcapSaveHECFile_C 
     character(len=1), intent(in) :: hecfile
   end function
   function rcapSaveRNFFile_C(rnffile) BIND(C,Name='rcapSaveRNFFile')
     implicit none
-	integer(kind=4) rcapSaveRNFFile_C 
+    integer(kind=4) rcapSaveRNFFile_C 
     character(len=1), intent(in) :: rnffile
   end function
   subroutine rcapRefineFFbModel() BIND(C,Name='rcapRefineFFbModel')
@@ -310,7 +310,7 @@ contains
   end Function
   subroutine rcapAppendNodeGroup(dataname,num,nodeArray)
     implicit none
-	character(len=*), intent(in) :: dataname
+    character(len=*), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(in) :: nodeArray
     call rcapAppendNodeGroup_C(cstring(dataname),num,nodeArray)
@@ -323,7 +323,7 @@ contains
   end function
   subroutine rcapGetNodeGroup(dataname,num,nodeArray)
     implicit none
-	character(len=*), intent(in) :: dataname
+    character(len=*), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(out) :: nodeArray
     call rcapGetNodeGroup_C(cstring(dataname),num,nodeArray)
@@ -343,7 +343,7 @@ contains
   end function
   subroutine rcapGetBNodeGroup(dataname,num,nodeArray)
     implicit none
-	character(len=*), intent(in) :: dataname
+    character(len=*), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(out) :: nodeArray
     call rcapGetBNodeGroup_C(cstring(dataname),num,nodeArray)
@@ -364,7 +364,7 @@ contains
   end function
   subroutine rcapGetBNodeVarInt(dataname,num,nodeArray,nodeVars)
     implicit none
-	character(len=*), intent(in) :: dataname
+    character(len=*), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(out) :: nodeArray
     integer(kind=4), dimension(num), intent(in) :: nodeVars
@@ -372,7 +372,7 @@ contains
   end subroutine
   subroutine rcapAppendElementGroup(dataname,num,elementArray)
     implicit none
-	character(len=*), intent(in) :: dataname
+    character(len=*), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(in) :: elementArray
     call rcapAppendElementGroup_C(cstring(dataname),num,elementArray)
@@ -385,7 +385,7 @@ contains
   end function
   subroutine rcapGetElementGroup(dataname,num,elementArray)
     implicit none
-	character(len=*), intent(in) :: dataname
+    character(len=*), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(out) :: elementArray
     call rcapGetElementGroup_C(cstring(dataname),num,elementArray)
@@ -405,7 +405,7 @@ contains
   end function
   subroutine rcapGetFaceGroup(dataname,num,faceArray)
     implicit none
-	character(len=*), intent(in) :: dataname
+    character(len=*), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(2*num), intent(out) :: faceArray
     call rcapGetFaceGroup_C(cstring(dataname),num,faceArray)
@@ -423,33 +423,33 @@ contains
   end subroutine
   function rcapLoadGFFile(gffile,bounfile)
     implicit none
-	integer(kind=4) rcapLoadGFFile
+    integer(kind=4) rcapLoadGFFile
     character(len=*), intent(in) :: gffile
     character(len=*), intent(in) :: bounfile
     rcapLoadGFFile = rcapLoadGFFile_C(cstring(gffile),cstring(bounfile))
   end function
   function rcapLoadHECFile(hecfile)
     implicit none
-	integer(kind=4) rcapLoadHECFile
+    integer(kind=4) rcapLoadHECFile
     character(len=*), intent(in) :: hecfile
     rcapLoadHECFile = rcapLoadHECFile_C(cstring(hecfile))
   end function
   function rcapSaveGFFile(gffile,bounfile)
     implicit none
-	integer(kind=4) rcapSaveGFFile 
+    integer(kind=4) rcapSaveGFFile 
     character(len=*), intent(in) :: gffile
     character(len=*), intent(in) :: bounfile
     rcapSaveGFFile = rcapSaveGFFile_C(cstring(gffile),cstring(bounfile))
   end function
   function rcapSaveHECFile(hecfile)
     implicit none
-	integer(kind=4) rcapSaveHECFile
+    integer(kind=4) rcapSaveHECFile
     character(len=*), intent(in) :: hecfile
     rcapSaveHECFile = rcapSaveHECFile_C(cstring(hecfile))
   end function
   function rcapSaveRNFFile(rnffile)
     implicit none
-	integer(kind=4) rcapSaveRNFFile
+    integer(kind=4) rcapSaveRNFFile
     character(len=*), intent(in) :: rnffile
     rcapSaveRNFFile = rcapSaveRNFFile_C(cstring(rnffile))
   end function

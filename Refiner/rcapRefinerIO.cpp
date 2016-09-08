@@ -109,7 +109,7 @@ void rcapRefineFFbModel( void )
 		++dIterFree;
 		++i;
 	}
-	rcapAppendBNodeVarInt( "BC", dataNum, nodeArray, nodeVars );
+	rcapAppendBNodeVarInt( "BC", &dataNum, nodeArray, nodeVars );
 	delete[] nodeArray;
 	delete[] nodeVars;
 	REVOCAP_Debug("data size = %d\n", rcapGetBNodeVarIntCount("BC") );
@@ -136,13 +136,13 @@ void rcapRefineFFbModel( void )
 	// count refined node table
 	int32_t refineNum = 0;
 	int32_t refineNodeCount = 0;
-	refineNodeCount = static_cast<int32_t>(rcapRefineElementMulti( elementCount, typeTable, nodeTable, refineNum, NULL, NULL ));
+	refineNodeCount = static_cast<int32_t>(rcapRefineElementMulti( &elementCount, typeTable, nodeTable, &refineNum, NULL, NULL ));
 	REVOCAP_Debug("refineElementCount = %d, refineNodeTableSize = %d\n", refineNum, refineNodeCount);
 	int32_t* refineNodeTable = new int32_t[refineNodeCount];
 	int8_t* refineTypeTable = new int8_t[refineNum];
 	refineNodeTable[0] = 0;
 	REVOCAP_Debug("RefineElement\n");
-	rcapRefineElementMulti( elementCount, typeTable, nodeTable, refineNum, refineTypeTable, refineNodeTable );
+	rcapRefineElementMulti( &elementCount, typeTable, nodeTable, &refineNum, refineTypeTable, refineNodeTable );
 	REVOCAP_Debug("Commit\n");
 	rcapCommit();
 

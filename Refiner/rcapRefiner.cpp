@@ -74,10 +74,10 @@ struct rcapRefinerInfo rcapRefinerDoc;
 
 void rcapGetVersion( void )
 {
-	puts("REVOCAP_Refiner Version 1.1.02 (2013/06/14)");
+	puts("REVOCAP_Refiner Version 1.2.01 (2016/09/30)");
 }
 
-void rcapInitRefiner(const int32_t &node_Offset,const int32_t &element_Offset)
+void rcapInitRefiner(const int32_t* node_Offset,const int32_t* element_Offset)
 {
 	REVOCAP_Debug("rcapInitRefiner start\n");
 	rcapRefinerDoc.mesh = NULL;
@@ -85,8 +85,8 @@ void rcapInitRefiner(const int32_t &node_Offset,const int32_t &element_Offset)
 	rcapRefinerDoc.boundaryRefiner = NULL;
 	rcapRefinerDoc.middleMan = NULL;
 	rcapRefinerDoc.smoother = NULL;
-	rcapRefinerDoc.nodeOffset = node_Offset;
-	rcapRefinerDoc.elementOffset = element_Offset;
+	rcapRefinerDoc.nodeOffset = *node_Offset;
+	rcapRefinerDoc.elementOffset = *element_Offset;
 	// Refiner で offset 値の差分は吸収しているため
 	// 内部のメッシュはすべて 0 始まりとしてよい
 	// maxElementId は offset 後の値
@@ -164,12 +164,13 @@ void rcapTermRefiner( void )
 	REVOCAP_Debug("rcapTermRefiner finish\n");
 }
 
-void rcapSetNode64( const int32_t &num, float64_t* coords, int32_t* globalIds, int32_t* localIds )
+void rcapSetNode64( const int32_t* _num, float64_t* coords, int32_t* globalIds, int32_t* localIds )
 {
 	REVOCAP_Debug("rcapSetNode64 start\n");
-	if(rcapRefinerDoc.mesh == NULL){
+	if(rcapRefinerDoc.mesh == NULL || _num==NULL){
 		return;
 	}
+	int32_t num = *_num;
 	kmb::MiddleNodeManagerWithShape* middleNodeManagerWithShape
 		= dynamic_cast<kmb::MiddleNodeManagerWithShape*>( rcapRefinerDoc.middleMan );
 	if( localIds==NULL || localIds[0] < rcapRefinerDoc.nodeOffset ){
@@ -229,12 +230,13 @@ void rcapSetNode64( const int32_t &num, float64_t* coords, int32_t* globalIds, i
 	REVOCAP_Debug("rcapSetNode64 finish\n");
 }
 
-void rcapSetNode32( const int32_t &num, float32_t* coords, int32_t* globalIds, int32_t* localIds )
+void rcapSetNode32( const int32_t* _num, float32_t* coords, int32_t* globalIds, int32_t* localIds )
 {
 	REVOCAP_Debug("rcapSetNode32 start\n");
-	if(rcapRefinerDoc.mesh == NULL){
+	if(rcapRefinerDoc.mesh == NULL||_num==NULL){
 		return;
 	}
+	int32_t num = *_num;
 	kmb::MiddleNodeManagerWithShape* middleNodeManagerWithShape
 		= dynamic_cast<kmb::MiddleNodeManagerWithShape*>( rcapRefinerDoc.middleMan );
 	if( localIds==NULL || localIds[0] < rcapRefinerDoc.nodeOffset ){
@@ -305,64 +307,76 @@ int32_t rcapGetNodeCount( void )
 	}
 }
 
-void rcapGetNode64( const int32_t &num, int32_t* localIds, float64_t* coords )
+void rcapGetNode64( const int32_t* _num, int32_t* localIds, float64_t* coords )
 {
 	REVOCAP_Debug("rcapGetNode64 start\n");
-	if( rcapRefinerDoc.mesh != NULL ){
-		kmb::Point3D point;
-		for(int32_t i=0;i<num;++i){
-			rcapRefinerDoc.mesh->getNode(static_cast<kmb::nodeIdType>(localIds[i]-rcapRefinerDoc.nodeOffset),point);
-			coords[3*i]   = point.x();
-			coords[3*i+1] = point.y();
-			coords[3*i+2] = point.z();
-		}
+	if( rcapRefinerDoc.mesh == NULL || _num == NULL ){
+		return;
+	}
+	int32_t num = *_num;
+	kmb::Point3D point;
+	for(int32_t i=0;i<num;++i){
+		rcapRefinerDoc.mesh->getNode(static_cast<kmb::nodeIdType>(localIds[i]-rcapRefinerDoc.nodeOffset),point);
+		coords[3*i]   = point.x();
+		coords[3*i+1] = point.y();
+		coords[3*i+2] = point.z();
 	}
 	REVOCAP_Debug("rcapGetNode64 finish\n");
 }
 
-void rcapGetNode32( const int32_t &num, int32_t* localIds, float32_t* coords )
+void rcapGetNode32( const int32_t* _num, int32_t* localIds, float32_t* coords )
 {
-	if( rcapRefinerDoc.mesh != NULL ){
-		kmb::Point3D point;
-		for(int32_t i=0;i<num;++i){
-			rcapRefinerDoc.mesh->getNode(static_cast<kmb::nodeIdType>(localIds[i]-rcapRefinerDoc.nodeOffset),point);
-			coords[3*i]   = static_cast<float>(point.x());
-			coords[3*i+1] = static_cast<float>(point.y());
-			coords[3*i+2] = static_cast<float>(point.z());
-		}
+	REVOCAP_Debug("rcapGetNode32 start\n");
+	if( rcapRefinerDoc.mesh == NULL || _num == NULL ){
+		return;
 	}
+	int32_t num = *_num;
+	kmb::Point3D point;
+	for(int32_t i=0;i<num;++i){
+		rcapRefinerDoc.mesh->getNode(static_cast<kmb::nodeIdType>(localIds[i]-rcapRefinerDoc.nodeOffset),point);
+		coords[3*i]   = static_cast<float>(point.x());
+		coords[3*i+1] = static_cast<float>(point.y());
+		coords[3*i+2] = static_cast<float>(point.z());
+	}
+	REVOCAP_Debug("rcapGetNode32 finish\n");
 }
 
-void rcapGetNodeSeq64( const int32_t &num, const int32_t &initId, float64_t* coords )
+void rcapGetNodeSeq64( const int32_t* _num, const int32_t* _initId, float64_t* coords )
 {
+	if( rcapRefinerDoc.mesh == NULL || _num == NULL || _initId == NULL ){
+		return;
+	}
+	int32_t num = *_num;
+	int32_t initId = *_initId;
 	REVOCAP_Debug("rcapGetNodeSeq64 start num = %d initId = %d\n", num, initId);
-	if( rcapRefinerDoc.mesh != NULL ){
-		int32_t ini = initId - rcapRefinerDoc.nodeOffset;
-		kmb::Point3D point;
-		for(int32_t i=ini;i<ini+num;++i){
-			rcapRefinerDoc.mesh->getNode(static_cast<kmb::nodeIdType>(i),point);
-			coords[3*i]   = point.x();
-			coords[3*i+1] = point.y();
-			coords[3*i+2] = point.z();
-		}
+	int32_t ini = initId - rcapRefinerDoc.nodeOffset;
+	kmb::Point3D point;
+	for(int32_t i=ini;i<ini+num;++i){
+		rcapRefinerDoc.mesh->getNode(static_cast<kmb::nodeIdType>(i),point);
+		coords[3*i]   = point.x();
+		coords[3*i+1] = point.y();
+		coords[3*i+2] = point.z();
 	}
 	REVOCAP_Debug("rcapGetNodeSeq64 finish\n");
 }
 
-void rcapGetNodeSeq32( size_t num, size_t initId, float32_t* coords )
+void rcapGetNodeSeq32( const int32_t* _num, const int32_t* _initId, float32_t* coords )
 {
-	REVOCAP_Debug("rcapGetNodeSeq64 start num = %d initId = %d\n", num, initId);
-	if( rcapRefinerDoc.mesh != NULL ){
-		size_t ini = initId - rcapRefinerDoc.nodeOffset;
-		kmb::Point3D point;
-		for(size_t i=ini;i<ini+num;++i){
-			rcapRefinerDoc.mesh->getNode(static_cast<kmb::nodeIdType>(i),point);
-			coords[3*i]   = static_cast<float>(point.x());
-			coords[3*i+1] = static_cast<float>(point.y());
-			coords[3*i+2] = static_cast<float>(point.z());
-		}
+	if( rcapRefinerDoc.mesh == NULL || _num == NULL || _initId == NULL ){
+		return;
 	}
-	REVOCAP_Debug("rcapGetNodeSeq64 finish\n");
+	int32_t num = *_num;
+	int32_t initId = *_initId;
+	REVOCAP_Debug("rcapGetNodeSeq32 start num = %d initId = %d\n", num, initId);
+	int32_t ini = initId - rcapRefinerDoc.nodeOffset;
+	kmb::Point3D point;
+	for(int32_t i=ini;i<ini+num;++i){
+		rcapRefinerDoc.mesh->getNode(static_cast<kmb::nodeIdType>(i),point);
+		coords[3*i]   = static_cast<float>(point.x());
+		coords[3*i+1] = static_cast<float>(point.y());
+		coords[3*i+2] = static_cast<float>(point.z());
+	}
+	REVOCAP_Debug("rcapGetNodeSeq32 finish\n");
 }
 
 void rcapSetCADFilename( const char* filename )
@@ -428,9 +442,9 @@ void rcapWriteFittingFile( const char* filename )
 	rnfIO.appendDataToRNFFile( filename, rcapRefinerDoc.mesh, "fitting" );
 }
 
-void rcapSetSecondFitting( const int32_t &flag )
+void rcapSetSecondFitting( const int32_t* flag )
 {
-	if( flag != 0 ){
+	if( *flag != 0 ){
 		rcapRefinerDoc.refiner->setSecondFitting(true);
 		rcapRefinerDoc.boundaryRefiner->setSecondFitting(true);
 	}else{
@@ -439,9 +453,9 @@ void rcapSetSecondFitting( const int32_t &flag )
 	}
 }
 
-void rcapSetSmoothing( const int32_t &flag )
+void rcapSetSmoothing( const int32_t* flag )
 {
-	if( flag != 0 ){
+	if( *flag != 0 ){
 		rcapRefinerDoc.smoother = new kmb::MeshSmoother( rcapRefinerDoc.mesh );
 	}else{
 		if( rcapRefinerDoc.smoother ){
@@ -465,10 +479,15 @@ void rcapSetPartitionFilename( const char* filename )
 	}
 }
 
-int32_t rcapRefineElement( const int32_t &num, const int8_t &etype, int32_t* nodeArray, int32_t* resultNodeArray )
+int32_t rcapRefineElement( const int32_t* _num, const int8_t* _etype, int32_t* nodeArray, int32_t* resultNodeArray )
 {
+	if( _num == NULL || _etype == NULL ){
+		return -1;
+	}
+	int32_t num = *_num;
+	int8_t etype = *_etype;
 	REVOCAP_Debug("rcapRefineElement start\n");
-	int32_t refinedNum = rcapGetRefineElementCount(num,etype);
+	int32_t refinedNum = rcapGetRefineElementCount(_num,_etype);
 	// NULL 値を入れた時は個数だけを返す
 	if( resultNodeArray == NULL || resultNodeArray[0] < 0 ||
 		nodeArray == NULL || nodeArray[0] < 0 )
@@ -514,8 +533,10 @@ int32_t rcapRefineElement( const int32_t &num, const int8_t &etype, int32_t* nod
 	return count;
 }
 
-int32_t rcapGetRefineElementCount( const int32_t &num, const int8_t &etype )
+int32_t rcapGetRefineElementCount( const int32_t* _num, const int8_t* _etype )
 {
+	int32_t num = *_num;
+	int8_t etype = *_etype;
 	int32_t refinedNum = 0;
 	switch( etype ){
 		case kmb::SEGMENT:		refinedNum = 2*num;	break;
@@ -537,8 +558,9 @@ int32_t rcapGetRefineElementCount( const int32_t &num, const int8_t &etype )
 	return refinedNum;
 }
 
-int32_t rcapRefineElementMulti( const int32_t &num, int8_t* etypeArray, int32_t* nodeArray, int32_t &refinedNum, int8_t* resultEtypeArray, int32_t* resultNodeArray )
+int32_t rcapRefineElementMulti( const int32_t* _num, int8_t* etypeArray, int32_t* nodeArray, int32_t* refinedNum, int8_t* resultEtypeArray, int32_t* resultNodeArray )
 {
+	int32_t num = *_num;
 	REVOCAP_Debug("rcapRefineElementMulti start\n");
 	if( num <= 0 || etypeArray == NULL || etypeArray[0] < 0 ){
 		return 0;
@@ -547,13 +569,13 @@ int32_t rcapRefineElementMulti( const int32_t &num, int8_t* etypeArray, int32_t*
 	REVOCAP_Debug("rcapRefineElementMulti argument refinedNum = %d\n", *refinedNum);
 
 	// 細分した節点配列の個数と細分した要素の個数を計算する
-	refinedNodeArraySize = rcapGetRefineElementMultiCount(num,etypeArray,refinedNum);
+	refinedNodeArraySize = rcapGetRefineElementMultiCount(_num,etypeArray,refinedNum);
 	// 初期化されているときに refinedElementSize = 0 とは限らないことに注意
 	if( resultNodeArray == NULL || resultNodeArray[0] < 0 || nodeArray == NULL || nodeArray[0] < 0 ){
 		return refinedNodeArraySize;
 	}
 
-	int32_t refinedElementSize = refinedNum;
+	int32_t refinedElementSize = *refinedNum;
 	std::fill( resultNodeArray, resultNodeArray+refinedNodeArraySize, kmb::nullNodeId );
 
 	REVOCAP_Debug("rcapRefineElementMulti Org Element Count = %d\n", num);
@@ -608,12 +630,13 @@ int32_t rcapRefineElementMulti( const int32_t &num, int8_t* etypeArray, int32_t*
 		delete[] rEtypeArray;
 	}
 	REVOCAP_Debug("rcapRefineElementMulti finish\n");
-	refinedNum = refinedElementSize;
+	*refinedNum = refinedElementSize;
 	return refinedNodeArraySize;
 }
 
-int32_t rcapGetRefineElementMultiCount( const int32_t &num, int8_t* etypeArray, int32_t &refinedNum )
+int32_t rcapGetRefineElementMultiCount( const int32_t* _num, int8_t* etypeArray, int32_t* refinedNum )
 {
+	int32_t num = *_num;
 	if( num <= 0 || etypeArray == NULL || etypeArray[0] < 0 ){
 		return 0;
 	}
@@ -684,7 +707,7 @@ int32_t rcapGetRefineElementMultiCount( const int32_t &num, int8_t* etypeArray, 
 			break;
 		}
 	}
-	refinedNum = refinedElementSize;
+	*refinedNum = refinedElementSize;
 	return refinedNodeArraySize;
 }
 
@@ -739,12 +762,12 @@ int32_t rcapGetMiddle( int8_t etype, int32_t* originalNodeArray )
 	}
 }
 
-void rcapAppendNodeGroup( const char dataname[80], const int32_t &num, const int32_t* nodeArray )
+void rcapAppendNodeGroup( const char dataname[80], const int32_t* num, const int32_t* nodeArray )
 {
-	REVOCAP_Debug("Append Node Group [%s] %d\n",dataname,num);
+	REVOCAP_Debug("Append Node Group [%s] %d\n",dataname,*num);
 	kmb::DataBindings* data = rcapRefinerDoc.mesh->createDataBindings( dataname, kmb::DataBindings::NodeGroup, kmb::PhysicalValue::None, "NG" );
 	if( data ){
-		for(int i=0;i<num;++i){
+		for(int i=0;i<*num;++i){
 			data->addId( static_cast<kmb::nodeIdType>(nodeArray[i]) - rcapRefinerDoc.nodeOffset );
 		}
 		rcapRefinerDoc.refiner->appendData( dataname, "NG" );
@@ -756,7 +779,7 @@ int32_t rcapGetNodeGroupCount( const char dataname[80] )
 	return static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( dataname, "NG" ));
 }
 
-void rcapGetNodeGroup( const char dataname[80], const int32_t &num, int32_t* nodeArray )
+void rcapGetNodeGroup( const char dataname[80], const int32_t* num, int32_t* nodeArray )
 {
 	REVOCAP_Debug("Get Node Group [%s]\n",dataname);
 	const kmb::DataBindings* data = rcapRefinerDoc.mesh->getDataBindingsPtr( dataname, "NG" );
@@ -764,7 +787,7 @@ void rcapGetNodeGroup( const char dataname[80], const int32_t &num, int32_t* nod
 		kmb::DataBindings::const_iterator dIter = data->begin();
 		int32_t i = 0;
 		while( !dIter.isFinished() ){
-			if( i > num ){
+			if( i > *num ){
 				break;
 			}
 			nodeArray[i] = dIter.getId() + rcapRefinerDoc.nodeOffset;
@@ -774,12 +797,12 @@ void rcapGetNodeGroup( const char dataname[80], const int32_t &num, int32_t* nod
 	}
 }
 
-void rcapAppendBNodeGroup( const char dataname[80], const int32_t &num, int32_t* nodeArray )
+void rcapAppendBNodeGroup( const char dataname[80], const int32_t* num, int32_t* nodeArray )
 {
 	REVOCAP_Debug("Append Boundary Node Group [%s]\n",dataname);
 	kmb::DataBindings* data = rcapRefinerDoc.mesh->createDataBindings( dataname, kmb::DataBindings::NodeGroup, kmb::PhysicalValue::None, "BNG" );
 	if( data ){
-		for(int32_t i=0;i<num;++i){
+		for(int32_t i=0;i<*num;++i){
 			data->addId( static_cast<kmb::nodeIdType>(nodeArray[i]) - rcapRefinerDoc.nodeOffset );
 		}
 		rcapRefinerDoc.boundaryRefiner->appendData( dataname, "BNG" );
@@ -791,7 +814,7 @@ int32_t rcapGetBNodeGroupCount( const char dataname[80] )
 	return static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( dataname, "BNG" ));
 }
 
-void rcapGetBNodeGroup( const char dataname[80], const int32_t &num, int32_t* nodeArray )
+void rcapGetBNodeGroup( const char dataname[80], const int32_t* num, int32_t* nodeArray )
 {
 	REVOCAP_Debug("Get Boundary Node Group [%s]\n",dataname);
 	const kmb::DataBindings* data = rcapRefinerDoc.mesh->getDataBindingsPtr( dataname, "BNG" );
@@ -799,7 +822,7 @@ void rcapGetBNodeGroup( const char dataname[80], const int32_t &num, int32_t* no
 		kmb::DataBindings::const_iterator dIter = data->begin();
 		int32_t i = 0;
 		while( !dIter.isFinished() ){
-			if( i > num ){
+			if( i > *num ){
 				break;
 			}
 			nodeArray[i] = dIter.getId() + rcapRefinerDoc.nodeOffset;
@@ -809,13 +832,13 @@ void rcapGetBNodeGroup( const char dataname[80], const int32_t &num, int32_t* no
 	}
 }
 
-void rcapAppendBNodeVarInt( const char dataname[80], const int32_t &num, int32_t* nodeArray, int32_t* nodeVars )
+void rcapAppendBNodeVarInt( const char dataname[80], const int32_t* num, int32_t* nodeArray, int32_t* nodeVars )
 {
 	REVOCAP_Debug("Append Boundary Node Variable Int [%s]\n",dataname);
 	kmb::DataBindings* data = new kmb::IntegerMapBindings();
 	if( data ){
 		rcapRefinerDoc.mesh->setDataBindingsPtr( dataname, data, "BNVI" );
-		for(int32_t i=0;i<num;++i){
+		for(int32_t i=0;i<*num;++i){
 			long l = static_cast<long>(nodeVars[i]);
 			data->setPhysicalValue( static_cast<kmb::nodeIdType>(nodeArray[i]) - rcapRefinerDoc.nodeOffset, &l );
 		}
@@ -828,7 +851,7 @@ int32_t rcapGetBNodeVarIntCount( const char dataname[80] )
 	return static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( dataname, "BNVI" ));
 }
 
-void rcapGetBNodeVarInt( const char dataname[80], const int32_t &num, int32_t* nodeArray, int32_t* nodeVars  )
+void rcapGetBNodeVarInt( const char dataname[80], const int32_t* num, int32_t* nodeArray, int32_t* nodeVars  )
 {
 	REVOCAP_Debug("Get Boundary Node Variable Int [%s]\n",dataname);
 	const kmb::DataBindings* data = rcapRefinerDoc.mesh->getDataBindingsPtr( dataname, "BNVI" );
@@ -838,7 +861,7 @@ void rcapGetBNodeVarInt( const char dataname[80], const int32_t &num, int32_t* n
 		kmb::DataBindings::const_iterator dIter = data->begin();
 		int32_t i = 0;
 		while( !dIter.isFinished() ){
-			if( i > num ){
+			if( i > *num ){
 				break;
 			}
 			long l = 0;
@@ -851,12 +874,12 @@ void rcapGetBNodeVarInt( const char dataname[80], const int32_t &num, int32_t* n
 	}
 }
 
-void rcapAppendElementGroup( const char dataname[80], const int32_t &num, int32_t* elementArray )
+void rcapAppendElementGroup( const char dataname[80], const int32_t* num, int32_t* elementArray )
 {
 	REVOCAP_Debug("Append Element Group [%s]\n",dataname);
 	kmb::DataBindings* data = rcapRefinerDoc.mesh->createDataBindings( dataname, kmb::DataBindings::ElementGroup, kmb::PhysicalValue::None, "EG" );
 	if( data ){
-		for(int32_t i=0;i<num;++i){
+		for(int32_t i=0;i<*num;++i){
 			data->addId( static_cast<kmb::elementIdType>(elementArray[i]-rcapRefinerDoc.elementOffset) );
 		}
 		rcapRefinerDoc.refiner->appendData( dataname, "EG" );
@@ -868,14 +891,14 @@ int32_t rcapGetElementGroupCount( const char dataname[80] )
 	return static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( dataname, "EG" ));
 }
 
-void rcapGetElementGroup( const char dataname[80], const int32_t &num, int32_t* elementArray )
+void rcapGetElementGroup( const char dataname[80], const int32_t* num, int32_t* elementArray )
 {
 	const kmb::DataBindings* data = rcapRefinerDoc.mesh->getDataBindingsPtr( dataname, "EG" );
 	if( data && data->getBindingMode() == kmb::DataBindings::ElementGroup){
 		kmb::DataBindings::const_iterator dIter = data->begin();
 		int32_t i = 0;
 		while( !dIter.isFinished() ){
-			if( i > num ){
+			if( i > *num ){
 				break;
 			}
 			elementArray[i] = dIter.getId() + rcapRefinerDoc.elementOffset;
@@ -885,12 +908,12 @@ void rcapGetElementGroup( const char dataname[80], const int32_t &num, int32_t* 
 	}
 }
 
-void rcapAppendFaceGroup( const char dataname[80], const int32_t &num, int32_t* faceArray )
+void rcapAppendFaceGroup( const char dataname[80], const int32_t* num, int32_t* faceArray )
 {
 	REVOCAP_Debug("Append Face Group [%s]\n",dataname);
 	kmb::DataBindings* data = rcapRefinerDoc.mesh->createDataBindings( dataname, kmb::DataBindings::FaceGroup, kmb::PhysicalValue::None, "FG" );
 	if( data ){
-		for(int32_t i=0;i<num;++i){
+		for(int32_t i=0;i<*num;++i){
 			kmb::Face f( static_cast<kmb::elementIdType>(faceArray[2*i]-rcapRefinerDoc.elementOffset), faceArray[2*i+1] );
 			data->addId( f );
 		}
@@ -903,7 +926,7 @@ int32_t rcapGetFaceGroupCount( const char dataname[80] )
 	return static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( dataname, "FG" ));
 }
 
-void rcapGetFaceGroup( const char dataname[80], const int32_t &num, int32_t* faceArray )
+void rcapGetFaceGroup( const char dataname[80], const int32_t* num, int32_t* faceArray )
 {
 	const kmb::DataBindings* data = rcapRefinerDoc.mesh->getDataBindingsPtr( dataname, "FG" );
 	if( data && data->getBindingMode() == kmb::DataBindings::FaceGroup ){
@@ -911,7 +934,7 @@ void rcapGetFaceGroup( const char dataname[80], const int32_t &num, int32_t* fac
 		int32_t i = 0;
 		kmb::Face f;
 		while( !dIter.isFinished() ){
-			if( i > num ){
+			if( i > *num ){
 				break;
 			}
 			dIter.getFace( f );
