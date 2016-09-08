@@ -100,14 +100,12 @@ kmb::MeshData::getNodeDim(void) const
 	}
 }
 
-kmb::Matrix4x4*
-kmb::MeshData::getCoordMatrix(void)
+kmb::Matrix4x4* kmb::MeshData::getCoordMatrix(void)
 {
 	return coordMatrix;
 }
 
-const kmb::Matrix4x4*
-kmb::MeshData::getCoordMatrix(void) const
+const kmb::Matrix4x4* kmb::MeshData::getCoordMatrix(void) const
 {
 	return coordMatrix;
 }

@@ -32,6 +32,7 @@ kmb::TriangleBucketArea::TriangleBucketArea(const kmb::BoxRegion &box,int xnum,i
 , points(NULL)
 , elements(NULL)
 , coordMatrix(NULL)
+, elemArea(NULL)
 {
 }
 

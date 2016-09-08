@@ -78,8 +78,7 @@ PROGRAM RefinerSample
        & tetras(4*I-3), tetras(4*I-2), tetras(4*I-1), tetras(4*I), I=1, elementCount)
 
 ! set conditions which are updated simultaneously
-! remark append CHAR(0)
-  str = "innovation project"//CHAR(0)
+  str = "innovation project"
   nodeCount = 3
   CALL rcapAppendNodeGroup(str,nodeCount,ng0)
   PRINT '("Node Group : Count ="I8)', nodeCount
@@ -131,7 +130,7 @@ PROGRAM RefinerSample
   CALL rcapCommit()
 
 ! get node group after refine
-  str = "innovation project"//CHAR(0)
+  str = "innovation project"
   res = rcapGetNodeGroupCount(str)
   ALLOCATE( result_ng0(res) )
   CALL rcapGetNodeGroup(str,res,result_ng0)

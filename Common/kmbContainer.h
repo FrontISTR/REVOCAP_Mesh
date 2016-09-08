@@ -21,7 +21,7 @@ namespace kmb{
 
 template<class T>
 void clearVector(std::vector<T*> container){
-	std::vector< T* >::iterator iter = container.begin();
+	typename std::vector< T* >::iterator iter = container.begin();
 	while( iter != container.end() ){
 		T* t = *iter;
 		if( t != NULL ){

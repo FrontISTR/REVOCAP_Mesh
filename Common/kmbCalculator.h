@@ -40,7 +40,6 @@ public:
 protected:
 	double sum;
 	int counter;
-
 };
 
 class Minimizer
@@ -54,6 +53,27 @@ public:
 	bool update(double value);
 	static double getMin(double x,double y);
 	static double getMin(double x,double y,double z);
+	// 最小値の順番を返す
+	template <typename T> static int minIndex(T x0, T x1, T x2) {
+		if (x0 <= x1) {
+			if (x0 <= x2) {
+				return 0;
+			}
+			else {
+				// 2 < 0 <= 1
+				return 2;
+			}
+		}
+		else {
+			if (x1 <= x2) {
+				return 1;
+			}
+			else {
+				// 2 < 1 < 0
+				return 2;
+			}
+		}
+	}
 protected:
 	double minValue;
 };
@@ -69,6 +89,25 @@ public:
 	bool update(double value);
 	static double getMax(double x,double y);
 	static double getMax(double x,double y,double z);
+	// 最大値の順番を返す
+	template <typename T> static int maxIndex(T x0, T x1, T x2) {
+		if (x0 >= x1) {
+			if (x0 >= x2) {
+				return 0;
+			}else {
+				// 2 > 0 >= 1
+				return 2;
+			}
+		}else {
+			if (x1 >= x2) {
+				return 1;
+			}
+			else {
+				// 2 > 1 > 0
+				return 2;
+			}
+		}
+	}
 protected:
 	double maxValue;
 };

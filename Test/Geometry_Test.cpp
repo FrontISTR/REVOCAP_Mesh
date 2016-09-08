@@ -1,6 +1,11 @@
 ﻿#define BOOST_TEST_MODULE GeometryTest
+
+#ifdef BOOST_TEST_NO_LIB
+#include <boost/test/included/unit_test.hpp>
+#else
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
+#endif
 
 #include "Geometry/kmbGeometry3D.h"
 #include "Geometry/kmbLine.h"

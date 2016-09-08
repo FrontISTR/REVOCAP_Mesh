@@ -231,7 +231,7 @@ double kmb::Point3D::distanceToTriangle(const Point3D& a, const Point3D& b, cons
 	flag = 0;
 	if (t[0] != 0.0) flag |= 0x01;
 	if (t[1] != 0.0) flag |= 0x02;
-	if (t[2] != 0.0) flag |= 0x04;
+	if (t[0] + t[1] != 1.0) flag |= 0x04;
 	nearest.x((1.0 - t[0] - t[1])*a.x() + t[0] * b.x() + t[1] * c.x());
 	nearest.y((1.0 - t[0] - t[1])*a.y() + t[0] * b.y() + t[1] * c.y());
 	nearest.z((1.0 - t[0] - t[1])*a.z() + t[0] * b.z() + t[1] * c.z());
@@ -239,8 +239,7 @@ double kmb::Point3D::distanceToTriangle(const Point3D& a, const Point3D& b, cons
 }
 
 // 内分点
-kmb::Point3D
-kmb::Point3D::dividingPoint(const Point3D& other,double m,double n) const
+kmb::Point3D kmb::Point3D::dividingPoint(const Point3D& other,double m,double n) const
 {
 	return Point3D(
 		(n*this->x() + m*other.x()) / (m+n), 
