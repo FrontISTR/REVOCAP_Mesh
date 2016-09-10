@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
-project(REVOCAP_Refiner_Sample)
+project(REVOCAP_Refiner_Sample C Fortran)
 set(REVOCAP_REFINER_VERSION "1.2.0")
-enable_language (Fortran)
 
 include_directories("${PROJECT_SOURCE_DIR}/..")
-include_directories("${PROJECT_BINARY_DIR}/../..")
+include_directories("${PROJECT_BINARY_DIR}/..")
 set(CMAKE_C_FLAGS_RELEASE "-Wall -O2")
 set(CMAKE_C_FLAGS_DEBUG "-Wall -g")
 
