@@ -75,9 +75,9 @@ int main(void)
 	int32_t i,j;
 
 	/* 節点番号のオフセット値を与える */
-	rcapInitRefiner( nodeOffset, elementOffset );
+	rcapInitRefiner( &nodeOffset, &elementOffset );
 	/* 座標値を Refiner に与える */
-	rcapSetNode64( nodeCount, coords, NULL, NULL );
+	rcapSetNode64( &nodeCount, coords, NULL, NULL );
 
 	printf("REVOCAP_Refiner sample program : Multi Type\n");
 	printf("----- Original Model -----\n");
@@ -86,19 +86,19 @@ int main(void)
 	nodeCount = rcapGetNodeCount();
 	assert( nodeCount == 10 );
 	printf("node:\n");
-	printf("  size: %zu\n", nodeCount );
+	printf("  size: %d\n", nodeCount );
 	printf("  coordinate:\n");
-	for(i=0;(size_t)i<nodeCount;++i){
+	for(i=0;i<nodeCount;++i){
 		printf("  - [%d, %f, %f, %f]\n", i+nodeOffset, coords[3*i], coords[3*i+1], coords[3*i+2] );
 	}
 
 	/* 細分前の要素数 */
 	assert( elementCount == 2 );
 	printf("element:\n");
-	printf("  - size: %zu\n", elementCount );
+	printf("  - size: %d\n", elementCount );
 	printf("    connectivity:\n");
 	j = 0;
-	for(i=0;(size_t)i<elementCount;++i){
+	for(i=0;i<elementCount;++i){
 		switch( etypes[i] ){
 		case RCAP_WEDGE:
 			printf("      - [%d, WEDGE, %d, %d, %d, %d, %d, %d]\n", i+elementOffset,
@@ -116,16 +116,16 @@ int main(void)
 	}
 
 	/* 節点グループの登録 */
-	rcapAppendNodeGroup("ng0",ng0Count,ng0);
+	rcapAppendNodeGroup("ng0",&ng0Count,ng0);
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	assert( ng0Count == 5 );
 	printf("data:\n");
 	printf("  - name: ng0\n");
 	printf("    mode: NODEGROUP\n");
 	printf("    vtype: NONE\n");
-	printf("    size: %zu\n",ng0Count);
+	printf("    size: %d\n",ng0Count);
 	printf("    id:\n");
-	for(i=0;(size_t)i<ng0Count;++i){
+	for(i=0;i<ng0Count;++i){
 		printf("    - %d\n", ng0[i]);
 	}
 
@@ -133,7 +133,7 @@ int main(void)
 	printf("---\n");
 
 	/* 細分後の要素を格納するのに必要な節点配列の大きさの取得 */
-	refineNodesArraySize = rcapGetRefineElementMultiCount( elementCount, etypes, refineElementCount );
+	refineNodesArraySize = rcapGetRefineElementMultiCount( &elementCount, etypes, &refineElementCount );
 	if( refineNodesArraySize == 0 ){
 		rcapTermRefiner();
 		return 0;
@@ -141,27 +141,27 @@ int main(void)
 	refineNodes = (int32_t*)calloc( refineNodesArraySize, sizeof(int32_t) );
 	/* 要素の型も受け取る場合 */
 	resultEtypes = (int8_t*)calloc( refineElementCount, sizeof(int8_t) );
-	rcapRefineElementMulti( elementCount, etypes, nodes, refineElementCount, resultEtypes, refineNodes );
+	rcapRefineElementMulti( &elementCount, etypes, nodes, &refineElementCount, resultEtypes, refineNodes );
 	rcapCommit();
 
 	/* 細分後の節点 */
 	refineNodeCount = rcapGetNodeCount();
 	resultCoords = (float64_t*)calloc( 3*refineNodeCount, sizeof(float64_t) );
-	rcapGetNodeSeq64( refineNodeCount, nodeOffset, resultCoords );
+	rcapGetNodeSeq64( &refineNodeCount, &nodeOffset, resultCoords );
 	printf("node:\n");
-	printf("  size: %zu\n", refineNodeCount );
+	printf("  size: %d\n", refineNodeCount );
 	printf("  coordinate:\n");
-	for(i=0;(size_t)i<refineNodeCount;++i){
+	for(i=0;i<refineNodeCount;++i){
 		printf("  - [%d, %f, %f, %f]\n", i+nodeOffset, resultCoords[3*i], resultCoords[3*i+1], resultCoords[3*i+2] );
 	}
 	free( resultCoords );
 
 	/* 細分後の要素 */
 	printf("element:\n");
-	printf("  - size: %zu\n", refineElementCount );
+	printf("  - size: %d\n", refineElementCount );
 	printf("    connectivity:\n");
 	j = 0;
-	for(i=0;(size_t)i<refineElementCount;++i){
+	for(i=0;i<refineElementCount;++i){
 		switch( resultEtypes[i] ){
 		case RCAP_WEDGE:
 			printf("      - [%d, WEDGE, %d, %d, %d, %d, %d, %d]\n", i+elementOffset,
@@ -183,14 +183,14 @@ int main(void)
 	/* 細分後の節点グループ */
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	result_ng0 = (int32_t*)calloc( ng0Count, sizeof(int32_t) );
-	rcapGetNodeGroup("ng0",ng0Count,result_ng0);
+	rcapGetNodeGroup("ng0",&ng0Count,result_ng0);
 	printf("data:\n");
 	printf("  - name: ng0\n");
 	printf("    mode: NODEGROUP\n");
 	printf("    vtype: NONE\n");
 	printf("    size: %d\n",ng0Count);
 	printf("    id:\n");
-	for(i=0;(size_t)i<ng0Count;++i){
+	for(i=0;i<ng0Count;++i){
 		printf("    - %d\n", result_ng0[i]);
 	}
 	free( result_ng0 );

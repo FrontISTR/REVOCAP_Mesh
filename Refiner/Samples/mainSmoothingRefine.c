@@ -62,7 +62,7 @@ int main(void)
 		2.000000, -0.30000000,  0.30000000,
 		2.000000, -0.30000000, -0.30000000,
 	};
-	size_t refineNodeCount = 0;
+	int32_t refineNodeCount = 0;
 	float64_t* resultCoords = NULL;
 	int32_t hexas[80] = {
 		0, 1, 13, 12, 4, 5, 17, 16,
@@ -83,46 +83,48 @@ int main(void)
 	int32_t* refine2Hexas = NULL;
 	int8_t etype = RCAP_HEXAHEDRON;
 	/* 初期節点の個数 */
-	size_t nodeCount = 24;
+	int32_t nodeCount = 24;
 	/* 初期要素の個数 */
-	size_t elementCount = 10;
+	int32_t elementCount = 10;
 	/* 細分後の要素の個数 */
-	size_t refineElementCount = 0;
+	int32_t refineElementCount = 0;
 
 	/* 境界条件（節点グループ） */
 	int32_t ng0[4] = {0,3,4,7};
 	int32_t* result_ng0 = NULL;
-	size_t ng0Count = 4;
+	int32_t ng0Count = 4;
 
 	/* カウンタ */
 	int32_t i;
+	/* フラグ */
+	int32_t flag = 1;
 
 	/* 節点番号のオフセット値を与える */
-	rcapInitRefiner( nodeOffset, elementOffset );
+	rcapInitRefiner( &nodeOffset, &elementOffset );
 	rcapSetCADFilename( "data/column2/column2.rnf" );
-	rcapSetSmoothing(1);
+	rcapSetSmoothing(&flag);
 
 	printf("REVOCAP_Refiner sample program : Fitting Smoothing Refine\n");
 	printf("----- Original Model -----\n");
 	printf("---\n");
 	/* 座標値を Refiner に与える */
 	/* 節点配列で与える局所節点番号と、CAD ファイルに記述してある大域節点番号との対応も与える */
-	rcapSetNode64( nodeCount, coords, NULL, NULL );
+	rcapSetNode64( &nodeCount, coords, NULL, NULL );
 	/* 細分前の節点数 */
 	nodeCount = rcapGetNodeCount();
 	assert( nodeCount == 24 );
 	printf("node:\n");
-	printf("  size: %zu\n", nodeCount );
+	printf("  size: %d\n", nodeCount );
 	printf("  coordinate:\n");
-	for(i=0;(size_t)i<nodeCount;++i){
+	for(i=0;i<nodeCount;++i){
 		printf("  - [%d, %f, %f, %f]\n", i+nodeOffset, coords[3*i], coords[3*i+1], coords[3*i+2] );
 	}
 	/* 細分前の要素数 */
 	assert( elementCount == 10 );
 	printf("element:\n");
-	printf("  - size: %zu\n", elementCount );
+	printf("  - size: %d\n", elementCount );
 	printf("    connectivity:\n");
-	for(i=0;(size_t)i<elementCount;++i){
+	for(i=0;i<elementCount;++i){
 		printf("      - [%d, HEXAHEDRON, %d, %d, %d, %d, %d, %d, %d, %d]\n", i+elementOffset,
 			hexas[8*i], hexas[8*i+1], hexas[8*i+2], hexas[8*i+3],
 			hexas[8*i+4], hexas[8*i+5], hexas[8*i+6], hexas[8*i+7]);
@@ -134,10 +136,10 @@ int main(void)
 	printf("    vtype: NONE\n");
 	printf("    size: %d\n",ng0Count);
 	printf("    id:\n");
-	rcapAppendNodeGroup("ng0",ng0Count,ng0);
+	rcapAppendNodeGroup("ng0",&ng0Count,ng0);
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	assert( ng0Count == 4 );
-	for(i=0;(size_t)i<ng0Count;++i){
+	for(i=0;i<ng0Count;++i){
 		printf("    - %d\n", ng0[i]);
 	}
 
@@ -146,19 +148,19 @@ int main(void)
 	printf("---\n");
 
 	/* 要素の細分 */
-	refineElementCount = rcapRefineElement( elementCount, etype, hexas, NULL );
+	refineElementCount = rcapRefineElement( &elementCount, &etype, hexas, NULL );
 	refineHexas = (int32_t*)calloc( 8*refineElementCount, sizeof(int32_t) );
-	elementCount = rcapRefineElement( elementCount, etype, hexas, refineHexas);
+	elementCount = rcapRefineElement( &elementCount, &etype, hexas, refineHexas);
 	rcapCommit();
 
 	/* 細分後の節点 */
 	refineNodeCount = rcapGetNodeCount();
 	printf("node:\n");
-	printf("  size: %zu\n", refineNodeCount );
+	printf("  size: %d\n", refineNodeCount );
 	printf("  coordinate:\n");
 	resultCoords = (float64_t*)calloc( 3*refineNodeCount, sizeof(float64_t) );
-	rcapGetNodeSeq64( refineNodeCount, nodeOffset, resultCoords );
-	for(i=0;(size_t)i<refineNodeCount;++i){
+	rcapGetNodeSeq64( &refineNodeCount, &nodeOffset, resultCoords );
+	for(i=0;i<refineNodeCount;++i){
 		printf("  - [%d, %f, %f, %f]\n", i+nodeOffset, resultCoords[3*i], resultCoords[3*i+1], resultCoords[3*i+2] );
 	}
 	free( resultCoords );
@@ -166,9 +168,9 @@ int main(void)
 
 	/* 細分後の要素 */
 	printf("element:\n");
-	printf("  - size: %zu\n", refineElementCount );
+	printf("  - size: %d\n", refineElementCount );
 	printf("    connectivity:\n");
-	for(i=0;(size_t)i<refineElementCount;++i){
+	for(i=0;i<refineElementCount;++i){
 		printf("      - [%d, HEXAHEDRON, %d, %d, %d, %d, %d, %d, %d, %d]\n", i+elementOffset,
 			refineHexas[8*i], refineHexas[8*i+1], refineHexas[8*i+2], refineHexas[8*i+3],
 			refineHexas[8*i+4], refineHexas[8*i+5], refineHexas[8*i+6], refineHexas[8*i+7] );
@@ -183,8 +185,8 @@ int main(void)
 	printf("    vtype: NONE\n");
 	printf("    size: %d\n",ng0Count);
 	printf("    id:\n");
-	rcapGetNodeGroup("ng0",ng0Count,result_ng0);
-	for(i=0;(size_t)i<ng0Count;++i){
+	rcapGetNodeGroup("ng0",&ng0Count,result_ng0);
+	for(i=0;i<ng0Count;++i){
 		printf("    - %d\n", result_ng0[i]);
 	}
 	free( result_ng0 );
@@ -197,9 +199,9 @@ int main(void)
 
 	/* 要素の細分 */
 	elementCount = refineElementCount;
-	refineElementCount = rcapRefineElement( elementCount, etype, refineHexas, NULL );
+	refineElementCount = rcapRefineElement( &elementCount, &etype, refineHexas, NULL );
 	refine2Hexas = (int32_t*)calloc( 8*refineElementCount, sizeof(int32_t) );
-	refineElementCount = rcapRefineElement( elementCount, etype, refineHexas, refine2Hexas );
+	refineElementCount = rcapRefineElement( &elementCount, &etype, refineHexas, refine2Hexas );
 	rcapCommit();
 
 	printf("----- Refined Model -----\n");
@@ -208,11 +210,11 @@ int main(void)
 	/* 細分後の節点 */
 	refineNodeCount = rcapGetNodeCount();
 	printf("node:\n");
-	printf("  size: %zu\n", refineNodeCount );
+	printf("  size: %d\n", refineNodeCount );
 	printf("  coordinate:\n");
 	resultCoords = (float64_t*)calloc( 3*refineNodeCount, sizeof(float64_t) );
-	rcapGetNodeSeq64( refineNodeCount, nodeOffset, resultCoords );
-	for(i=0;(size_t)i<refineNodeCount;++i){
+	rcapGetNodeSeq64( &refineNodeCount, &nodeOffset, resultCoords );
+	for(i=0;i<refineNodeCount;++i){
 		printf("  - [%d, %f, %f, %f]\n", i+nodeOffset, resultCoords[3*i], resultCoords[3*i+1], resultCoords[3*i+2] );
 	}
 	free( resultCoords );
@@ -220,9 +222,9 @@ int main(void)
 
 	/* 細分後の要素 */
 	printf("element:\n");
-	printf("  - size: %zu\n", refineElementCount );
+	printf("  - size: %d\n", refineElementCount );
 	printf("    connectivity:\n");
-	for(i=0;(size_t)i<refineElementCount;++i){
+	for(i=0;i<refineElementCount;++i){
 		printf("      - [%d, HEXAHEDRON, %d, %d, %d, %d, %d, %d, %d, %d]\n", i+elementOffset,
 			refine2Hexas[8*i], refine2Hexas[8*i+1], refine2Hexas[8*i+2], refine2Hexas[8*i+3],
 			refine2Hexas[8*i+4], refine2Hexas[8*i+5], refine2Hexas[8*i+6], refine2Hexas[8*i+7] );
@@ -237,8 +239,8 @@ int main(void)
 	printf("    vtype: NONE\n");
 	printf("    size: %d\n",ng0Count);
 	printf("    id:\n");
-	rcapGetNodeGroup("ng0",ng0Count,result_ng0);
-	for(i=0;(size_t)i<ng0Count;++i){
+	rcapGetNodeGroup("ng0",&ng0Count,result_ng0);
+	for(i=0;i<ng0Count;++i){
 		printf("    - %d\n", result_ng0[i]);
 	}
 
