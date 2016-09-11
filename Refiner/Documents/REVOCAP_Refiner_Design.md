@@ -3,7 +3,7 @@
 ## 概念
 
 REVOCAP_Refinerは単体のソフトウェアではなく、ソルバーおよびカップラに組み込まれて使われるFEM解析モデルの細分を行うライブラリである。
-<img src="Images/Concept.png" alt="Refiner概念図" width="400px">
+<img src="images/Concept.png" alt="Refiner概念図" width="400px">
 
 ## 目的
 
@@ -14,9 +14,9 @@ REVOCAP_Refinerは単体のソフトウェアではなく、ソルバーおよ�
 REVOCAP_Refiner はソルバーおよびマルチ力学エンジン（カップラ）に組み込まれて解析モデルの細分を行う。プレポスト・プロセッサーからは形状データ（ＣＡＤデータ）から生成されたモデル細分時の形状適合のための事前情報を受け取り、ソルバ内部でのモデル細分の時に利用する。このとき、ソルバおよびマルチ力学エンジン（カップラ）は形状適合情報については意識する必要はない。
 REVOCAP_Refiner の内部でのメッシュの処理については REVOCAP_PrePost のメッシュ処理部と共通の機能が多いため（特に汎用的な幾何処理およびメモリ処理関係）、転用して利用する。
 
-<img src="Images/REVOCAP_System.png" alt="REVOCAPシステム構成図" width="400px">
+<img src="images/REVOCAP_System.png" alt="REVOCAPシステム構成図" width="400px">
 
-<img src="Images/Refiner_System.png" alt="Refinerシステム構成図" width="400px">
+<img src="images/Refiner_System.png" alt="Refinerシステム構成図" width="400px">
 
 REVOCAP_Refiner はソルバおよびマルチ力学エンジン（カップラ）に組み込まれて解析モデルの細分を行う。プレポスト・プロセッサーからは形状データ（ＣＡＤデータ）から生成されたモデル細分時の形状適合のための事前情報を受け取り、ソルバ内部でのモデル細分の時に利用する。このとき、ソルバおよびマルチ力学エンジン（カップラ）は形状適合情報については意識する必要はない。
 REVOCAP_Refiner の内部でのメッシュの処理については REVOCAP_PrePost のメッシュ処理部と共通の機能が多いため（特に汎用的な幾何処理およびメモリ処理関係）、転用して利用する。

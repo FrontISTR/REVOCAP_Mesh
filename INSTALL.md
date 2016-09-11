@@ -1,15 +1,19 @@
 # REVOCAP_Mesh のインストール方法
 
+REVOCAP_Refiner のインストール方法については Refiner/INSTALL.md をご覧ください。
+
 ## Requirements
 
 - cmake-3.0 以上
 - swig (ruby/C++インターフェース生成が有効なもの)
-- OpenCASCADE Community Edition (oce)
+- OpenCASCADE Community Edition
 - OpenGL, GLU
-- GLEW
-- ruby
+- GLEW (Ver.2.0.0 で動作確認済み)
+- ruby (Ver.2.3 で動作確認済み)
+- boost (Ver.1.61.0 で動作確認済み）
 
 > cmake-2.8でもビルドは出来ますが、拡張モジュールの名前が`libXXX.so`になります。
+> boost は WITH_TEST=ON の時だけ利用します。
 
 ## Quick installation
 
@@ -35,6 +39,20 @@
 ```
 
 XXXRubyディレクトリはコンパイルの対象から外します。
+
+### MinGW でインストールする場合
+
+```txt
+export PATH=/mingw64/bin:$PATH
+cmake -G "MinGW Makefiles" ..
+mingw32-make
+```
+
+### OpenCASCADE を利用しない場合
+
+```txt
+% cmake -DWITH_OPENCASCADE=OFF ..
+```
 
 ### OpenCASCADE(oce)のインストール先
 

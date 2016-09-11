@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 project(REVOCAP_MESH CXX C Fortran)
-set(REVOCAP_MESH_VERSION "1.7.0")
+set(REVOCAP_MESH_VERSION "1.7.01")
 
 option(WITH_EXTENSION "Build with ruby extension libraries" ON)
 option(WITH_OPENCASCADE "Build with OpenCASCADE feature" ON)

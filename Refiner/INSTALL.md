@@ -18,7 +18,15 @@
 ### インストール先の変更
 
 ```txt
-% cmake -DCMAKE_INSTALL_PREFIX=$HOME/local ..
+% cmake -DCMAKE_INSTALL_PREFIX=$HOME/local ../Refiner
+```
+
+### MinGW でインストールする場合
+
+```txt
+export PATH=/mingw64/bin:$PATH
+cmake -G "MinGW Makefiles" ..
+mingw32-make
 ```
 
 ### Doxygen
@@ -26,7 +34,7 @@
 予め`doxygen`と`graphviz`をインストールする必要があります。
 
 ```txt
-% cmake -DBUILD_DOC ..
+% cmake -DBUILD_DOC=ON ../Refiner
 % make doc
 % firefox doc/html/index.html
 ```
