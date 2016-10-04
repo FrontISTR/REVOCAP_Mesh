@@ -73,6 +73,7 @@ add_subdirectory(RevocapIO) # RcapIO target,static library
 add_subdirectory(MeshGL)    # RcapMeshGL target, static library
 add_subdirectory(MeshGen)   # RcapMeshGen target, static library
 add_subdirectory(Shape)     # RcapShape target, static library
+add_subdirectory(Refiner)
 
 # Build swig modules
 if(WITH_EXTENSION)

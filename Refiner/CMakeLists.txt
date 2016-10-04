@@ -11,24 +11,36 @@ set(refiner_sources
   rcapRefinerInterface.F90
 )
 
-file(GLOB common_sources   "../Common/*.cpp")
-file(GLOB matrix_sources   "../Matrix/*.cpp")
-file(GLOB geometry_sources   "../Geometry/*.cpp")
-file(GLOB meshdb_sources   "../MeshDB/*.cpp")
-file(GLOB meshgen_sources   "../MeshGen/*.cpp")
-file(GLOB revocapio_sources   "../RevocapIO/*.cpp")
-file(GLOB shape_sources   "../Shape/*.cpp")
+#file(GLOB common_sources   "../Common/*.cpp")
+#file(GLOB matrix_sources   "../Matrix/*.cpp")
+#file(GLOB geometry_sources   "../Geometry/*.cpp")
+#file(GLOB meshdb_sources   "../MeshDB/*.cpp")
+#file(GLOB meshgen_sources   "../MeshGen/*.cpp")
+#file(GLOB revocapio_sources   "../RevocapIO/*.cpp")
+#file(GLOB shape_sources   "../Shape/*.cpp")
 
+add_library(Refiner OBJECT ${refiner_sources})
 add_library(RcapRefiner STATIC
-	${refiner_sources}
-	${common_sources}
-	${matrix_sources}
-	${geometry_sources}
-	${meshdb_sources}
-	${meshgen_sources}
-	${revocapio_sources}
-	${shape_sources}
+  $<TARGET_OBJECTS:Refiner>
+  $<TARGET_OBJECTS:Common>
+  $<TARGET_OBJECTS:Matrix>
+  $<TARGET_OBJECTS:Geometry>
+  $<TARGET_OBJECTS:MeshDB>
+  $<TARGET_OBJECTS:MeshGen>
+  $<TARGET_OBJECTS:RevocapIO_OBJS>
+  $<TARGET_OBJECTS:Shape>
 )
+
+#add_library(RcapRefiner STATIC
+#	${refiner_sources}
+#	${common_sources}
+#	${matrix_sources}
+#	${geometry_sources}
+#	${meshdb_sources}
+#	${meshgen_sources}
+#	${revocapio_sources}
+#	${shape_sources}
+#)
 
 # Refiner Utils
 add_definitions(-D_CONSOLE)
@@ -46,25 +58,25 @@ install(FILES rcapRefiner.h DESTINATION include)
 install(FILES rcapRefinerIO.h DESTINATION include)
 
 # -DBUILD_DOC
-if(BUILD_DOC)
-  find_package(Doxygen)
-  if(DOXYGEN_FOUND)
-    message(STATUS "Generate API documents. Please type \"make doc\"")
-    set(doxy_main_page "${CMAKE_SOURCE_DIR}/INSTALL.md")
-    set(doxyfile_in ${CMAKE_SOURCE_DIR}/Documents/Doxyfile.in)
-    set(doxyfile ${CMAKE_BINARY_DIR}/Documents/Doxyfile)
-    configure_file(${doxyfile_in} ${doxyfile} @ONLY)
-
-    add_custom_target(doc
-      COMMAND ${DOXYGEN_EXECUTABLE} ${doxyfile}
-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-      COMMENT "Generate API documents."
-      VERBATIM
-    )
-  else()
-    message(WARNING "doxygen not found.")
-  endif()
-endif()
+#if(BUILD_DOC)
+#  find_package(Doxygen)
+#  if(DOXYGEN_FOUND)
+#    message(STATUS "Generate API documents. Please type \"make doc\"")
+#    set(doxy_main_page "${CMAKE_SOURCE_DIR}/INSTALL.md")
+#    set(doxyfile_in ${CMAKE_SOURCE_DIR}/Documents/Doxyfile.in)
+#    set(doxyfile ${CMAKE_BINARY_DIR}/Documents/Doxyfile)
+#    configure_file(${doxyfile_in} ${doxyfile} @ONLY)
+#
+#    add_custom_target(doc
+#      COMMAND ${DOXYGEN_EXECUTABLE} ${doxyfile}
+#      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+#      COMMENT "Generate API documents."
+#      VERBATIM
+#    )
+#  else()
+#    message(WARNING "doxygen not found.")
+#  endif()
+#endif()
 
 # Package
 # % cpack

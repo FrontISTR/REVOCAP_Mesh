@@ -24,6 +24,13 @@ REVOCAP_Refiner のインストール方法については Refiner/INSTALL.md �
 % make -j4
 % make install
 ```
+
+REVOCAP_Refinerだけを構築する場合
+
+```txt
+% make -j4 RcapRefiner
+```
+
 ## Tips
 
 ### インストール先の変更

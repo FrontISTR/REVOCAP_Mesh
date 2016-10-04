@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.0)
 
 file(GLOB MeshGL_SRCS *.cpp)
 
-add_library(RcapMeshGL STATIC ${MeshGL_SRCS})
+add_library(MeshGL OBJECT ${MeshGL_SRCS})
+add_library(RcapMeshGL STATIC $<TARGET_OBJECTS:MeshGL>)
 
 install(TARGETS RcapMeshGL
   ARCHIVE DESTINATION lib
