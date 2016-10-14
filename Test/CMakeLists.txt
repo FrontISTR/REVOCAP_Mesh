@@ -39,7 +39,8 @@ add_test(
 
 add_executable(Array_Test Array_Test.cpp)
 target_link_libraries(Array_Test RcapRefiner)
-target_link_libraries(Array_Test boost_unit_test_framework-mt)
+#target_link_libraries(Array_Test boost_unit_test_framework-mt)
+target_link_libraries(Array_Test ${Boost_LIBRARIES})
 add_test(
  NAME Array_Test
  COMMAND $<TARGET_FILE:Array_Test>
