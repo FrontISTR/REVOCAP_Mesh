@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : BLMGenerator                                            #
@@ -39,8 +39,8 @@ class Face;
 class BLMGenerator
 {
 protected:
-	// ‘w‚ÌŒÂ”‚ÆŒú‚³
-	// layerThick ‚Í¬‚³‚¢‡‚É•À‚ñ‚Å‚¢‚é‚±‚Æ
+	// å±¤ã®å€‹æ•°ã¨åšã•
+	// layerThick ã¯å°ã•ã„é †ã«ä¸¦ã‚“ã§ã„ã‚‹ã“ã¨
 	int layerNum;
 	double* layerThick;
 	MeshData* mesh;
@@ -50,53 +50,53 @@ public:
 	BLMGenerator(MeshData* mesh,int layerNum,double* layerThick);
 	virtual ~BLMGenerator(void);
 
-	// extrude => ‰Ÿ‚µo‚µ
-	//   •\–ÊƒƒbƒVƒ…‚ÌŠO‘¤‚É‘wƒƒbƒVƒ…‚ğ’Ç‰Á‚µ‚Ä‚¢‚­
-	//   “ü—Í‚Ì•\–ÊƒƒbƒVƒ…‚ÍˆÚ“®‚³‚¹‚¸‚Éß“_”Ô†‚à•Ï‚¦‚È‚¢
-	//   o—Í‚ÌŠO‘¤‚É‚ÍV‚µ‚¢ß“_”Ô†‚Ì•\–ÊƒƒbƒVƒ…‚ª‚Å‚«‚é
-	// intrude => ‰Ÿ‚µ‚İi•\–ÊŠg’£j
-	//   •\–ÊƒƒbƒVƒ…‚ğ–c‚ç‚Ü‚¹‚Ä“à‘¤‚É‘wƒƒbƒVƒ…‚ğ’Ç‰Á‚µ‚Ä‚¢‚­
-	//   o—Í‚ÌŠO‘¤‚É‚Í“ü—Í‚Æ“¯‚¶ß“_”Ô†‚Ì•\–ÊƒƒbƒVƒ…‚ªŒ»‚ê‚é
-	//   ß“_”Ô†‚Í•Ï‚¦‚¸‚ÉÀ•W’l‚¾‚¯‚ğ•Ï‚¦‚Ä‚¢‚é
-	//   “à‘¤‚ÌƒƒbƒVƒ… parentId ‚Í•\–Ê‚Ìß“_”Ô†‚ª’u‚«Š·‚¦‚ç‚ê‚é
-	// intrudeB => ‰Ÿ‚µ‚İi•\–ÊŒÅ’èj
-	//   •\–ÊƒƒbƒVƒ…‚ğŒÅ’è‚µ‚Ä“à‘¤‚É‘wƒƒbƒVƒ…‚ğ’Ç‰Á‚µ‚Ä‚¢‚­
-	//   o—Í‚ÌŠO‘¤‚É‚Í“ü—Í‚Æ“¯‚¶ß“_”Ô†‚Ì•\–ÊƒƒbƒVƒ…‚ªŒ»‚ê‚é
-	//   ‚à‚Æ‚à‚Æ‚ÌƒƒbƒVƒ…‚ğ‚Ğ‚¸‚Ü‚¹‚Ä‘wƒƒbƒVƒ…‚ğ‘}“ü‚µ‚Ä‚¢‚é
-	//   “à‘¤‚ÌƒƒbƒVƒ… parentId ‚Í•\–Ê‚Ìß“_”Ô†‚ª’u‚«Š·‚¦‚ç‚ê‚é
-	// boundalyId   ‘ÎÛ‚Æ‚È‚é•\–ÊƒƒbƒVƒ…‚Ì Idi“üo—ÍŒ“—pj
-	// parentId     ‰Ÿ‚µ‚İ‘ÎÛ‚Æ‚È‚éƒ{ƒŠƒ…[ƒ€ƒƒbƒVƒ…‚Ì Id
-	// –ß‚è’l       ¶¬‚µ‚½‘wƒƒbƒVƒ…‚Ì Id
+	// extrude => æŠ¼ã—å‡ºã—
+	//   è¡¨é¢ãƒ¡ãƒƒã‚·ãƒ¥ã®å¤–å´ã«å±¤ãƒ¡ãƒƒã‚·ãƒ¥ã‚’è¿½åŠ ã—ã¦ã„ã
+	//   å…¥åŠ›ã®è¡¨é¢ãƒ¡ãƒƒã‚·ãƒ¥ã¯ç§»å‹•ã•ã›ãšã«ç¯€ç‚¹ç•ªå·ã‚‚å¤‰ãˆãªã„
+	//   å‡ºåŠ›ã®å¤–å´ã«ã¯æ–°ã—ã„ç¯€ç‚¹ç•ªå·ã®è¡¨é¢ãƒ¡ãƒƒã‚·ãƒ¥ãŒã§ãã‚‹
+	// intrude => æŠ¼ã—è¾¼ã¿ï¼ˆè¡¨é¢æ‹¡å¼µï¼‰
+	//   è¡¨é¢ãƒ¡ãƒƒã‚·ãƒ¥ã‚’è†¨ã‚‰ã¾ã›ã¦å†…å´ã«å±¤ãƒ¡ãƒƒã‚·ãƒ¥ã‚’è¿½åŠ ã—ã¦ã„ã
+	//   å‡ºåŠ›ã®å¤–å´ã«ã¯å…¥åŠ›ã¨åŒã˜ç¯€ç‚¹ç•ªå·ã®è¡¨é¢ãƒ¡ãƒƒã‚·ãƒ¥ãŒç¾ã‚Œã‚‹
+	//   ç¯€ç‚¹ç•ªå·ã¯å¤‰ãˆãšã«åº§æ¨™å€¤ã ã‘ã‚’å¤‰ãˆã¦ã„ã‚‹
+	//   å†…å´ã®ãƒ¡ãƒƒã‚·ãƒ¥ parentId ã¯è¡¨é¢ã®ç¯€ç‚¹ç•ªå·ãŒç½®ãæ›ãˆã‚‰ã‚Œã‚‹
+	// intrudeB => æŠ¼ã—è¾¼ã¿ï¼ˆè¡¨é¢å›ºå®šï¼‰
+	//   è¡¨é¢ãƒ¡ãƒƒã‚·ãƒ¥ã‚’å›ºå®šã—ã¦å†…å´ã«å±¤ãƒ¡ãƒƒã‚·ãƒ¥ã‚’è¿½åŠ ã—ã¦ã„ã
+	//   å‡ºåŠ›ã®å¤–å´ã«ã¯å…¥åŠ›ã¨åŒã˜ç¯€ç‚¹ç•ªå·ã®è¡¨é¢ãƒ¡ãƒƒã‚·ãƒ¥ãŒç¾ã‚Œã‚‹
+	//   ã‚‚ã¨ã‚‚ã¨ã®ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ã²ãšã¾ã›ã¦å±¤ãƒ¡ãƒƒã‚·ãƒ¥ã‚’æŒ¿å…¥ã—ã¦ã„ã‚‹
+	//   å†…å´ã®ãƒ¡ãƒƒã‚·ãƒ¥ parentId ã¯è¡¨é¢ã®ç¯€ç‚¹ç•ªå·ãŒç½®ãæ›ãˆã‚‰ã‚Œã‚‹
+	// boundalyId   å¯¾è±¡ã¨ãªã‚‹è¡¨é¢ãƒ¡ãƒƒã‚·ãƒ¥ã® Idï¼ˆå…¥å‡ºåŠ›å…¼ç”¨ï¼‰
+	// parentId     æŠ¼ã—è¾¼ã¿å¯¾è±¡ã¨ãªã‚‹ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ¡ãƒƒã‚·ãƒ¥ã® Id
+	// æˆ»ã‚Šå€¤       ç”Ÿæˆã—ãŸå±¤ãƒ¡ãƒƒã‚·ãƒ¥ã® Id
 	kmb::bodyIdType extrude(kmb::bodyIdType &boundaryId);
 	kmb::bodyIdType intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId);
 	kmb::bodyIdType intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId);
 
-	// –Êƒf[ƒ^‚ğ—^‚¦‚Ä
-	// extrude => ‰Ÿ‚µo‚µ
-	// intrude => ‰Ÿ‚µ‚İ
-	// –ß‚è’l  ¶¬‚µ‚½‘wƒƒbƒVƒ…‚Ì Id
-	// —^‚¦‚½–Êƒf[ƒ^‚Í‘w‚ÌŠO‘¤‚Ì–Ê‚É‚È‚é‚æ‚¤‚ÉXV‚³‚ê‚é
+	// é¢ãƒ‡ãƒ¼ã‚¿ã‚’ä¸ãˆã¦
+	// extrude => æŠ¼ã—å‡ºã—
+	// intrude => æŠ¼ã—è¾¼ã¿
+	// æˆ»ã‚Šå€¤  ç”Ÿæˆã—ãŸå±¤ãƒ¡ãƒƒã‚·ãƒ¥ã® Id
+	// ä¸ãˆãŸé¢ãƒ‡ãƒ¼ã‚¿ã¯å±¤ã®å¤–å´ã®é¢ã«ãªã‚‹ã‚ˆã†ã«æ›´æ–°ã•ã‚Œã‚‹
 	kmb::bodyIdType extrudeFromData(const char* faceGroup);
 	kmb::bodyIdType intrudeFromData(const char* faceGroup);
 	kmb::bodyIdType intrudeBFromData(const char* faceGroup);
 
-	// “o˜^‚µ‚½ MeshData ‚É BLM ‚ğ¶¬‚·‚éi“ü—Í–Ê‚Ì“à•”j
-	// —^‚¦‚ç‚ê‚½ faceGroup ‚ÍV‚µ‚¢‹«ŠE–Ê‚ÉXV‚³‚ê‚éitargetBodyId‚àj
-	// ‚»‚êˆÈŠO‚Ì‹«ŠE–Ê‚Í•Ï‰»‚µ‚È‚¢‚±‚Æ‚ğ•ÛØ‚·‚é
-	// faceGroup ‚Ì•\–Ê—Ìˆæ‚Ì“à•”‚É‚¾‚¯ BLM ‚ğì‚é‚±‚Æ‚É’ˆÓ‚·‚é
+	// ç™»éŒ²ã—ãŸ MeshData ã« BLM ã‚’ç”Ÿæˆã™ã‚‹ï¼ˆå…¥åŠ›é¢ã®å†…éƒ¨ï¼‰
+	// ä¸ãˆã‚‰ã‚ŒãŸ faceGroup ã¯æ–°ã—ã„å¢ƒç•Œé¢ã«æ›´æ–°ã•ã‚Œã‚‹ï¼ˆtargetBodyIdã‚‚ï¼‰
+	// ãã‚Œä»¥å¤–ã®å¢ƒç•Œé¢ã¯å¤‰åŒ–ã—ãªã„ã“ã¨ã‚’ä¿è¨¼ã™ã‚‹
+	// faceGroup ã®è¡¨é¢é ˜åŸŸã®å†…éƒ¨ã«ã ã‘ BLM ã‚’ä½œã‚‹ã“ã¨ã«æ³¨æ„ã™ã‚‹
 	bool generateInnerFromData(const char* faceGroup,kmb::bodyIdType &layerId);
 
-	// “o˜^‚µ‚½ MeshData ‚É BLM ‚ğ¶¬‚·‚éi“ü—Í–Ê‚Ì“à•”j
-	// —^‚¦‚ç‚ê‚½ bodyId ‚ÍV‚µ‚¢‹«ŠE–Ê‚ÉXV‚³‚ê‚é
-	// ‚»‚êˆÈŠO‚Ì‹«ŠE–Ê‚Í•Ï‰»‚µ‚È‚¢‚±‚Æ‚ğ•ÛØ‚·‚é
-	// “ü—Í•\–Ê‚Ì“à•”‚É‚¾‚¯ BLM ‚ğì‚é‚±‚Æ‚É’ˆÓ‚·‚é
+	// ç™»éŒ²ã—ãŸ MeshData ã« BLM ã‚’ç”Ÿæˆã™ã‚‹ï¼ˆå…¥åŠ›é¢ã®å†…éƒ¨ï¼‰
+	// ä¸ãˆã‚‰ã‚ŒãŸ bodyId ã¯æ–°ã—ã„å¢ƒç•Œé¢ã«æ›´æ–°ã•ã‚Œã‚‹
+	// ãã‚Œä»¥å¤–ã®å¢ƒç•Œé¢ã¯å¤‰åŒ–ã—ãªã„ã“ã¨ã‚’ä¿è¨¼ã™ã‚‹
+	// å…¥åŠ›è¡¨é¢ã®å†…éƒ¨ã«ã ã‘ BLM ã‚’ä½œã‚‹ã“ã¨ã«æ³¨æ„ã™ã‚‹
 	bool generateInner(kmb::bodyIdType bodyId,kmb::bodyIdType parentId,kmb::bodyIdType &layerId);
 
-	// layer ‚ÍÏZ‚Å—^‚¦‚é
-	// —á‚¦‚Î thicks = [0.1, 0.2, 0.3, 0.5, 0.8]
+	// layer ã¯ç©ç®—ã§ä¸ãˆã‚‹
+	// ä¾‹ãˆã° thicks = [0.1, 0.2, 0.3, 0.5, 0.8]
 	// setLayer(5,thicks)
-	// ‚Ì‚æ‚¤‚É
-	// thicks ‚Ìƒƒ‚ƒŠŠÇ—‚ÍŒÄ‚Ño‚µ‘¤‚ªÓ”C‚ğ‚Â
+	// ã®ã‚ˆã†ã«
+	// thicks ã®ãƒ¡ãƒ¢ãƒªç®¡ç†ã¯å‘¼ã³å‡ºã—å´ãŒè²¬ä»»ã‚’æŒã¤
 	void setLayer(int layerNum,double* thicks);
 
 	void setMesh(MeshData* mesh);
@@ -105,11 +105,11 @@ protected:
 	// 0 <= layerIndex <= layerNum
 	// layerIndex = 0             : innerNodeId
 	// layerIndex = layerNum      : outerNodeId
-	// 0 < layerIndex < layerNum  : innerNode ‚Æ outerNode ‚ğ layerThick ‚ÌŠÔŠu‚Å
-	//                              •ªŠ„‚µ‚½ß“_‚Ì nodeId ‚ğ•Ô‚·
-	//                              ‚Ü‚¾ß“_‚ª‚È‚¯‚ê‚Îì‚èAŠù‚É‚ ‚ê‚ÎƒLƒƒƒbƒVƒ…‚µ‚½
-	//                              ƒf[ƒ^‚©‚ç•Ô‚·
-	// ƒLƒƒƒbƒVƒ…‚Ì“à—e‚Í
+	// 0 < layerIndex < layerNum  : innerNode ã¨ outerNode ã‚’ layerThick ã®é–“éš”ã§
+	//                              åˆ†å‰²ã—ãŸç¯€ç‚¹ã® nodeId ã‚’è¿”ã™
+	//                              ã¾ã ç¯€ç‚¹ãŒãªã‘ã‚Œã°ä½œã‚Šã€æ—¢ã«ã‚ã‚Œã°ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã—ãŸ
+	//                              ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰è¿”ã™
+	// ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®å†…å®¹ã¯
 	// layers = layerNodes[ std::pair(innerNodeId,outerNodeId) ];
 	// layers[0] : layerIndex = 1
 	// layers[1] : layerIndex = 2
@@ -119,15 +119,15 @@ protected:
 	kmb::nodeIdType getLayerNodeId(kmb::nodeIdType outerNodeId, kmb::nodeIdType innerNodeId, int layerIndex ) const;
 
 
-	// —v‘f‚ÌŒ^ (etype, oldNodeId) ‚É‘Î‚µ‚Ä nodeMapper ‚Å—^‚¦‚ç‚ê‚é‘Î‰‚ª‚ ‚ê‚Î
-	// Vß“_‚Æ‹Œß“_‚ÌŠÔ‚É—v‘f‚ğ“o˜^‚³‚ê‚Ä‚¢‚é mesh ‚É addElement ‚Å’Ç‰Á
-	// ‚±‚Ìƒƒ\ƒbƒh‚ğ beginElement ‚Æ endElement ‚É‹²‚ñ‚Åg‚¤‚±‚Æ
-	// oldNodeId ‚ªŠO‘¤‚©‚çŒ©‚¦‚é‚Æ‚« outer = true
+	// è¦ç´ ã®å‹ (etype, oldNodeId) ã«å¯¾ã—ã¦ nodeMapper ã§ä¸ãˆã‚‰ã‚Œã‚‹å¯¾å¿œãŒã‚ã‚Œã°
+	// æ–°ç¯€ç‚¹ã¨æ—§ç¯€ç‚¹ã®é–“ã«è¦ç´ ã‚’ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ mesh ã« addElement ã§è¿½åŠ 
+	// ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ beginElement ã¨ endElement ã«æŒŸã‚“ã§ä½¿ã†ã“ã¨
+	// oldNodeId ãŒå¤–å´ã‹ã‚‰è¦‹ãˆã‚‹ã¨ã outer = true
 	kmb::Face appendLayerElements( kmb::elementType etype, kmb::nodeIdType* oldNodeId, bool outer=true);
 private:
 	mutable std::map< std::pair<kmb::nodeIdType,kmb::nodeIdType>, kmb::nodeIdType* > layerNodes;
 	void clearLayerNodes(void);
-	// “ñd‰»‚µ‚½ß“_‚Ì‘Î‰
+	// äºŒé‡åŒ–ã—ãŸç¯€ç‚¹ã®å¯¾å¿œ
 	// original => duplicated
 	std::map< kmb::nodeIdType, kmb::nodeIdType > nodeMapper;
 	kmb::nodeIdType getDuplicatedNodeId(kmb::nodeIdType nodeId);

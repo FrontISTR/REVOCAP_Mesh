@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+Ôªø/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Vector4D                                                #
@@ -81,7 +81,7 @@ kmb::Tuple4D::operator =(const Tuple4D& other)
 	return *this;
 }
 
-/// ÉXÉJÉâÅ[êœ
+/// „Çπ„Ç´„É©„ÉºÁ©ç
 
 kmb::Vector4D
 kmb::Vector4D::scalar(const double s) const{

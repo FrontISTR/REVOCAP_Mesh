@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Calculator                                              #
@@ -40,7 +40,6 @@ public:
 protected:
 	double sum;
 	int counter;
-
 };
 
 class Minimizer
@@ -50,10 +49,31 @@ public:
 	virtual ~Minimizer(void);
 	double getMin(void) const{ return minValue; }
 	void initialize(void);
-	/// Å¬’l‚ªXV‚³‚ê‚½‚É true ‚ğ•Ô‚·
+	/// æœ€å°å€¤ãŒæ›´æ–°ã•ã‚ŒãŸæ™‚ã« true ã‚’è¿”ã™
 	bool update(double value);
 	static double getMin(double x,double y);
 	static double getMin(double x,double y,double z);
+	// æœ€å°å€¤ã®é †ç•ªã‚’è¿”ã™
+	template <typename T> static int minIndex(T x0, T x1, T x2) {
+		if (x0 <= x1) {
+			if (x0 <= x2) {
+				return 0;
+			}
+			else {
+				// 2 < 0 <= 1
+				return 2;
+			}
+		}
+		else {
+			if (x1 <= x2) {
+				return 1;
+			}
+			else {
+				// 2 < 1 < 0
+				return 2;
+			}
+		}
+	}
 protected:
 	double minValue;
 };
@@ -65,15 +85,34 @@ public:
 	virtual ~Maximizer(void);
 	double getMax(void) const{ return maxValue; }
 	void initialize(void);
-	/// Å‘å’l‚ªXV‚³‚ê‚½‚É true ‚ğ•Ô‚·
+	/// æœ€å¤§å€¤ãŒæ›´æ–°ã•ã‚ŒãŸæ™‚ã« true ã‚’è¿”ã™
 	bool update(double value);
 	static double getMax(double x,double y);
 	static double getMax(double x,double y,double z);
+	// æœ€å¤§å€¤ã®é †ç•ªã‚’è¿”ã™
+	template <typename T> static int maxIndex(T x0, T x1, T x2) {
+		if (x0 >= x1) {
+			if (x0 >= x2) {
+				return 0;
+			}else {
+				// 2 > 0 >= 1
+				return 2;
+			}
+		}else {
+			if (x1 >= x2) {
+				return 1;
+			}
+			else {
+				// 2 > 1 > 0
+				return 2;
+			}
+		}
+	}
 protected:
 	double maxValue;
 };
 
-// Œ^ T ‚Å—^‚¦‚ç‚ê‚é Id ‚Æˆê‚É•Û‘¶
+// å‹ T ã§ä¸ãˆã‚‰ã‚Œã‚‹ Id ã¨ä¸€ç·’ã«ä¿å­˜
 template<typename T>
 class MinMaxWithId
 {
@@ -104,7 +143,7 @@ public:
 		minValue = DBL_MAX;
 		maxValue = -DBL_MAX;
 	}
-	// XV‚³‚ê‚½‚É true ‚ğ•Ô‚·
+	// æ›´æ–°ã•ã‚ŒãŸæ™‚ã« true ã‚’è¿”ã™
 	bool update(double value,T id)
 	{
 		bool flag = false;
@@ -138,7 +177,7 @@ public:
 	double getMaxAbs(void) const;
 	double getSum(void) const;
 	void initialize(void);
-	/// Å‘å’l‚ªXV‚³‚ê‚½‚É true ‚ğ•Ô‚·
+	/// æœ€å¤§å€¤ãŒæ›´æ–°ã•ã‚ŒãŸæ™‚ã« true ã‚’è¿”ã™
 	bool update(double value);
 };
 
@@ -156,7 +195,7 @@ public:
 	long getMin(void) const{ return minValue; }
 	long getAverage(void) const;
 	void initialize(void);
-	/// Å‘å’l‚ªXV‚³‚ê‚½‚É true ‚ğ•Ô‚·
+	/// æœ€å¤§å€¤ãŒæ›´æ–°ã•ã‚ŒãŸæ™‚ã« true ã‚’è¿”ã™
 	bool update(long value);
 	static long getMax(long x,long y);
 	static long getMax(long x,long y,long z);

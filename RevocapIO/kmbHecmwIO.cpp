@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : HecmwIO                                                 #
@@ -24,9 +24,9 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// HEC-MW ‚Ì‚½‚ß‚Ìƒtƒ@ƒCƒ‹ I/O
+// HEC-MW ã®ãŸã‚ã®ãƒ•ã‚¡ã‚¤ãƒ« I/O
 //
-// material ‘®«‚Í CNT ƒtƒ@ƒCƒ‹‚ğ“Ç‚Ü‚È‚¢‚Æ‚í‚©‚ç‚È‚¢
+// material å±æ€§ã¯ CNT ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¾ãªã„ã¨ã‚ã‹ã‚‰ãªã„
 //
 
 #include "RevocapIO/kmbHecmwIO.h"
@@ -378,7 +378,7 @@ kmb::HecmwIO::readElement( std::ifstream &input, std::string &line, kmb::Element
 
 void kmb::HecmwIO::writeElement( std::ofstream &output, const kmb::MeshData* mesh, kmb::bodyIdType bodyId, std::string partName) const
 {
-	// REVOCAP ‚Æ HEC ‚Ìß“_”z—ñ‚Ì‡”Ô‚ğ’ˆÓ‚·‚é‚½‚ß‚É‚ ‚¦‚Ä for ‚ğg‚í‚¸‚ÉÀ‘•
+	// REVOCAP ã¨ HEC ã®ç¯€ç‚¹é…åˆ—ã®é †ç•ªã‚’æ³¨æ„ã™ã‚‹ãŸã‚ã«ã‚ãˆã¦ for ã‚’ä½¿ã‚ãšã«å®Ÿè£…
 	const kmb::Body* body = mesh->getBodyPtr(bodyId);
 	// for TETRAHEDRON
 	if( body && body->getDimension() == 3 && body->getCountByType( kmb::TETRAHEDRON ) > 0 ){
@@ -604,29 +604,29 @@ kmb::HecmwIO::readSection( std::ifstream &input, std::string &line, kmb::MeshDat
 		std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
 		std::string matname = kmb::RevocapIOUtils::getValue( line, "MATERIAL" );
 		if( name.size() > 0 ){
-			// egrpInfo ‚©‚ç’T‚·
+			// egrpInfo ã‹ã‚‰æ¢ã™
 			int index = getEgrpInfoIndex( name );
 			if( index != -1 ){
-				// Œ©‚Â‚©‚ê‚Î Material “o˜^
+				// è¦‹ã¤ã‹ã‚Œã° Material ç™»éŒ²
 				egrpInfo[index].materialName = matname;
 			}else{
-				// ‚È‚¯‚ê‚ÎV‹K“o˜^
+				// ãªã‘ã‚Œã°æ–°è¦ç™»éŒ²
 				index = createEgrpInfo( name, matname );
 			}
 			std::cout << "section " << egrpInfo[index].bodyId << " " << egrpInfo[index].egrpName << " => " << egrpInfo[index].materialName << std::endl;
-			// Body ‚Ì¶¬i“ü‚ê•¨‚¾‚¯j
+			// Body ã®ç”Ÿæˆï¼ˆå…¥ã‚Œç‰©ã ã‘ï¼‰
 			bodyId = mesh->beginElement( egrpInfo[index].egrpCount );
 			mesh->endElement();
 			mesh->setBodyName( bodyId, name.c_str() );
 			egrpInfo[index].bodyId = bodyId;
-			// Section ƒf[ƒ^‚Ì‰ğÍ
+			// Section ãƒ‡ãƒ¼ã‚¿ã®è§£æ
 			kmb::HashValue* hash = new kmb::HashValue();
 			std::string typestr = kmb::RevocapIOUtils::getValue( line, "TYPE" );
 			hash->setValue( "TYPE", new kmb::TextValue( typestr.c_str() ) );
 			hash->setValue( "EGRP", new kmb::TextValue( name.c_str() ) );
 			hash->setValue( "MATERIAL", new kmb::TextValue( matname.c_str() ) );
 			sectionInfo->setPhysicalValue( bodyId, hash );
-			// ‚Qs–ÚˆÈ~‚ª‚ ‚é‚©‚Ç‚¤‚©
+			// ï¼’è¡Œç›®ä»¥é™ãŒã‚ã‚‹ã‹ã©ã†ã‹
 			std::getline( input, line );
 			if( line.find("!") == 0 || line.size() == 0 ){
 				// default value
@@ -678,13 +678,13 @@ kmb::HecmwIO::readSection( std::ifstream &input, std::string &line, kmb::MeshDat
 
 void kmb::HecmwIO::writeSection( std::ofstream &output, const kmb::MeshData* mesh, kmb::bodyIdType bodyId ) const
 {
-	// SECTION ƒf[ƒ^‚Ìo—Í
-	// TYPE ‚Í SECTION ƒf[ƒ^ƒx[ƒX‚©‚ç’²‚×‚é
-	// Body ‚Æ Material ‚Ì‘Î‰ŠÖŒW‚ğ‹Lq‚·‚é
+	// SECTION ãƒ‡ãƒ¼ã‚¿ã®å‡ºåŠ›
+	// TYPE ã¯ SECTION ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‹ã‚‰èª¿ã¹ã‚‹
+	// Body ã¨ Material ã®å¯¾å¿œé–¢ä¿‚ã‚’è¨˜è¿°ã™ã‚‹
 	//
-	// SECTION ‚É THICKNESS “™‚ª“o˜^‚³‚ê‚Ä‚¢‚ê‚Î‚»‚ê‚ğo—Í‚·‚é
+	// SECTION ã« THICKNESS ç­‰ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚Œã°ãã‚Œã‚’å‡ºåŠ›ã™ã‚‹
 	//
-	// section = mesh ‚Ì "SECTION" ƒf[ƒ^ƒx[ƒX (HashŒ^)
+	// section = mesh ã® "SECTION" ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ (Hashå‹)
 	// section["TYPE"]
 	// section["THICKNESS"]
 	// section["INTEGPOINTS"]
@@ -692,7 +692,7 @@ void kmb::HecmwIO::writeSection( std::ofstream &output, const kmb::MeshData* mes
 	// section["GAPRAD1"]
 	// section["GAPRAD2"]
 	//
-	// dummySectionFlag = true ‚Ì‚Æ‚«@SECTION ‚É‹Lq‚ª‚È‚¯‚ê‚Î TYPE = SOLID ‚Åo—Í‚·‚é
+	// dummySectionFlag = true ã®ã¨ãã€€SECTION ã«è¨˜è¿°ãŒãªã‘ã‚Œã° TYPE = SOLID ã§å‡ºåŠ›ã™ã‚‹
 	double thickParam = 0.0;
 	const std::multimap< std::string, kmb::DataBindings*> dataBindings = mesh->getDataBindingsMap();
 	std::string matName;
@@ -796,7 +796,7 @@ kmb::HecmwIO::readMaterial( std::ifstream &input, std::string &line, kmb::MeshDa
 			ss << kmb::RevocapIOUtils::getValue( line, "SUBITEM" );
 			int subitem = 0;
 			ss >> subitem;
-			// subitem ‚ÍÈ—ª‚µ‚½‚Æ‚«‚É1
+			// subitem ã¯çœç•¥ã—ãŸã¨ãã«1
 			if( subitem == 0 ){
 				subitem = 1;
 			}
@@ -808,7 +808,7 @@ kmb::HecmwIO::readMaterial( std::ifstream &input, std::string &line, kmb::MeshDa
 				}
 				value = 0.0;
 				tokenizer >> value;
-				// comma ‚È‚çˆê‚Âi‚ß‚é
+				// comma ãªã‚‰ä¸€ã¤é€²ã‚ã‚‹
 				tokenizer >> comma;
 				switch(this->soltype)
 				{
@@ -997,10 +997,10 @@ kmb::HecmwIO::readEGroup( std::ifstream &input, std::string &line, kmb::MeshData
 	size_t count = 0;
 	if( mesh == NULL ){
 		std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
-		// egrpInfo ‚©‚ç’T‚·
+		// egrpInfo ã‹ã‚‰æ¢ã™
 		int index = getEgrpInfoIndex( name );
 		if( index == -1 ){
-			// ‚È‚¯‚ê‚ÎV‹K“o˜^
+			// ãªã‘ã‚Œã°æ–°è¦ç™»éŒ²
 			index = createEgrpInfo( name, "" );
 		}
 		while( !input.eof() ){
@@ -1016,7 +1016,7 @@ kmb::HecmwIO::readEGroup( std::ifstream &input, std::string &line, kmb::MeshData
 		std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
 		kmb::bodyIdType bodyId_eg = kmb::Body::nullBodyId;
 		std::string matName;
-		// —Ìˆæ‚Æ‚µ‚Ä“o˜^‚³‚ê‚Ä‚¢‚é‚©‚ğ”»’è‚·‚é
+		// é ˜åŸŸã¨ã—ã¦ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ã‚’åˆ¤å®šã™ã‚‹
 		int index = getEgrpInfoIndex( name );
 		if( index != -1 ){
 			bodyId_eg = egrpInfo[index].bodyId;
@@ -1024,7 +1024,7 @@ kmb::HecmwIO::readEGroup( std::ifstream &input, std::string &line, kmb::MeshData
 			matName = egrpInfo[index].materialName;
 		}
 		if( bodyId_eg != kmb::Body::nullBodyId ){
-			// —Ìˆæ‚Æ‚µ‚Ä’è‹`‚³‚ê‚Ä‚¢‚é‚Æ‚«
+			// é ˜åŸŸã¨ã—ã¦å®šç¾©ã•ã‚Œã¦ã„ã‚‹ã¨ã
 			if( parentBody != NULL ){
 				kmb::ElementContainer* body = mesh->getBodyPtr( bodyId_eg );
 				kmb::elementIdType elementId = kmb::Element::nullElementId;
@@ -1053,13 +1053,13 @@ kmb::HecmwIO::readEGroup( std::ifstream &input, std::string &line, kmb::MeshData
 				delete[] nodeTable;
 			}
 		}else{
-			// Data ‚Æ‚µ‚Ä’è‹`‚³‚ê‚Ä‚¢‚é‚Æ‚«
+			// Data ã¨ã—ã¦å®šç¾©ã•ã‚Œã¦ã„ã‚‹ã¨ã
 			kmb::DataBindings* data = mesh->getDataBindingsPtr( name.c_str() );
 			if( data == NULL && dataFlag ){
 				data = mesh->createDataBindings( name.c_str(), kmb::DataBindings::ElementGroup, kmb::PhysicalValue::None );
 			}
-			// ‚·‚Å‚Éƒf[ƒ^‚Ì“ü‚ê•¨‚ª‚ ‚éê‡‚Í‚»‚ê‚É“ü‚ê‚é
-			// ‹«ŠEğŒ‚ğ“Ç‚Ş‚Æ‚«‚Í cnt ƒtƒ@ƒCƒ‹‚ğ“Ç‚ñ‚¾“_‚Å“ü‚ê•¨‚ğì‚Á‚Ä‚¨‚­
+			// ã™ã§ã«ãƒ‡ãƒ¼ã‚¿ã®å…¥ã‚Œç‰©ãŒã‚ã‚‹å ´åˆã¯ãã‚Œã«å…¥ã‚Œã‚‹
+			// å¢ƒç•Œæ¡ä»¶ã‚’èª­ã‚€ã¨ãã¯ cnt ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã‚“ã æ™‚ç‚¹ã§å…¥ã‚Œç‰©ã‚’ä½œã£ã¦ãŠã
 			if( data ){
 				kmb::elementIdType elementId = kmb::Element::nullElementId;
 				std::istringstream tokenLine;
@@ -1134,8 +1134,8 @@ kmb::HecmwIO::readNGroup( std::ifstream &input, std::string &line, kmb::MeshData
 		if( data == NULL && dataFlag ){
 			data = mesh->createDataBindings( name.c_str(), kmb::DataBindings::NodeGroup, kmb::PhysicalValue::None );
 		}
-		// ‚·‚Å‚Éƒf[ƒ^‚Ì“ü‚ê•¨‚ª‚ ‚éê‡‚Í‚»‚ê‚É“ü‚ê‚é
-		// ‹«ŠEğŒ‚ğ“Ç‚Ş‚Æ‚«‚Í cnt ƒtƒ@ƒCƒ‹‚ğ“Ç‚ñ‚¾“_‚Å“ü‚ê•¨‚ğì‚Á‚Ä‚¨‚­
+		// ã™ã§ã«ãƒ‡ãƒ¼ã‚¿ã®å…¥ã‚Œç‰©ãŒã‚ã‚‹å ´åˆã¯ãã‚Œã«å…¥ã‚Œã‚‹
+		// å¢ƒç•Œæ¡ä»¶ã‚’èª­ã‚€ã¨ãã¯ cnt ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã‚“ã æ™‚ç‚¹ã§å…¥ã‚Œç‰©ã‚’ä½œã£ã¦ãŠã
 		if( data ){
 			if( generateFlag ){
 				std::istringstream tokenLine;
@@ -1289,7 +1289,7 @@ kmb::HecmwIO::readSGroup( std::ifstream &input, std::string &line, kmb::MeshData
 						++count;
 						break;
 					default:
-						// findElement ‚ÅƒGƒ‰[‚Ì‚à‚±‚±‚ğ’Ê‚é
+						// findElement ã§ã‚¨ãƒ©ãƒ¼ã®æ™‚ã‚‚ã“ã“ã‚’é€šã‚‹
 						break;
 					}
 				}
@@ -1310,7 +1310,7 @@ void kmb::HecmwIO::writeSGroup( std::ofstream &output, const kmb::MeshData* mesh
 {
 	std::multimap< std::string, kmb::DataBindings*> dataBindings = mesh->getDataBindingsMap();
 	// SGROUP
-	// DFLUX, FILM, RADIATE ‚Í–¢‘Î‰
+	// DFLUX, FILM, RADIATE ã¯æœªå¯¾å¿œ
 	{
 		std::multimap< std::string, kmb::DataBindings*>::const_iterator sgIter = dataBindings.begin();
 		std::multimap< std::string, kmb::DataBindings*>::const_iterator sgEnd = dataBindings.end();
@@ -1602,17 +1602,17 @@ void kmb::HecmwIO::writeInitialCondition( std::ofstream &output, const kmb::Mesh
 }
 
 /*
- * (1) elementCount ‚Æ nodeCount ‚ğ’²‚×‚é
- * (2) element ‚ª‚Ç‚Ì body ‚É‘®‚·‚é‚©‚ğ’²‚×‚é
- *     !EGROUP ‚Å’è‹`‚³‚ê‚Ä‚¢‚éê‡
- *     !ELEMENT, EGRP=XXX ‚Å’è‹`‚³‚ê‚Ä‚¢‚éê‡
- * (3) body –ˆ‚Ì material ‚Æ‚Ì‘Î‰‚ğ’²‚×‚é
- * ‹ó“Ç‚İ‚Ì\‘¢‘Ì
+ * (1) elementCount ã¨ nodeCount ã‚’èª¿ã¹ã‚‹
+ * (2) element ãŒã©ã® body ã«å±ã™ã‚‹ã‹ã‚’èª¿ã¹ã‚‹
+ *     !EGROUP ã§å®šç¾©ã•ã‚Œã¦ã„ã‚‹å ´åˆ
+ *     !ELEMENT, EGRP=XXX ã§å®šç¾©ã•ã‚Œã¦ã„ã‚‹å ´åˆ
+ * (3) body æ¯ã® material ã¨ã®å¯¾å¿œã‚’èª¿ã¹ã‚‹
+ * ç©ºèª­ã¿æ™‚ã®æ§‹é€ ä½“
  * egrpName
  * materialName
  * elementCount
- * materialName ‚ª—^‚¦‚ç‚ê‚Ä‚¢‚½‚ç Body ‚Æ‚İ‚È‚·
- * egrpName = ALL ‚Å materialName ‚ª—^‚¦‚ç‚ê‚Ä‚¢‚é‚Æ‚«‚ÍAˆÃ–Ù‚Ì‘S‚Ä‚Ì—v‘f
+ * materialName ãŒä¸ãˆã‚‰ã‚Œã¦ã„ãŸã‚‰ Body ã¨ã¿ãªã™
+ * egrpName = ALL ã§ materialName ãŒä¸ãˆã‚‰ã‚Œã¦ã„ã‚‹ã¨ãã¯ã€æš—é»™ã®å…¨ã¦ã®è¦ç´ 
  */
 int
 kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
@@ -1624,22 +1624,22 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 		if( input.fail() ){
 			return -1;
 		}
-		// Section ‚Ìî•ñ
+		// Section ã®æƒ…å ±
 		mesh->createDataBindings(
 			"SECTION",
 			kmb::DataBindings::BodyVariable,
 			kmb::PhysicalValue::Hash,
 			"SECTION");
-		// ‚P‰ñ–Ú‚Ì“Ç‚İ‚İ‚É—v‘f‚¾‚¯‚·‚×‚Ä“Ç‚Ş
+		// ï¼‘å›ç›®ã®èª­ã¿è¾¼ã¿æ™‚ã«è¦ç´ ã ã‘ã™ã¹ã¦èª­ã‚€
 		kmb::ElementContainerMap elements;
-		// “Ç‚İ‚İ‚Ìƒeƒ“ƒ|ƒ‰ƒŠ
+		// èª­ã¿è¾¼ã¿æ™‚ã®ãƒ†ãƒ³ãƒãƒ©ãƒª
 		size_t nodeCount = 0;
 		std::string line;
-		// ‹ó“Ç‚İ‚·‚é
-		// Å‰‚Ì‚Ps
+		// ç©ºèª­ã¿ã™ã‚‹
+		// æœ€åˆã®ï¼‘è¡Œ
 		std::getline( input, line );
 		while( !input.eof() ){
-			// ƒwƒbƒ_•”‚Ì‰ğÍ
+			// ãƒ˜ãƒƒãƒ€éƒ¨ã®è§£æ
 			if( line.find("!HEADER") == 0 ){
 				readHeader( input, line );
 			}else if( line.find("!NODE") == 0 ){
@@ -1648,25 +1648,25 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 				std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
 				size_t count = 0;
 				if( name != "" ){
-					// EGRP ‘®«‚ª‚ ‚é‚Æ‚«‚Í—v‘f‚ÌŒÂ”‚ğ”‚¦‚é
+					// EGRP å±æ€§ãŒã‚ã‚‹ã¨ãã¯è¦ç´ ã®å€‹æ•°ã‚’æ•°ãˆã‚‹
 
-					// egrpInfo ‚©‚ç’T‚·
+					// egrpInfo ã‹ã‚‰æ¢ã™
 					int index = getEgrpInfoIndex( name );
 					if( index == -1 ){
-						// ‚È‚¯‚ê‚ÎV‹K“o˜^
+						// ãªã‘ã‚Œã°æ–°è¦ç™»éŒ²
 						index = createEgrpInfo( name, "" );
 					}
 
-					// —v‘f‚ğ“Ç‚Ş‚Ì‚Í–{”Ô‚Ås‚¤‚Ì‚Å‚±‚±‚Å‚Í‹ó“Ç‚İ
+					// è¦ç´ ã‚’èª­ã‚€ã®ã¯æœ¬ç•ªã§è¡Œã†ã®ã§ã“ã“ã§ã¯ç©ºèª­ã¿
 					count = readElement( input, line, NULL );
 					egrpInfo[index].egrpCount += count;
 				}else{
-					// EGRP ‘®«‚ª‚È‚¢‚Æ‚«‚ÍA‚±‚±‚Å‚·‚×‚Ä“Ç‚Ş
+					// EGRP å±æ€§ãŒãªã„ã¨ãã¯ã€ã“ã“ã§ã™ã¹ã¦èª­ã‚€
 
-					// egrpInfo ‚©‚ç’T‚·
+					// egrpInfo ã‹ã‚‰æ¢ã™
 					int index = getEgrpInfoIndex( "ALL" );
 					if( index == -1 ){
-						// ‚È‚¯‚ê‚ÎV‹K“o˜^
+						// ãªã‘ã‚Œã°æ–°è¦ç™»éŒ²
 						index = createEgrpInfo( "ALL", "" );
 					}
 
@@ -1690,9 +1690,9 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 		input.clear(); // clear EOF flag
 		input.seekg( 0, std::ios_base::beg ); // rewind
 
-		// SECTION ‚Å ALL ‚ªİ’è‚³‚ê‚Ä‚¢‚é‚Æ‚«‚Í’Pˆê—Ìˆæ‚Æ‚İ‚È‚·
-		// ALL ‚ğ‚Ü‚Æ‚ß‚Ä MeshData ‚É“o˜^
-		// ‚»‚êˆÈŠO‚Ì SECTION ‚Å’è‹`‚³‚ê‚½ Body ‚ğ Material ‚É’Ç‰Á
+		// SECTION ã§ ALL ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹ã¨ãã¯å˜ä¸€é ˜åŸŸã¨ã¿ãªã™
+		// ALL ã‚’ã¾ã¨ã‚ã¦ MeshData ã«ç™»éŒ²
+		// ãã‚Œä»¥å¤–ã® SECTION ã§å®šç¾©ã•ã‚ŒãŸ Body ã‚’ Material ã«è¿½åŠ 
 		{
 			std::string matName;
 			std::vector< kmb::HecmwIO::egrpData >::iterator egrpIter = egrpInfo.begin();
@@ -1700,7 +1700,7 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 				// debug output
 				std::cout << "material binding " << egrpIter->bodyId << " " << egrpIter->egrpName << " => " << egrpIter->materialName << std::endl;
 				if( egrpIter->bodyId != kmb::Body::nullBodyId ){
-					// Material ‚Ì“o˜^
+					// Material ã®ç™»éŒ²
 					matName = egrpIter->materialName;
 					if( matName.size() > 0 && mesh->hasData( matName.c_str() ) ){
 						mesh->addId( matName.c_str(), egrpIter->bodyId );
@@ -1724,14 +1724,14 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 			}
 		}
 
-		// –{”Ô
-		// !NODE ‚ª•¡”‰ñŒ»‚ê‚Ä‚à‚æ‚¢‚æ‚¤‚É‚·‚é
+		// æœ¬ç•ª
+		// !NODE ãŒè¤‡æ•°å›ç¾ã‚Œã¦ã‚‚ã‚ˆã„ã‚ˆã†ã«ã™ã‚‹
 		mesh->beginNode( nodeCount );
 		mesh->endNode();
-		// Å‰‚Ì‚Ps
+		// æœ€åˆã®ï¼‘è¡Œ
 		std::getline( input, line );
 		while( !input.eof() ){
-			// ƒwƒbƒ_•”‚Ì‰ğÍ
+			// ãƒ˜ãƒƒãƒ€éƒ¨ã®è§£æ
 			if( line.find("!HEADER") == 0 ){
 				readHeader( input, line );
 			}else if( line.find("!NODE") == 0 ){
@@ -1739,15 +1739,15 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 			}else if( line.find("!ELEMENT") == 0 ){
 				std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
 				if( name == "" ){
-					// EGRP ‚ª’è‹`‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í ALL ‚Æ‚µ‚ÄŠù‚É“Ç‚İ‚İÏ‚İ
+					// EGRP ãŒå®šç¾©ã•ã‚Œã¦ã„ãªã„å ´åˆã¯ ALL ã¨ã—ã¦æ—¢ã«èª­ã¿è¾¼ã¿æ¸ˆã¿
 					readElement( input, line, NULL );
 				}else{
-					// EGRP ‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚Æ‚«
+					// EGRP ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã¨ã
 					kmb::bodyIdType bodyId_eg = kmb::Body::nullBodyId;
 					std::string matName_eg;
-					// —Ìˆæ‚Æ‚µ‚Ä“o˜^‚³‚ê‚Ä‚¢‚é‚©‚ğ”»’è‚·‚éiSECTION‚É’è‹`‚³‚ê‚Ä‚¢‚é‚©j
+					// é ˜åŸŸã¨ã—ã¦ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ã‚’åˆ¤å®šã™ã‚‹ï¼ˆSECTIONã«å®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ï¼‰
 
-					// egrpInfo ‚©‚ç’T‚·
+					// egrpInfo ã‹ã‚‰æ¢ã™
 					int index = getEgrpInfoIndex( name );
 					if( index != -1 ){
 						bodyId_eg = egrpInfo[index].bodyId;
@@ -1756,11 +1756,11 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 						std::cout << "Warning (HecmwIO) : not find section of egrp " << name << std::endl;
 					}
 					if( bodyId_eg != kmb::Body::nullBodyId ){
-						// SECTION ‚É’è‹`Ï‚İ‚Ì‚Í–{”Ô“Ç‚İ
+						// SECTION ã«å®šç¾©æ¸ˆã¿ã®æ™‚ã¯æœ¬ç•ªèª­ã¿
 						kmb::ElementContainer* body = mesh->getBodyPtr( bodyId_eg );
 						readElement( input, line, body );
 					}else{
-						// SECTION ‚É’è‹`‚³‚ê‚Ä‚¢‚È‚¢‚Í ALL ‚Æ‚µ‚Ä“Ç‚Ş
+						// SECTION ã«å®šç¾©ã•ã‚Œã¦ã„ãªã„æ™‚ã¯ ALL ã¨ã—ã¦èª­ã‚€
 						readElement( input, line, NULL );
 					}
 				}
@@ -1798,7 +1798,7 @@ kmb::HecmwIO::loadFromFRSFile(const char* filename,kmb::MeshData* mesh) const
 	std::string line;
 	while( !input.eof() ){
 		std::getline( input, line );
-		// ƒwƒbƒ_•”‚Ì‰ğÍ
+		// ãƒ˜ãƒƒãƒ€éƒ¨ã®è§£æ
 		if( line.find("#") == 0 ){
 			continue;
 		}else if( line.find("EGRP") == 0 ){
@@ -1965,8 +1965,8 @@ kmb::HecmwIO::loadFromFRSFile(const char* filename,kmb::MeshData* mesh) const
 	return 0;
 }
 
-// res ‚Ì•¡”“Ç‚İ‚İ‘Î‰‚Ì‚½‚ß
-// Šù‚Éƒf[ƒ^‚ª‚ ‚éê‡‚Í‰Šú‰»‚¹‚¸‚É’Ç‹L‚·‚é
+// res ã®è¤‡æ•°èª­ã¿è¾¼ã¿å¯¾å¿œã®ãŸã‚
+// æ—¢ã«ãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚‹å ´åˆã¯åˆæœŸåŒ–ã›ãšã«è¿½è¨˜ã™ã‚‹
 int
 kmb::HecmwIO::loadFromResFile(const char* filename,kmb::MeshData* mesh) const
 {
@@ -1974,7 +1974,7 @@ kmb::HecmwIO::loadFromResFile(const char* filename,kmb::MeshData* mesh) const
 	if( input.fail() ){
 		return -1;
 	}
-	// Å‰‚Ì‚Ps‚ÅƒoƒCƒiƒŠƒ`ƒFƒbƒN
+	// æœ€åˆã®ï¼‘è¡Œã§ãƒã‚¤ãƒŠãƒªãƒã‚§ãƒƒã‚¯
 	char buf[64];
 	input.read( buf, 19 );
 	buf[19] = '\0';
@@ -1984,7 +1984,7 @@ kmb::HecmwIO::loadFromResFile(const char* filename,kmb::MeshData* mesh) const
 	}
 	input.clear();
 	input.seekg(0, std::ios::beg);
-	// Å‰‚Ì‚Ps‚ÅƒAƒXƒL[ƒ`ƒFƒbƒN
+	// æœ€åˆã®ï¼‘è¡Œã§ã‚¢ã‚¹ã‚­ãƒ¼ãƒã‚§ãƒƒã‚¯
 	input.get( buf, 64, '\0' );
 	if( strncmp( resHeader.c_str(), buf, resHeader.size() ) == 0 ){
 		std::cout << "HECMW ASCII RESULT READING..." << std::endl;
@@ -2010,14 +2010,14 @@ kmb::HecmwIO::loadFromResFileItem(const char* filename,kmb::DataBindings* data,c
 	int elementCount = 0;
 	int nodeValueCount = 0;
 	int elementValueCount = 0;
-	// data ‚ğ“Ç‚Ş‚Ü‚Å‚É‚¢‚­‚Â‹ó“Ç‚İ‚·‚é‚Ì‚©
+	// data ã‚’èª­ã‚€ã¾ã§ã«ã„ãã¤ç©ºèª­ã¿ã™ã‚‹ã®ã‹
 	int nodeValueOffset = -1;
 	int elementValueOffset = -1;
-	// data ‚ÌŸŒ³
+	// data ã®æ¬¡å…ƒ
 	std::vector<int> nodeValDims;
 	std::vector<int> elementValDims;
 	std::string line;
-	// Å‰‚Ì‚Ps
+	// æœ€åˆã®ï¼‘è¡Œ
 	if( std::getline( input, line ) ){
 		if( line.find( resHeader) != 0 ){
 			return -1;
@@ -2150,7 +2150,7 @@ kmb::HecmwIO::loadFromResAsciiFile(const char* filename,kmb::MeshData* mesh) con
 	std::vector<int> nodeValDims;
 	std::vector<int> elementValDims;
 	std::string line;
-	// Å‰‚Ì‚Ps
+	// æœ€åˆã®ï¼‘è¡Œ
 	if( std::getline( input, line ) ){
 		if( line.find( resHeader) != 0 ){
 			std::cout << "Warning Hecmw Result file format error." << std::endl;
@@ -2342,7 +2342,7 @@ kmb::HecmwIO::loadFromResAsciiFile(const char* filename,kmb::MeshData* mesh) con
 		delete[] v;
 	}
 	input.close();
-	// ‚ ‚¦‚Ä clearTargetData ‚ğ‚µ‚È‚¢ => boundary extractor ‚Å•\–Ê‚É’l‚ğˆø‚«Œp‚ª‚¹‚é‚½‚ß
+	// ã‚ãˆã¦ clearTargetData ã‚’ã—ãªã„ => boundary extractor ã§è¡¨é¢ã«å€¤ã‚’å¼•ãç¶™ãŒã›ã‚‹ãŸã‚
 	return 0;
 }
 
@@ -2363,7 +2363,7 @@ kmb::HecmwIO::loadFromResBinFile(const char* filename,kmb::MeshData* mesh) const
 	int dim = 0;
 	std::vector<int> nodeValDims;
 	std::vector<int> elementValDims;
-	// Å‰‚Ì‚Ps
+	// æœ€åˆã®ï¼‘è¡Œ
 	char buf[64];
 	input.read( buf, 19 );
 	buf[19] = '\0';
@@ -2371,17 +2371,17 @@ kmb::HecmwIO::loadFromResBinFile(const char* filename,kmb::MeshData* mesh) const
 		input.close();
 		return -1;
 	}
-	// long ‚Ì‘å‚«‚³
+	// long ã®å¤§ãã•
 	input.read( buf, 2 );
 	buf[2] = '\0';
 	std::cout << "HECMW BINARY RESULT INTEGERSIZE : " << buf << std::endl;
-	// ƒwƒbƒ_[
+	// ãƒ˜ãƒƒãƒ€ãƒ¼
 	input.get( buf, 64, '\0' );
 	if( resHeader != buf ){
 		input.close();
 		return -2;
 	}
-	// NULL •¶š
+	// NULL æ–‡å­—
 	input.read( buf, 1 );
 
 	input.read(reinterpret_cast<char*>(&nodeCount),sizeof(long));
@@ -2390,7 +2390,7 @@ kmb::HecmwIO::loadFromResBinFile(const char* filename,kmb::MeshData* mesh) const
 	input.read(reinterpret_cast<char*>(&elementValueCount),sizeof(long));
 
 
-	// ß“_ƒf[ƒ^
+	// ç¯€ç‚¹ãƒ‡ãƒ¼ã‚¿
 	mesh->clearTargetData();
 	for(int i=0;i<nodeValueCount;++i){
 		long dl = 0;
@@ -2459,7 +2459,7 @@ kmb::HecmwIO::loadFromResBinFile(const char* filename,kmb::MeshData* mesh) const
 		delete[] v;
 	}
 
-	// —v‘fƒf[ƒ^
+	// è¦ç´ ãƒ‡ãƒ¼ã‚¿
 	mesh->clearTargetData();
 	for(int i=0;i<elementValueCount;++i){
 		long dl = 0;
@@ -2529,11 +2529,11 @@ kmb::HecmwIO::loadFromResBinFile(const char* filename,kmb::MeshData* mesh) const
 	}
 
 	input.close();
-	// ‚ ‚¦‚Ä clearTargetData ‚ğ‚µ‚È‚¢ => boundary extractor ‚Å•\–Ê‚É’l‚ğˆø‚«Œp‚ª‚¹‚é‚½‚ß
+	// ã‚ãˆã¦ clearTargetData ã‚’ã—ãªã„ => boundary extractor ã§è¡¨é¢ã«å€¤ã‚’å¼•ãç¶™ãŒã›ã‚‹ãŸã‚
 	return 0;
 }
 
-// setSolutionType ‚Å‰ğÍ‚Ìí—Ş‚ğİ’è‚µ‚Ä‚¨‚­‚±‚Æ
+// setSolutionType ã§è§£æã®ç¨®é¡ã‚’è¨­å®šã—ã¦ãŠãã“ã¨
 int
 kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 {
@@ -2547,7 +2547,7 @@ kmb::HecmwIO::saveToFile(const char* filename, const kmb::MeshData* mesh) const
 		writeHeader(output);
 		writeNode(output,mesh);
 
-		// SECTION ‚Å—^‚¦‚ç‚ê‚é—v‘f‚ÍABody ‚²‚Æ‚É EGRP –¼‚ğ•t‚¯‚Ä !ELEMENT ‚Åo—Í‚·‚é
+		// SECTION ã§ä¸ãˆã‚‰ã‚Œã‚‹è¦ç´ ã¯ã€Body ã”ã¨ã« EGRP åã‚’ä»˜ã‘ã¦ !ELEMENT ã§å‡ºåŠ›ã™ã‚‹
 		kmb::bodyIdType bodyCount = mesh->getBodyCount();
 		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 			writeElement(output,mesh,bodyId);
@@ -2621,7 +2621,7 @@ kmb::HecmwIO::saveToResFile(const char* filename,kmb::MeshData* mesh) const
 	mesh->clearTargetData();
 	output.write( reinterpret_cast<char*>(&nodeValueCount), sizeof(long) );
 	output.write( reinterpret_cast<char*>(&elementValueCount), sizeof(long) );
-	// ß“_•¨——Ê
+	// ç¯€ç‚¹ç‰©ç†é‡
 	{
 		std::vector< std::string >::iterator vIter = nodeValues.begin();
 		std::vector< std::string >::iterator endIter = nodeValues.end();
@@ -2695,7 +2695,7 @@ kmb::HecmwIO::saveToResFile(const char* filename,kmb::MeshData* mesh) const
 	}
 	dim = 0;
 	mesh->clearTargetData();
-	// —v‘f•¨——Ê
+	// è¦ç´ ç‰©ç†é‡
 	{
 		std::vector< std::string >::iterator vIter = elementValues.begin();
 		std::vector< std::string >::iterator endIter = elementValues.end();
@@ -2838,7 +2838,7 @@ kmb::HecmwIO::appendEquationToFile(const char* filename,const kmb::MeshData* mes
 	output << "!EQUATION" << std::endl;
 	int equationCount = 0;
 
-	// slave ‚Ìß“_‚ğ master ‚Ì—v‘f‚Å•]‰¿‚·‚é
+	// slave ã®ç¯€ç‚¹ã‚’ master ã®è¦ç´ ã§è©•ä¾¡ã™ã‚‹
 	const kmb::DataBindings* mGroup = mesh->getDataBindingsPtr(master);
 	kmb::FaceBucket fbucket;
 	fbucket.setContainer(mesh,mGroup);
@@ -2860,14 +2860,14 @@ kmb::HecmwIO::appendEquationToFile(const char* filename,const kmb::MeshData* mes
 		mesh->getNode( nodeId, pt );
 		fbucket.getNearest( pt.x(), pt.y(), pt.z(), dist, f );
 		element = mesh->findElement( f.getElementId(), mGroup->getTargetBodyId() );
-		// —v‘fÀ•W‚ª’è‹`ˆæ‚©‚ç‘å‚«‚­ŠO‚ê‚Ä‚¢‚é‚à‚Ì‚ğœ‚­
+		// è¦ç´ åº§æ¨™ãŒå®šç¾©åŸŸã‹ã‚‰å¤§ããå¤–ã‚Œã¦ã„ã‚‹ã‚‚ã®ã‚’é™¤ã
 		int findex = f.getLocalFaceId();
 		if( eev.getWeightElementFace( element, findex, pt.x(), pt.y(), pt.z(), coeff ) >= outThresh ){
 			int len = element.getBoundaryNodeCount(findex);
 			int count = 1;
 			double sum = 0.0;
 			for(int j=0;j<len;++j){
-				// thresh ˆÈ‰º‚Ì€‚ğœ‚­
+				// thresh ä»¥ä¸‹ã®é …ã‚’é™¤ã
 				if( fabs( coeff[j] ) > thresh ){
 					++count;
 					sum += coeff[j];
@@ -2880,8 +2880,8 @@ kmb::HecmwIO::appendEquationToFile(const char* filename,const kmb::MeshData* mes
 					coeff[j] /= sum;
 				}
 			}
-			// ‚±‚±‚Å equation ƒf[ƒ^‚ğo—Í‚·‚é
-			// €‚Í‚Ps‚ÅÅ‘å‚S€‚Ü‚Å
+			// ã“ã“ã§ equation ãƒ‡ãƒ¼ã‚¿ã‚’å‡ºåŠ›ã™ã‚‹
+			// é …ã¯ï¼‘è¡Œã§æœ€å¤§ï¼”é …ã¾ã§
 			// x, y, z => i = 1, 2, 3
 			for(int i=0;i<3;++i){
 				int term = 0;
@@ -2893,7 +2893,7 @@ kmb::HecmwIO::appendEquationToFile(const char* filename,const kmb::MeshData* mes
 						if( term > 0 ){
 							output << ", ";
 						}
-						output << element.getBoundaryCellId(findex,j) + offsetNodeId << ", " << i+1 << ", " << -coeff[j];
+						output << element.getBoundaryNodeId(findex,j) + offsetNodeId << ", " << i+1 << ", " << -coeff[j];
 						++term;
 					}
 					if( term == 4 ){

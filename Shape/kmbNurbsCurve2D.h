@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : NurbsCurve2D                                            #
@@ -13,9 +13,9 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// Šµ—p“I‚É§Œä“_‚Ì’l‚Í“¯ŸÀ•W‚»‚Ì‚à‚Ì‚Å‚Í‚È‚­
-// [x,y,w] => [xw:yw:w] ‚É•ÏŠ·‚µ‚½‚à‚Ì‚ª“¯ŸÀ•W
-// •ÏŠ·Œã‚Ì“¯ŸÀ•W‚Å¬‚º‡‚í‚¹‚é‚±‚Æ‚É’ˆÓ‚·‚é
+// æ…£ç”¨çš„ã«åˆ¶å¾¡ç‚¹ã®å€¤ã¯åŒæ¬¡åº§æ¨™ãã®ã‚‚ã®ã§ã¯ãªã
+// [x,y,w] => [xw:yw:w] ã«å¤‰æ›ã—ãŸã‚‚ã®ãŒåŒæ¬¡åº§æ¨™
+// å¤‰æ›å¾Œã®åŒæ¬¡åº§æ¨™ã§æ··ãœåˆã‚ã›ã‚‹ã“ã¨ã«æ³¨æ„ã™ã‚‹
 //
 #pragma once
 
@@ -48,7 +48,7 @@ public:
 	virtual void getDomain( double &min_t, double &max_t ) const;
 	virtual bool getNearest( const kmb::Point2D& point, double& t ) const;
 protected:
-	// —L—®‚Ì•ª•ê‚¾‚¯ŒvZ‚·‚é
+	// æœ‰ç†å¼ã®åˆ†æ¯ã ã‘è¨ˆç®—ã™ã‚‹
 	virtual bool getSubDerivative( double t, kmb::Vector2D& tangent ) const;
 	virtual bool getSubSecondDerivative( double t, kmb::Vector2D& tangent ) const;
 	virtual bool getWeight( double t, double &w ) const;

@@ -32,9 +32,9 @@
 /********************************************************************************
 =begin
 
-=== 1次四角形インターフェイス要素 (QUADRILATERAL_INTERFACE)
+=== 1谺｡蝗幄ｧ貞ｽ｢繧､繝ｳ繧ｿ繝ｼ繝輔ぉ繧､繧ｹ隕∫ｴ (QUADRILATERAL_INTERFACE)
 
-接続行列
+謗･邯夊｡悟��
 
 	{ 0, 1, 0, 1, 1, 0, 0, 1, 0},
 	{ 1, 0, 1, 0, 1, 1, 0, 0, 0},
@@ -46,7 +46,7 @@
 	{ 1, 0, 0, 1, 0, 0, 0, 0, 1},
 	{ 0, 0, 0, 0, 1, 1, 1, 1, 0},
 
-面
+髱｢
 
 	{ 3, 2, 1, 0},
 	{ 0, 4, 8, 7},
@@ -130,3 +130,12 @@ kmb::QuadInterface::~QuadInterface(void)
 {
 }
 
+kmb::nodeIdType kmb::QuadInterface::operator()(const int index,const int i) const
+{
+	return cell[kmb::QuadInterface::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::QuadInterface::operator()(const int index,const int i)
+{
+	return cell[kmb::QuadInterface::faceTable[index][i]];
+}

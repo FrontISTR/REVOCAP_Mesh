@@ -26,6 +26,8 @@ public:
 	TriInterface(void);
 	TriInterface(kmb::nodeIdType *ary);
 	virtual ~TriInterface(void);
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 public:
 	static const int connectionTable[6][6];
 	static const int faceTable[5][3];

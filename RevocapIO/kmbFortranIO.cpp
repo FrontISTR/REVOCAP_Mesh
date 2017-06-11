@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : FortranIO                                               #
@@ -50,7 +50,7 @@ kmb::FortranIO::getReverseEndian(void) const
 	return endianFlag;
 }
 
-// Å‰‚ÉintŒ^‚Å•¶š—ñ‚Ì‘å‚«‚³A‚»‚ÌŒã‚Å•¶š—ñ–{‘ÌAÅŒã‚É‚à‚¤ˆê“x int ‚Å‘å‚«‚³
+// æœ€åˆã«intå‹ã§æ–‡å­—åˆ—ã®å¤§ãã•ã€ãã®å¾Œã§æ–‡å­—åˆ—æœ¬ä½“ã€æœ€å¾Œã«ã‚‚ã†ä¸€åº¦ int ã§å¤§ãã•
 int
 kmb::FortranIO::readString(std::ifstream &input, std::string &str)
 {
@@ -100,7 +100,7 @@ kmb::FortranIO::writeFloat(std::ofstream &output,float f)
 	char buf[32];
 	char pow[8];
 	sprintf( buf, " % 8.6E", f );
-	if( strlen(buf) == 15 ){ // w”‚ª‚RƒPƒ^‚Ì
+	if( strlen(buf) == 15 ){ // æŒ‡æ•°ãŒï¼“ã‚±ã‚¿ã®æ™‚
 		strcpy(pow,(&buf[13]));
 		buf[12] = '\0';
 		strcat(buf,pow);

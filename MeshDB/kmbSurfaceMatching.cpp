@@ -133,10 +133,10 @@ kmb::SurfaceMatching::setPair(kmb::bodyIdType bodyId,const char* faceGroup)
 			slaveFaceGroup = NULL;
 			return;
 		}
-		// distance matrix ‚Ìì¬
-		// sFmaster (element id)
-		// —ñFslave  (face)
-		// ¬•ªF‚»‚ê‚¼‚ê‚Ì‹——£
+		// distance matrix ã®ä½œæˆ
+		// è¡Œï¼šmaster (element id)
+		// åˆ—ï¼šslave  (face)
+		// æˆåˆ†ï¼šãã‚Œãã‚Œã®è·é›¢
 		distanceMatrix = new kmb::Matrix_DoubleArray( masterLen, slaveLen );
 		elementIds = new kmb::elementIdType[masterLen];
 		faces = new kmb::Face[slaveLen];
@@ -159,7 +159,7 @@ kmb::SurfaceMatching::setPair(kmb::bodyIdType bodyId,const char* faceGroup)
 			++mIter;
 			++i;
 		}
-		// connection table ‚Ìì¬
+		// connection table ã®ä½œæˆ
 		int i0,i1;
 		for(int j0=0;j0<masterLen;++j0){
 			kmb::ElementContainer::iterator m0Iter = masterSurf->find(elementIds[j0]);
@@ -174,8 +174,8 @@ kmb::SurfaceMatching::setPair(kmb::bodyIdType bodyId,const char* faceGroup)
 	}
 }
 
-// mapping : face => [‘Î‰‚·‚é–Ê,‰ñ“]]
-// face ‚ÌˆÊ‘Š‚Æ–Ê‚ÌˆÊ‘Š‚ªˆê’v‚·‚é‚Æ‚ÍŒÀ‚ç‚È‚¢‚Ì‚Å’ˆÓ‚·‚é
+// mapping : face => [å¯¾å¿œã™ã‚‹é¢,å›è»¢]
+// face ã®ä½ç›¸ã¨é¢ã®ä½ç›¸ãŒä¸€è‡´ã™ã‚‹ã¨ã¯é™ã‚‰ãªã„ã®ã§æ³¨æ„ã™ã‚‹
 bool
 kmb::SurfaceMatching::calcMapping(void)
 {
@@ -185,8 +185,8 @@ kmb::SurfaceMatching::calcMapping(void)
 	if( distanceMatrix == NULL || mesh == NULL || elementIds == NULL || faces == NULL ){
 		return false;
 	}
-	// sFmaster (element id) = rSize
-	// —ñFslave  (face)       = cSize
+	// è¡Œï¼šmaster (element id) = rSize
+	// åˆ—ï¼šslave  (face)       = cSize
 	int rSize = distanceMatrix->getRowSize();
 	int cSize = distanceMatrix->getColSize();
 	if( cSize < rSize ){
@@ -195,9 +195,9 @@ kmb::SurfaceMatching::calcMapping(void)
 
 	kmb::Minimizer min;
 	kmb::Permutation perm;
-	// master(element Id) => slave(face) ‚Ö‚Ì’PË‚Ì‘S‘Ì‚ÌƒCƒeƒŒ[ƒ^
+	// master(element Id) => slave(face) ã¸ã®å˜å°„ã®å…¨ä½“ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿
 	perm.initialize( cSize, rSize );
-	// Å¬’l‚ğ‚Æ‚é master => slave ‚Ì‡—ñ
+	// æœ€å°å€¤ã‚’ã¨ã‚‹ master => slave ã®é †åˆ—
 	int* minPerm = new int[rSize];
 	for(int i=0;i<rSize;++i){
 		minPerm[i] = -1;
@@ -215,7 +215,7 @@ kmb::SurfaceMatching::calcMapping(void)
 				}
 			}
 			if( min.update( sumDist ) && checkTopologicalMapping(perm) ){
-				// minPerm ‚ğXV
+				// minPerm ã‚’æ›´æ–°
 				for(int i=0;i<rSize;++i){
 					minPerm[i] = perm.getPerm(i);
 				}
@@ -232,7 +232,7 @@ kmb::SurfaceMatching::calcMapping(void)
 	}
 
 	if( minPerm[0] >= 0 ){
-		// ‘¶İ‚µ‚Ä‚¢‚é‚±‚Æ‚ğŠm”F‚·‚é
+		// å­˜åœ¨ã—ã¦ã„ã‚‹ã“ã¨ã‚’ç¢ºèªã™ã‚‹
 		for(int i=0;i<rSize;++i){
 			int index = -1;
 			kmb::ElementContainer::iterator eIter = masterSurf->find( elementIds[i] );
@@ -280,7 +280,7 @@ kmb::SurfaceMatching::constructDummyElements(void)
 	{
 		return appendCount;
 	}
-	// 3 ‰ñ‚®‚ç‚¢‚â‚Á‚Ä‚¨‚¯‚ÎˆÀSHH
+	// 3 å›ãã‚‰ã„ã‚„ã£ã¦ãŠã‘ã°å®‰å¿ƒï¼Ÿï¼Ÿ
 	for(int i=0;i<3;++i){
 		kmb::DataBindings::iterator fIter = slaveFaceGroup->begin();
 		while( !fIter.isFinished() ){
@@ -305,7 +305,7 @@ kmb::SurfaceMatching::getMatchingElementId(kmb::Face f,int &index)
 {
 	std::map< kmb::Face, kmb::SurfaceMatching::rotatedElement >::const_iterator mIter = mapping.find(f);
 	if( mIter == mapping.end() ){
-		// •K—v‚È‚ç masterSurf ‚É’Ç‰Á‚·‚é
+		// å¿…è¦ãªã‚‰ masterSurf ã«è¿½åŠ ã™ã‚‹
 		kmb::elementIdType elementId = appendDummyElement(f);
 		if( elementId != kmb::Element::nullElementId ){
 			index = 0;
@@ -318,8 +318,8 @@ kmb::SurfaceMatching::getMatchingElementId(kmb::Face f,int &index)
 	}
 }
 
-// ‹ß–T‚ª‚Å‚«‚Ä‚©‚ç‚µ‚©’Ç‰Á‚Å‚«‚È‚¢‚Ì‚Å
-// ‡˜‚ğ•Ï‚¦‚ÄÀs‚·‚é‚Æ¬Œ÷‚·‚éê‡‚ª‚ ‚é‚Ì‚Å’ˆÓ
+// è¿‘å‚ãŒã§ãã¦ã‹ã‚‰ã—ã‹è¿½åŠ ã§ããªã„ã®ã§
+// é †åºã‚’å¤‰ãˆã¦å®Ÿè¡Œã™ã‚‹ã¨æˆåŠŸã™ã‚‹å ´åˆãŒã‚ã‚‹ã®ã§æ³¨æ„
 kmb::elementIdType
 kmb::SurfaceMatching::appendDummyElement(kmb::Face f)
 {
@@ -338,7 +338,7 @@ kmb::SurfaceMatching::appendDummyElement(kmb::Face f)
 	}
 
 	kmb::elementIdType appendId = kmb::Element::nullElementId;
-	// f ‚Ìü‚è‚Ì Face ‚Æ‚»‚ê‚É‘Î‰‚·‚é element ‚Ìî•ñ‚ğæ“¾‚·‚é
+	// f ã®å‘¨ã‚Šã® Face ã¨ãã‚Œã«å¯¾å¿œã™ã‚‹ element ã®æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 	kmb::elementType etype = f.getFaceElementType( mesh );
 	int len = kmb::Element::getBoundaryCount( etype );
 	kmb::Face* bfaces = new kmb::Face[len];
@@ -348,16 +348,16 @@ kmb::SurfaceMatching::appendDummyElement(kmb::Face f)
 		matchingElements[i].elementId = kmb::Element::nullElementId;
 		matchingElements[i].index = -1;
 		neighborInfo->getFaceNeighborByIndex(f,i,slaveElements,bfaces[i]);
-		// ‚±‚±‚Å‚Í getMatchingElement ‚ğg‚í‚¸‚É“o˜^Ï‚İ‚Ìî•ñ‚¾‚¯‚ğg‚¤
+		// ã“ã“ã§ã¯ getMatchingElement ã‚’ä½¿ã‚ãšã«ç™»éŒ²æ¸ˆã¿ã®æƒ…å ±ã ã‘ã‚’ä½¿ã†
 		std::map< kmb::Face, kmb::SurfaceMatching::rotatedElement >::iterator mIter = mapping.find(bfaces[i]);
 		if( mIter != mapping.end() ){
 			matchingElements[i] = mIter->second;
 		}
 	}
-	// f ‚Ìü‚è‚Ìî•ñ‚©‚ç dummy element ‚ğì‚é
-	// Œü‚«‚Í f ‚É‡‚í‚¹‚éiindex = 0j
-	// QUAD ‚Ì‚Ü‚í‚è‚Í QUAD ‚ª‚ ‚é‚±‚Æ‚ğ‘O’ñ‚Æ‚·‚é
-	// TRIANGLE ‚Ì‚Ü‚í‚è‚Í TRIANGLE ‚ª‚ ‚é‚±‚Æ‚ğ‘O’ñ‚Æ‚·‚é
+	// f ã®å‘¨ã‚Šã®æƒ…å ±ã‹ã‚‰ dummy element ã‚’ä½œã‚‹
+	// å‘ãã¯ f ã«åˆã‚ã›ã‚‹ï¼ˆindex = 0ï¼‰
+	// QUAD ã®ã¾ã‚ã‚Šã¯ QUAD ãŒã‚ã‚‹ã“ã¨ã‚’å‰æã¨ã™ã‚‹
+	// TRIANGLE ã®ã¾ã‚ã‚Šã¯ TRIANGLE ãŒã‚ã‚‹ã“ã¨ã‚’å‰æã¨ã™ã‚‹
 	if( etype == kmb::TRIANGLE ){
 	}else if( etype == kmb::QUAD ){
 		kmb::nodeIdType nodes[4] = { kmb::nullNodeId, kmb::nullNodeId, kmb::nullNodeId, kmb::nullNodeId };
@@ -372,13 +372,13 @@ kmb::SurfaceMatching::appendDummyElement(kmb::Face f)
 				bfaces[i].getFaceElement( slaveElements, q1 );
 				int i0=-1, i1=-1;
 				if( kmb::ElementRelation::getQuadRelation(
-						q0.getCellId(0), q0.getCellId(1), q0.getCellId(2), q0.getCellId(3),
-						q1.getCellId(0), q1.getCellId(1), q1.getCellId(2), q1.getCellId(3),
+						q0.getNodeId(0), q0.getNodeId(1), q0.getNodeId(2), q0.getNodeId(3),
+						q1.getNodeId(0), q1.getNodeId(1), q1.getNodeId(2), q1.getNodeId(3),
 						i0, i1 ) == kmb::ElementRelation::ADJACENT && i0 == i )
 				{
-					// i ”Ô–Ú‚Ì•Ó‚Í [i,i+1] => Å‰‚Ìß“_‚Í i
-					nodes[i] = elem.getCellId( (i1 + 1 + matchingElements[i].index)%4 );
-					nodes[(i+1)%4] = elem.getCellId( (i1 + matchingElements[i].index)%4 );
+					// i ç•ªç›®ã®è¾ºã¯ [i,i+1] => æœ€åˆã®ç¯€ç‚¹ã¯ i
+					nodes[i] = elem.getNodeId( (i1 + 1 + matchingElements[i].index)%4 );
+					nodes[(i+1)%4] = elem.getNodeId( (i1 + matchingElements[i].index)%4 );
 				}
 			}
 		}
@@ -456,7 +456,7 @@ kmb::SurfaceMatching::duplicateNode(kmb::nodeIdType n0)
 	if( this->mesh == NULL ){
 		return kmb::nullNodeId;
 	}
-	// ’Ç‰Á‚µ‚½ß“_‚ğŠo‚¦‚Ä‚¨‚©‚È‚­‚Ä‚Í‚¢‚¯‚È‚¢
+	// è¿½åŠ ã—ãŸç¯€ç‚¹ã‚’è¦šãˆã¦ãŠã‹ãªãã¦ã¯ã„ã‘ãªã„
 	kmb::Node point;
 	kmb::nodeIdType n1;
 	mesh->getNode( n0, point );

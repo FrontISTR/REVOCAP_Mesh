@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Plane                                                   #
@@ -31,9 +31,9 @@
 namespace kmb{
 
 /**
- * ‹óŠÔ“à‚Ì•½–Ê
+ * ç©ºé–“å†…ã®å¹³é¢
  * ax + by + cz + d = 0
- * a*a + b*b + c*c = 1 ‚Æ‚È‚é‚æ‚¤‚É³‹K‰»‚µ‚Ä‚¨‚­
+ * a*a + b*b + c*c = 1 ã¨ãªã‚‹ã‚ˆã†ã«æ­£è¦åŒ–ã—ã¦ãŠã
  */
 
 class Plane
@@ -56,30 +56,30 @@ public:
 	double evaluate(const Point3D &pt) const;
 	Vector3D getNormal(void) const;
 	double getConstant(void) const;
-	// –@ü‚Ì•ÏX
+	// æ³•ç·šã®å¤‰æ›´
 	bool setNormal(double a,double b,double c);
 	void setOrigin(double x,double y,double z);
-	// ‹óW‡‚©‚à‚µ‚ê‚È‚¢‚©‚çƒ|ƒCƒ“ƒ^‚Å•Ô‚·
+	// ç©ºé›†åˆã‹ã‚‚ã—ã‚Œãªã„ã‹ã‚‰ãƒã‚¤ãƒ³ã‚¿ã§è¿”ã™
 	Point3D* createIntersectPoint(const Point3D &p0,const Point3D &p1) const;
-	// p0 ‚Æ p1 ‚ğŒ‹‚Ô’¼ü‚Æ‚ÌŒğ“_
-	// p0 ‚ğ t=0Ap1 ‚ğ t=1 ‚Æ‚µ‚Äƒpƒ‰ƒ[ƒ^‚ğ—^‚¦‚½‚Æ‚«‚Ì t ‚àŒvZ‚·‚é
+	// p0 ã¨ p1 ã‚’çµã¶ç›´ç·šã¨ã®äº¤ç‚¹
+	// p0 ã‚’ t=0ã€p1 ã‚’ t=1 ã¨ã—ã¦ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ä¸ãˆãŸã¨ãã® t ã‚‚è¨ˆç®—ã™ã‚‹
 	bool getIntersection(const Point3D &p0,const Point3D &p1, Point3D &pt, double &t) const;
-	// p0 p1 p2 ‚ÌOŠpŒ`‚Æ‚ÌŒğ‚í‚è
-	// –ß‚è’l
-	// -2 Œğ‚í‚è‚È‚µOŠpŒ`‚Í•‰‚Ì‘¤
-	// -1 Œğ‚í‚è‚È‚µOŠpŒ`‚Í³‚Ì‘¤
-	// 0 p0 p3 p4 ‚ª³‚Ì‘¤ p1 p2 p4 p3 ‚ª•‰‚Ì‘¤
-	// 1 p1 p3 p4 ‚ª³‚Ì‘¤ p2 p0 p4 p3 ‚ª•‰‚Ì‘¤
-	// 2 p2 p3 p4 ‚ª³‚Ì‘¤ p0 p1 p4 p3 ‚ª•‰‚Ì‘¤
-	// 3 p1 p2 p4 p3 ‚ª³‚Ì‘¤ p0 p3 p4 ‚ª•‰‚Ì‘¤
-	// 4 p2 p0 p4 p3 ‚ª³‚Ì‘¤ p1 p3 p4 ‚ª•‰‚Ì‘¤
-	// 5 p0 p1 p4 p3 ‚ª³‚Ì‘¤ p2 p3 p4 ‚ª•‰‚Ì‘¤
-	// 6 p0 ‚ğ’Ê‚é p0 p1 p3 ‚ª³‚Ì‘¤ p0 p3 p2 ‚ª•‰‚Ì‘¤
-	// 7 p1 ‚ğ’Ê‚é p1 p2 p3 ‚ª³‚Ì‘¤ p1 p3 p0 ‚ª•‰‚Ì‘¤
-	// 8 p2 ‚ğ’Ê‚é p2 p0 p3 ‚ª³‚Ì‘¤ p2 p3 p1 ‚ª•‰‚Ì‘¤
-	// 9  p0 ‚ğ’Ê‚é p0 p3 p2 ‚ª³‚Ì‘¤ p0 p1 p3 ‚ª•‰‚Ì‘¤
-	// 10 p1 ‚ğ’Ê‚é p1 p3 p0 ‚ª³‚Ì‘¤ p1 p2 p3 ‚ª•‰‚Ì‘¤
-	// 11 p2 ‚ğ’Ê‚é p2 p3 p1 ‚ª³‚Ì‘¤ p2 p0 p3 ‚ª•‰‚Ì‘¤
+	// p0 p1 p2 ã®ä¸‰è§’å½¢ã¨ã®äº¤ã‚ã‚Š
+	// æˆ»ã‚Šå€¤
+	// -2 äº¤ã‚ã‚Šãªã—ä¸‰è§’å½¢ã¯è² ã®å´
+	// -1 äº¤ã‚ã‚Šãªã—ä¸‰è§’å½¢ã¯æ­£ã®å´
+	// 0 p0 p3 p4 ãŒæ­£ã®å´ p1 p2 p4 p3 ãŒè² ã®å´
+	// 1 p1 p3 p4 ãŒæ­£ã®å´ p2 p0 p4 p3 ãŒè² ã®å´
+	// 2 p2 p3 p4 ãŒæ­£ã®å´ p0 p1 p4 p3 ãŒè² ã®å´
+	// 3 p1 p2 p4 p3 ãŒæ­£ã®å´ p0 p3 p4 ãŒè² ã®å´
+	// 4 p2 p0 p4 p3 ãŒæ­£ã®å´ p1 p3 p4 ãŒè² ã®å´
+	// 5 p0 p1 p4 p3 ãŒæ­£ã®å´ p2 p3 p4 ãŒè² ã®å´
+	// 6 p0 ã‚’é€šã‚‹ p0 p1 p3 ãŒæ­£ã®å´ p0 p3 p2 ãŒè² ã®å´
+	// 7 p1 ã‚’é€šã‚‹ p1 p2 p3 ãŒæ­£ã®å´ p1 p3 p0 ãŒè² ã®å´
+	// 8 p2 ã‚’é€šã‚‹ p2 p0 p3 ãŒæ­£ã®å´ p2 p3 p1 ãŒè² ã®å´
+	// 9  p0 ã‚’é€šã‚‹ p0 p3 p2 ãŒæ­£ã®å´ p0 p1 p3 ãŒè² ã®å´
+	// 10 p1 ã‚’é€šã‚‹ p1 p3 p0 ãŒæ­£ã®å´ p1 p2 p3 ãŒè² ã®å´
+	// 11 p2 ã‚’é€šã‚‹ p2 p3 p1 ãŒæ­£ã®å´ p2 p0 p3 ãŒè² ã®å´
 	int getIntersectionTriangle(const Point3D &p0,const Point3D &p1, const Point3D &p2, Point3D &p3, Point3D &p4) const;
 	// get foot of perpendicular
 	Point3D projectOnPlane(const Point3D& p) const;

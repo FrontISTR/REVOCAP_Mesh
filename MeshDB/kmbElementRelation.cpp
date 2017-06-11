@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+Ôªø/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementRelation                                         #
@@ -156,7 +156,7 @@ kmb::ElementRelation::getRelation(const kmb::ElementBase &eIter0, int &index0, c
 					int count = 0;
 					const int vertexCount = eIter0.getVertexCount();
 					for(int i=0;i<vertexCount;++i){
-						indices[i] = eIter1.indexOf( eIter0.getCellId(i) );
+						indices[i] = eIter1.indexOf( eIter0.getNodeId(i) );
 						if( indices[i] >= eIter1.getVertexCount() ){
 							indices[i] = -1;
 						}
@@ -190,7 +190,7 @@ kmb::ElementRelation::getRelation(const kmb::ElementBase &eIter0, int &index0, c
 					case 3:
 					case 4:
 						{
-							// âΩî‘ñ⁄ÇÃñ Ç…ê⁄Ç∑ÇÈÇ©ÇÉ`ÉFÉbÉN
+							// ‰ΩïÁï™ÁõÆ„ÅÆÈù¢„Å´Êé•„Åô„Çã„Åã„Çí„ÉÅ„Çß„ÉÉ„ÇØ
 							const int boundaryCount = eIter0.getBoundaryCount();
 							ret = kmb::ElementRelation::OTHERRELATION;
 							for(int i=0;i<boundaryCount;++i){
@@ -259,11 +259,11 @@ kmb::ElementRelation::getRelation(const kmb::ElementBase &eIter0, int &index0, c
 						{
 							int i0 = -1;
 							int i1 = -1;
-							if( eIter0.getCellId(0) == eIter1.getCellId(0) ){
+							if( eIter0.getNodeId(0) == eIter1.getNodeId(0) ){
 								ret =
 									kmb::ElementRelation::getQuadRelation(
-										eIter0.getCellId(1), eIter0.getCellId(2), eIter0.getCellId(3), eIter0.getCellId(4),
-										eIter1.getCellId(1), eIter1.getCellId(2), eIter1.getCellId(3), eIter1.getCellId(4),
+										eIter0.getNodeId(1), eIter0.getNodeId(2), eIter0.getNodeId(3), eIter0.getNodeId(4),
+										eIter1.getNodeId(1), eIter1.getNodeId(2), eIter1.getNodeId(3), eIter1.getNodeId(4),
 										i0,i1);
 							}
 						}
@@ -333,182 +333,182 @@ kmb::ElementRelation::isAdjacent(const kmb::ElementBase &eIter0, int &index0, co
 	bool ret = true;
 	if( eIter0.getType() == kmb::TETRAHEDRON && eIter1.getType() == kmb::TETRAHEDRON ){
 		unsigned int rel = 0;
-		if( eIter0.getCellId(0) == eIter1.getCellId(0) )	rel |= 0x1000;
-		if( eIter0.getCellId(0) == eIter1.getCellId(1) )	rel |= 0x2000;
-		if( eIter0.getCellId(0) == eIter1.getCellId(2) )	rel |= 0x4000;
-		if( eIter0.getCellId(0) == eIter1.getCellId(3) )	rel |= 0x8000;
-		if( eIter0.getCellId(1) == eIter1.getCellId(0) )	rel |= 0x0100;
-		if( eIter0.getCellId(1) == eIter1.getCellId(1) )	rel |= 0x0200;
-		if( eIter0.getCellId(1) == eIter1.getCellId(2) )	rel |= 0x0400;
-		if( eIter0.getCellId(1) == eIter1.getCellId(3) )	rel |= 0x0800;
-		if( eIter0.getCellId(2) == eIter1.getCellId(0) )	rel |= 0x0010;
-		if( eIter0.getCellId(2) == eIter1.getCellId(1) )	rel |= 0x0020;
-		if( eIter0.getCellId(2) == eIter1.getCellId(2) )	rel |= 0x0040;
-		if( eIter0.getCellId(2) == eIter1.getCellId(3) )	rel |= 0x0080;
-		if( eIter0.getCellId(3) == eIter1.getCellId(0) )	rel |= 0x0001;
-		if( eIter0.getCellId(3) == eIter1.getCellId(1) )	rel |= 0x0002;
-		if( eIter0.getCellId(3) == eIter1.getCellId(2) )	rel |= 0x0004;
-		if( eIter0.getCellId(3) == eIter1.getCellId(3) )	rel |= 0x0008;
+		if( eIter0.getNodeId(0) == eIter1.getNodeId(0) )	rel |= 0x1000;
+		if( eIter0.getNodeId(0) == eIter1.getNodeId(1) )	rel |= 0x2000;
+		if( eIter0.getNodeId(0) == eIter1.getNodeId(2) )	rel |= 0x4000;
+		if( eIter0.getNodeId(0) == eIter1.getNodeId(3) )	rel |= 0x8000;
+		if( eIter0.getNodeId(1) == eIter1.getNodeId(0) )	rel |= 0x0100;
+		if( eIter0.getNodeId(1) == eIter1.getNodeId(1) )	rel |= 0x0200;
+		if( eIter0.getNodeId(1) == eIter1.getNodeId(2) )	rel |= 0x0400;
+		if( eIter0.getNodeId(1) == eIter1.getNodeId(3) )	rel |= 0x0800;
+		if( eIter0.getNodeId(2) == eIter1.getNodeId(0) )	rel |= 0x0010;
+		if( eIter0.getNodeId(2) == eIter1.getNodeId(1) )	rel |= 0x0020;
+		if( eIter0.getNodeId(2) == eIter1.getNodeId(2) )	rel |= 0x0040;
+		if( eIter0.getNodeId(2) == eIter1.getNodeId(3) )	rel |= 0x0080;
+		if( eIter0.getNodeId(3) == eIter1.getNodeId(0) )	rel |= 0x0001;
+		if( eIter0.getNodeId(3) == eIter1.getNodeId(1) )	rel |= 0x0002;
+		if( eIter0.getNodeId(3) == eIter1.getNodeId(2) )	rel |= 0x0004;
+		if( eIter0.getNodeId(3) == eIter1.getNodeId(3) )	rel |= 0x0008;
 		switch( rel )
 		{
 			case 0x0248:
 			case 0x0482:
 			case 0x0824:
 				index0 = 0;	index1 = 0;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 123 vs 123
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 123
 			case 0x0284:
 			case 0x0842:
 			case 0x0428:
 				index0 = 0;	index1 = 0;	ret = true;		break;
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 123 vs 032
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 032
 			case 0x0418:
 			case 0x0184:
 			case 0x0841:
 				index0 = 0;	index1 = 1;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 123 vs 032
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 032
 			case 0x0481:
 			case 0x0814:
 			case 0x0148:
 				index0 = 0;	index1 = 1;	ret = true;		break;
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 123 vs 013
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 013
 			case 0x0128:
 			case 0x0281:
 			case 0x0812:
 				index0 = 0;	index1 = 2;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 123 vs 013
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 013
 			case 0x0182:
 			case 0x0821:
 			case 0x0218:
 				index0 = 0;	index1 = 2;	ret = true;		break;
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 123 vs 021
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 021
 			case 0x0421:
 			case 0x0214:
 			case 0x0142:
 				index0 = 0;	index1 = 3;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 123 vs 021
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 021
 			case 0x0412:
 			case 0x0124:
 			case 0x0241:
 				index0 = 0;	index1 = 3;	ret = true;		break;
 
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 032 vs 123
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 123
 			case 0x2084:
 			case 0x8042:
 			case 0x4028:
 				index0 = 1;	index1 = 0;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 032 vs 123
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 123
 			case 0x2048:
 			case 0x4082:
 			case 0x8024:
 				index0 = 1;	index1 = 0;	ret = true;		break;
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 032 vs 032
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 032
 			case 0x1048:
 			case 0x4081:
 			case 0x8014:
 				index0 = 1;	index1 = 1;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 032 vs 032
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 032
 			case 0x1084:
 			case 0x4018:
 			case 0x8041:
 				index0 = 1;	index1 = 1;	ret = true;		break;
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 032 vs 013
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 013
 			case 0x1082:
 			case 0x8021:
 			case 0x2018:
 				index0 = 1;	index1 = 2;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 032 vs 013
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 013
 			case 0x1028:
 			case 0x8012:
 			case 0x2081:
 				index0 = 1;	index1 = 2;	ret = true;		break;
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 032 vs 021
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 021
 			case 0x1024:
 			case 0x2041:
 			case 0x4012:
 				index0 = 1;	index1 = 3;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 032 vs 021
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 021
 			case 0x1042:
 			case 0x2014:
 			case 0x4021:
 				index0 = 1;	index1 = 3;	ret = true;		break;
 
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 013 vs 123
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 123
 			case 0x2408:
 			case 0x4802:
 			case 0x8204:
 				index0 = 2;	index1 = 0;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 013 vs 123
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 123
 			case 0x4208:
 			case 0x8402:
 			case 0x2804:
 				index0 = 2;	index1 = 0;	ret = true;		break;
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 013 vs 032
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 032
 			case 0x1804:
 			case 0x8401:
 			case 0x4108:
 				index0 = 2;	index1 = 1;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 013 vs 032
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 032
 			case 0x8104:
 			case 0x4801:
 			case 0x1408:
 				index0 = 2;	index1 = 1;	ret = true;		break;
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 013 vs 013
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 013
 			case 0x1208:
 			case 0x2801:
 			case 0x8102:
 				index0 = 2;	index1 = 2;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 013 vs 013
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 013
 			case 0x2108:
 			case 0x8201:
 			case 0x1802:
 				index0 = 2;	index1 = 2;	ret = true;		break;
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 013 vs 021
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 021
 			case 0x1402:
 			case 0x4201:
 			case 0x2104:
 				index0 = 2;	index1 = 3;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 013 vs 021
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 021
 			case 0x4102:
 			case 0x2401:
 			case 0x1204:
 				index0 = 2;	index1 = 3;	ret = true;		break;
 
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 021 vs 123
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 123
 			case 0x2840:
 			case 0x8420:
 			case 0x4280:
 				index0 = 3;	index1 = 0;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 021 vs 123
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 123
 			case 0x2480:
 			case 0x8240:
 			case 0x4820:
 				index0 = 3;	index1 = 0;	ret = true;		break;
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 021 vs 032
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 032
 			case 0x1480:
 			case 0x4810:
 			case 0x8140:
 				index0 = 3;	index1 = 1;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 021 vs 032
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 032
 			case 0x1840:
 			case 0x4180:
 			case 0x8410:
 				index0 = 3;	index1 = 1;	ret = true;		break;
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 021 vs 013
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 013
 			case 0x1820:
 			case 0x8210:
 			case 0x2180:
 				index0 = 3;	index1 = 2;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 021 vs 013
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 013
 			case 0x1280:
 			case 0x8120:
 			case 0x2810:
 				index0 = 3;	index1 = 2;	ret = true;		break;
-			// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 021 vs 021
+			// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 021
 			case 0x1240:
 			case 0x2410:
 			case 0x4120:
 				index0 = 3;	index1 = 3;	ret = false;	break;
-			// 3ì_Ç™ãtå¸Ç´Ç…àÍív 021 vs 021
+			// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 021
 			case 0x1420:
 			case 0x2140:
 			case 0x4210:
@@ -577,17 +577,17 @@ kmb::ElementRelation::getTriangleRelation
 	if( a2 == b1 )	rel |= 0x002;
 	if( a2 == b2 )	rel |= 0x004;
 	switch( rel ){
-		// ìØÇ∂å¸Ç´Ç…3ì_ã§óL
+		// Âêå„ÅòÂêë„Åç„Å´3ÁÇπÂÖ±Êúâ
 		case 0x124:
 		case 0x241:
 		case 0x412:
 			return kmb::ElementRelation::EQUAL;
-		// ãtå¸Ç´Ç…3ì_ã§óL
+		// ÈÄÜÂêë„Åç„Å´3ÁÇπÂÖ±Êúâ
 		case 0x421:
 		case 0x214:
 		case 0x142:
 			return kmb::ElementRelation::REVERSE;
-		// ìØÇ∂å¸Ç´Ç…2ì_ã§óL
+		// Âêå„ÅòÂêë„Åç„Å´2ÁÇπÂÖ±Êúâ
 		case 0x120:
 			aIndex = 2; bIndex = 2;
 			return kmb::ElementRelation::ANTIADJACENT;
@@ -615,7 +615,7 @@ kmb::ElementRelation::getTriangleRelation
 		case 0x104:
 			aIndex = 1; bIndex = 1;
 			return kmb::ElementRelation::ANTIADJACENT;
-		// ãtå¸Ç´Ç…2ì_ã§óL
+		// ÈÄÜÂêë„Åç„Å´2ÁÇπÂÖ±Êúâ
 		case 0x210:
 			aIndex = 2; bIndex = 2;
 			return kmb::ElementRelation::ADJACENT;
@@ -680,19 +680,19 @@ kmb::ElementRelation::getQuadRelation
 		return kmb::ElementRelation::COMMONNODE;
 	}
 	switch( rel ){
-	// å¸Ç´Çï€Ç¡Çƒ4ì_ã§óL
+	// Âêë„Åç„Çí‰øù„Å£„Å¶4ÁÇπÂÖ±Êúâ
 	case 0x1248:
 	case 0x2481:
 	case 0x4812:
 	case 0x8124:
 		return kmb::ElementRelation::EQUAL;
-	// ãtå¸Ç´Ç…4ì_ã§óL
+	// ÈÄÜÂêë„Åç„Å´4ÁÇπÂÖ±Êúâ
 	case 0x1842:
 	case 0x8421:
 	case 0x4218:
 	case 0x2184:
 		return kmb::ElementRelation::REVERSE;
-	// ìØÇ∂å¸Ç´Ç…2ì_ã§óL
+	// Âêå„ÅòÂêë„Åç„Å´2ÁÇπÂÖ±Êúâ
 	case 0x1200:
 		aIndex = 0;	bIndex = 0;
 		return kmb::ElementRelation::ANTIADJACENT;
@@ -741,7 +741,7 @@ kmb::ElementRelation::getQuadRelation
 	case 0x1008:
 		aIndex = 3;	bIndex = 3;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// ãtå¸Ç´Ç…2ì_ã§óL
+	// ÈÄÜÂêë„Åç„Å´2ÁÇπÂÖ±Êúâ
 	case 0x2100:
 		aIndex = 0;	bIndex = 0;
 		return kmb::ElementRelation::ADJACENT;
@@ -823,7 +823,7 @@ kmb::ElementRelation::getTriangleQuadRelation
 		return kmb::ElementRelation::OTHERRELATION;
 	}
 	switch( rel ){
-	// ìØÇ∂å¸Ç´Ç…2ì_ã§óL
+	// Âêå„ÅòÂêë„Åç„Å´2ÁÇπÂÖ±Êúâ
 	case 0x012:
 		aIndex = 0;	bIndex = 0;
 		return kmb::ElementRelation::ANTIADJACENT;
@@ -860,7 +860,7 @@ kmb::ElementRelation::getTriangleQuadRelation
 	case 0x810:
 		aIndex = 2;	bIndex = 3;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// ãtå¸Ç´Ç…2ì_ã§óL
+	// ÈÄÜÂêë„Åç„Å´2ÁÇπÂÖ±Êúâ
 	case 0x021:
 		aIndex = 0;	bIndex = 0;
 		return kmb::ElementRelation::ADJACENT;
@@ -934,7 +934,7 @@ kmb::ElementRelation::getTetrahedronRelation
 		return kmb::ElementRelation::COMMONEDGE;
 	}
 	switch( rel ){
-	// 4ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív
+	// 4ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥
 	case 0x1248:
 	case 0x1482:
 	case 0x1824:
@@ -948,7 +948,7 @@ kmb::ElementRelation::getTetrahedronRelation
 	case 0x8214:
 	case 0x8142:
 		return kmb::ElementRelation::EQUAL;
-	// 4ì_Ç™àŸÇ»ÇÈå¸Ç´Ç…àÍív
+	// 4ÁÇπ„ÅåÁï∞„Å™„ÇãÂêë„Åç„Å´‰∏ÄËá¥
 	case 0x1284:
 	case 0x1428:
 	case 0x1842:
@@ -962,193 +962,193 @@ kmb::ElementRelation::getTetrahedronRelation
 	case 0x8241:
 	case 0x8124:
 		return kmb::ElementRelation::REVERSE;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 123 vs 123
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 123
 	case 0x0248:
 	case 0x0482:
 	case 0x0824:
 		aIndex = 0;	bIndex = 0;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 123 vs 123
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 123
 	case 0x0284:
 	case 0x0842:
 	case 0x0428:
 		aIndex = 0;	bIndex = 0;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 123 vs 032
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 032
 	case 0x0418:
 	case 0x0184:
 	case 0x0841:
 		aIndex = 0;	bIndex = 1;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 123 vs 032
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 032
 	case 0x0481:
 	case 0x0814:
 	case 0x0148:
 		aIndex = 0;	bIndex = 1;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 123 vs 013
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 013
 	case 0x0128:
 	case 0x0281:
 	case 0x0812:
 		aIndex = 0;	bIndex = 2;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 123 vs 013
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 013
 	case 0x0182:
 	case 0x0821:
 	case 0x0218:
 		aIndex = 0;	bIndex = 2;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 123 vs 021
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 021
 	case 0x0421:
 	case 0x0214:
 	case 0x0142:
 		aIndex = 0;	bIndex = 3;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 123 vs 021
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 123 vs 021
 	case 0x0412:
 	case 0x0124:
 	case 0x0241:
 		aIndex = 0;	bIndex = 3;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 032 vs 123
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 123
 	case 0x2084:
 	case 0x8042:
 	case 0x4028:
 		aIndex = 1;	bIndex = 0;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 032 vs 123
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 123
 	case 0x2048:
 	case 0x4082:
 	case 0x8024:
 		aIndex = 1;	bIndex = 0;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 032 vs 032
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 032
 	case 0x1048:
 	case 0x4081:
 	case 0x8014:
 		aIndex = 1;	bIndex = 1;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 032 vs 032
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 032
 	case 0x1084:
 	case 0x4018:
 	case 0x8041:
 		aIndex = 1;	bIndex = 1;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 032 vs 013
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 013
 	case 0x1082:
 	case 0x8021:
 	case 0x2018:
 		aIndex = 1;	bIndex = 2;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 032 vs 013
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 013
 	case 0x1028:
 	case 0x8012:
 	case 0x2081:
 		aIndex = 1;	bIndex = 2;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 032 vs 021
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 021
 	case 0x1024:
 	case 0x2041:
 	case 0x4012:
 		aIndex = 1;	bIndex = 3;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 032 vs 021
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 032 vs 021
 	case 0x1042:
 	case 0x2014:
 	case 0x4021:
 		aIndex = 1;	bIndex = 3;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 013 vs 123
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 123
 	case 0x2408:
 	case 0x4802:
 	case 0x8204:
 		aIndex = 2;	bIndex = 0;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 013 vs 123
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 123
 	case 0x4208:
 	case 0x8402:
 	case 0x2804:
 		aIndex = 2;	bIndex = 0;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 013 vs 032
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 032
 	case 0x1804:
 	case 0x8401:
 	case 0x4108:
 		aIndex = 2;	bIndex = 1;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 013 vs 032
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 032
 	case 0x8104:
 	case 0x4801:
 	case 0x1408:
 		aIndex = 2;	bIndex = 1;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 013 vs 013
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 013
 	case 0x1208:
 	case 0x2801:
 	case 0x8102:
 		aIndex = 2;	bIndex = 2;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 013 vs 013
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 013
 	case 0x2108:
 	case 0x8201:
 	case 0x1802:
 		aIndex = 2;	bIndex = 2;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 013 vs 021
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 021
 	case 0x1402:
 	case 0x4201:
 	case 0x2104:
 		aIndex = 2;	bIndex = 3;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 013 vs 021
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 013 vs 021
 	case 0x4102:
 	case 0x2401:
 	case 0x1204:
 		aIndex = 2;	bIndex = 3;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 021 vs 123
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 123
 	case 0x2840:
 	case 0x8420:
 	case 0x4280:
 		aIndex = 3;	bIndex = 0;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 021 vs 123
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 123
 	case 0x2480:
 	case 0x8240:
 	case 0x4820:
 		aIndex = 3;	bIndex = 0;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 021 vs 032
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 032
 	case 0x1480:
 	case 0x4810:
 	case 0x8140:
 		aIndex = 3;	bIndex = 1;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 021 vs 032
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 032
 	case 0x1840:
 	case 0x4180:
 	case 0x8410:
 		aIndex = 3;	bIndex = 1;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 021 vs 013
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 013
 	case 0x1820:
 	case 0x8210:
 	case 0x2180:
 		aIndex = 3;	bIndex = 2;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 021 vs 013
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 013
 	case 0x1280:
 	case 0x8120:
 	case 0x2810:
 		aIndex = 3;	bIndex = 2;
 		return kmb::ElementRelation::ADJACENT;
-	// 3ì_Ç™ìØÇ∂å¸Ç´Ç…àÍív 021 vs 021
+	// 3ÁÇπ„ÅåÂêå„ÅòÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 021
 	case 0x1240:
 	case 0x2410:
 	case 0x4120:
 		aIndex = 3;	bIndex = 3;
 		return kmb::ElementRelation::ANTIADJACENT;
-	// 3ì_Ç™ãtå¸Ç´Ç…àÍív 021 vs 021
+	// 3ÁÇπ„ÅåÈÄÜÂêë„Åç„Å´‰∏ÄËá¥ 021 vs 021
 	case 0x1420:
 	case 0x2140:
 	case 0x4210:
@@ -1184,7 +1184,7 @@ kmb::ElementRelation::getTriangleTetrahedronRelation
 		return kmb::ElementRelation::NOCOMMON;
 	}
 	switch( rel ){
-	// 0î‘ñ⁄ÇÃñ Ç∆àÍív
+	// 0Áï™ÁõÆ„ÅÆÈù¢„Å®‰∏ÄËá¥
 	case 0x248:
 	case 0x824:
 	case 0x482:
@@ -1195,7 +1195,7 @@ kmb::ElementRelation::getTriangleTetrahedronRelation
 	case 0x428:
 		bIndex = 0;
 		return kmb::ElementRelation::ANTIBOUNDARY;
-	// 1î‘ñ⁄ÇÃñ Ç∆àÍív
+	// 1Áï™ÁõÆ„ÅÆÈù¢„Å®‰∏ÄËá¥
 	case 0x184:
 	case 0x418:
 	case 0x841:
@@ -1206,7 +1206,7 @@ kmb::ElementRelation::getTriangleTetrahedronRelation
 	case 0x814:
 		bIndex = 1;
 		return kmb::ElementRelation::ANTIBOUNDARY;
-	// 2î‘ñ⁄ÇÃñ Ç∆àÍív
+	// 2Áï™ÁõÆ„ÅÆÈù¢„Å®‰∏ÄËá¥
 	case 0x128:
 	case 0x812:
 	case 0x281:
@@ -1217,7 +1217,7 @@ kmb::ElementRelation::getTriangleTetrahedronRelation
 	case 0x218:
 		bIndex = 2;
 		return kmb::ElementRelation::ANTIBOUNDARY;
-	// 3î‘ñ⁄ÇÃñ Ç∆àÍív
+	// 3Áï™ÁõÆ„ÅÆÈù¢„Å®‰∏ÄËá¥
 	case 0x142:
 	case 0x214:
 	case 0x421:
@@ -1228,170 +1228,170 @@ kmb::ElementRelation::getTriangleTetrahedronRelation
 	case 0x412:
 		bIndex = 3;
 		return kmb::ElementRelation::ANTIBOUNDARY;
-	// ï”ã§óL (0,0)
+	// Ëæ∫ÂÖ±Êúâ (0,0)
 	case 0x024:
 	case 0x042:
 		aIndex = 0;
 		bIndex = 0;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (0,1)
+	// Ëæ∫ÂÖ±Êúâ (0,1)
 	case 0x014:
 	case 0x041:
 		aIndex = 0;
 		bIndex = 1;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (0,2)
+	// Ëæ∫ÂÖ±Êúâ (0,2)
 	case 0x012:
 	case 0x021:
 		aIndex = 0;
 		bIndex = 2;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (0,3)
+	// Ëæ∫ÂÖ±Êúâ (0,3)
 	case 0x018:
 	case 0x081:
 		aIndex = 0;
 		bIndex = 3;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (0,4)
+	// Ëæ∫ÂÖ±Êúâ (0,4)
 	case 0x028:
 	case 0x082:
 		aIndex = 0;
 		bIndex = 4;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (0,5)
+	// Ëæ∫ÂÖ±Êúâ (0,5)
 	case 0x048:
 	case 0x084:
 		aIndex = 0;
 		bIndex = 5;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (1,0)
+	// Ëæ∫ÂÖ±Êúâ (1,0)
 	case 0x402:
 	case 0x204:
 		aIndex = 1;
 		bIndex = 0;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (1,1)
+	// Ëæ∫ÂÖ±Êúâ (1,1)
 	case 0x401:
 	case 0x104:
 		aIndex = 1;
 		bIndex = 1;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (1,2)
+	// Ëæ∫ÂÖ±Êúâ (1,2)
 	case 0x201:
 	case 0x102:
 		aIndex = 1;
 		bIndex = 2;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (1,3)
+	// Ëæ∫ÂÖ±Êúâ (1,3)
 	case 0x801:
 	case 0x108:
 		aIndex = 1;
 		bIndex = 3;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (1,4)
+	// Ëæ∫ÂÖ±Êúâ (1,4)
 	case 0x802:
 	case 0x208:
 		aIndex = 1;
 		bIndex = 4;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (1,5)
+	// Ëæ∫ÂÖ±Êúâ (1,5)
 	case 0x804:
 	case 0x408:
 		aIndex = 1;
 		bIndex = 5;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (2,0)
+	// Ëæ∫ÂÖ±Êúâ (2,0)
 	case 0x240:
 	case 0x420:
 		aIndex = 2;
 		bIndex = 0;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (2,1)
+	// Ëæ∫ÂÖ±Êúâ (2,1)
 	case 0x140:
 	case 0x410:
 		aIndex = 2;
 		bIndex = 1;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (2,2)
+	// Ëæ∫ÂÖ±Êúâ (2,2)
 	case 0x120:
 	case 0x210:
 		aIndex = 2;
 		bIndex = 2;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (2,3)
+	// Ëæ∫ÂÖ±Êúâ (2,3)
 	case 0x180:
 	case 0x810:
 		aIndex = 2;
 		bIndex = 3;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (2,4)
+	// Ëæ∫ÂÖ±Êúâ (2,4)
 	case 0x280:
 	case 0x820:
 		aIndex = 2;
 		bIndex = 4;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ï”ã§óL (2,5)
+	// Ëæ∫ÂÖ±Êúâ (2,5)
 	case 0x480:
 	case 0x840:
 		aIndex = 2;
 		bIndex = 5;
 		return kmb::ElementRelation::COMMONEDGE;
-	// ì_ã§óL (0,0)
+	// ÁÇπÂÖ±Êúâ (0,0)
 	case 0x100:
 		aIndex = 0;
 		bIndex = 0;
 		return kmb::ElementRelation::COMMONNODE;
-	// ì_ã§óL (0,1)
+	// ÁÇπÂÖ±Êúâ (0,1)
 	case 0x200:
 		aIndex = 0;
 		bIndex = 1;
 		return kmb::ElementRelation::COMMONNODE;
-	// ì_ã§óL (0,2)
+	// ÁÇπÂÖ±Êúâ (0,2)
 	case 0x400:
 		aIndex = 0;
 		bIndex = 2;
 		return kmb::ElementRelation::COMMONNODE;
-	// ì_ã§óL (0,3)
+	// ÁÇπÂÖ±Êúâ (0,3)
 	case 0x800:
 		aIndex = 0;
 		bIndex = 3;
 		return kmb::ElementRelation::COMMONNODE;
-	// ì_ã§óL (1,0)
+	// ÁÇπÂÖ±Êúâ (1,0)
 	case 0x010:
 		aIndex = 1;
 		bIndex = 0;
 		return kmb::ElementRelation::COMMONNODE;
-	// ì_ã§óL (1,1)
+	// ÁÇπÂÖ±Êúâ (1,1)
 	case 0x020:
 		aIndex = 1;
 		bIndex = 1;
 		return kmb::ElementRelation::COMMONNODE;
-	// ì_ã§óL (1,2)
+	// ÁÇπÂÖ±Êúâ (1,2)
 	case 0x040:
 		aIndex = 1;
 		bIndex = 2;
 		return kmb::ElementRelation::COMMONNODE;
-	// ì_ã§óL (1,3)
+	// ÁÇπÂÖ±Êúâ (1,3)
 	case 0x080:
 		aIndex = 1;
 		bIndex = 3;
 		return kmb::ElementRelation::COMMONNODE;
-	// ì_ã§óL (2,0)
+	// ÁÇπÂÖ±Êúâ (2,0)
 	case 0x001:
 		aIndex = 2;
 		bIndex = 0;
 		return kmb::ElementRelation::COMMONNODE;
-	// ì_ã§óL (2,1)
+	// ÁÇπÂÖ±Êúâ (2,1)
 	case 0x002:
 		aIndex = 2;
 		bIndex = 1;
 		return kmb::ElementRelation::COMMONNODE;
-	// ì_ã§óL (2,2)
+	// ÁÇπÂÖ±Êúâ (2,2)
 	case 0x004:
 		aIndex = 2;
 		bIndex = 2;
 		return kmb::ElementRelation::COMMONNODE;
-	// ì_ã§óL (2,3)
+	// ÁÇπÂÖ±Êúâ (2,3)
 	case 0x008:
 		aIndex = 2;
 		bIndex = 3;
@@ -1411,7 +1411,7 @@ kmb::ElementRelation::clone( const kmb::ElementBase &eIter, kmb::nodeIdType *clo
 	}
 	const int len = eIter.getNodeCount();
 	for(int i=0;i<len;++i){
-		clonedCell[i] = eIter.getCellId(i);
+		clonedCell[i] = eIter.getNodeId(i);
 	}
 	return retVal;
 }
@@ -1425,7 +1425,7 @@ kmb::ElementRelation::clone( const kmb::ElementBase &eIter, kmb::nodeIdType *clo
 	}
 	const int len = eIter.getNodeCount();
 	for(int i=0;i<len;++i){
-		kmb::nodeIdType nodeId = eIter.getCellId(i);
+		kmb::nodeIdType nodeId = eIter.getNodeId(i);
 		std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( nodeId );
 		if( nIter != nodeMapper.end() ){
 			clonedCell[i] = nIter->second;
@@ -1447,161 +1447,161 @@ kmb::ElementRelation::reverse( const kmb::ElementBase &eIter, kmb::nodeIdType *r
 	switch( eIter.getType() )
 	{
 	case kmb::SEGMENT:
-		reversedCell[0] = eIter.getCellId(1);
-		reversedCell[1] = eIter.getCellId(0);
+		reversedCell[0] = eIter.getNodeId(1);
+		reversedCell[1] = eIter.getNodeId(0);
 		retVal = true;
 		break;
 	case kmb::SEGMENT2:
-		reversedCell[0] = eIter.getCellId(1);
-		reversedCell[1] = eIter.getCellId(0);
+		reversedCell[0] = eIter.getNodeId(1);
+		reversedCell[1] = eIter.getNodeId(0);
 
-		reversedCell[2] = eIter.getCellId(2);
+		reversedCell[2] = eIter.getNodeId(2);
 		retVal = true;
 		break;
 	case kmb::TRIANGLE:
-		reversedCell[0] = eIter.getCellId(2);
-		reversedCell[1] = eIter.getCellId(1);
-		reversedCell[2] = eIter.getCellId(0);
+		reversedCell[0] = eIter.getNodeId(2);
+		reversedCell[1] = eIter.getNodeId(1);
+		reversedCell[2] = eIter.getNodeId(0);
 		retVal = true;
 		break;
 	case kmb::TRIANGLE2:
-		reversedCell[0] = eIter.getCellId(2);
-		reversedCell[1] = eIter.getCellId(1);
-		reversedCell[2] = eIter.getCellId(0);
+		reversedCell[0] = eIter.getNodeId(2);
+		reversedCell[1] = eIter.getNodeId(1);
+		reversedCell[2] = eIter.getNodeId(0);
 
-		reversedCell[3] = eIter.getCellId(5);
-		reversedCell[4] = eIter.getCellId(4);
-		reversedCell[5] = eIter.getCellId(3);
+		reversedCell[3] = eIter.getNodeId(5);
+		reversedCell[4] = eIter.getNodeId(4);
+		reversedCell[5] = eIter.getNodeId(3);
 		retVal = true;
 		break;
 	case kmb::QUAD:
-		reversedCell[0] = eIter.getCellId(3);
-		reversedCell[1] = eIter.getCellId(2);
-		reversedCell[2] = eIter.getCellId(1);
-		reversedCell[3] = eIter.getCellId(0);
+		reversedCell[0] = eIter.getNodeId(3);
+		reversedCell[1] = eIter.getNodeId(2);
+		reversedCell[2] = eIter.getNodeId(1);
+		reversedCell[3] = eIter.getNodeId(0);
 		retVal = true;
 		break;
 	case kmb::QUAD2:
-		reversedCell[0] = eIter.getCellId(3);
-		reversedCell[1] = eIter.getCellId(2);
-		reversedCell[2] = eIter.getCellId(1);
-		reversedCell[3] = eIter.getCellId(0);
+		reversedCell[0] = eIter.getNodeId(3);
+		reversedCell[1] = eIter.getNodeId(2);
+		reversedCell[2] = eIter.getNodeId(1);
+		reversedCell[3] = eIter.getNodeId(0);
 
-		reversedCell[4] = eIter.getCellId(6);
-		reversedCell[5] = eIter.getCellId(5);
-		reversedCell[6] = eIter.getCellId(4);
-		reversedCell[7] = eIter.getCellId(7);
+		reversedCell[4] = eIter.getNodeId(6);
+		reversedCell[5] = eIter.getNodeId(5);
+		reversedCell[6] = eIter.getNodeId(4);
+		reversedCell[7] = eIter.getNodeId(7);
 		retVal = true;
 		break;
 	case kmb::TETRAHEDRON:
-		reversedCell[0] = eIter.getCellId(1);
-		reversedCell[1] = eIter.getCellId(0);
-		reversedCell[2] = eIter.getCellId(2);
-		reversedCell[3] = eIter.getCellId(3);
+		reversedCell[0] = eIter.getNodeId(1);
+		reversedCell[1] = eIter.getNodeId(0);
+		reversedCell[2] = eIter.getNodeId(2);
+		reversedCell[3] = eIter.getNodeId(3);
 		retVal = true;
 		break;
 	case kmb::TETRAHEDRON2:
-		reversedCell[0] = eIter.getCellId(1);
-		reversedCell[1] = eIter.getCellId(0);
-		reversedCell[2] = eIter.getCellId(2);
-		reversedCell[3] = eIter.getCellId(3);
+		reversedCell[0] = eIter.getNodeId(1);
+		reversedCell[1] = eIter.getNodeId(0);
+		reversedCell[2] = eIter.getNodeId(2);
+		reversedCell[3] = eIter.getNodeId(3);
 
-		reversedCell[4] = eIter.getCellId(5);
-		reversedCell[5] = eIter.getCellId(4);
-		reversedCell[6] = eIter.getCellId(6);
-		reversedCell[7] = eIter.getCellId(8);
-		reversedCell[8] = eIter.getCellId(7);
-		reversedCell[9] = eIter.getCellId(9);
+		reversedCell[4] = eIter.getNodeId(5);
+		reversedCell[5] = eIter.getNodeId(4);
+		reversedCell[6] = eIter.getNodeId(6);
+		reversedCell[7] = eIter.getNodeId(8);
+		reversedCell[8] = eIter.getNodeId(7);
+		reversedCell[9] = eIter.getNodeId(9);
 		retVal = true;
 		break;
 	case kmb::WEDGE:
-		reversedCell[0] = eIter.getCellId(0);
-		reversedCell[1] = eIter.getCellId(2);
-		reversedCell[2] = eIter.getCellId(1);
-		reversedCell[3] = eIter.getCellId(3);
-		reversedCell[4] = eIter.getCellId(5);
-		reversedCell[5] = eIter.getCellId(4);
+		reversedCell[0] = eIter.getNodeId(0);
+		reversedCell[1] = eIter.getNodeId(2);
+		reversedCell[2] = eIter.getNodeId(1);
+		reversedCell[3] = eIter.getNodeId(3);
+		reversedCell[4] = eIter.getNodeId(5);
+		reversedCell[5] = eIter.getNodeId(4);
 		retVal = true;
 		break;
 	case kmb::WEDGE2:
-		reversedCell[0] = eIter.getCellId(0);
-		reversedCell[1] = eIter.getCellId(2);
-		reversedCell[2] = eIter.getCellId(1);
-		reversedCell[3] = eIter.getCellId(3);
-		reversedCell[4] = eIter.getCellId(5);
-		reversedCell[5] = eIter.getCellId(4);
+		reversedCell[0] = eIter.getNodeId(0);
+		reversedCell[1] = eIter.getNodeId(2);
+		reversedCell[2] = eIter.getNodeId(1);
+		reversedCell[3] = eIter.getNodeId(3);
+		reversedCell[4] = eIter.getNodeId(5);
+		reversedCell[5] = eIter.getNodeId(4);
 
-		reversedCell[6] = eIter.getCellId(6);
-		reversedCell[7] = eIter.getCellId(8);
-		reversedCell[8] = eIter.getCellId(7);
-		reversedCell[9] = eIter.getCellId(9);
-		reversedCell[10] = eIter.getCellId(11);
-		reversedCell[11] = eIter.getCellId(10);
-		reversedCell[12] = eIter.getCellId(12);
-		reversedCell[13] = eIter.getCellId(14);
-		reversedCell[14] = eIter.getCellId(13);
+		reversedCell[6] = eIter.getNodeId(6);
+		reversedCell[7] = eIter.getNodeId(8);
+		reversedCell[8] = eIter.getNodeId(7);
+		reversedCell[9] = eIter.getNodeId(9);
+		reversedCell[10] = eIter.getNodeId(11);
+		reversedCell[11] = eIter.getNodeId(10);
+		reversedCell[12] = eIter.getNodeId(12);
+		reversedCell[13] = eIter.getNodeId(14);
+		reversedCell[14] = eIter.getNodeId(13);
 		retVal = true;
 		break;
 	case kmb::PYRAMID:
-		reversedCell[0] = eIter.getCellId(0);
-		reversedCell[1] = eIter.getCellId(1);
-		reversedCell[2] = eIter.getCellId(4);
-		reversedCell[3] = eIter.getCellId(3);
-		reversedCell[4] = eIter.getCellId(2);
+		reversedCell[0] = eIter.getNodeId(0);
+		reversedCell[1] = eIter.getNodeId(1);
+		reversedCell[2] = eIter.getNodeId(4);
+		reversedCell[3] = eIter.getNodeId(3);
+		reversedCell[4] = eIter.getNodeId(2);
 		retVal = true;
 		break;
 	case kmb::PYRAMID2:
-		reversedCell[0] = eIter.getCellId(0);
-		reversedCell[1] = eIter.getCellId(1);
-		reversedCell[2] = eIter.getCellId(4);
-		reversedCell[3] = eIter.getCellId(3);
-		reversedCell[4] = eIter.getCellId(2);
+		reversedCell[0] = eIter.getNodeId(0);
+		reversedCell[1] = eIter.getNodeId(1);
+		reversedCell[2] = eIter.getNodeId(4);
+		reversedCell[3] = eIter.getNodeId(3);
+		reversedCell[4] = eIter.getNodeId(2);
 
-		reversedCell[5] = eIter.getCellId(5);
-		reversedCell[6] = eIter.getCellId(8);
-		reversedCell[7] = eIter.getCellId(7);
-		reversedCell[8] = eIter.getCellId(6);
-		reversedCell[9] = eIter.getCellId(12);
-		reversedCell[10] = eIter.getCellId(11);
-		reversedCell[11] = eIter.getCellId(10);
-		reversedCell[12] = eIter.getCellId(9);
+		reversedCell[5] = eIter.getNodeId(5);
+		reversedCell[6] = eIter.getNodeId(8);
+		reversedCell[7] = eIter.getNodeId(7);
+		reversedCell[8] = eIter.getNodeId(6);
+		reversedCell[9] = eIter.getNodeId(12);
+		reversedCell[10] = eIter.getNodeId(11);
+		reversedCell[11] = eIter.getNodeId(10);
+		reversedCell[12] = eIter.getNodeId(9);
 		retVal = true;
 		break;
 	case kmb::HEXAHEDRON:
-		reversedCell[0] = eIter.getCellId(0);
-		reversedCell[1] = eIter.getCellId(3);
-		reversedCell[2] = eIter.getCellId(2);
-		reversedCell[3] = eIter.getCellId(1);
-		reversedCell[4] = eIter.getCellId(4);
-		reversedCell[5] = eIter.getCellId(7);
-		reversedCell[6] = eIter.getCellId(6);
-		reversedCell[7] = eIter.getCellId(5);
+		reversedCell[0] = eIter.getNodeId(0);
+		reversedCell[1] = eIter.getNodeId(3);
+		reversedCell[2] = eIter.getNodeId(2);
+		reversedCell[3] = eIter.getNodeId(1);
+		reversedCell[4] = eIter.getNodeId(4);
+		reversedCell[5] = eIter.getNodeId(7);
+		reversedCell[6] = eIter.getNodeId(6);
+		reversedCell[7] = eIter.getNodeId(5);
 		retVal = true;
 		break;
 	case kmb::HEXAHEDRON2:
-		reversedCell[0] = eIter.getCellId(0);
-		reversedCell[1] = eIter.getCellId(3);
-		reversedCell[2] = eIter.getCellId(2);
-		reversedCell[3] = eIter.getCellId(1);
-		reversedCell[4] = eIter.getCellId(4);
-		reversedCell[5] = eIter.getCellId(7);
-		reversedCell[6] = eIter.getCellId(6);
-		reversedCell[7] = eIter.getCellId(5);
+		reversedCell[0] = eIter.getNodeId(0);
+		reversedCell[1] = eIter.getNodeId(3);
+		reversedCell[2] = eIter.getNodeId(2);
+		reversedCell[3] = eIter.getNodeId(1);
+		reversedCell[4] = eIter.getNodeId(4);
+		reversedCell[5] = eIter.getNodeId(7);
+		reversedCell[6] = eIter.getNodeId(6);
+		reversedCell[7] = eIter.getNodeId(5);
 
-		reversedCell[8] = eIter.getCellId(11);
-		reversedCell[9] = eIter.getCellId(10);
-		reversedCell[10] = eIter.getCellId(9);
-		reversedCell[11] = eIter.getCellId(8);
+		reversedCell[8] = eIter.getNodeId(11);
+		reversedCell[9] = eIter.getNodeId(10);
+		reversedCell[10] = eIter.getNodeId(9);
+		reversedCell[11] = eIter.getNodeId(8);
 
-		reversedCell[12] = eIter.getCellId(15);
-		reversedCell[13] = eIter.getCellId(14);
-		reversedCell[14] = eIter.getCellId(13);
-		reversedCell[15] = eIter.getCellId(12);
+		reversedCell[12] = eIter.getNodeId(15);
+		reversedCell[13] = eIter.getNodeId(14);
+		reversedCell[14] = eIter.getNodeId(13);
+		reversedCell[15] = eIter.getNodeId(12);
 
-		reversedCell[16] = eIter.getCellId(16);
-		reversedCell[17] = eIter.getCellId(19);
-		reversedCell[18] = eIter.getCellId(18);
-		reversedCell[19] = eIter.getCellId(17);
+		reversedCell[16] = eIter.getNodeId(16);
+		reversedCell[17] = eIter.getNodeId(19);
+		reversedCell[18] = eIter.getNodeId(18);
+		reversedCell[19] = eIter.getNodeId(17);
 		retVal = true;
 		break;
 	default:
@@ -1645,7 +1645,7 @@ kmb::ElementRelation::common( const kmb::ElementBase &eIter0, const kmb::Element
 				const int len1 = eIter1.getVertexCount();
 				for(int i=0;i<len0;++i){
 					for(int j=0;j<len1;++j){
-						if( eIter0.getCellId(i) == eIter1.getCellId(j) ){
+						if( eIter0.getNodeId(i) == eIter1.getNodeId(j) ){
 							common[i] = j;
 							++counter;
 						}
@@ -1657,8 +1657,8 @@ kmb::ElementRelation::common( const kmb::ElementBase &eIter0, const kmb::Element
 						if( common[i0] != -1 && common[i1] != -1 &&
 							( common[i0] - common[i1] + len1 ) % len1 == 1 )
 						{
-							commonCell[0] = eIter0.getCellId(i0);
-							commonCell[1] = eIter0.getCellId(i1);
+							commonCell[0] = eIter0.getNodeId(i0);
+							commonCell[1] = eIter0.getNodeId(i1);
 							etype = kmb::SEGMENT;
 							break;
 						}
@@ -1693,7 +1693,7 @@ kmb::ElementRelation::common( kmb::Face f0, kmb::Face f1, const kmb::ElementCont
 				const int len1 = eIter1.getBoundaryVertexCount( f1.getLocalFaceId() );
 				for(int i=0;i<len0;++i){
 					for(int j=0;j<len1;++j){
-						if( eIter0.getBoundaryCellId( f0.getLocalFaceId(), i ) == eIter1.getBoundaryCellId( f1.getLocalFaceId(), j ) ){
+						if( eIter0.getBoundaryNodeId( f0.getLocalFaceId(), i ) == eIter1.getBoundaryNodeId( f1.getLocalFaceId(), j ) ){
 							common[i] = j;
 							++counter;
 						}
@@ -1705,8 +1705,8 @@ kmb::ElementRelation::common( kmb::Face f0, kmb::Face f1, const kmb::ElementCont
 						if( common[i0] != -1 && common[i1] != -1 &&
 							( common[i0] - common[i1] + len1 ) % len1 == 1 )
 						{
-							commonCell[0] = eIter0.getBoundaryCellId( f0.getLocalFaceId(), i0 );
-							commonCell[1] = eIter0.getBoundaryCellId( f0.getLocalFaceId(), i1 );
+							commonCell[0] = eIter0.getBoundaryNodeId( f0.getLocalFaceId(), i0 );
+							commonCell[1] = eIter0.getBoundaryNodeId( f0.getLocalFaceId(), i1 );
 							etype = kmb::SEGMENT;
 							break;
 						}
@@ -1732,14 +1732,14 @@ kmb::ElementRelation::getRelationForSegment
 	}
 	if( eIter1.getDimension() == 1 ){
 		ret = kmb::ElementRelation::getSegmentRelation(
-			eIter0.getCellId(0), eIter0.getCellId(1),
-			eIter1.getCellId(0), eIter1.getCellId(1),
+			eIter0.getNodeId(0), eIter0.getNodeId(1),
+			eIter1.getNodeId(0), eIter1.getNodeId(1),
 			index0, index1);
 	}else{
 		int indices[2];
 		int count = 0;
 		for(int i=0;i<2;++i){
-			indices[i] = eIter1.indexOf( eIter0.getCellId(i) );
+			indices[i] = eIter1.indexOf( eIter0.getNodeId(i) );
 			if( indices[i] >= eIter1.getVertexCount() ){
 				indices[i] = -1;
 			}
@@ -1764,7 +1764,7 @@ kmb::ElementRelation::getRelationForSegment
 						ret = kmb::ElementRelation::OTHERRELATION;
 					break;
 				default:
-					// óßëÃóvëf
+					// Á´ã‰ΩìË¶ÅÁ¥†
 					if( conn != 0 )
 						ret = kmb::ElementRelation::COMMONEDGE;
 					else
@@ -1824,16 +1824,16 @@ kmb::ElementRelation::getRelationForTriangle
 	case TRIANGLE:
 	case TRIANGLE2:
 		ret = kmb::ElementRelation::getTriangleRelation(
-				eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2),
-				eIter1.getCellId(0), eIter1.getCellId(1), eIter1.getCellId(2),
+				eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2),
+				eIter1.getNodeId(0), eIter1.getNodeId(1), eIter1.getNodeId(2),
 				index0, index1 );
 		break;
 	case TETRAHEDRON:
 	case TETRAHEDRON2:
 
 		ret = kmb::ElementRelation::getTriangleTetrahedronRelation(
-				eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2),
-				eIter1.getCellId(0), eIter1.getCellId(1), eIter1.getCellId(2), eIter1.getCellId(3),
+				eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2),
+				eIter1.getNodeId(0), eIter1.getNodeId(1), eIter1.getNodeId(2), eIter1.getNodeId(3),
 				index0, index1 );
 		break;
 	default:
@@ -1842,7 +1842,7 @@ kmb::ElementRelation::getRelationForTriangle
 			int indices[3];
 			int count = 0;
 			for(int i=0;i<3;++i){
-				indices[i] = eIter1.indexOf( eIter0.getCellId(i) );
+				indices[i] = eIter1.indexOf( eIter0.getNodeId(i) );
 				if( indices[i] >= eIter1.getVertexCount() ){
 					indices[i] = -1;
 				}
@@ -1950,14 +1950,14 @@ kmb::ElementRelation::getRelationForTriangle
 					case WEDGE:
 					case WEDGE2:
 						{
-							// WEDGE ÇÃéOäpå`ÇÃ Face ÇÕ 0 î‘ñ⁄Ç∆ 1 î‘ñ⁄ÇæÇØ
+							// WEDGE „ÅÆ‰∏âËßíÂΩ¢„ÅÆ Face „ÅØ 0 Áï™ÁõÆ„Å® 1 Áï™ÁõÆ„Å†„Åë
 							for(int i=0;i<2;++i){
 								kmb::ElementRelation::relationType r =
 									kmb::ElementRelation::getTriangleRelation(
-										eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2),
-										eIter1.getCellId(kmb::Wedge::faceTable[i][0]),
-										eIter1.getCellId(kmb::Wedge::faceTable[i][1]),
-										eIter1.getCellId(kmb::Wedge::faceTable[i][2]),
+										eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2),
+										eIter1.getNodeId(kmb::Wedge::faceTable[i][0]),
+										eIter1.getNodeId(kmb::Wedge::faceTable[i][1]),
+										eIter1.getNodeId(kmb::Wedge::faceTable[i][2]),
 										ind0,ind1);
 								if( r == kmb::ElementRelation::EQUAL ){
 									index1 = i;
@@ -1974,14 +1974,14 @@ kmb::ElementRelation::getRelationForTriangle
 					case PYRAMID:
 					case PYRAMID2:
 						{
-							// PYRAMID ÇÃéOäpå`ÇÃ Face ÇÕ 0 î‘ñ⁄Ç©ÇÁ 3 î‘ñ⁄ÇæÇØ
+							// PYRAMID „ÅÆ‰∏âËßíÂΩ¢„ÅÆ Face „ÅØ 0 Áï™ÁõÆ„Åã„Çâ 3 Áï™ÁõÆ„Å†„Åë
 							for(int i=0;i<4;++i){
 								kmb::ElementRelation::relationType r =
 									kmb::ElementRelation::getTriangleRelation(
-										eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2),
-										eIter1.getCellId(kmb::Pyramid::faceTable[i][0]),
-										eIter1.getCellId(kmb::Pyramid::faceTable[i][1]),
-										eIter1.getCellId(kmb::Pyramid::faceTable[i][2]),
+										eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2),
+										eIter1.getNodeId(kmb::Pyramid::faceTable[i][0]),
+										eIter1.getNodeId(kmb::Pyramid::faceTable[i][1]),
+										eIter1.getNodeId(kmb::Pyramid::faceTable[i][2]),
 										ind0,ind1);
 								if( r == kmb::ElementRelation::EQUAL ){
 									index1 = i;
@@ -1996,7 +1996,7 @@ kmb::ElementRelation::getRelationForTriangle
 						}
 						break;
 					default: // for type
-						// ÇªÇÍà»äOÇÕ3ì_Çã§óLÇµÇƒÇ¢ÇƒÇ‡ÉÅÉbÉVÉÖÇ∆ÇµÇƒÇÃä÷åWÇÕÇ»Ç¢
+						// „Åù„Çå‰ª•Â§ñ„ÅØ3ÁÇπ„ÇíÂÖ±Êúâ„Åó„Å¶„ÅÑ„Å¶„ÇÇ„É°„ÉÉ„Ç∑„É•„Å®„Åó„Å¶„ÅÆÈñ¢‰øÇ„ÅØ„Å™„ÅÑ
 						ret = kmb::ElementRelation::OTHERRELATION;
 						break;
 					}
@@ -2048,8 +2048,8 @@ kmb::ElementRelation::getRelationForQuad
 	case kmb::QUAD:
 	case kmb::QUAD2:
 		ret = kmb::ElementRelation::getQuadRelation(
-				eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2), eIter0.getCellId(3),
-				eIter1.getCellId(0), eIter1.getCellId(1), eIter1.getCellId(2), eIter1.getCellId(3),
+				eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2), eIter0.getNodeId(3),
+				eIter1.getNodeId(0), eIter1.getNodeId(1), eIter1.getNodeId(2), eIter1.getNodeId(3),
 				index0, index1);
 		break;
 	default:
@@ -2057,7 +2057,7 @@ kmb::ElementRelation::getRelationForQuad
 			int indices[4];
 			int count = 0;
 			for(int i=0;i<4;++i){
-				indices[i] = eIter1.indexOf( eIter0.getCellId(i) );
+				indices[i] = eIter1.indexOf( eIter0.getNodeId(i) );
 				if( indices[i] >= eIter1.getVertexCount() ){
 					indices[i] = -1;
 				}
@@ -2088,14 +2088,14 @@ kmb::ElementRelation::getRelationForQuad
 					case kmb::WEDGE:
 					case kmb::WEDGE2:
 					{
-						// Wedge ÇÃ4äpå`ÇÃ Face ÇÕ 2,3,4 î‘ñ⁄
+						// Wedge „ÅÆ4ËßíÂΩ¢„ÅÆ Face „ÅØ 2,3,4 Áï™ÁõÆ
 						for(int i=2;i<5;++i){
 							kmb::ElementRelation::relationType r = kmb::ElementRelation::getQuadRelation(
-								eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2), eIter0.getCellId(3),
-								eIter1.getCellId(kmb::Wedge::faceTable[i][0]),
-								eIter1.getCellId(kmb::Wedge::faceTable[i][1]),
-								eIter1.getCellId(kmb::Wedge::faceTable[i][2]),
-								eIter1.getCellId(kmb::Wedge::faceTable[i][3]),
+								eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2), eIter0.getNodeId(3),
+								eIter1.getNodeId(kmb::Wedge::faceTable[i][0]),
+								eIter1.getNodeId(kmb::Wedge::faceTable[i][1]),
+								eIter1.getNodeId(kmb::Wedge::faceTable[i][2]),
+								eIter1.getNodeId(kmb::Wedge::faceTable[i][3]),
 								ind0,ind1);
 							if( r == kmb::ElementRelation::EQUAL ){
 								index1 = i;
@@ -2112,14 +2112,14 @@ kmb::ElementRelation::getRelationForQuad
 					case kmb::PYRAMID:
 					case kmb::PYRAMID2:
 					{
-						// Pyramid ÇÃ4äpå`ÇÃ Face ÇÕ 4 î‘ñ⁄
+						// Pyramid „ÅÆ4ËßíÂΩ¢„ÅÆ Face „ÅØ 4 Áï™ÁõÆ
 						kmb::ElementRelation::relationType r =
 							kmb::ElementRelation::getQuadRelation(
-							eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2), eIter0.getCellId(3),
-							eIter1.getCellId(kmb::Pyramid::faceTable[4][0]),
-							eIter1.getCellId(kmb::Pyramid::faceTable[4][1]),
-							eIter1.getCellId(kmb::Pyramid::faceTable[4][2]),
-							eIter1.getCellId(kmb::Pyramid::faceTable[4][3]),
+							eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2), eIter0.getNodeId(3),
+							eIter1.getNodeId(kmb::Pyramid::faceTable[4][0]),
+							eIter1.getNodeId(kmb::Pyramid::faceTable[4][1]),
+							eIter1.getNodeId(kmb::Pyramid::faceTable[4][2]),
+							eIter1.getNodeId(kmb::Pyramid::faceTable[4][3]),
 							ind0,ind1);
 						if( r == kmb::ElementRelation::EQUAL ){
 							index1 = 4;
@@ -2133,15 +2133,15 @@ kmb::ElementRelation::getRelationForQuad
 					case kmb::HEXAHEDRON:
 					case kmb::HEXAHEDRON2:
 					{
-						// Hexa ÇÃ4äpå`ÇÃ Face ÇÕ 0,1,2,3,4,5 î‘ñ⁄
+						// Hexa „ÅÆ4ËßíÂΩ¢„ÅÆ Face „ÅØ 0,1,2,3,4,5 Áï™ÁõÆ
 						for(int i=0;i<6;++i){
 							kmb::ElementRelation::relationType r =
 								kmb::ElementRelation::getQuadRelation(
-								eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2), eIter0.getCellId(3),
-								eIter1.getCellId(kmb::Hexahedron::faceTable[i][0]),
-								eIter1.getCellId(kmb::Hexahedron::faceTable[i][1]),
-								eIter1.getCellId(kmb::Hexahedron::faceTable[i][2]),
-								eIter1.getCellId(kmb::Hexahedron::faceTable[i][3]),
+								eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2), eIter0.getNodeId(3),
+								eIter1.getNodeId(kmb::Hexahedron::faceTable[i][0]),
+								eIter1.getNodeId(kmb::Hexahedron::faceTable[i][1]),
+								eIter1.getNodeId(kmb::Hexahedron::faceTable[i][2]),
+								eIter1.getNodeId(kmb::Hexahedron::faceTable[i][3]),
 								ind0,ind1);
 							if( r == kmb::ElementRelation::EQUAL ){
 								index1 = i;
@@ -2229,13 +2229,13 @@ kmb::ElementRelation::getRelationForTetrahedron(const kmb::ElementBase &eIter0, 
 	case kmb::TETRAHEDRON:
 	case kmb::TETRAHEDRON2:
 		ret = kmb::ElementRelation::getTetrahedronRelation(
-			eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2), eIter0.getCellId(3),
-			eIter1.getCellId(0), eIter1.getCellId(1), eIter1.getCellId(2), eIter1.getCellId(3),
+			eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2), eIter0.getNodeId(3),
+			eIter1.getNodeId(0), eIter1.getNodeId(1), eIter1.getNodeId(2), eIter1.getNodeId(3),
 			index0, index1);
 		break;
 	default:
 		{
-			// indices[i] = j  <=> tetra ÇÃ i î‘ñ⁄ÇÃêﬂì_ = other ÇÃ j î‘ñ⁄ÇÃêﬂì_ 
+			// indices[i] = j  <=> tetra „ÅÆ i Áï™ÁõÆ„ÅÆÁØÄÁÇπ = other „ÅÆ j Áï™ÁõÆ„ÅÆÁØÄÁÇπ 
 			int indices[4];
 			int count = 0;
 			for(int i=0;i<4;++i){
@@ -2276,7 +2276,7 @@ kmb::ElementRelation::getRelationForTetrahedron(const kmb::ElementBase &eIter0, 
 			case 3:
 				{
 					ret = kmb::ElementRelation::OTHERRELATION;
-					// i ÇÕ Tetra ÇÃñ î‘çÜ = ëäëŒÇ∑ÇÈí∏ì_ÇÃî‘çÜ
+					// i „ÅØ Tetra „ÅÆÈù¢Áï™Âè∑ = Áõ∏ÂØæ„Åô„ÇãÈ†ÇÁÇπ„ÅÆÁï™Âè∑
 					for(int i=0;i<4;++i){
 						if( indices[i] == -1 ){
 							int res = eIter1.isFace(

@@ -30,22 +30,22 @@
 =begin
 = RevocapShape
 
-==�T�v
+==概要
 
-RevocapShape �Ƃ� RevocapMesh �� OpenCASCADE �̃C���^�[�t�F�C�X
-����ь`�󏈗����L�q�������W���[��
+RevocapShape とは RevocapMesh と OpenCASCADE のインターフェイス
+および形状処理を記述したモジュール
 
-==���W���[���萔
+==モジュール定数
 
 ((<VERSION>))
 ((<COPYRIGHT>))
 
-== ���W���[���萔
-�ȉ��̒萔�� RevocapShape ���W���[���Œ�`����Ă���B
+== モジュール定数
+以下の定数は RevocapShape モジュールで定義されている。
 --- VERSION
-	�o�[�W�������̕�����
+	バージョン情報の文字列
 --- COPYRIGHT
-	���쌠���̕�����
+	著作権情報の文字列
 =end
 ---------------------------------------------------------------*/
 namespace kmb{
@@ -62,10 +62,10 @@ namespace kmb{
 #endif
 %}
 
-// swig �̐��䕶
+// swig の制御文
 #ifdef OPENCASCADE
 
-// cxx �t�@�C���ɂ��̂܂܏o�͂����
+// cxx ファイルにそのまま出力される
 %{
 #define OPENCASCADE 1
 #include "Shape/kmbCADFileIO.h"
@@ -77,12 +77,12 @@ namespace kmb{
 =begin
 =RevocapShape::ShapeData
 
-==�T�v
+==概要
 
-CAD �f�[�^���Ǘ����邽�߂̃N���X�B
-�����Ƀp�����g���b�N�ȋȖʃf�[�^�� Brep �\����ێ�����B
+CAD データを管理するためのクラス。
+内部にパラメトリックな曲面データと Brep 構造を保持する。
 
-==���\�b�h�ꗗ
+==メソッド一覧
 
 ((<ShapeData.new>))
 ((<convertToBezier>))
@@ -92,7 +92,7 @@ CAD �f�[�^���Ǘ����邽�߂̃N���X�B
 ((<isValid>))
 ((<saveToRNF>))
 
-==���\�b�h
+==メソッド
 
 =end
 ---------------------------------------------------------------------*/
@@ -129,21 +129,21 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- isClosed()
-    OpenCASCADE �̊֐����g���āA���Ă��邩�𔻒肷��
+    OpenCASCADE の関数を使って、閉じているかを判定する
 =end
 ---------------------------------------------------------------------------*/
 	bool isClosed(void) const;
 /**--------------------------------------------------------------------------
 =begin
 --- isValid()
-    OpenCASCADE �̊֐����g���āA�Ó����ǂ����𔻒肷��
+    OpenCASCADE の関数を使って、妥当かどうかを判定する
 =end
 ---------------------------------------------------------------------------*/
 	bool isValid(void) const;
 /**--------------------------------------------------------------------------
 =begin
 --- saveToRNF(filename,append=false)
-    RNF �`���ŋȖʏ����o�͂���
+    RNF 形式で曲面情報を出力する
 =end
 ---------------------------------------------------------------------------*/
 	int saveToRNF(const char* filename,bool append=false) const;
@@ -151,7 +151,7 @@ public:
 
 }
 
-// swig �̐��䕶
+// swig の制御文
 #endif
 
 %{

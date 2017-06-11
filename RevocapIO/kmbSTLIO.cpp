@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : STLIO                                                   #
@@ -35,9 +35,9 @@ kmb::STLIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
 	switch( checkFormat(filename) )
 	{
 	case kmb::STLIO::BINARY:
-		return loadFromBinaryFile(filename,mesh);
+		return loadBinaryFile(filename,mesh);
 	case kmb::STLIO::ASCII:
-		return loadFromAsciiFile(filename,mesh);
+		return loadAsciiFile(filename,mesh);
 	default:
 		break;
 	}
@@ -47,6 +47,40 @@ kmb::STLIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
 int
 kmb::STLIO::saveToFile(const char* filename,const kmb::MeshData* mesh)
 {
+	if( mesh == NULL || !mesh->getNodes() ){
+		return -1;
+	}
+	std::ofstream output( filename, std::ios_base::out );
+	if( output.fail() ){
+		return -1;
+	}
+	kmb::Point3D pt[3];
+	kmb::Vector3D normal;
+	kmb::bodyIdType bodyCount = mesh->getBodyCount();
+	for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
+		const kmb::Body* body = mesh->getBodyPtr(bodyId);
+		if( body==NULL || !body->isUniqueType( kmb::kTriangle ) ){
+			continue;
+		}
+		output << "solid " << body->getBodyName() << std::endl;
+		kmb::ElementContainer::const_iterator eIter = body->begin();
+		while( eIter != body->end() ){
+			mesh->getNode( eIter[0], pt[0] );
+			mesh->getNode( eIter[1], pt[1] );
+			mesh->getNode( eIter[2], pt[2] );
+			normal = kmb::Point3D::calcNormalVector(pt[0],pt[1],pt[2]);
+			output << "  facet normal " << normal.x() << " " << normal.y() << " " << normal.z() << std::endl;
+			output << "    outer loop" << std::endl;
+			output << "      vertex " << pt[0].x() << " " << pt[0].y() << " " << pt[0].z() << std::endl;
+			output << "      vertex " << pt[1].x() << " " << pt[1].y() << " " << pt[1].z() << std::endl;
+			output << "      vertex " << pt[2].x() << " " << pt[2].y() << " " << pt[2].z() << std::endl;
+			output << "    endloop" << std::endl;
+			output << "  endfacet" << std::endl;
+			++eIter;
+		}
+		output << "endsolid " << body->getBodyName() << std::endl;
+	}
+	output.close();
 	return 0;
 }
 
@@ -68,7 +102,7 @@ kmb::STLIO::checkFormat(const char* filename)
 }
 
 int
-kmb::STLIO::loadFromBinaryFile(const char* filename,kmb::MeshData* mesh)
+kmb::STLIO::loadBinaryFile(const char* filename,kmb::MeshData* mesh)
 {
 	kmb::OctreePoint3D nodeOctree;
 	kmb::nodeIdType nearestId = kmb::nullNodeId;
@@ -107,23 +141,27 @@ kmb::STLIO::loadFromBinaryFile(const char* filename,kmb::MeshData* mesh)
 }
 
 int
-kmb::STLIO::loadFromAsciiFile(const char* filename,kmb::MeshData* mesh)
+kmb::STLIO::loadAsciiFile(const char* filename,kmb::MeshData* mesh)
 {
 	kmb::OctreePoint3D nodeOctree;
 	std::ifstream input( filename, std::ios_base::in );
 	input.seekg(0,std::ios::beg);
-	std::string str,tag;
-	std::getline( input, str );
+	std::string str,tag,name;
 	int index = 0;
 	double x,y,z,dist;
+	kmb::bodyIdType bodyId;
 	kmb::nodeIdType nodes[3] = {kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId};
 	kmb::nodeIdType nearestId = kmb::nullNodeId;
 	mesh->beginNode();
-	mesh->beginElement();
 	nodeOctree.setContainer(mesh->getNodes());
 	while( std::getline( input, str ) ){
-		if( str.find("endsol") != std::string::npos ){
-			break;
+		if( str.find("endsolid") != std::string::npos ){
+			mesh->endElement();
+			std::stringstream is(str);
+			is >> tag >> name;
+			mesh->setBodyName(bodyId,name.c_str());
+		}else if( str.find("solid") != std::string::npos ){
+			bodyId = mesh->beginElement();
 		}else if( str.find("vertex") != std::string::npos && index < 3 ){
 			std::stringstream is(str);
 			is >> tag >> x >> y >> z;
@@ -141,7 +179,6 @@ kmb::STLIO::loadFromAsciiFile(const char* filename,kmb::MeshData* mesh)
 			index = 0;
 		}
 	}
-	mesh->endElement();
 	mesh->endNode();
 	return 0;
 }

@@ -49,6 +49,13 @@ def wget(location,path=nil)
   end
 end
 
+cmake_goption = ""
+case(RUBY_PLATFORM)
+when /msys/
+  cmake_goption = '-G "MinGW Makefiles"'
+end
+
+
 # cmake
 if !File.exists?('cmake-3.4.1.tar.gz')
   wget('https://cmake.org/files/v3.4/cmake-3.4.1.tar.gz')
@@ -72,19 +79,22 @@ end
 FileUtils.chdir("zlib-1.2.8"){
   puts "zlib-1.2.8"
   system('make -fwin32/Makefile.gcc 2>&1 | tee ../zlib_make.log')
+  system('./configure | tee ../zlib_configure.log')
+  system('make 2>&1 | tee ../zlib_make.log')
 }
 
 # oce
 if !File.exist?('master.zip')
-  wget('https://github.com/tpaviot/oce/archive/master.zip')
+  wget('https://github.com/tpaviot/oce/archive/OCE-0.17.2.tar.gz')
 end
-if !File.exists?("oce-master")
-  system('unzip master.zip')
+if !File.exists?("OCE-0.17.2.tar.gz")
+  system('tar xvfz OCE-0.17.2.tar.gz')
 end
 FileUtils.mkdir_p("build")
 FileUtils.chdir("build"){
   system('pwd')
-  system('../cmake-3.4.1/bin/cmake -G "MSYS Makefiles" ' +
+#  system('../cmake-3.4.1/bin/cmake -G "MSYS Makefiles" ' +
+  system('cmake ' + cmake_goption + 
          '-DOCE_BUILD_TYPE="Release" ' +
          '-DOCE_DRAW=OFF ' +
          '-DOCE_VISUALISATION=OFF ' +
@@ -102,7 +112,7 @@ FileUtils.chdir("build"){
          '-DOCE_MULTITHREAD_LIBRARY=OPENMP ' +
          '-DOPENMP_LIBRARY=-lgomp ' +
 #         '-DOCE_TESTING=ON ' +
-         '../oce-master')
+         '../oce-OCE-0.17.2')
   system('make 2>&1 | tee ../oce_make.log')
   system('make install 2>&1 | tee ../oce_make_install.log')
 }

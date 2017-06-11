@@ -28,9 +28,9 @@
 =begin
 = RevocapMesh
 
-ƒƒbƒVƒ…ƒf[ƒ^‚ð”Ä—p“I‚Éˆµ‚¤‚½‚ß‚Ìƒ‚ƒWƒ…[ƒ‹B
-ƒXƒNƒŠƒvƒgŒ¾Œê Ruby ‚Ì‚½‚ß‚ÌŠg’£ƒNƒ‰ƒXŒQ‚Æ‚µ‚Ä’ñ‹Ÿ‚³‚ê‚éB
-REVOCAP_PrePost ‚Ì FXRuby ‚ÅŽÀ‘•‚³‚ê‚½ GUI •”‚©‚ç—˜—p‚³‚ê‚éB
+ãƒ¡ãƒƒã‚·ãƒ¥ãƒ‡ãƒ¼ã‚¿ã‚’æ±Žç”¨çš„ã«æ‰±ã†ãŸã‚ã®ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã€‚
+ã‚¹ã‚¯ãƒªãƒ—ãƒˆè¨€èªž Ruby ã®ãŸã‚ã®æ‹¡å¼µã‚¯ãƒ©ã‚¹ç¾¤ã¨ã—ã¦æä¾›ã•ã‚Œã‚‹ã€‚
+REVOCAP_PrePost ã® FXRuby ã§å®Ÿè£…ã•ã‚ŒãŸ GUI éƒ¨ã‹ã‚‰åˆ©ç”¨ã•ã‚Œã‚‹ã€‚
 
 =end
 
@@ -63,7 +63,7 @@ REVOCAP_PrePost ‚Ì FXRuby ‚ÅŽÀ‘•‚³‚ê‚½ GUI •”‚©‚ç—˜—p‚³‚ê‚éB
 #include "MeshDBRuby/kmbPhysicalValue_SWIG.h"
 %}
 
-// typedef ‚Í %include ‚µ‚È‚¢‚Æ int Œ^‚ÌƒGƒCƒŠƒAƒX‚ªŠî–{Œ^‚É‚È‚ç‚È‚¢
+// typedef ã¯ %include ã—ãªã„ã¨ int åž‹ã®ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãŒåŸºæœ¬åž‹ã«ãªã‚‰ãªã„
 %include "../MeshDB/kmbTypes.h"
 %include "../Common/kmbCommon.h"
 %include "../Geometry/kmbIdTypes.h"
@@ -76,9 +76,9 @@ REVOCAP_PrePost ‚Ì FXRuby ‚ÅŽÀ‘•‚³‚ê‚½ GUI •”‚©‚ç—˜—p‚³‚ê‚éB
 /**--------------------------------------------------------------------
 =begin
 
-RevocapMesh ‚É‚¨‚¢‚ÄAŽŸ‚Ìƒ‚ƒWƒ…[ƒ‹’è”‚ª’è‹`‚³‚ê‚Ä‚¢‚éB
+RevocapMesh ã«ãŠã„ã¦ã€æ¬¡ã®ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«å®šæ•°ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã€‚
 
-==ƒ‚ƒWƒ…[ƒ‹’è”
+==ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«å®šæ•°
 ((<VERSION>))
 ((<COPYRIGHT>))
 
@@ -88,12 +88,12 @@ RevocapMesh ‚É‚¨‚¢‚ÄAŽŸ‚Ìƒ‚ƒWƒ…[ƒ‹’è”‚ª’è‹`‚³‚ê‚Ä‚¢‚éB
 
 /**--------------------------------------------------------------------
 =begin
-== ƒ‚ƒWƒ…[ƒ‹’è”
-ˆÈ‰º‚Ì’è”‚Í RevocapMesh ƒ‚ƒWƒ…[ƒ‹‚Å’è‹`‚³‚ê‚Ä‚¢‚éB
+== ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«å®šæ•°
+ä»¥ä¸‹ã®å®šæ•°ã¯ RevocapMesh ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã§å®šç¾©ã•ã‚Œã¦ã„ã‚‹ã€‚
 --- VERSION
-	ƒo[ƒWƒ‡ƒ“î•ñ‚Ì•¶Žš—ñ
+	ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±ã®æ–‡å­—åˆ—
 --- COPYRIGHT
-	’˜ìŒ î•ñ‚Ì•¶Žš—ñ
+	è‘—ä½œæ¨©æƒ…å ±ã®æ–‡å­—åˆ—
 =end
 ---------------------------------------------------------------*/
 namespace kmb{
@@ -101,7 +101,7 @@ namespace kmb{
 #define COPYRIGHT "IIS, The University of Tokyo CISS, Large Scale Assembly, Structural Correspondence, Multi Dynamics Simulator"
 }
 
-// ‡”Ô‚Íd—vI
+// é †ç•ªã¯é‡è¦ï¼
 %include "BoundingBox.i"
 %include "MeshData.i"
 %include "MeshDB.i"

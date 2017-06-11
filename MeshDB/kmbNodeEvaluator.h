@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : NodeEvaluator                                           #
@@ -12,7 +12,7 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-// ƒƒbƒVƒ…‚Ì•]‰¿’l‚Åß“_‚ÉŠi”[‚·‚é‚à‚Ì‚ğˆµ‚¤
+// ãƒ¡ãƒƒã‚·ãƒ¥ã®è©•ä¾¡å€¤ã§ç¯€ç‚¹ã«æ ¼ç´ã™ã‚‹ã‚‚ã®ã‚’æ‰±ã†
 
 #pragma once
 
@@ -30,9 +30,9 @@ public:
 	NodeEvaluator(void);
 	virtual ~NodeEvaluator(void);
 	void setMesh(kmb::MeshData* mesh);
-	// –Ê‚Ìî•ñ‚ğ—^‚¦‚Ä curvature ‚ğ data ‚É‘ã“ü‚·‚é
-	// data ‚Í 2\pi ‚Å‰Šú‰»
-	// data ‚ÌŒÂ”‚ğ•Ô‚·
+	// é¢ã®æƒ…å ±ã‚’ä¸ãˆã¦ curvature ã‚’ data ã«ä»£å…¥ã™ã‚‹
+	// data ã¯ 2\pi ã§åˆæœŸåŒ–
+	// data ã®å€‹æ•°ã‚’è¿”ã™
 	int calcCurvature(const char* name,const char* stype=NULL);
 };
 

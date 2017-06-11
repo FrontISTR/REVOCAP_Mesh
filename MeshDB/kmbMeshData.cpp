@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshData                                                #
@@ -100,14 +100,12 @@ kmb::MeshData::getNodeDim(void) const
 	}
 }
 
-kmb::Matrix4x4*
-kmb::MeshData::getCoordMatrix(void)
+kmb::Matrix4x4* kmb::MeshData::getCoordMatrix(void)
 {
 	return coordMatrix;
 }
 
-const kmb::Matrix4x4*
-kmb::MeshData::getCoordMatrix(void) const
+const kmb::Matrix4x4* kmb::MeshData::getCoordMatrix(void) const
 {
 	return coordMatrix;
 }
@@ -645,7 +643,7 @@ kmb::MeshData::findElement(kmb::elementIdType elementId,kmb::bodyIdType bodyId)
 			if( body != NULL ){
 				kmb::ElementContainer::iterator eIter = body->find( elementId );
 				if( !eIter.isFinished() ){
-					return eIter; // ‘ã“ü‰‰Zq‚ªŒÄ‚Î‚ê‚é
+					return eIter; // ä»£å…¥æ¼”ç®—å­ãŒå‘¼ã°ã‚Œã‚‹
 				}
 			}
 		}
@@ -737,11 +735,11 @@ kmb::MeshData::importBody(const kmb::MeshData& otherMesh,kmb::bodyIdType bodyId)
 
 	kmb::Node node;
 
-	// —v‘f‚Ì’Ç‰Á
-	// ’Ç‰Á‚Å‚«‚È‚©‚Á‚½ß“_‚Í nullNodeId ‚É‚È‚Á‚Ä‚¢‚é
+	// è¦ç´ ã®è¿½åŠ 
+	// è¿½åŠ ã§ããªã‹ã£ãŸç¯€ç‚¹ã¯ nullNodeId ã«ãªã£ã¦ã„ã‚‹
 	kmb::nodeIdType* cell = new kmb::nodeIdType[ kmb::Element::MAX_NODE_COUNT ];
 	kmb::ElementContainer::const_iterator eIter = otherBody->begin();
-	// otherMesh ‚Ìß“_ Id ‚Æ©•ª‚Ìß“_ Id ‚Ì‘Î‰‚ğŠo‚¦‚Ä‚¨‚­
+	// otherMesh ã®ç¯€ç‚¹ Id ã¨è‡ªåˆ†ã®ç¯€ç‚¹ Id ã®å¯¾å¿œã‚’è¦šãˆã¦ãŠã
 	std::map< kmb::nodeIdType, kmb::nodeIdType > nodeMapper;
 	while( !eIter.isFinished() ){
 		const int len = eIter.getNodeCount();
@@ -795,7 +793,7 @@ kmb::MeshData::createDataBindings
 (const char* name,kmb::DataBindings::bindingMode bmode,PhysicalValue::valueType vtype,const char* stype,kmb::bodyIdType targetBodyId)
 {
 	if( name == NULL || this->getDataBindingsPtr( name, stype ) != NULL ){
-		// Šù‚Ég‚í‚ê‚Ä‚¢‚é
+		// æ—¢ã«ä½¿ã‚ã‚Œã¦ã„ã‚‹
 		return NULL;
 	}else{
 		kmb::DataBindings* data = kmb::DataBindings::createDataBindings(bmode,vtype,stype,targetBodyId);
@@ -1216,7 +1214,7 @@ kmb::MeshData::setMultiPhysicalValues(double* values)
 std::string
 kmb::MeshData::getUniqueDataName(std::string prefix,int num)
 {
-	// unique ‚È–¼‘O‚ğŒ©‚Â‚¯‚é
+	// unique ãªåå‰ã‚’è¦‹ã¤ã‘ã‚‹
 	int count = num;
 	std::stringstream stream;
 	do{
@@ -1591,7 +1589,7 @@ kmb::MeshData::getNodeSetFromDataBindings(std::set<kmb::nodeIdType>&nodeSet,cons
 						{
 							int len = eIter.getNodeCount();
 							for(int i=0;i<len;++i){
-								nodeSet.insert( eIter.getCellId(i) );
+								nodeSet.insert( eIter.getNodeId(i) );
 							}
 							++eIter;
 						}
@@ -1609,7 +1607,7 @@ kmb::MeshData::getNodeSetFromDataBindings(std::set<kmb::nodeIdType>&nodeSet,cons
 					kmb::ElementContainer::const_iterator element = this->findElement( elementId, bodyId );
 					int len = element.getNodeCount();
 					for(int i=0;i<len;++i){
-						nodeSet.insert( element.getCellId(i) );
+						nodeSet.insert( element.getNodeId(i) );
 					}
 					++dIter;
 				}
@@ -1638,7 +1636,7 @@ kmb::MeshData::getNodeSetFromDataBindings(std::set<kmb::nodeIdType>&nodeSet,cons
 							const int localId = f.getLocalFaceId();
 							const int boudaryNodeCount = element.getBoundaryNodeCount( localId );
 							for(int i=0;i<boudaryNodeCount;++i){
-								nodeSet.insert( element.getBoundaryCellId(localId,i) );
+								nodeSet.insert( element.getBoundaryNodeId(localId,i) );
 							}
 						}
 					}
@@ -1689,7 +1687,7 @@ kmb::MeshData::getBoundingBoxOfData(kmb::BoundingBox &bbox,const kmb::DataBindin
 							const int len = elem.getNodeCount();
 							for(int i=0;i<len;++i)
 							{
-								if( this->getNode( elem.getCellId(i), node ) ){
+								if( this->getNode( elem.getNodeId(i), node ) ){
 									bbox.update( node );
 								}
 							}
@@ -1725,7 +1723,7 @@ kmb::MeshData::getBoundingBoxOfData(kmb::BoundingBox &bbox,const kmb::DataBindin
 								const int len = elem.getBoundaryNodeCount(f.getLocalFaceId());
 								for(int i=0;i<len;++i)
 								{
-									if( this->getNode( elem.getBoundaryCellId(f.getLocalFaceId(),i), node ) ){
+									if( this->getNode( elem.getBoundaryNodeId(f.getLocalFaceId(),i), node ) ){
 										bbox.update( node );
 									}
 								}
@@ -1741,14 +1739,14 @@ kmb::MeshData::getBoundingBoxOfData(kmb::BoundingBox &bbox,const kmb::DataBindin
 	}
 }
 
-// ‘Î‰‚µ‚Ä‚¢‚é‚Ì‚Í
+// å¯¾å¿œã—ã¦ã„ã‚‹ã®ã¯
 // NodeGroup => FaceGroup
 // NodeGroup => ElementGroup
 // FaceGroup => NodeGroup
-// FaceGroup => FaceGroup i’P‚È‚éƒRƒs[j
-// FaceGroup => ElementGroup ie—v‘f‚ğƒOƒ‹[ƒv‚É’Ç‰Áj
+// FaceGroup => FaceGroup ï¼ˆå˜ãªã‚‹ã‚³ãƒ”ãƒ¼ï¼‰
+// FaceGroup => ElementGroup ï¼ˆè¦ªè¦ç´ ã‚’ã‚°ãƒ«ãƒ¼ãƒ—ã«è¿½åŠ ï¼‰
 // ElementGroup => NodeGroup
-// ElementVariable => NodeGroup i•½‹Ï‰»j
+// ElementVariable => NodeGroup ï¼ˆå¹³å‡åŒ–ï¼‰
 int
 kmb::MeshData::convertData(const char* org, const char* conv, const char* orgstype,const char* convstype)
 {
@@ -1773,7 +1771,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 		kmb::bodyIdType bodyId  = faceGroup->getTargetBodyId();
 		kmb::ElementContainer* elements = this->getBodyPtr( bodyId );
 		if( elements ){
-			// ˆê’U nodeGroup ‚Ìß“_‚ğŠÜ‚Ş—v‘f‚ğŠo‚¦‚Ä‚¨‚­
+			// ä¸€æ—¦ nodeGroup ã®ç¯€ç‚¹ã‚’å«ã‚€è¦ç´ ã‚’è¦šãˆã¦ãŠã
 			kmb::DataBindings* elementGroup
 				= kmb::DataBindings::createDataBindings( kmb::DataBindings::ElementGroup, kmb::PhysicalValue::None, "" );
 			kmb::NodeNeighborInfo neighborInfo;
@@ -1800,7 +1798,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 					bool isFace = true;
 					int boundaryNodeCount = elem.getBoundaryNodeCount(i);
 					for(int j=0;j<boundaryNodeCount;++j){
-						if( !nodeGroup->hasId( elem.getBoundaryCellId(i,j) ) ){
+						if( !nodeGroup->hasId( elem.getBoundaryNodeId(i,j) ) ){
 							isFace = false;
 							break;
 						}
@@ -1831,7 +1829,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 		kmb::bodyIdType bodyId  = elementGroup->getTargetBodyId();
 		kmb::ElementContainer* elements = this->getBodyPtr( bodyId );
 		if( elements ){
-			// ˆê’U nodeGroup ‚Ìß“_‚ğŠÜ‚Ş—v‘f‚ğŠo‚¦‚Ä‚¨‚­
+			// ä¸€æ—¦ nodeGroup ã®ç¯€ç‚¹ã‚’å«ã‚€è¦ç´ ã‚’è¦šãˆã¦ãŠã
 			kmb::DataBindings* eGroup
 				= kmb::DataBindings::createDataBindings( kmb::DataBindings::ElementGroup, kmb::PhysicalValue::None, "" );
 			kmb::NodeNeighborInfo neighborInfo;
@@ -1850,14 +1848,14 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 				}
 				++nIter;
 			}
-			// eGroup ‚ÉŠÜ‚Ü‚ê‚é—v‘f‚Ìß“_‚ª‚·‚×‚ÄŠÜ‚Ü‚ê‚éê‡‚É’Ç‰Á‚·‚é
+			// eGroup ã«å«ã¾ã‚Œã‚‹è¦ç´ ã®ç¯€ç‚¹ãŒã™ã¹ã¦å«ã¾ã‚Œã‚‹å ´åˆã«è¿½åŠ ã™ã‚‹
 			kmb::DataBindings::iterator eIter = eGroup->begin();
 			while( !eIter.isFinished() ){
 				kmb::ElementContainer::iterator elem = elements->find( eIter.getId() );
 				int nodeCount = elem.getNodeCount();
 				bool isElement = true;
 				for(int i=0;i<nodeCount;++i){
-					if( !nodeGroup->hasId( elem.getCellId(i) ) ){
+					if( !nodeGroup->hasId( elem.getNodeId(i) ) ){
 						isElement = false;
 						break;
 					}
@@ -1895,7 +1893,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 				if( !elem.isFinished() ){
 					int len = elem.getBoundaryNodeCount(localIndex);
 					for(int i=0;i<len;++i){
-						if( nodeGroup->addId( elem.getBoundaryCellId( localIndex, i ) ) ){
+						if( nodeGroup->addId( elem.getBoundaryNodeId( localIndex, i ) ) ){
 							++dataCount;
 						}
 					}
@@ -1973,7 +1971,7 @@ kmb::MeshData::convertData(const kmb::DataBindings* orgData, kmb::DataBindings* 
 				if( !elem.isFinished() ){
 					int len = elem.getNodeCount();
 					for(int i=0;i<len;++i){
-						if( nodeGroup->addId( elem.getCellId( i ) ) ){
+						if( nodeGroup->addId( elem.getNodeId( i ) ) ){
 							++dataCount;
 						}
 					}
@@ -2088,7 +2086,7 @@ kmb::MeshData::convertBodyToData(kmb::bodyIdType bodyId, const char* name,const 
 		}
 	}
 	else
-	// BODY => FaceGroup (localFaceId = -1 ‚ğ—^‚¦‚Ä)
+	// BODY => FaceGroup (localFaceId = -1 ã‚’ä¸ãˆã¦)
 	if( data != NULL && data->getBindingMode() == kmb::DataBindings::FaceGroup )
 	{
 		kmb::ElementContainer* elements = this->getBodyPtr( bodyId );

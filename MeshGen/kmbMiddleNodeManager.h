@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MiddleNodeManager                                       #
@@ -13,15 +13,15 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// ‚PŸ—v‘f‚ğ‚QŸ—v‘f‚É‚·‚éê‡‚È‚ÇA•Ó‚Ì—¼’[‚Ì“_‚ğ—^‚¦‚ÄA‚»‚Ì’†ŠÔ“_‚ğ•Ô‚·
+// ï¼‘æ¬¡è¦ç´ ã‚’ï¼’æ¬¡è¦ç´ ã«ã™ã‚‹å ´åˆãªã©ã€è¾ºã®ä¸¡ç«¯ã®ç‚¹ã‚’ä¸ãˆã¦ã€ãã®ä¸­é–“ç‚¹ã‚’è¿”ã™
 //
-// lŠpŒ`‚Ìl“_‚Ì‡”Ô‚ªˆá‚Á‚Ä‚à’†S‚Ì“_‚ğ³‚µ‚­•Ô‚·‚æ‚¤‚ÈƒRƒ“ƒeƒi‚ÌİŒv
+// å››è§’å½¢ã®å››ç‚¹ã®é †ç•ªãŒé•ã£ã¦ã‚‚ä¸­å¿ƒã®ç‚¹ã‚’æ­£ã—ãè¿”ã™ã‚ˆã†ãªã‚³ãƒ³ãƒ†ãƒŠã®è¨­è¨ˆ
 //
-// NodePair ‚É‚Í‘ÎŠpü‚Ì‚¤‚¿AÅ¬‚Ìß“_”Ô†‚©‚ç‚ÌÅ’·‘ÎŠpü‚ğ“o˜^‚·‚é
-// ‘ÎŠpü‚ª‘¶İ‚µ‚È‚¢‚à‚ÌiOŠpŒ`‚È‚Çj‚ÍÅ¬‚Ìß“_”Ô†‚Ì‘Î•Ó‚Ì’†ŠÔß“_‚ÌƒyƒA‚ğ“o˜^‚·‚é
+// NodePair ã«ã¯å¯¾è§’ç·šã®ã†ã¡ã€æœ€å°ã®ç¯€ç‚¹ç•ªå·ã‹ã‚‰ã®æœ€é•·å¯¾è§’ç·šã‚’ç™»éŒ²ã™ã‚‹
+// å¯¾è§’ç·šãŒå­˜åœ¨ã—ãªã„ã‚‚ã®ï¼ˆä¸‰è§’å½¢ãªã©ï¼‰ã¯æœ€å°ã®ç¯€ç‚¹ç•ªå·ã®å¯¾è¾ºã®ä¸­é–“ç¯€ç‚¹ã®ãƒšã‚¢ã‚’ç™»éŒ²ã™ã‚‹
 //
-// middlePoints ‚Ì map ‚É Face ‚ğ‚¢‚ê‚é‚ÆA’†ŠÔß“_‚É‘Î‚µ‚Ä Face ‚Í
-// ˆêˆÓ‚Å‚Í‚È‚¢‚Ì‚Å‚æ‚­‚È‚¢‚Ì‚Å‚±‚Ì‚æ‚¤‚ÈÀ‘•‚Æ‚µ‚½
+// middlePoints ã® map ã« Face ã‚’ã„ã‚Œã‚‹ã¨ã€ä¸­é–“ç¯€ç‚¹ã«å¯¾ã—ã¦ Face ã¯
+// ä¸€æ„ã§ã¯ãªã„ã®ã§ã‚ˆããªã„ã®ã§ã“ã®ã‚ˆã†ãªå®Ÿè£…ã¨ã—ãŸ
 //
 #pragma once
 
@@ -41,20 +41,20 @@ protected:
 	struct originalPair{
 		kmb::nodeIdType n0;
 		kmb::nodeIdType n1;
-		// —v‘f‚Ì’†SE–Ê‚©‚ç¶¬‚µ‚½‚Æ‚«B‚»‚êˆÈŠO‚Í kmb::Element::nullElementId
+		// è¦ç´ ã®ä¸­å¿ƒãƒ»é¢ã‹ã‚‰ç”Ÿæˆã—ãŸã¨ãã€‚ãã‚Œä»¥å¤–ã¯ kmb::Element::nullElementId
 		kmb::elementIdType elementId;
 	};
-	// ‘æˆê¬•ª‚Ì•û‚ª¬‚³‚¢‚Æ‚·‚é
+	// ç¬¬ä¸€æˆåˆ†ã®æ–¹ãŒå°ã•ã„ã¨ã™ã‚‹
 	typedef std::pair< kmb::nodeIdType, kmb::nodeIdType > NodePair;
 	Point3DContainer* points;
-	// eß“_‚Ì‘g => ’†ŠÔß“_
+	// è¦ªç¯€ç‚¹ã®çµ„ => ä¸­é–“ç¯€ç‚¹
 	std::map< NodePair, kmb::nodeIdType > middlePoints;
-	// ’†ŠÔß“_ => eß“_‚Ìî•ñ
+	// ä¸­é–“ç¯€ç‚¹ => è¦ªç¯€ç‚¹ã®æƒ…å ±
 	std::map< kmb::nodeIdType, kmb::MiddleNodeManager::originalPair > originalPoints;
 protected:
-	// “à•”‚ÌQÆƒe[ƒuƒ‹‚É’Ç‰Á‚·‚é
+	// å†…éƒ¨ã®å‚ç…§ãƒ†ãƒ¼ãƒ–ãƒ«ã«è¿½åŠ ã™ã‚‹
 	void appendMiddleNode( kmb::nodeIdType middle, kmb::nodeIdType org0, kmb::nodeIdType org1, kmb::elementIdType elemId=kmb::Element::nullElementId);
-	// “™•ª‚µ‚½“_‚ğ¶¬‚µ‚Ä‚»‚Ì nodeId ‚ğ•Ô‚·
+	// ç­‰åˆ†ã—ãŸç‚¹ã‚’ç”Ÿæˆã—ã¦ãã® nodeId ã‚’è¿”ã™
 	virtual kmb::nodeIdType createMiddleNode(kmb::nodeIdType n0, kmb::nodeIdType n1);
 	virtual kmb::nodeIdType createMiddleNode3(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::nodeIdType n2);
 	virtual kmb::nodeIdType createMiddleNode4(kmb::nodeIdType n0, kmb::nodeIdType n1,kmb::nodeIdType n2, kmb::nodeIdType n3);
@@ -77,51 +77,51 @@ public:
 	MiddleNodeManager(void);
 	virtual ~MiddleNodeManager(void);
 	void clear(void);
-	// ƒRƒ“ƒeƒi‚Ìİ’è
+	// ã‚³ãƒ³ãƒ†ãƒŠã®è¨­å®š
 	void setNodeContainer(Point3DContainer* points);
 	size_t getMiddleNodeCount(void) const;
-	// a ‚Æ b ‚Ì’†ŠÔß“_‚Ì nodeId ‚ğ•Ô‚·
-	// “o˜^‚³‚ê‚Ä‚¢‚È‚©‚Á‚½‚ç“_‚ğ¶¬‚µAnodeContainer ‚É’Ç‰Á‚µ‚Ä‚©‚ç•Ô‚·
-	// a ‚Æ b ‚©‚ç‚È‚é—v‘f(SEGMENT)‚Ìê‡‚Í elemId ‚ğ—^‚¦‚é
+	// a ã¨ b ã®ä¸­é–“ç¯€ç‚¹ã® nodeId ã‚’è¿”ã™
+	// ç™»éŒ²ã•ã‚Œã¦ã„ãªã‹ã£ãŸã‚‰ç‚¹ã‚’ç”Ÿæˆã—ã€nodeContainer ã«è¿½åŠ ã—ã¦ã‹ã‚‰è¿”ã™
+	// a ã¨ b ã‹ã‚‰ãªã‚‹è¦ç´ (SEGMENT)ã®å ´åˆã¯ elemId ã‚’ä¸ãˆã‚‹
 	kmb::nodeIdType getDividedNode(kmb::nodeIdType a,kmb::nodeIdType b,kmb::elementIdType elemId=kmb::Element::nullElementId);
-	// —v‘f‚Ì’†ŠÔß“_‚ğ—^‚¦‚é‚Ì‚Í
-	// SEGMENT QUAD HEXAHEDRON ‚Ì‚Æ‚«
-	// TRIANGLE TETRAHEDRON WEDGE ‚Ì‚Æ‚«FmiddlePoints ‚É‚Í‘Î•Ó‚Ì’†ŠÔß“_‚ğ—^‚¦‚é
+	// è¦ç´ ã®ä¸­é–“ç¯€ç‚¹ã‚’ä¸ãˆã‚‹ã®ã¯
+	// SEGMENT QUAD HEXAHEDRON ã®ã¨ã
+	// TRIANGLE TETRAHEDRON WEDGE ã®ã¨ãï¼šmiddlePoints ã«ã¯å¯¾è¾ºã®ä¸­é–“ç¯€ç‚¹ã‚’ä¸ãˆã‚‹
 	kmb::nodeIdType getCenterNode(const kmb::ElementBase &elem,kmb::elementIdType elementId);
 	kmb::nodeIdType getCenterNode(const kmb::ElementBase &elem,int faceIndex,kmb::elementIdType elementId);
-	// ’¼Úß“_”Ô†‚Å—^‚¦‚éê‡
+	// ç›´æ¥ç¯€ç‚¹ç•ªå·ã§ä¸ãˆã‚‹å ´åˆ
 	kmb::nodeIdType getCenterNode4(kmb::nodeIdType n0,kmb::nodeIdType n1,kmb::nodeIdType n2,kmb::nodeIdType n3,kmb::elementIdType elementId);
 	kmb::nodeIdType getCenterNode8(kmb::nodeIdType n0,kmb::nodeIdType n1,kmb::nodeIdType n2,kmb::nodeIdType n3,kmb::nodeIdType n4,kmb::nodeIdType n5,kmb::nodeIdType n6,kmb::nodeIdType n7,kmb::elementIdType elementId);
-	// 2Ÿ—v‘f‚Ì‚ÉŒ`óŠÖ”‚ğg‚Á‚Ä’†ŠÔß“_‚ğ—^‚¦‚é
+	// 2æ¬¡è¦ç´ ã®æ™‚ã«å½¢çŠ¶é–¢æ•°ã‚’ä½¿ã£ã¦ä¸­é–“ç¯€ç‚¹ã‚’ä¸ãˆã‚‹
 	kmb::nodeIdType getCenterNode2(const kmb::ElementBase &elem,kmb::elementIdType elementId);
 	kmb::nodeIdType getCenterNode2(const kmb::ElementBase &elem,int faceIndex,kmb::elementIdType elementId);
-	// a ‚Æ b ‚Ì’†ŠÔß“_‚Ì nodeId ‚ğ•Ô‚·
-	// “o˜^‚³‚ê‚Ä‚¢‚È‚©‚Á‚½‚ç nullNodeId ‚ğ•Ô‚·
+	// a ã¨ b ã®ä¸­é–“ç¯€ç‚¹ã® nodeId ã‚’è¿”ã™
+	// ç™»éŒ²ã•ã‚Œã¦ã„ãªã‹ã£ãŸã‚‰ nullNodeId ã‚’è¿”ã™
 	kmb::nodeIdType isDivided(kmb::nodeIdType a,kmb::nodeIdType b) const;
-	// a ‚Æ b ‚Ì’†“_‚ª middle ‚Å‚ ‚é‚±‚Æ‚ğŠo‚¦‚Ä‚¨‚­
+	// a ã¨ b ã®ä¸­ç‚¹ãŒ middle ã§ã‚ã‚‹ã“ã¨ã‚’è¦šãˆã¦ãŠã
 	void setDividedNode(kmb::nodeIdType middle, kmb::nodeIdType a,kmb::nodeIdType b);
-	// middle point ‚©‚çŒ³‚Ì“_‚ğŒŸõ‚·‚é
+	// middle point ã‹ã‚‰å…ƒã®ç‚¹ã‚’æ¤œç´¢ã™ã‚‹
 	kmb::elementIdType getOriginalNode(kmb::nodeIdType centerId,kmb::nodeIdType &a,kmb::nodeIdType &b) const;
 
-	// a ‚Æ b ‚Ì’†ŠÔß“_‚Ì nodeId ‚ğ•Ô‚·
-	// a, b, c ‚Ì3“_‚ğ‚±‚Ì‡”Ô‚Å’Ê‚é2Ÿ‹Èüã‚É’†ŠÔß“_‚ğæ‚é
-	// “o˜^‚³‚ê‚Ä‚¢‚È‚©‚Á‚½‚ç“_‚ğ¶¬‚µAnodeContainer ‚É’Ç‰Á‚µ‚Ä‚©‚ç•Ô‚·
-	// a ‚Æ b ‚©‚ç‚È‚é—v‘f(SEGMENT)‚Ìê‡‚Í elemId ‚ğ—^‚¦‚é
+	// a ã¨ b ã®ä¸­é–“ç¯€ç‚¹ã® nodeId ã‚’è¿”ã™
+	// a, b, c ã®3ç‚¹ã‚’ã“ã®é †ç•ªã§é€šã‚‹2æ¬¡æ›²ç·šä¸Šã«ä¸­é–“ç¯€ç‚¹ã‚’å–ã‚‹
+	// ç™»éŒ²ã•ã‚Œã¦ã„ãªã‹ã£ãŸã‚‰ç‚¹ã‚’ç”Ÿæˆã—ã€nodeContainer ã«è¿½åŠ ã—ã¦ã‹ã‚‰è¿”ã™
+	// a ã¨ b ã‹ã‚‰ãªã‚‹è¦ç´ (SEGMENT)ã®å ´åˆã¯ elemId ã‚’ä¸ãˆã‚‹
 	kmb::nodeIdType getDividedNode3(kmb::nodeIdType a,kmb::nodeIdType b,kmb::nodeIdType c,kmb::elementIdType elemId=kmb::Element::nullElementId);
 
-	// n0 ‚Æ n1 ‚Ì’†ŠÔß“_‚Ì nodeId ‚ğ•Ô‚·
-	// OŠpŒ`2Ÿ‚Ì 4,5,2,1,3 ‚Ì‡
+	// n0 ã¨ n1 ã®ä¸­é–“ç¯€ç‚¹ã® nodeId ã‚’è¿”ã™
+	// ä¸‰è§’å½¢2æ¬¡ã® 4,5,2,1,3 ã®é †
 	kmb::nodeIdType getDividedNode5(kmb::nodeIdType n0,kmb::nodeIdType n1,kmb::nodeIdType n2,kmb::nodeIdType n3,kmb::nodeIdType n4,kmb::elementIdType elemId=kmb::Element::nullElementId);
 
-	// lŠp‚QŸ‚Ì“à•”‚Ì’†ŠÔß“_‚ğŒ`óŠÖ”‚©‚çì‚é‚½‚ß‚Ì“Á•Êƒƒ\ƒbƒh
-	// index = 5, 6, 7, 8 ‚Æ’ê‚Ì’†S c ‚ÌŠÔ‚Ì’†“_‚ğ¶¬‚·‚é
+	// å››è§’éŒï¼’æ¬¡ã®å†…éƒ¨ã®ä¸­é–“ç¯€ç‚¹ã‚’å½¢çŠ¶é–¢æ•°ã‹ã‚‰ä½œã‚‹ãŸã‚ã®ç‰¹åˆ¥ãƒ¡ã‚½ãƒƒãƒ‰
+	// index = 5, 6, 7, 8 ã¨åº•ã®ä¸­å¿ƒ c ã®é–“ã®ä¸­ç‚¹ã‚’ç”Ÿæˆã™ã‚‹
 	kmb::nodeIdType getDividedNodePyrmid2c(int index,kmb::nodeIdType center,const kmb::ElementBase &elem,kmb::elementIdType elemId=kmb::Element::nullElementId);
 
-	// ’†ŠÔß“_‚ÌˆÊ’u‚ğ’²®‚·‚é
-	// MeshSmoother ‚ğ—^‚¦‚ÄAß“_‚ğ“®‚©‚·
-	// “®‚©‚·‘ÎÛ‚Í’†ŠÔß“_‚Å‚Ì‚İ
-	// –ß‚è’l‚Í“®‚©‚µ‚½ß“_‚ÌŒÂ”
-	// smoother ‚É‚ ‚ç‚©‚¶‚ß mesh ‚Æ body ‚ğ“o˜^‚µ‚Ä‚¨‚­‚±‚Æ
+	// ä¸­é–“ç¯€ç‚¹ã®ä½ç½®ã‚’èª¿æ•´ã™ã‚‹
+	// MeshSmoother ã‚’ä¸ãˆã¦ã€ç¯€ç‚¹ã‚’å‹•ã‹ã™
+	// å‹•ã‹ã™å¯¾è±¡ã¯ä¸­é–“ç¯€ç‚¹ã§ã®ã¿
+	// æˆ»ã‚Šå€¤ã¯å‹•ã‹ã—ãŸç¯€ç‚¹ã®å€‹æ•°
+	// smoother ã«ã‚ã‚‰ã‹ã˜ã‚ mesh ã¨ body ã‚’ç™»éŒ²ã—ã¦ãŠãã“ã¨
 	virtual int smoothingMiddleNodes(kmb::MeshSmoother* smoother);
 };
 

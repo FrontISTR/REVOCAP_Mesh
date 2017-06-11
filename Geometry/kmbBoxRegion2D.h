@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : BoxRegion2D                                             #
@@ -30,7 +30,7 @@
 
 namespace kmb{
 
-/// À•W²‚É•½s‚È’·•ûŒ`
+/// åº§æ¨™è»¸ã«å¹³è¡Œãªé•·æ–¹å½¢
 class BoxRegion2D : public Region2D
 {
 protected:
@@ -43,6 +43,8 @@ public:
 	virtual ~BoxRegion2D(void);
 	BoxRegion2D& operator=(const BoxRegion2D &other);
 
+	void setMinMax(double x0,double y0,double x1,double y1);
+	void setMinMax(kmb::Point2D& minPoint,kmb::Point2D& maxPoint);
 	double minX(void) const;
 	double minY(void) const;
 	double maxX(void) const;
@@ -55,7 +57,7 @@ public:
 	double centerY(void) const;
 	double rangeX(void) const;
 	double rangeY(void) const;
-	// rangeX ‚Æ rangeY ‚Ì‘å‚«‚¢•û‚ğ•Ô‚·
+	// rangeX ã¨ rangeY ã®å¤§ãã„æ–¹ã‚’è¿”ã™
 	double range(void) const;
 	double diameter(void) const;
 	const Point2D& getMin(void) const;
@@ -66,16 +68,16 @@ public:
 	virtual locationType intersect(const Point2D &point) const;
 	virtual double distanceSq(const Point2D &point) const;
 	virtual double distanceSq(const double x,const double y) const;
-	// Box “¯m‚Ì”»’èŠÖ”
+	// Box åŒå£«ã®åˆ¤å®šé–¢æ•°
 	bool intersect(const BoxRegion2D& box) const;
 	double intersectArea(const BoxRegion2D& box) const;
 	double distanceSq(const kmb::BoxRegion2D& box) const;
-	// max min ‚Ì—¼•û‚ğŠg‘å‚·‚é
+	// max min ã®ä¸¡æ–¹ã‚’æ‹¡å¤§ã™ã‚‹
 	void expand(double x,double y);
 	void expand(double ratio);
 	void translate(double x,double y);
-	// ’¼ü‚Æd‚È‚Á‚Ä‚¢‚é•”•ª
-	// d‚È‚Á‚Ä‚¢‚È‚¯‚ê‚ÎAmint_t = max_t = 0.0 ‚ğ•Ô‚·
+	// ç›´ç·šã¨é‡ãªã£ã¦ã„ã‚‹éƒ¨åˆ†
+	// é‡ãªã£ã¦ã„ãªã‘ã‚Œã°ã€mint_t = max_t = 0.0 ã‚’è¿”ã™
 	void crossOnLine(const kmb::Point2D& origin, const kmb::Vector2D& dir, double &min_t, double &max_t) const;
 };
 

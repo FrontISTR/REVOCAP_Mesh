@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementContainerMap                                     #
@@ -30,7 +30,7 @@
 
 namespace kmb{
 
-/* Map ‚É‚æ‚éƒŠƒtƒ@ƒŒƒ“ƒXÀ‘• offsetId ‚æ‚è‚à¬‚³‚¢ elementId ‚Å‚à“o˜^‰Â”\ */
+/* Map ã«ã‚ˆã‚‹ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹å®Ÿè£… offsetId ã‚ˆã‚Šã‚‚å°ã•ã„ elementId ã§ã‚‚ç™»éŒ²å¯èƒ½ */
 
 class ElementContainerMap : public ElementContainer
 {
@@ -64,8 +64,8 @@ public:
 		virtual const kmb::Element* getElement(void) const;
 		virtual bool getElement(kmb::elementType &etype,kmb::nodeIdType *nodes) const;
 		virtual kmb::elementType getType(void) const;
-		virtual kmb::nodeIdType getCellId(int cellIndex) const;
-		virtual bool setCellId(int cellIndex, kmb::nodeIdType nodeId);
+		virtual kmb::nodeIdType getNodeId(int cellIndex) const;
+		virtual bool setNodeId(int cellIndex, kmb::nodeIdType nodeId);
 		virtual kmb::nodeIdType operator[](const int cellIndex) const;
 		virtual ElementContainer::_iterator* operator++(void);
 		virtual ElementContainer::_iterator* operator++(int n);

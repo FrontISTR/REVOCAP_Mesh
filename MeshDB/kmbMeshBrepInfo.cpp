@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : Advance/REVOCAP version 3.2                          #
 # Class Name : MeshBrepInfo                                            #
@@ -258,7 +258,7 @@ kmb::MeshBrepInfo* kmb::MeshBrepInfo::create3DModelWithBoundary(kmb::MeshData *m
 			item->dim = 3;
 			brep->mapperById.insert( std::pair< kmb::bodyIdType, kmb::MeshBrepItem* >(bodyId,item) );
 			brep->volumes.push_back(item);
-			// eŽqŠÖŒW‚Ì\’z
+			// è¦ªå­é–¢ä¿‚ã®æ§‹ç¯‰
 			kmb::BoundaryExtractor bext;
 			bext.setReverseMode(reverse);
 			bext.setMesh(mesh);
@@ -268,7 +268,7 @@ kmb::MeshBrepInfo* kmb::MeshBrepInfo::create3DModelWithBoundary(kmb::MeshData *m
 				if( mesh->getDimension(surfaceId) == 2 ){
 					kmb::ElementContainer* body = mesh->getBodyPtr(surfaceId);
 					if( body != NULL ){
-						// Å‰‚Ì—v‘f‚¾‚¯‚Å”»’è‚·‚é
+						// æœ€åˆã®è¦ç´ ã ã‘ã§åˆ¤å®šã™ã‚‹
 						kmb::ElementContainer::const_iterator eIter = body->begin();
 						if( !eIter.isFinished() && bext.getBoundaryFace(eIter,f) ){
 							item->children.push_back( brep->mapperById.find(surfaceId)->second );

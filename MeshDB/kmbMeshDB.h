@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshDB                                                  #
@@ -168,12 +168,12 @@ public:
 
 	virtual void removeAllBodies(void);
 
-	// ’u‚«Š·‚¦‚½—v‘f‚ÌŒÂ”‚ğ•Ô‚·
+	// ç½®ãæ›ãˆãŸè¦ç´ ã®å€‹æ•°ã‚’è¿”ã™
 	int replaceNodeIdOfBody(kmb::bodyIdType bodyId,kmb::nodeIdType oldNodeId,kmb::nodeIdType newNodeId);
 	int replaceNodeIdOfBody(kmb::bodyIdType bodyId,std::map<kmb::nodeIdType,kmb::nodeIdType>& nodeMapper);
 	int replaceNodeIdOfBody(kmb::bodyIdType bodyId,const char* coupleName);
 
-	// ‹¤’Êß“_‚ÌŒÂ”
+	// å…±é€šç¯€ç‚¹ã®å€‹æ•°
 	size_t countCommonNode(kmb::bodyIdType bodyId0,kmb::bodyIdType bodyId1) const;
 
 	void reverseBody(kmb::bodyIdType bodyID);
@@ -211,7 +211,7 @@ public:
 	kmb::Vector3D getAreaVectorOfSurface(kmb::bodyIdType bodyId) const;
 	kmb::Vector3D getAreaVectorOfFaceGroup(const char* faceGroup) const;
 	//------------ corner node ----------------------//
-	// dir = (a,b,c) ‚Ì‚Æ‚«‚Í ax + by + cz ‚ÌÅ¬‚Æ‚È‚é“_‚ğæ‚é
+	// dir = (a,b,c) ã®ã¨ãã¯ ax + by + cz ã®æœ€å°ã¨ãªã‚‹ç‚¹ã‚’å–ã‚‹
 	kmb::nodeIdType getCornerNodeIdOfSurface(kmb::bodyIdType bodyId,kmb::Vector3D dir) const;
 	kmb::nodeIdType getCornerNodeIdOfFaceGroup(const char* faceGroup,kmb::Vector3D dir) const;
 	//------------ area volume ----------------------//
@@ -281,7 +281,7 @@ public:
 	bool replaceIdOfData(const char* name,kmb::idType oldID,kmb::idType newID,const char* stype=NULL);
 
 	// search nearest value in binding data
-	// value ‚ğ—^‚¦‚ÄAÅ‚à‹ß‚¢’l‚ğ‚Æ‚é id ‚ğ•Ô‚·
+	// value ã‚’ä¸ãˆã¦ã€æœ€ã‚‚è¿‘ã„å€¤ã‚’ã¨ã‚‹ id ã‚’è¿”ã™
 	void getNearestValue(std::string key,const kmb::PhysicalValue* value,kmb::idType& id) const;
 	void getNearestValue(std::string key,const kmb::PhysicalValue* value,kmb::Face& f) const;
 	// calc BoundingBox
@@ -299,13 +299,13 @@ public:
 	// interpolate physical value
 	int getInterpolatedValue(const char* name,double x,double y,double z,double *values,double tolerance=0.0,const char* stype=NULL) const;
 	int getInterpolatedValueInBody(const char* name,kmb::bodyIdType bodyId,double x,double y,double z,double *values,double tolerance=0.0,const char* stype=NULL) const;
-	// element group ‚Ü‚½‚Í face group ‚ÉŠÜ‚Ü‚ê‚é—v‘f‚Å•âŠÔ‚·‚é
+	// element group ã¾ãŸã¯ face group ã«å«ã¾ã‚Œã‚‹è¦ç´ ã§è£œé–“ã™ã‚‹
 	int getInterpolatedValueInData(const char* name,const char* target,double x,double y,double z,double *values,double tolerance=0.0,const char* stype=NULL) const;
 
-	// TargetData ‚ÅƒLƒƒƒbƒVƒ…‚µ‚Ä‚ ‚éƒf[ƒ^‚É‚Â‚¢‚Ä•âŠÔ’l‚ğ‹‚ß‚é
+	// TargetData ã§ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã—ã¦ã‚ã‚‹ãƒ‡ãƒ¼ã‚¿ã«ã¤ã„ã¦è£œé–“å€¤ã‚’æ±‚ã‚ã‚‹
 	int getInterpolatedValues(double x,double y,double z,double *values,double tolerance=0.0) const;
 	int getInterpolatedValuesInBody(kmb::bodyIdType bodyId,double x,double y,double z,double *values,double tolerance=0.0) const;
-	// element group ‚Ü‚½‚Í face group ‚ÉŠÜ‚Ü‚ê‚é—v‘f‚Å•âŠÔ‚·‚é
+	// element group ã¾ãŸã¯ face group ã«å«ã¾ã‚Œã‚‹è¦ç´ ã§è£œé–“ã™ã‚‹
 	int getInterpolatedValuesInData(const char* target,double x,double y,double z,double *values,double tolerance=0.0) const;
 
 public:

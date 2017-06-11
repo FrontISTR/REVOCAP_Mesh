@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Collision                                               #
@@ -36,28 +36,28 @@ public:
 	virtual ~Collision(void);
 	void setAccuracy(double acc);
 	double getAccuracy(void) const;
-	// “_‚ÆOŠpŒ`ElŠpŒ`‚Ì‹——£
+	// ç‚¹ã¨ä¸‰è§’å½¢ãƒ»å››è§’å½¢ã®è·é›¢
 	double distanceSqPtTri(kmb::nodeIdType nodeId,kmb::ElementBase& tri,double s[2]) const;
 	double distanceSqPtQuad(kmb::Point3D& pt,kmb::ElementBase& quad) const;
-	// ü•ª“¯m‚Ì‹——£
+	// ç·šåˆ†åŒå£«ã®è·é›¢
 	double distanceSqSegSeg(kmb::nodeIdType a0,kmb::nodeIdType a1,kmb::nodeIdType b0,kmb::nodeIdType b1,double &t1, double &t2) const;
 	double distanceSqSegSeg(kmb::ElementBase& seg0,kmb::ElementBase& seg1,double &t1, double &t2) const;
 	double distanceSegSeg(kmb::nodeIdType a0,kmb::nodeIdType a1,kmb::nodeIdType b0,kmb::nodeIdType b1) const;
 	double distanceSegSeg(kmb::ElementBase& seg0,kmb::ElementBase& seg1) const;
-	// ü•ª‚ÆOŠpŒ`‚Ì‹——£
+	// ç·šåˆ†ã¨ä¸‰è§’å½¢ã®è·é›¢
 	double distanceSqSegTri(kmb::nodeIdType a0,kmb::nodeIdType a1,kmb::ElementBase& tri,double &s,double t[2]) const;
 	double distanceSegTri(kmb::nodeIdType a0,kmb::nodeIdType a1,kmb::ElementBase& tri) const;
-	// OŠpŒ`“¯m‚Ì‹——£
+	// ä¸‰è§’å½¢åŒå£«ã®è·é›¢
 	double distanceSqTriTri(kmb::ElementBase& tri0,kmb::ElementBase& tri1,double s[2],double t[2]) const;
 	double distanceTriTri(kmb::ElementBase& tri0,kmb::ElementBase& tri1) const;
-	// lŠpŒ`“¯m‚Ì‹——£
-	// 2‚Â‚ÌOŠpŒ`‚É•ª‚¯‚ÄŒvZ‚·‚é
+	// å››è§’å½¢åŒå£«ã®è·é›¢
+	// 2ã¤ã®ä¸‰è§’å½¢ã«åˆ†ã‘ã¦è¨ˆç®—ã™ã‚‹
 	double distanceSqQuadQuad(kmb::ElementBase& q0,kmb::ElementBase& q1) const;
 	double distanceQuadQuad(kmb::ElementBase& q0,kmb::ElementBase& q1) const;
-	// OŠpŒ`‚ÆlŠpŒ`‚Ì‹——£
+	// ä¸‰è§’å½¢ã¨å››è§’å½¢ã®è·é›¢
 	double distanceSqTriQuad(kmb::ElementBase& tri,kmb::ElementBase& q) const;
 	double distanceTriQuad(kmb::ElementBase& tri,kmb::ElementBase& q) const;
-	// Œ^‚ª‚í‚©‚ç‚È‚¢—v‘f‚ÌŠÔ‚Ì‹——£
+	// å‹ãŒã‚ã‹ã‚‰ãªã„è¦ç´ ã®é–“ã®è·é›¢
 	double distanceSq(kmb::ElementBase& elem0,kmb::ElementBase& elem1) const;
 	double distance(kmb::ElementBase& elem0,kmb::ElementBase& elem1) const;
 	double distanceSq(kmb::ElementBase& elem0,kmb::Face& f,const kmb::ElementContainer* elements) const;
@@ -66,7 +66,7 @@ public:
 	enum collisionType{
 		COLLISION_ERROR = -2,
 		NOT_COLLIDE = -1,
-		TOPOLOGICAL_CONTACT = 0, // ‹¤—L‚µ‚Ä‚¢‚é“_‚ª‚ ‚é‚¾‚¯
+		TOPOLOGICAL_CONTACT = 0, // å…±æœ‰ã—ã¦ã„ã‚‹ç‚¹ãŒã‚ã‚‹ã ã‘
 		GEOMETRICAL_CONTACT = 1,
 		DETECT = 2,
 		kCollisionError = -2,
@@ -76,53 +76,53 @@ public:
 		kCollision = 2
 	};
 	static const char* collisionTypeString( collisionType ctype );
-	// OŠpŒ`‚ÆOŠpŒ`‚ÌŠ±ÂŠÖŒW
+	// ä¸‰è§’å½¢ã¨ä¸‰è§’å½¢ã®å¹²æ¸‰é–¢ä¿‚
 	collisionType detectTriTri(kmb::ElementBase& tri0,kmb::ElementBase& tri1) const;
 	collisionType detectTriTetra(kmb::ElementBase& tri,kmb::ElementBase& tetra) const;
 
-	// OŠpŒ` t0 ‚Æ t1 ‚ğ—^‚¦‚ÄAß“_‚Ì‡”Ô‚Å
-	// 3 ’¸“_ŠÔ‚Ì‹——£‚Ì˜a‚ªÅ¬‚Æ‚È‚éŒü‚«(t0‚É‚Â‚¢‚Ä)‚ğ‹‚ß‚é
-	// element type ‚Íƒ`ƒFƒbƒNÏ‚İ‚Æ‚·‚é
+	// ä¸‰è§’å½¢ t0 ã¨ t1 ã‚’ä¸ãˆã¦ã€ç¯€ç‚¹ã®é †ç•ªã§
+	// 3 é ‚ç‚¹é–“ã®è·é›¢ã®å’ŒãŒæœ€å°ã¨ãªã‚‹å‘ã(t0ã«ã¤ã„ã¦)ã‚’æ±‚ã‚ã‚‹
+	// element type ã¯ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã¨ã™ã‚‹
 	double distanceByNodeTri(kmb::ElementBase& t0,kmb::ElementBase& t1,int &index) const;
 	double distanceByNodeTri(kmb::ElementBase& t0,kmb::Face &f,const kmb::ElementContainer* elements,int &index) const;
-	// lŠpŒ` q0 ‚Æ q1 ‚ğ—^‚¦‚ÄAß“_‚Ì‡”Ô‚Å
-	// 4 ’¸“_ŠÔ‚Ì‹——£‚Ì˜a‚ªÅ¬‚Æ‚È‚éŒü‚«(q0‚É‚Â‚¢‚Ä)‚ğ‹‚ß‚é
-	// element type ‚Íƒ`ƒFƒbƒNÏ‚İ‚Æ‚·‚é
+	// å››è§’å½¢ q0 ã¨ q1 ã‚’ä¸ãˆã¦ã€ç¯€ç‚¹ã®é †ç•ªã§
+	// 4 é ‚ç‚¹é–“ã®è·é›¢ã®å’ŒãŒæœ€å°ã¨ãªã‚‹å‘ã(q0ã«ã¤ã„ã¦)ã‚’æ±‚ã‚ã‚‹
+	// element type ã¯ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã¨ã™ã‚‹
 	double distanceByNodeQuad(kmb::ElementBase& q0,kmb::ElementBase& q1,int &index) const;
 	double distanceByNodeQuad(kmb::ElementBase& q0,kmb::Face &f,const kmb::ElementContainer* elements,int &index) const;
-	// Œ^‚ª‚í‚©‚ç‚È‚¢—v‘f‚Ì’¸“_ŠÔ‚Ì‹——£‚Ì˜a
+	// å‹ãŒã‚ã‹ã‚‰ãªã„è¦ç´ ã®é ‚ç‚¹é–“ã®è·é›¢ã®å’Œ
 	double distanceByNode(kmb::ElementBase& elem0,kmb::ElementBase& elem1,int &index) const;
 	double distanceByNode(kmb::ElementBase& elem0,kmb::Face& f,const kmb::ElementContainer* elements,int &index) const;
 
-	// –ÊƒOƒ‹[ƒv‚ÌŠÔ‚ÌŠ±ÂŠÖŒW‚ğ’²‚×‚é
-	// fg0 ‚É‘Î‚µ‚Ä fg1 ‚Ì–Ê‚Ì‚¤‚¿A‹——£‚ª thres ‚æ‚è¬‚³‚¢‚à‚Ì‚ğ result ‚É’Ç‰Á‚·‚é
-	// ’Ç‰Á‚µ‚½ŒÂ”‚ğ•Ô‚·
+	// é¢ã‚°ãƒ«ãƒ¼ãƒ—ã®é–“ã®å¹²æ¸‰é–¢ä¿‚ã‚’èª¿ã¹ã‚‹
+	// fg0 ã«å¯¾ã—ã¦ fg1 ã®é¢ã®ã†ã¡ã€è·é›¢ãŒ thres ã‚ˆã‚Šå°ã•ã„ã‚‚ã®ã‚’ result ã«è¿½åŠ ã™ã‚‹
+	// è¿½åŠ ã—ãŸå€‹æ•°ã‚’è¿”ã™
 	int detectFaceGroup(const char* fg0,const char* fg1,double thres,const char* result) const;
-	// •\–Ê—v‘f‚Æ–ÊƒOƒ‹[ƒv‚ÌŠÔ‚ÌŠ±ÂŠÖŒW‚ğ’²‚×‚é
-	// bodyId0 ‚É‘Î‚µ‚Ä fg1 ‚Ì–Ê‚Ì‚¤‚¿A‹——£‚ª thres ‚æ‚è¬‚³‚¢‚à‚Ì‚ğ result ‚É’Ç‰Á‚·‚é
-	// ’Ç‰Á‚µ‚½ŒÂ”‚ğ•Ô‚·
+	// è¡¨é¢è¦ç´ ã¨é¢ã‚°ãƒ«ãƒ¼ãƒ—ã®é–“ã®å¹²æ¸‰é–¢ä¿‚ã‚’èª¿ã¹ã‚‹
+	// bodyId0 ã«å¯¾ã—ã¦ fg1 ã®é¢ã®ã†ã¡ã€è·é›¢ãŒ thres ã‚ˆã‚Šå°ã•ã„ã‚‚ã®ã‚’ result ã«è¿½åŠ ã™ã‚‹
+	// è¿½åŠ ã—ãŸå€‹æ•°ã‚’è¿”ã™
 	int detectSurfaceFaceGroup(kmb::bodyIdType bodyId0,const char* fg1,double thres,const char* result) const;
-	// •\–Ê—v‘f‚Æ–ÊƒOƒ‹[ƒv‚ÌŠÔ‚ÌŠ±ÂŠÖŒW‚ğ’²‚×‚é
-	// bodyId0 ‚É‘Î‚µ‚Ä fg1 ‚Ì–Ê‚Ì‚¤‚¿A‹——£‚ª thres ‚æ‚è¬‚³‚¢’¸“_‚ª tCount ˆÈã‚ ‚é‚à‚Ì‚ğ result ‚É’Ç‰Á‚·‚é
-	// ’Ç‰Á‚µ‚½ŒÂ”‚ğ•Ô‚·
+	// è¡¨é¢è¦ç´ ã¨é¢ã‚°ãƒ«ãƒ¼ãƒ—ã®é–“ã®å¹²æ¸‰é–¢ä¿‚ã‚’èª¿ã¹ã‚‹
+	// bodyId0 ã«å¯¾ã—ã¦ fg1 ã®é¢ã®ã†ã¡ã€è·é›¢ãŒ thres ã‚ˆã‚Šå°ã•ã„é ‚ç‚¹ãŒ tCount ä»¥ä¸Šã‚ã‚‹ã‚‚ã®ã‚’ result ã«è¿½åŠ ã™ã‚‹
+	// è¿½åŠ ã—ãŸå€‹æ•°ã‚’è¿”ã™
 	int detectSurfaceFaceGroupByNode(kmb::bodyIdType bodyId0,const char* fg1,int tCount,double thres,const char* result) const;
 
-	// quad or triangle  ‚É‘Î‚µ‚ÄA‚S’¸“_ŠÔ‚Ü‚½‚Í‚R’¸“_‚Ì‹——£‚Ì˜a‚ªÅ¬‚É‚È‚é–Ê‚ğ‹‚ß‚é
-	// ‹——£‚ğŒvZ‚·‚é‘ÎÛ‚Í“¯‚¶Œ^‚Ì‚İiquad vs quad ‚Ü‚½‚Í tri vs trij
-	// –ß‚è’l‚ÍA‹——£A–ÊA‚à‚Æ‚Ì quad or tri ‚ğ‚Ç‚ÌŒü‚«‚É‚µ‚½‚Æ‚«‚ÉÅ¬‚É‚È‚é‚©‚Ì‰ñ“]“x
+	// quad or triangle  ã«å¯¾ã—ã¦ã€ï¼”é ‚ç‚¹é–“ã¾ãŸã¯ï¼“é ‚ç‚¹ã®è·é›¢ã®å’ŒãŒæœ€å°ã«ãªã‚‹é¢ã‚’æ±‚ã‚ã‚‹
+	// è·é›¢ã‚’è¨ˆç®—ã™ã‚‹å¯¾è±¡ã¯åŒã˜å‹ã®ã¿ï¼ˆquad vs quad ã¾ãŸã¯ tri vs triï¼‰
+	// æˆ»ã‚Šå€¤ã¯ã€è·é›¢ã€é¢ã€ã‚‚ã¨ã® quad or tri ã‚’ã©ã®å‘ãã«ã—ãŸã¨ãã«æœ€å°ã«ãªã‚‹ã‹ã®å›è»¢åº¦
 	double getNearestFace(kmb::ElementBase& q0,const char* fg,kmb::Face &nearestFace,int &index) const;
 
-	// static ŠÖ”ŒQ
-	// ‹——£‚Ì2æ‚ğ•Ô‚·
+	// static é–¢æ•°ç¾¤
+	// è·é›¢ã®2ä¹—ã‚’è¿”ã™
 	static double testSegSeg(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0,kmb::Point3D& q1,double &t1, double &t2);
 	static double testSegTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2,double &s,double t[2]);
 	static double testTriTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& p2,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2,double s[2],double t[2]);
 
-	// topological ‚Èƒ`ƒFƒbƒN‚Í‚µ‚È‚¢
-	// ‹——£ŠÖ”‚Åƒ`ƒFƒbƒN
+	// topological ãªãƒã‚§ãƒƒã‚¯ã¯ã—ãªã„
+	// è·é›¢é–¢æ•°ã§ãƒã‚§ãƒƒã‚¯
 	static collisionType detectSegTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2);
 	static collisionType detectTriTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& p2,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2);
-	// ‘ÌÏÀ•W‚Ì•„†‚ğƒ`ƒFƒbƒN
+	// ä½“ç©åº§æ¨™ã®ç¬¦å·ã‚’ãƒã‚§ãƒƒã‚¯
 	static collisionType detectSegTri2(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2);
 	static collisionType detectTriTri2(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D& p2,kmb::Point3D& q0,kmb::Point3D& q1,kmb::Point3D& q2);
 };

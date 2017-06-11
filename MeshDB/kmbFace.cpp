@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Face                                                    #
@@ -99,7 +99,7 @@ kmb::Face::createElement(const kmb::ElementBase &elem) const
 		const int len = elem.getNodeCount();
 		kmb::nodeIdType* cell = new kmb::nodeIdType[len];
 		for(int i=0;i<len;++i){
-			cell[i] = elem.getCellId(i);
+			cell[i] = elem.getNodeId(i);
 		}
 		kmb::Element* clone = kmb::Element::create( elem.getType(), cell );
 		if( clone ){
@@ -165,20 +165,20 @@ kmb::Face::getFaceElement(const kmb::ElementBase &parent,kmb::ElementBase &outpu
 	}else if( this->localFaceId == -1 ){
 		const int len = parent.getNodeCount();
 		for(int i=0;i<len;++i){
-			output.setCellId(i,parent.getCellId(i));
+			output.setNodeId(i,parent.getNodeId(i));
 		}
 		return true;
 	}else if( this->localFaceId < parent.getBoundaryCount() ){
 		const int len = parent.getBoundaryNodeCount( this->localFaceId );
 		for(int i=0;i<len;++i){
-			output.setCellId(i,parent.getBoundaryCellId(this->localFaceId,i));
+			output.setNodeId(i,parent.getBoundaryNodeId(this->localFaceId,i));
 		}
 		return true;
 	}else if( parent.getDimension() == 3 && this->localFaceId < parent.getBoundaryCount() + parent.getEdgeCount() ){
 		const int edgeId = this->localFaceId - parent.getBoundaryCount();
 		const int len = parent.getEdgeNodeCount( edgeId );
 		for(int i=0;i<len;++i){
-			output.setCellId(i,parent.getEdgeCellId(edgeId,i));
+			output.setNodeId(i,parent.getEdgeNodeId(edgeId,i));
 		}
 		return true;
 	}
@@ -257,20 +257,20 @@ kmb::Face::getFaceLinearElement(const kmb::ElementBase &parent,kmb::ElementBase 
 	}else if( this->localFaceId == -1 ){
 		const int len = parent.getVertexCount();
 		for(int i=0;i<len;++i){
-			output.setCellId(i,parent.getCellId(i));
+			output.setNodeId(i,parent.getNodeId(i));
 		}
 		return true;
 	}else if( this->localFaceId < parent.getBoundaryCount() ){
 		const int len = parent.getBoundaryVertexCount( this->localFaceId );
 		for(int i=0;i<len;++i){
-			output.setCellId(i,parent.getBoundaryCellId(this->localFaceId,i));
+			output.setNodeId(i,parent.getBoundaryNodeId(this->localFaceId,i));
 		}
 		return true;
 	}else if( parent.getDimension() == 3 && this->localFaceId < parent.getBoundaryCount() + parent.getEdgeCount() ){
 		const int edgeId = this->localFaceId - parent.getBoundaryCount();
 		const int len = parent.getEdgeVertexCount( edgeId );
 		for(int i=0;i<len;++i){
-			output.setCellId(i,parent.getEdgeCellId(edgeId,i));
+			output.setNodeId(i,parent.getEdgeNodeId(edgeId,i));
 		}
 		return true;
 	}

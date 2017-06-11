@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Octree                                                  #
@@ -15,17 +15,17 @@
 #pragma once
 
 /*
- * ß“_‚Ü‚½‚Í—v‘f‚ğˆÊ’uî•ñ‚ÉŠî‚Ã‚¢‚ÄŠK‘w“I‚ÉŠi”[‚·‚é
- * ƒeƒ“ƒvƒŒ[ƒgƒNƒ‰ƒX
+ * ç¯€ç‚¹ã¾ãŸã¯è¦ç´ ã‚’ä½ç½®æƒ…å ±ã«åŸºã¥ã„ã¦éšå±¤çš„ã«æ ¼ç´ã™ã‚‹
+ * ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚¯ãƒ©ã‚¹
  *
  * T = nodeIdType or elementIdType
  */
 
 /*
- * T ‚ğ idarray ‚É maxCount ‚Ü‚ÅŠi”[‚·‚é
- * Ši”[‚Å‚«‚È‚­‚È‚Á‚½‚ç box ‚ğ center ‚Å•ª‚¯‚ÄA
- * 8ŒÂ‚Ìq‹Ÿ‚É•ª”z‚·‚é
- * Œ»İŠi”[‚³‚ê‚Ä‚¢‚éŒÂ”‚ğ count ‚É‹L˜^‚·‚é
+ * T ã‚’ idarray ã« maxCount ã¾ã§æ ¼ç´ã™ã‚‹
+ * æ ¼ç´ã§ããªããªã£ãŸã‚‰ box ã‚’ center ã§åˆ†ã‘ã¦ã€
+ * 8å€‹ã®å­ä¾›ã«åˆ†é…ã™ã‚‹
+ * ç¾åœ¨æ ¼ç´ã•ã‚Œã¦ã„ã‚‹å€‹æ•°ã‚’ count ã«è¨˜éŒ²ã™ã‚‹
  */
 
 #include "Geometry/kmbGeometry3D.h"
@@ -39,11 +39,11 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 namespace kmb{
@@ -107,12 +107,12 @@ protected:
 			}
 		};
 
-		// ©•ª‚ÌŠK‘w‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é“_‚ÌŒÂ”
+		// è‡ªåˆ†ã®éšå±¤ã«å«ã¾ã‚Œã¦ã„ã‚‹ç‚¹ã®å€‹æ•°
 		size_t getLocalCount(void) const{
 			return count;
 		}
 
-		// ©•ª‚æ‚è‰º‚ÌŠK‘w‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é“_‚ÌŒÂ”
+		// è‡ªåˆ†ã‚ˆã‚Šä¸‹ã®éšå±¤ã«å«ã¾ã‚Œã¦ã„ã‚‹ç‚¹ã®å€‹æ•°
 		size_t getCount(void) const{
 			size_t sum = 0;
 			if( children != NULL ){
@@ -129,7 +129,7 @@ protected:
 			center.setCoordinate(x,y,z);
 		}
 
-		// Ši”[‚³‚ê‚Ä‚¢‚é T Œ^‚Ì—v‘f‚É‚Â‚¢‚ÄÅ’Z‹——£‚ğ•Ô‚·
+		// æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ T å‹ã®è¦ç´ ã«ã¤ã„ã¦æœ€çŸ­è·é›¢ã‚’è¿”ã™
 		double getNearest(const double x,const double y,const double z,T &t) const{
 			double d = getNearestSq(x,y,z,t);
 			if( d > 0.0 ){
@@ -144,7 +144,7 @@ protected:
 			box.getCenter( center );
 		}
 
-		// À•W‚ğ—^‚¦‚Ä’Ç‰Á
+		// åº§æ¨™ã‚’ä¸ãˆã¦è¿½åŠ 
 		int appendByPoint(const kmb::Point3D &pt,const T t){
 			box.update(pt);
 			if( children != NULL )
@@ -163,8 +163,8 @@ protected:
 			return 0;
 		}
 
-		// —Ìˆæ‚ğ—^‚¦‚Ä’Ç‰Á
-		// d•¡‚µ‚Ä‚¢‚Ä‚à‚æ‚¢
+		// é ˜åŸŸã‚’ä¸ãˆã¦è¿½åŠ 
+		// é‡è¤‡ã—ã¦ã„ã¦ã‚‚ã‚ˆã„
 		int appendByRegion(const kmb::BoxRegion &b,const T t){
 			box.update(b);
 			if( children != NULL )
@@ -252,11 +252,11 @@ protected:
 				( ( bz ) ? 1 : 0 );
 		}
 
-		// q‚ÌŠK‘w‚ğì‚é
+		// å­ã®éšå±¤ã‚’ä½œã‚‹
 		void createChildren(void){
 			if( children == NULL )
 			{
-				// Œ´‘¥‚Æ‚µ‚Äq‚ÌŠK‘w‚ğì‚Á‚½‚ç center ‚Ì’l‚Í•Ï‚¦‚Ä‚Í‚¢‚¯‚È‚¢
+				// åŸå‰‡ã¨ã—ã¦å­ã®éšå±¤ã‚’ä½œã£ãŸã‚‰ center ã®å€¤ã¯å¤‰ãˆã¦ã¯ã„ã‘ãªã„
 				box.getCenter( center );
 				children = new typename kmb::Octree<T>::OctreeNode*[8];
 				children[0] = new typename kmb::Octree<T>::OctreeNode(octree,
@@ -275,13 +275,13 @@ protected:
 					box.maxX(), box.maxY(), box.minZ(), center.x(), center.y(), center.z(), layer+1 );
 				children[7] = new typename kmb::Octree<T>::OctreeNode(octree,
 					box.maxX(), box.maxY(), box.maxZ(), center.x(), center.y(), center.z(), layer+1 );
-				// q‹Ÿ‚É Id ‚ğƒRƒs[
+				// å­ä¾›ã« Id ã‚’ã‚³ãƒ”ãƒ¼
 				for(unsigned int i=0;i<count;++i)
 				{
 					octree->append(idarray[i],this);
 				}
 				this->count = 0;
-				// children ‚ğ‚Á‚½‚ç idarray ‚Í NULL
+				// children ã‚’æŒã£ãŸã‚‰ idarray ã¯ NULL
 				delete[] idarray;
 				idarray = NULL;
 			}
@@ -302,8 +302,8 @@ protected:
 				if( min.update( children[ getChildIndex(bx,by,bz) ]->getNearestSq(x,y,z,tmp) ) ){
 					t = tmp;
 				}
-				// —×Ú—Ìˆæ‚æ‚è‚à‹ß‚¢‚©‚Ç‚¤‚©‚ğŠm‚©‚ß‚é
-				// min ‚ÍXV‚³‚ê‚é‚Ì‚ÅA–ˆ‰ñ’²‚×‚é
+				// éš£æ¥é ˜åŸŸã‚ˆã‚Šã‚‚è¿‘ã„ã‹ã©ã†ã‹ã‚’ç¢ºã‹ã‚ã‚‹
+				// min ã¯æ›´æ–°ã•ã‚Œã‚‹ã®ã§ã€æ¯å›èª¿ã¹ã‚‹
 				// x
 				if( (x-center.x())*(x-center.x()) < min.getMin() &&
 					min.update( children[ getChildIndex(!bx,by,bz) ]->getNearestSq(x,y,z,tmp) ) )
@@ -369,10 +369,10 @@ protected:
 		}
 	};
 protected:
-	// OctreeNode ‚Í NULL ‚É‚µ‚È‚¢
+	// OctreeNode ã¯ NULL ã«ã—ãªã„
 	OctreeNode* topNode;
 	size_t maxCount;
-	// q‚ÌŠK‘w‚És‚­‚É‚µ‚½‚ª‚Á‚Ä maxCount ‚ğ‘‚â‚·
+	// å­ã®éšå±¤ã«è¡Œãã«ã—ãŸãŒã£ã¦ maxCount ã‚’å¢—ã‚„ã™
 	bool maxExpand;
 public:
 	Octree(size_t mCount=256)
@@ -404,21 +404,21 @@ public:
 	size_t getCount(void) const{
 		return topNode->getCount();
 	}
-	// id ‚ğ—^‚¦‚Ä’Ç‰Á
-	// ‚±‚ê‚Í“Áê‰»‚·‚éƒNƒ‰ƒX‚ÅÀ‘•‚·‚é
+	// id ã‚’ä¸ãˆã¦è¿½åŠ 
+	// ã“ã‚Œã¯ç‰¹æ®ŠåŒ–ã™ã‚‹ã‚¯ãƒ©ã‚¹ã§å®Ÿè£…ã™ã‚‹
 	virtual int append(const T t,typename kmb::Octree<T>::OctreeNode* octNode=NULL) = 0;
-	// ƒRƒ“ƒeƒi‚Ì—v‘f‚·‚×‚Ä’Ç‰Á
-	// ‚±‚ê‚Í“Áê‰»‚·‚éƒNƒ‰ƒX‚ÅÀ‘•‚·‚é
+	// ã‚³ãƒ³ãƒ†ãƒŠã®è¦ç´ ã™ã¹ã¦è¿½åŠ 
+	// ã“ã‚Œã¯ç‰¹æ®ŠåŒ–ã™ã‚‹ã‚¯ãƒ©ã‚¹ã§å®Ÿè£…ã™ã‚‹
 	virtual int appendAll(typename kmb::Octree<T>::OctreeNode* octNode=NULL) = 0;
-	// id ‚ğ—^‚¦‚Ä‹——£‚Ì‚Qæ‚ğ•Ô‚·
-	// ‚±‚ê‚Í“Áê‰»‚·‚éƒNƒ‰ƒX‚ÅÀ‘•‚·‚é
-	// ’FgetNearest ‚©‚çŒÄ‚ñ‚Å‚¢‚éƒI[ƒo[ƒwƒbƒh‚ğŒ¸‚ç‚¹‚Î­‚µ‘¬‚­‚È‚é
+	// id ã‚’ä¸ãˆã¦è·é›¢ã®ï¼’ä¹—ã‚’è¿”ã™
+	// ã“ã‚Œã¯ç‰¹æ®ŠåŒ–ã™ã‚‹ã‚¯ãƒ©ã‚¹ã§å®Ÿè£…ã™ã‚‹
+	// æ³¨ï¼šgetNearest ã‹ã‚‰å‘¼ã‚“ã§ã„ã‚‹ã‚ªãƒ¼ãƒãƒ¼ãƒ˜ãƒƒãƒ‰ã‚’æ¸›ã‚‰ã›ã°å°‘ã—é€Ÿããªã‚‹
 	virtual double getDistanceSq(const double x,const double y,const double z,const T t) const = 0;
-	// ‹——£‚ğ•Ô‚·
+	// è·é›¢ã‚’è¿”ã™
 	double getNearest(const double x,const double y,const double z,T &t) const{
 		return topNode->getNearest(x,y,z,t);
 	}
-	// —Ìˆæ‚Æ‚ÌŠÖŒW‚ğ•Ô‚·
+	// é ˜åŸŸã¨ã®é–¢ä¿‚ã‚’è¿”ã™
 	virtual bool getIntersectToRegion(const kmb::Region* region,const T t) const{
 		return false;
 	}

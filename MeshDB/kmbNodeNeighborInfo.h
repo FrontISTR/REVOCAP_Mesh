@@ -64,27 +64,27 @@ public:
 	// erase correspondence
 	bool deleteCoboundary( kmb::elementIdType elementId, const kmb::ElementBase &element );
 
-	// ‹ß–Tî•ñAü•Óî•ñ‚Ìæ“¾
+	// è¿‘å‚æƒ…å ±ã€å‘¨è¾ºæƒ…å ±ã®å–å¾—
 	
-	// —v‘f‚ğ—^‚¦‚Ä‚»‚Ì‹ß–T—v‘f‚ğæ‚èo‚µAneighbors ‚É•Ô‚·
-	// neighbors ‚ÍŒÄ‚Ño‚µ‘¤‚Å element ‚Ì‹«ŠE‚ÌŒÂ”‚¾‚¯‚ ‚ç‚©‚¶‚ß—pˆÓ‚µ‚Ä
-	// ŒÄ‚Ño‚µ‘¤‚Åƒƒ‚ƒŠ‚ÌŠm•ÛE‰ğ•ú‚ğs‚¤‚±‚Æ
-	// –ß‚è’l‚Í‹ß–T—v‘f‚ÌŒÂ”
-	// ’ˆÓFneighbors ‚É“ü‚Á‚Ä‚¢‚é‹ß–T‚Ì‡”Ô‚ÍˆÓ–¡‚Í‚È‚¢i“r’†‚É NULL ‚Ío‚Ä‚±‚È‚¢j
+	// è¦ç´ ã‚’ä¸ãˆã¦ãã®è¿‘å‚è¦ç´ ã‚’å–ã‚Šå‡ºã—ã€neighbors ã«è¿”ã™
+	// neighbors ã¯å‘¼ã³å‡ºã—å´ã§ element ã®å¢ƒç•Œã®å€‹æ•°ã ã‘ã‚ã‚‰ã‹ã˜ã‚ç”¨æ„ã—ã¦
+	// å‘¼ã³å‡ºã—å´ã§ãƒ¡ãƒ¢ãƒªã®ç¢ºä¿ãƒ»è§£æ”¾ã‚’è¡Œã†ã“ã¨
+	// æˆ»ã‚Šå€¤ã¯è¿‘å‚è¦ç´ ã®å€‹æ•°
+	// æ³¨æ„ï¼šneighbors ã«å…¥ã£ã¦ã„ã‚‹è¿‘å‚ã®é †ç•ªã¯æ„å‘³ã¯ãªã„ï¼ˆé€”ä¸­ã« NULL ã¯å‡ºã¦ã“ãªã„ï¼‰
 	int getNeighborElements( kmb::elementIdType elementID, kmb::elementIdType *neighbors, const kmb::ElementContainer* elements ) const;
 	int getNeighborElements( kmb::elementIdType elementID, kmb::elementIdType *neighbors, kmb::MeshData* mesh ) const;
 	
-	// —v‘f‚ğ—^‚¦‚ÄA‚»‚Ì‹«ŠE—v‘f‚ğA“o˜^‚³‚ê‚Ä‚¢‚é neighborInfo ‚©‚ç’T‚·
-	// Œ©‚Â‚©‚Á‚½ŒÂ”‚ğ•Ô‚·
+	// è¦ç´ ã‚’ä¸ãˆã¦ã€ãã®å¢ƒç•Œè¦ç´ ã‚’ã€ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ neighborInfo ã‹ã‚‰æ¢ã™
+	// è¦‹ã¤ã‹ã£ãŸå€‹æ•°ã‚’è¿”ã™
 	int getElementBoundary( const kmb::ElementBase &element, kmb::elementIdType *boundaries, const kmb::ElementContainer* elements ) const;
-	// •½–Ê—v‘f‚ğ“o˜^‚µ‚Ä‚¢‚é‚É—§‘Ì—v‘f element ‚Æ–Ê”Ô†‚ğ—^‚¦‚Ä‹«ŠE—v‘f‚ğ’T‚·
-	// element ‚Í•K‚¸‚µ‚à elements ‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚È‚­‚Ä‚à‚æ‚¢
+	// å¹³é¢è¦ç´ ã‚’ç™»éŒ²ã—ã¦ã„ã‚‹æ™‚ã«ç«‹ä½“è¦ç´  element ã¨é¢ç•ªå·ã‚’ä¸ãˆã¦å¢ƒç•Œè¦ç´ ã‚’æ¢ã™
+	// element ã¯å¿…ãšã—ã‚‚ elements ã«å«ã¾ã‚Œã¦ã„ãªãã¦ã‚‚ã‚ˆã„
 	kmb::elementIdType getElementFace( const kmb::ElementBase &element, kmb::idType faceId, const kmb::ElementContainer* elements ) const;
-	// —§‘Ì—v‘f‚ğ“o˜^‚µ‚Ä‚¢‚é‚É•½–Ê—v‘f‚ğ—^‚¦‚ÄAelement ‚Æ–Ê”Ô†‚ğ•Ô‚·
-	// element : •½–Ê—v‘f
-	// face : element ‚ğ–Ê‚É‚à‚Â‚æ‚¤‚È—§‘Ì—v‘f‚Ì Face 
+	// ç«‹ä½“è¦ç´ ã‚’ç™»éŒ²ã—ã¦ã„ã‚‹æ™‚ã«å¹³é¢è¦ç´ ã‚’ä¸ãˆã¦ã€element ã¨é¢ç•ªå·ã‚’è¿”ã™
+	// element : å¹³é¢è¦ç´ 
+	// face : element ã‚’é¢ã«ã‚‚ã¤ã‚ˆã†ãªç«‹ä½“è¦ç´ ã® Face 
 	bool getFace( const kmb::ElementBase &element, kmb::Face &face, const kmb::ElementContainer* elements ) const;
-	// face ‚ğ—^‚¦‚ÄA‚»‚ê‚ÉÚ‚µ‚Ä‚¢‚é Face adj ‚ğ‹‚ß‚é
+	// face ã‚’ä¸ãˆã¦ã€ãã‚Œã«æ¥ã—ã¦ã„ã‚‹ Face adj ã‚’æ±‚ã‚ã‚‹
 	bool getAdjacentFace( const kmb::Face &face, kmb::Face &adj, const kmb::ElementContainer* elements ) const;
 	bool getAdjacentFace( const kmb::Face &face, kmb::Face &adj, kmb::MeshData* mesh ) const;
 public:
@@ -101,12 +101,12 @@ public:
 	bool isConnected( kmb::nodeIdType nodeId0, kmb::nodeIdType nodeId1, const kmb::ElementContainer* elements ) const;
 	bool isConnected( kmb::nodeIdType nodeId0, kmb::nodeIdType nodeId1, kmb::MeshData* mesh ) const;
 
-	// ß“_‚ğ—^‚¦‚Ä‚»‚Ìü•Ó—v‘f‚ÌŒÂ”
+	// ç¯€ç‚¹ã‚’ä¸ãˆã¦ãã®å‘¨è¾ºè¦ç´ ã®å€‹æ•°
 	size_t getElementCountAroundNode(nodeIdType nodeId) const;
-	// ‚·‚×‚Ä‚Ì‹ß–Tî•ñ‚ÌŒÂ”
+	// ã™ã¹ã¦ã®è¿‘å‚æƒ…å ±ã®å€‹æ•°
 	size_t getSize(void) const;
 
-	// ß“_‚ğ—^‚¦‚Ä‚»‚Ì‹ß–T—v‘f‚Ì Iterator ‚ğ—^‚¦‚é
+	// ç¯€ç‚¹ã‚’ä¸ãˆã¦ãã®è¿‘å‚è¦ç´ ã® Iterator ã‚’ä¸ãˆã‚‹
 	NodeNeighbor::iterator beginIteratorAt(kmb::nodeIdType nodeID){
 		return coboundaries.lower_bound(nodeID);
 	};
@@ -120,17 +120,17 @@ public:
 		return coboundaries.upper_bound(nodeID);
 	};
 
-	// ß“_‚ğ—^‚¦‚Ä‚»‚Ìü•Ó—v‘f‚ÌW‡‚ğ•Ô‚·
+	// ç¯€ç‚¹ã‚’ä¸ãˆã¦ãã®å‘¨è¾ºè¦ç´ ã®é›†åˆã‚’è¿”ã™
 	void getSurroundingElements(kmb::nodeIdType nodeId, std::vector<kmb::elementIdType> &elements) const;
 	// given two nodes, return elements which have both nodes
 	void getSurroundingElementsOf2Node(kmb::nodeIdType nodeId0, kmb::nodeIdType nodeId1, std::vector<kmb::elementIdType> &elements) const;
 
-	// ß“_‚ğ—^‚¦‚Ä”½Œv‰ñ‚è‚ÉÚ‚µ‚Ä‚¢‚é•½–Ê—v‘f‚ğ•Ô‚·
-	// •½–Ê—v‘f‚Ìê‡‚Ì‚İ
+	// ç¯€ç‚¹ã‚’ä¸ãˆã¦åæ™‚è¨ˆå›ã‚Šã«æ¥ã—ã¦ã„ã‚‹å¹³é¢è¦ç´ ã‚’è¿”ã™
+	// å¹³é¢è¦ç´ ã®å ´åˆã®ã¿
 	kmb::elementIdType getNextElementAroundNode( kmb::ElementContainer* triangles, kmb::nodeIdType nodeID, kmb::elementIdType elemID, bool clockwise=false) const;
 
-	// ü•ª—v‘f‚Ìê‡‚Ì‚İ
-	// ’[“_‚ğ‹‚ß‚é
+	// ç·šåˆ†è¦ç´ ã®å ´åˆã®ã¿
+	// ç«¯ç‚¹ã‚’æ±‚ã‚ã‚‹
 	void getEndsOfEdge( const kmb::ElementContainer* edges, kmb::nodeIdType& firstID, kmb::nodeIdType& endID ) const;
 
 	NodeNeighbor::iterator beginNodeIterator(void);

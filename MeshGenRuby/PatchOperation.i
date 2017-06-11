@@ -27,14 +27,14 @@
 =begin
 =RevocapMesh::PatchOperation
 
-RevocapMesh::PatchOperation �N���X��
-RevocapMesh::MeshDB �Ɋi�[���ꂽ�\�ʃp�b�`�ɑ΂��āA�����Ԃ𖄂߂�A
-���������낦��Ȃǂ̈ʑ������E�􉽏������s�����߂̃N���X�ł���B
+RevocapMesh::PatchOperation クラスは
+RevocapMesh::MeshDB に格納された表面パッチに対して、すき間を埋める、
+向きをそろえるなどの位相処理・幾何処理を行うためのクラスである。
 
-�`��f�[�^ (IGES) ����p�b�`�f�[�^�𐶐�����ɂ́A���̃N���X�ł͂Ȃ�
-RevocapPatch ���W���[�����g���B
+形状データ (IGES) からパッチデータを生成するには、このクラスではなく
+RevocapPatch モジュールを使う。
 
-==���\�b�h�ꗗ
+==メソッド一覧
 
 ((<PatchOperation.new>))
 ((<uniformOrientation>))
@@ -58,7 +58,7 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- PatchOperation.new
-	�p�b�`�����N���X PatchOperation �̃C���X�^���X�𐶐�����B
+	パッチ処理クラス PatchOperation のインスタンスを生成する。
 =end
 ---------------------------------------------------------------------------*/
 	PatchOperation(void);
@@ -66,24 +66,24 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- uniformOrientation(mesh,patch,elementId=-1)
-	MeshDB �� bodyId �� patch �ŗ^������\�ʃp�b�`�ɑ΂��āA
-	�v�f�̌������ꌳ������B
-	�߂�l�͌�����ς����v�f�̌��B
-	elementId �͊�ƂȂ�v�f�� Id ��^���A���̗v�f�Ɨאڂ��Ă���v�f�̌�����
-	���낦�Ă����B�ȗ������ꍇ�͎����I�Ɍ��߂�B
-	�\�ʃp�b�`���A�����Ă��Ȃ����ɂ� elementId �𖾎��I�ɗ^����K�v������B
+	MeshDB の bodyId が patch で与えられる表面パッチに対して、
+	要素の向きを一元化する。
+	戻り値は向きを変えた要素の個数。
+	elementId は基準となる要素の Id を与え、その要素と隣接している要素の向きを
+	そろえていく。省略した場合は自動的に決める。
+	表面パッチが連結していない時には elementId を明示的に与える必要がある。
 =end
 ---------------------------------------------------------------------------*/
 	int uniformOrientation(kmb::MeshDB* mesh,kmb::bodyIdType bodyId,kmb::elementIdType elementId=kmb::Element::nullElementId);
 /**--------------------------------------------------------------------------
 =begin
 --- subdivideByEdge(mesh,edgeId,tolerance=Float::MAX,globalTolerance=Float::MAX)
-	edgeId ��̐ߓ_�ő��̂P���� Body ��̐������ו�����B
-	�߂�l�� edge �ƌ`��}�b�`���� mesh �� 1 ���� Body �� Id ��Ԃ��B
+	edgeId 上の節点で他の１次元 Body 上の線分を細分する。
+	戻り値は edge と形状マッチする mesh の 1 次元 Body の Id を返す。
 --- subdivideByEdgeWithPatch(mesh,edgeId,tolerance=Float::MAX,globalTolerance=Float::MAX)
-	edgeId ��̐ߓ_�ő��̂P���� Body ��̐������ו�����B
-	����ɂ��̂P���� Body �����E�Ɏ��悤�ȎO�p�`�ɂ��Ă� edgeId ��̐ߓ_�ōו�����B
-	�߂�l�� edge �ƌ`��}�b�`���� mesh �� 1 ���� Body �� Id ��Ԃ��B
+	edgeId 上の節点で他の１次元 Body 上の線分を細分する。
+	さらにその１次元 Body を境界に持つような三角形についても edgeId 上の節点で細分する。
+	戻り値は edge と形状マッチする mesh の 1 次元 Body の Id を返す。
 =end
 -----------------------------------------------------------------------------*/
 	kmb::bodyIdType subdivideByEdge(kmb::MeshDB* mesh,kmb::bodyIdType edgeId,double tolerance=DBL_MAX,double globalTolerance=DBL_MAX);
@@ -92,12 +92,12 @@ public:
 =begin
 --- divideByPlane(mesh,bodyId,a,b,c,d,cap=false,duplicate=false)
 --- divideByPlane(mesh,bodyId,plane,cap=false,duplilcate=false)
-	�O�p�`����Ȃ� Body �� ax+by+cz+d=0 �̕��ʂŕ�������B
-	plane �� RevocapMesh::FramedPlane.new(a,b,c,d) �Ő�������
-	cap = true �̂Ƃ��͕��������ʂɂӂ�������B
-	duplicate = true �̂Ƃ��́A���������ʂ̐ߓ_���d������B
-	�����������̈�ƕ��̈�̎O�p�` BodyID �̑g��
-	�ӂ�������̂ɐ����������̐^�U�l��3�g�݂�Ԃ��B
+	三角形からなる Body を ax+by+cz+d=0 の平面で分割する。
+	plane は RevocapMesh::FramedPlane.new(a,b,c,d) で生成する
+	cap = true のときは分割した面にふたをする。
+	duplicate = true のときは、分割した面の節点を二重化する。
+	分割した正領域と負領域の三角形 BodyID の組と
+	ふたをするのに成功したかの真偽値の3つ組みを返す。
 =end
 -----------------------------------------------------------------------------*/
 %extend{

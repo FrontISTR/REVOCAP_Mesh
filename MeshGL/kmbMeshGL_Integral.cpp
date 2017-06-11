@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshGL                                                  #
@@ -34,7 +34,7 @@
 #include <cmath>
 
 //
-// Ï•ª‹ÈüiƒIƒCƒ‰[–@j
+// ç©åˆ†æ›²ç·šï¼ˆã‚ªã‚¤ãƒ©ãƒ¼æ³•ï¼‰
 //
 
 int
@@ -55,7 +55,7 @@ kmb::MeshGL::drawTrajectory(const char* vectorVal,double x,double y,double z,dou
 			if( bbox.intersect(x,y,z) == kmb::Region::OUTSIDE ){
 				break;
 			}
-			// node cache ‚ðì‚Á‚Ä‚¨‚­•K—v‚ª‚ ‚é
+			// node cache ã‚’ä½œã£ã¦ãŠãå¿…è¦ãŒã‚ã‚‹
 			int res = mesh->getValueOnNearestNode(vectorVal,x,y,z,v);
 			if( res != -1 ){
 				if( colorMap ){

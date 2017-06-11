@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Matrix_DoubleArray                                      #
@@ -19,9 +19,9 @@
 
 namespace kmb{
 
-// ”z—ñ‚É‚æ‚éƒŠƒtƒ@ƒŒƒ“ƒXÀ‘•
-// i s j —ñ¬•ª‚ª m[i+j*rowSize] ‚ÉŠi”[‚³‚ê‚é
-// ‚¢‚í‚ä‚é Column-major Œ`®
+// é…åˆ—ã«ã‚ˆã‚‹ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹å®Ÿè£…
+// i è¡Œ j åˆ—æˆåˆ†ãŒ m[i+j*rowSize] ã«æ ¼ç´ã•ã‚Œã‚‹
+// ã„ã‚ã‚†ã‚‹ Column-major å½¢å¼
 class Matrix_DoubleArray : public Matrix{
 private:
 	double *m;
@@ -29,7 +29,7 @@ private:
 	int colSize;
 public:
 	Matrix_DoubleArray(int rowSize, int colSize);
-	// ƒRƒs[‚µ‚Ä‚©‚çg‚¤
+	// ã‚³ãƒ”ãƒ¼ã—ã¦ã‹ã‚‰ä½¿ã†
 	Matrix_DoubleArray(int rowSize, int colSize,double* ary);
 	Matrix_DoubleArray(const kmb::Matrix& mat);
 	virtual ~Matrix_DoubleArray(void);
@@ -47,7 +47,7 @@ public:
 		return m[i+j*rowSize];
 	}
 	virtual bool row_exchange(int i0,int i1);
-	// i1s‚Éi0s‚Ìr”{‚ğ‰Á‚¦‚é
+	// i1è¡Œã«i0è¡Œã®rå€ã‚’åŠ ãˆã‚‹
 	virtual bool row_transf(int i0,int i1,double r);
 	virtual bool row_multi(int i0,double r);
 protected:
@@ -59,7 +59,7 @@ private:
 	double *m;
 public:
 	SquareMatrix_DoubleArray(int size);
-	// ƒRƒs[‚µ‚Ä‚©‚çg‚¤
+	// ã‚³ãƒ”ãƒ¼ã—ã¦ã‹ã‚‰ä½¿ã†
 	SquareMatrix_DoubleArray(int size,double* ary);
 	SquareMatrix_DoubleArray(const kmb::SquareMatrix& mat);
 	virtual ~SquareMatrix_DoubleArray(void);
@@ -84,7 +84,7 @@ private:
 	int size;
 public:
 	ColumnVector_DoubleArray(int size);
-	// ƒRƒs[‚µ‚Ä‚©‚çg‚¤
+	// ã‚³ãƒ”ãƒ¼ã—ã¦ã‹ã‚‰ä½¿ã†
 	ColumnVector_DoubleArray(int size,double* ary);
 	ColumnVector_DoubleArray(const kmb::ColumnVector &vec);
 	virtual ~ColumnVector_DoubleArray(void);
@@ -112,7 +112,7 @@ private:
 	int size;
 public:
 	RowVector_DoubleArray(int size);
-	// ƒRƒs[‚µ‚Ä‚©‚çg‚¤
+	// ã‚³ãƒ”ãƒ¼ã—ã¦ã‹ã‚‰ä½¿ã†
 	RowVector_DoubleArray(int size,double* ary);
 	RowVector_DoubleArray(const kmb::RowVector &vec);
 	virtual ~RowVector_DoubleArray(void);

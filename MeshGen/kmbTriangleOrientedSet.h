@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : TriangleOrientedSet                                     #
@@ -13,17 +13,17 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// Advancing Front –@‚Å—p‚¢‚é‚½‚ß‚ÌŒü‚«•t‚«‚ÌOŠpŒ`‚ÌƒRƒ“ƒeƒi
-// ‹tŒü‚«‚ÌOŠpŒ`‚ğ“o˜^‚·‚é‚ÆOŠpŒ`‚Ìíœ‚ğˆÓ–¡‚·‚é
-// ‚½‚¾‚µ elementId ‚ğ•t—^‚µ‚Ä‚¢‚È‚¢‚Ì‚Å elementId ‚©‚çOŠpŒ`‚ğæ“¾‚·‚é‚±‚Æ‚ª‚Å‚«‚È‚¢
-// iterator ‚Å‚Í‡”Ô‚ğ“K“–‚É—^‚¦‚Ä‚¢‚é‚ªA‚»‚ÌêŒÀ‚è‚Ì’l
+// Advancing Front æ³•ã§ç”¨ã„ã‚‹ãŸã‚ã®å‘ãä»˜ãã®ä¸‰è§’å½¢ã®ã‚³ãƒ³ãƒ†ãƒŠ
+// é€†å‘ãã®ä¸‰è§’å½¢ã‚’ç™»éŒ²ã™ã‚‹ã¨ä¸‰è§’å½¢ã®å‰Šé™¤ã‚’æ„å‘³ã™ã‚‹
+// ãŸã ã— elementId ã‚’ä»˜ä¸ã—ã¦ã„ãªã„ã®ã§ elementId ã‹ã‚‰ä¸‰è§’å½¢ã‚’å–å¾—ã™ã‚‹ã“ã¨ãŒã§ããªã„
+// iterator ã§ã¯é †ç•ªã‚’é©å½“ã«ä¸ãˆã¦ã„ã‚‹ãŒã€ãã®å ´é™ã‚Šã®å€¤
 //
-// OŠpŒ`‚Ì‚·‚×‚Ä‚Ìß“_”Ô†‚ğƒL[‚É‚µ‚Äƒ|ƒCƒ“ƒ^‚ğ multimap ‚É“o˜^‚·‚é
-// —áF[10,20,30] => ƒL[ 10, 20, 30 ‚»‚ê‚¼‚ê‚ÉOŠpŒ`‚Ìƒ|ƒCƒ“ƒ^‚ğ“o˜^‚·‚éi‡Œv‚R‰ñj
+// ä¸‰è§’å½¢ã®ã™ã¹ã¦ã®ç¯€ç‚¹ç•ªå·ã‚’ã‚­ãƒ¼ã«ã—ã¦ãƒã‚¤ãƒ³ã‚¿ã‚’ multimap ã«ç™»éŒ²ã™ã‚‹
+// ä¾‹ï¼š[10,20,30] => ã‚­ãƒ¼ 10, 20, 30 ãã‚Œãã‚Œã«ä¸‰è§’å½¢ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ç™»éŒ²ã™ã‚‹ï¼ˆåˆè¨ˆï¼“å›ï¼‰
 //
-// ‚»‚ê‚É‚æ‚Á‚Ä‹ß–Tî•ñ‚à‚±‚ÌƒRƒ“ƒeƒi‚ÅŠÇ—‚·‚é‚±‚Æ‚ª‚Å‚«‚é
+// ãã‚Œã«ã‚ˆã£ã¦è¿‘å‚æƒ…å ±ã‚‚ã“ã®ã‚³ãƒ³ãƒ†ãƒŠã§ç®¡ç†ã™ã‚‹ã“ã¨ãŒã§ãã‚‹
 //
-// ’Êí‚Ì ElementContainer ‚Ì Iterator ‚Å‚Ü‚í‚·‚Æ‚¿‚å‚Á‚Æ’x‚¢
+// é€šå¸¸ã® ElementContainer ã® Iterator ã§ã¾ã‚ã™ã¨ã¡ã‚‡ã£ã¨é…ã„
 //
 
 #pragma once
@@ -71,16 +71,16 @@ public:
 	// nodeContainer
 	NodeTriMap::iterator beginNodeIterator(void);
 	NodeTriMap::const_iterator beginNodeIterator(void) const;
-	// nodeId ‚ÌŸ‚Ìß“_”Ô†‚ğw‚· iterator ‚ğ•Ô‚·
+	// nodeId ã®æ¬¡ã®ç¯€ç‚¹ç•ªå·ã‚’æŒ‡ã™ iterator ã‚’è¿”ã™
 	NodeTriMap::iterator nextNodeIterator(kmb::nodeIdType nodeId);
 	NodeTriMap::const_iterator nextNodeIterator(kmb::nodeIdType nodeId) const;
 	NodeTriMap::iterator endNodeIterator(void);
 	NodeTriMap::const_iterator endNodeIterator(void) const;
 	size_t getNodeCount(void) const;
 
-	// —×‚è‡‚¤OŠpŒ`‚Ì‘g‚ğ‚·‚×‚Ä’T‚·
+	// éš£ã‚Šåˆã†ä¸‰è§’å½¢ã®çµ„ã‚’ã™ã¹ã¦æ¢ã™
 	size_t getAllEdges( std::set< std::pair< kmb::Triangle*, kmb::Triangle* > > &edges ) const;
-	// OŠpŒ`‚Ì•Ó‚Ì‚·‚×‚Ä‚ğ’T‚·i—×‚è‡‚¤‚à‚Ì‚ª‚ ‚é‚©‚Ç‚¤‚©‚Í–¢ƒ`ƒFƒbƒNj
+	// ä¸‰è§’å½¢ã®è¾ºã®ã™ã¹ã¦ã‚’æ¢ã™ï¼ˆéš£ã‚Šåˆã†ã‚‚ã®ãŒã‚ã‚‹ã‹ã©ã†ã‹ã¯æœªãƒã‚§ãƒƒã‚¯ï¼‰
 	size_t getAllEdges( std::set< std::pair< kmb::nodeIdType, kmb::nodeIdType > > &edges ) const;
 
 	class _iterator : public ElementContainer::_iterator
@@ -92,8 +92,8 @@ public:
 		virtual kmb::Element* getElement(void);
 		virtual const kmb::Element* getElement(void) const;
 		virtual kmb::elementType getType(void) const;
-		virtual kmb::nodeIdType getCellId(int cellIndex) const;
-		virtual bool setCellId(int cellIndex, kmb::nodeIdType nodeId);
+		virtual kmb::nodeIdType getNodeId(int cellIndex) const;
+		virtual bool setNodeId(int cellIndex, kmb::nodeIdType nodeId);
 		virtual kmb::nodeIdType operator[](const int cellIndex) const;
 		virtual ElementContainer::_iterator* operator++(void);
 		virtual ElementContainer::_iterator* operator++(int n);
@@ -113,7 +113,7 @@ public:
 
 protected:
 	NodeTriMap triangles;
-	// OŠpŒ`“¯m‚Ì”äŠr
+	// ä¸‰è§’å½¢åŒå£«ã®æ¯”è¼ƒ
 	static bool faster(kmb::Triangle& a,kmb::Triangle& b);
 };
 

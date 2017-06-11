@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 2.0                          #
 # Class Name : StringUtils                                             #
@@ -14,8 +14,8 @@ namespace kmb{
 
 class StringUtils{
 public:
-	// •¶š—ñ str ‚Ì from ‚ğ to ‚É’uŠ·‚·‚é
-	// ƒpƒX‹æØ‚è•¶š‚ÌˆêŠ‡•ÏŠ·‚É—p‚¢‚é
+	// æ–‡å­—åˆ— str ã® from ã‚’ to ã«ç½®æ›ã™ã‚‹
+	// ãƒ‘ã‚¹åŒºåˆ‡ã‚Šæ–‡å­—ã®ä¸€æ‹¬å¤‰æ›ã«ç”¨ã„ã‚‹
 	static void replaceString(std::string& str,std::string from,std::string to){
 		std::string::size_type pos( str.find( from ) );
 		while( pos != std::string::npos )
@@ -25,7 +25,7 @@ public:
 		}
 	}
 
-	// •¶š—ñ str ‚ÌÅŒã‚ÉŒ»‚ê‚é sep ˆÈ‰º‚ğíœ
+	// æ–‡å­—åˆ— str ã®æœ€å¾Œã«ç¾ã‚Œã‚‹ sep ä»¥ä¸‹ã‚’å‰Šé™¤
 	static void chompString(std::string& str,std::string sep="\n\r"){
 		std::string::size_type pos( str.rfind( sep ) );
 		if( pos != std::string::npos )

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : AFTetraMesher                                           #
@@ -93,13 +93,13 @@ kmb::PatchModifier::uniformOrientation(kmb::elementIdType elementId)
 {
 	int count = 0;
 	if( patch && neighborInfo ){
-		// Å‰‚Ì elementId ‚ğ—^‚¦‚é
+		// æœ€åˆã® elementId ã‚’ä¸ãˆã‚‹
 		if( elementId == kmb::Element::nullElementId ){
 			elementId = patch->begin().getId();
 		}
 		std::set< kmb::elementIdType > checked;
 
-		std::set< kmb::elementIdType > candidate;   // ‚Ü‚¾‚·‚×‚Ä‚Ì‹ß–T‚ğ’²‚×I‚í‚Á‚Ä‚¢‚È‚¢—v‘f
+		std::set< kmb::elementIdType > candidate;   // ã¾ã ã™ã¹ã¦ã®è¿‘å‚ã‚’èª¿ã¹çµ‚ã‚ã£ã¦ã„ãªã„è¦ç´ 
 		kmb::elementIdType neighbor[6];
 
 		while( true ){
@@ -108,14 +108,14 @@ kmb::PatchModifier::uniformOrientation(kmb::elementIdType elementId)
 				return count;
 			}
 			checked.insert( elementId );
-			// ‹ß–Tæ“¾
+			// è¿‘å‚å–å¾—
 			const int boundNum = elem.getBoundaryCount();
 			neighborInfo->getNeighborElements(elementId,neighbor,patch);
 			for(int i=0;i<boundNum;++i){
 				if( neighbor[i] != kmb::Element::nullElementId ){
 					if( checked.find( neighbor[i] ) == checked.end() ){
 						kmb::ElementContainer::iterator nei = patch->find( neighbor[i] );
-						// ƒ`ƒFƒbƒN‚³‚ê‚Ä‚¢‚È‚¯‚ê‚ÎA©•ª—Dæ
+						// ãƒã‚§ãƒƒã‚¯ã•ã‚Œã¦ã„ãªã‘ã‚Œã°ã€è‡ªåˆ†å„ªå…ˆ
 						int i0,i1;
 						if( !nei.isFinished() &&
 							kmb::ElementRelation::getRelation( elem, i0, nei, i1 ) == kmb::ElementRelation::ANTIADJACENT )
@@ -192,12 +192,12 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 		{
 			neighborInfo->deleteCoboundary( quad0, e0 );
 			neighborInfo->deleteCoboundary( quad1, e1 );
-			// 2“_‹¤—L‚ÌŠm”F
+			// 2ç‚¹å…±æœ‰ã®ç¢ºèª
 			unsigned int rel = 0;
 			unsigned int flag = 0x0001;
 			for(int i=0;i<4;++i){
 				for(int j=0;j<4;++j){
-					if( e0.getCellId(i) == e1.getCellId(j) )	rel |= flag;
+					if( e0.getNodeId(i) == e1.getNodeId(j) )	rel |= flag;
 					flag = flag << 1;
 				}
 			}
@@ -205,157 +205,157 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				= {kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId};
 			kmb::nodeIdType quadNodes[4]
 				= {kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId};
-			// nodes[0] = e0[0] ‚Æ‚È‚é‚æ‚¤‚É³‹K‰»‚·‚é
+			// nodes[0] = e0[0] ã¨ãªã‚‹ã‚ˆã†ã«æ­£è¦åŒ–ã™ã‚‹
 			switch( rel ){
 			case 0x0081:  // (0,0) (1,3)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e1.getCellId(1);
-				nodes[2] = e1.getCellId(2);
-				nodes[3] = e0.getCellId(1);
-				nodes[4] = e0.getCellId(2);
-				nodes[5] = e0.getCellId(3);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e1.getNodeId(1);
+				nodes[2] = e1.getNodeId(2);
+				nodes[3] = e0.getNodeId(1);
+				nodes[4] = e0.getNodeId(2);
+				nodes[5] = e0.getNodeId(3);
 				swapped = true;
 				break;
 			case 0x0012:  // (0,1) (1,0)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e1.getCellId(2);
-				nodes[2] = e1.getCellId(3);
-				nodes[3] = e0.getCellId(1);
-				nodes[4] = e0.getCellId(2);
-				nodes[5] = e0.getCellId(3);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e1.getNodeId(2);
+				nodes[2] = e1.getNodeId(3);
+				nodes[3] = e0.getNodeId(1);
+				nodes[4] = e0.getNodeId(2);
+				nodes[5] = e0.getNodeId(3);
 				swapped = true;
 				break;
 			case 0x0024:  // (0,2) (1,1)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e1.getCellId(3);
-				nodes[2] = e1.getCellId(0);
-				nodes[3] = e0.getCellId(1);
-				nodes[4] = e0.getCellId(2);
-				nodes[5] = e0.getCellId(3);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e1.getNodeId(3);
+				nodes[2] = e1.getNodeId(0);
+				nodes[3] = e0.getNodeId(1);
+				nodes[4] = e0.getNodeId(2);
+				nodes[5] = e0.getNodeId(3);
 				swapped = true;
 				break;
 			case 0x0048:  // (0,3) (1,2)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e1.getCellId(0);
-				nodes[2] = e1.getCellId(1);
-				nodes[3] = e0.getCellId(1);
-				nodes[4] = e0.getCellId(2);
-				nodes[5] = e0.getCellId(3);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e1.getNodeId(0);
+				nodes[2] = e1.getNodeId(1);
+				nodes[3] = e0.getNodeId(1);
+				nodes[4] = e0.getNodeId(2);
+				nodes[5] = e0.getNodeId(3);
 				swapped = true;
 				break;
 			case 0x0810:  // (1,0) (2,3)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e0.getCellId(1);
-				nodes[2] = e1.getCellId(1);
-				nodes[3] = e1.getCellId(2);
-				nodes[4] = e0.getCellId(2);
-				nodes[5] = e0.getCellId(3);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e0.getNodeId(1);
+				nodes[2] = e1.getNodeId(1);
+				nodes[3] = e1.getNodeId(2);
+				nodes[4] = e0.getNodeId(2);
+				nodes[5] = e0.getNodeId(3);
 				swapped = true;
 				break;
 			case 0x0120:  // (1,1) (2,0)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e0.getCellId(1);
-				nodes[2] = e1.getCellId(2);
-				nodes[3] = e1.getCellId(3);
-				nodes[4] = e0.getCellId(2);
-				nodes[5] = e0.getCellId(3);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e0.getNodeId(1);
+				nodes[2] = e1.getNodeId(2);
+				nodes[3] = e1.getNodeId(3);
+				nodes[4] = e0.getNodeId(2);
+				nodes[5] = e0.getNodeId(3);
 				swapped = true;
 				break;
 			case 0x0240:  // (1,2) (2,1)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e0.getCellId(1);
-				nodes[2] = e1.getCellId(3);
-				nodes[3] = e1.getCellId(0);
-				nodes[4] = e0.getCellId(2);
-				nodes[5] = e0.getCellId(3);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e0.getNodeId(1);
+				nodes[2] = e1.getNodeId(3);
+				nodes[3] = e1.getNodeId(0);
+				nodes[4] = e0.getNodeId(2);
+				nodes[5] = e0.getNodeId(3);
 				swapped = true;
 				break;
 			case 0x0480:  // (1,3) (2,2)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e0.getCellId(1);
-				nodes[2] = e1.getCellId(0);
-				nodes[3] = e1.getCellId(1);
-				nodes[4] = e0.getCellId(2);
-				nodes[5] = e0.getCellId(3);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e0.getNodeId(1);
+				nodes[2] = e1.getNodeId(0);
+				nodes[3] = e1.getNodeId(1);
+				nodes[4] = e0.getNodeId(2);
+				nodes[5] = e0.getNodeId(3);
 				swapped = true;
 				break;
 			case 0x8100:  // (2,0) (3,3)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e0.getCellId(1);
-				nodes[2] = e0.getCellId(2);
-				nodes[3] = e1.getCellId(1);
-				nodes[4] = e1.getCellId(2);
-				nodes[5] = e0.getCellId(3);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e0.getNodeId(1);
+				nodes[2] = e0.getNodeId(2);
+				nodes[3] = e1.getNodeId(1);
+				nodes[4] = e1.getNodeId(2);
+				nodes[5] = e0.getNodeId(3);
 				swapped = true;
 				break;
 			case 0x1200:  // (2,1) (3,0)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e0.getCellId(1);
-				nodes[2] = e0.getCellId(2);
-				nodes[3] = e1.getCellId(2);
-				nodes[4] = e1.getCellId(3);
-				nodes[5] = e0.getCellId(3);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e0.getNodeId(1);
+				nodes[2] = e0.getNodeId(2);
+				nodes[3] = e1.getNodeId(2);
+				nodes[4] = e1.getNodeId(3);
+				nodes[5] = e0.getNodeId(3);
 				swapped = true;
 				break;
 			case 0x2400:  // (2,2) (3,1)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e0.getCellId(1);
-				nodes[2] = e0.getCellId(2);
-				nodes[3] = e1.getCellId(3);
-				nodes[4] = e1.getCellId(0);
-				nodes[5] = e0.getCellId(3);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e0.getNodeId(1);
+				nodes[2] = e0.getNodeId(2);
+				nodes[3] = e1.getNodeId(3);
+				nodes[4] = e1.getNodeId(0);
+				nodes[5] = e0.getNodeId(3);
 				swapped = true;
 				break;
 			case 0x4800:  // (2,3) (3,2)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e0.getCellId(1);
-				nodes[2] = e0.getCellId(2);
-				nodes[3] = e1.getCellId(0);
-				nodes[4] = e1.getCellId(1);
-				nodes[5] = e0.getCellId(3);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e0.getNodeId(1);
+				nodes[2] = e0.getNodeId(2);
+				nodes[3] = e1.getNodeId(0);
+				nodes[4] = e1.getNodeId(1);
+				nodes[5] = e0.getNodeId(3);
 				swapped = true;
 				break;
 			case 0x1008:  // (3,0) (0,3)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e0.getCellId(1);
-				nodes[2] = e0.getCellId(2);
-				nodes[3] = e0.getCellId(3);
-				nodes[4] = e1.getCellId(1);
-				nodes[5] = e1.getCellId(2);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e0.getNodeId(1);
+				nodes[2] = e0.getNodeId(2);
+				nodes[3] = e0.getNodeId(3);
+				nodes[4] = e1.getNodeId(1);
+				nodes[5] = e1.getNodeId(2);
 				swapped = true;
 				break;
 			case 0x2001:  // (3,1) (0,0)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e0.getCellId(1);
-				nodes[2] = e0.getCellId(2);
-				nodes[3] = e0.getCellId(3);
-				nodes[4] = e1.getCellId(2);
-				nodes[5] = e1.getCellId(3);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e0.getNodeId(1);
+				nodes[2] = e0.getNodeId(2);
+				nodes[3] = e0.getNodeId(3);
+				nodes[4] = e1.getNodeId(2);
+				nodes[5] = e1.getNodeId(3);
 				swapped = true;
 				break;
 			case 0x4002:  // (3,2) (0,1)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e0.getCellId(1);
-				nodes[2] = e0.getCellId(2);
-				nodes[3] = e0.getCellId(3);
-				nodes[4] = e1.getCellId(3);
-				nodes[5] = e1.getCellId(0);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e0.getNodeId(1);
+				nodes[2] = e0.getNodeId(2);
+				nodes[3] = e0.getNodeId(3);
+				nodes[4] = e1.getNodeId(3);
+				nodes[5] = e1.getNodeId(0);
 				swapped = true;
 				break;
 			case 0x8004:  // (3,3) (0,2)
-				nodes[0] = e0.getCellId(0);
-				nodes[1] = e0.getCellId(1);
-				nodes[2] = e0.getCellId(2);
-				nodes[3] = e0.getCellId(3);
-				nodes[4] = e1.getCellId(0);
-				nodes[5] = e1.getCellId(1);
+				nodes[0] = e0.getNodeId(0);
+				nodes[1] = e0.getNodeId(1);
+				nodes[2] = e0.getNodeId(2);
+				nodes[3] = e0.getNodeId(3);
+				nodes[4] = e1.getNodeId(0);
+				nodes[5] = e1.getNodeId(1);
 				swapped = true;
 				break;
 			default:
 				break;
 			}
 			if( swapped ){
-				// 7 ŒÂ‚ß‚Ì“_‚ğì‚é
+				// 7 å€‹ã‚ã®ç‚¹ã‚’ä½œã‚‹
 				kmb::Point3D center(0.0,0.0,0.0);
 				kmb::Point3D point;
 				for(int i=0;i<6;++i){
@@ -366,30 +366,30 @@ kmb::PatchModifier::quadTrisect(kmb::elementIdType quad0, kmb::elementIdType qua
 				center.scale( 1.0/6.0 );
 				nodes[6] = points->addPoint( center );
 				if( orientation ){
-					// 0,2,4,6 ‚ğ‚Â‚È‚®
-					e0.setCellId(0, nodes[0]);
-					e0.setCellId(1, nodes[1]);
-					e0.setCellId(2, nodes[2]);
-					e0.setCellId(3, nodes[6]);
-					e1.setCellId(0, nodes[2]);
-					e1.setCellId(1, nodes[3]);
-					e1.setCellId(2, nodes[4]);
-					e1.setCellId(3, nodes[6]);
+					// 0,2,4,6 ã‚’ã¤ãªã
+					e0.setNodeId(0, nodes[0]);
+					e0.setNodeId(1, nodes[1]);
+					e0.setNodeId(2, nodes[2]);
+					e0.setNodeId(3, nodes[6]);
+					e1.setNodeId(0, nodes[2]);
+					e1.setNodeId(1, nodes[3]);
+					e1.setNodeId(2, nodes[4]);
+					e1.setNodeId(3, nodes[6]);
 					quadNodes[0] = nodes[4];
 					quadNodes[1] = nodes[5];
 					quadNodes[2] = nodes[0];
 					quadNodes[3] = nodes[6];
 					elementId = patch->addElement(kmb::QUAD,quadNodes);
 				}else{
-					// 1,2,5,6 ‚ğ‚Â‚È‚®
-					e0.setCellId(0, nodes[5]);
-					e0.setCellId(1, nodes[0]);
-					e0.setCellId(2, nodes[1]);
-					e0.setCellId(3, nodes[6]);
-					e1.setCellId(0, nodes[1]);
-					e1.setCellId(1, nodes[2]);
-					e1.setCellId(2, nodes[3]);
-					e1.setCellId(3, nodes[6]);
+					// 1,2,5,6 ã‚’ã¤ãªã
+					e0.setNodeId(0, nodes[5]);
+					e0.setNodeId(1, nodes[0]);
+					e0.setNodeId(2, nodes[1]);
+					e0.setNodeId(3, nodes[6]);
+					e1.setNodeId(0, nodes[1]);
+					e1.setNodeId(1, nodes[2]);
+					e1.setNodeId(2, nodes[3]);
+					e1.setNodeId(3, nodes[6]);
 					quadNodes[0] = nodes[3];
 					quadNodes[1] = nodes[4];
 					quadNodes[2] = nodes[5];
@@ -407,10 +407,10 @@ kmb::PatchModifier::edgeContract(kmb::nodeIdType node0, kmb::nodeIdType node1)
 {
 	if( patch && neighborInfo ){
 		if( patch->isUniqueType(kmb::TRIANGLE) ){
-			// nodeID1 ‚ğŠÜ‚Ş—v‘f
+			// nodeID1 ã‚’å«ã‚€è¦ç´ 
 			std::vector< kmb::elementIdType > elements1;
 			neighborInfo->getSurroundingElements(node1, elements1);
-			// nodeID0 ‚Æ nodeID1 ‚Ì—¼•û‚ğŠÜ‚Ş—v‘f‚ğ’T‚µ‚Äíœ
+			// nodeID0 ã¨ nodeID1 ã®ä¸¡æ–¹ã‚’å«ã‚€è¦ç´ ã‚’æ¢ã—ã¦å‰Šé™¤
 			std::vector< kmb::elementIdType >::iterator eIter = elements1.begin();
 			while( eIter != elements1.end() )
 			{
@@ -418,14 +418,14 @@ kmb::PatchModifier::edgeContract(kmb::nodeIdType node0, kmb::nodeIdType node1)
 				kmb::ElementContainer::iterator element = patch->find( elemId );
 				if( !element.isFinished() ){
 					if( element.include( node0 ) ){
-						// nodeID0 ‚àŠÜ‚Şê‡‚Ííœ
+						// nodeID0 ã‚‚å«ã‚€å ´åˆã¯å‰Šé™¤
 						neighborInfo->deleteCoboundary( elemId, element );
 						patch->deleteElement( elemId );
 					}else{
-						// nodeID0 ‚ğŠÜ‚Ü‚È‚¢ê‡‚Í nodeID ‚ğ“ü‚ê‘Ö‚¦‚é
+						// nodeID0 ã‚’å«ã¾ãªã„å ´åˆã¯ nodeID ã‚’å…¥ã‚Œæ›¿ãˆã‚‹
 						neighborInfo->deleteCoboundary( elemId, element );
 						element.replaceNodeId( node1, node0 );
-						// ‹ß–Tî•ñ‚É“o˜^‚µ‚È‚¨‚·
+						// è¿‘å‚æƒ…å ±ã«ç™»éŒ²ã—ãªãŠã™
 						neighborInfo->appendCoboundary( elemId, element );
 					}
 				}

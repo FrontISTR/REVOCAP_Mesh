@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Sphere                                                  #
@@ -81,8 +81,8 @@ intersect(const kmb::Point3D &point) const
 		return kmb::Region::OUTSIDE;
 }
 
-// •s\•ª
-// box ‚ª‹…‚ğˆÍ‚ñ‚Å‚µ‚Ü‚¤‚æ‚¤‚Èê‡
+// ä¸ååˆ†
+// box ãŒçƒã‚’å›²ã‚“ã§ã—ã¾ã†ã‚ˆã†ãªå ´åˆ
 bool
 kmb::Sphere::intersect(const kmb::BoxRegion& box) const
 {
@@ -95,14 +95,14 @@ kmb::Sphere::intersect(const kmb::BoxRegion& box) const
 	double boxMinY = box.minY();
 	double boxMinZ = box.minZ();
 
-	// ‚æ‚­‚ ‚éâ‘Î‚É‚¾‚ß‚Èê‡‚Íæ‚ÉœŠO
+	// ã‚ˆãã‚ã‚‹çµ¶å¯¾ã«ã ã‚ãªå ´åˆã¯å…ˆã«é™¤å¤–
 	if( boxMaxX < center.x() - r || center.x() + r < boxMinX || 
 		boxMaxY < center.y() - r || center.y() + r < boxMinY || 
 		boxMaxZ < center.z() - r || center.z() + r < boxMinZ )
 	{
 		return false;
 	}
-	// box ‚Ì 8 ’¸“_‚Ì‚¤‚¿‚Ì­‚È‚­‚Æ‚àˆê‚Â‚ª‹…‚Ì“à•”‚È‚ç—Ç‚¢
+	// box ã® 8 é ‚ç‚¹ã®ã†ã¡ã®å°‘ãªãã¨ã‚‚ä¸€ã¤ãŒçƒã®å†…éƒ¨ãªã‚‰è‰¯ã„
 	double rsq = r*r;
 	return 
 		( center.distanceSq(boxMaxX,boxMaxY,boxMaxZ) <= rsq ) ||
@@ -134,18 +134,18 @@ kmb::Sphere::eval(const kmb::Point3D &point) const
 	return point.distanceSq( this->center ) - (this->radius * this->radius);
 }
 
-//----------------------- ¶¬Œn‚Ìƒƒ\ƒbƒh ---------------------------------------//
+//----------------------- ç”Ÿæˆç³»ã®ãƒ¡ã‚½ãƒƒãƒ‰ ---------------------------------------//
 
-// “àÚ‹…
+// å†…æ¥çƒ
 kmb::Sphere*
 kmb::Sphere::createInscribedSphere(const kmb::Point3D &a,const kmb::Point3D &b,const kmb::Point3D &c,const kmb::Point3D &d)
 {
 	kmb::Sphere* sphere = NULL;
 	sphere = new kmb::Sphere();
 	if( sphere ){
-		// ‘ÌÏ
+		// ä½“ç©
 		double volume = fabs(kmb::Point3D::volume(a,b,c,d));
-		// –ÊÏ
+		// é¢ç©
 		double abc = kmb::Point3D::area(a,b,c);
 		double bcd = kmb::Point3D::area(b,c,d);
 		double cda = kmb::Point3D::area(c,d,a);
@@ -160,13 +160,13 @@ kmb::Sphere::createInscribedSphere(const kmb::Point3D &a,const kmb::Point3D &b,c
 	}
 	return sphere;
 }
-// ”¼Œa‚¾‚¯‹‚ß‚é
+// åŠå¾„ã ã‘æ±‚ã‚ã‚‹
 double
 kmb::Sphere::getInscribedRadius(const kmb::Point3D &a,const kmb::Point3D &b,const kmb::Point3D &c,const kmb::Point3D &d)
 {
-	// ‘ÌÏ
+	// ä½“ç©
 	double volume = fabs(kmb::Point3D::volume(a,b,c,d));
-	// –ÊÏ
+	// é¢ç©
 	double abc = kmb::Point3D::area(a,b,c);
 	double bcd = kmb::Point3D::area(b,c,d);
 	double cda = kmb::Point3D::area(c,d,a);
@@ -174,7 +174,7 @@ kmb::Sphere::getInscribedRadius(const kmb::Point3D &a,const kmb::Point3D &b,cons
 
 	return (volume*3.0)/(abc+bcd+cda+dab);
 }
-// ’†S‚¾‚¯‹‚ß‚é
+// ä¸­å¿ƒã ã‘æ±‚ã‚ã‚‹
 kmb::Point3D
 kmb::Sphere::getInscribedCenter(const kmb::Point3D &a,const kmb::Point3D &b,const kmb::Point3D &c,const kmb::Point3D &d)
 {
@@ -188,7 +188,7 @@ kmb::Sphere::getInscribedCenter(const kmb::Point3D &a,const kmb::Point3D &b,cons
 	return kmb::Point3D(x,y,z);
 }
 
-// ŠOÚ‹…
+// å¤–æ¥çƒ
 kmb::Sphere*
 kmb::Sphere::createCircumscribedSphere(const kmb::Point3D &a,const kmb::Point3D &b,const kmb::Point3D &c,const kmb::Point3D &d)
 {
@@ -202,7 +202,7 @@ kmb::Sphere::createCircumscribedSphere(const kmb::Point3D &a,const kmb::Point3D 
 	}
 	return sphere;
 }
-// ”¼Œa
+// åŠå¾„
 double
 kmb::Sphere::getCircumscribedRadius(const kmb::Point3D &a,const kmb::Point3D &b,const kmb::Point3D &c,const kmb::Point3D &d)
 {
@@ -220,7 +220,7 @@ kmb::Sphere::getCircumscribedRadius(const kmb::Point3D &a,const kmb::Point3D &b,
 		return DBL_MAX;
 	}
 }
-// ’†S
+// ä¸­å¿ƒ
 kmb::Point3D
 kmb::Sphere::getCircumscribedCenter(const kmb::Point3D &a,const kmb::Point3D &b,const kmb::Point3D &c,const kmb::Point3D &d)
 {

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshDB                                                  #
@@ -30,7 +30,7 @@
 #include <set>
 #include <map>
 
-//------------------- —v‘fƒOƒ‹[ƒv‚Ì•¡» --------------------------//
+//------------------- è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã®è¤‡è£½ --------------------------//
 
 kmb::bodyIdType kmb::MeshDB::
 cloneBody(kmb::bodyIdType bodyID)
@@ -40,7 +40,7 @@ cloneBody(kmb::bodyIdType bodyID)
 	kmb::nodeIdType* cells = new kmb::nodeIdType[ kmb::Element::MAX_NODE_COUNT ];
 	if( orgBody != NULL && cells != NULL ){
 		id = this->beginElement( orgBody->getCount() );
-		// —v‘f‚ÌƒRƒs[
+		// è¦ç´ ã®ã‚³ãƒ”ãƒ¼
 		kmb::ElementContainer::iterator
 			eIter = orgBody->begin();
 		while( eIter != orgBody->end() )
@@ -63,7 +63,7 @@ cloneReverseBody(kmb::bodyIdType bodyID)
 	kmb::nodeIdType* cells = new kmb::nodeIdType[ kmb::Element::MAX_NODE_COUNT ];
 	if( orgBody != NULL && cells != NULL ){
 		id = this->beginElement( orgBody->getCount() );
-		// —v‘f‚ÌƒRƒs[
+		// è¦ç´ ã®ã‚³ãƒ”ãƒ¼
 		kmb::ElementContainer::iterator eIter = orgBody->begin();
 		while( eIter != orgBody->end() )
 		{
@@ -85,9 +85,9 @@ kmb::MeshDB::cloneBodyWithNode(bodyIdType bodyID)
 	kmb::Node node;
 	kmb::nodeIdType* cells = new kmb::nodeIdType[ kmb::Element::MAX_NODE_COUNT ];
 	if( orgBody != NULL && cells != NULL ){
-		// ß“_‚ÌƒRƒs[
+		// ç¯€ç‚¹ã®ã‚³ãƒ”ãƒ¼
 		std::set<kmb::nodeIdType> nodeSet;
-		// ŒÃ‚¢ nodeID ‚ÆV‚µ‚¢ nodeID ‚Ì‘Î‰•\ nodeMapper[ oldID ] = newID
+		// å¤ã„ nodeID ã¨æ–°ã—ã„ nodeID ã®å¯¾å¿œè¡¨ nodeMapper[ oldID ] = newID
 		std::map<kmb::nodeIdType,kmb::nodeIdType> nodeMapper;
 		orgBody->getNodesOfBody( nodeSet );
 		std::set<kmb::nodeIdType>::iterator nIter = nodeSet.begin();
@@ -101,7 +101,7 @@ kmb::MeshDB::cloneBodyWithNode(bodyIdType bodyID)
 			++nIter;
 		}
 
-		// —v‘f‚ÌƒRƒs[
+		// è¦ç´ ã®ã‚³ãƒ”ãƒ¼
 		id = this->beginElement( orgBody->getCount() );
 		kmb::ElementContainer::iterator eIter = orgBody->begin();
 		while( eIter != orgBody->end() )
@@ -124,9 +124,9 @@ kmb::MeshDB::cloneReverseBodyWithNode(bodyIdType bodyID)
 	kmb::Node node;
 	kmb::nodeIdType* cells = new kmb::nodeIdType[ kmb::Element::MAX_NODE_COUNT ];
 	if( orgBody != NULL && cells != NULL ){
-		// ß“_‚ÌƒRƒs[
+		// ç¯€ç‚¹ã®ã‚³ãƒ”ãƒ¼
 		std::set<kmb::nodeIdType> nodeSet;
-		// ŒÃ‚¢ nodeID ‚ÆV‚µ‚¢ nodeID ‚Ì‘Î‰•\ nodeMapper[ oldID ] = newID
+		// å¤ã„ nodeID ã¨æ–°ã—ã„ nodeID ã®å¯¾å¿œè¡¨ nodeMapper[ oldID ] = newID
 		std::map<kmb::nodeIdType,kmb::nodeIdType> nodeMapper;
 		orgBody->getNodesOfBody( nodeSet );
 		std::set<kmb::nodeIdType>::iterator nIter = nodeSet.begin();
@@ -140,7 +140,7 @@ kmb::MeshDB::cloneReverseBodyWithNode(bodyIdType bodyID)
 			++nIter;
 		}
 
-		// —v‘f‚ÌƒRƒs[
+		// è¦ç´ ã®ã‚³ãƒ”ãƒ¼
 		id = this->beginElement( orgBody->getCount() );
 		kmb::ElementContainer::iterator eIter = orgBody->begin();
 		while( eIter != orgBody->end() )

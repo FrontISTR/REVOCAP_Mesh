@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ColumnVector, RowVector                                 #
@@ -18,12 +18,12 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 #include <cfloat>
@@ -59,7 +59,7 @@ public:
 		}
 	}
 
-	// i0 s‚Æ i1 s‚ÌŒğŠ·
+	// i0 è¡Œã¨ i1 è¡Œã®äº¤æ›
 	virtual bool row_exchange(int i0,int i1){
 		double t = getRow(i0);
 		setRow(i0,getRow(i1));
@@ -67,23 +67,23 @@ public:
 		return true;
 	}
 
-	// i0 s‚ğ r ”{‚µ‚Ä i1 s‚É‰Á‚¦‚é
+	// i0 è¡Œã‚’ r å€ã—ã¦ i1 è¡Œã«åŠ ãˆã‚‹
 	virtual bool row_transf(int i0,int i1,double r){
 		setRow(i1,getRow(i1)+r*getRow(i0));
 		return true;
 	}
 
-	// i0 s‚ğ r ”{
+	// i0 è¡Œã‚’ r å€
 	virtual bool row_multi(int i0,double r){
 		setRow(i0,r*getRow(i0));
 		return true;
 	}
 
-	// ¬•ª
+	// æˆåˆ†
 	virtual double& operator[](const int i) = 0;
 	virtual double operator[](const int i) const = 0;
 
-	// ‘ã“ü
+	// ä»£å…¥
 	ColumnVector& operator=(const ColumnVector& other){
 		int size = getSize();
 		for(int i=0;i<size;++i){
@@ -97,7 +97,7 @@ public:
 			(*this)[i] = other[i];
 		}
 	}
-	// ˜a‘ã“ü
+	// å’Œä»£å…¥
 	bool setSum(const ColumnVector& v0,const ColumnVector& v1){
 		int size = getSize();
 		for(int i=0;i<size;++i){
@@ -119,7 +119,7 @@ public:
 		}
 		return true;
 	}
-	// ·‘ã“ü
+	// å·®ä»£å…¥
 	bool setDifference(const ColumnVector& v0,const ColumnVector& v1){
 		int size = getSize();
 		for(int i=0;i<size;++i){
@@ -141,7 +141,7 @@ public:
 		}
 		return true;
 	}
-	// ƒXƒJƒ‰”{‘ã“ü this = s * v
+	// ã‚¹ã‚«ãƒ©å€ä»£å…¥ this = s * v
 	bool setScalar(const double s,const ColumnVector& v){
 		int size = getSize();
 		for(int i=0;i<size;++i){
@@ -149,7 +149,7 @@ public:
 		}
 		return true;
 	}
-	// ƒXƒJƒ‰”{‰Á‚¦‚é this = this + s * v
+	// ã‚¹ã‚«ãƒ©å€åŠ ãˆã‚‹ this = this + s * v
 	bool addScalar(const double s,const ColumnVector& v){
 		int size = getSize();
 		for(int i=0;i<size;++i){
@@ -157,7 +157,7 @@ public:
 		}
 		return true;
 	}
-	// ƒAƒ‹ƒLƒƒfƒX’·‚³
+	// ã‚¢ãƒ«ã‚­ãƒ¡ãƒ‡ã‚¹é•·ã•
 	double distanceSq(const ColumnVector &other) const{
 		double lenSq = 0.0;
 		int size = getSize();
@@ -166,7 +166,7 @@ public:
 		}
 		return lenSq;
 	}
-	// “àÏ
+	// å†…ç©
 	double operator%(const kmb::ColumnVector &other) const{
 		double sum = 0.0;
 		int size = getSize();
@@ -198,7 +198,7 @@ public:
 		}
 		return sum;
 	}
-	// 1-norm = â‘Î’l‚Ì˜a
+	// 1-norm = çµ¶å¯¾å€¤ã®å’Œ
 	double norm_1(void) const{
 		double norm = 0.0;
 		int size = getSize();
@@ -207,7 +207,7 @@ public:
 		}
 		return norm;
 	}
-	// inf-norm = â‘Î’l‚ÌÅ‘å
+	// inf-norm = çµ¶å¯¾å€¤ã®æœ€å¤§
 	double norm_inf(void) const{
 		double m = -DBL_MAX;
 		int size = getSize();
@@ -249,7 +249,7 @@ public:
 		}
 	}
 
-	// i0 —ñ‚Æ i1 —ñ‚ÌŒğŠ·
+	// i0 åˆ—ã¨ i1 åˆ—ã®äº¤æ›
 	virtual bool column_exchange(int i0,int i1){
 		double t = getColumn(i0);
 		setColumn(i0,getColumn(i1));
@@ -257,23 +257,23 @@ public:
 		return true;
 	}
 
-	// i0 —ñ‚ğ r ”{‚µ‚Ä i1 —ñ‚É‰Á‚¦‚é
+	// i0 åˆ—ã‚’ r å€ã—ã¦ i1 åˆ—ã«åŠ ãˆã‚‹
 	virtual bool column_transf(int i0,int i1,double r){
 		setColumn(i1,getColumn(i1)+r*getColumn(i0));
 		return true;
 	}
 
-	// i0 —ñ‚ğ r ”{
+	// i0 åˆ—ã‚’ r å€
 	virtual bool column_multi(int i0,double r){
 		setColumn(i0,r*getColumn(i0));
 		return true;
 	}
 
-	// ¬•ª
+	// æˆåˆ†
 	virtual double& operator[](const int i) = 0;
 	virtual double operator[](const int i) const = 0;
 
-	// ‘ã“ü
+	// ä»£å…¥
 	RowVector& operator=(const RowVector& other){
 		int size = getSize();
 		for(int i=0;i<size;++i){
@@ -287,7 +287,7 @@ public:
 			(*this)[i] = other[i];
 		}
 	}
-	// ˜a‘ã“ü
+	// å’Œä»£å…¥
 	bool setSum(const RowVector& v0,const RowVector& v1){
 		int size = getSize();
 		for(int i=0;i<size;++i){
@@ -309,7 +309,7 @@ public:
 		}
 		return true;
 	}
-	// ·‘ã“ü
+	// å·®ä»£å…¥
 	bool setDifference(const RowVector& v0,const RowVector& v1){
 		int size = getSize();
 		for(int i=0;i<size;++i){
@@ -331,7 +331,7 @@ public:
 		}
 		return true;
 	}
-	// ƒXƒJƒ‰”{‘ã“ü this = x * v
+	// ã‚¹ã‚«ãƒ©å€ä»£å…¥ this = x * v
 	bool setScalar(const double s,const RowVector& v){
 		int size = getSize();
 		for(int i=0;i<size;++i){
@@ -339,7 +339,7 @@ public:
 		}
 		return true;
 	}
-	// ƒXƒJƒ‰”{‰Á‚¦‚é this = this + s * v
+	// ã‚¹ã‚«ãƒ©å€åŠ ãˆã‚‹ this = this + s * v
 	bool addScalar(const double s,const RowVector& v){
 		int size = getSize();
 		for(int i=0;i<size;++i){
@@ -347,7 +347,7 @@ public:
 		}
 		return true;
 	}
-	// ƒAƒ‹ƒLƒƒfƒX’·‚³
+	// ã‚¢ãƒ«ã‚­ãƒ¡ãƒ‡ã‚¹é•·ã•
 	double distanceSq(const RowVector &other) const{
 		double lenSq = 0.0;
 		int size = getSize();
@@ -356,7 +356,7 @@ public:
 		}
 		return lenSq;
 	}
-	// “àÏ
+	// å†…ç©
 	double operator%(const kmb::RowVector &other) const{
 		double sum = 0.0;
 		int size = getSize();
@@ -388,7 +388,7 @@ public:
 		}
 		return sum;
 	}
-	// 1-norm = â‘Î’l‚Ì˜a
+	// 1-norm = çµ¶å¯¾å€¤ã®å’Œ
 	double norm_1(void) const{
 		double norm = 0.0;
 		int size = getSize();
@@ -397,7 +397,7 @@ public:
 		}
 		return norm;
 	}
-	// inf-norm = â‘Î’l‚ÌÅ‘å
+	// inf-norm = çµ¶å¯¾å€¤ã®æœ€å¤§
 	double norm_inf(void) const{
 		double m = -DBL_MAX;
 		int size = getSize();

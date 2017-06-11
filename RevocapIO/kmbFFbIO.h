@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : FFbIO                                                   #
@@ -13,58 +13,58 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// FrontFlow/blue GF1 Œ`®
+// FrontFlow/blue GF1 å½¢å¼
 //
-// HISTORY ƒf[ƒ^‚Ì“Ç‚İ‚İ•û–@
-// (1) NEWSET ‚É‹Lq‚³‚ê‚Ä‚¢‚é•¶š—ñ‚ğæ“¾
+// HISTORY ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿æ–¹æ³•
+// (1) NEWSET ã«è¨˜è¿°ã•ã‚Œã¦ã„ã‚‹æ–‡å­—åˆ—ã‚’å–å¾—
 // (2) eachHistory( filename, ["TIME","MAXIMUM DIVERGENT"] ){ |ary| }
-//     ‚Å TIME ‚Æ MAXIMUM DIVERGENT ‚Ì’l‚ğ Array ‚É‚µ‚Ä yield ‚·‚é
+//     ã§ TIME ã¨ MAXIMUM DIVERGENT ã®å€¤ã‚’ Array ã«ã—ã¦ yield ã™ã‚‹
 //
 
 //
-// ”z—ñƒwƒbƒ_‚ÆƒL[ƒ[ƒh
+// é…åˆ—ãƒ˜ãƒƒãƒ€ã¨ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
 //
 // #FLT_ARY
-//  *GRID_2D  ß“_À•W (X,Y)
-//  *GRID_3D  ß“_À•W (X,Y,Z)
-//  *BC_IV2D  —¬“ü‘¬“x (U,V)
-//  *BC_IV3D  —¬“ü‘¬“x (U,V,W)
-//  *BC_WV2D  •Ç‘¬“x   (U,V)
-//  *BC_WV3D  •Ç‘¬“x   (U,V,W)
-//  *BC_TMPV  ‹«ŠE‰·“x
-//  *BC_HFXV  ‹«ŠE”M—¬‘©
-//  *TIME_PS  ŠÔ
-//  *VELO_2D  ‘¬“x     (U,V)
-//  *VELO_3D  ‘¬“x     (U,V,W)
-//  *PRES_2E  —v‘f‚É‚¨‚¯‚éˆ³—Í(2D)
-//  *PRES_3E  —v‘f‚É‚¨‚¯‚éˆ³—Í(3D)
-//  *PRES_3D  ß“_‚É‚¨‚¯‚éˆ³—Í(3D)
-//  *BC_PGET  ƒI[ƒo[ƒZƒbƒgß“_‚Ì‹ÇŠÀ•W  (ƒÌ,ƒÄ,ƒÅ)
-//  *BC_EGET  ƒI[ƒo[ƒZƒbƒg—v‘f‚Ì‹ÇŠÀ•W  (ƒÌ,ƒÄ,ƒÅ)
-//  *HISTORY  (ŠÔƒXƒeƒbƒv,—¬‘¬‚Ì”­U‚ÌÅ‘å’l,”S«‚Ì‹óŠÔ•½‹Ï’l,...)
+//  *GRID_2D  ç¯€ç‚¹åº§æ¨™ (X,Y)
+//  *GRID_3D  ç¯€ç‚¹åº§æ¨™ (X,Y,Z)
+//  *BC_IV2D  æµå…¥é€Ÿåº¦ (U,V)
+//  *BC_IV3D  æµå…¥é€Ÿåº¦ (U,V,W)
+//  *BC_WV2D  å£é€Ÿåº¦   (U,V)
+//  *BC_WV3D  å£é€Ÿåº¦   (U,V,W)
+//  *BC_TMPV  å¢ƒç•Œæ¸©åº¦
+//  *BC_HFXV  å¢ƒç•Œç†±æµæŸ
+//  *TIME_PS  æ™‚é–“
+//  *VELO_2D  é€Ÿåº¦     (U,V)
+//  *VELO_3D  é€Ÿåº¦     (U,V,W)
+//  *PRES_2E  è¦ç´ ã«ãŠã‘ã‚‹åœ§åŠ›(2D)
+//  *PRES_3E  è¦ç´ ã«ãŠã‘ã‚‹åœ§åŠ›(3D)
+//  *PRES_3D  ç¯€ç‚¹ã«ãŠã‘ã‚‹åœ§åŠ›(3D)
+//  *BC_PGET  ã‚ªãƒ¼ãƒãƒ¼ã‚»ãƒƒãƒˆç¯€ç‚¹ã®å±€æ‰€åº§æ¨™  (Î¾,Î¶,Î·)
+//  *BC_EGET  ã‚ªãƒ¼ãƒãƒ¼ã‚»ãƒƒãƒˆè¦ç´ ã®å±€æ‰€åº§æ¨™  (Î¾,Î¶,Î·)
+//  *HISTORY  (æ™‚é–“ã‚¹ãƒ†ãƒƒãƒ—,æµé€Ÿã®ç™ºæ•£ã®æœ€å¤§å€¤,ç²˜æ€§ã®ç©ºé–“å¹³å‡å€¤,...)
 // #INT_ARY
-//  *NODE_2D  —v‘fÚ‘±ƒf[ƒ^(2D)
-//  *NODE_3D  —v‘fÚ‘±ƒf[ƒ^(3D)
-//  *ELM_TYP  –¢g—p
-//  *BC_INLT  —¬“ü‹«ŠEğŒß“_ƒŠƒXƒg
-//  *BC_WALL  •Ç‹«ŠEğŒß“_ƒŠƒXƒg
-//  *BC_SYMT  ‘ÎÌ‹«ŠEğŒß“_ƒŠƒXƒg
-//  *BC_CYCL  üŠú‹«ŠEğŒß“_ƒŠƒXƒg
-//  *BC_BODY  —¬‘Ì—ÍŒvZ‹«ŠEğŒß“_ƒŠƒXƒg
-//  *BC_FREE  ©—R‹«ŠEß“_ƒŠƒXƒg
-//  *BC_MWAL  ˆÚ“®‹«ŠEß“_ƒŠƒXƒg => BCVector
-//  *BC_INTR  —ÌˆæŠÔ’ÊM‹«ŠEß“_ƒŠƒXƒg (ß“_”Ô†,‘Šè—Ìˆæ”Ô†,‘Šèß“_”Ô†)
-//  *BC_TMPN  ‰·“x‹«ŠEğŒß“_ƒŠƒXƒg => BCTemp
-//  *BC_HFXN  ”M—¬‘©‹«ŠEğŒß“_ƒŠƒXƒg => BCFlux
-//  *STEP_PS  ŠÔƒXƒeƒbƒv
-//  *BC_PSET  ƒI[ƒo[ƒZƒbƒg‹«ŠEß“_ƒŠƒXƒg (ß“_”Ô†,—v‘f”Ô†,—Ìˆæ”Ô†)
-//  *BC_ESET  ƒI[ƒo[ƒZƒbƒg‹«ŠE—v‘fƒŠƒXƒg (—v‘f”Ô†,—v‘f”Ô†,—Ìˆæ”Ô†)
-//  *ELM_ATRE À•WŒn”Ô†
-//  *PT_NODE  ß“_”
-//  *PT_ELEM  —v‘f”
-//  *BC_INTR  —ÌˆæŠÔ’ÊM‹«ŠE (ß“_”Ô†,‘Šè‚Ì—Ìˆæ”Ô†,‘Šè‚Ìß“_”Ô†)
+//  *NODE_2D  è¦ç´ æ¥ç¶šãƒ‡ãƒ¼ã‚¿(2D)
+//  *NODE_3D  è¦ç´ æ¥ç¶šãƒ‡ãƒ¼ã‚¿(3D)
+//  *ELM_TYP  æœªä½¿ç”¨
+//  *BC_INLT  æµå…¥å¢ƒç•Œæ¡ä»¶ç¯€ç‚¹ãƒªã‚¹ãƒˆ
+//  *BC_WALL  å£å¢ƒç•Œæ¡ä»¶ç¯€ç‚¹ãƒªã‚¹ãƒˆ
+//  *BC_SYMT  å¯¾ç§°å¢ƒç•Œæ¡ä»¶ç¯€ç‚¹ãƒªã‚¹ãƒˆ
+//  *BC_CYCL  å‘¨æœŸå¢ƒç•Œæ¡ä»¶ç¯€ç‚¹ãƒªã‚¹ãƒˆ
+//  *BC_BODY  æµä½“åŠ›è¨ˆç®—å¢ƒç•Œæ¡ä»¶ç¯€ç‚¹ãƒªã‚¹ãƒˆ
+//  *BC_FREE  è‡ªç”±å¢ƒç•Œç¯€ç‚¹ãƒªã‚¹ãƒˆ
+//  *BC_MWAL  ç§»å‹•å¢ƒç•Œç¯€ç‚¹ãƒªã‚¹ãƒˆ => BCVector
+//  *BC_INTR  é ˜åŸŸé–“é€šä¿¡å¢ƒç•Œç¯€ç‚¹ãƒªã‚¹ãƒˆ (ç¯€ç‚¹ç•ªå·,ç›¸æ‰‹é ˜åŸŸç•ªå·,ç›¸æ‰‹ç¯€ç‚¹ç•ªå·)
+//  *BC_TMPN  æ¸©åº¦å¢ƒç•Œæ¡ä»¶ç¯€ç‚¹ãƒªã‚¹ãƒˆ => BCTemp
+//  *BC_HFXN  ç†±æµæŸå¢ƒç•Œæ¡ä»¶ç¯€ç‚¹ãƒªã‚¹ãƒˆ => BCFlux
+//  *STEP_PS  æ™‚é–“ã‚¹ãƒ†ãƒƒãƒ—
+//  *BC_PSET  ã‚ªãƒ¼ãƒãƒ¼ã‚»ãƒƒãƒˆå¢ƒç•Œç¯€ç‚¹ãƒªã‚¹ãƒˆ (ç¯€ç‚¹ç•ªå·,è¦ç´ ç•ªå·,é ˜åŸŸç•ªå·)
+//  *BC_ESET  ã‚ªãƒ¼ãƒãƒ¼ã‚»ãƒƒãƒˆå¢ƒç•Œè¦ç´ ãƒªã‚¹ãƒˆ (è¦ç´ ç•ªå·,è¦ç´ ç•ªå·,é ˜åŸŸç•ªå·)
+//  *ELM_ATRE åº§æ¨™ç³»ç•ªå·
+//  *PT_NODE  ç¯€ç‚¹æ•°
+//  *PT_ELEM  è¦ç´ æ•°
+//  *BC_INTR  é ˜åŸŸé–“é€šä¿¡å¢ƒç•Œ (ç¯€ç‚¹ç•ªå·,ç›¸æ‰‹ã®é ˜åŸŸç•ªå·,ç›¸æ‰‹ã®ç¯€ç‚¹ç•ªå·)
 
-// ƒ|ƒXƒgƒf[ƒ^‚É‚Â‚¢‚Ä‚Í“Ç‚İ‚Ü‚ê‚Ä‚¢‚é—v‘fEß“_ˆÈã‚Ìƒf[ƒ^‚Í“Ç‚Ü‚È‚¢
+// ãƒã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ã«ã¤ã„ã¦ã¯èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹è¦ç´ ãƒ»ç¯€ç‚¹ä»¥ä¸Šã®ãƒ‡ãƒ¼ã‚¿ã¯èª­ã¾ãªã„
 
 #pragma once
 
@@ -92,7 +92,7 @@ private:
 		TEMP,
 		HEAT,
 		BODY,
-		CUSTOM,       // ”Ä—p‹«ŠEğŒİ’è—p
+		CUSTOM,       // æ±ç”¨å¢ƒç•Œæ¡ä»¶è¨­å®šç”¨
 		A_WALL,
 		A_NRBC,
 		INTERCONNECT
@@ -102,10 +102,10 @@ private:
 	std::vector< kmb::nodeIdType > temp;
 	std::vector< kmb::nodeIdType > heat;
 	bool readPost;
-	// c_str ‚Å•Ô‚µ‚½Œã‚àÁ‚¦‚È‚¢‚æ‚¤‚É
+	// c_str ã§è¿”ã—ãŸå¾Œã‚‚æ¶ˆãˆãªã„ã‚ˆã†ã«
 	std::string header;
-	// “Ç‚İ‚Ş‚Æ‚«‚Éˆø‚¢‚ÄA‘‚«‚Ş‚Æ‚«‚É‘«‚·
-	// ƒtƒ@ƒCƒ‹‚Ì id ‚ª 1 ‚©‚çn‚Ü‚é‚ÍA‚±‚ê‚ç‚Ì offset ‚Í 1 ‚É‚·‚é
+	// èª­ã¿è¾¼ã‚€ã¨ãã«å¼•ã„ã¦ã€æ›¸ãè¾¼ã‚€ã¨ãã«è¶³ã™
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã® id ãŒ 1 ã‹ã‚‰å§‹ã¾ã‚‹æ™‚ã¯ã€ã“ã‚Œã‚‰ã® offset ã¯ 1 ã«ã™ã‚‹
 	kmb::nodeIdType offsetNodeId;
 	kmb::elementIdType offsetElementId;
 public:
@@ -113,41 +113,41 @@ public:
 	virtual ~FFbIO(void);
 	int loadFromMeshFile(const char* filename,kmb::MeshData* mesh);
 	int loadFromBoundaryFile(const char* filename,kmb::MeshData* mesh);
-	// “Á’è‚ÌƒXƒeƒbƒv‚Ì‚à‚Ì‚ğ“Ç‚Ş step = -1 ‚Ì‚Í•K‚¸“Ç‚Ş
+	// ç‰¹å®šã®ã‚¹ãƒ†ãƒƒãƒ—ã®ã‚‚ã®ã‚’èª­ã‚€ step = -1 ã®æ™‚ã¯å¿…ãšèª­ã‚€
 	int loadPostStep(const char* filename,kmb::MeshData* mesh,int step=-1);
 	const char* loadHeader(const char* filename);
-	// –ß‚è’l‚Íl–Ê‘Ìƒ‚ƒfƒ‹‚¾‚Á‚½‚ç 4A˜Z–Ê‘Ìƒ‚ƒfƒ‹‚¾‚Á‚½‚ç 6
-	// ¬‡‚Ìê‡‚Í 8
+	// æˆ»ã‚Šå€¤ã¯å››é¢ä½“ãƒ¢ãƒ‡ãƒ«ã ã£ãŸã‚‰ 4ã€å…­é¢ä½“ãƒ¢ãƒ‡ãƒ«ã ã£ãŸã‚‰ 6
+	// æ··åˆã®å ´åˆã¯ 8
 	int saveToMeshFile(const char* filename,const kmb::MeshData* mesh);
 	int saveToMeshFileVer6(const char* filename,const kmb::MeshData* mesh);
-	// REVOCAP “Æ©Šg’£
-	// stype = "CUSTOM" ‚Ì NodeGroup ‚ğ BoundaryFile ‚Éo—Í‚·‚é
+	// REVOCAP ç‹¬è‡ªæ‹¡å¼µ
+	// stype = "CUSTOM" ã® NodeGroup ã‚’ BoundaryFile ã«å‡ºåŠ›ã™ã‚‹
 	int saveToBoundaryFile(const char* filename,const kmb::MeshData* mesh);
 	int saveToBoundaryFileAcoustic(const char* filename,const kmb::MeshData* mesh);
 protected:
-	// read Œn‚Í header ‚ÌŸ‚Ìs‚©‚ç
-	// write Œn‚Í header ‚àŠÜ‚ß‚Äo—Í
+	// read ç³»ã¯ header ã®æ¬¡ã®è¡Œã‹ã‚‰
+	// write ç³»ã¯ header ã‚‚å«ã‚ã¦å‡ºåŠ›
 	// unformatted endian check
 	bool checkFormat(std::ifstream &input);
-	// #A_GF_V1 or #U_GF_V1 ‚ÌŒã‚ÌƒRƒƒ“ƒg
+	// #A_GF_V1 or #U_GF_V1 ã®å¾Œã®ã‚³ãƒ¡ãƒ³ãƒˆ
 	int readHeader(std::ifstream &input,kmb::MeshData* mesh);
 	int readHeader(std::ifstream &input,std::string &str);
 	int writeHeader(std::ofstream &output,const kmb::MeshData* mesh);
 	int writeFooter(std::ofstream &output,const kmb::MeshData* mesh);
-	// #NEW_SET ‚ÌŒã‚ÌƒRƒƒ“ƒg‚Ì‰ğß
+	// #NEW_SET ã®å¾Œã®ã‚³ãƒ¡ãƒ³ãƒˆã®è§£é‡ˆ
 	int readNewSet(std::ifstream &input,kmb::MeshData* mesh);
 	int writeNewSet(std::ofstream &output,const kmb::MeshData* mesh);
-	// ß“_
+	// ç¯€ç‚¹
 	int readGrid3D(std::ifstream &input,kmb::MeshData* mesh);
 	int writeGrid3D(std::ofstream &output,const kmb::MeshData* mesh);
-	// —v‘f
+	// è¦ç´ 
 	int readNode2D(std::ifstream &input,kmb::MeshData* mesh);
 	int readNode3D(std::ifstream &input,kmb::MeshData* mesh);
 	int writeNode2D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bodyIdType bodyId);
 	int writeNode3D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bodyIdType bodyId);
 	int writeNode2DVer6(std::ofstream &output,const kmb::MeshData* mesh,kmb::bodyIdType bodyId);
 	int writeNode3DVer6(std::ofstream &output,const kmb::MeshData* mesh,kmb::bodyIdType bodyId);
-	// ‹«ŠE–Ê
+	// å¢ƒç•Œé¢
 	// BC_INLT BC_MWAL : NodeVariable, Vector3
 	// BC_FREE BC_WALL BC_CYCL BC_SYMT BCA_WAL BCA_NOR : NodeGroup
 	// BC_INTR : NodeVariable, Array of Integer
@@ -156,14 +156,14 @@ protected:
 	int readBC3D(std::ifstream &input,kmb::MeshData* mesh,boundaryType btype,const char* name);
 	int readBCINTR(std::ifstream &input,kmb::MeshData* mesh,boundaryType btype,const char* name);
 	int writeBC(std::ofstream &output,const kmb::MeshData* mesh,boundaryType btype,const char* name="BC_INLT");
-	// ˆ³—Í’l
+	// åœ§åŠ›å€¤
 	int readPres2E(std::ifstream &input,kmb::MeshData* mesh);
 	int readPres3E(std::ifstream &input,kmb::MeshData* mesh);
 	int readPres3D(std::ifstream &input,kmb::MeshData* mesh);
-	// ‘¬“x
+	// é€Ÿåº¦
 	int readVelo3D(std::ifstream &input,kmb::MeshData* mesh);
 	int readVelo2D(std::ifstream &input,kmb::MeshData* mesh);
-	// ‚»‚Ì‘¼‚Ìˆê”Ê“I‚ÈƒL[ƒ[ƒh‘Î‰
+	// ãã®ä»–ã®ä¸€èˆ¬çš„ãªã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰å¯¾å¿œ
 	int readHeaderFlt(std::ifstream &input,kmb::MeshData* mesh);
 	int readHeaderInt(std::ifstream &input,kmb::MeshData* mesh);
 	int writeHeaderFlt(std::ofstream &output,const kmb::MeshData* mesh,const char* name,const char* comment);

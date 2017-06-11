@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementContainerArray                                   #
@@ -24,12 +24,12 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 /**
- * Element ‚Ìƒ|ƒCƒ“ƒ^‚Ì”z—ñ
+ * Element ã®ãƒã‚¤ãƒ³ã‚¿ã®é…åˆ—
  *
- * ß“_”z—ñ‚ğŠi”[‚·‚éê‡‚Í
- * ’Pˆê—v‘f‚Ìê‡‚Í ElementContainerNArray
- * —v‘f¬İ‚Ìê‡‚Í ElementContainerMixedArray
- * ‚ğ—p‚¢‚éB
+ * ç¯€ç‚¹é…åˆ—ã‚’æ ¼ç´ã™ã‚‹å ´åˆã¯
+ * å˜ä¸€è¦ç´ ã®å ´åˆã¯ ElementContainerNArray
+ * è¦ç´ æ··åœ¨ã®å ´åˆã¯ ElementContainerMixedArray
+ * ã‚’ç”¨ã„ã‚‹ã€‚
  */
 
 #pragma once
@@ -38,7 +38,7 @@
 
 namespace kmb{
 
-// ”z—ñ‚É‚æ‚éÀ‘•
+// é…åˆ—ã«ã‚ˆã‚‹å®Ÿè£…
 class ElementContainerArray : public ElementContainer
 {
 public:
@@ -71,8 +71,8 @@ public:
 		virtual const kmb::Element* getElement(void) const;
 		virtual bool getElement(kmb::elementType &etype,kmb::nodeIdType *nodes) const;
 		virtual kmb::elementType getType(void) const;
-		virtual kmb::nodeIdType getCellId(int cellIndex) const;
-		virtual bool setCellId(int cellIndex, kmb::nodeIdType nodeId);
+		virtual kmb::nodeIdType getNodeId(int cellIndex) const;
+		virtual bool setNodeId(int cellIndex, kmb::nodeIdType nodeId);
 		virtual kmb::nodeIdType operator[](const int cellIndex) const;
 		virtual ElementContainer::_iterator* operator++(void);
 		virtual ElementContainer::_iterator* operator++(int n);
@@ -89,9 +89,9 @@ public:
 	virtual iterator find(kmb::elementIdType id);
 	virtual const_iterator find(kmb::elementIdType id) const;
 protected:
-	size_t index; // 0 ‚©‚ç‡‚É–„‚ß‚Ä‚¢‚­ê‡‚Ì”z—ñ‚Ì“Y‚¦š
-	size_t size;  // ”z—ñ‚Ì‘å‚«‚³
-	size_t count; // “o˜^Ï‚İ‚Ì—v‘f‚ÌŒÂ”
+	size_t index; // 0 ã‹ã‚‰é †ã«åŸ‹ã‚ã¦ã„ãå ´åˆã®é…åˆ—ã®æ·»ãˆå­—
+	size_t size;  // é…åˆ—ã®å¤§ãã•
+	size_t count; // ç™»éŒ²æ¸ˆã¿ã®è¦ç´ ã®å€‹æ•°
 	kmb::Element** elementArray;
 	kmb::Element* getElementPtr(kmb::elementIdType id) const;
 };

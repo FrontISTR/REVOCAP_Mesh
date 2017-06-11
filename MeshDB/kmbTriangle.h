@@ -39,13 +39,13 @@ public:
 	Triangle(kmb::nodeIdType *ary);
 	virtual ~Triangle(void);
 
-	// •Ó‚ÌŒğŠ·
-	// abc ‚Æ acd ‚©‚ç abd ‚Æ bcd ‚É•ÏŠ·‚·‚é
+	// è¾ºã®äº¤æ›
+	// abc ã¨ acd ã‹ã‚‰ abd ã¨ bcd ã«å¤‰æ›ã™ã‚‹
 	static bool edgeSwap(kmb::ElementBase &triangle0,kmb::ElementBase &triangle1);
-	// OŠpŒ`‚É“Á‰»‚µ‚½ˆê’v”»’è
-	// 1 : ˆê’v -1 : ‹tŒü‚« 0 : ‚»‚Ì‘¼
+	// ä¸‰è§’å½¢ã«ç‰¹åŒ–ã—ãŸä¸€è‡´åˆ¤å®š
+	// 1 : ä¸€è‡´ -1 : é€†å‘ã 0 : ãã®ä»–
 	static int isCoincident(kmb::nodeIdType t00,kmb::nodeIdType t01,kmb::nodeIdType t02,kmb::nodeIdType t10,kmb::nodeIdType t11,kmb::nodeIdType t12);
-	// ‚R“_‚Ì‚¤‚¿ˆê’v‚µ‚Ä‚¢‚é“_‚ª‚ ‚é‚©‚ğ”»’è‚·‚é
+	// ï¼“ç‚¹ã®ã†ã¡ä¸€è‡´ã—ã¦ã„ã‚‹ç‚¹ãŒã‚ã‚‹ã‹ã‚’åˆ¤å®šã™ã‚‹
 	static bool isCoincidentNodes(kmb::nodeIdType t0,kmb::nodeIdType t1,kmb::nodeIdType t2);
 public:
 	static const int connectionTable[3][3];
@@ -57,6 +57,8 @@ public:
 
 	static double checkShapeFunctionDomain(double s,double t);
 
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 };
 
 }

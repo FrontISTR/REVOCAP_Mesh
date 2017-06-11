@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : FramedPlane                                             #
@@ -35,18 +35,18 @@ kmb::FramedPlane::FramedPlane(const double a0,const double b0,const double c0,co
 }
 
 kmb::FramedPlane::FramedPlane(const kmb::Point3D &o,const kmb::Vector3D &v0,const kmb::Vector3D &v1)
-: kmb::Plane(0.0, 0.0, 0.0, 0.0) // ‰¼
+: kmb::Plane(0.0, 0.0, 0.0, 0.0) // ä»®
 {
 	this->origin.setCoordinate( o.x(), o.y(), o.z() );
-	// v0 ‚Æ v1 ‚Ì‚È‚·•½–Ê‚©‚ç n0 n1 ‚ğ¶¬‚·‚é
-	// ³‹K’¼Œğ‚È‚ç‚»‚Ì‚Ü‚Üg‚¤
+	// v0 ã¨ v1 ã®ãªã™å¹³é¢ã‹ã‚‰ n0 n1 ã‚’ç”Ÿæˆã™ã‚‹
+	// æ­£è¦ç›´äº¤ãªã‚‰ãã®ã¾ã¾ä½¿ã†
 	this->n0.setCoordinate( v0.x(), v0.y(), v0.z() );
 	this->n1.setCoordinate( v1.x(), v1.y(), v1.z() );
 	this->n0.normalize();
 	this->n1 -= (n0*n1) * n0;
 	this->n1.normalize();
 	Vector3D n = n0 % n1;
-	// –@üƒxƒNƒgƒ‹ n ‚Í³‹K‰»‚³‚ê‚Ä‚¢‚é
+	// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ« n ã¯æ­£è¦åŒ–ã•ã‚Œã¦ã„ã‚‹
 	this->a = n.x();
 	this->b = n.y();
 	this->c = n.z();
@@ -159,7 +159,7 @@ kmb::FramedPlane::setNormalPolar(double phi,double theta)
 	b = sin(phi)*sin(theta);
 	c = cos(theta);
 	d = - a*origin.x() - b*origin.y() - c*origin.z();
-	// UVBase ‚à‚»‚ê‚ç‚µ‚­³‹K‰»
+	// UVBase ã‚‚ãã‚Œã‚‰ã—ãæ­£è¦åŒ–
 	double r = a*a + b*b;
 	if( r == 0.0 ){
 		n0.setCoordinate( 1.0, 0.0, 0.0 );

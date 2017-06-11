@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementContainer                                        #
@@ -140,7 +140,7 @@ kmb::ElementContainer::addElement(const kmb::Element* element)
 		const int nodeCount = element->getNodeCount();
 		kmb::nodeIdType* cell = new kmb::nodeIdType[nodeCount];
 		for(int i=0;i<nodeCount;++i){
-			cell[i] = element->getCellId(i);
+			cell[i] = element->getNodeId(i);
 		}
 		elementId = this->addElement( etype, cell );
 		delete[] cell;
@@ -158,7 +158,7 @@ kmb::ElementContainer::addElement(const kmb::Element* element,const kmb::element
 		const int nodeCount = element->getNodeCount();
 		kmb::nodeIdType* cell = new kmb::nodeIdType[nodeCount];
 		for(int i=0;i<nodeCount;++i){
-			cell[i] = element->getCellId(i);
+			cell[i] = element->getNodeId(i);
 		}
 		elementId = this->addElement( etype, cell, id );
 		delete[] cell;
@@ -176,7 +176,7 @@ kmb::ElementContainer::updateBoundingBox(const kmb::Point3DContainer* points)
 	while( !eIter.isFinished() ){
 		const int len = eIter.getNodeCount();
 		for(int i=0;i<len;++i){
-			if( points->getPoint( eIter.getCellId(i), point ) ){
+			if( points->getPoint( eIter.getNodeId(i), point ) ){
 				boundingBox.update( point );
 			}
 		}
@@ -293,7 +293,7 @@ kmb::ElementContainer::getNodesOfBody(const kmb::Point3DContainer* points,kmb::P
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i)
 			{
-				const kmb::nodeIdType id = eIter.getCellId(i);
+				const kmb::nodeIdType id = eIter.getNodeId(i);
 				if( points->getPoint( id, point ) ){
 					// Permission of multiple points depends on specification of Point3DContainer
 					result->addPoint( point, id );
@@ -313,7 +313,7 @@ kmb::ElementContainer::getNodesOfBody(std::set<kmb::nodeIdType> &result) const
 		const int len = eIter.getNodeCount();
 		for(int i=0;i<len;++i)
 		{
-			const kmb::nodeIdType id = eIter.getCellId(i);
+			const kmb::nodeIdType id = eIter.getNodeId(i);
 			result.insert( id );
 		}
 		++eIter;
@@ -437,7 +437,7 @@ kmb::ElementContainer::iterator::getElement(kmb::elementType &etype,kmb::nodeIdT
 		etype = _iter->getType();
 		int nodeCount = kmb::Element::getNodeCount( etype );
 		for(int i=0;i<nodeCount;++i){
-			nodes[i] = _iter->getCellId(i);
+			nodes[i] = _iter->getNodeId(i);
 		}
 		return true;
 	}else{
@@ -452,7 +452,7 @@ kmb::ElementContainer::iterator::getElement(kmb::Element &element) const
 		if( element.getType() == _iter->getType() ){
 			const int len = element.getNodeCount();
 			for(int i=0;i<len;++i){
-				element.setCellId(i,_iter->getCellId(i));
+				element.setNodeId(i,_iter->getNodeId(i));
 			}
 			return true;
 		}
@@ -471,20 +471,20 @@ kmb::ElementContainer::iterator::getType(void) const
 }
 
 kmb::nodeIdType
-kmb::ElementContainer::iterator::getCellId(int cellIndex) const
+kmb::ElementContainer::iterator::getNodeId(int cellIndex) const
 {
 	if( _iter != NULL ){
-		return _iter->getCellId(cellIndex);
+		return _iter->getNodeId(cellIndex);
 	}else{
 		return kmb::nullNodeId;
 	}
 }
 
 bool
-kmb::ElementContainer::iterator::setCellId(int cellIndex,kmb::nodeIdType nodeId)
+kmb::ElementContainer::iterator::setNodeId(int cellIndex,kmb::nodeIdType nodeId)
 {
 	if( _iter != NULL ){
-		return _iter->setCellId(cellIndex,nodeId);
+		return _iter->setNodeId(cellIndex,nodeId);
 	}else{
 		return false;
 	}
@@ -494,7 +494,7 @@ kmb::nodeIdType
 kmb::ElementContainer::iterator::operator[](const int i) const
 {
 	if( _iter != NULL ){
-		return _iter->getCellId(i);
+		return _iter->getNodeId(i);
 	}else{
 		return kmb::nullNodeId;
 	}
@@ -620,7 +620,7 @@ kmb::ElementContainer::const_iterator::getElement(kmb::elementType &etype,kmb::n
 		etype = _iter->getType();
 		int nodeCount = kmb::Element::getNodeCount( etype );
 		for(int i=0;i<nodeCount;++i){
-			nodes[i] = _iter->getCellId(i);
+			nodes[i] = _iter->getNodeId(i);
 		}
 		return true;
 	}else{
@@ -635,7 +635,7 @@ kmb::ElementContainer::const_iterator::getElement(kmb::Element &element) const
 		if( element.getType() == _iter->getType() ){
 			const int len = element.getNodeCount();
 			for(int i=0;i<len;++i){
-				element.setCellId(i,_iter->getCellId(i));
+				element.setNodeId(i,_iter->getNodeId(i));
 			}
 			return true;
 		}
@@ -654,17 +654,17 @@ kmb::ElementContainer::const_iterator::getType(void) const
 }
 
 kmb::nodeIdType
-kmb::ElementContainer::const_iterator::getCellId(int cellIndex) const
+kmb::ElementContainer::const_iterator::getNodeId(int cellIndex) const
 {
 	if( _iter != NULL ){
-		return _iter->getCellId(cellIndex);
+		return _iter->getNodeId(cellIndex);
 	}else{
 		return kmb::nullNodeId;
 	}
 }
 
 bool
-kmb::ElementContainer::const_iterator::setCellId(int cellIndex,kmb::nodeIdType nodeId)
+kmb::ElementContainer::const_iterator::setNodeId(int cellIndex,kmb::nodeIdType nodeId)
 {
 	return false;
 }
@@ -673,7 +673,7 @@ kmb::nodeIdType
 kmb::ElementContainer::const_iterator::operator[](const int i) const
 {
 	if( _iter != NULL ){
-		return _iter->getCellId(i);
+		return _iter->getNodeId(i);
 	}else{
 		return kmb::nullNodeId;
 	}

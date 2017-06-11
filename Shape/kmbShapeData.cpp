@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ShapeData                                               #
@@ -201,7 +201,7 @@ kmb::ShapeData::isClosed(void) const
 	return false;
 }
 
-// OpenCASCADE ‚Ì•\Œ»Œ`®‚©‚ç REVOCAP ‚ÌŒ`®‚Ö‚Ì•ÏŠ·
+// OpenCASCADE ã®è¡¨ç¾å½¢å¼ã‹ã‚‰ REVOCAP ã®å½¢å¼ã¸ã®å¤‰æ›
 int
 kmb::ShapeData::getBezierSurface( TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const
 {
@@ -210,7 +210,7 @@ kmb::ShapeData::getBezierSurface( TopoDS_Face &face, Handle_Geom_Surface &surf, 
 	int nu = bsf->NbUPoles();
 	int nv = bsf->NbVPoles();
 	bezier->setOrder( nu, nv );
-	// i,j ‚Ì‡”Ô‚É’ˆÓ
+	// i,j ã®é †ç•ªã«æ³¨æ„
 	for(int j=1;j<=nv;++j){
 		for(int i=1;i<=nu;++i){
 			gp_Pnt pt = bsf->Pole(i,j);
@@ -244,7 +244,7 @@ kmb::ShapeData::getBSplineSurface( TopoDS_Face &face, Handle_Geom_Surface &surf,
 	}
 	int nu = bsp->NbUPoles();
 	int nv = bsp->NbVPoles();
-	// i,j ‚Ì‡”Ô‚É’ˆÓ
+	// i,j ã®é †ç•ªã«æ³¨æ„
 	for(int j=1;j<=nv;++j){
 		for(int i=1;i<=nu;++i){
 			gp_Pnt pt = bsp->Pole(i,j);
@@ -265,7 +265,7 @@ kmb::ShapeData::getCylindricalSurface( TopoDS_Face &face, Handle_Geom_Surface &s
 	std::cout << "cylindrical bounds " << u0 << " " << u1 << " " << v0 << " " << v1  << std::endl;
 	std::cout << "periodic => " << cylinder->IsUPeriodic() << std::endl;
 	if( cylinder->IsUPeriodic() && fabs(u1-u0-2*PI)<1.0e-6 ){
-		// REVOCAP Œ`®‚Æ‚µ‚Ä‚ÍA‚Q‚Â‚Ì Nurbs ‚Å•\Œ»‚·‚é
+		// REVOCAP å½¢å¼ã¨ã—ã¦ã¯ã€ï¼’ã¤ã® Nurbs ã§è¡¨ç¾ã™ã‚‹
 		kmb::NurbsSurface3D* col0 = new kmb::NurbsSurface3D();
 		kmb::NurbsSurface3D* col1 = new kmb::NurbsSurface3D();
 		col0->setOrder( 3, 2 );
@@ -373,7 +373,7 @@ kmb::ShapeData::getCylindricalSurface( TopoDS_Face &face, Handle_Geom_Surface &s
 		surfaces.push_back( col1 );
 		return 2;
 	}else if( cylinder->IsUPeriodic() && fabs(u1-u0)>PI ){
-		// ”¼‰~‚æ‚è‚à‘å‚«‚¢‚à‚Ì‚Í REVOCAP Œ`®‚Æ‚µ‚Ä‚ÍA2‚Â‚Ì Nurbs ‚Å•\Œ»‚·‚é
+		// åŠå††ã‚ˆã‚Šã‚‚å¤§ãã„ã‚‚ã®ã¯ REVOCAP å½¢å¼ã¨ã—ã¦ã¯ã€2ã¤ã® Nurbs ã§è¡¨ç¾ã™ã‚‹
 		kmb::NurbsSurface3D* col0 = new kmb::NurbsSurface3D();
 		kmb::NurbsSurface3D* col1 = new kmb::NurbsSurface3D();
 		col0->setOrder(3,2);
@@ -449,7 +449,7 @@ kmb::ShapeData::getCylindricalSurface( TopoDS_Face &face, Handle_Geom_Surface &s
 		surfaces.push_back( col1 );
 		return 2;
 	}else if( cylinder->IsUPeriodic() ){
-		// ”¼‰~‚æ‚è‚à¬‚³‚¢‚à‚Ì‚Í REVOCAP Œ`®‚Æ‚µ‚Ä‚ÍA1‚Â‚Ì Nurbs ‚Å•\Œ»‚·‚é
+		// åŠå††ã‚ˆã‚Šã‚‚å°ã•ã„ã‚‚ã®ã¯ REVOCAP å½¢å¼ã¨ã—ã¦ã¯ã€1ã¤ã® Nurbs ã§è¡¨ç¾ã™ã‚‹
 		kmb::NurbsSurface3D* col0 = new kmb::NurbsSurface3D();
 		col0->setOrder(3,2);
 		col0->appendUKnot(0.0);
@@ -660,7 +660,7 @@ kmb::ShapeData::getSurfaces( std::vector<kmb::Surface3D*> &surfaces) const
 				std::cout << "not supported Geom_RectangularTrimmedSurface" << std::endl;
 				Handle(Geom_RectangularTrimmedSurface) rts =
 					Handle(Geom_RectangularTrimmedSurface)::DownCast(surf);
-				// Šî’ê‹È–Ê‚ÌƒgƒŠƒ€‚É‚È‚Á‚Ä‚¢‚é‚Í‚¸
+				// åŸºåº•æ›²é¢ã®ãƒˆãƒªãƒ ã«ãªã£ã¦ã„ã‚‹ã¯ãš
 				rts->BasisSurface();
 			}else if( surf->IsKind( STANDARD_TYPE(Geom_ElementarySurface) ) ){
 				if( surf->IsKind( STANDARD_TYPE(Geom_ConicalSurface) ) ){

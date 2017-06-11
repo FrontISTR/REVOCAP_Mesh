@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : FramedPlane                                             #
@@ -28,8 +28,8 @@
 #include "Geometry/kmbGeometry3D.h"
 #include "Geometry/kmbGeometry2D.h"
 
-// •½–Êã‚É (u,v) À•W‚ğ’è‹`‚µ‚½‚à‚Ì
-// Œ´“_‚Í (0,0,0) ‚ÌË‰e‚Æ‚·‚é
+// å¹³é¢ä¸Šã« (u,v) åº§æ¨™ã‚’å®šç¾©ã—ãŸã‚‚ã®
+// åŸç‚¹ã¯ (0,0,0) ã®å°„å½±ã¨ã™ã‚‹
 
 namespace kmb{
 
@@ -39,21 +39,21 @@ public:
 	FramedPlane(const double a0,const double b0,const double c0,const double d0);
 	FramedPlane(const Point3D &o,const Vector3D &v0,const Vector3D &v1);
 	virtual ~FramedPlane(void);
-	// origin ‚ğŒ´“_‚Æ‚·‚é‚æ‚¤‚È UV À•W‚ğ•Ô‚·
+	// origin ã‚’åŸç‚¹ã¨ã™ã‚‹ã‚ˆã†ãª UV åº§æ¨™ã‚’è¿”ã™
 	Point2D transformTo2D(const Point3D &point) const;
 	Point3D transformTo3D(const Point2D &point) const;
 	Point3D transformTo3D(double u,double v) const;
-	// UV À•W‚ÌŠî’êƒxƒNƒgƒ‹‚ğ‰ñ“]‚·‚é
+	// UV åº§æ¨™ã®åŸºåº•ãƒ™ã‚¯ãƒˆãƒ«ã‚’å›è»¢ã™ã‚‹
 	void rotateUVBase(const double angle);
-	// Œ´“_‚ÌˆÚ“®
+	// åŸç‚¹ã®ç§»å‹•
 	void setOrigin(const Point3D& point);
 	void setOrigin(double x,double y,double z);
 	void getOrigin(Point3D& point) const;
 	// origin = origin + s * normal
 	void slideOrigin(double s);
-	// –@ü‚Ì•ÏX
+	// æ³•ç·šã®å¤‰æ›´
 	bool setNormal(double a,double b,double c);
-	// ƒ‰ƒWƒAƒ“
+	// ãƒ©ã‚¸ã‚¢ãƒ³
 	void setNormalPolar(double phi,double theta);
 	// -PI <= phi <= PI
 	// 0 <= theta <= PI
@@ -61,7 +61,7 @@ public:
 protected:
 	void initUVBase(void);
 private:
-	// normal, n0, n1 ‚ª‚±‚Ì‡”Ô‚Å³‹K’¼ŒğŠî’ê
+	// normal, n0, n1 ãŒã“ã®é †ç•ªã§æ­£è¦ç›´äº¤åŸºåº•
 	Point3D origin;
 	Vector3D n0;
 	Vector3D n1;

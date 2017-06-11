@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Geometry                                                #
@@ -80,8 +80,8 @@ kmb::Permutation::isFinished(void) const
 	return ( seq == NULL );
 }
 
-// ÅŒã‚Ì‚à‚Ì‚ğ next ‚·‚é‚Æ
-// seq = NULL ‚É‚·‚é
+// æœ€å¾Œã®ã‚‚ã®ã‚’ next ã™ã‚‹ã¨
+// seq = NULL ã«ã™ã‚‹
 bool
 kmb::Permutation::nextPerm(int i)
 {
@@ -94,7 +94,7 @@ kmb::Permutation::nextPerm(int i)
 			}
 			return nextPerm(i-1);
 		}
-		// 0 ‚©‚ç i-1 Œ…–Ú‚Åg‚í‚ê‚Ä‚¢‚½‚ç true;
+		// 0 ã‹ã‚‰ i-1 æ¡ç›®ã§ä½¿ã‚ã‚Œã¦ã„ãŸã‚‰ true;
 		bool* temp = new bool[n];
 		for(int j=0;j<n;++j){
 			temp[j] = false;
@@ -102,7 +102,7 @@ kmb::Permutation::nextPerm(int i)
 		for(int j=0;j<i;++j){
 			temp[ seq[j] ] = true;
 		}
-		// i Œ…–Ú‚ğ 0 ‚©‚ç i-1 Œ…–Ú‚Åg‚í‚ê‚Ä‚¢‚È‚¢”‚É‘‚â‚·
+		// i æ¡ç›®ã‚’ 0 ã‹ã‚‰ i-1 æ¡ç›®ã§ä½¿ã‚ã‚Œã¦ã„ãªã„æ•°ã«å¢—ã‚„ã™
 		bool flag = false;
 		for(int j=0;j<n;++j){
 			if( temp[j] == false && j > seq[i] ){
@@ -112,12 +112,12 @@ kmb::Permutation::nextPerm(int i)
 				break;
 			}
 		}
-		// ‘‚â‚¹‚È‚©‚Á‚½‚Æ‚«
+		// å¢—ã‚„ã›ãªã‹ã£ãŸã¨ã
 		if( !flag ){
 			delete[] temp;
 			return nextPerm(i-1);
 		}
-		// i+1 Œ…–ÚˆÈ‰º‚ğ‹ó‚¢‚Ä‚¢‚é”‚Å–„‚ß‚é
+		// i+1 æ¡ç›®ä»¥ä¸‹ã‚’ç©ºã„ã¦ã„ã‚‹æ•°ã§åŸ‹ã‚ã‚‹
 		++i;
 		if( i < k ){
 			for(int j=0;j<n;++j){

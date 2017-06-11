@@ -42,23 +42,23 @@
 /********************************************************************************
 =begin
 
-=== 1���l�ʑ̗v�f (TETRAHEDRON)
+=== 1次四面体要素 (TETRAHEDRON)
 
-�ڑ��s��
+接続行列
 
 	{ 0, 1, 1, 1},
 	{ 1, 0, 1, 1},
 	{ 1, 1, 0, 1},
 	{ 1, 1, 1, 0}
 
-��
+面
 
 	{ 1, 2, 3},
 	{ 0, 3, 2},
 	{ 0, 1, 3},
 	{ 0, 2, 1}
 
-��
+辺
 
 	{ 1, 2},
 	{ 0, 2},
@@ -69,7 +69,7 @@
 
 =end
 
-�`��֐� : [s,t,u] ��Ԃł̌��������킹�邽�߂ɁA���Ԓ���
+形状関数 : [s,t,u] 空間での向きを合わせるために、順番注意
 0 <= s && 0 <= t && 0 <= u && s+t+u < 1.0
 0 : 1-s-t-u   => (s,t,u) = ( 0, 0, 0)
 1 : s         => (s,t,u) = ( 1, 0, 0)
@@ -79,8 +79,8 @@
 *********************************************************************************/
 const int kmb::Tetrahedron::nodeCount = 4;
 
-// �ʂ��\������O�p�`�̓Y�����ԍ�
-// �O�����猩�č���肪��
+// 面を構成する三角形の添え字番号
+// 外側から見て左回りが正
 //   1 2 3
 // 0   3 2
 // 0 1   3
@@ -116,13 +116,13 @@ bool
 kmb::Tetrahedron::isEquivalent(int index[4])
 {
 	const int len = kmb::Element::getNodeCount(kmb::TETRAHEDRON);
-	// �u������Ȃ����͖������ɂ���
+	// 置換じゃない時は無条件にだめ
 	for(int i=0;i<len;++i){
 		if(index[i] < 0 || len <= index[i]){
 			return false;
 		}
 	}
-	// connection matrix �������Ȃ炢�����Ƃɂ���
+	// connection matrix が同じならいいことにする
 	for(int i=0;i<len;++i){
 		for(int j=0;j<len;++j){
 			if( kmb::Tetrahedron::connectionTable[i][j]
@@ -159,6 +159,16 @@ kmb::Tetrahedron::Tetrahedron(kmb::nodeIdType *ary)
 
 kmb::Tetrahedron::~Tetrahedron(void)
 {
+}
+
+kmb::nodeIdType kmb::Tetrahedron::operator()(const int index,const int i) const
+{
+	return cell[kmb::Tetrahedron::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Tetrahedron::operator()(const int index,const int i)
+{
+	return cell[kmb::Tetrahedron::faceTable[index][i]];
 }
 
 void

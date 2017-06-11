@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Curve2D                                                 #
@@ -21,20 +21,20 @@ namespace kmb{
 class Curve2D
 {
 protected:
-	// getNearest ‚Ìˆ—‚É‚¨‚¯‚éè‡’l
+	// getNearest ã®å‡¦ç†ã«ãŠã‘ã‚‹é–¾å€¤
 	double epsilon;
 	int iterMax;
 public:
 	Curve2D(void);
 	virtual ~Curve2D(void);
-	// ’è‹`ˆæ‚ÌŠO‚È‚ç‚Î false ‚ğ•Ô‚·
+	// å®šç¾©åŸŸã®å¤–ãªã‚‰ã° false ã‚’è¿”ã™
 	virtual bool getPoint( double t, kmb::Point2D& point ) const = 0;
 	virtual void getDomain( double &min_t, double &max_t ) const = 0;
 	virtual bool isDomain( double t ) const = 0;
 	virtual bool getDerivative( double t, kmb::Vector2D& tangent ) const;
 	virtual bool getSecondDerivative( double t, kmb::Vector2D& tangent ) const;
-	// point ‚É‚à‚Á‚Æ‚à‹ß‚¢ ‹Èüã‚Ì“_‚ğ‹‚ß‚é
-	// newton –@‚ªû‘©‚µ‚È‚©‚Á‚½‚Æ‚«‚Í false ‚ğ•Ô‚·
+	// point ã«ã‚‚ã£ã¨ã‚‚è¿‘ã„ æ›²ç·šä¸Šã®ç‚¹ã‚’æ±‚ã‚ã‚‹
+	// newton æ³•ãŒåæŸã—ãªã‹ã£ãŸã¨ãã¯ false ã‚’è¿”ã™
 	virtual bool getNearest( const kmb::Point2D& point, double& t ) const;
 
 	double getEpsilon(void) const;

@@ -38,8 +38,12 @@ public:
 	Tetrahedron(kmb::nodeIdType *ary);
 	virtual ~Tetrahedron(void);
 
-	// Œü‚«‚ğ–³‹‚µ‚Äß“_”Ô†‡‚ª“¯‚¶}Œ`‚ğ‚ ‚ç‚í‚·‚©
-	// index ‚Í 0 ‚©‚ç 3 ‚Ü‚Å‚Ì®”‚Ì’uŠ·
+public:
+	static const int connectionTable[4][4];
+	static const int faceTable[4][4];
+	static const int edgeTable[6][2];
+	// å‘ãã‚’ç„¡è¦–ã—ã¦ç¯€ç‚¹ç•ªå·é †ãŒåŒã˜å›³å½¢ã‚’ã‚ã‚‰ã‚ã™ã‹
+	// index ã¯ 0 ã‹ã‚‰ 3 ã¾ã§ã®æ•´æ•°ã®ç½®æ›
 	static bool isEquivalent(int index[4]);
 
 	static void shapeFunction(double s,double t,double u,double* coeff);
@@ -48,9 +52,9 @@ public:
 
 	static double checkShapeFunctionDomain(double s,double t,double u);
 
-	static const int connectionTable[4][4];
-	static const int faceTable[4][4];
-	static const int edgeTable[6][2];
+
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 };
 
 }

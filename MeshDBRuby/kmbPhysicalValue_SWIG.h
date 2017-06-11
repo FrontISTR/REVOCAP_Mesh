@@ -25,9 +25,9 @@
 ----------------------------------------------------------------------*/
 #pragma once
 /**
- * �����ʂ̏����Ɋւ��� Ruby �g�����C�u�����݂̂Ŏg����֐��Q
- * meshdb.i �ɏ����Ă��܂��� SWIG �����O��ς��Ă��܂�
- * �N���X�̃��\�b�h�Ƃ��Ē�`����ƁARuby �g�����C�u�����łƒʏ�ł� sizeof �̒l���ς���Ă��܂�����
+ * 物理量の処理に関する Ruby 拡張ライブラリのみで使われる関数群
+ * meshdb.i に書いてしまうと SWIG が名前を変えてしまう
+ * クラスのメソッドとして定義すると、Ruby 拡張ライブラリ版と通常版の sizeof の値が変わってしまうため
  */
 #include <math.h>
 #include <float.h>
@@ -368,7 +368,7 @@ kmb::PhysicalValue* createFromVALUE(VALUE v)
 		case T_HASH:
 		{
 			VALUE ary = rb_ary_new();
-			// ����� ary �� key �����ׂē���
+			// これで ary に key がすべて入る
 			rb_iterate( rb_each, v, (VALUE(*)(...))appendKeys, ary );
 			const int len = RARRAY_LEN(ary);
 			if( len > 0 ){

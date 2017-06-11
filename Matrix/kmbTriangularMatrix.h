@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : UpperTriangularMatrix, LowerTriangularMatrix            #
@@ -18,12 +18,12 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 namespace kmb{
@@ -37,24 +37,24 @@ public:
 	virtual ~UpperTriangularMatrix(void){};
 	virtual bool solve(const kmb::ColumnVector &b, kmb::ColumnVector &x) const;
 	virtual double determinant(void) const;
-	// ‰½‚à‚µ‚È‚¢‚æ‚¤‚É‚·‚éiUpperTriangular‚Å‚È‚­‚È‚Á‚Ä‚µ‚Ü‚¤‚½‚ßj
+	// ä½•ã‚‚ã—ãªã„ã‚ˆã†ã«ã™ã‚‹ï¼ˆUpperTriangularã§ãªããªã£ã¦ã—ã¾ã†ãŸã‚ï¼‰
 	virtual bool transpose(void);
 	virtual bool row_exchange(int i0,int i1);
 	virtual bool row_transf(int i0,int i1,double r);
-	// ãOŠp¬•ª‚Æ‚Ì“àÏi‘ÎŠp¬•ª‚ğ–³‹j
+	// ä¸Šä¸‰è§’æˆåˆ†ã¨ã®å†…ç©ï¼ˆå¯¾è§’æˆåˆ†ã‚’ç„¡è¦–ï¼‰
 	virtual double rowProduct_upper(int i, const kmb::ColumnVector &vec) const;
-	// ‘ÎŠp¬•ª
+	// å¯¾è§’æˆåˆ†
 	virtual double getDiagonal(int i) const;
 };
 
-// ‘ÎŠp¬•ª‚ª 1.0 ‚Å‚ ‚é‚±‚Æ‚ğ•ÛØ‚³‚ê‚Ä‚¢‚éãOŠps—ñ
+// å¯¾è§’æˆåˆ†ãŒ 1.0 ã§ã‚ã‚‹ã“ã¨ã‚’ä¿è¨¼ã•ã‚Œã¦ã„ã‚‹ä¸Šä¸‰è§’è¡Œåˆ—
 class UpperTriangularDiagonalUnitMatrix : public UpperTriangularMatrix
 {
 public:
 	UpperTriangularDiagonalUnitMatrix(int size) : UpperTriangularMatrix(size){};
 	virtual ~UpperTriangularDiagonalUnitMatrix(void){};
 	virtual bool solve(const kmb::ColumnVector &b, kmb::ColumnVector &x) const;
-	// ‘ÎŠp¬•ª
+	// å¯¾è§’æˆåˆ†
 	virtual double getDiagonal(int i) const;
 };
 
@@ -93,13 +93,13 @@ public:
 	virtual ~LowerTriangularMatrix(void){};
 	virtual bool solve(const kmb::ColumnVector &b, kmb::ColumnVector &x) const;
 	virtual double determinant(void) const;
-	// ‰½‚à‚µ‚È‚¢‚æ‚¤‚É‚·‚éiLowerTriangular‚Å‚È‚­‚È‚Á‚Ä‚µ‚Ü‚¤‚½‚ßj
+	// ä½•ã‚‚ã—ãªã„ã‚ˆã†ã«ã™ã‚‹ï¼ˆLowerTriangularã§ãªããªã£ã¦ã—ã¾ã†ãŸã‚ï¼‰
 	virtual bool transpose(void);
 	virtual bool row_exchange(int i0,int i1);
 	virtual bool row_transf(int i0,int i1,double r);
-	// ‰ºOŠp¬•ª‚Æ‚Ì“àÏi‘ÎŠp¬•ª‚ğ–³‹j
+	// ä¸‹ä¸‰è§’æˆåˆ†ã¨ã®å†…ç©ï¼ˆå¯¾è§’æˆåˆ†ã‚’ç„¡è¦–ï¼‰
 	virtual double rowProduct_lower(int i, const kmb::ColumnVector &vec) const;
-	// ‘ÎŠp¬•ª
+	// å¯¾è§’æˆåˆ†
 	virtual double getDiagonal(int i) const;
 };
 

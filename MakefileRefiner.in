@@ -1,0 +1,38 @@
+Refiner: force
+	OPENCASCADEFLAG=
+	cd Common && $(MAKE) static
+	cd Matrix && $(MAKE) static
+	cd Geometry && $(MAKE) static
+	cd MeshDB && $(MAKE) static
+	cd MeshGen && $(MAKE) static
+	cd RevocapIO && $(MAKE) static
+	cd Shape && $(MAKE) static
+	cd Refiner && $(MAKE) static
+	cd Refiner && $(MAKE) preFitting
+
+RefinerSampleC: force
+	cd Refiner && $(MAKE) sampleC
+	cd Refiner && $(MAKE) sampleMultiStage
+	cd Refiner && $(MAKE) sampleNodeVariable
+	cd Refiner && $(MAKE) sampleTetra
+	cd Refiner && $(MAKE) sampleHexa
+	cd Refiner && $(MAKE) sampleHexa2
+	cd Refiner && $(MAKE) sampleMultiByType
+	cd Refiner && $(MAKE) sampleMultiType
+	cd Refiner && $(MAKE) sampleFitting
+
+RefinerSampleF: force
+	cd Refiner && $(MAKE) sampleF
+
+RefinerDoc: force
+	cd Refiner && $(MAKE) doc
+
+RefinerClean:
+	cd Common && $(MAKE) clean
+	cd Matrix && $(MAKE) clean
+	cd Geometry && $(MAKE) clean
+	cd MeshDB && $(MAKE) clean
+	cd MeshGen && $(MAKE) clean
+	cd RevocapIO && $(MAKE) clean
+	cd Shape && $(MAKE) clean
+	cd Refiner && $(MAKE) clean

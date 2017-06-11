@@ -27,12 +27,12 @@
 =begin
 =RevocapGL::MeshGL
 
-==ŠT—v
+==æ¦‚è¦
 
-RevocapMesh::MeshDB ‚ÉŠi”[‚³‚ê‚½ƒƒbƒVƒ…ƒf[ƒ^‚ğ
-OpenGL ‚Å‚‘¬‚É•`‰æ‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX‚Å‚ ‚éB
+RevocapMesh::MeshDB ã«æ ¼ç´ã•ã‚ŒãŸãƒ¡ãƒƒã‚·ãƒ¥ãƒ‡ãƒ¼ã‚¿ã‚’
+OpenGL ã§é«˜é€Ÿã«æç”»ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã§ã‚ã‚‹ã€‚
 
-==ƒƒ\ƒbƒhˆê——
+==ãƒ¡ã‚½ãƒƒãƒ‰ä¸€è¦§
 
 ((<MeshGL.new>))
 ((<setPreferenceMode>))
@@ -90,13 +90,13 @@ class MeshGL
 public:
 /**--------------------------------------------------------------------------
 =begin
-==ƒƒ\ƒbƒh
+==ãƒ¡ã‚½ãƒƒãƒ‰
 --- MeshGL.new(listSize=1)
-	ƒƒbƒVƒ…ê—p•`‰æƒNƒ‰ƒX MeshGL ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬‚·‚éB
-	listSize ‚Í display ƒƒ\ƒbƒh‚ÌÅŒã‚Ìˆø”‚Å—^‚¦‚ç‚ê‚é listIndex ‚ÌŒÂ”‚ğ•\‚·B
-	“à•”‚ÌÀ‘•‚Å‚Í listSize ŒÂ•ª‚Ì OpenGL ‚Ì DisplayList ‚ğŠo‚¦‚Ä‚¨‚­‚±‚Æ‚ğ‰Â”\‚É‚·‚éB
-	“¯‚¶Œ`ó‚Ì•\¦‚ğˆÙ‚È‚éƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚És‚¢A‚»‚ê‚¼‚ê‚Å Cache ‚µ‚½‚¢ê‡‚Í
-	listSize ‚ğƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚ÌŒÂ”•ª—^‚¦‚éB
+	ãƒ¡ãƒƒã‚·ãƒ¥å°‚ç”¨æç”»ã‚¯ãƒ©ã‚¹ MeshGL ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã™ã‚‹ã€‚
+	listSize ã¯ display ãƒ¡ã‚½ãƒƒãƒ‰ã®æœ€å¾Œã®å¼•æ•°ã§ä¸ãˆã‚‰ã‚Œã‚‹ listIndex ã®å€‹æ•°ã‚’è¡¨ã™ã€‚
+	å†…éƒ¨ã®å®Ÿè£…ã§ã¯ listSize å€‹åˆ†ã® OpenGL ã® DisplayList ã‚’è¦šãˆã¦ãŠãã“ã¨ã‚’å¯èƒ½ã«ã™ã‚‹ã€‚
+	åŒã˜å½¢çŠ¶ã®è¡¨ç¤ºã‚’ç•°ãªã‚‹ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã«è¡Œã„ã€ãã‚Œãã‚Œã§ Cache ã—ãŸã„å ´åˆã¯
+	listSize ã‚’ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®å€‹æ•°åˆ†ä¸ãˆã‚‹ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	MeshGL(size_t listSize=1);
@@ -104,13 +104,13 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- setPreferenceMode(mode)
-	•`‰æ‚Ì—Dæƒ‚[ƒh‚ğİ’è‚·‚é
-	Œ»İİ’è‰Â”\‚È‚Ì‚Í
-	- "PRECISION" ¸“x—Dæƒ‚[ƒh
-	- "SPEED" ‘¬“x—Dæƒ‚[ƒh
-	‚Å‚ ‚é
+	æç”»ã®å„ªå…ˆãƒ¢ãƒ¼ãƒ‰ã‚’è¨­å®šã™ã‚‹
+	ç¾åœ¨è¨­å®šå¯èƒ½ãªã®ã¯
+	- "PRECISION" ç²¾åº¦å„ªå…ˆãƒ¢ãƒ¼ãƒ‰
+	- "SPEED" é€Ÿåº¦å„ªå…ˆãƒ¢ãƒ¼ãƒ‰
+	ã§ã‚ã‚‹
 --- getPreferenceMode
-	Œ»İ‚Ì•`‰æ‚Ì—Dæƒ‚[ƒh‚ğæ“¾‚·‚é
+	ç¾åœ¨ã®æç”»ã®å„ªå…ˆãƒ¢ãƒ¼ãƒ‰ã‚’å–å¾—ã™ã‚‹
 =end
 ---------------------------------------------------------------------------*/
 %extend{
@@ -135,8 +135,8 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- clearCache
-	•`‰æ—p‚ÌƒLƒƒƒbƒVƒ…‚ğƒNƒŠƒA‚·‚éB
-	À‘•‚Í display list ‚Ìíœ‚Å‚ ‚éB
+	æç”»ç”¨ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹ã€‚
+	å®Ÿè£…ã¯ display list ã®å‰Šé™¤ã§ã‚ã‚‹ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	void clearCache(void);
@@ -144,19 +144,19 @@ public:
 =begin
 --- display(mesh,updateFlag,listIndex=0)
 --- display(listIndex=0)
-	ƒuƒƒbƒN‚ğ’è‹`‚µ‚ÄA‚»‚ÌƒuƒƒbƒN“à‚Å‚Ì GL ‚Ì–½—ß‚ğ DisplayList ‚É“o˜^E•`‰æ‚·‚éB
-	Šù‚É DisplayList ‚É“o˜^Ï‚İ‚Ìê‡‚Í‚»‚Ìƒf[ƒ^‚ğ•`‰æ‚·‚éB
-	“o˜^‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«‚ÍAˆê’UƒuƒƒbƒN“à‚Ì–½—ß‚ğ DisplayList ‚É“o˜^‚µ‚Ä‚©‚ç•`‰æ‚·‚éB
-	–ß‚è’l‚Í³í‚É•`‰æ‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ•Ô‚·B
-	listIndex ‚Ì’l‚Í MeshGL ‚ª•¡”‚Ì Cache (= Display List) ‚ğŠÇ—‚·‚éê‡‚ÉA
-	‚Ç‚Ì Cache ‚ğg‚¤‚©‚ğ‘I‘ğ‚·‚éB-1 ‚ğ—^‚¦‚é‚Æ Cache ‚ğg‚í‚¸‚ÉƒuƒƒbƒN“à‚ğ‚»‚Ì‚Ü‚ÜÀs‚·‚éB
-	—áF
+	ãƒ–ãƒ­ãƒƒã‚¯ã‚’å®šç¾©ã—ã¦ã€ãã®ãƒ–ãƒ­ãƒƒã‚¯å†…ã§ã® GL ã®å‘½ä»¤ã‚’ DisplayList ã«ç™»éŒ²ãƒ»æç”»ã™ã‚‹ã€‚
+	æ—¢ã« DisplayList ã«ç™»éŒ²æ¸ˆã¿ã®å ´åˆã¯ãã®ãƒ‡ãƒ¼ã‚¿ã‚’æç”»ã™ã‚‹ã€‚
+	ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã¨ãã¯ã€ä¸€æ—¦ãƒ–ãƒ­ãƒƒã‚¯å†…ã®å‘½ä»¤ã‚’ DisplayList ã«ç™»éŒ²ã—ã¦ã‹ã‚‰æç”»ã™ã‚‹ã€‚
+	æˆ»ã‚Šå€¤ã¯æ­£å¸¸ã«æç”»ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’è¿”ã™ã€‚
+	listIndex ã®å€¤ã¯ MeshGL ãŒè¤‡æ•°ã® Cache (= Display List) ã‚’ç®¡ç†ã™ã‚‹å ´åˆã«ã€
+	ã©ã® Cache ã‚’ä½¿ã†ã‹ã‚’é¸æŠã™ã‚‹ã€‚-1 ã‚’ä¸ãˆã‚‹ã¨ Cache ã‚’ä½¿ã‚ãšã«ãƒ–ãƒ­ãƒƒã‚¯å†…ã‚’ãã®ã¾ã¾å®Ÿè¡Œã™ã‚‹ã€‚
+	ä¾‹ï¼š
 	 meshGL.display{
 	   meshGL.setMesh( mesh )
 	   meshGL.drawFaceGroup("face_0")
 	 }
-	Display List ‚ğì‚è’¼‚·ê‡idisplay ‚ÌƒuƒƒbƒN“à‚ªXV‚³‚ê‚½ê‡j‚ÍAMeshGL ‚Ì update ƒƒ\ƒbƒh‚ğ
-	ŒÄ‚Ño‚·
+	Display List ã‚’ä½œã‚Šç›´ã™å ´åˆï¼ˆdisplay ã®ãƒ–ãƒ­ãƒƒã‚¯å†…ãŒæ›´æ–°ã•ã‚ŒãŸå ´åˆï¼‰ã¯ã€MeshGL ã® update ãƒ¡ã‚½ãƒƒãƒ‰ã‚’
+	å‘¼ã³å‡ºã™
 =end
 ---------------------------------------------------------------------------*/
 %extend{
@@ -211,7 +211,7 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- update
-	Ÿ‰ñ•`‰æ‚·‚éƒ^ƒCƒ~ƒ“ƒO‚Å Display List ‚ğì‚è’¼‚·
+	æ¬¡å›æç”»ã™ã‚‹ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§ Display List ã‚’ä½œã‚Šç›´ã™
 =end
 ---------------------------------------------------------------------------*/
 
@@ -220,7 +220,7 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- getLists
-	Œ»İ—˜—p‚µ‚Ä‚¢‚é DisplayList ‚Ì Index ‚ğ”z—ñ‚Å•Ô‚·B
+	ç¾åœ¨åˆ©ç”¨ã—ã¦ã„ã‚‹ DisplayList ã® Index ã‚’é…åˆ—ã§è¿”ã™ã€‚
 =end
 ---------------------------------------------------------------------------*/
 %extend{
@@ -236,16 +236,16 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 ---setMesh(mesh)
-	•`‰æ‚Ì‘ÎÛ‚Æ‚È‚é MeshDB ‚ÌƒIƒuƒWƒFƒNƒg‚ğw’è‚·‚éB
+	æç”»ã®å¯¾è±¡ã¨ãªã‚‹ MeshDB ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æŒ‡å®šã™ã‚‹ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	void setMesh(kmb::MeshData* mesh);
 /**--------------------------------------------------------------------------
 =begin
 ---drawEdge(bodyId)
-	ƒGƒbƒW‚ğ•\¦‚·‚éB‚PŸŒ³—v‘f‚©‚ç‚È‚é Body ‚Ì BodyId ‚ğ—^‚¦‚éB
+	ã‚¨ãƒƒã‚¸ã‚’è¡¨ç¤ºã™ã‚‹ã€‚ï¼‘æ¬¡å…ƒè¦ç´ ã‹ã‚‰ãªã‚‹ Body ã® BodyId ã‚’ä¸ãˆã‚‹ã€‚
 ---drawEdgeWithScale(bodyId,x,y,z,scale)
-	ƒGƒbƒW‚ğ (x,y,z) ‚ğ’†S‚É scale ”{‚µ‚Ä•`‰æ‚·‚éB
+	ã‚¨ãƒƒã‚¸ã‚’ (x,y,z) ã‚’ä¸­å¿ƒã« scale å€ã—ã¦æç”»ã™ã‚‹ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	void drawEdge(kmb::bodyIdType bodyId);
@@ -254,9 +254,9 @@ public:
 =begin
 ---drawSurface(bodyId)
 ---drawSurface2D(bodyId)
-	ƒT[ƒtƒFƒX‚ğ•\¦‚·‚éB‚QŸŒ³—v‘f‚©‚ç‚È‚é Body ‚Ì BodyId ‚ğ—^‚¦‚éB
+	ã‚µãƒ¼ãƒ•ã‚§ã‚¹ã‚’è¡¨ç¤ºã™ã‚‹ã€‚ï¼’æ¬¡å…ƒè¦ç´ ã‹ã‚‰ãªã‚‹ Body ã® BodyId ã‚’ä¸ãˆã‚‹ã€‚
 ---drawFaceGroup(faceName)
-	ã‹L‚Æ“¯—l‚É bodyId ‚Ì‘ã‚í‚è‚É faceName ‚ğ—^‚¦‚Ä•`‰æ‚·‚éB
+	ä¸Šè¨˜ã¨åŒæ§˜ã« bodyId ã®ä»£ã‚ã‚Šã« faceName ã‚’ä¸ãˆã¦æç”»ã™ã‚‹ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	void drawSurface(kmb::bodyIdType bodyId);
@@ -265,18 +265,18 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 ---drawAllNodes(r=-1.0)
-    ƒƒbƒVƒ…‚É“o˜^‚³‚ê‚Ä‚¢‚é‚·‚×‚Ä‚Ìß“_‚ğ•\¦‚·‚éB
-    r <= 0.0 ‚Ì‚Í glVertex ‚Å•`‰æ‚·‚éB“_‚Ì‘å‚«‚³‚Í‚ ‚ç‚©‚¶‚ß glPointSize ‚Åw’è‚·‚éB
-    r > 0.0 ‚Ì‚Í gluSphere ‚Å•`‰æ‚·‚éB
+    ãƒ¡ãƒƒã‚·ãƒ¥ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã™ã¹ã¦ã®ç¯€ç‚¹ã‚’è¡¨ç¤ºã™ã‚‹ã€‚
+    r <= 0.0 ã®æ™‚ã¯ glVertex ã§æç”»ã™ã‚‹ã€‚ç‚¹ã®å¤§ãã•ã¯ã‚ã‚‰ã‹ã˜ã‚ glPointSize ã§æŒ‡å®šã™ã‚‹ã€‚
+    r > 0.0 ã®æ™‚ã¯ gluSphere ã§æç”»ã™ã‚‹ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	void drawAllNodes(double r);
 /**--------------------------------------------------------------------------
 =begin
 ---drawSurfaceContour(bodyId,name,colormap)
-	MeshDB ‚É name ‚Æ‚¢‚¤–¼‘O‚ÅŠi”[‚³‚ê‚Ä‚¢‚é•¨——ÊiElementVariable ƒ‚[ƒhAScalar ’lj
-	‚É‘Î‚µ‚ÄAcolormap ‚Å’è‹`‚³‚ê‚½F‚Ã‚¯•û–@‚É‚æ‚Á‚ÄA‚»‚ê‚¼‚ê‚Ì—v‘f‚É
-	“¯‚¶F‚ğ‚Â‚¯‚é‚±‚Æ‚ÅAƒJƒ‰[ƒRƒ“ƒ^[•\¦‚ğs‚¤B
+	MeshDB ã« name ã¨ã„ã†åå‰ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡ï¼ˆElementVariable ãƒ¢ãƒ¼ãƒ‰ã€Scalar å€¤ï¼‰
+	ã«å¯¾ã—ã¦ã€colormap ã§å®šç¾©ã•ã‚ŒãŸè‰²ã¥ã‘æ–¹æ³•ã«ã‚ˆã£ã¦ã€ãã‚Œãã‚Œã®è¦ç´ ã«
+	åŒã˜è‰²ã‚’ã¤ã‘ã‚‹ã“ã¨ã§ã€ã‚«ãƒ©ãƒ¼ã‚³ãƒ³ã‚¿ãƒ¼è¡¨ç¤ºã‚’è¡Œã†ã€‚
 =end
 ---------------------------------------------------------------------------*/
   void drawSurfaceContour(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
@@ -284,22 +284,22 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 ---drawFaceGeoupContour(facename,name,colormap,comp=-1)
-	MeshDB ‚É name ‚Æ‚¢‚¤–¼‘O‚ÅŠi”[‚³‚ê‚Ä‚¢‚é•¨——ÊiElementVariable ƒ‚[ƒhAInteger ’lj
-	‚É‘Î‚µ‚ÄAcolormap ‚Å’è‹`‚³‚ê‚½F‚Ã‚¯•û–@‚É‚æ‚Á‚ÄA‚»‚ê‚¼‚ê‚Ì—v‘f‚É
-	“¯‚¶F‚ğ‚Â‚¯‚é‚±‚Æ‚ÅAfacename ‚Ì FaceGroup ‚ÌƒJƒ‰[ƒRƒ“ƒ^[•\¦‚ğs‚¤B
+	MeshDB ã« name ã¨ã„ã†åå‰ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡ï¼ˆElementVariable ãƒ¢ãƒ¼ãƒ‰ã€Integer å€¤ï¼‰
+	ã«å¯¾ã—ã¦ã€colormap ã§å®šç¾©ã•ã‚ŒãŸè‰²ã¥ã‘æ–¹æ³•ã«ã‚ˆã£ã¦ã€ãã‚Œãã‚Œã®è¦ç´ ã«
+	åŒã˜è‰²ã‚’ã¤ã‘ã‚‹ã“ã¨ã§ã€facename ã® FaceGroup ã®ã‚«ãƒ©ãƒ¼ã‚³ãƒ³ã‚¿ãƒ¼è¡¨ç¤ºã‚’è¡Œã†ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	void drawFaceGroupContour(const char* faceName, const char* physicalValue, kmb::ColorMap* colorMap,int comp=-1);
 /**--------------------------------------------------------------------------
 =begin
 ---drawSurfaceNodeContour(bodyId,name,colormap,comp=-1)
-	MeshDB ‚É name ‚Æ‚¢‚¤–¼‘O‚ÅŠi”[‚³‚ê‚Ä‚¢‚é•¨——ÊiNodeVariable ƒ‚[ƒhAScalar ’lj
-	‚É‘Î‚µ‚ÄAcolormap ‚Å’è‹`‚³‚ê‚½F‚Ã‚¯•û–@‚É‚æ‚Á‚ÄAƒJƒ‰[ƒRƒ“ƒ^[•\¦‚ğs‚¤B
-	colormap ‚Ì smoothness ‚ª SOLID ‚Ì‚Æ‚«‚É‚ÍA‚»‚ê‚¼‚ê‚Ì—v‘f‚ğ“¯‚¶F‚Ì•‚Å•ªŠ„‚µ‚Ä
-	F‚ğ‚Â‚¯‚éBSMOOTH ‚Ì‚Æ‚«‚É‚Í’¸“_‚²‚Æ‚ÉF‚ğ—^‚¦‚ÄAƒuƒŒƒ“ƒh‚Í OpenGL ‚É”C‚¹‚éB
+	MeshDB ã« name ã¨ã„ã†åå‰ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡ï¼ˆNodeVariable ãƒ¢ãƒ¼ãƒ‰ã€Scalar å€¤ï¼‰
+	ã«å¯¾ã—ã¦ã€colormap ã§å®šç¾©ã•ã‚ŒãŸè‰²ã¥ã‘æ–¹æ³•ã«ã‚ˆã£ã¦ã€ã‚«ãƒ©ãƒ¼ã‚³ãƒ³ã‚¿ãƒ¼è¡¨ç¤ºã‚’è¡Œã†ã€‚
+	colormap ã® smoothness ãŒ SOLID ã®ã¨ãã«ã¯ã€ãã‚Œãã‚Œã®è¦ç´ ã‚’åŒã˜è‰²ã®å¹…ã§åˆ†å‰²ã—ã¦
+	è‰²ã‚’ã¤ã‘ã‚‹ã€‚SMOOTH ã®ã¨ãã«ã¯é ‚ç‚¹ã”ã¨ã«è‰²ã‚’ä¸ãˆã¦ã€ãƒ–ãƒ¬ãƒ³ãƒ‰ã¯ OpenGL ã«ä»»ã›ã‚‹ã€‚
 ---drawFaceGroupNodeContour(facename,name,colormap,comp=-1)
-	ã‹L‚Ìƒƒ\ƒbƒh‚É‚Â‚¢‚ÄAbodyId ‚Ì‘ã‚í‚è‚É‚»‚ê‚¼‚ê FaceGroup ‚Ì–¼‘O‚ğ—^‚¦‚Ä
-	ƒRƒ“ƒ^[•\¦‚ğs‚¤B
+	ä¸Šè¨˜ã®ãƒ¡ã‚½ãƒƒãƒ‰ã«ã¤ã„ã¦ã€bodyId ã®ä»£ã‚ã‚Šã«ãã‚Œãã‚Œ FaceGroup ã®åå‰ã‚’ä¸ãˆã¦
+	ã‚³ãƒ³ã‚¿ãƒ¼è¡¨ç¤ºã‚’è¡Œã†ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	void drawSurfaceNodeContour(kmb::bodyIdType bodyId,const char* physicalValue,kmb::ColorMap* colorMap,int comp=-1);
@@ -314,18 +314,18 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 ---deformSurface(bodyId,displacement,factor)
-	bodyId ‚Å—^‚¦‚ç‚ê‚é Surface ‚ğ
-	MeshDB ‚É displacement ‚Æ‚¢‚¤–¼‘O‚ÅŠi”[‚³‚ê‚Ä‚¢‚é•¨——Ê
-	iƒ‚[ƒhFNodeVariable,’lFVector3j‚É‘Î‚µ‚ÄAfactor ”{‚Å•ÏŒ`•\¦‚·‚éB
+	bodyId ã§ä¸ãˆã‚‰ã‚Œã‚‹ Surface ã‚’
+	MeshDB ã« displacement ã¨ã„ã†åå‰ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡
+	ï¼ˆãƒ¢ãƒ¼ãƒ‰ï¼šNodeVariable,å€¤ï¼šVector3ï¼‰ã«å¯¾ã—ã¦ã€factor å€ã§å¤‰å½¢è¡¨ç¤ºã™ã‚‹ã€‚
 ---deformFaceGroup(faceName,displacement,factor)
-	faceName ‚Å—^‚¦‚ç‚ê‚é FaceGroup ‚Ì face ‚ğ
-	MeshDB ‚É displacement ‚Æ‚¢‚¤–¼‘O‚ÅŠi”[‚³‚ê‚Ä‚¢‚é•¨——Ê
-	iƒ‚[ƒhFNodeVariable,’lFVector3j‚É‘Î‚µ‚ÄAfactor ”{‚Å•ÏŒ`•\¦‚·‚éB
+	faceName ã§ä¸ãˆã‚‰ã‚Œã‚‹ FaceGroup ã® face ã‚’
+	MeshDB ã« displacement ã¨ã„ã†åå‰ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡
+	ï¼ˆãƒ¢ãƒ¼ãƒ‰ï¼šNodeVariable,å€¤ï¼šVector3ï¼‰ã«å¯¾ã—ã¦ã€factor å€ã§å¤‰å½¢è¡¨ç¤ºã™ã‚‹ã€‚
 ---deformXYZFaceGroup(faceName,displacementX,displacementY,displacementZ,factor)
-	faceName ‚Å—^‚¦‚ç‚ê‚é FaceGroup ‚Ì face ‚ğ
-	MeshDB ‚É displacementX, displacementY,displacementZ ‚Æ‚¢‚¤–¼‘O‚ÅŠi”[‚³‚ê‚Ä‚¢‚é
-	•¨——Êiƒ‚[ƒhFNodeVariable,’lFScalarj‚ğ(x,y,z)À•W‚Ì•ÏŒ`—Ê‚¾‚Æ‚µ‚Ä
-	factor ”{‚Å•ÏŒ`•\¦‚·‚éB
+	faceName ã§ä¸ãˆã‚‰ã‚Œã‚‹ FaceGroup ã® face ã‚’
+	MeshDB ã« displacementX, displacementY,displacementZ ã¨ã„ã†åå‰ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹
+	ç‰©ç†é‡ï¼ˆãƒ¢ãƒ¼ãƒ‰ï¼šNodeVariable,å€¤ï¼šScalarï¼‰ã‚’(x,y,z)åº§æ¨™ã®å¤‰å½¢é‡ã ã¨ã—ã¦
+	factor å€ã§å¤‰å½¢è¡¨ç¤ºã™ã‚‹ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	void deformSurface(kmb::bodyIdType bodyId, const char* displacement, double factor);
@@ -334,30 +334,30 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 ---deformSurfaceNodeContour(bodyId,displacement,factor,nodeValue,colorMap,comp=-1)
-	bodyId ‚Å—^‚¦‚ç‚ê‚é Surface ‚ğ
-	MeshDB ‚É displacement ‚Æ‚¢‚¤–¼‘O‚ÅŠi”[‚³‚ê‚Ä‚¢‚é•¨——Ê
-	iƒ‚[ƒhFNodeVariable,’lFVector3j‚É‘Î‚µ‚ÄAfactor ”{‚Å•ÏŒ`•\¦‚·‚éB
-	MeshDB ‚É nodeValue ‚Æ‚¢‚¤–¼‘O‚ÅŠi”[‚³‚ê‚Ä‚¢‚é•¨——ÊiNodeVariable ƒ‚[ƒhj
-	‚É‘Î‚µ‚ÄAcolormap ‚Å’è‹`‚³‚ê‚½F‚Ã‚¯•û–@‚É‚æ‚Á‚ÄAcomp ¬•ª‚ÌƒJƒ‰[ƒRƒ“ƒ^[•\¦‚ğs‚¤B
+	bodyId ã§ä¸ãˆã‚‰ã‚Œã‚‹ Surface ã‚’
+	MeshDB ã« displacement ã¨ã„ã†åå‰ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡
+	ï¼ˆãƒ¢ãƒ¼ãƒ‰ï¼šNodeVariable,å€¤ï¼šVector3ï¼‰ã«å¯¾ã—ã¦ã€factor å€ã§å¤‰å½¢è¡¨ç¤ºã™ã‚‹ã€‚
+	MeshDB ã« nodeValue ã¨ã„ã†åå‰ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡ï¼ˆNodeVariable ãƒ¢ãƒ¼ãƒ‰ï¼‰
+	ã«å¯¾ã—ã¦ã€colormap ã§å®šç¾©ã•ã‚ŒãŸè‰²ã¥ã‘æ–¹æ³•ã«ã‚ˆã£ã¦ã€comp æˆåˆ†ã®ã‚«ãƒ©ãƒ¼ã‚³ãƒ³ã‚¿ãƒ¼è¡¨ç¤ºã‚’è¡Œã†ã€‚
 ---deformSurfaceContour(bodyId,displacement,factor,elementValue,colorMap,comp=-1)
-	bodyId ‚Å—^‚¦‚ç‚ê‚é Surface ‚ğ
-	MeshDB ‚É displacement ‚Æ‚¢‚¤–¼‘O‚ÅŠi”[‚³‚ê‚Ä‚¢‚é•¨——Ê
-	iƒ‚[ƒhFNodeVariable,’lFVector3j‚É‘Î‚µ‚ÄAfactor ”{‚Å•ÏŒ`•\¦‚·‚éB
-	MeshDB ‚É elementValue ‚Æ‚¢‚¤–¼‘O‚ÅŠi”[‚³‚ê‚Ä‚¢‚é•¨——ÊiElementVariable ƒ‚[ƒhj
-	‚É‘Î‚µ‚ÄAcolormap ‚Å’è‹`‚³‚ê‚½F‚Ã‚¯•û–@‚É‚æ‚Á‚ÄAcomp ¬•ª‚ÌƒJƒ‰[ƒRƒ“ƒ^[•\¦‚ğs‚¤B
+	bodyId ã§ä¸ãˆã‚‰ã‚Œã‚‹ Surface ã‚’
+	MeshDB ã« displacement ã¨ã„ã†åå‰ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡
+	ï¼ˆãƒ¢ãƒ¼ãƒ‰ï¼šNodeVariable,å€¤ï¼šVector3ï¼‰ã«å¯¾ã—ã¦ã€factor å€ã§å¤‰å½¢è¡¨ç¤ºã™ã‚‹ã€‚
+	MeshDB ã« elementValue ã¨ã„ã†åå‰ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡ï¼ˆElementVariable ãƒ¢ãƒ¼ãƒ‰ï¼‰
+	ã«å¯¾ã—ã¦ã€colormap ã§å®šç¾©ã•ã‚ŒãŸè‰²ã¥ã‘æ–¹æ³•ã«ã‚ˆã£ã¦ã€comp æˆåˆ†ã®ã‚«ãƒ©ãƒ¼ã‚³ãƒ³ã‚¿ãƒ¼è¡¨ç¤ºã‚’è¡Œã†ã€‚
 ---deformFaceGroupNodeContour(faceName,displacement,factor,nodeValue,colorMap,comp=-1)
-	faceName ‚Å—^‚¦‚ç‚ê‚é FaceGroup ‚Ì face ‚ğ
-	MeshDB ‚É displacement ‚Æ‚¢‚¤–¼‘O‚ÅŠi”[‚³‚ê‚Ä‚¢‚é•¨——Ê
-	iƒ‚[ƒhFNodeVariable,’lFVector3j‚É‘Î‚µ‚ÄAfactor ”{‚Å•ÏŒ`•\¦‚·‚éB
-	MeshDB ‚É nodeValue ‚Æ‚¢‚¤–¼‘O‚ÅŠi”[‚³‚ê‚Ä‚¢‚é•¨——ÊiNodeVariable ƒ‚[ƒhj
-	‚É‘Î‚µ‚ÄAcolormap ‚Å’è‹`‚³‚ê‚½F‚Ã‚¯•û–@‚É‚æ‚Á‚ÄAcomp ¬•ª‚ÌƒJƒ‰[ƒRƒ“ƒ^[•\¦‚ğs‚¤B
+	faceName ã§ä¸ãˆã‚‰ã‚Œã‚‹ FaceGroup ã® face ã‚’
+	MeshDB ã« displacement ã¨ã„ã†åå‰ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡
+	ï¼ˆãƒ¢ãƒ¼ãƒ‰ï¼šNodeVariable,å€¤ï¼šVector3ï¼‰ã«å¯¾ã—ã¦ã€factor å€ã§å¤‰å½¢è¡¨ç¤ºã™ã‚‹ã€‚
+	MeshDB ã« nodeValue ã¨ã„ã†åå‰ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡ï¼ˆNodeVariable ãƒ¢ãƒ¼ãƒ‰ï¼‰
+	ã«å¯¾ã—ã¦ã€colormap ã§å®šç¾©ã•ã‚ŒãŸè‰²ã¥ã‘æ–¹æ³•ã«ã‚ˆã£ã¦ã€comp æˆåˆ†ã®ã‚«ãƒ©ãƒ¼ã‚³ãƒ³ã‚¿ãƒ¼è¡¨ç¤ºã‚’è¡Œã†ã€‚
 ---deformXYZFaceGroupNodeContour(faceName,displacementX,displacementY,displacementZ,factor,nodeValue,colorMap,comp=-1)
-	faceName ‚Å—^‚¦‚ç‚ê‚é FaceGroup ‚Ì face ‚ğ
-	MeshDB ‚É displacementX, displacementY,displacementZ ‚Æ‚¢‚¤–¼‘O‚ÅŠi”[‚³‚ê‚Ä‚¢‚é
-	•¨——Êiƒ‚[ƒhFNodeVariable,’lFScalarj‚ğ(x,y,z)À•W‚Ì•ÏŒ`—Ê‚¾‚Æ‚µ‚Ä
-	factor ”{‚Å•ÏŒ`•\¦‚·‚éB
-	MeshDB ‚É nodeValue ‚Æ‚¢‚¤–¼‘O‚ÅŠi”[‚³‚ê‚Ä‚¢‚é•¨——ÊiNodeVariable ƒ‚[ƒhj
-	‚É‘Î‚µ‚ÄAcolormap ‚Å’è‹`‚³‚ê‚½F‚Ã‚¯•û–@‚É‚æ‚Á‚ÄAcomp ¬•ª‚ÌƒJƒ‰[ƒRƒ“ƒ^[•\¦‚ğs‚¤B
+	faceName ã§ä¸ãˆã‚‰ã‚Œã‚‹ FaceGroup ã® face ã‚’
+	MeshDB ã« displacementX, displacementY,displacementZ ã¨ã„ã†åå‰ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹
+	ç‰©ç†é‡ï¼ˆãƒ¢ãƒ¼ãƒ‰ï¼šNodeVariable,å€¤ï¼šScalarï¼‰ã‚’(x,y,z)åº§æ¨™ã®å¤‰å½¢é‡ã ã¨ã—ã¦
+	factor å€ã§å¤‰å½¢è¡¨ç¤ºã™ã‚‹ã€‚
+	MeshDB ã« nodeValue ã¨ã„ã†åå‰ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ç‰©ç†é‡ï¼ˆNodeVariable ãƒ¢ãƒ¼ãƒ‰ï¼‰
+	ã«å¯¾ã—ã¦ã€colormap ã§å®šç¾©ã•ã‚ŒãŸè‰²ã¥ã‘æ–¹æ³•ã«ã‚ˆã£ã¦ã€comp æˆåˆ†ã®ã‚«ãƒ©ãƒ¼ã‚³ãƒ³ã‚¿ãƒ¼è¡¨ç¤ºã‚’è¡Œã†ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	void deformSurfaceNodeContour(kmb::bodyIdType bodyId, const char* displacement, double factor, const char* physicalValue, kmb::ColorMap* colorMap, int comp=-1);
@@ -367,25 +367,25 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 ---drawVector(vector,factor,colormap)
-	vectorName ‚Å—^‚¦‚ç‚ê‚é NodeVariable ƒ‚[ƒh‚Ì Vector3 ’l‚Ì•¨——Ê‚É‘Î‚µ‚ÄA
-	’·‚³‚ª factor ”{‚Ì–îˆó‚ÅƒxƒNƒgƒ‹•\¦‚·‚éB
-	F‚Í colorMap ‚Å—^‚¦‚éB
+	vectorName ã§ä¸ãˆã‚‰ã‚Œã‚‹ NodeVariable ãƒ¢ãƒ¼ãƒ‰ã® Vector3 å€¤ã®ç‰©ç†é‡ã«å¯¾ã—ã¦ã€
+	é•·ã•ãŒ factor å€ã®çŸ¢å°ã§ãƒ™ã‚¯ãƒˆãƒ«è¡¨ç¤ºã™ã‚‹ã€‚
+	è‰²ã¯ colorMap ã§ä¸ãˆã‚‹ã€‚
 ---drawField(vector,size,colorMap)
-	vectorName ‚Å—^‚¦‚ç‚ê‚é NodeVariable ƒ‚[ƒh‚Ì Vector3 ’l‚Ì•¨——Ê‚É‘Î‚µ‚ÄA
-	’·‚³ size ˆê’è‚Ì–îˆó‚ÅƒxƒNƒgƒ‹•\¦‚·‚éB
-	F‚Í colorMap ‚Å—^‚¦‚éB
+	vectorName ã§ä¸ãˆã‚‰ã‚Œã‚‹ NodeVariable ãƒ¢ãƒ¼ãƒ‰ã® Vector3 å€¤ã®ç‰©ç†é‡ã«å¯¾ã—ã¦ã€
+	é•·ã• size ä¸€å®šã®çŸ¢å°ã§ãƒ™ã‚¯ãƒˆãƒ«è¡¨ç¤ºã™ã‚‹ã€‚
+	è‰²ã¯ colorMap ã§ä¸ãˆã‚‹ã€‚
 ---drawSurfaceVector(bodyId,vector,factor,colormap)
-	vectorName ‚Å—^‚¦‚ç‚ê‚é NodeVariable ƒ‚[ƒh‚Ì Vector3 ’l‚Ì•¨——Ê‚É‘Î‚µ‚ÄA
-	bodyId ‚Å—^‚¦‚ç‚ê‚½–Êã‚Ìß“_‚É‚Â‚¢‚ÄA’·‚³‚ª factor ”{‚Ì–îˆó‚ÅƒxƒNƒgƒ‹•\¦‚·‚éB
-	F‚Í colorMap ‚Å—^‚¦‚éB
+	vectorName ã§ä¸ãˆã‚‰ã‚Œã‚‹ NodeVariable ãƒ¢ãƒ¼ãƒ‰ã® Vector3 å€¤ã®ç‰©ç†é‡ã«å¯¾ã—ã¦ã€
+	bodyId ã§ä¸ãˆã‚‰ã‚ŒãŸé¢ä¸Šã®ç¯€ç‚¹ã«ã¤ã„ã¦ã€é•·ã•ãŒ factor å€ã®çŸ¢å°ã§ãƒ™ã‚¯ãƒˆãƒ«è¡¨ç¤ºã™ã‚‹ã€‚
+	è‰²ã¯ colorMap ã§ä¸ãˆã‚‹ã€‚
 ---drawSurfaceField(bodyId,vector,size,colormap)
-	vectorName ‚Å—^‚¦‚ç‚ê‚é NodeVariable ƒ‚[ƒh‚Ì Vector3 ’l‚Ì•¨——Ê‚É‘Î‚µ‚ÄA
-	bodyId ‚Å—^‚¦‚ç‚ê‚½–Êã‚Ìß“_‚É‚Â‚¢‚ÄA’·‚³‚ª size ˆê’è‚Ì–îˆó‚ÅƒxƒNƒgƒ‹•\¦‚·‚éB
-	F‚Í colorMap ‚Å—^‚¦‚éB
+	vectorName ã§ä¸ãˆã‚‰ã‚Œã‚‹ NodeVariable ãƒ¢ãƒ¼ãƒ‰ã® Vector3 å€¤ã®ç‰©ç†é‡ã«å¯¾ã—ã¦ã€
+	bodyId ã§ä¸ãˆã‚‰ã‚ŒãŸé¢ä¸Šã®ç¯€ç‚¹ã«ã¤ã„ã¦ã€é•·ã•ãŒ size ä¸€å®šã®çŸ¢å°ã§ãƒ™ã‚¯ãƒˆãƒ«è¡¨ç¤ºã™ã‚‹ã€‚
+	è‰²ã¯ colorMap ã§ä¸ãˆã‚‹ã€‚
 ---drawFaceGroupVector(faceName,vectorName,factor,colorMap)
-	vectorName ‚Å—^‚¦‚ç‚ê‚é NodeVariable ƒ‚[ƒh‚Ì Vector3 ’l‚Ì•¨——Ê‚É‘Î‚µ‚ÄA
-	faceName ‚Å—^‚¦‚ç‚ê‚½–ÊƒOƒ‹[ƒvã‚Ìß“_‚É‚Â‚¢‚ÄA’·‚³‚ª factor ”{‚Ì–îˆó‚ÅƒxƒNƒgƒ‹•\¦‚·‚éB
-	F‚Í colorMap ‚Å—^‚¦‚éB
+	vectorName ã§ä¸ãˆã‚‰ã‚Œã‚‹ NodeVariable ãƒ¢ãƒ¼ãƒ‰ã® Vector3 å€¤ã®ç‰©ç†é‡ã«å¯¾ã—ã¦ã€
+	faceName ã§ä¸ãˆã‚‰ã‚ŒãŸé¢ã‚°ãƒ«ãƒ¼ãƒ—ä¸Šã®ç¯€ç‚¹ã«ã¤ã„ã¦ã€é•·ã•ãŒ factor å€ã®çŸ¢å°ã§ãƒ™ã‚¯ãƒˆãƒ«è¡¨ç¤ºã™ã‚‹ã€‚
+	è‰²ã¯ colorMap ã§ä¸ãˆã‚‹ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	void drawVector(const char* vectorName, double factor, kmb::ColorMap* colorMap);
@@ -396,24 +396,24 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 ---drawIsosurface(bodyId,valueName,val)
-	bodyId ‚Ì Body ‚Ì’†‚Å valueName ‚Å—^‚¦‚ç‚ê‚é NodeVariable ƒ‚[ƒh‚Ì•¨——Ê‚É‘Î‚µ‚ÄA
-	’l‚ª val ‚Ì“™’l–Ê‚ğ•\¦‚·‚éB‚±‚Ìƒƒ\ƒbƒh‚Å‚ÍF‚â Material ‚Í‚Â‚¯‚È‚¢B
+	bodyId ã® Body ã®ä¸­ã§ valueName ã§ä¸ãˆã‚‰ã‚Œã‚‹ NodeVariable ãƒ¢ãƒ¼ãƒ‰ã®ç‰©ç†é‡ã«å¯¾ã—ã¦ã€
+	å€¤ãŒ val ã®ç­‰å€¤é¢ã‚’è¡¨ç¤ºã™ã‚‹ã€‚ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã§ã¯è‰²ã‚„ Material ã¯ã¤ã‘ãªã„ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	void drawIsosurface(kmb::bodyIdType bodyId, const char* nodeValue, double val);
 /**--------------------------------------------------------------------------
 =begin
 ---drawSection(bodyId,plane)
-	bodyId ‚Ì Body ‚ğ plane ‚ÅØ‚Á‚½Ø’f–Ê‚ğ•\¦‚·‚éB
+	bodyId ã® Body ã‚’ plane ã§åˆ‡ã£ãŸåˆ‡æ–­é¢ã‚’è¡¨ç¤ºã™ã‚‹ã€‚
 ---drawSectionNodeContour(bodyId,plane,physicalValue,colorMap,comp=-1)
-	ß“_’l‚Ì physicalValue ‚Ì’l‚Å colorMap ‚É]‚¢ƒRƒ“ƒ^[•\¦‚ğ‚·‚éB
+	ç¯€ç‚¹å€¤ã® physicalValue ã®å€¤ã§ colorMap ã«å¾“ã„ã‚³ãƒ³ã‚¿ãƒ¼è¡¨ç¤ºã‚’ã™ã‚‹ã€‚
 ---drawSectionContour(bodyId,plane,physicalValue,colorMap,comp=-1)
-	—v‘f’l‚Ì physicalValue ‚Ì’l‚Å colorMap ‚É]‚¢ƒRƒ“ƒ^[•\¦‚ğ‚·‚éB
-	‚½‚¾‚µ Tetrahedron ‚Ì‚İ
+	è¦ç´ å€¤ã® physicalValue ã®å€¤ã§ colorMap ã«å¾“ã„ã‚³ãƒ³ã‚¿ãƒ¼è¡¨ç¤ºã‚’ã™ã‚‹ã€‚
+	ãŸã ã— Tetrahedron ã®ã¿
 ---drawSectionVector(bodyId,plane,vectorName,factor,colorMap)
-	ß“_’l‚Ì vectorName ‚Ì’l‚Å colorMap ‚É]‚¢ factor ”{‚ÌƒxƒNƒgƒ‹•\¦‚ğ‚·‚éB
+	ç¯€ç‚¹å€¤ã® vectorName ã®å€¤ã§ colorMap ã«å¾“ã„ factor å€ã®ãƒ™ã‚¯ãƒˆãƒ«è¡¨ç¤ºã‚’ã™ã‚‹ã€‚
 ---drawSectionField(bodyId,plane,vectorName,size,colorMap)
-	ß“_’l‚Ì vectorName ‚Ì’l‚Å colorMap ‚É]‚¢A’·‚³ size ˆê’è‚ÌƒxƒNƒgƒ‹•\¦‚ğ‚·‚éB
+	ç¯€ç‚¹å€¤ã® vectorName ã®å€¤ã§ colorMap ã«å¾“ã„ã€é•·ã• size ä¸€å®šã®ãƒ™ã‚¯ãƒˆãƒ«è¡¨ç¤ºã‚’ã™ã‚‹ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	void drawSection(kmb::bodyIdType bodyId,kmb::Plane* plane);
@@ -424,7 +424,7 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- drawTrajectory(vectorVal,x,y,z,delta,step,colorMap,tolerance=0.0)
-	ƒxƒNƒgƒ‹’lŠÖ” vectorVal ‚ğ (x,y,z) ‚©‚ç delta ŠÔŠu‚Å step ”‚¾‚¯—¬ü‚ğ‘‚­
+	ãƒ™ã‚¯ãƒˆãƒ«å€¤é–¢æ•° vectorVal ã‚’ (x,y,z) ã‹ã‚‰ delta é–“éš”ã§ step æ•°ã ã‘æµç·šã‚’æ›¸ã
 =end
 ---------------------------------------------------------------------------*/
 	int drawTrajectory(const char* vectorVal,double x,double y,double z,double delta,int step, kmb::ColorMap* colorMap, double tolerance=0.0);
@@ -432,11 +432,11 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 ---drawIntersection(bodyId,plane)
-	bodyId ‚Ì Body ‚ğ plane ‚ÆŒğ·‚·‚é—v‘f‚ğœ‚¢‚½–Ê‚ğ•\¦‚·‚é
+	bodyId ã® Body ã‚’ plane ã¨äº¤å·®ã™ã‚‹è¦ç´ ã‚’é™¤ã„ãŸé¢ã‚’è¡¨ç¤ºã™ã‚‹
 
 ---drawIntersectionContour(bodyId,plane,physicalValue,colorMap,comp=-1);
-	bodyId ‚Ì Body ‚ğ plane ‚ÆŒğ·‚·‚é—v‘f‚ğœ‚¢‚½–Ê‚ğ
-	physicalValue ‚Ì’l‚ÅƒRƒ“ƒ^[•\¦‚·‚é
+	bodyId ã® Body ã‚’ plane ã¨äº¤å·®ã™ã‚‹è¦ç´ ã‚’é™¤ã„ãŸé¢ã‚’
+	physicalValue ã®å€¤ã§ã‚³ãƒ³ã‚¿ãƒ¼è¡¨ç¤ºã™ã‚‹
 =end
 ---------------------------------------------------------------------------*/
 	void drawIntersection(kmb::bodyIdType bodyId,kmb::Plane* plane);
@@ -445,21 +445,21 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 ---drawMarking(condName,mode)
-	MeshDB ‚É condName ‚ÅŠi”[‚³‚ê‚Ä‚¢‚é‹«ŠEğŒ‚É‚Â‚¢‚Ä mode ‚Ìƒ}[ƒJ[‚ğ
-	•\¦‚·‚éB
-	—˜—p‰Â”\‚È mode ‚É‚Â‚¢‚Ä‚ÍˆÈ‰º‚Ì‚Æ‚¨‚è
-	 * VECTOR ß“_ã‚É–îˆó
-	 * TENSOR ß“_ã‚ÉŒğ·–Ê
-	 * DOT ß“_ã‚É“_
-	 * CROSS ß“_ã‚É\š
-	 * CDOT —v‘f‚Ì’†S‚É“_
-	 * CCROSS —v‘f‚Ì’†S‚É\š
-	 * EDGE —v‘f‚Ì•Ó‚ğ•\¦
-	 * DAGGER ß“_ã‚É\š
-	 * CIRCLE ß“_ã‚ÉŠÛˆó
+	MeshDB ã« condName ã§æ ¼ç´ã•ã‚Œã¦ã„ã‚‹å¢ƒç•Œæ¡ä»¶ã«ã¤ã„ã¦ mode ã®ãƒãƒ¼ã‚«ãƒ¼ã‚’
+	è¡¨ç¤ºã™ã‚‹ã€‚
+	åˆ©ç”¨å¯èƒ½ãª mode ã«ã¤ã„ã¦ã¯ä»¥ä¸‹ã®ã¨ãŠã‚Š
+	 * VECTOR ç¯€ç‚¹ä¸Šã«çŸ¢å°
+	 * TENSOR ç¯€ç‚¹ä¸Šã«äº¤å·®é¢
+	 * DOT ç¯€ç‚¹ä¸Šã«ç‚¹
+	 * CROSS ç¯€ç‚¹ä¸Šã«åå­—
+	 * CDOT è¦ç´ ã®ä¸­å¿ƒã«ç‚¹
+	 * CCROSS è¦ç´ ã®ä¸­å¿ƒã«åå­—
+	 * EDGE è¦ç´ ã®è¾ºã‚’è¡¨ç¤º
+	 * DAGGER ç¯€ç‚¹ä¸Šã«åå­—
+	 * CIRCLE ç¯€ç‚¹ä¸Šã«ä¸¸å°
 ---drawMarkingEdgeWithScale(bodyId,mode,x,y,z,scale)
-	MeshDB ‚Ì‚PŸŒ³—v‘f‚©‚ç‚È‚é Body ‚ğ bodyId ‚Å—^‚¦‚ÄA‚»‚ê‚É‘Î‚µ‚Ä mode ‚Ì
-	ƒ}[ƒJ[‚ğ•\¦‚·‚éB
+	MeshDB ã®ï¼‘æ¬¡å…ƒè¦ç´ ã‹ã‚‰ãªã‚‹ Body ã‚’ bodyId ã§ä¸ãˆã¦ã€ãã‚Œã«å¯¾ã—ã¦ mode ã®
+	ãƒãƒ¼ã‚«ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	void drawMarking(const char* condName,const char* mode);
@@ -467,13 +467,13 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 ---setMarkSize(size)
-	ƒ}[ƒJ[‚ÌŠî€ƒTƒCƒY‚ğİ’è‚·‚éB
+	ãƒãƒ¼ã‚«ãƒ¼ã®åŸºæº–ã‚µã‚¤ã‚ºã‚’è¨­å®šã™ã‚‹ã€‚
 ---getMarkSize
-	ƒ}[ƒJ[‚ÌŠî€ƒTƒCƒY‚ğæ“¾‚·‚éB
+	ãƒãƒ¼ã‚«ãƒ¼ã®åŸºæº–ã‚µã‚¤ã‚ºã‚’å–å¾—ã™ã‚‹ã€‚
 ---setNodeOffset(offset)
-	ID •\¦‚Ì‚Ìß“_ ID ‚ÌƒIƒtƒZƒbƒg’l‚ğİ’è‚·‚é
+	ID è¡¨ç¤ºã®æ™‚ã®ç¯€ç‚¹ ID ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆå€¤ã‚’è¨­å®šã™ã‚‹
 ---setElementOffset(offset)
-	ID •\¦‚Ì‚Ì—v‘f ID ‚ÌƒIƒtƒZƒbƒg’l‚ğİ’è‚·‚é
+	ID è¡¨ç¤ºã®æ™‚ã®è¦ç´  ID ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆå€¤ã‚’è¨­å®šã™ã‚‹
 =end
 ---------------------------------------------------------------------------*/
 	void setMarkSize(double size);
@@ -484,11 +484,11 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 ---getDeformFaceGroupBoundingBox(faceName,displacement,factor)
-	deformFaceGroup ‚Ì“¯‚¶ˆø”‚Å•\¦‚³‚ê‚é•ÏŒ`}‚Ì BoundingBox ‚ğ
-	[[max_x,max_y,max_z],[min_x,min_y,min_z]] Œ`®‚Å•Ô‚·B
+	deformFaceGroup ã®åŒã˜å¼•æ•°ã§è¡¨ç¤ºã•ã‚Œã‚‹å¤‰å½¢å›³ã® BoundingBox ã‚’
+	[[max_x,max_y,max_z],[min_x,min_y,min_z]] å½¢å¼ã§è¿”ã™ã€‚
 ---getDeformXYZFaceGroupBoundingBox(faceName,displacementX,displacementY,displacementZ,factor)
-	deformXYZFaceGroup ‚Ì“¯‚¶ˆø”‚Å•\¦‚³‚ê‚é•ÏŒ`}‚Ì BoundingBox ‚ğ
-	[[max_x,max_y,max_z],[min_x,min_y,min_z]] Œ`®‚Å•Ô‚·B
+	deformXYZFaceGroup ã®åŒã˜å¼•æ•°ã§è¡¨ç¤ºã•ã‚Œã‚‹å¤‰å½¢å›³ã® BoundingBox ã‚’
+	[[max_x,max_y,max_z],[min_x,min_y,min_z]] å½¢å¼ã§è¿”ã™ã€‚
 =end
 ---------------------------------------------------------------------------*/
 %extend{

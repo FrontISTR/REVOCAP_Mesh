@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshDB                                                  #
@@ -120,19 +120,19 @@ kmb::MeshDB::convertToLinearBody( kmb::bodyIdType bodyId )
 }
 
 //
-// ’Pƒ‚È Body ‚Ì’Ç‰Á
-// coupleName ‚ª NULL ‚Å‚È‚¢‚Æ‚«‚Í
-// otherMesh => thisMesh ‚Ìß“_”Ô†‚Ì‘Î‰‚ğ DataBindings<kmb::nodeIdType> ‚É‹L‰¯‚·‚é
-// stype ‚Í "import"
-// coupleName = NULL ‚Ì‚Íß“_”Ô†‚Ì‘Î‰‚Í‚±‚Ìƒƒ\ƒbƒh“à‚Å‚Ì‚İg‚¤
+// å˜ç´”ãª Body ã®è¿½åŠ 
+// coupleName ãŒ NULL ã§ãªã„ã¨ãã¯
+// otherMesh => thisMesh ã®ç¯€ç‚¹ç•ªå·ã®å¯¾å¿œã‚’ DataBindings<kmb::nodeIdType> ã«è¨˜æ†¶ã™ã‚‹
+// stype ã¯ "import"
+// coupleName = NULL ã®æ™‚ã¯ç¯€ç‚¹ç•ªå·ã®å¯¾å¿œã¯ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰å†…ã§ã®ã¿ä½¿ã†
 //
-// coupleName ‚Å—^‚¦‚ç‚ê‚éƒf[ƒ^‚Í 
-// ctype ‚ª SLAVE ‚Ì : otherMesh ‚É‹L˜^‚·‚éiƒfƒtƒHƒ‹ƒg’lj
-//          MASTER     : this ‚É‹L˜^‚·‚é
-//          BOTH       : otherMesh ‚Æ this ‚Ì—¼•û‚É‹L˜^‚·‚é
-//          None       : ‚Ç‚¿‚ç‚É‚à‹L˜^‚µ‚È‚¢
+// coupleName ã§ä¸ãˆã‚‰ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ã¯ 
+// ctype ãŒ SLAVE ã®æ™‚ : otherMesh ã«è¨˜éŒ²ã™ã‚‹ï¼ˆãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ï¼‰
+//          MASTER     : this ã«è¨˜éŒ²ã™ã‚‹
+//          BOTH       : otherMesh ã¨ this ã®ä¸¡æ–¹ã«è¨˜éŒ²ã™ã‚‹
+//          None       : ã©ã¡ã‚‰ã«ã‚‚è¨˜éŒ²ã—ãªã„
 //
-// Œ»ó‚Í’Ç‰Á‚³‚ê‚é Body ‚Í‚RŸŒ³‚Ì‚İ‘Î‰
+// ç¾çŠ¶ã¯è¿½åŠ ã•ã‚Œã‚‹ Body ã¯ï¼“æ¬¡å…ƒã®ã¿å¯¾å¿œ
 kmb::bodyIdType
 kmb::MeshDB::importBody(kmb::MeshData& otherMesh, kmb::bodyIdType bodyId, const char* coupleName,kmb::coupleType ctype)
 {
@@ -184,17 +184,17 @@ kmb::MeshDB::importBody(kmb::MeshData& otherMesh, kmb::bodyIdType bodyId, const 
 
 	kmb::Node node;
 
-	// —v‘f‚Ì’Ç‰Á
-	// ’Ç‰Á‚Å‚«‚È‚©‚Á‚½ß“_‚Í nullNodeId ‚É‚È‚Á‚Ä‚¢‚é
+	// è¦ç´ ã®è¿½åŠ 
+	// è¿½åŠ ã§ããªã‹ã£ãŸç¯€ç‚¹ã¯ nullNodeId ã«ãªã£ã¦ã„ã‚‹
 	kmb::nodeIdType* cell = new kmb::nodeIdType[ kmb::Element::MAX_NODE_COUNT ];
 	kmb::ElementContainer::iterator eIter = otherBody->begin();
 	long l = 0;
 	if( slaveCoupleData && masterCoupleData ){
-		// ‚·‚Å‚É’Ç‰ÁÏ‚İ‚Ìß“_‚Ìƒ`ƒFƒbƒN‚Í slaveCouple Data ‚Ås‚¤
+		// ã™ã§ã«è¿½åŠ æ¸ˆã¿ã®ç¯€ç‚¹ã®ãƒã‚§ãƒƒã‚¯ã¯ slaveCouple Data ã§è¡Œã†
 		while( !eIter.isFinished() ){
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				kmb::nodeIdType yourId = eIter.getCellId(i);
+				kmb::nodeIdType yourId = eIter.getNodeId(i);
 				cell[i] = kmb::nullNodeId;
 				if( slaveCoupleData->getPhysicalValue( yourId, &l ) ){
 					cell[i] = static_cast< kmb::nodeIdType >( l );
@@ -210,11 +210,11 @@ kmb::MeshDB::importBody(kmb::MeshData& otherMesh, kmb::bodyIdType bodyId, const 
 			++eIter;
 		}
 	}else if( slaveCoupleData ){
-		// ‚·‚Å‚É’Ç‰ÁÏ‚İ‚Ìß“_‚Ìƒ`ƒFƒbƒN‚Í slaveCouple Data ‚Ås‚¤
+		// ã™ã§ã«è¿½åŠ æ¸ˆã¿ã®ç¯€ç‚¹ã®ãƒã‚§ãƒƒã‚¯ã¯ slaveCouple Data ã§è¡Œã†
 		while( !eIter.isFinished() ){
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				kmb::nodeIdType yourId = eIter.getCellId(i);
+				kmb::nodeIdType yourId = eIter.getNodeId(i);
 				cell[i] = kmb::nullNodeId;
 				if( slaveCoupleData->getPhysicalValue( yourId, &l ) ){
 					cell[i] = static_cast< kmb::nodeIdType >( l );
@@ -228,14 +228,14 @@ kmb::MeshDB::importBody(kmb::MeshData& otherMesh, kmb::bodyIdType bodyId, const 
 			++eIter;
 		}
 	}else if( masterCoupleData ){
-		// otherMesh ‚Ìß“_ Id ‚Æ©•ª‚Ìß“_ Id ‚Ì‘Î‰‚ğŠo‚¦‚Ä‚¨‚­
-		// masterCoupleData ‚É‚ÍƒL[‚Å‚Í‚È‚­‚Ä’l‚Æ‚µ‚Ä“ü‚Á‚Ä‚¢‚é‚Ì‚ÅŒŸõ‚Í‚µ‚È‚¢
-		// otherMesh ‚Ì“¯‚¶ß“_‚ª this ‚Å‚ÍˆÙ‚È‚éß“_‚Æ‚È‚éê‡‚à‚ ‚é
+		// otherMesh ã®ç¯€ç‚¹ Id ã¨è‡ªåˆ†ã®ç¯€ç‚¹ Id ã®å¯¾å¿œã‚’è¦šãˆã¦ãŠã
+		// masterCoupleData ã«ã¯ã‚­ãƒ¼ã§ã¯ãªãã¦å€¤ã¨ã—ã¦å…¥ã£ã¦ã„ã‚‹ã®ã§æ¤œç´¢ã¯ã—ãªã„
+		// otherMesh ã®åŒã˜ç¯€ç‚¹ãŒ this ã§ã¯ç•°ãªã‚‹ç¯€ç‚¹ã¨ãªã‚‹å ´åˆã‚‚ã‚ã‚‹
 		std::map< kmb::nodeIdType, kmb::nodeIdType > nodeMapper;
 		while( !eIter.isFinished() ){
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				kmb::nodeIdType yourId = eIter.getCellId(i);
+				kmb::nodeIdType yourId = eIter.getNodeId(i);
 				cell[i] = kmb::nullNodeId;
 				std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( yourId );
 				if( nIter != nodeMapper.end() ){
@@ -251,12 +251,12 @@ kmb::MeshDB::importBody(kmb::MeshData& otherMesh, kmb::bodyIdType bodyId, const 
 			++eIter;
 		}
 	}else{
-		// otherMesh ‚Ìß“_ Id ‚Æ©•ª‚Ìß“_ Id ‚Ì‘Î‰‚ğŠo‚¦‚Ä‚¨‚­
+		// otherMesh ã®ç¯€ç‚¹ Id ã¨è‡ªåˆ†ã®ç¯€ç‚¹ Id ã®å¯¾å¿œã‚’è¦šãˆã¦ãŠã
 		std::map< kmb::nodeIdType, kmb::nodeIdType > nodeMapper;
 		while( !eIter.isFinished() ){
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				kmb::nodeIdType yourId = eIter.getCellId(i);
+				kmb::nodeIdType yourId = eIter.getNodeId(i);
 				cell[i] = kmb::nullNodeId;
 				std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( yourId );
 				if( nIter != nodeMapper.end() ){
@@ -309,18 +309,18 @@ kmb::MeshDB::importBodyWithNodeMatching(kmb::MeshData& otherMesh, kmb::bodyIdTyp
 	kmb::Node node;
 	long l = 0;
 
-	// —v‘f‚Ì’Ç‰Á
-	// ’Ç‰Á‚Å‚«‚È‚©‚Á‚½ß“_‚Í nullNodeId ‚É‚È‚Á‚Ä‚¢‚é
+	// è¦ç´ ã®è¿½åŠ 
+	// è¿½åŠ ã§ããªã‹ã£ãŸç¯€ç‚¹ã¯ nullNodeId ã«ãªã£ã¦ã„ã‚‹
 	kmb::bodyIdType myBodyId = this->beginElement( otherBody->getCount() );
 	kmb::nodeIdType* cell = new kmb::nodeIdType[ kmb::Element::MAX_NODE_COUNT ];
 	kmb::nodeIdType nearestNodeId = kmb::nullNodeId;
 	kmb::ElementContainer::iterator eIter = otherBody->begin();
 	if( coupleData ){
-		// coupleData ‚ª—^‚¦‚ç‚ê‚½ê‡‚ÍA‚·‚Å‚É’Ç‰ÁÏ‚İ‚Ìß“_‚Í’Ç‰Á‚µ‚È‚¢
+		// coupleData ãŒä¸ãˆã‚‰ã‚ŒãŸå ´åˆã¯ã€ã™ã§ã«è¿½åŠ æ¸ˆã¿ã®ç¯€ç‚¹ã¯è¿½åŠ ã—ãªã„
 		while( !eIter.isFinished() ){
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				kmb::nodeIdType yourId = eIter.getCellId(i);
+				kmb::nodeIdType yourId = eIter.getNodeId(i);
 				cell[i] = kmb::nullNodeId;
 				if( coupleData->getPhysicalValue( yourId, &l ) ){
 					cell[i] = static_cast< kmb::nodeIdType >(l);
@@ -338,12 +338,12 @@ kmb::MeshDB::importBodyWithNodeMatching(kmb::MeshData& otherMesh, kmb::bodyIdTyp
 			++eIter;
 		}
 	}else{
-		// otherMesh ‚Ìß“_ Id ‚Æ©•ª‚Ìß“_ Id ‚Ì‘Î‰‚ğŠo‚¦‚Ä‚¨‚­
+		// otherMesh ã®ç¯€ç‚¹ Id ã¨è‡ªåˆ†ã®ç¯€ç‚¹ Id ã®å¯¾å¿œã‚’è¦šãˆã¦ãŠã
 		std::map< kmb::nodeIdType, kmb::nodeIdType > nodeMapper;
 		while( !eIter.isFinished() ){
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				kmb::nodeIdType yourId = eIter.getCellId(i);
+				kmb::nodeIdType yourId = eIter.getNodeId(i);
 				cell[i] = kmb::nullNodeId;
 				std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( yourId );
 				if( nIter != nodeMapper.end() ){
@@ -366,15 +366,15 @@ kmb::MeshDB::importBodyWithNodeMatching(kmb::MeshData& otherMesh, kmb::bodyIdTyp
 	return myBodyId;
 }
 
-// node matching ‚ÌŒ‹‰Ê‚ğg‚Á‚Ä
-// body ‚Ì’Ç‰ÁBnode matching ‚ÌŒ‹‰Ê‚ªg‚¦‚é‚Æ‚«‚ÍAnode ‚Í’Ç‰Á‚¹‚¸‚É‚»‚ÌŒ‹‰Ê‚ğg‚¤B
-// —áF
+// node matching ã®çµæœã‚’ä½¿ã£ã¦
+// body ã®è¿½åŠ ã€‚node matching ã®çµæœãŒä½¿ãˆã‚‹ã¨ãã¯ã€node ã¯è¿½åŠ ã›ãšã«ãã®çµæœã‚’ä½¿ã†ã€‚
+// ä¾‹ï¼š
 // this->matchNodeToNode( otherMesh, bodyId, targetBody, tolerance, nodeMapper )
-// ‚È‚Ç‚Å node matching ‚ğæ“¾‚µ‚Ä‚©‚ç
+// ãªã©ã§ node matching ã‚’å–å¾—ã—ã¦ã‹ã‚‰
 // importBody( otherMesh, bodyId, nodeMapper )
-// ‚Ì‚æ‚¤‚Ég‚¤
+// ã®ã‚ˆã†ã«ä½¿ã†
 
-// nodeMapper[ otherMesh ‚Ì NodeId ] = this ‚Ì NodeId
+// nodeMapper[ otherMesh ã® NodeId ] = this ã® NodeId
 kmb::bodyIdType
 kmb::MeshDB::importBody(kmb::MeshData& otherMesh,kmb::bodyIdType bodyID,std::map<kmb::nodeIdType,kmb::nodeIdType>& nodeMapper)
 {
@@ -387,16 +387,16 @@ kmb::MeshDB::importBody(kmb::MeshData& otherMesh,kmb::bodyIdType bodyID,std::map
 	if( node3Ds == NULL && otherMesh.getNodeDim() == 3 ){
 		node3Ds = new kmb::Point3DContainerMap();
 	}
-	// ß“_‚Ì’Ç‰Á
-	// otherMesh ‚Ìß“_ ID ‚Æ©•ª‚Ìß“_ ID ‚Ì‘Î‰‚ğŠo‚¦‚Ä‚¨‚­
+	// ç¯€ç‚¹ã®è¿½åŠ 
+	// otherMesh ã®ç¯€ç‚¹ ID ã¨è‡ªåˆ†ã®ç¯€ç‚¹ ID ã®å¯¾å¿œã‚’è¦šãˆã¦ãŠã
 	std::set< kmb::nodeIdType >::iterator nIter = nodeSet.begin();
 	while( nIter != nodeSet.end() ){
 		kmb::nodeIdType yourID = (*nIter);
-		// ‚·‚Å‚É nodeMapper ‚É“o˜^‚³‚ê‚Ä‚¢‚éß“_ ID ‚Í“o˜^‚µ‚È‚¢
+		// ã™ã§ã« nodeMapper ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ç¯€ç‚¹ ID ã¯ç™»éŒ²ã—ãªã„
 		if( nodeMapper.find( yourID ) == nodeMapper.end() ){
 			kmb::Node node;
 			if( otherMesh.getNode( yourID, node ) ){
-				// addNode ‚Å‚Í“à•”‚ÅƒRƒs[‚ğì‚Á‚Äƒ|ƒCƒ“ƒ^‚Í‹¤—L‚µ‚È‚¢
+				// addNode ã§ã¯å†…éƒ¨ã§ã‚³ãƒ”ãƒ¼ã‚’ä½œã£ã¦ãƒã‚¤ãƒ³ã‚¿ã¯å…±æœ‰ã—ãªã„
 				kmb::nodeIdType myID = this->addNode( node );
 				nodeMapper.insert( std::pair< kmb::nodeIdType, kmb::nodeIdType >(yourID,myID) );
 			}else{
@@ -405,8 +405,8 @@ kmb::MeshDB::importBody(kmb::MeshData& otherMesh,kmb::bodyIdType bodyID,std::map
 		}
 		++nIter;
 	}
-	nodeSet.clear(); // ƒƒ‚ƒŠ‚Ì‰ğ•ú
-	// —v‘f‚Ì’Ç‰Á
+	nodeSet.clear(); // ãƒ¡ãƒ¢ãƒªã®è§£æ”¾
+	// è¦ç´ ã®è¿½åŠ 
 	kmb::ElementContainerMap* body = new kmb::ElementContainerMap();
 	kmb::nodeIdType* cell = new kmb::nodeIdType[ kmb::Element::MAX_NODE_COUNT ];
 	kmb::ElementContainer::iterator eIter = otherBody->begin();
@@ -465,7 +465,7 @@ kmb::MeshDB::importAllBody(const kmb::MeshData& otherMesh)
 	if( node3Ds == NULL ){
 		node3Ds = new kmb::Point3DContainerMap();
 	}
-	// ß“_‚Ì’Ç‰Á
+	// ç¯€ç‚¹ã®è¿½åŠ 
 	kmb::nodeIdType offsetNodeId = this->getMaxNodeId() + 1;
 	kmb::Point3D pt;
 	kmb::Point3DContainer::const_iterator pIter = otherMesh.getNodes()->begin();
@@ -475,7 +475,7 @@ kmb::MeshDB::importAllBody(const kmb::MeshData& otherMesh)
 		}
 		++pIter;
 	}
-	// —v‘f‚Ì’Ç‰Á
+	// è¦ç´ ã®è¿½åŠ 
 	kmb::bodyIdType bCount = otherMesh.getBodyCount();
 	kmb::nodeIdType nodeTable[20];
 	for(kmb::bodyIdType i=0;i<bCount;++i){

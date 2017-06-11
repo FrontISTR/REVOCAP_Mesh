@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Matrix3x3                                               #
@@ -57,12 +57,12 @@ kmb::Matrix3x3::Matrix3x3(
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 int
@@ -255,12 +255,12 @@ kmb::Matrix3x3::determinant(
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 double
@@ -358,22 +358,10 @@ kmb::Matrix3x3::createSchmidtRotation(const Vector3D v0,const Vector3D v1,bool c
 	}
 }
 
-kmb::Vector3D*
-kmb::Matrix3x3::solve(const Vector3D& b) const
-{
-	kmb::Vector3D* answer = new kmb::Vector3D();
-	if( solve(b,*answer) ){
-		return answer;
-	}else{
-		delete answer;
-		return NULL;
-	}
-}
-
 bool
 kmb::Matrix3x3::solve(const Vector3D& b,Vector3D& x) const
 {
-	// Á‹–@
+	// æ¶ˆå»æ³•
 	double coef[12] = {
 		m[0],m[1],m[2],
 		m[3],m[4],m[5],
@@ -385,7 +373,7 @@ kmb::Matrix3x3::solve(const Vector3D& b,Vector3D& x) const
 	
 	int ind = -1;
 	double m = 0.0;
-	// 0 —ñ
+	// 0 åˆ—
 	for(int i=0;i<3;++i){
 		double d = fabs(mat.get(i,0));
 		if( d > m ){
@@ -402,7 +390,7 @@ kmb::Matrix3x3::solve(const Vector3D& b,Vector3D& x) const
 	mat.row_transf(0, 1, -mat.get(1,0));
 	mat.row_transf(0, 2, -mat.get(2,0));
 
-	// 1 —ñ
+	// 1 åˆ—
 	ind = -1;
 	m = 0.0;
 	for(int i=1;i<3;++i){
@@ -421,7 +409,7 @@ kmb::Matrix3x3::solve(const Vector3D& b,Vector3D& x) const
 	mat.row_transf(1, 2, -mat.get(2,1));
 	mat.row_transf(1, 0, -mat.get(0,1));
 
-	// 2 —ñ
+	// 2 åˆ—
 	if( mat.get(2,2) == 0.0 ){
 		return false;
 	}
@@ -439,7 +427,7 @@ kmb::Matrix3x3::solve(const Vector3D& b,Vector3D& x) const
 bool
 kmb::Matrix3x3::solveSafely(const Vector3D& b,Vector3D& x,double thresh) const
 {
-	// Á‹–@
+	// æ¶ˆå»æ³•
 	double coef[12] = {
 		m[0],m[1],m[2],
 		m[3],m[4],m[5],
@@ -451,7 +439,7 @@ kmb::Matrix3x3::solveSafely(const Vector3D& b,Vector3D& x,double thresh) const
 	
 	int ind = -1;
 	double m = 0.0;
-	// 0 —ñ
+	// 0 åˆ—
 	for(int i=0;i<3;++i){
 		double d = fabs(mat.get(i,0));
 		if( d > m ){
@@ -468,7 +456,7 @@ kmb::Matrix3x3::solveSafely(const Vector3D& b,Vector3D& x,double thresh) const
 	mat.row_transf(0, 1, -mat.get(1,0));
 	mat.row_transf(0, 2, -mat.get(2,0));
 
-	// 1 —ñ
+	// 1 åˆ—
 	ind = -1;
 	m = 0.0;
 	for(int i=1;i<3;++i){
@@ -487,7 +475,7 @@ kmb::Matrix3x3::solveSafely(const Vector3D& b,Vector3D& x,double thresh) const
 	mat.row_transf(1, 2, -mat.get(2,1));
 	mat.row_transf(1, 0, -mat.get(0,1));
 
-	// 2 —ñ
+	// 2 åˆ—
 	if( fabs(mat.get(2,2)) < thresh ){
 		return false;
 	}

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : FFbIO                                                   #
@@ -13,7 +13,7 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// std::getLine ‚Í Win32 ‚Æ Linux ‚Å separator ‚ªˆá‚¤‚Ì‚Å’ˆÓ‚·‚é‚±‚Æ!
+// std::getLine ã¯ Win32 ã¨ Linux ã§ separator ãŒé•ã†ã®ã§æ³¨æ„ã™ã‚‹ã“ã¨!
 //
 
 #include "RevocapIO/kmbFFbIO.h"
@@ -50,7 +50,7 @@ kmb::FFbIO::~FFbIO(void)
 bool
 kmb::FFbIO::checkFormat(std::ifstream &input)
 {
-	// ascii ‚© unformat ‚©‚Ì”»’f‚ğ‚·‚é
+	// ascii ã‹ unformat ã‹ã®åˆ¤æ–­ã‚’ã™ã‚‹
 	input.seekg(0,std::ios::beg);
 	char buf[80];
  	input.read(buf,80);
@@ -58,7 +58,7 @@ kmb::FFbIO::checkFormat(std::ifstream &input)
 		unformatFlag = false;
 	}else if( strncmp( "#U_GF_V1", buf+4, 8) == 0 ){
 		unformatFlag = true;
-		// endian ‚Ì”»’f‚ğ‚·‚é
+		// endian ã®åˆ¤æ–­ã‚’ã™ã‚‹
 		input.seekg( 0, std::ios_base::beg );
 		int size = 0;
 		input.read(reinterpret_cast<char*>(&size),sizeof(int));
@@ -166,7 +166,7 @@ kmb::FFbIO::loadFromMeshFile(const char* filename,kmb::MeshData* mesh)
 		return -1;
 	}
 
-	// æ“ª‚ª "#" ‚Ìs‚ğ’T‚·
+	// å…ˆé ­ãŒ "#" ã®è¡Œã‚’æ¢ã™
 	while( !input.eof() ){
 		readString( input, line );
 		if( line == "#NEW_SET" ){
@@ -247,7 +247,7 @@ kmb::FFbIO::loadPostStep(const char* filename,kmb::MeshData* mesh,int step)
 		return -1;
 	}
 
-	// æ“ª‚ª "#" ‚Ìs‚ğ’T‚·
+	// å…ˆé ­ãŒ "#" ã®è¡Œã‚’æ¢ã™
 	while( !input.eof() ){
 		readString( input, line );
 		if( line == "#NEW_SET" ){
@@ -276,7 +276,7 @@ kmb::FFbIO::loadPostStep(const char* filename,kmb::MeshData* mesh,int step)
 		}else if( line == "#INT_ARY" ){
 			readString( input, line );
 			readHeaderInt(input,mesh);
-			// “Ç‚İ‚Ş STEP ’l‚©‚Ç‚¤‚©‚Ì”»’è
+			// èª­ã¿è¾¼ã‚€ STEP å€¤ã‹ã©ã†ã‹ã®åˆ¤å®š
 			const kmb::PhysicalValue* v = mesh->getPhysicalValue( "PRESENT STEP" );
 			if( v!=NULL && v->getType()==kmb::PhysicalValue::Integer && step==reinterpret_cast<const kmb::IntegerValue*>(v)->getValue() ){
 				readPost = true;
@@ -344,7 +344,7 @@ kmb::FFbIO::loadFromBoundaryFile(const char* filename,kmb::MeshData* mesh)
 		return -1;
 	}
 
-	// æ“ª‚ª "#" ‚Ìs‚ğ’T‚·
+	// å…ˆé ­ãŒ "#" ã®è¡Œã‚’æ¢ã™
 	while( !input.eof() ){
 		readString( input, line );
 		if( line == "#NEW_SET" ){
@@ -521,10 +521,10 @@ kmb::FFbIO::saveToBoundaryFileAcoustic(const char* filename,const kmb::MeshData*
 #endif
 
 //
-// ƒ}ƒjƒ…ƒAƒ‹‚É‹K’è‚Í‚È‚¢‚ª
-// 1s–Ú‚ªƒRƒƒ“ƒg‚Ìs” n 
-// 2s–Ú‚©‚çn+1s–Ú‚Ü‚Å‹ó“Ç‚İ
-// ‚±‚ÌƒtƒH[ƒ}ƒbƒg‚¶‚á‚È‚¢ê‡‚Í -1 ‚ğ•Ô‚·
+// ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ã«è¦å®šã¯ãªã„ãŒ
+// 1è¡Œç›®ãŒã‚³ãƒ¡ãƒ³ãƒˆã®è¡Œæ•° n 
+// 2è¡Œç›®ã‹ã‚‰n+1è¡Œç›®ã¾ã§ç©ºèª­ã¿
+// ã“ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã˜ã‚ƒãªã„å ´åˆã¯ -1 ã‚’è¿”ã™
 //
 int
 kmb::FFbIO::readHeader(std::ifstream &input,kmb::MeshData* mesh)
@@ -544,7 +544,7 @@ kmb::FFbIO::readHeader(std::ifstream &input,kmb::MeshData* mesh)
 		if( len < 0 ){
 			return -1;
 		}
-		std::getline( input, line ); // ‰üsƒNƒŠƒA
+		std::getline( input, line ); // æ”¹è¡Œã‚¯ãƒªã‚¢
 		std::cout << line << std::endl;
 		for(int i=0;i<len;++i){
 			std::getline( input, line );
@@ -565,7 +565,7 @@ kmb::FFbIO::readHeader(std::ifstream &input,std::string &str)
 		std::string line;
 		std::vector<int> intArray;
 		readArray<int>(input,intArray);
-		int len = intArray[0]; // s”
+		int len = intArray[0]; // è¡Œæ•°
 		for(int i=0;i<len;++i){
 			readString( input, line );
 			str.append( line );
@@ -578,7 +578,7 @@ kmb::FFbIO::readHeader(std::ifstream &input,std::string &str)
 		if( len < 0 ){
 			return -1;
 		}
-		std::getline( input, line ); // ‰üsƒNƒŠƒA
+		std::getline( input, line ); // æ”¹è¡Œã‚¯ãƒªã‚¢
 		for(int i=0;i<len;++i){
 			std::getline( input, line );
 			str.append( line );
@@ -615,10 +615,10 @@ kmb::FFbIO::writeFooter(std::ofstream &output,const kmb::MeshData* mesh)
 }
 
 //
-// ƒ}ƒjƒ…ƒAƒ‹‚É‹K’è‚Í‚È‚¢‚ª
-// 1s–Ú‚ªƒRƒƒ“ƒg‚Ìs” n 
-// 2s–Ú‚©‚çn+1s–Ú‚Ü‚Å‹ó“Ç‚İ
-// ‚±‚ÌƒtƒH[ƒ}ƒbƒg‚¶‚á‚È‚¢ê‡‚Í -1 ‚ğ•Ô‚·
+// ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ã«è¦å®šã¯ãªã„ãŒ
+// 1è¡Œç›®ãŒã‚³ãƒ¡ãƒ³ãƒˆã®è¡Œæ•° n 
+// 2è¡Œç›®ã‹ã‚‰n+1è¡Œç›®ã¾ã§ç©ºèª­ã¿
+// ã“ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã˜ã‚ƒãªã„å ´åˆã¯ -1 ã‚’è¿”ã™
 //
 int
 kmb::FFbIO::readNewSet(std::ifstream &input,kmb::MeshData* mesh)
@@ -629,18 +629,18 @@ kmb::FFbIO::readNewSet(std::ifstream &input,kmb::MeshData* mesh)
 		readArray<int>(input,intArray);
 		int len = intArray[0];
 		for(int i=0;i<len;++i){
-			readString( input, str ); // ‹ó“Ç‚İ
+			readString( input, str ); // ç©ºèª­ã¿
 		}
 	}else{
 		int len = 0;
 		std::string str;
 		input >> len;
-		readString( input, str ); // ‹ó“Ç‚İ
+		readString( input, str ); // ç©ºèª­ã¿
 		if( len < 0 ){
 			return -1;
 		}
 		for(int i=0;i<len;++i){
-			readString( input, str ); // ‹ó“Ç‚İ
+			readString( input, str ); // ç©ºèª­ã¿
 		}
 	}
 	return 0;
@@ -818,7 +818,7 @@ kmb::FFbIO::readNode2D(std::ifstream &input,kmb::MeshData* mesh)
 	return 0;
 }
 
-// ß“_”z—ñ‚Ì‡”Ô‚Í’ˆÓ
+// ç¯€ç‚¹é…åˆ—ã®é †ç•ªã¯æ³¨æ„
 int
 kmb::FFbIO::readNode3D(std::ifstream &input,kmb::MeshData* mesh)
 {
@@ -965,7 +965,7 @@ kmb::FFbIO::writeNode2D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 	output << "#INT_ARY" << std::endl;
 	output << "*NODE_2D" << std::endl;
 	output << "NODE TABLE (2-D)" << std::endl;
-	kmb::nodeIdType nodes[15];  // 6(1s‚Ì•)-1+4(—v‘f‚ÌÅ‘åß“_”) < 15 (—]—T‚ğ‚Á‚Ä‚¢‚é)
+	kmb::nodeIdType nodes[15];  // 6(1è¡Œã®å¹…)-1+4(è¦ç´ ã®æœ€å¤§ç¯€ç‚¹æ•°) < 15 (ä½™è£•ã‚’æŒã£ã¦ã„ã‚‹)
 	int index = 0;
 	output.width(12);
 	output.setf( std::ios::right );
@@ -976,9 +976,9 @@ kmb::FFbIO::writeNode2D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 			output << std::setw(12) << body->getCount() << std::endl;
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
-				nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-				nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-				nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
+				nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+				nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+				nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
 				index += 3;
 				if( index >= 6 ){
 					for(int i=0;i<6;++i){
@@ -1004,10 +1004,10 @@ kmb::FFbIO::writeNode2D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 			output << std::setw(12) << body->getCount() << std::endl;
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
-				nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-				nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-				nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-				nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
+				nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+				nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+				nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+				nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
 				index += 4;
 				if( index >= 6 ){
 					for(int i=0;i<6;++i){
@@ -1050,10 +1050,10 @@ kmb::FFbIO::writeNode3D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 			output << std::setw(12) << body->getCount() << std::endl;
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
-				nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-				nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-				nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-				nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
+				nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+				nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+				nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+				nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
 				index += 4;
 				while( index >= 6 ){
 					for(int i=0;i<6;++i){
@@ -1079,11 +1079,11 @@ kmb::FFbIO::writeNode3D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 			output << std::setw(12) << body->getCount() << std::endl;
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
-				nodes[index]   = eIter.getCellId(1) + offsetNodeId;
-				nodes[index+1] = eIter.getCellId(2) + offsetNodeId;
-				nodes[index+2] = eIter.getCellId(3) + offsetNodeId;
-				nodes[index+3] = eIter.getCellId(4) + offsetNodeId;
-				nodes[index+4] = eIter.getCellId(0) + offsetNodeId;
+				nodes[index]   = eIter.getNodeId(1) + offsetNodeId;
+				nodes[index+1] = eIter.getNodeId(2) + offsetNodeId;
+				nodes[index+2] = eIter.getNodeId(3) + offsetNodeId;
+				nodes[index+3] = eIter.getNodeId(4) + offsetNodeId;
+				nodes[index+4] = eIter.getNodeId(0) + offsetNodeId;
 				index += 5;
 				while( index >= 6 ){
 					for(int i=0;i<6;++i){
@@ -1109,12 +1109,12 @@ kmb::FFbIO::writeNode3D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 			output << std::setw(12) << body->getCount() << std::endl;
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
-				nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-				nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-				nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-				nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
-				nodes[index+4] = eIter.getCellId(4) + offsetNodeId;
-				nodes[index+5] = eIter.getCellId(5) + offsetNodeId;
+				nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+				nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+				nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+				nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
+				nodes[index+4] = eIter.getNodeId(4) + offsetNodeId;
+				nodes[index+5] = eIter.getNodeId(5) + offsetNodeId;
 				index += 6;
 				while( index >= 6 ){
 					for(int i=0;i<6;++i){
@@ -1140,14 +1140,14 @@ kmb::FFbIO::writeNode3D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 			output << std::setw(12) << body->getCount() << std::endl;
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
-				nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-				nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-				nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-				nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
-				nodes[index+4] = eIter.getCellId(4) + offsetNodeId;
-				nodes[index+5] = eIter.getCellId(5) + offsetNodeId;
-				nodes[index+6] = eIter.getCellId(6) + offsetNodeId;
-				nodes[index+7] = eIter.getCellId(7) + offsetNodeId;
+				nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+				nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+				nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+				nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
+				nodes[index+4] = eIter.getNodeId(4) + offsetNodeId;
+				nodes[index+5] = eIter.getNodeId(5) + offsetNodeId;
+				nodes[index+6] = eIter.getNodeId(6) + offsetNodeId;
+				nodes[index+7] = eIter.getNodeId(7) + offsetNodeId;
 				index += 8;
 				while( index >= 6 ){
 					for(int i=0;i<6;++i){
@@ -1175,45 +1175,45 @@ kmb::FFbIO::writeNode3D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 			while( !eIter.isFinished() ){
 				switch( eIter.getType() ){
 				case kmb::TETRAHEDRON:
-					nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
 					nodes[index+4] = 0;
 					nodes[index+5] = 0;
 					nodes[index+6] = 0;
 					nodes[index+7] = 0;
 					break;
 				case kmb::PYRAMID:
-					nodes[index]   = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(3) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(4) + offsetNodeId;
-					nodes[index+4] = eIter.getCellId(0) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(3) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(4) + offsetNodeId;
+					nodes[index+4] = eIter.getNodeId(0) + offsetNodeId;
 					nodes[index+5] = 0;
 					nodes[index+6] = 0;
 					nodes[index+7] = 0;
 					break;
 				case kmb::WEDGE:
-					nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
-					nodes[index+4] = eIter.getCellId(4) + offsetNodeId;
-					nodes[index+5] = eIter.getCellId(5) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
+					nodes[index+4] = eIter.getNodeId(4) + offsetNodeId;
+					nodes[index+5] = eIter.getNodeId(5) + offsetNodeId;
 					nodes[index+6] = 0;
 					nodes[index+7] = 0;
 					break;
 				case kmb::HEXAHEDRON:
-					nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
 
-					nodes[index+4] = eIter.getCellId(4) + offsetNodeId;
-					nodes[index+5] = eIter.getCellId(5) + offsetNodeId;
-					nodes[index+6] = eIter.getCellId(6) + offsetNodeId;
-					nodes[index+7] = eIter.getCellId(7) + offsetNodeId;
+					nodes[index+4] = eIter.getNodeId(4) + offsetNodeId;
+					nodes[index+5] = eIter.getNodeId(5) + offsetNodeId;
+					nodes[index+6] = eIter.getNodeId(6) + offsetNodeId;
+					nodes[index+7] = eIter.getNodeId(7) + offsetNodeId;
 					break;
 				default:
 					nodes[index]   = 0;
@@ -1271,18 +1271,18 @@ kmb::FFbIO::writeNode2DVer6(std::ofstream &output,const kmb::MeshData* mesh,kmb:
 				switch( eIter.getType() ){
 				case kmb::TRIANGLE:
 					{
-						nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-						nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-						nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
+						nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+						nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+						nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
 						nodes[index+3] = 0;
 					}
 					break;
 				case kmb::QUAD:
 					{
-						nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-						nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-						nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-						nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
+						nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+						nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+						nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+						nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
 					}
 					break;
 				default:
@@ -1332,44 +1332,44 @@ kmb::FFbIO::writeNode3DVer6(std::ofstream &output,const kmb::MeshData* mesh,kmb:
 			while( !eIter.isFinished() ){
 				switch( eIter.getType() ){
 				case kmb::TETRAHEDRON:
-					nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
 					nodes[index+4] = 0;
 					nodes[index+5] = 0;
 					nodes[index+6] = 0;
 					nodes[index+7] = 0;
 					break;
 				case kmb::PYRAMID:
-					nodes[index]   = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(3) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(4) + offsetNodeId;
-					nodes[index+4] = eIter.getCellId(0) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(3) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(4) + offsetNodeId;
+					nodes[index+4] = eIter.getNodeId(0) + offsetNodeId;
 					nodes[index+5] = 0;
 					nodes[index+6] = 0;
 					nodes[index+7] = 0;
 					break;
 				case kmb::WEDGE:
-					nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
-					nodes[index+4] = eIter.getCellId(4) + offsetNodeId;
-					nodes[index+5] = eIter.getCellId(5) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
+					nodes[index+4] = eIter.getNodeId(4) + offsetNodeId;
+					nodes[index+5] = eIter.getNodeId(5) + offsetNodeId;
 					nodes[index+6] = 0;
 					nodes[index+7] = 0;
 					break;
 				case kmb::HEXAHEDRON:
-					nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
-					nodes[index+4] = eIter.getCellId(4) + offsetNodeId;
-					nodes[index+5] = eIter.getCellId(5) + offsetNodeId;
-					nodes[index+6] = eIter.getCellId(6) + offsetNodeId;
-					nodes[index+7] = eIter.getCellId(7) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
+					nodes[index+4] = eIter.getNodeId(4) + offsetNodeId;
+					nodes[index+5] = eIter.getNodeId(5) + offsetNodeId;
+					nodes[index+6] = eIter.getNodeId(6) + offsetNodeId;
+					nodes[index+7] = eIter.getNodeId(7) + offsetNodeId;
 					break;
 				default:
 					nodes[index]   = 0;
@@ -1416,7 +1416,7 @@ kmb::FFbIO::readHeaderFlt(std::ifstream &input,kmb::MeshData* mesh)
 		std::vector<float> floatArray;
 		readString( input, line );
 		readArray<int>( input, intArray );
-		// ‚PŸŒ³‚Ì’l‚Ì‚¾‚¯“o˜^
+		// ï¼‘æ¬¡å…ƒã®å€¤ã®æ™‚ã ã‘ç™»éŒ²
 		if( intArray[0] == 1 && intArray[1] == 1 ){
 			strip(line);
 			mesh->createDataBindings( line.c_str(), kmb::DataBindings::Global, kmb::PhysicalValue::Scalar );
@@ -1426,12 +1426,12 @@ kmb::FFbIO::readHeaderFlt(std::ifstream &input,kmb::MeshData* mesh)
 	}else{
 		std::string line,dummy;
 		std::getline( input, line );
-		// ‘OŒã‚Ì‹ó”’‚ğæ‚é
+		// å‰å¾Œã®ç©ºç™½ã‚’å–ã‚‹
 		strip(line);
 		int dim=0, size=0;
 		input >> dim >> size;
 		std::getline( input, dummy );
-		// ‚PŸŒ³‚Ì’l‚Ì‚¾‚¯“o˜^
+		// ï¼‘æ¬¡å…ƒã®å€¤ã®æ™‚ã ã‘ç™»éŒ²
 		if( dim == 1 && size == 1 ){
 			strip(line);
 			mesh->createDataBindings( line.c_str(), kmb::DataBindings::Global, kmb::PhysicalValue::Scalar );
@@ -1451,7 +1451,7 @@ kmb::FFbIO::readHeaderInt(std::ifstream &input,kmb::MeshData* mesh)
 		std::vector<int> intArray;
 		readString( input, line );
 		readArray<int>( input, intArray );
-		// ‚PŸŒ³‚Ì’l‚Ì‚¾‚¯“o˜^
+		// ï¼‘æ¬¡å…ƒã®å€¤ã®æ™‚ã ã‘ç™»éŒ²
 		if( intArray[0] == 1 && intArray[1] == 1 ){
 			strip(line);
 			mesh->createDataBindings( line.c_str(), kmb::DataBindings::Global, kmb::PhysicalValue::Integer );
@@ -1461,7 +1461,7 @@ kmb::FFbIO::readHeaderInt(std::ifstream &input,kmb::MeshData* mesh)
 	}else{
 		std::string line,dummy;
 		std::getline( input, line );
-		// ‘OŒã‚Ì‹ó”’‚ğæ‚é
+		// å‰å¾Œã®ç©ºç™½ã‚’å–ã‚‹
 		strip(line);
 		//std::string::size_type notwhite = line.find_last_not_of(" ");
 		//line.erase( notwhite+1 );
@@ -1470,7 +1470,7 @@ kmb::FFbIO::readHeaderInt(std::ifstream &input,kmb::MeshData* mesh)
 		int dim=0, size=0;
 		input >> dim >> size;
 		std::getline( input, dummy );
-		// ‚PŸŒ³‚Ì’l‚Ì‚¾‚¯“o˜^
+		// ï¼‘æ¬¡å…ƒã®å€¤ã®æ™‚ã ã‘ç™»éŒ²
 		if( dim == 1 && size == 1 ){
 			strip(line);
 			mesh->createDataBindings( line.c_str(), kmb::DataBindings::Global, kmb::PhysicalValue::Integer );
@@ -1858,7 +1858,7 @@ kmb::FFbIO::readVelo2D(std::ifstream &input,kmb::MeshData* mesh)
 	return 0;
 }
 
-// name ‚Æ 2 s–Ú‚Éo—Í‚·‚é•¶š—ñ‚Í•K‚¸‚µ‚à“¯‚¶‚Å‚Í‚È‚¢‚±‚Æ‚É’ˆÓ
+// name ã¨ 2 è¡Œç›®ã«å‡ºåŠ›ã™ã‚‹æ–‡å­—åˆ—ã¯å¿…ãšã—ã‚‚åŒã˜ã§ã¯ãªã„ã“ã¨ã«æ³¨æ„
 int
 kmb::FFbIO::writeBC(std::ofstream &output,const kmb::MeshData* mesh,boundaryType btype,const char* name)
 {
@@ -2192,8 +2192,8 @@ kmb::FFbIO::readBC(std::ifstream &input,kmb::MeshData* mesh,boundaryType btype,c
 	return 0;
 }
 
-// Temp ‚Æ Heat ‚É‚Â‚¢‚Ä
-// tmpv hfxv ‚Ì‘O‚É tmpn hfxn ‚ª‚ ‚é‚Æ‰¼’è‚·‚é
+// Temp ã¨ Heat ã«ã¤ã„ã¦
+// tmpv hfxv ã®å‰ã« tmpn hfxn ãŒã‚ã‚‹ã¨ä»®å®šã™ã‚‹
 int
 kmb::FFbIO::readBCV(std::ifstream &input,kmb::MeshData* mesh,boundaryType btype,const char* name)
 {
@@ -2283,8 +2283,8 @@ kmb::FFbIO::readBCV(std::ifstream &input,kmb::MeshData* mesh,boundaryType btype,
 	return 0;
 }
 
-// inlet ‚Æ moving wall ‚É‚Â‚¢‚Ä
-// iv3d mv3d ‚Ì‘O‚É inlt mwal ‚ª‚ ‚é‚Æ‰¼’è‚·‚é
+// inlet ã¨ moving wall ã«ã¤ã„ã¦
+// iv3d mv3d ã®å‰ã« inlt mwal ãŒã‚ã‚‹ã¨ä»®å®šã™ã‚‹
 int
 kmb::FFbIO::readBC3D(std::ifstream &input,kmb::MeshData* mesh,boundaryType btype,const char* name)
 {

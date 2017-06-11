@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Hexahedron                                              #
@@ -44,12 +44,12 @@ public:
 
 	static int divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nodeIdType tetrahedrons[][4]);
 
-	// Œü‚«‚ğ–³‹‚µ‚Äß“_”Ô†‡‚ª“¯‚¶}Œ`‚ğ‚ ‚ç‚í‚·‚©
-	// index ‚Í 0 ‚©‚ç 7 ‚Ü‚Å‚Ì®”‚Ì’uŠ·
+	// å‘ãã‚’ç„¡è¦–ã—ã¦ç¯€ç‚¹ç•ªå·é †ãŒåŒã˜å›³å½¢ã‚’ã‚ã‚‰ã‚ã™ã‹
+	// index ã¯ 0 ã‹ã‚‰ 7 ã¾ã§ã®æ•´æ•°ã®ç½®æ›
 	static bool isEquivalent(int index[8]);
-	// hexa ‚É‘Î‚µ‚ÄAquad0 ‚Æ quad1 ‚ª‘Î–ÊŠÖŒW‚É‚ ‚é‚©
-	// ‚ ‚éê‡‚ÍÅ‰‚Ìß“_‚Ì‚¸‚ê‚Ä‚¢‚éŒÂ” 0,1,2,3 ‚ğ•Ô‚·
-	// ‘Î–ÊŠÖŒW‚É‚È‚¢ê‡‚Í -1 ‚ğ•Ô‚·
+	// hexa ã«å¯¾ã—ã¦ã€quad0 ã¨ quad1 ãŒå¯¾é¢é–¢ä¿‚ã«ã‚ã‚‹ã‹
+	// ã‚ã‚‹å ´åˆã¯æœ€åˆã®ç¯€ç‚¹ã®ãšã‚Œã¦ã„ã‚‹å€‹æ•° 0,1,2,3 ã‚’è¿”ã™
+	// å¯¾é¢é–¢ä¿‚ã«ãªã„å ´åˆã¯ -1 ã‚’è¿”ã™
 	static int isOppositeFace(const kmb::ElementBase* hexa,const kmb::ElementBase* quad0,const kmb::ElementBase* quad1);
 public:
 	static const int connectionTable[8][8];
@@ -57,6 +57,9 @@ public:
 	static const int edgeTable[12][2];
 
 	static void shapeFunction(double s,double t,double u,double* coeff);
+	static void shapeFunction_ds(double s,double t,double u,double* coeff);
+	static void shapeFunction_dt(double s,double t,double u,double* coeff);
+	static void shapeFunction_du(double s,double t,double u,double* coeff);
 
 	static bool getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D* points,double naturalCoords[3]);
 	static bool getPhysicalCoordinates(const double naturalCoords[3],const kmb::Point3D* points,kmb::Point3D &target);
@@ -67,6 +70,9 @@ public:
 	static double jacobian_ds(double s, double t,double u,const kmb::Point3D* points);
 	static double jacobian_dt(double s, double t,double u,const kmb::Point3D* points);
 	static double jacobian_du(double s, double t,double u,const kmb::Point3D* points);
+
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 };
 
 }

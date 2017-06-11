@@ -24,7 +24,7 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// 2ЋџЊі—v‘f‚©‚з‚И‚й•\–КѓЃѓbѓVѓ…Ѓiѓpѓbѓ`Ѓj‚Й‘О‚·‚йЉф‰ЅЏ€—ќЃE€К‘ЉЏ€—ќ
+// 2ж¬Ўе…ѓи¦Ѓзґ гЃ‹г‚‰гЃЄг‚‹иЎЁйќўгѓЎгѓѓг‚·гѓҐпј€гѓ‘гѓѓгѓЃпј‰гЃ«еЇѕгЃ™г‚‹е№ѕдЅ•е‡¦зђ†гѓ»дЅЌз›ёе‡¦зђ†
 //
 
 #pragma once
@@ -55,7 +55,7 @@ protected:
 	std::set< std::pair<kmb::elementIdType, kmb::elementIdType> > edgesBetweenElements;
 	kmb::Classification< kmb::Face > dividedFacesInfo;
 	std::set< std::pair<kmb::Face,kmb::Face> > edgesBetweenFaces;
-	// •\–К‚©‚з–КѓOѓ‹Ѓ[ѓv‚рЌДЌ\ђ¬‚·‚й‚Ж‚«‚Й‹tЊь‚«‚М•\–К‚©‚з‚а‹–‚·
+	// иЎЁйќўгЃ‹г‚‰йќўг‚°гѓ«гѓјгѓ—г‚’е†Ќж§‹ж€ђгЃ™г‚‹гЃЁгЃЌгЃ«йЂ†еђ‘гЃЌгЃ®иЎЁйќўгЃ‹г‚‰г‚‚иЁ±гЃ™
 	bool permitReverse;
 public:
 	SurfaceOperation(void);
@@ -78,34 +78,34 @@ public:
 	// divide face group by threshold of angles
 	// the names of divided face groups are postfixed "1" such as "face_1". 
 	//
-	// divideFaceGroup ‚Н•ЄЉ„‚М‹«ЉE‚М—ЕђьЏWЌ‡‚р Body ‚Ж‚µ‚Д•Ы‘¶‚µ‚ДЃA‚»‚М bodyId ‚р•Ф‚·
-	// divideFaceGroupWithRidge ‚Н•ЄЉ„‚µ‚Ѕ FaceGroup ‚Ж‚»‚М—Еђь‚М BodyId ‚МA‘z”z—с‚р“ь‚к‚й
-	// key = FaceGroup ‚М–ј‘OЃAvalue = ‚»‚к‚р€Н‚Ю—ЕђьЏWЌ‡‚М BodyId
-	// FaceGroup ‚М stype ‚Н "Brep" ‚Й‚·‚йЃB
-	// –Я‚и’l‚Н‘S‘М‚М—Еђь‚М BodyId
+	// divideFaceGroup гЃЇе€†е‰ІгЃ®еўѓз•ЊгЃ®зЁњз·љй›†еђ€г‚’ Body гЃЁгЃ—гЃ¦дїќе­гЃ—гЃ¦гЂЃгЃќгЃ® bodyId г‚’иї”гЃ™
+	// divideFaceGroupWithRidge гЃЇе€†е‰ІгЃ—гЃџ FaceGroup гЃЁгЃќгЃ®зЁњз·љгЃ® BodyId гЃ®йЂЈжѓій…Ќе€—г‚’е…Ґг‚Њг‚‹
+	// key = FaceGroup гЃ®еђЌе‰ЌгЂЃvalue = гЃќг‚Њг‚’е›Іг‚ЂзЁњз·љй›†еђ€гЃ® BodyId
+	// FaceGroup гЃ® stype гЃЇ "Brep" гЃ«гЃ™г‚‹гЂ‚
+	// ж€»г‚ЉеЂ¤гЃЇе…ЁдЅ“гЃ®зЁњз·љгЃ® BodyId
 	kmb::bodyIdType divideFaceGroup(std::string name,double angle,std::vector<std::string> &subFaceGroups);
 	kmb::bodyIdType divideFaceGroupWithRidge(std::string name,double angle,std::map<std::string,kmb::bodyIdType> &subFaceGroupMapper);
-	// divide => –і—ќ‚в‚и•ЄЉ„‚·‚йЃiЉp“x‚ри‡’l‚Й‚·‚йЃj
-	// decompose => Ћ©‘R‚Й•Є‚©‚к‚й
-	// AЊ‹ђ¬•Є‚Й•ЄЉ„‚·‚й
+	// divide => з„Ўзђ†г‚„г‚Ље€†е‰ІгЃ™г‚‹пј€и§’еє¦г‚’й–ѕеЂ¤гЃ«гЃ™г‚‹пј‰
+	// decompose => и‡Єз„¶гЃ«е€†гЃ‹г‚Њг‚‹
+	// йЂЈзµђж€ђе€†гЃ«е€†е‰ІгЃ™г‚‹
 	void decomposeSurface(kmb::bodyIdType bodyID, std::set< kmb::bodyIdType > &components);
-	// FaceGroup ‚рAЊ‹ђ¬•Є‚Й•ЄЉ„‚·‚й
+	// FaceGroup г‚’йЂЈзµђж€ђе€†гЃ«е€†е‰ІгЃ™г‚‹
 	bool decomposeFaceGroup(std::string faceGroup, std::vector<std::string> &subFaceGroups);
-	// AЊ‹ђ¬•Є‚І‚Ж‚Й•Є‚Ї‚й‰єђї‚ЇѓЃѓ\ѓbѓh
-	// element id ‚Н•Ы‘¶
+	// йЂЈзµђж€ђе€†гЃ”гЃЁгЃ«е€†гЃ‘г‚‹дё‹и«‹гЃ‘гѓЎг‚Ѕгѓѓгѓ‰
+	// element id гЃЇдїќе­
 	void decomposeByElementContainer(kmb::ElementContainer* elements,std::set< kmb::ElementContainer* > &components);
 	void clear(void);
 
 	void setSurface(kmb::MeshData* mesh,kmb::bodyIdType bodyId);
 	enum vertexType{
 		Unknown,
-		CONVEX,     // ’ё“_‚МЋь‚и‚М—v‘f‚МЉp“x‚Мa‚Є 360 “x‚ж‚иЏ¬‚і‚ўЃ•“К
-		CONCAVE,    // ’ё“_‚МЋь‚и‚М—v‘f‚МЉp“x‚Мa‚Є 360 “x‚ж‚иЏ¬‚і‚ўЃ•‰љ
-		FLAT,       // ’ё“_‚МЋь‚и‚М—v‘f‚МЉp“x‚Мa‚Є 360 “x
-		HYPERBOLIC  // ’ё“_‚МЋь‚и‚М—v‘f‚МЉp“x‚Мa‚Є 360 “x‚ж‚и‘е‚«‚ў
+		CONVEX,     // й ‚з‚№гЃ®е‘Ёг‚ЉгЃ®и¦Ѓзґ гЃ®и§’еє¦гЃ®е’ЊгЃЊ 360 еє¦г‚€г‚Ље°ЏгЃ•гЃ„пј†е‡ё
+		CONCAVE,    // й ‚з‚№гЃ®е‘Ёг‚ЉгЃ®и¦Ѓзґ гЃ®и§’еє¦гЃ®е’ЊгЃЊ 360 еє¦г‚€г‚Ље°ЏгЃ•гЃ„пј†е‡№
+		FLAT,       // й ‚з‚№гЃ®е‘Ёг‚ЉгЃ®и¦Ѓзґ гЃ®и§’еє¦гЃ®е’ЊгЃЊ 360 еє¦
+		HYPERBOLIC  // й ‚з‚№гЃ®е‘Ёг‚ЉгЃ®и¦Ѓзґ гЃ®и§’еє¦гЃ®е’ЊгЃЊ 360 еє¦г‚€г‚Ље¤§гЃЌгЃ„
 	};
-	// NodeNeighborInfo ‚рЉO‚©‚з—^‚¦‚йЏкЌ‡
-	// ElementContainer ‚Є Element2D ‚М‚Э‚©‚з‚И‚й‚±‚Ж‚НѓmЃ[ѓ`ѓFѓbѓN
+	// NodeNeighborInfo г‚’е¤–гЃ‹г‚‰дёЋгЃ€г‚‹е ґеђ€
+	// ElementContainer гЃЊ Element2D гЃ®гЃїгЃ‹г‚‰гЃЄг‚‹гЃ“гЃЁгЃЇгѓЋгѓјгѓЃг‚§гѓѓг‚Ї
 	static vertexType getVertexType
 		(kmb::nodeIdType nodeId,
 		 kmb::MeshData* mesh,
@@ -115,15 +115,15 @@ public:
 
 	kmb::bodyIdType faceGroup2Surface(const char* name);
 	bool surface2FaceGroup(kmb::bodyIdType bodyId,kmb::bodyIdType parentBodyId,const char* name);
-	// parentFaceGroup ‚Е—^‚¦‚з‚к‚й face ‚М‚¤‚їЃAbodyId ‚Е—^‚¦‚з‚к‚й–К‚Ж‹¤’К‚М‚а‚М‚р name ‚М
-	// face group ‚Й“o^‚·‚й
+	// parentFaceGroup гЃ§дёЋгЃ€г‚‰г‚Њг‚‹ face гЃ®гЃ†гЃЎгЂЃbodyId гЃ§дёЋгЃ€г‚‰г‚Њг‚‹йќўгЃЁе…±йЂљгЃ®г‚‚гЃ®г‚’ name гЃ®
+	// face group гЃ«з™»йЊІгЃ™г‚‹
 	bool surface2FaceGroup(kmb::bodyIdType bodyId,const char* parentFaceGroup,const char* name);
 protected:
 	// append data to divideElementsInfo
 	// return the number of divided groups
 	size_t divideSurface(const kmb::ElementContainer* elements,const kmb::Point3DContainer* points,double angle);
-	// •ЄЉ„‚і‚к‚й–К‚МЋOЉpЊ`‚ЖЋlЉpЊ`‚МЊВђ”
-	// 2Ћџ—v‘f‚а“Ї‚¶‚ж‚¤‚Йђ”‚¦‚й
+	// е€†е‰ІгЃ•г‚Њг‚‹йќўгЃ®дё‰и§’еЅўгЃЁе››и§’еЅўгЃ®еЂ‹ж•°
+	// 2ж¬Ўи¦Ѓзґ г‚‚еђЊгЃг‚€гЃ†гЃ«ж•°гЃ€г‚‹
 	bool getDividedSurfaceElementCount(const kmb::ElementContainer* orgSurf,kmb::elementIdType initElementId,size_t &triCount,size_t &quadCount) const;
 	// get divided surface included an element with initElementId as id
 	size_t getDividedSurface(const kmb::ElementContainer* orgSurf,kmb::elementIdType initElementId,kmb::ElementContainer* dividedSurf) const;

@@ -32,6 +32,7 @@ kmb::TriangleBucketArea::TriangleBucketArea(const kmb::BoxRegion &box,int xnum,i
 , points(NULL)
 , elements(NULL)
 , coordMatrix(NULL)
+, elemArea(NULL)
 {
 }
 
@@ -68,9 +69,9 @@ kmb::TriangleBucketArea::append(kmb::elementIdType elementId)
 	if( !eIter.isFinished() && eIter.getType() == kmb::TRIANGLE ){
 		kmb::BoundingBox box;
 		kmb::Point3D a,b,c;
-		if( points->getPoint( eIter.getCellId(0), a ) &&
-			points->getPoint( eIter.getCellId(1), b ) &&
-			points->getPoint( eIter.getCellId(2), c ) )
+		if( points->getPoint( eIter.getNodeId(0), a ) &&
+			points->getPoint( eIter.getNodeId(1), b ) &&
+			points->getPoint( eIter.getNodeId(2), c ) )
 		{
 			if( coordMatrix ){
 				coordMatrix->convert( a );
@@ -117,9 +118,9 @@ kmb::TriangleBucketArea::appendAll(void)
 	kmb::ElementContainer::const_iterator eIter = elements->begin();
 	while( !eIter.isFinished() ){
 		if( eIter.getType() == kmb::TRIANGLE &&
-			points->getPoint( eIter.getCellId(0), a ) &&
-			points->getPoint( eIter.getCellId(1), b ) &&
-			points->getPoint( eIter.getCellId(2), c ) )
+			points->getPoint( eIter.getNodeId(0), a ) &&
+			points->getPoint( eIter.getNodeId(1), b ) &&
+			points->getPoint( eIter.getNodeId(2), c ) )
 		{
 			if( coordMatrix ){
 				coordMatrix->convert( a );
@@ -210,7 +211,7 @@ kmb::TriangleBucketArea::getNearest(double x,double y,double z,double &dist,kmb:
 		double span = sqrt( minimizer.getMin() );
 		getSubIndices( x-span, y-span, z-span, i1, j1, k1 );
 		getSubIndices( x+span, y+span, z+span, i2, j2, k2 );
-		// (i0,j0,k0) ˆÈŠO‚ğ’T‚·
+		// (i0,j0,k0) ä»¥å¤–ã‚’æ¢ã™
 		for(int i=i1;i<=i2;++i){
 			for(int j=j1;j<=j2;++j){
 				for(int k=k1;k<=k2;++k){
@@ -223,8 +224,8 @@ kmb::TriangleBucketArea::getNearest(double x,double y,double z,double &dist,kmb:
 			}
 		}
 	}else{
-		// (i0,j0,k0) ‚Ì Bucket ‚É‚È‚¢
-		// ‘S•”’²‚×‚é
+		// (i0,j0,k0) ã® Bucket ã«ãªã„
+		// å…¨éƒ¨èª¿ã¹ã‚‹
 		kmb::BoxRegion box;
 		kmb::Bucket< std::pair<kmb::elementIdType,double> >::const_iterator tIter = this->begin();
 		kmb::Bucket< std::pair<kmb::elementIdType,double> >::const_iterator endIter = this->end();

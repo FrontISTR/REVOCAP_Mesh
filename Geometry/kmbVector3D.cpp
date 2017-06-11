@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+Ôªø/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Vector3D                                                #
@@ -38,7 +38,7 @@ kmb::Vector3D::Vector3D(const Point3D& p,const Point3D& q)
 	}
 }
 
-/// ÉXÉJÉâÅ[êœ
+/// „Çπ„Ç´„É©„ÉºÁ©ç
 
 kmb::Vector3D
 kmb::Vector3D::scalar(const double s) const{

@@ -1,4 +1,4 @@
-include ../OPTIONS
+﻿include ../OPTIONS
 include ../MakefileConfig.in
 
 LIBDIR = ../lib

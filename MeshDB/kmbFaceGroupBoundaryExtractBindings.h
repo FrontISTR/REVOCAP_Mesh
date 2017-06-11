@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : FaceGroupBoundaryExtractBindings                        #
@@ -12,9 +12,9 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-// •\–Ê’Šo‚Ì‚½‚ß‚Ì–Êƒf[ƒ^‚ğŠÇ—‚·‚é‚½‚ß‚Ìƒf[ƒ^\‘¢
-// Œ‹‰Ê‚¾‚¯‚ª—~‚µ‚¢‚Æ‚«‚Í BoundaryExtractor ‚Å‚æ‚¢
-// “à•”‚Ì–Ê‚ÌƒyƒA‚Æ‚È‚Á‚Ä‚¢‚é–Ê‚Ìî•ñ‚ª—~‚µ‚¢‚Ég‚¤
+// è¡¨é¢æŠ½å‡ºã®ãŸã‚ã®é¢ãƒ‡ãƒ¼ã‚¿ã‚’ç®¡ç†ã™ã‚‹ãŸã‚ã®ãƒ‡ãƒ¼ã‚¿æ§‹é€ 
+// çµæœã ã‘ãŒæ¬²ã—ã„ã¨ãã¯ BoundaryExtractor ã§ã‚ˆã„
+// å†…éƒ¨ã®é¢ã®ãƒšã‚¢ã¨ãªã£ã¦ã„ã‚‹é¢ã®æƒ…å ±ãŒæ¬²ã—ã„æ™‚ã«ä½¿ã†
 #pragma once
 
 #include "MeshDB/kmbDataBindings.h"
@@ -57,13 +57,13 @@ public:
 	virtual DataBindings::iterator begin(void);
 	virtual DataBindings::const_iterator begin(void) const;
 
-	// “Æ©ƒƒ\ƒbƒh
+	// ç‹¬è‡ªãƒ¡ã‚½ãƒƒãƒ‰
 	void setMesh(kmb::MeshData* mesh);
 	size_t appendBody(kmb::bodyIdType bodyId);
-	// f ‚Æd‚È‚Á‚Ä‚¢‚é‚à‚¤ˆê•û‚Ì Face ‚ğ•Ô‚·
-	// — •Ô‚Á‚Ä‚¢‚Ä‚à‚æ‚¢ê‡‚Í reverse = true
-	// ’FŒü‚«‚ª“¯‚¶—v‘f‚ª“o˜^‚³‚ê‚Ä‚¢‚éê‡‚ÍA’Êí–Ê‚ÍŒü‚«‚ª‹t‚É‚È‚é
-	// reverse=true ‚Ì‚Íe‚Ì—v‘f‚ÌŒü‚«‚ªˆÙ‚È‚éê‡A–Ê‚Í“¯‚¶Œü‚«‚É‚È‚é
+	// f ã¨é‡ãªã£ã¦ã„ã‚‹ã‚‚ã†ä¸€æ–¹ã® Face ã‚’è¿”ã™
+	// è£è¿”ã£ã¦ã„ã¦ã‚‚ã‚ˆã„å ´åˆã¯ reverse = true
+	// æ³¨ï¼šå‘ããŒåŒã˜è¦ç´ ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€é€šå¸¸é¢ã¯å‘ããŒé€†ã«ãªã‚‹
+	// reverse=true ã®æ™‚ã¯è¦ªã®è¦ç´ ã®å‘ããŒç•°ãªã‚‹å ´åˆã€é¢ã¯åŒã˜å‘ãã«ãªã‚‹
 	kmb::Face getNeighbor(kmb::Face f,bool reverse=false) const;
 };
 

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+Ôªø/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : BoxRegion2D                                             #
@@ -38,21 +38,7 @@ kmb::BoxRegion2D::BoxRegion2D(const kmb::Point2D &l,const kmb::Point2D &u)
 kmb::BoxRegion2D::
 BoxRegion2D(double x0,double y0,double x1,double y1)
 {
-	if(x0 < x1){
-		this->minPoint.x( x0 );
-		this->maxPoint.x( x1 );
-	}else{
-		this->minPoint.x( x1 );
-		this->maxPoint.x( x0 );
-	}
-
-	if(y0 < y1){
-		this->minPoint.y( y0 );
-		this->maxPoint.y( y1 );
-	}else{
-		this->minPoint.y( y1 );
-		this->maxPoint.y( y0 );
-	}
+	setMinMax(x0,y0,x1,y1);
 }
 
 kmb::BoxRegion2D::BoxRegion2D(const kmb::BoxRegion2D &other)
@@ -71,6 +57,30 @@ kmb::BoxRegion2D::operator=(const kmb::BoxRegion2D &other)
 	maxPoint = other.maxPoint;
 	minPoint = other.minPoint;
 	return *this;
+}
+
+void kmb::BoxRegion2D::setMinMax(double x0,double y0,double x1,double y1)
+{
+	if(x0 < x1){
+		this->minPoint.x( x0 );
+		this->maxPoint.x( x1 );
+	}else{
+		this->minPoint.x( x1 );
+		this->maxPoint.x( x0 );
+	}
+
+	if(y0 < y1){
+		this->minPoint.y( y0 );
+		this->maxPoint.y( y1 );
+	}else{
+		this->minPoint.y( y1 );
+		this->maxPoint.y( y0 );
+	}
+}
+
+void kmb::BoxRegion2D::setMinMax(kmb::Point2D& minPoint,kmb::Point2D& maxPoint)
+{
+	setMinMax(minPoint.x(),minPoint.y(),maxPoint.x(),maxPoint.y());
 }
 
 double
@@ -334,7 +344,7 @@ kmb::BoxRegion2D::crossOnLine(const kmb::Point2D& origin, const kmb::Vector2D& d
 		bbox_y.update( DBL_MAX );
 		bbox_y.update( -DBL_MAX );
 	}
-	// [t_minx,t_maxx] Ç∆ [t_miny,t_maxy] ÇÃêœÇ min_t max_t Ç…Ç∑ÇÈ
+	// [t_minx,t_maxx] „Å® [t_miny,t_maxy] „ÅÆÁ©ç„Çí min_t max_t „Å´„Åô„Çã
 	if( bbox_x.intersect( bbox_y ) ){
 		min_t = kmb::Maximizer::getMax( bbox_x.getMin(), bbox_y.getMin() );
 		max_t = kmb::Minimizer::getMin( bbox_x.getMax(), bbox_y.getMax() );

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : Advance/REVOCAP version 3.2                          #
 # Class Name : IntegrationPoint                                        #
@@ -13,7 +13,7 @@
 #include "MeshDB/kmbElement.h"
 
 /**
- * Ï•ª“_‚Å‚Ì•¨——Ê‚ğŠÇ—‚·‚é‚½‚ß‚Ì—v‘f”Ô†‚ÆÏ•ª“_‚ÌƒCƒ“ƒfƒbƒNƒX‚Ì‘g
+ * ç©åˆ†ç‚¹ã§ã®ç‰©ç†é‡ã‚’ç®¡ç†ã™ã‚‹ãŸã‚ã®è¦ç´ ç•ªå·ã¨ç©åˆ†ç‚¹ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®çµ„
  */
 
 namespace kmb{
@@ -25,7 +25,7 @@ public:
 	kmb::idType integrationIndex;
 	IntegrationPoint(kmb::elementIdType _elementId=kmb::Element::nullElementId, kmb::idType _integrationIndex=kmb::nullId);
 	~IntegrationPoint(void);
-	// std::set ‚â std::map ‚Ég‚¤‚½‚ß‚É operator< ‚ğ’è‹`‚µ‚Ä‚¨‚­
+	// std::set ã‚„ std::map ã«ä½¿ã†ãŸã‚ã« operator< ã‚’å®šç¾©ã—ã¦ãŠã
 	bool operator<(const IntegrationPoint &other)const{
 		return (elementId < other.elementId) ||
 			(elementId==other.elementId && integrationIndex < other.integrationIndex);

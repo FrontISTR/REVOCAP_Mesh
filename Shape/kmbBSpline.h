@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : BSpline                                                 #
@@ -12,14 +12,14 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-// B-Spline Šî’êŠÖ”‚ÌŠî‘b’m¯
-// 0 Ÿ‚Í knots ‚Ì‹æŠÔ‚Ì step ŠÖ”
-// p Ÿ‚Í i‹æ•ª“Ijp Ÿ‘½€®
-// knots ‚ğ k_0,k_1,...,k_m-1 ‚Æ‚·‚é
-// i ”Ô–Ú‚Ì 0 ŸŠî’êŠÖ”‚Í [k_i,k_i+1) ‚ğ‘ä‚É‚Â
-// i ”Ô–Ú‚Ì p ŸŠî’êŠÖ”‚Í [k_i,k_i+p+1) ‚ğ‘ä‚É‚Â
-// p Ÿ‚ÌŠî’êŠÖ”‚ÌŒÂ”Fm - (p+1)
-// n ŒÂ‚Ì§Œä“_‚©‚ç p Ÿ‚Ì‹Èü‚ğì‚é‚É‚Í n+p+1 ŒÂ‚Ì knot ‚ª•K—v
+// B-Spline åŸºåº•é–¢æ•°ã®åŸºç¤çŸ¥è­˜
+// 0 æ¬¡ã¯ knots ã®åŒºé–“ã® step é–¢æ•°
+// p æ¬¡ã¯ ï¼ˆåŒºåˆ†çš„ï¼‰p æ¬¡å¤šé …å¼
+// knots ã‚’ k_0,k_1,...,k_m-1 ã¨ã™ã‚‹
+// i ç•ªç›®ã® 0 æ¬¡åŸºåº•é–¢æ•°ã¯ [k_i,k_i+1) ã‚’å°ã«æŒã¤
+// i ç•ªç›®ã® p æ¬¡åŸºåº•é–¢æ•°ã¯ [k_i,k_i+p+1) ã‚’å°ã«æŒã¤
+// p æ¬¡ã®åŸºåº•é–¢æ•°ã®å€‹æ•°ï¼šm - (p+1)
+// n å€‹ã®åˆ¶å¾¡ç‚¹ã‹ã‚‰ p æ¬¡ã®æ›²ç·šã‚’ä½œã‚‹ã«ã¯ n+p+1 å€‹ã® knot ãŒå¿…è¦
 
 #pragma once
 
@@ -31,7 +31,7 @@ class BSpline
 {
 private:
 	std::vector< double > knots;
-	// ‹Èüƒpƒ‰ƒ[ƒ^‚Ì¸“x
+	// æ›²ç·šãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ç²¾åº¦
 	static double precision;
 public:
 	BSpline(void);
@@ -41,20 +41,20 @@ public:
 	double getKnot(int index) const;
 	void setKnots(int num,double* knots);
 	int getKnotCount(void) const;
-	// knotsCount = m ‚Ì‚Æ‚«Aindex ‚Í 0,...,m-deg-2 ‚Ü‚Å
+	// knotsCount = m ã®ã¨ãã€index ã¯ 0,...,m-deg-2 ã¾ã§
 	double getValue(int index,int degree,double u) const;
-	// knotsCount = m ‚Ì‚Æ‚«Aindex ‚Í 0,...,m-deg-3 ‚Ü‚Å
+	// knotsCount = m ã®ã¨ãã€index ã¯ 0,...,m-deg-3 ã¾ã§
 	double getDerivative(int index,int degree,double u) const;
-	// knotsCount = m ‚Ì‚Æ‚«Aindex ‚Í 0,...,m-deg-4 ‚Ü‚Å
+	// knotsCount = m ã®ã¨ãã€index ã¯ 0,...,m-deg-4 ã¾ã§
 	double getSecondDerivative(int index,int degree,double u) const;
-	// ’è‹`ˆæ‚ÉŠÜ‚Ü‚ê‚é‚©‚Ç‚¤‚© = knots ‚ÌÅ‰‚ÆÅŒã‚ÌŠÔ‚É‚ ‚é‚©‚Ç‚¤‚©
+	// å®šç¾©åŸŸã«å«ã¾ã‚Œã‚‹ã‹ã©ã†ã‹ = knots ã®æœ€åˆã¨æœ€å¾Œã®é–“ã«ã‚ã‚‹ã‹ã©ã†ã‹
 	bool isDomain(double t) const;
 	void getDomain(double &min_t,double &max_t) const;
-	// origin ‚ğŒ´“_‚É unit ‚ğ’PˆÊ‚Æ‚µ‚½À•W‚Å‚ÌÅ‘å‚ÆÅ¬‚ğ‹‚ß‚é
+	// origin ã‚’åŸç‚¹ã« unit ã‚’å˜ä½ã¨ã—ãŸåº§æ¨™ã§ã®æœ€å¤§ã¨æœ€å°ã‚’æ±‚ã‚ã‚‹
 	void getDomainOnFrame( double origin, double unit, double &min_t,double &max_t) const;
 private:
-	// t ‚ª knot ‚Ì i ”Ô–ÚˆÈã i+1 ”Ô–Ú‚æ‚è¬‚³‚¢
-	// t < knots[0] ‚Ìê‡‚Í -1
+	// t ãŒ knot ã® i ç•ªç›®ä»¥ä¸Š i+1 ç•ªç›®ã‚ˆã‚Šå°ã•ã„
+	// t < knots[0] ã®å ´åˆã¯ -1
 	int getInterval(double t) const;
 };
 

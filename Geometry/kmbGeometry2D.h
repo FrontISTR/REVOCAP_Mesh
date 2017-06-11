@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Geometry2D                                              #
@@ -76,6 +76,7 @@ public:
 	Point2D& operator+=(const Vector2D& other);
 	Point2D& operator-=(const Vector2D& other);
 	bool operator==(const Point2D& other) const;
+	bool operator!=(const Point2D& other) const;
 	double distance(const Point2D& other) const;
 	double distance(double x,double y) const;
 	double distanceSq(const Point2D& other) const;
@@ -86,31 +87,31 @@ public:
 	// also return segment parameter t
 	double distanceSqToSegment(const Point2D& a,const Point2D& b,double& t) const;
 	double distanceToSegment(const Point2D& a,const Point2D& b) const;
-	// this ‚Æ other ‚ğ m:n ‚É“à•ª‚µ‚½“_‚ğ•Ô‚·
+	// this ã¨ other ã‚’ m:n ã«å†…åˆ†ã—ãŸç‚¹ã‚’è¿”ã™
 	Point2D dividingPoint(const Point2D& other,double m,double n) const;
 
-	// static ŠÖ”ŒQ
-	// ‹——£
+	// static é–¢æ•°ç¾¤
+	// è·é›¢
 #ifndef REVOCAP_SUPPORT_RUBY
 	static double distance(const Point2D& a,const Point2D& b);
 	static double distanceSq(const Point2D& a,const Point2D& b);
 #endif
-	// OŠpŒ`‚Ì–ÊÏ
-	// a,b,c ‚ª”¼Œv‰ñ‚è‚Ì‚É³
+	// ä¸‰è§’å½¢ã®é¢ç©
+	// a,b,c ãŒåŠæ™‚è¨ˆå›ã‚Šã®æ™‚ã«æ­£
 	static double area(const Point2D& a,const Point2D& b,const Point2D &c);
 	static Point2D getCenter(const Point2D& a,const Point2D& b);
 	static Point2D getCenter(const Point2D& a,const Point2D& b,const Point2D &c);
-	// Šp“xiƒ‰ƒWƒAƒ“j
+	// è§’åº¦ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰
 	// -PI < theta <= PI
 	static double angle(const Point2D &a,const Point2D &b,const Point2D &c);
 	// 0 <= theta < 2*PI
 	static double angle2(const Point2D &a,const Point2D &b,const Point2D &c);
 	static double cos(const Point2D &a,const Point2D &b,const Point2D &c);
 	static double sin(const Point2D &a,const Point2D &b,const Point2D &c);
-	// –ÊÏÀ•W
+	// é¢ç©åº§æ¨™
 	static void calcMinorCoordinate( const kmb::Point2D& a, const kmb::Point2D& b, const kmb::Point2D& c, const kmb::Point2D& x, double coordinate[3]);
 	static Point2D infinity;
-	// ‚Q‚Â‚Ìü•ª a0a1 ‚Æ b0b1 ‚ªŒğ·‚µ‚Ä‚¢‚é‚©
+	// ï¼’ã¤ã®ç·šåˆ† a0a1 ã¨ b0b1 ãŒäº¤å·®ã—ã¦ã„ã‚‹ã‹
 	static bool intesectSegments(const kmb::Point2D& a0, const kmb::Point2D& a1, const kmb::Point2D& b0, const kmb::Point2D& b1);
 };
 
@@ -121,7 +122,7 @@ public:
 	Vector2D(const double x, const double y)
 		: Tuple2D(x,y){};
 	// p - q
-	/// p ‚ªn“_, q ‚ªI“_
+	/// p ãŒå§‹ç‚¹, q ãŒçµ‚ç‚¹
 	Vector2D(const Point2D& p,const Point2D& q);
 	Vector2D(const Tuple2D &other)
 		: Tuple2D(other){};
@@ -132,7 +133,7 @@ public:
 	Vector2D operator-(const Vector2D& other){
 		return Vector2D(v[0]-other.v[0],v[1]-other.v[1]);
 	}
-	/// ƒXƒJƒ‰[Ï
+	/// ã‚¹ã‚«ãƒ©ãƒ¼ç©
 	Vector2D scalar(const double s) const;
 	Vector2D operator*(const double s) const{
 		return Vector2D(s*v[0],s*v[1]);
@@ -140,17 +141,17 @@ public:
 	friend Vector2D operator*(const double scalar,const Vector2D& vect){
 		return vect * scalar;
 	}
-	/// “àÏ
+	/// å†…ç©
 	double operator*(const Vector2D& other) const{
 		return v[0]*other.v[0] + v[1]*other.v[1];
 	}
-	/// ŠOÏ
+	/// å¤–ç©
 	double operator%(const Vector2D& other) const{
 		return v[0]*other.v[1] - v[1]*other.v[0];
 	}
 	double lengthSq() const;
 	double length() const;
-	double abs(void) const; // length ‚Æ“¯‚¶ˆÓ–¡
+	double abs(void) const; // length ã¨åŒã˜æ„å‘³
 	double normalize();
 	void rotate(double angle);
 ///// static
@@ -162,17 +163,17 @@ public:
 };
 
 //
-// 2x2 s—ñ
+// 2x2 è¡Œåˆ—
 // 
 //	m[0] = m00;	m[2] = m01;
 //	m[1] = m10;	m[3] = m11;
 //
-// “Y‚¦š‚Ì‚Â‚«•û‚É’ˆÓ‚¹‚æ
+// æ·»ãˆå­—ã®ã¤ãæ–¹ã«æ³¨æ„ã›ã‚ˆ
 //
-// Š|‚¯Z‚Í
+// æ›ã‘ç®—ã¯
 // [ m[0]  m[2] ] [x]
 // [ m[1]  m[3] ] [y]
-// ‚Å—^‚¦‚ç‚ê‚é
+// ã§ä¸ãˆã‚‰ã‚Œã‚‹
 //
 
 class Matrix2x2 : public SquareMatrix
@@ -192,13 +193,19 @@ public:
 	double get(int i,int j) const;
 	bool set(int i,int j,double val);
 	bool add(int i,int j,double val);
+	double operator()(int i,int j) const{
+		return m[i+j*2];
+	}
+	double& operator()(int i,int j){
+		return m[i+j*2];
+	}
 
 	bool identity(void);
 	bool zero(void);
 	bool transpose(void);
 	void transpose(const Matrix2x2& other);
 	static Matrix2x2 createRotation(double angle);
-	// v0 ‚ª1—ñ–Ú‚É‚È‚é‚æ‚¤‚É Gram-Schmidt ’¼Œğ‰»s—ñ‚ğì‚é
+	// v0 ãŒ1åˆ—ç›®ã«ãªã‚‹ã‚ˆã†ã« Gram-Schmidt ç›´äº¤åŒ–è¡Œåˆ—ã‚’ä½œã‚‹
 	static Matrix2x2 createSchmidtRotation(const Vector2D v0,bool column=true);
 	double determinant(void) const;
 	double trace(void) const;
@@ -210,15 +217,14 @@ public:
 		double m10,double m11);
 	// get inverse matrix
 	Matrix2x2* getInverse(void) const;
-	/// this * x = b ‚È‚é•û’ö®‚Ì‰ğ‚Ì x ‚ğ•Ô‚·
-	Vector2D* solve(const Vector2D& b) const;
+	/// this * x = b ãªã‚‹æ–¹ç¨‹å¼ã®è§£ã® x ã‚’è¿”ã™
 	bool solve(const Vector2D& b,Vector2D& x) const;
 	bool solveSafely(const Vector2D& b,Vector2D& x,double thresh=1.0e-6) const;
-	/// s—ñ‚ÌŠ|‚¯Z
-	// ‰E‚©‚çcƒxƒNƒgƒ‹‚ğŠ|‚¯‚é
+	/// è¡Œåˆ—ã®æ›ã‘ç®—
+	// å³ã‹ã‚‰ç¸¦ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ›ã‘ã‚‹
 	Vector2D operator*(const Vector2D& vect);
 	Matrix2x2 operator*(const Matrix2x2& other);
-	/// s—ñ‚Ì‘«‚µZAˆø‚«Z
+	/// è¡Œåˆ—ã®è¶³ã—ç®—ã€å¼•ãç®—
 	Matrix2x2 operator+(const Matrix2x2& other);
 	Matrix2x2 operator-(const Matrix2x2& other);
 protected:

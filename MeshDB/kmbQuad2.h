@@ -49,6 +49,9 @@ public:
 	static bool getPhysicalCoordinates(const double naturalCoords[2],const kmb::Point3D* nodes,kmb::Point3D &target);
 
 	static double checkShapeFunctionDomain(double s,double t);
+
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 };
 
 }
