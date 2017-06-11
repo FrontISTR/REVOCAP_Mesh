@@ -30,16 +30,16 @@
 /********************************************************************************
 =begin
 
-=== 1ŽŸü•ª—v‘f (SEGMENT)
+=== 1æ¬¡ç·šåˆ†è¦ç´  (SEGMENT)
 
-Ú‘±s—ñ
+æŽ¥ç¶šè¡Œåˆ—
 
 	{ 0, 1},
 	{-1, 0}
 
 =end
 
-Œ`óŠÖ”
+å½¢çŠ¶é–¢æ•°
 0 : 1-s   => s = 0
 1 : s     => s = 1
 
@@ -75,6 +75,16 @@ kmb::Segment::Segment(kmb::nodeIdType a,kmb::nodeIdType b)
 
 kmb::Segment::~Segment(void)
 {
+}
+
+kmb::nodeIdType kmb::Segment::operator()(const int index,const int i) const
+{
+	return cell[index];
+}
+
+kmb::nodeIdType& kmb::Segment::operator()(const int index,const int i)
+{
+	return cell[index];
 }
 
 void

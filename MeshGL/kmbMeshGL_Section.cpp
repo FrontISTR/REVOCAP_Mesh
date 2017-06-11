@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+Ôªø/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshGL                                                  #
@@ -22,8 +22,8 @@
 
 #include <cmath>
 
-// é¿ëïÇÕåªèÛÇÕ Tetra ÇæÇØ
-// plane Ç∆åç∑Ç∑ÇÈóvëfÇèúÇ¢ÇΩÇ∆Ç´Ç…å©Ç¶ÇÈéOäpå`Çï\é¶
+// ÂÆüË£Ö„ÅØÁèæÁä∂„ÅØ Tetra „Å†„Åë
+// plane „Å®‰∫§Â∑Æ„Åô„ÇãË¶ÅÁ¥†„ÇíÈô§„ÅÑ„Åü„Å®„Åç„Å´Ë¶ã„Åà„Çã‰∏âËßíÂΩ¢„ÇíË°®Á§∫
 void
 kmb::MeshGL::drawIntersection(kmb::bodyIdType bodyId,kmb::Plane* plane)
 {
@@ -41,10 +41,10 @@ kmb::MeshGL::drawIntersection(kmb::bodyIdType bodyId,kmb::Plane* plane)
 			case kmb::TETRAHEDRON:
 			case kmb::TETRAHEDRON2:
 				{
-					if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-						mesh->getNode( eIter.getCellId(1), n1 ) &&
-						mesh->getNode( eIter.getCellId(2), n2 ) &&
-						mesh->getNode( eIter.getCellId(3), n3 ) )
+					if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+						mesh->getNode( eIter.getNodeId(1), n1 ) &&
+						mesh->getNode( eIter.getNodeId(2), n2 ) &&
+						mesh->getNode( eIter.getNodeId(3), n3 ) )
 					{
 						drawIntersectionTetrahedron(
 							n0, n1, n2, n3,
@@ -61,7 +61,7 @@ kmb::MeshGL::drawIntersection(kmb::bodyIdType bodyId,kmb::Plane* plane)
 	}
 }
 
-// comp ñ¢ëŒâû
+// comp Êú™ÂØæÂøú
 void
 kmb::MeshGL::drawIntersectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,const char* physicalValue,kmb::ColorMap* colorMap,int comp)
 {
@@ -85,10 +85,10 @@ kmb::MeshGL::drawIntersectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,co
 					case kmb::TETRAHEDRON:
 					case kmb::TETRAHEDRON2:
 						{
-							if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-								mesh->getNode( eIter.getCellId(1), n1 ) &&
-								mesh->getNode( eIter.getCellId(2), n2 ) &&
-								mesh->getNode( eIter.getCellId(3), n3 ) )
+							if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+								mesh->getNode( eIter.getNodeId(1), n1 ) &&
+								mesh->getNode( eIter.getNodeId(2), n2 ) &&
+								mesh->getNode( eIter.getNodeId(3), n3 ) )
 							{
 								colorMap->setGLColor( v );
 								drawIntersectionTetrahedron(
@@ -116,10 +116,10 @@ kmb::MeshGL::drawIntersectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,co
 						case kmb::TETRAHEDRON:
 						case kmb::TETRAHEDRON2:
 							{
-								if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-									mesh->getNode( eIter.getCellId(1), n1 ) &&
-									mesh->getNode( eIter.getCellId(2), n2 ) &&
-									mesh->getNode( eIter.getCellId(3), n3 ) )
+								if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+									mesh->getNode( eIter.getNodeId(1), n1 ) &&
+									mesh->getNode( eIter.getNodeId(2), n2 ) &&
+									mesh->getNode( eIter.getNodeId(3), n3 ) )
 								{
 									colorMap->setGLColor( kmb::Vector3D::abs(v) );
 									drawIntersectionTetrahedron(
@@ -144,10 +144,10 @@ kmb::MeshGL::drawIntersectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,co
 						case kmb::TETRAHEDRON:
 						case kmb::TETRAHEDRON2:
 							{
-								if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-									mesh->getNode( eIter.getCellId(1), n1 ) &&
-									mesh->getNode( eIter.getCellId(2), n2 ) &&
-									mesh->getNode( eIter.getCellId(3), n3 ) )
+								if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+									mesh->getNode( eIter.getNodeId(1), n1 ) &&
+									mesh->getNode( eIter.getNodeId(2), n2 ) &&
+									mesh->getNode( eIter.getNodeId(3), n3 ) )
 								{
 									colorMap->setGLColor( v[comp] );
 									drawIntersectionTetrahedron(
@@ -175,10 +175,10 @@ kmb::MeshGL::drawIntersectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,co
 					case kmb::TETRAHEDRON:
 					case kmb::TETRAHEDRON2:
 						{
-							if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-								mesh->getNode( eIter.getCellId(1), n1 ) &&
-								mesh->getNode( eIter.getCellId(2), n2 ) &&
-								mesh->getNode( eIter.getCellId(3), n3 ) )
+							if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+								mesh->getNode( eIter.getNodeId(1), n1 ) &&
+								mesh->getNode( eIter.getNodeId(2), n2 ) &&
+								mesh->getNode( eIter.getNodeId(3), n3 ) )
 							{
 								colorMap->setGLColorByStep( v );
 								drawIntersectionTetrahedron(
@@ -214,7 +214,7 @@ kmb::MeshGL::drawSectionTetrahedron(
 	}
 	switch( flag )
 	{
-	// ÇPÇ¬ÇæÇØê≥
+	// Ôºë„Å§„Å†„ÅëÊ≠£
 	case 0x01: // 0
 		{
 			// REMARK ORDER!!
@@ -251,7 +251,7 @@ kmb::MeshGL::drawSectionTetrahedron(
 				&n3,&n2,t3,t2);
 		}
 		break;
-	// ÇQÇ¬ÇæÇØê≥
+	// Ôºí„Å§„Å†„ÅëÊ≠£
 	case 0x03: // 0 1
 		{
 			// REMARK ORDER!!
@@ -312,7 +312,7 @@ kmb::MeshGL::drawSectionTetrahedron(
 				&n2,&n1,t2,t1);
 		}
 		break;
-	// ÇRÇ¬ÇæÇØê≥
+	// Ôºì„Å§„Å†„ÅëÊ≠£
 	case 0x07: // 0 1 2
 		{
 			// REMARK ORDER!!

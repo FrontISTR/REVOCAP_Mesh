@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : PatchGenerator                                          #
@@ -104,7 +104,7 @@ bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 		return false;
 	}
 
-	// Å‰‚É execute ‚µ‚½ƒ‚ƒfƒ‹‚ÌƒTƒCƒY‚ğŠî€‚É‚·‚é
+	// æœ€åˆã« execute ã—ãŸãƒ¢ãƒ‡ãƒ«ã®ã‚µã‚¤ã‚ºã‚’åŸºæº–ã«ã™ã‚‹
 	if( modelDiameter < 0.0 ){
 		modelDiameter = shape.getBoundingBox().range();
 	}
@@ -128,7 +128,7 @@ bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 		relative );
 	imesh.Perform();
 
-	// TopoDS_Shape ‚ÉŠÜ‚Ü‚ê‚é Face ‚Ì iterator
+	// TopoDS_Shape ã«å«ã¾ã‚Œã‚‹ Face ã® iterator
 	TopExp_Explorer exFace;
 	for( exFace.Init(shape.getShape(),TopAbs_FACE); exFace.More(); exFace.Next() ){
 		TopoDS_Face face = TopoDS::Face(exFace.Current());

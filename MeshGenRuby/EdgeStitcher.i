@@ -16,13 +16,13 @@
 =begin
 =RevocapMeshGen::EdgeStitchcer
 
-==�T�v
+==概要
 
-RevocapMeshGen::EdgeStitcher �N���X��
-RevocapMesh::MeshData �Ɋi�[���ꂽ��������Ȃ�Ӄf�[�^�ɂ��āA
-�����D�����킹��O�p�`�܂��͎l�p�`�p�b�`�𐶐�����B
+RevocapMeshGen::EdgeStitcher クラスは
+RevocapMesh::MeshData に格納された線分からなる辺データについて、
+それを縫い合わせる三角形または四角形パッチを生成する。
 
-==���\�b�h�ꗗ
+==メソッド一覧
 
 ((<EdgeStitcher.new>))
 ((<setMesh>))
@@ -35,7 +35,7 @@ RevocapMesh::MeshData �Ɋi�[���ꂽ��������Ȃ�Ӄf�[�^�ɂ��āA
 ((<getNormalCheck>))
 ((<setNormalCheck>))
 
-==���\�b�h
+==メソッド
 
 =end
 ------------------------------------------------------------------------------*/
@@ -53,7 +53,7 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- EdgeStitcher.new
-	�ӖD�����킹�����N���X EdgeStitcher �̃C���X�^���X�𐶐�����B
+	辺縫い合わせ処理クラス EdgeStitcher のインスタンスを生成する。
 =end
 ---------------------------------------------------------------------------*/
 	EdgeStitcher(void);
@@ -62,32 +62,32 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- setMesh(mesh)
-	EdgeStitcher ���ΏۂƂ��郁�b�V����ݒ肷��B
+	EdgeStitcher が対象とするメッシュを設定する。
 =end
 ---------------------------------------------------------------------------*/
 	void setMesh(kmb::MeshData* mesh);
 /**--------------------------------------------------------------------------
 =begin
 --- setEdges( forward, backward )
-	EdgeStitcher ���D�����킹��ΏۂƂȂ�Ӄf�[�^��ݒ肷��B
-	forward �� backward �ł��ꂼ��� MeshData �ɂ����� bodyId ��^����B
-	�D�����킹�̃p�b�`���쐬����ۂ� forward �͏������Abackward �͋t�����ɑ�������B
-	���ꂼ��̕Ӄf�[�^�ɂ��Ď����I�ɐ擪�ƏI�[�𒲂ׂ�B
-	�Е������[�v�̏ꍇ�́A��������̊J�n�_�Ɉ�ԋ߂��_���J�n�_�ɂ���B
-	���������[�v�̏ꍇ�́Aedge0 �̍ŏ��̗v�f�̐ߓ_���J�n�_�ɂ��āAedge1 �̊J�n�_��
-	edge0 �̊J�n�_����ł��߂��_�Ƃ���B
+	EdgeStitcher が縫い合わせる対象となる辺データを設定する。
+	forward と backward でそれぞれの MeshData における bodyId を与える。
+	縫い合わせのパッチを作成する際に forward は順方向、backward は逆方向に走査する。
+	それぞれの辺データについて自動的に先頭と終端を調べる。
+	片方がループの場合は、もう一方の開始点に一番近い点を開始点にする。
+	両方がループの場合は、edge0 の最初の要素の節点を開始点にして、edge1 の開始点は
+	edge0 の開始点から最も近い点とする。
 
 --- setEdgesWithinDistance( forward, backward, distance )
-	EdgeStitcher ���D�����킹��ΏۂƂȂ�Ӄf�[�^��ݒ肷��B
-	forward �� backward �Ɋ܂܂�邷�ׂĂ̐����ł͂Ȃ��A
-	�����̗��[�̒��_����ΏۂƂȂ�ӂɊ܂܂��܂ł̋������Ƃ��� distance �ȉ���
-	����������D�����킹��ΏۂƂ���B
+	EdgeStitcher が縫い合わせる対象となる辺データを設定する。
+	forward と backward に含まれるすべての線分ではなく、
+	線分の両端の頂点から対象となる辺に含まれるまでの距離がともに distance 以下の
+	線分だけを縫い合わせる対象とする。
 
 ---	setEdgesWithInitNodes( forward, forwardInit, backward, backwardInit )
-	EdgeStitcher ���D�����킹��ΏۂƂȂ�Ӄf�[�^�ƖD�����킹�̊J�n�_��ݒ肷��B
-	forwardInit �� forward ���\���Ӄf�[�^�ɂ�����ߓ_�ԍ��A
-	backwardInit �� backward ���\���Ӄf�[�^�ɂ�����ߓ_�ԍ���^���A
-	�����̐ߓ_����D�����킹�������J�n����B
+	EdgeStitcher が縫い合わせる対象となる辺データと縫い合わせの開始点を設定する。
+	forwardInit は forward が表す辺データにおける節点番号、
+	backwardInit は backward が表す辺データにおける節点番号を与え、
+	それらの節点から縫い合わせ処理を開始する。
 
 =end
 ---------------------------------------------------------------------------*/
@@ -99,17 +99,17 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- stitchEdgesByTriangles()
-	�O�p�`�ŖD�����킹����������B���������O�p�`�p�b�`�� MeshData �Ɋi�[���Ă��� bodyId ��Ԃ��B
-	�[�_�ɂ��ǂ���ꍇ�������́A�J�n�_�ɖ߂�ꍇ�ɏI������B
-	���荇�킹��O�p�`�̌����́A�������O�p�`�̋��E�ƂȂ�悤�ɂ���
-	�i�O�p�`�̌����Ɛ����̌����͋t�j�B
+	三角形で縫い合わせ処理をする。生成した三角形パッチを MeshData に格納してその bodyId を返す。
+	端点にたどりつく場合もしくは、開始点に戻る場合に終了する。
+	張り合わせる三角形の向きは、線分が三角形の境界となるようにする
+	（三角形の向きと線分の向きは逆）。
 
 --- stitchEdgesByQuads()
-	�l�p�`�ŖD�����킹����������B���������l�p�`�p�b�`�� MeshData �Ɋi�[���Ă��� bodyId ��Ԃ��B
-	�[�_�ɂ��ǂ���ꍇ�������́A�J�n�_�ɖ߂�ꍇ�ɏI������B
-	�ӂ̌��̋��̃p���e�B���قȂ鎞�́A�Ō�̎l�p�`�����߂��Ȃ��ꍇ������B
-	���荇�킹��l�p�`�̌����́A�������l�p�`�̋��E�ƂȂ�悤�ɂ���
-	�i�l�p�`�̌����Ɛ����̌����͋t�j�B
+	四角形で縫い合わせ処理をする。生成した四角形パッチを MeshData に格納してその bodyId を返す。
+	端点にたどりつく場合もしくは、開始点に戻る場合に終了する。
+	辺の個数の偶奇のパリティが異なる時は、最後の四角形が埋められない場合がある。
+	張り合わせる四角形の向きは、線分が四角形の境界となるようにする
+	（四角形の向きと線分の向きは逆）。
 =end
 ---------------------------------------------------------------------------*/
 	kmb::bodyIdType stitchEdgesByTriangles(void);
@@ -119,14 +119,14 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- getNormalCheck()
-	�D�����킹��ӂ̑I�ѕ��Ŗ@���x�N�g�����l�����邩�ǂ����𒲂ׂ�B
+	縫い合わせる辺の選び方で法線ベクトルを考慮するかどうかを調べる。
 
 --- setNormalCheck(check)
-	�D�����킹��ӂ̑I�ѕ��Ŗ@���x�N�g�����l�����邩�ǂ����ݒ肷��B
-	�O������ԓ��̕��ʏ�ɕӃf�[�^������ꍇ�� check = true �Ƃ���ƁA
-	��������p�b�`�f�[�^�̌��������낤�B�@���x�N�g�����l�����Ȃ��ꍇ�́A
-	�p�b�`�f�[�^�𐶐�����ӂ̑I�ѕ��͎O�p�`�̌`��Ŕ��f���邽�߁A
-	�ꍇ�ɂ���Ă͕��ʓ��Ő܂ꂽ�p�b�`�f�[�^�����������ꍇ������B
+	縫い合わせる辺の選び方で法線ベクトルを考慮するかどうか設定する。
+	三次元空間内の平面上に辺データがある場合は check = true とすると、
+	生成するパッチデータの向きがそろう。法線ベクトルを考慮しない場合は、
+	パッチデータを生成する辺の選び方は三角形の形状で判断するため、
+	場合によっては平面内で折れたパッチデータが生成される場合がある。
 =end
 ---------------------------------------------------------------------------*/
 	bool getNormalCheck(void);

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : UpperTriangularMatrix, LowerTriangularMatrix            #
@@ -19,12 +19,12 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 bool

@@ -13,8 +13,8 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// ‹óŠÔ‚ğŠiqó‚É•ªŠ„‚µ‚½—Ìˆæ‚²‚Æ‚ÉOŠpŒ`‚ÆŠ±Â‚µ‚Ä‚¢‚é–ÊÏ‚ğ•Û‘¶‚·‚é
-// Ši”[‚³‚ê‚Ä‚¢‚é–ÊÏ‚ğ‚·‚×‚Ä‘«‚¹‚ÎAŒ³‚ÌOŠpŒ`‚Ì–ÊÏ‚É‚È‚éi”’lŒë·‚Ì”ÍˆÍ‚Åj
+// ç©ºé–“ã‚’æ ¼å­çŠ¶ã«åˆ†å‰²ã—ãŸé ˜åŸŸã”ã¨ã«ä¸‰è§’å½¢ã¨å¹²æ¸‰ã—ã¦ã„ã‚‹é¢ç©ã‚’ä¿å­˜ã™ã‚‹
+// æ ¼ç´ã•ã‚Œã¦ã„ã‚‹é¢ç©ã‚’ã™ã¹ã¦è¶³ã›ã°ã€å…ƒã®ä¸‰è§’å½¢ã®é¢ç©ã«ãªã‚‹ï¼ˆæ•°å€¤èª¤å·®ã®ç¯„å›²ã§ï¼‰
 //
 #pragma once
 
@@ -51,8 +51,8 @@ public:
 	bool getNearest(double x,double y,double z,double &dist,kmb::elementIdType &tri) const;
 	double getArea(kmb::elementIdType elemId) const;
 protected:
-	// (i,j,k) ‚Ì bucket ‚Ì’†‚Å‚ÌÅ¬’l
-	// ‹——£‚Í‚Qæ‚Å•Ô‚·
+	// (i,j,k) ã® bucket ã®ä¸­ã§ã®æœ€å°å€¤
+	// è·é›¢ã¯ï¼’ä¹—ã§è¿”ã™
 	bool getNearestInBucket(const kmb::Point3D& pt,int i,int j,int k,double &dist,kmb::elementIdType &tri) const;
 };
 

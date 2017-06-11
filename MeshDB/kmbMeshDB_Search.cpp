@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+Ôªø/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshDB                                                  #
@@ -23,7 +23,7 @@
 #      "Innovative General-Purpose Coupled Analysis System"            #
 #                                                                      #
 ----------------------------------------------------------------------*/
-// óvëfÇÃåüçıÇ…ä÷Ç∑ÇÈèàóù
+// Ë¶ÅÁ¥†„ÅÆÊ§úÁ¥¢„Å´Èñ¢„Åô„ÇãÂá¶ÁêÜ
 
 #include "MeshDB/kmbMeshDB.h"
 #include "MeshDB/kmbElementContainer.h"
@@ -79,11 +79,11 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 	}
 
 	if( this->elementBucket.getCount() > 0 ){
-		// bucket Ç…óvëfÇ™ìoò^Ç≥ÇÍÇƒÇ¢ÇÈÇ∆Ç´
+		// bucket „Å´Ë¶ÅÁ¥†„ÅåÁôªÈå≤„Åï„Çå„Å¶„ÅÑ„Çã„Å®„Åç
 		findElementId = this->elementBucket.searchElementInBody(body,x,y,z,tolerance);
 		return findElementId;
 	}else if( this->elementOctree.getCount() > 0 ){
-		// octree Ç…óvëfÇ™ìoò^Ç≥ÇÍÇƒÇ¢ÇÈÇ∆Ç´
+		// octree „Å´Ë¶ÅÁ¥†„ÅåÁôªÈå≤„Åï„Çå„Å¶„ÅÑ„Çã„Å®„Åç
 		double dist = this->elementOctree.getNearest(x,y,z,findElementId);
 		if( dist <= tolerance ){
 			return findElementId;
@@ -100,8 +100,8 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
 				kmb::elementIdType eid = eIter.getId();
-				if( this->getNode( eIter.getCellId(0), n0 ) &&
-					this->getNode( eIter.getCellId(1), n1 ) )
+				if( this->getNode( eIter.getNodeId(0), n0 ) &&
+					this->getNode( eIter.getNodeId(1), n1 ) )
 				{
 					double d = pt.distanceSqToSegment( n0, n1 );
 					if( minimizer.update( d ) ){
@@ -123,9 +123,9 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 				{
 				case kmb::TRIANGLE:
 				case kmb::TRIANGLE2:
-					if( this->getNode( eIter.getCellId(0), n0 ) &&
-						this->getNode( eIter.getCellId(1), n1 ) &&
-						this->getNode( eIter.getCellId(2), n2 ) )
+					if( this->getNode( eIter.getNodeId(0), n0 ) &&
+						this->getNode( eIter.getNodeId(1), n1 ) &&
+						this->getNode( eIter.getNodeId(2), n2 ) )
 					{
 						double d = pt.distanceSqToTriangle( n0, n1, n2 );
 						if( minimizer.update( d ) ){
@@ -135,10 +135,10 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 					break;
 				case QUAD:
 				case QUAD2:
-					if( this->getNode( eIter.getCellId(0), n0 ) &&
-						this->getNode( eIter.getCellId(1), n1 ) &&
-						this->getNode( eIter.getCellId(2), n2 ) &&
-						this->getNode( eIter.getCellId(3), n3 ) )
+					if( this->getNode( eIter.getNodeId(0), n0 ) &&
+						this->getNode( eIter.getNodeId(1), n1 ) &&
+						this->getNode( eIter.getNodeId(2), n2 ) &&
+						this->getNode( eIter.getNodeId(3), n3 ) )
 					{
 						double d = kmb::Minimizer::getMin(
 								pt.distanceSqToTriangle( n0, n1, n2 ),
@@ -161,8 +161,8 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 		}else if( body->isUniqueDim(3) ){
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
-				// Ç±Ç±Ç≈ (x,y,z) Çä‹ÇﬁÇ©Ç«Ç§Ç©ÇîªíËÇ∑ÇÈ
-				// ä‹ÇﬁèÍçáÇÕãóó£ 0 Ç∆Ç∑ÇÈ
+				// „Åì„Åì„Åß (x,y,z) „ÇíÂê´„ÇÄ„Åã„Å©„ÅÜ„Åã„ÇíÂà§ÂÆö„Åô„Çã
+				// Âê´„ÇÄÂ†¥Âêà„ÅØË∑ùÈõ¢ 0 „Å®„Åô„Çã
 				double dist = 0.0;
 				if( evaluator->getMinInnerVolume(eIter,x,y,z) >= 0.0 ){
 					dist = 0.0;
@@ -201,7 +201,7 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 		return kmb::Element::nullElementId;
 	}
 	if( this->elementBucket.getCount() > 0 ){
-		// bucket Ç…óvëfÇ™ìoò^Ç≥ÇÍÇƒÇ¢ÇÈÇ∆Ç´
+		// bucket „Å´Ë¶ÅÁ¥†„ÅåÁôªÈå≤„Åï„Çå„Å¶„ÅÑ„Çã„Å®„Åç
 		findElementId = this->elementBucket.searchElementInData(data,body,x,y,z,tolerance);
 	}else if( data->getBindingMode() == kmb::DataBindings::ElementGroup ){
 		//------------ naive search -------------------//
@@ -216,8 +216,8 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 				kmb::elementIdType eid = dIter.getId();
 				kmb::ElementContainer::const_iterator eIter = body->find( eid );
 				if( !eIter.isFinished() ){
-					if( this->getNode( eIter.getCellId(0), n0 ) &&
-						this->getNode( eIter.getCellId(1), n1 ) )
+					if( this->getNode( eIter.getNodeId(0), n0 ) &&
+						this->getNode( eIter.getNodeId(1), n1 ) )
 					{
 						double d = pt.distanceSqToSegment( n0, n1 );
 						if( minimizer.update( d ) ){
@@ -238,9 +238,9 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 					{
 					case kmb::TRIANGLE:
 					case kmb::TRIANGLE2:
-						if( this->getNode( eIter.getCellId(0), n0 ) &&
-							this->getNode( eIter.getCellId(1), n1 ) &&
-							this->getNode( eIter.getCellId(2), n2 ) )
+						if( this->getNode( eIter.getNodeId(0), n0 ) &&
+							this->getNode( eIter.getNodeId(1), n1 ) &&
+							this->getNode( eIter.getNodeId(2), n2 ) )
 						{
 							double d = pt.distanceSqToTriangle( n0, n1, n2 );
 							if( minimizer.update( d ) ){
@@ -250,10 +250,10 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 						break;
 					case QUAD:
 					case QUAD2:
-						if( this->getNode( eIter.getCellId(0), n0 ) &&
-							this->getNode( eIter.getCellId(1), n1 ) &&
-							this->getNode( eIter.getCellId(2), n2 ) &&
-							this->getNode( eIter.getCellId(3), n3 ) )
+						if( this->getNode( eIter.getNodeId(0), n0 ) &&
+							this->getNode( eIter.getNodeId(1), n1 ) &&
+							this->getNode( eIter.getNodeId(2), n2 ) &&
+							this->getNode( eIter.getNodeId(3), n3 ) )
 						{
 							double d = kmb::Minimizer::getMin(
 									pt.distanceSqToTriangle( n0, n1, n2 ),
@@ -275,7 +275,7 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 				kmb::elementIdType eid = dIter.getId();
 				kmb::ElementContainer::const_iterator eIter = body->find( eid );
 				if( !eIter.isFinished() ){
-					// Ç±Ç±Ç≈ (x,y,z) Çä‹ÇﬁÇ©Ç«Ç§Ç©ÇîªíËÇ∑ÇÈ
+					// „Åì„Åì„Åß (x,y,z) „ÇíÂê´„ÇÄ„Åã„Å©„ÅÜ„Åã„ÇíÂà§ÂÆö„Åô„Çã
 					if( maximizer.update( evaluator->getMinInnerVolume( eIter, x, y, z ) ) ){
 						findElementId = eIter.getId();
 					}
@@ -301,7 +301,7 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 				kmb::idType localId = f.getLocalFaceId();
 				kmb::ElementContainer::const_iterator eIter = body->find( eid );
 				if( !eIter.isFinished() ){
-					if( this->getNode( eIter.getBoundaryCellId(localId,0), n0 ) )
+					if( this->getNode( eIter.getBoundaryNodeId(localId,0), n0 ) )
 					{
 						double d = pt.distanceSq( n0 );
 						if( minimizer.update( d ) ){
@@ -319,8 +319,8 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 				kmb::idType localId = f.getLocalFaceId();
 				kmb::ElementContainer::const_iterator eIter = body->find( eid );
 				if( !eIter.isFinished() ){
-					if( this->getNode( eIter.getBoundaryCellId(localId,0), n0 ) &&
-						this->getNode( eIter.getBoundaryCellId(localId,1), n1 ) )
+					if( this->getNode( eIter.getBoundaryNodeId(localId,0), n0 ) &&
+						this->getNode( eIter.getBoundaryNodeId(localId,1), n1 ) )
 					{
 						double d = pt.distanceSqToSegment( n0, n1 );
 						if( minimizer.update( d ) ){
@@ -343,9 +343,9 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 					{
 					case kmb::TRIANGLE:
 					case kmb::TRIANGLE2:
-						if( this->getNode( eIter.getBoundaryCellId(localId,0), n0 ) &&
-							this->getNode( eIter.getBoundaryCellId(localId,1), n1 ) &&
-							this->getNode( eIter.getBoundaryCellId(localId,2), n2 ) )
+						if( this->getNode( eIter.getBoundaryNodeId(localId,0), n0 ) &&
+							this->getNode( eIter.getBoundaryNodeId(localId,1), n1 ) &&
+							this->getNode( eIter.getBoundaryNodeId(localId,2), n2 ) )
 						{
 							double d = pt.distanceSqToTriangle( n0, n1, n2 );
 							if( minimizer.update( d ) ){
@@ -356,10 +356,10 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 						break;
 					case QUAD:
 					case QUAD2:
-						if( this->getNode( eIter.getBoundaryCellId(localId,0), n0 ) &&
-							this->getNode( eIter.getBoundaryCellId(localId,1), n1 ) &&
-							this->getNode( eIter.getBoundaryCellId(localId,2), n2 ) &&
-							this->getNode( eIter.getBoundaryCellId(localId,3), n3 ) )
+						if( this->getNode( eIter.getBoundaryNodeId(localId,0), n0 ) &&
+							this->getNode( eIter.getBoundaryNodeId(localId,1), n1 ) &&
+							this->getNode( eIter.getBoundaryNodeId(localId,2), n2 ) &&
+							this->getNode( eIter.getBoundaryNodeId(localId,3), n3 ) )
 						{
 							double d = kmb::Minimizer::getMin(
 									pt.distanceSqToTriangle( n0, n1, n2 ),
@@ -384,9 +384,9 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 	return findElementId;
 }
 
-// Body ÇÕìØàÍÇÃóvëfÇ≈Ç†ÇÈÇ±Ç∆Ç™èåè
-// TRIANGLE Ç∆ TETRAHEDRON Ç™ç¨Ç∂Ç¡ÇƒÇ¢ÇÈÇÊÇ§Ç» Body ÇÕÉ_ÉÅ
-// éOäpå`Ç∆ê¸ï™Ç…ëŒÇµÇƒÇÕÅAmaxCoeff Ç…óvëfÇ©ÇÁÇÃãóó£Ç∆äeí∏ì_Ç©ÇÁÇÃãóó£Çë„ì¸ÇµÇƒï‘Ç∑
+// Body „ÅØÂêå‰∏Ä„ÅÆË¶ÅÁ¥†„Åß„ÅÇ„Çã„Åì„Å®„ÅåÊù°‰ª∂
+// TRIANGLE „Å® TETRAHEDRON „ÅåÊ∑∑„Åò„Å£„Å¶„ÅÑ„Çã„Çà„ÅÜ„Å™ Body „ÅØ„ÉÄ„É°
+// ‰∏âËßíÂΩ¢„Å®Á∑öÂàÜ„Å´ÂØæ„Åó„Å¶„ÅØ„ÄÅmaxCoeff „Å´Ë¶ÅÁ¥†„Åã„Çâ„ÅÆË∑ùÈõ¢„Å®ÂêÑÈ†ÇÁÇπ„Åã„Çâ„ÅÆË∑ùÈõ¢„Çí‰ª£ÂÖ•„Åó„Å¶Ëøî„Åô
 /*
 kmb::elementIdType
 kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,double* maxCoeff,double tolerance) const
@@ -412,8 +412,8 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 			while( !eIter.isFinished() )
 			{
 				kmb::elementIdType eid = eIter.getId();
-				if( this->getNode( eIter.getCellId(0), n0 ) &&
-					this->getNode( eIter.getCellId(1), n1 ) )
+				if( this->getNode( eIter.getNodeId(0), n0 ) &&
+					this->getNode( eIter.getNodeId(1), n1 ) )
 				{
 					double d = pt.distanceSqToSegment( n0, n1 );
 					if( d < toleranceSq && minimizer.update( d ) ){
@@ -434,9 +434,9 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 				{
 				case kmb::TRIANGLE:
 				case kmb::TRIANGLE2:
-					if( this->getNode( eIter.getCellId(0), n0 ) &&
-						this->getNode( eIter.getCellId(1), n1 ) &&
-						this->getNode( eIter.getCellId(2), n2 ) )
+					if( this->getNode( eIter.getNodeId(0), n0 ) &&
+						this->getNode( eIter.getNodeId(1), n1 ) &&
+						this->getNode( eIter.getNodeId(2), n2 ) )
 					{
 						double d = pt.distanceSqToTriangle( n0, n1, n2 );
 						if( d < toleranceSq && minimizer.update( d ) ){
@@ -450,10 +450,10 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 					break;
 				case QUAD:
 				case QUAD2:
-					if( this->getNode( eIter.getCellId(0), n0 ) &&
-						this->getNode( eIter.getCellId(1), n1 ) &&
-						this->getNode( eIter.getCellId(2), n2 ) &&
-						this->getNode( eIter.getCellId(3), n3 ) )
+					if( this->getNode( eIter.getNodeId(0), n0 ) &&
+						this->getNode( eIter.getNodeId(1), n1 ) &&
+						this->getNode( eIter.getNodeId(2), n2 ) &&
+						this->getNode( eIter.getNodeId(3), n3 ) )
 					{
 						double d = kmb::Minimizer::getMin(
 								pt.distanceSqToTriangle( n0, n1, n2 ),
@@ -498,7 +498,7 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 				}
 				++eIter;
 			}
-			// tolerance ÇÊÇËè¨Ç≥ÇØÇÍÇŒå©Ç¬Ç©ÇÁÇ»Ç©Ç¡ÇΩÇ±Ç∆Ç…Ç∑ÇÈ
+			// tolerance „Çà„ÇäÂ∞è„Åï„Åë„Çå„Å∞Ë¶ã„Å§„Åã„Çâ„Å™„Åã„Å£„Åü„Åì„Å®„Å´„Åô„Çã
 			if( maximizer.getMax() <= tolerance ){
 				findElementId = kmb::Element::nullElementId;
 			}
@@ -525,7 +525,7 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 				}
 				++eIter;
 			}
-			// tolerance ÇÊÇËè¨Ç≥ÇØÇÍÇŒå©Ç¬Ç©ÇÁÇ»Ç©Ç¡ÇΩÇ±Ç∆Ç…Ç∑ÇÈ
+			// tolerance „Çà„ÇäÂ∞è„Åï„Åë„Çå„Å∞Ë¶ã„Å§„Åã„Çâ„Å™„Åã„Å£„Åü„Åì„Å®„Å´„Åô„Çã
 			if( maximizer.getMax() <= tolerance ){
 				findElementId = kmb::Element::nullElementId;
 			}
@@ -563,9 +563,9 @@ kmb::MeshDB::searchElementWithNormal(kmb::bodyIdType bodyId,double x,double y,do
 				kmb::elementIdType eid = eIter.getId();
 				if( evaluator->getNormalVector( eIter, vect ) &&
 					vect*normal > 0 &&
-					this->getNode( eIter.getCellId(0), n0 ) &&
-					this->getNode( eIter.getCellId(1), n1 ) &&
-					this->getNode( eIter.getCellId(2), n2 ) )
+					this->getNode( eIter.getNodeId(0), n0 ) &&
+					this->getNode( eIter.getNodeId(1), n1 ) &&
+					this->getNode( eIter.getNodeId(2), n2 ) )
 				{
 					double d = pt.distanceSqToTriangle( n0, n1, n2 );
 					if( d < toleranceSq && minimizer.update( d ) ){
@@ -588,10 +588,10 @@ kmb::MeshDB::searchElementWithNormal(kmb::bodyIdType bodyId,double x,double y,do
 				kmb::elementIdType eid = eIter.getId();
 				if( evaluator->getNormalVector( eIter, vect ) &&
 					vect*normal > 0 &&
-					this->getNode( eIter.getCellId(0), n0 ) &&
-					this->getNode( eIter.getCellId(1), n1 ) &&
-					this->getNode( eIter.getCellId(1), n2 ) &&
-					this->getNode( eIter.getCellId(2), n3 ) )
+					this->getNode( eIter.getNodeId(0), n0 ) &&
+					this->getNode( eIter.getNodeId(1), n1 ) &&
+					this->getNode( eIter.getNodeId(1), n2 ) &&
+					this->getNode( eIter.getNodeId(2), n3 ) )
 				{
 					double d = kmb::Minimizer::getMin(
 							pt.distanceSqToTriangle( n0, n1, n2 ),
@@ -821,7 +821,7 @@ kmb::MeshDB::getNearestNode(double x,double y,double z,kmb::nodeIdType &nearestI
 	}
 }
 
-// èÁí∑ÉoÅ[ÉWÉáÉì
+// ÂÜóÈï∑„Éê„Éº„Ç∏„Éß„É≥
 /*
 double
 kmb::MeshDB::getNearestElement(kmb::bodyIdType bodyId,double x,double y,double z,kmb::elementIdType &nearestId)
@@ -837,9 +837,9 @@ kmb::MeshDB::getNearestElement(kmb::bodyIdType bodyId,double x,double y,double z
 			while( eIter != body->end() ){
 				kmb::Element* triangle = eIter.getElement();
 				if( triangle ){
-					if( this->getNode( triangle->getCellId(0), n0 ) &&
-						this->getNode( triangle->getCellId(1), n1 ) &&
-						this->getNode( triangle->getCellId(2), n2 ) &&
+					if( this->getNode( triangle->getNodeId(0), n0 ) &&
+						this->getNode( triangle->getNodeId(1), n1 ) &&
+						this->getNode( triangle->getNodeId(2), n2 ) &&
 						min.update( pt.distanceSqToTriangle( n0, n1, n2 ) ) ){
 						nearestId = eIter.getId();
 					}
@@ -852,8 +852,8 @@ kmb::MeshDB::getNearestElement(kmb::bodyIdType bodyId,double x,double y,double z
 			while( eIter != body->end() ){
 				kmb::Element* segment = eIter.getElement();
 				if( segment ){
-					if( this->getNode( segment->getCellId(0), n0 ) &&
-						this->getNode( segment->getCellId(1), n1 ) &&
+					if( this->getNode( segment->getNodeId(0), n0 ) &&
+						this->getNode( segment->getNodeId(1), n1 ) &&
 						min.update( pt.distanceSqToSegment( n0, n1 ) ) ){
 						nearestId = eIter.getId();
 					}

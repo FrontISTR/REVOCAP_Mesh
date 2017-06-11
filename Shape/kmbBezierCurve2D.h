@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : BezierCurve2D                                           #
@@ -13,12 +13,12 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 /**
- * Bezier ‹Èü
- * n ŒÂ‚Ì§Œä“_‚ğ—^‚¦‚é‚ÆAn-1 Ÿ‚Ì‹Èü‚ª“¾‚ç‚ê‚é
+ * Bezier æ›²ç·š
+ * n å€‹ã®åˆ¶å¾¡ç‚¹ã‚’ä¸ãˆã‚‹ã¨ã€n-1 æ¬¡ã®æ›²ç·šãŒå¾—ã‚‰ã‚Œã‚‹
  * order = n
  * degree = n-1
  *
- * ’è‹`ˆæ‚Í 0 <= t <= 1 ‚Æ‚·‚é
+ * å®šç¾©åŸŸã¯ 0 <= t <= 1 ã¨ã™ã‚‹
  */
 #pragma once
 
@@ -36,7 +36,7 @@ public:
 	virtual ~BezierCurve2D(void);
 	void clear(void);
 	virtual bool isDomain( double t ) const;
-	// ’è‹`ˆæ‚Í [0.0, 1.0]
+	// å®šç¾©åŸŸã¯ [0.0, 1.0]
 	virtual void getDomain( double &min_t, double &max_t ) const;
 	virtual bool getPoint( double t, kmb::Point2D& point ) const;
 	bool getDerivative( double t, kmb::Vector2D& tangent ) const;

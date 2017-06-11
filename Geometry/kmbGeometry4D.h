@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Geometry4D                                              #
@@ -74,13 +74,14 @@ public:
 	Point4D& operator+=(const Vector4D& other);
 	Point4D& operator-=(const Vector4D& other);
 	virtual bool operator==(const Point4D& other) const;
-	// ‚Q“_ŠÔ‚Ì‹——£
+	virtual bool operator!=(const Point4D& other) const;
+	// ï¼’ç‚¹é–“ã®è·é›¢
 	double distance(const Point4D& other) const;
 	double distance(double x,double y,double z,double w) const;
 	double distanceSq(const Point4D& other) const;
 	double distanceSq(double x,double y,double z,double w) const;
-	// static ŠÖ”ŒQ
-	// ‹——£
+	// static é–¢æ•°ç¾¤
+	// è·é›¢
 #ifndef REVOCAP_SUPPORT_RUBY
 	static double distance(const Point4D& a,const Point4D& b);
 	static double distanceSq(const Point4D& a,const Point4D& b);
@@ -115,7 +116,7 @@ public:
 		v[3] -= other.v[3];
 		return *this;
 	}
-	/// ƒXƒJƒ‰[Ï
+	/// ã‚¹ã‚«ãƒ©ãƒ¼ç©
 	Vector4D scalar(const double s) const;
 	Vector4D operator*(const double s) const{
 		return Vector4D(s*v[0],s*v[1],s*v[2],s*v[3]);
@@ -123,13 +124,13 @@ public:
 	friend Vector4D operator*(const double scalar,const Vector4D& vect){
 		return vect * scalar;
 	}
-	/// “àÏ
+	/// å†…ç©
 	double operator*(const Vector4D& other) const{
 		return v[0]*other.v[0] + v[1]*other.v[1] + v[2]*other.v[2] + v[3]*other.v[3];
 	}
 	double lengthSq(void) const;
 	double length(void) const;
-	double abs(void) const; // length ‚Æ“¯‚¶ˆÓ–¡
+	double abs(void) const; // length ã¨åŒã˜æ„å‘³
 	double normalize();
 };
 
@@ -137,7 +138,7 @@ class Matrix3x3;
 class Vector3D;
 class Tuple3D;
 
-// matrix ‚Ì•À‚Ñ‡
+// matrix ã®ä¸¦ã³é †
 // m[0] m[4] m[8]  m[12]
 // m[1] m[5] m[9]  m[13]
 // m[2] m[6] m[10] m[14]
@@ -149,7 +150,7 @@ class Matrix4x4 : public SquareMatrix
 public:
 	Matrix4x4(void);
 	Matrix4x4(double m[16]);
-	// ‘ã“ü‚³‚ê‚é‡”Ô‚É’ˆÓ
+	// ä»£å…¥ã•ã‚Œã‚‹é †ç•ªã«æ³¨æ„
 	// m[0] m[4] m[8]  m[12]  = m00 m01 m02 m03
 	// m[1] m[5] m[9]  m[13]    m10 m11 m12 m13
 	// m[2] m[6] m[10] m[14]    m20 m21 m22 m23
@@ -174,10 +175,10 @@ public:
 
 	bool identity(void);
 	bool zero(void);
-	/// “]’us—ñ
+	/// è»¢ç½®è¡Œåˆ—
 	bool transpose(void);
 	void transpose(const Matrix4x4& other);
-	/// s—ñ®
+	/// è¡Œåˆ—å¼
 	double determinant(void) const;
 	double trace(void) const;
 	static double determinant(
@@ -190,11 +191,10 @@ public:
 		double m10,double m11,double m12,double m13,
 		double m20,double m21,double m22,double m23,
 		double m30,double m31,double m32,double m33);
-	/// this * x = b ‚È‚é•û’ö®‚Ì‰ğ‚Ì x ‚ğ•Ô‚·
-	Vector4D* solve(const Vector4D& b) const;
+	/// this * x = b ãªã‚‹æ–¹ç¨‹å¼ã®è§£ã® x ã‚’è¿”ã™
 	bool solve(const Vector4D& b,Vector4D& x) const;
 	bool solveSafely(const Vector4D& b,Vector4D& x,double thresh=1.0e-6) const;
-	/// s—ñ‚ÌŠ|‚¯Z
+	/// è¡Œåˆ—ã®æ›ã‘ç®—
 	// [A t] * v = (a*v + t) / (s*v + r)
 	// [s r]
 	void convert(Tuple3D& tuple) const;
@@ -203,24 +203,24 @@ public:
 	Vector3D operator*(const Vector3D& vect);
 	Vector4D operator*(const Vector4D& vect);
 	Matrix4x4 operator*(const Matrix4x4& other);
-	/// s—ñ‚Ì‘«‚µZAˆø‚«Z
+	/// è¡Œåˆ—ã®è¶³ã—ç®—ã€å¼•ãç®—
 	Matrix4x4 operator+(const Matrix4x4& other);
 	Matrix4x4 operator-(const Matrix4x4& other);
-	// ‘ã“ü‰‰Zq
+	// ä»£å…¥æ¼”ç®—å­
 	Matrix4x4& operator=(const Matrix4x4& other);
 	Matrix4x4& operator=(const Matrix3x3& other);
 
 	/// AFFINE type 
 	bool isAffineType(void) const;
-	// Šp“x‚Íƒ‰ƒWƒAƒ“‚Å—^‚¦‚é
+	// è§’åº¦ã¯ãƒ©ã‚¸ã‚¢ãƒ³ã§ä¸ãˆã‚‹
 	static Matrix4x4 createRotation(const Vector3D& axis, double angle);
 	static Matrix4x4* createLookAt(const Vector3D& eye, const Vector3D& center, const Vector3D& up);
 	static Matrix4x4* createAffine(const Matrix3x3& transform, const Vector3D& displace);
 	bool getLookAt(Vector3D& eye, Vector3D& center, Vector3D& up) const;
 
-	// •½sˆÚ“®¬•ª
+	// å¹³è¡Œç§»å‹•æˆåˆ†
 	void translate(double x,double y,double z);
-	// ƒXƒJƒ‰[”{i•½sˆÚ“®¬•ª‚à•Ï‚í‚éj
+	// ã‚¹ã‚«ãƒ©ãƒ¼å€ï¼ˆå¹³è¡Œç§»å‹•æˆåˆ†ã‚‚å¤‰ã‚ã‚‹ï¼‰
 	void scale(double r);
 protected:
 	double m[16];

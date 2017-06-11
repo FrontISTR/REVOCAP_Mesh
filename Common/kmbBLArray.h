@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : BLArray                                                 #
@@ -13,14 +13,14 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 /*
- * ‘å‚«‚³‰Â•Ï‚Ì”z—ñ‚ğ‰¼‘z“I‚È“ñŸŒ³”z—ñ‚ÅÀŒ»‚µ‚½‚à‚Ì
+ * å¤§ãã•å¯å¤‰ã®é…åˆ—ã‚’ä»®æƒ³çš„ãªäºŒæ¬¡å…ƒé…åˆ—ã§å®Ÿç¾ã—ãŸã‚‚ã®
  * Bi-Layerd Array
  *
- * SubArray ‚Í‘å‚«‚³‚ª 2 ‚Ì‚×‚«‚É‚·‚é
+ * SubArray ã¯å¤§ãã•ãŒ 2 ã®ã¹ãã«ã™ã‚‹
  * subSize = 1<<bitlength = 2^bitlength
  *
- * n >= 1 ‚È‚ç—v‘f‚ª n ¬•ª‚ ‚é‚Æl‚¦‚é
- * À•W’l‚ğŠi”[‚·‚é‚Æ‚«‚Í BLArray<double,3> ‚Ì‚æ‚¤‚É‚·‚é
+ * n >= 1 ãªã‚‰è¦ç´ ãŒ n æˆåˆ†ã‚ã‚‹ã¨è€ƒãˆã‚‹
+ * åº§æ¨™å€¤ã‚’æ ¼ç´ã™ã‚‹ã¨ãã¯ BLArray<double,3> ã®ã‚ˆã†ã«ã™ã‚‹
  *
  */
 
@@ -60,8 +60,8 @@ protected:
 };
 
 /**
- * BLArray ‚Ì index
- * topIndex ‚Æ subIndex ‚ğŠÇ—‚·‚é
+ * BLArray ã® index
+ * topIndex ã¨ subIndex ã‚’ç®¡ç†ã™ã‚‹
  */
 class BLArrayIndex
 {
@@ -89,7 +89,7 @@ public:
 	size_t getTopIndex(void) const;
 };
 
-/* n ŒÂ‚Ì T ‚ğ•À‚×‚ÄŠi”[‚·‚é‚Æ‚« */
+/* n å€‹ã® T ã‚’ä¸¦ã¹ã¦æ ¼ç´ã™ã‚‹ã¨ã */
 template<typename T,int n=1>
 class BLArray : public BLArrayBase
 {
@@ -133,11 +133,11 @@ public:
 			}
 		}
 	}
-	// ƒƒCƒ“”z—ñ‚ÆƒTƒu”z—ñ‚Ì‘å‚«‚³‚ğŒˆ‚ß‚é
-	// 2^n * tSize >= size ‚ğ–‚½‚·Å¬‚Ì n ‚ğŒˆ‚ß‚ÄA
-	// ƒTƒu”z—ñ‚Ì‘å‚«‚³‚Í 2^n ‚Æ‚·‚é
-	// ƒƒCƒ“”z—ñ‚Ì‘å‚«‚³‚Í subSize * topSize > size ‚ğ–‚½‚·‚æ‚¤‚ÉŒˆ‚ß‚½ topSize ‚Æ‚·‚é
-	// ‚±‚Ìˆ—‚Ì‚ ‚Æ‚É‚Í getSize() >= size ‚ª•ÛØ‚³‚ê‚é
+	// ãƒ¡ã‚¤ãƒ³é…åˆ—ã¨ã‚µãƒ–é…åˆ—ã®å¤§ãã•ã‚’æ±ºã‚ã‚‹
+	// 2^n * tSize >= size ã‚’æº€ãŸã™æœ€å°ã® n ã‚’æ±ºã‚ã¦ã€
+	// ã‚µãƒ–é…åˆ—ã®å¤§ãã•ã¯ 2^n ã¨ã™ã‚‹
+	// ãƒ¡ã‚¤ãƒ³é…åˆ—ã®å¤§ãã•ã¯ subSize * topSize > size ã‚’æº€ãŸã™ã‚ˆã†ã«æ±ºã‚ãŸ topSize ã¨ã™ã‚‹
+	// ã“ã®å‡¦ç†ã®ã‚ã¨ã«ã¯ getSize() >= size ãŒä¿è¨¼ã•ã‚Œã‚‹
 	bool initialize(size_t size,size_t tSize=1)
 	{
 		clear();
@@ -253,13 +253,13 @@ public:
 			ary[tIndex] != NULL &&
 			ary[tIndex][n*sIndex] != defval;
 	}
-	// Å‰‚É‰½‚©‚ªŠi”[‚³‚ê‚Ä‚¢‚é index ‚ğ•Ô‚·
+	// æœ€åˆã«ä½•ã‹ãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚‹ index ã‚’è¿”ã™
 	bool first(BLArrayIndex &index) const
 	{
 		for(size_t i = 0;i<topSize;++i){
 			if( ary[i] != NULL ){
 				for(size_t j = 0;j<subSize;++j){
-					// ‘S‚Ä‚Ì¬•ª‚É’l‚ª“ü‚Á‚Ä‚¢‚é‚©
+					// å…¨ã¦ã®æˆåˆ†ã«å€¤ãŒå…¥ã£ã¦ã„ã‚‹ã‹
 					bool flag = true;
 					for(int k=0;k<n;++k){
 						flag &= ( ary[i][n*j+k] != defval );
@@ -335,12 +335,12 @@ protected:
 		}
 		return true;
 	}
-	// ÀÛ‚Ì subarray ‚ÌŠm•Û‚Í•K—v‚É‚È‚Á‚½‚És‚¤
+	// å®Ÿéš›ã® subarray ã®ç¢ºä¿ã¯å¿…è¦ã«ãªã£ãŸæ™‚ã«è¡Œã†
 	bool increaseSubArray(size_t tSize){
 		if( tSize > topSize ){
-			// Œ³‚Ìe”z—ñ‚ğ•Û‘¶
+			// å…ƒã®è¦ªé…åˆ—ã‚’ä¿å­˜
 			T** temp = ary;
-			// V‚µ‚¢e”z—ñ‚ğì‚é
+			// æ–°ã—ã„è¦ªé…åˆ—ã‚’ä½œã‚‹
 			ary = new T*[ tSize ];
 			for(size_t i = 0;i<topSize;++i){
 				ary[i] = temp[i];
@@ -367,7 +367,7 @@ protected:
 	}
 };
 
-/* T ‚Ìƒ|ƒCƒ“ƒ^‚ğ•Û‘¶‚·‚é */
+/* T ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ä¿å­˜ã™ã‚‹æ™‚ */
 template<typename T>
 class BLArrayPtr : public BLArrayBase
 {
@@ -404,8 +404,8 @@ public:
 			localbitmask = 0U;
 		}
 	}
-	// ƒ|ƒCƒ“ƒ^‚ğ NULL ‚É‚·‚é‚¾‚¯‚Åƒƒ‚ƒŠ‚Ì‰ğ•ú‚Í‚µ‚È‚¢
-	// ‚±‚ÌƒNƒ‰ƒX‚ÌŠO‚Åƒƒ‚ƒŠŠÇ—‚ğ‚µ‚Ä‚¢‚éê‡
+	// ãƒã‚¤ãƒ³ã‚¿ã‚’ NULL ã«ã™ã‚‹ã ã‘ã§ãƒ¡ãƒ¢ãƒªã®è§£æ”¾ã¯ã—ãªã„
+	// ã“ã®ã‚¯ãƒ©ã‚¹ã®å¤–ã§ãƒ¡ãƒ¢ãƒªç®¡ç†ã‚’ã—ã¦ã„ã‚‹å ´åˆ
 	void clearData(void){
 		if( ary ){
 			for(size_t i = 0;i<topSize;++i){
@@ -465,7 +465,7 @@ public:
 			ary[tIndex] != NULL &&
 			ary[tIndex][sIndex] != NULL;
 	}
-	// Å‰‚ÉŠi”[‚³‚ê‚Ä‚¢‚é index ‚ğ•Ô‚·
+	// æœ€åˆã«æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ index ã‚’è¿”ã™
 	bool first(BLArrayIndex &index) const
 	{
 		for(size_t i = 0;i<topSize;++i){
@@ -502,7 +502,7 @@ protected:
 		}
 		return ary[tIndex][sIndex];
 	}
-	// ÀÛ‚Ì subarray ‚ÌŠm•Û‚Í•K—v‚É‚È‚Á‚½‚És‚¤
+	// å®Ÿéš›ã® subarray ã®ç¢ºä¿ã¯å¿…è¦ã«ãªã£ãŸæ™‚ã«è¡Œã†
 	bool increaseSubArray(size_t tSize){
 		if( tSize > topSize ){
 			T*** temp = ary;

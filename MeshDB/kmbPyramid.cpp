@@ -35,9 +35,9 @@
 /********************************************************************************
 =begin
 
-=== 1ŸlŠp—v‘f (PYRAMID)
+=== 1æ¬¡å››è§’éŒè¦ç´  (PYRAMID)
 
-Ú‘±s—ñ
+æ¥ç¶šè¡Œåˆ—
 
 	{ 0, 1, 1, 1, 1},
 	{ 1, 0, 1, 0, 1},
@@ -45,7 +45,7 @@
 	{ 1, 0, 1, 0, 1},
 	{ 1, 1, 0, 1, 0}
 
-–Ê
+é¢
 
 	{ 0, 1, 2},
 	{ 0, 2, 3},
@@ -53,7 +53,7 @@
 	{ 0, 4, 1},
 	{ 4, 3, 2, 1}
 
-•Ó
+è¾º
 
 	{ 0, 1},
 	{ 0, 2},
@@ -66,7 +66,7 @@
 
 =end
 
-Œ`óŠÖ” (-1 <= s,t,u <= 1)
+å½¢çŠ¶é–¢æ•° (-1 <= s,t,u <= 1)
 0 : 1/2(1+u)                     => (s,t,u) = (  0,  0,  1)
 1 : 1/8(1-s)(1-t)(1-u)           => (s,t,u) = ( -1, -1, -1)
 2 : 1/8(1+s)(1-t)(1-u)           => (s,t,u) = (  1, -1, -1)
@@ -76,7 +76,7 @@
 *********************************************************************************/
 const int kmb::Pyramid::nodeCount = 5;
 
-// —×Ús—ñ
+// éš£æ¥è¡Œåˆ—
 const int kmb::Pyramid::connectionTable[5][5] =
 {
 	{ 0, 1, 1, 1, 1},
@@ -86,11 +86,11 @@ const int kmb::Pyramid::connectionTable[5][5] =
 	{ 1, 1, 0, 1, 0}
 };
 
-// –Ê‚ğ\¬‚·‚é‘½ŠpŒ`‚Ì“Y‚¦š”Ô†
-// ŠO‘¤‚©‚çŒ©‚Ä¶‰ñ‚è‚ª³
-// 0 ‚ğ“V’¸‚Æ‚µ
-// 1234 ‚ªlŠpŒ`
-// –Ê‚ğ\¬‚·‚é‘½ŠpŒ`‚Ì“Y‚¦š”Ô†
+// é¢ã‚’æ§‹æˆã™ã‚‹å¤šè§’å½¢ã®æ·»ãˆå­—ç•ªå·
+// å¤–å´ã‹ã‚‰è¦‹ã¦å·¦å›ã‚ŠãŒæ­£
+// 0 ã‚’å¤©é ‚ã¨ã—
+// 1234 ãŒå››è§’å½¢
+// é¢ã‚’æ§‹æˆã™ã‚‹å¤šè§’å½¢ã®æ·»ãˆå­—ç•ªå·
 // 0 1 2
 // 0 2 3
 // 0 3 4
@@ -122,13 +122,13 @@ bool
 kmb::Pyramid::isEquivalent(int index[5])
 {
 	const int len = kmb::Element::getNodeCount(kmb::PYRAMID);
-	// ’uŠ·‚¶‚á‚È‚¢‚Í–³ğŒ‚É‚¾‚ß
+	// ç½®æ›ã˜ã‚ƒãªã„æ™‚ã¯ç„¡æ¡ä»¶ã«ã ã‚
 	for(int i=0;i<len;++i){
 		if(index[i] < 0 || len <= index[i]){
 			return false;
 		}
 	}
-	// connection matrix ‚ª“¯‚¶‚È‚ç‚¢‚¢‚±‚Æ‚É‚·‚é
+	// connection matrix ãŒåŒã˜ãªã‚‰ã„ã„ã“ã¨ã«ã™ã‚‹
 	for(int i=0;i<len;++i){
 		for(int j=0;j<len;++j){
 			if( kmb::Pyramid::connectionTable[i][j]
@@ -155,6 +155,16 @@ kmb::Pyramid::Pyramid(kmb::nodeIdType* ary)
 
 kmb::Pyramid::~Pyramid(void)
 {
+}
+
+kmb::nodeIdType kmb::Pyramid::operator()(const int index,const int i) const
+{
+	return cell[kmb::Pyramid::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Pyramid::operator()(const int index,const int i)
+{
+	return cell[kmb::Pyramid::faceTable[index][i]];
 }
 
 void
@@ -187,7 +197,7 @@ kmb::Pyramid::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3
 		return false;
 	}
 	/*
-	 * pyramid‚Ì—v‘fÀ•W‚ğ‹‚ß‚é‚½‚ß‚Éƒjƒ…[ƒgƒ“–@‚ğs‚¤
+	 * pyramidã®è¦ç´ åº§æ¨™ã‚’æ±‚ã‚ã‚‹ãŸã‚ã«ãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ³æ³•ã‚’è¡Œã†
 	 */
 	class nr_local : public kmb::OptTargetVV {
 	public:
@@ -211,19 +221,19 @@ kmb::Pyramid::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3
 		}
 		bool df(const ColumnVector &t,Matrix &jac){
 			for(int i=0;i<3;++i){
-				// s ‚Å”÷•ª
+				// s ã§å¾®åˆ†
 				jac.set(i,0,0.125 * (
 					-(1.0-t[1])*(1.0-t[2])*points[1][i]
 					+(1.0-t[1])*(1.0-t[2])*points[2][i]
 					+(1.0+t[1])*(1.0-t[2])*points[3][i]
 					-(1.0+t[1])*(1.0-t[2])*points[4][i] ) );
-				// t ‚Å”÷•ª
+				// t ã§å¾®åˆ†
 				jac.set(i,1,0.125 * (
 					-(1.0-t[0])*(1.0-t[2])*points[1][i]
 					-(1.0+t[0])*(1.0-t[2])*points[2][i]
 					+(1.0+t[0])*(1.0-t[2])*points[3][i]
 					+(1.0-t[0])*(1.0-t[2])*points[4][i] ) );
-				// u ‚Å”÷•ª
+				// u ã§å¾®åˆ†
 				jac.set(i,2,0.125 * (
 					+4.0*points[0].getCoordinate(i)
 					-(1.0-t[0])*(1.0-t[1])*points[1][i]
@@ -270,32 +280,32 @@ kmb::Pyramid::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nodeId
 	}
 	int num = 2;
 
-	// ‘ÎŠpü‚ğ‚Ç‚Ì‚æ‚¤‚Éˆø‚­‚©Œˆ‚ß‚é
+	// å¯¾è§’ç·šã‚’ã©ã®ã‚ˆã†ã«å¼•ãã‹æ±ºã‚ã‚‹
 	bool n4 = element->getIndexMinNodeIdOfFace( 4 )%2 == 1; // [4,3,2,1]
 
 	if( !n4 )
 	{
 		// [2,4]
-		tetrahedrons[0][0] = element->getCellId(1);
-		tetrahedrons[0][1] = element->getCellId(2);
-		tetrahedrons[0][2] = element->getCellId(4);
-		tetrahedrons[0][3] = element->getCellId(0);
-		tetrahedrons[1][0] = element->getCellId(2);
-		tetrahedrons[1][1] = element->getCellId(3);
-		tetrahedrons[1][2] = element->getCellId(4);
-		tetrahedrons[1][3] = element->getCellId(0);
+		tetrahedrons[0][0] = element->getNodeId(1);
+		tetrahedrons[0][1] = element->getNodeId(2);
+		tetrahedrons[0][2] = element->getNodeId(4);
+		tetrahedrons[0][3] = element->getNodeId(0);
+		tetrahedrons[1][0] = element->getNodeId(2);
+		tetrahedrons[1][1] = element->getNodeId(3);
+		tetrahedrons[1][2] = element->getNodeId(4);
+		tetrahedrons[1][3] = element->getNodeId(0);
 	}
 	else
 	{
 		// [1,3]
-		tetrahedrons[0][0] = element->getCellId(1);
-		tetrahedrons[0][1] = element->getCellId(2);
-		tetrahedrons[0][2] = element->getCellId(3);
-		tetrahedrons[0][3] = element->getCellId(0);
-		tetrahedrons[1][0] = element->getCellId(1);
-		tetrahedrons[1][1] = element->getCellId(3);
-		tetrahedrons[1][2] = element->getCellId(4);
-		tetrahedrons[1][3] = element->getCellId(0);
+		tetrahedrons[0][0] = element->getNodeId(1);
+		tetrahedrons[0][1] = element->getNodeId(2);
+		tetrahedrons[0][2] = element->getNodeId(3);
+		tetrahedrons[0][3] = element->getNodeId(0);
+		tetrahedrons[1][0] = element->getNodeId(1);
+		tetrahedrons[1][1] = element->getNodeId(3);
+		tetrahedrons[1][2] = element->getNodeId(4);
+		tetrahedrons[1][3] = element->getNodeId(0);
 	}
 	return num;
 }

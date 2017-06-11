@@ -36,9 +36,9 @@
 /********************************************************************************
 =begin
 
-=== 2ŽŸŽlŠpŒ`—v‘f (QUAD2)
+=== 2æ¬¡å››è§’å½¢è¦ç´  (QUAD2)
 
-Ú‘±s—ñ
+æŽ¥ç¶šè¡Œåˆ—
 
 	{ 0, 1, 0,-1, 2, 0, 0,-2},
 	{-1, 0, 1, 0,-2, 2, 0, 0},
@@ -49,7 +49,7 @@
 	{ 0, 0,-2, 2, 0, 0, 0, 0},
 	{ 2, 0, 0,-2, 0, 0, 0, 0},
 
-•Ó
+è¾º
 
 	{ 0, 1, 4},
 	{ 1, 2, 5},
@@ -58,7 +58,7 @@
 
 =end
 
-Œ`óŠÖ” serendipity
+å½¢çŠ¶é–¢æ•° serendipity
 0 : 1/4(1-s)(1-t)(-1-s-t) => (s,t) = (-1,-1)
 1 : 1/4(1+s)(1-t)(-1+s-t) => (s,t) = ( 1,-1)
 2 : 1/4(1+s)(1+t)(-1+s+t) => (s,t) = ( 1, 1)
@@ -105,6 +105,16 @@ kmb::Quad2::Quad2(kmb::nodeIdType *ary)
 
 kmb::Quad2::~Quad2(void)
 {
+}
+
+kmb::nodeIdType kmb::Quad2::operator()(const int index,const int i) const
+{
+	return cell[kmb::Quad2::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Quad2::operator()(const int index,const int i)
+{
+	return cell[kmb::Quad2::faceTable[index][i]];
 }
 
 void
@@ -203,7 +213,7 @@ kmb::Quad2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D*
 		return false;
 	}
 	/*
-	 * —v‘fÀ•W‚ð‹‚ß‚é‚½‚ß‚Éƒjƒ…[ƒgƒ“–@‚ðs‚¤
+	 * è¦ç´ åº§æ¨™ã‚’æ±‚ã‚ã‚‹ãŸã‚ã«ãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ³æ³•ã‚’è¡Œã†
 	 */
 	class nr_local : public kmb::OptTargetVV {
 	public:
@@ -226,7 +236,7 @@ kmb::Quad2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D*
 			g[0] -= target[0];
 			g[1] -= target[1];
 			g[2] -= target[2];
-			// s ‚Å”÷•ª
+			// s ã§å¾®åˆ†
 			kmb::Quad2::shapeFunction_ds(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgds[i] = 0.0;
@@ -234,7 +244,7 @@ kmb::Quad2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D*
 					dgds[i] += coeff[j] * points[j][i];
 				}
 			}
-			// t ‚Å”÷•ª
+			// t ã§å¾®åˆ†
 			kmb::Quad2::shapeFunction_dt(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgdt[i] = 0.0;
@@ -264,7 +274,7 @@ kmb::Quad2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D*
 			g[0] -= target[0];
 			g[1] -= target[1];
 			g[2] -= target[2];
-			// s ‚Å”÷•ª
+			// s ã§å¾®åˆ†
 			kmb::Quad2::shapeFunction_ds(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgds[i] = 0.0;
@@ -272,7 +282,7 @@ kmb::Quad2::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D*
 					dgds[i] += coeff[j] * points[j][i];
 				}
 			}
-			// t ‚Å”÷•ª
+			// t ã§å¾®åˆ†
 			kmb::Quad2::shapeFunction_dt(t[0],t[1],coeff);
 			for(int i=0;i<3;++i){
 				dgdt[i] = 0.0;

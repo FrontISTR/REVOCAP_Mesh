@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Point3DContainerArray                                   #
@@ -16,12 +16,12 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 const char* kmb::Point3DContainerArray::CONTAINER_TYPE = "double_array";
@@ -118,6 +118,21 @@ kmb::Point3DContainerArray::getPoint(nodeIdType id,kmb::Point3D &point) const
 	}else{
 		return false;
 	}
+}
+
+double kmb::Point3DContainerArray::x(kmb::nodeIdType nodeId) const
+{
+	return pointArray[3*nodeId];
+}
+
+double kmb::Point3DContainerArray::y(kmb::nodeIdType nodeId) const
+{
+	return pointArray[3*nodeId+1];
+}
+
+double kmb::Point3DContainerArray::z(kmb::nodeIdType nodeId) const
+{
+	return pointArray[3*nodeId+2];
 }
 
 kmb::nodeIdType
@@ -301,8 +316,8 @@ kmb::Point3DContainerArray::_iteratorArray::operator++(void)
 	if( this->index < points->getCount() ){
 		return this;
 	}else{
-		// delete this ‚Í‚µ‚È‚¢B
-		// delete ‚·‚é‚Ì‚Í wrapper iterator
+		// delete this ã¯ã—ãªã„ã€‚
+		// delete ã™ã‚‹ã®ã¯ wrapper iterator
 		return NULL;
 	}
 }
@@ -314,8 +329,8 @@ kmb::Point3DContainerArray::_iteratorArray::operator++(int n)
 	if( this->index < points->getCount() ){
 		return this;
 	}else{
-		// delete this ‚Í‚µ‚È‚¢B
-		// delete ‚·‚é‚Ì‚Í wrapper iterator
+		// delete this ã¯ã—ãªã„ã€‚
+		// delete ã™ã‚‹ã®ã¯ wrapper iterator
 		return NULL;
 	}
 }
@@ -617,8 +632,8 @@ kmb::Point3DContainerXYZArray::_iteratorXYZ::operator++(void)
 	if( this->index < points->getCount() ){
 		return this;
 	}else{
-		// delete this ‚Í‚µ‚È‚¢B
-		// delete ‚·‚é‚Ì‚Í wrapper iterator
+		// delete this ã¯ã—ãªã„ã€‚
+		// delete ã™ã‚‹ã®ã¯ wrapper iterator
 		return NULL;
 	}
 }
@@ -630,8 +645,8 @@ kmb::Point3DContainerXYZArray::_iteratorXYZ::operator++(int n)
 	if( this->index < points->getCount() ){
 		return this;
 	}else{
-		// delete this ‚Í‚µ‚È‚¢B
-		// delete ‚·‚é‚Ì‚Í wrapper iterator
+		// delete this ã¯ã—ãªã„ã€‚
+		// delete ã™ã‚‹ã®ã¯ wrapper iterator
 		return NULL;
 	}
 }

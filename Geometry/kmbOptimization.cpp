@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+Ôªø/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Optimization                                            #
@@ -80,8 +80,8 @@ kmb::Optimization::calcMinOnGrid( OptTargetSS_0 &obj, double& opt_t, const doubl
 	return minimizer.getMin();
 }
 
-// 0 <= n[i] <= div[i] Ç≈ï™äÑÇ∑ÇÈ
-// ì_ÇÃå¬êîÇÕ ÉÆ(div[i]+1) Ç≈Ç†ÇÈÇ±Ç∆Ç…íçà”
+// 0 <= n[i] <= div[i] „ÅßÂàÜÂâ≤„Åô„Çã
+// ÁÇπ„ÅÆÂÄãÊï∞„ÅØ Œ†(div[i]+1) „Åß„ÅÇ„Çã„Åì„Å®„Å´Ê≥®ÊÑè
 bool
 kmb::Optimization::calcMinOnGrid( OptTargetSV_0 &obj, double* opt_t, const double* min_t, const double* max_t, const int* div )
 {
@@ -153,7 +153,7 @@ kmb::Optimization::calcMinOnGridWithRegion( OptTargetSV_0 &obj, double* opt_t, c
 }
 
 
-// ÉÆdiv[i] å¬ÇÃÉZÉãÇÃíÜêSÇ≈ÇÃï]âøílÇégÇ§
+// Œ†div[i] ÂÄã„ÅÆ„Çª„É´„ÅÆ‰∏≠ÂøÉ„Åß„ÅÆË©ï‰æ°ÂÄ§„Çí‰Ωø„ÅÜ
 bool
 kmb::Optimization::calcMinOnCell( OptTargetSV_0 &obj, double* optmin_t, double* optmax_t, const double* min_t, const double* max_t, const int* div )
 {
@@ -315,7 +315,7 @@ kmb::Optimization::calcZero_DN( OptTargetSS &obj, double init_t )
 		}
 		d = obj.df(t0);
 		if( fabs(d) < epsilon ){
-			// é∏îs
+			// Â§±Êïó
 			break;
 		}
 		d = - residual / d;
@@ -336,13 +336,13 @@ kmb::Optimization::calcZero_DN( OptTargetVV &obj, double* opt_t, const double* i
 		return false;
 	}
 	int dim = obj.getDomainDim();
-	kmb::ColumnVector_DoubleArray t(dim);  // åªç›ÇÃì_
-	kmb::ColumnVector_DoubleArray t0(dim); // éüÇÃì_
-	kmb::ColumnVector_DoubleArray y(dim);  // ä÷êîíl
-	kmb::ColumnVector_DoubleArray y0(dim); // ä÷êîíl
-	kmb::ColumnVector_DoubleArray d(dim);  // ï˚å¸
-	kmb::SquareMatrix_DoubleArray j(dim);  // çsóÒ
-	// èâä˙íl
+	kmb::ColumnVector_DoubleArray t(dim);  // ÁèæÂú®„ÅÆÁÇπ
+	kmb::ColumnVector_DoubleArray t0(dim); // Ê¨°„ÅÆÁÇπ
+	kmb::ColumnVector_DoubleArray y(dim);  // Èñ¢Êï∞ÂÄ§
+	kmb::ColumnVector_DoubleArray y0(dim); // Èñ¢Êï∞ÂÄ§
+	kmb::ColumnVector_DoubleArray d(dim);  // ÊñπÂêë
+	kmb::SquareMatrix_DoubleArray j(dim);  // Ë°åÂàó
+	// ÂàùÊúüÂÄ§
 	for(int i=0;i<dim;++i){
 		t0[i] = init_t[i];
 	}
@@ -372,7 +372,7 @@ kmb::Optimization::calcZero_DN( OptTargetVV &obj, double* opt_t, const double* i
 			obj.f(t,y);
 		}while( y.normSq() > ( 1 - 0.5*r ) * ( 1 - 0.5*r ) * residual );
 		if( t0.distanceSq(t) < epsilon*epsilon ){
-			// é˚ë©ÇπÇ∏Ç…í‚óØÇµÇƒÇµÇ‹Ç¡ÇΩèÍçá
+			// ÂèéÊùü„Åõ„Åö„Å´ÂÅúÁïô„Åó„Å¶„Åó„Åæ„Å£„ÅüÂ†¥Âêà
 			break;
 		}
 		t0 = t;
@@ -420,12 +420,12 @@ kmb::Optimization::calcMin_BFGS( OptTargetSV &obj, double* opt_t, double* init_t
 		return false;
 	}
 	int dim = obj.getDomainDim();
-	double* t0 = new double[dim]; // åªç›ÇÃì_
-	double* t  = new double[dim];  // éüÇÃì_
-	double* d  = new double[dim];  // íTçıï˚å¸
-	double alpha = 0.0; // d ï˚å¸ÇÃÉXÉeÉbÉvïù
-	double* u  = new double[dim];  // å˘îzïœâªó 
-	kmb::SquareMatrix_DoubleArray b(dim);  // çsóÒ
+	double* t0 = new double[dim]; // ÁèæÂú®„ÅÆÁÇπ
+	double* t  = new double[dim];  // Ê¨°„ÅÆÁÇπ
+	double* d  = new double[dim];  // Êé¢Á¥¢ÊñπÂêë
+	double alpha = 0.0; // d ÊñπÂêë„ÅÆ„Çπ„ÉÜ„ÉÉ„ÉóÂπÖ
+	double* u  = new double[dim];  // ÂãæÈÖçÂ§âÂåñÈáè
+	kmb::SquareMatrix_DoubleArray b(dim);  // Ë°åÂàó
 	bool res = false;
 
 	b.identity();
@@ -434,7 +434,7 @@ kmb::Optimization::calcMin_BFGS( OptTargetSV &obj, double* opt_t, double* init_t
 	}
 	iterCount = 0;
 	while( iterCount < iterMax ){
-		// íTçıï˚å¸ d ÇÃåàíË
+		// Êé¢Á¥¢ÊñπÂêë d „ÅÆÊ±∫ÂÆö
 		obj.df( t0, u );
 		for(int i=0;i<dim;++i){
 			u[i] *= -1.0;
@@ -442,8 +442,8 @@ kmb::Optimization::calcMin_BFGS( OptTargetSV &obj, double* opt_t, double* init_t
 		if( !b.solve( u, d ) ){
 			break;
 		}
-		// t0 + alpha * d ÇÃíºê¸íTçı
-		// Armijo èåè with xi = 0.5, å∏è≠ó¶ = 0.8
+		// t0 + alpha * d „ÅÆÁõ¥Á∑öÊé¢Á¥¢
+		// Armijo Êù°‰ª∂ with xi = 0.5, Ê∏õÂ∞ëÁéá = 0.8
 		alpha = 1.0 / 0.8;
 		double v = - kmb::ColumnVector::inner( d, u, dim );
 		double y = obj.f(t0);
@@ -453,7 +453,7 @@ kmb::Optimization::calcMin_BFGS( OptTargetSV &obj, double* opt_t, double* init_t
 				t[i] = t0[i] + alpha * d[i];
 			}
 		}while( obj.f(t) > y + 0.5 * alpha * v && alpha > DBL_MIN );
-		// èIóπîªíË
+		// ÁµÇ‰∫ÜÂà§ÂÆö
 		obj.df( t, d );
 		residual = kmb::ColumnVector::normSq( d, dim );
 		if( residual < epsilon*epsilon ){
@@ -463,13 +463,13 @@ kmb::Optimization::calcMin_BFGS( OptTargetSV &obj, double* opt_t, double* init_t
 			res = true;
 			break;
 		}
-		// b ÇÃçXêVÇÃèÄîı
+		// b „ÅÆÊõ¥Êñ∞„ÅÆÊ∫ñÂÇô
 		for(int i=0;i<dim;++i){
 			u[i] += d[i];
 			d[i] = t[i] - t0[i];
 			t0[i] = t[i];
 		}
-		// b ÇÃçXêV
+		// b „ÅÆÊõ¥Êñ∞
 		// u = df(t) - df(t0)
 		// d = t - t0
 		// t : temp
@@ -551,7 +551,7 @@ kmb::Optimization::calcMin_GS( OptTargetSS_0 &obj, double min_t, double max_t )
 	}
 }
 
-// é¿ëïÇµÇƒÇ¢ÇÈÇÃÇÕ DomainDim == 2 or 3 ÇÃÇ∆Ç´
+// ÂÆüË£Ö„Åó„Å¶„ÅÑ„Çã„ÅÆ„ÅØ DomainDim == 2 or 3 „ÅÆ„Å®„Åç
 bool
 kmb::Optimization::calcMin_GS( OptTargetSV_0 &obj, double* opt_t, const double* min_t, const double* max_t )
 {
@@ -585,7 +585,7 @@ kmb::Optimization::calcMin_GS( OptTargetSV_0 &obj, double* opt_t, const double* 
 		if( diff < n*kmb::Optimization::epsilon ){
 			break;
 		}
-		// m = 2^n å¬ÇÃì_Çí≤Ç◊Çƒç≈ëÂílÇÇ∆ÇÈÇ∆Ç±ÇÎÇíTÇ∑
+		// m = 2^n ÂÄã„ÅÆÁÇπ„ÇíË™ø„Åπ„Å¶ÊúÄÂ§ßÂÄ§„Çí„Å®„Çã„Å®„Åì„Çç„ÇíÊé¢„Åô
 		if( n == 2 ){
 			for(int i=0;i<n;++i){
 				s0[i] = (1.0-tau) * t0[i] + tau * t1[i];
@@ -722,7 +722,7 @@ kmb::Optimization::calcMin_CG( OptTargetSV &obj, double* opt_t, const double* mi
 	double* grad = new double[n];
 	double* grad_prev = new double[n];
 	double* conj = new double[n];
-	// èâä˙íl
+	// ÂàùÊúüÂÄ§
 	if( init_t != NULL ){
 		for(int i=0;i<n;++i){
 			t[i] = init_t[i];
@@ -732,7 +732,7 @@ kmb::Optimization::calcMin_CG( OptTargetSV &obj, double* opt_t, const double* mi
 			t[i] = 0.5*(min_t[i] + max_t[i]);
 		}
 	}
-	// ÇPéüå≥íTçıÇÃÇΩÇﬂÇÃÉTÉuÉNÉâÉX
+	// ÔºëÊ¨°ÂÖÉÊé¢Á¥¢„ÅÆ„Åü„ÇÅ„ÅÆ„Çµ„Éñ„ÇØ„É©„Çπ
 	class cg_local : public kmb::OptTargetSS_0 {
 	private:
 		int n;
@@ -763,7 +763,7 @@ kmb::Optimization::calcMin_CG( OptTargetSV &obj, double* opt_t, const double* mi
 	double epsilonSq = epsilon * epsilon;
 	iterCount = 0;
 	double lenSq = 0.0;
-	// beta Ç≈ÅAÇ–Ç∆Ç¬ëOÇÃ 1.0/lenSq Ç‡äoÇ¶ÇƒÇ®Ç≠
+	// beta „Åß„ÄÅ„Å≤„Å®„Å§Ââç„ÅÆ 1.0/lenSq „ÇÇË¶ö„Åà„Å¶„Åä„Åè
 	double beta = 0.0;
 	double sub_opt = 0.0;
 	double sub_min = 0.0;
@@ -798,8 +798,8 @@ kmb::Optimization::calcMin_CG( OptTargetSV &obj, double* opt_t, const double* mi
 			}
 		}
 		beta = 1.0 / lenSq;
-		// ÇPéüå≥íTçıÇµÇΩåãâ Ç sub_opt Ç∆Ç∑ÇÈÅB
-		// t Ç©ÇÁ conj ï˚å¸Ç…ìÆÇ©ÇµÇΩéûÇÃíËã`àÊÇ sub_min sub_max Ç≈ãÅÇﬂÇÈ
+		// ÔºëÊ¨°ÂÖÉÊé¢Á¥¢„Åó„ÅüÁµêÊûú„Çí sub_opt „Å®„Åô„Çã„ÄÇ
+		// t „Åã„Çâ conj ÊñπÂêë„Å´Âãï„Åã„Åó„ÅüÊôÇ„ÅÆÂÆöÁæ©Âüü„Çí sub_min sub_max „ÅßÊ±Ç„ÇÅ„Çã
 		minimizer.initialize();
 		maximizer.initialize();
 		for(int i=0;i<n;++i){

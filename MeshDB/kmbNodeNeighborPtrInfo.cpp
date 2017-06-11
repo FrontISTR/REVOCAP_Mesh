@@ -60,14 +60,14 @@ bool
 kmb::NodeNeighborPtrInfo::append( kmb::nodeIdType nodeId, kmb::Element* element )
 {
 	if( element ){
-		// d•¡‚µ‚È‚¢‚æ‚¤‚É“o˜^‚·‚é
+		// é‡è¤‡ã—ãªã„ã‚ˆã†ã«ç™»éŒ²ã™ã‚‹
 		std::pair< NodeNeighborPtr::iterator, NodeNeighborPtr::iterator >
 			bIterPair = coboundaries.equal_range( nodeId );
 		NodeNeighborPtr::iterator nIter = bIterPair.first;
 		while( nIter != bIterPair.second )
 		{
 			if(nIter->second == element){
-				// Šù‚É“o˜^Ï‚İ
+				// æ—¢ã«ç™»éŒ²æ¸ˆã¿
 				return false;
 			}
 			++nIter;
@@ -82,14 +82,14 @@ bool
 kmb::NodeNeighborPtrInfo::erase( kmb::nodeIdType nodeId, kmb::Element* element )
 {
 	if( element ){
-		// ŒŸõ‚µ‚Äíœ
+		// æ¤œç´¢ã—ã¦å‰Šé™¤
 		std::pair< NodeNeighborPtr::iterator, NodeNeighborPtr::iterator >
 			bIterPair = coboundaries.equal_range( nodeId );
 		NodeNeighborPtr::iterator nIter = bIterPair.first;
 		while( nIter != bIterPair.second )
 		{
 			if(nIter->second == element){
-				// “o˜^Ï‚İ‚Ì‚à‚Ì‚ğíœ
+				// ç™»éŒ²æ¸ˆã¿ã®ã‚‚ã®ã‚’å‰Šé™¤
 				coboundaries.erase( nIter );
 				return true;
 			}
@@ -103,10 +103,10 @@ bool
 kmb::NodeNeighborPtrInfo::appendCoboundary( kmb::Element* element )
 {
 	if( element ){
-		// ‚±‚Ì—v‘f‚ª¶¬‚·‚é—×ÚŠÖŒW‚ğ“o˜^‚·‚é
+		// ã“ã®è¦ç´ ãŒç”Ÿæˆã™ã‚‹éš£æ¥é–¢ä¿‚ã‚’ç™»éŒ²ã™ã‚‹
 		const unsigned int len = element->getNodeCount();
 		for(unsigned int i=0;i<len;++i){
-			kmb::nodeIdType nodeId = element->getCellId(i);
+			kmb::nodeIdType nodeId = element->getNodeId(i);
 			this->append(nodeId,element);
 		}
 		return true;
@@ -145,10 +145,10 @@ bool
 kmb::NodeNeighborPtrInfo::deleteCoboundary( kmb::Element* element )
 {
 	if( element ){
-		// ‚±‚Ì—v‘f‚ª¶¬‚·‚é—×ÚŠÖŒW‚ğíœ‚·‚é
+		// ã“ã®è¦ç´ ãŒç”Ÿæˆã™ã‚‹éš£æ¥é–¢ä¿‚ã‚’å‰Šé™¤ã™ã‚‹
 		const unsigned int len = element->getNodeCount();
 		for(unsigned int i=0;i<len;++i){
-			kmb::nodeIdType nodeId = element->getCellId(i);
+			kmb::nodeIdType nodeId = element->getNodeId(i);
 			this->erase(nodeId,element);
 		}
 		return true;
@@ -164,14 +164,14 @@ kmb::NodeNeighborPtrInfo::getElementNeighbor( const kmb::Element* element, kmb::
 
 	int count = 0;
 
-	// coboundaries ‚©‚çŒvZ‚·‚é
-	// ©•ª©g‚Ì’¸“_”z—ñ‚©‚ç
-	// ü•Ó—v‘f‚ğæ‚èo‚µ‚ÄA
-	// ‚»‚ê‚Æ‚Ì—v‘fŠÔŠÖŒW‚ğŒvZ‚·‚é
+	// coboundaries ã‹ã‚‰è¨ˆç®—ã™ã‚‹
+	// è‡ªåˆ†è‡ªèº«ã®é ‚ç‚¹é…åˆ—ã‹ã‚‰
+	// å‘¨è¾ºè¦ç´ ã‚’å–ã‚Šå‡ºã—ã¦ã€
+	// ãã‚Œã¨ã®è¦ç´ é–“é–¢ä¿‚ã‚’è¨ˆç®—ã™ã‚‹
 
 	const int boundaryNum = element->getBoundaryCount();
 
-	// Segment Segment2 ‚Ì‚Í“Á•Ê
+	// Segment Segment2 ã®æ™‚ã¯ç‰¹åˆ¥
 	switch( element->getDimension() )
 	{
 		case 1:
@@ -179,14 +179,14 @@ kmb::NodeNeighborPtrInfo::getElementNeighbor( const kmb::Element* element, kmb::
 			for(int i=0;i<2;++i)
 			{
 				neighbors[i] = NULL;
-				const kmb::nodeIdType nodeId = element->getCellId(i);
-				// ’¸“_‚²‚Æ‚Ìü•Ó—v‘f‚Æ‚ÌŠÖŒW‚ğ’²‚×‚é
+				const kmb::nodeIdType nodeId = element->getNodeId(i);
+				// é ‚ç‚¹ã”ã¨ã®å‘¨è¾ºè¦ç´ ã¨ã®é–¢ä¿‚ã‚’èª¿ã¹ã‚‹
 				std::pair< NodeNeighborPtr::const_iterator, NodeNeighborPtr::const_iterator >
 					eIterPair = coboundaries.equal_range( nodeId );
 				NodeNeighborPtr::const_iterator eIter = eIterPair.first;
 				while( eIter != eIterPair.second && neighbors[i] == NULL )
 				{
-					// ˆÙ‚È‚é—v‘f‚ªß“_‚Æ‹¤—L‚µ‚Ä‚¢‚½‚ç“o˜^‚·‚é
+					// ç•°ãªã‚‹è¦ç´ ãŒç¯€ç‚¹ã¨å…±æœ‰ã—ã¦ã„ãŸã‚‰ç™»éŒ²ã™ã‚‹
 					if( element != eIter->second ){
 						neighbors[ i ] = eIter->second;
 						++count;
@@ -201,15 +201,15 @@ kmb::NodeNeighborPtrInfo::getElementNeighbor( const kmb::Element* element, kmb::
 			int otherIndex = -1;
 			for(int i=0;i<boundaryNum;++i){
 				neighbors[i] = NULL;
-				// Face ‚ÌÅ‰‚Ì’¸“_‚Å’T‚·
-				kmb::nodeIdType nodeId = element->getBoundaryCellId(i,0);
-				// ’¸“_‚²‚Æ‚Ìü•Ó—v‘f‚Æ‚ÌŠÖŒW‚ğ’²‚×‚é
+				// Face ã®æœ€åˆã®é ‚ç‚¹ã§æ¢ã™
+				kmb::nodeIdType nodeId = element->getBoundaryNodeId(i,0);
+				// é ‚ç‚¹ã”ã¨ã®å‘¨è¾ºè¦ç´ ã¨ã®é–¢ä¿‚ã‚’èª¿ã¹ã‚‹
 				std::pair< NodeNeighborPtr::const_iterator, NodeNeighborPtr::const_iterator >
 					eIterPair = coboundaries.equal_range( nodeId );
 				NodeNeighborPtr::const_iterator eIter = eIterPair.first;
 				while( eIter != eIterPair.second && neighbors[i] == NULL )
 				{
-					// ˆÙ‚È‚é—v‘f‚ªÚ‚µ‚Ä‚¢‚½‚ç“o˜^‚·‚é
+					// ç•°ãªã‚‹è¦ç´ ãŒæ¥ã—ã¦ã„ãŸã‚‰ç™»éŒ²ã™ã‚‹
 					kmb::Element* coElement = eIter->second;
 					if( coElement && element != coElement ){
 						kmb::ElementRelation::relationType rel =
@@ -231,16 +231,16 @@ kmb::NodeNeighborPtrInfo::getElementNeighbor( const kmb::Element* element, kmb::
 			int otherIndex = -1;
 			for(int i=0;i<boundaryNum;++i){
 				neighbors[i] = NULL;
-				// Face ‚ÌÅ‰‚Ì’¸“_‚Å’T‚·
-				kmb::nodeIdType nodeId = element->getBoundaryCellId(i,0);
-				// ’¸“_‚²‚Æ‚Ìü•Ó—v‘f‚Æ‚ÌŠÖŒW‚ğ’²‚×‚é
+				// Face ã®æœ€åˆã®é ‚ç‚¹ã§æ¢ã™
+				kmb::nodeIdType nodeId = element->getBoundaryNodeId(i,0);
+				// é ‚ç‚¹ã”ã¨ã®å‘¨è¾ºè¦ç´ ã¨ã®é–¢ä¿‚ã‚’èª¿ã¹ã‚‹
 				std::pair< NodeNeighborPtr::const_iterator, NodeNeighborPtr::const_iterator >
 					eIterPair = coboundaries.equal_range( nodeId );
 				NodeNeighborPtr::const_iterator eIter = eIterPair.first;
 				while( eIter != eIterPair.second && neighbors[i] == NULL )
 				{
 					kmb::Element* coElement = eIter->second;
-					// ˆÙ‚È‚é—v‘f‚ªÚ‚µ‚Ä‚¢‚½‚ç“o˜^‚·‚é
+					// ç•°ãªã‚‹è¦ç´ ãŒæ¥ã—ã¦ã„ãŸã‚‰ç™»éŒ²ã™ã‚‹
 					if( coElement && element != coElement ){
 						kmb::ElementRelation::relationType rel =
 							kmb::ElementRelation::getRelation( *element, index, *coElement, otherIndex );
@@ -269,14 +269,14 @@ kmb::NodeNeighborPtrInfo::getElementNeighborFace( const kmb::Element* element, k
 
 	int count = 0;
 
-	// coboundaries ‚©‚çŒvZ‚·‚é
-	// ©•ª©g‚Ì’¸“_”z—ñ‚©‚ç
-	// ü•Ó—v‘f‚ğæ‚èo‚µ‚ÄA
-	// ‚»‚ê‚Æ‚Ì—v‘fŠÔŠÖŒW‚ğŒvZ‚·‚é
+	// coboundaries ã‹ã‚‰è¨ˆç®—ã™ã‚‹
+	// è‡ªåˆ†è‡ªèº«ã®é ‚ç‚¹é…åˆ—ã‹ã‚‰
+	// å‘¨è¾ºè¦ç´ ã‚’å–ã‚Šå‡ºã—ã¦ã€
+	// ãã‚Œã¨ã®è¦ç´ é–“é–¢ä¿‚ã‚’è¨ˆç®—ã™ã‚‹
 
 	const int boundaryNum = element->getBoundaryCount();
 
-	// Segment Segment2 ‚Ì‚Í“Á•Ê
+	// Segment Segment2 ã®æ™‚ã¯ç‰¹åˆ¥
 	switch( element->getDimension() )
 	{
 		case 1:
@@ -285,14 +285,14 @@ kmb::NodeNeighborPtrInfo::getElementNeighborFace( const kmb::Element* element, k
 			{
 				neighbors[i] = NULL;
 				faces[i] = -1;
-				const kmb::nodeIdType nodeId = element->getCellId(i);
-				// ’¸“_‚²‚Æ‚Ìü•Ó—v‘f‚Æ‚ÌŠÖŒW‚ğ’²‚×‚é
+				const kmb::nodeIdType nodeId = element->getNodeId(i);
+				// é ‚ç‚¹ã”ã¨ã®å‘¨è¾ºè¦ç´ ã¨ã®é–¢ä¿‚ã‚’èª¿ã¹ã‚‹
 				std::pair< NodeNeighborPtr::const_iterator, NodeNeighborPtr::const_iterator >
 					eIterPair = coboundaries.equal_range( nodeId );
 				NodeNeighborPtr::const_iterator eIter = eIterPair.first;
 				while( eIter != eIterPair.second && neighbors[i] == NULL )
 				{
-					// ˆÙ‚È‚é—v‘f‚ªß“_‚Æ‹¤—L‚µ‚Ä‚¢‚½‚ç“o˜^‚·‚é
+					// ç•°ãªã‚‹è¦ç´ ãŒç¯€ç‚¹ã¨å…±æœ‰ã—ã¦ã„ãŸã‚‰ç™»éŒ²ã™ã‚‹
 					if( element != eIter->second ){
 						neighbors[ i ] = eIter->second;
 						faces[i] = ((*eIter->second)[0] == nodeId)? 0 : 1;
@@ -309,15 +309,15 @@ kmb::NodeNeighborPtrInfo::getElementNeighborFace( const kmb::Element* element, k
 			for(int i=0;i<boundaryNum;++i){
 				neighbors[i] = NULL;
 				faces[i] = -1;
-				// Face ‚ÌÅ‰‚Ì’¸“_‚Å’T‚·
-				kmb::nodeIdType nodeId = element->getBoundaryCellId(i,0);
-				// ’¸“_‚²‚Æ‚Ìü•Ó—v‘f‚Æ‚ÌŠÖŒW‚ğ’²‚×‚é
+				// Face ã®æœ€åˆã®é ‚ç‚¹ã§æ¢ã™
+				kmb::nodeIdType nodeId = element->getBoundaryNodeId(i,0);
+				// é ‚ç‚¹ã”ã¨ã®å‘¨è¾ºè¦ç´ ã¨ã®é–¢ä¿‚ã‚’èª¿ã¹ã‚‹
 				std::pair< NodeNeighborPtr::const_iterator, NodeNeighborPtr::const_iterator >
 					eIterPair = coboundaries.equal_range( nodeId );
 				NodeNeighborPtr::const_iterator eIter = eIterPair.first;
 				while( eIter != eIterPair.second && neighbors[i] == NULL )
 				{
-					// ˆÙ‚È‚é—v‘f‚ªÚ‚µ‚Ä‚¢‚½‚ç“o˜^‚·‚é
+					// ç•°ãªã‚‹è¦ç´ ãŒæ¥ã—ã¦ã„ãŸã‚‰ç™»éŒ²ã™ã‚‹
 					kmb::Element* coElement = eIter->second;
 					if( coElement && element != coElement ){
 						kmb::ElementRelation::relationType rel =
@@ -341,16 +341,16 @@ kmb::NodeNeighborPtrInfo::getElementNeighborFace( const kmb::Element* element, k
 			for(int i=0;i<boundaryNum;++i){
 				neighbors[i] = NULL;
 				faces[i] = -1;
-				// Face ‚ÌÅ‰‚Ì’¸“_‚Å’T‚·
-				kmb::nodeIdType nodeId = element->getBoundaryCellId(i,0);
-				// ’¸“_‚²‚Æ‚Ìü•Ó—v‘f‚Æ‚ÌŠÖŒW‚ğ’²‚×‚é
+				// Face ã®æœ€åˆã®é ‚ç‚¹ã§æ¢ã™
+				kmb::nodeIdType nodeId = element->getBoundaryNodeId(i,0);
+				// é ‚ç‚¹ã”ã¨ã®å‘¨è¾ºè¦ç´ ã¨ã®é–¢ä¿‚ã‚’èª¿ã¹ã‚‹
 				std::pair< NodeNeighborPtr::const_iterator, NodeNeighborPtr::const_iterator >
 					eIterPair = coboundaries.equal_range( nodeId );
 				NodeNeighborPtr::const_iterator eIter = eIterPair.first;
 				while( eIter != eIterPair.second && neighbors[i] == NULL )
 				{
 					kmb::Element* coElement = eIter->second;
-					// ˆÙ‚È‚é—v‘f‚ªÚ‚µ‚Ä‚¢‚½‚ç“o˜^‚·‚é
+					// ç•°ãªã‚‹è¦ç´ ãŒæ¥ã—ã¦ã„ãŸã‚‰ç™»éŒ²ã™ã‚‹
 					if( coElement && element != coElement ){
 						kmb::ElementRelation::relationType rel =
 							kmb::ElementRelation::getRelation( *element, index, *coElement, otherIndex );
@@ -375,7 +375,7 @@ kmb::NodeNeighborPtrInfo::getElementNeighborFace( const kmb::Element* element, k
 void
 kmb::NodeNeighborPtrInfo::getNodeNeighbor( kmb::nodeIdType nodeId, std::set<kmb::nodeIdType> &neighbors ) const
 {
-	// ü•Ó—v‘f‚ğæ‚èo‚µ‚ÄŒvZ‚·‚é
+	// å‘¨è¾ºè¦ç´ ã‚’å–ã‚Šå‡ºã—ã¦è¨ˆç®—ã™ã‚‹
 	std::pair< NodeNeighborPtr::const_iterator, NodeNeighborPtr::const_iterator >
 		eIterPair = coboundaries.equal_range( nodeId );
 	NodeNeighborPtr::const_iterator eIter = eIterPair.first;
@@ -384,13 +384,13 @@ kmb::NodeNeighborPtrInfo::getNodeNeighbor( kmb::nodeIdType nodeId, std::set<kmb:
 		kmb::Element* element = eIter->second;
 		if( element ){
 			const int len = element->getNodeCount();
-			// ‹ÇŠÀ•W‚ğæ“¾
+			// å±€æ‰€åº§æ¨™ã‚’å–å¾—
 			int nodeIndex = element->indexOf(nodeId);
 			for(int i=0;i<len;++i){
 				if( i != nodeIndex &&
 					element->isConnected(i,nodeIndex) != 0 )
 				{
-					neighbors.insert(element->getCellId(i));
+					neighbors.insert(element->getNodeId(i));
 				}
 			}
 		}

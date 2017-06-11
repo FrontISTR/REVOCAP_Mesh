@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Collision                                               #
@@ -26,14 +26,14 @@
 kmb::Collision::collisionType
 kmb::Collision::detectTriTri(kmb::ElementBase& tri0,kmb::ElementBase& tri1) const
 {
-	// ˆÊ‘Šƒ`ƒFƒbƒN
+	// ä½ç›¸ãƒã‚§ãƒƒã‚¯
 	int i0=0,i1=0;
 	kmb::ElementRelation::relationType rel = kmb::ElementRelation::getRelation( tri0, i0, tri1, i1 );
-	// 2“_‹¤—L‚µ‚Ä‚¢‚éê‡
+	// 2ç‚¹å…±æœ‰ã—ã¦ã„ã‚‹å ´åˆ
 	if( rel == kmb::ElementRelation::ADJACENT || rel == kmb::ElementRelation::ANTIADJACENT ){
 		return kmb::Collision::TOPOLOGICAL_CONTACT;
 	}
-	// 1“_‹¤—L‚µ‚Ä‚¢‚éê‡ => OŠpŒ`‚Ìc‚è‚Ì•Ó‚ª‚à‚¤ˆê•û‚Ì–Ê‚ÆŠ±Â‚·‚é‚©‚Ç‚¤‚©
+	// 1ç‚¹å…±æœ‰ã—ã¦ã„ã‚‹å ´åˆ => ä¸‰è§’å½¢ã®æ®‹ã‚Šã®è¾ºãŒã‚‚ã†ä¸€æ–¹ã®é¢ã¨å¹²æ¸‰ã™ã‚‹ã‹ã©ã†ã‹
 	else if( rel == kmb::ElementRelation::COMMONNODE ){
 		kmb::Collision::collisionType colType = kmb::Collision::TOPOLOGICAL_CONTACT;
 		kmb::Point3D t0[3];
@@ -97,16 +97,16 @@ kmb::Collision::detectTriTri(kmb::ElementBase& tri0,kmb::ElementBase& tri1) cons
 kmb::Collision::collisionType
 kmb::Collision::detectTriTetra(kmb::ElementBase& tri,kmb::ElementBase& tetra) const
 {
-	// ˆÊ‘Šƒ`ƒFƒbƒN
+	// ä½ç›¸ãƒã‚§ãƒƒã‚¯
 	int i0=0,i1=0;
 	kmb::ElementRelation::relationType rel = kmb::ElementRelation::getRelation( tri, i0, tetra, i1 );
-	// 3“_‹¤—L‚µ‚Ä‚¢‚éê‡
+	// 3ç‚¹å…±æœ‰ã—ã¦ã„ã‚‹å ´åˆ
 	if( rel == kmb::ElementRelation::BOUNDARY || rel == kmb::ElementRelation::ANTIBOUNDARY ){
-		return kmb::Collision::TOPOLOGICAL_CONTACT; // ˆÊ‘Š“I‚ÉÚ‚µ‚Ä‚¢‚é
+		return kmb::Collision::TOPOLOGICAL_CONTACT; // ä½ç›¸çš„ã«æ¥ã—ã¦ã„ã‚‹
 	}
-	// 2“_‹¤—L‚µ‚Ä‚¢‚éê‡ => 
-	//  OŠpŒ`‚Ìc‚è1“_‚ªl–Ê‘Ì‚Ì’†‚É‚ ‚é‚©‚Ç‚¤‚©
-	//  l–Ê‘Ì‚Ì“ñ“_‹¤—L‚µ‚Ä‚¢‚È‚¢–Ê‚ÆOŠpŒ`‚ªŠ±Â
+	// 2ç‚¹å…±æœ‰ã—ã¦ã„ã‚‹å ´åˆ => 
+	//  ä¸‰è§’å½¢ã®æ®‹ã‚Š1ç‚¹ãŒå››é¢ä½“ã®ä¸­ã«ã‚ã‚‹ã‹ã©ã†ã‹
+	//  å››é¢ä½“ã®äºŒç‚¹å…±æœ‰ã—ã¦ã„ãªã„é¢ã¨ä¸‰è§’å½¢ãŒå¹²æ¸‰
 	else if( rel == kmb::ElementRelation::COMMONEDGE ){
 		kmb::Point3D n[3];
 		kmb::Point3D t[4];
@@ -122,17 +122,17 @@ kmb::Collision::detectTriTetra(kmb::ElementBase& tri,kmb::ElementBase& tetra) co
 			this->points->getPoint( tetra[3], t[3] ) )
 		{
 			kmb::Collision::collisionType colType = kmb::Collision::TOPOLOGICAL_CONTACT;
-			// “à•”ƒ`ƒFƒbƒN‚Íc‚è‚Ìˆê“_‚¾‚¯
+			// å†…éƒ¨ãƒã‚§ãƒƒã‚¯ã¯æ®‹ã‚Šã®ä¸€ç‚¹ã ã‘
 			double minor[4] = {0.0, 0.0, 0.0, 0.0};
 			kmb::Point3D::calcMinorCoordinate( t[0], t[1], t[2], t[3], n[i0], minor );
 			if( 0.0 < minor[0] && 0.0 < minor[1] && 0.0 < minor[2] && 0.0 < minor[3] ){
 				return kmb::Collision::DETECT;
 			}
-			// ‚±‚±‚ÅOŠpŒ`‚Æ•Ó‚Ìƒ`ƒFƒbƒN
-			// tetra ‚Ì‹¤—L‚µ‚Ä‚¢‚é’¸“_‚Ì”Ô†
+			// ã“ã“ã§ä¸‰è§’å½¢ã¨è¾ºã®ãƒã‚§ãƒƒã‚¯
+			// tetra ã®å…±æœ‰ã—ã¦ã„ã‚‹é ‚ç‚¹ã®ç•ªå·
 			int f0 = kmb::Tetrahedron::edgeTable[i1][0];
 			int f1 = kmb::Tetrahedron::edgeTable[i1][1];
-			// tri ‚Ì‹¤—L‚µ‚Ä‚¢‚é’¸“_‚Ì”Ô†
+			// tri ã®å…±æœ‰ã—ã¦ã„ã‚‹é ‚ç‚¹ã®ç•ªå·
 			int e0 = -1, e1 = -1;
 			if( tetra.indexOf( tri[ (i0+1)%3 ] ) == f0 ){
 				e0 = (i0+1)%3;
@@ -172,7 +172,7 @@ kmb::Collision::detectTriTetra(kmb::ElementBase& tri,kmb::ElementBase& tetra) co
 			return kmb::Collision::COLLISION_ERROR;
 		}
 	}
-	// 1“_‹¤—L‚µ‚Ä‚¢‚éê‡
+	// 1ç‚¹å…±æœ‰ã—ã¦ã„ã‚‹å ´åˆ
 	else if( rel == kmb::ElementRelation::COMMONNODE ){
 		kmb::Point3D n[3];
 		kmb::Point3D t[4];
@@ -188,7 +188,7 @@ kmb::Collision::detectTriTetra(kmb::ElementBase& tri,kmb::ElementBase& tetra) co
 			this->points->getPoint( tetra[3], t[3] ) )
 		{
 			kmb::Collision::collisionType colType = kmb::Collision::TOPOLOGICAL_CONTACT;
-			// ’¸“_‚ª“à•”‚É‚ ‚é‚Æ‚«
+			// é ‚ç‚¹ãŒå†…éƒ¨ã«ã‚ã‚‹ã¨ã
 			double minor[4] = {0.0, 0.0, 0.0, 0.0};
 			for(int i=0;i<3;++i){
 				if( i != i0 ){
@@ -198,7 +198,7 @@ kmb::Collision::detectTriTetra(kmb::ElementBase& tri,kmb::ElementBase& tetra) co
 					}
 				}
 			}
-			// OŠpŒ`‚Ì‘Î•Ó‚Æl–Ê‘Ì‚Ì–Ê
+			// ä¸‰è§’å½¢ã®å¯¾è¾ºã¨å››é¢ä½“ã®é¢
 			for(int i=0;i<4;++i){
 				switch( detectSegTri( n[ (i0+1)%3 ], n[ (i0+2)%3 ],
 					t[ kmb::Tetrahedron::faceTable[i][0] ],
@@ -213,7 +213,7 @@ kmb::Collision::detectTriTetra(kmb::ElementBase& tri,kmb::ElementBase& tetra) co
 					break;
 				}
 			}
-			// OŠpŒ`‚Ì‹¤•Ó‚Æl–Ê‘Ì‚Ì‘Î–Ê
+			// ä¸‰è§’å½¢ã®å…±è¾ºã¨å››é¢ä½“ã®å¯¾é¢
 			switch( detectSegTri( n[i0], n[ (i0+1)%3 ],
 				t[ kmb::Tetrahedron::faceTable[i1][0] ],
 				t[ kmb::Tetrahedron::faceTable[i1][1] ],
@@ -258,7 +258,7 @@ kmb::Collision::detectTriTetra(kmb::ElementBase& tri,kmb::ElementBase& tetra) co
 		this->points->getPoint( tetra[3], t[3] ) )
 	{
 		kmb::Collision::collisionType colType = kmb::Collision::NOT_COLLIDE;
-		// ’¸“_‚ª“à•”‚É‚ ‚é‚Æ‚«
+		// é ‚ç‚¹ãŒå†…éƒ¨ã«ã‚ã‚‹ã¨ã
 		double minor[4] = {0.0, 0.0, 0.0, 0.0};
 		for(int i=0;i<3;++i){
 			kmb::Point3D::calcMinorCoordinate( t[0], t[1], t[2], t[3], n[i], minor );
@@ -282,6 +282,6 @@ kmb::Collision::detectTriTetra(kmb::ElementBase& tri,kmb::ElementBase& tetra) co
 		}
 		return colType;
 	}else{
-		return kmb::Collision::COLLISION_ERROR; // ƒGƒ‰[
+		return kmb::Collision::COLLISION_ERROR; // ã‚¨ãƒ©ãƒ¼
 	}
 }

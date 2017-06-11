@@ -24,10 +24,10 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 #pragma once
-// ���̃t�@�C���� C++ �łł͎g�킸�� SWIG �����Ŏg����֐��Ȃǂ��`����
-// meshdb.i �̒����� Callback �ŌĂ΂���ނ̃��\�b�h�Ȃǂ������B
-// meshdb.i �ɏ����Ă��܂��� SWIG �����O��ς��Ă��܂�����B
-// copymesh �Ŏg���֐��Q
+// このファイルは C++ 版では使わずに SWIG だけで使われる関数などを定義する
+// meshdb.i の中から Callback で呼ばれる種類のメソッドなどを書く。
+// meshdb.i に書いてしまうと SWIG が名前を変えてしまうから。
+// copymesh で使う関数群
 
 VALUE _eachNodeWithId(VALUE mesh){
 	rb_funcall(mesh, rb_intern("eachNodeWithId"),0);

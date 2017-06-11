@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : BodyOperation                                           #
@@ -27,13 +27,13 @@ class BodyOperation
 public:
 	BodyOperation(const Point3DContainer* nodes);
 	virtual ~BodyOperation(void);
-	// 2ŸŒ³—v‘fƒOƒ‹[ƒv body ‚ÉŠÜ‚Ü‚ê‚é—v‘f‚Ì•Ó‚ğ
-	// SEGMENT —v‘f‚Æ‚µ‚Ä result ‚É“o˜^‚·‚é
-	// result == NULL ‚¾‚ÆŒÂ”‚¾‚¯•Ô‚·
+	// 2æ¬¡å…ƒè¦ç´ ã‚°ãƒ«ãƒ¼ãƒ— body ã«å«ã¾ã‚Œã‚‹è¦ç´ ã®è¾ºã‚’
+	// SEGMENT è¦ç´ ã¨ã—ã¦ result ã«ç™»éŒ²ã™ã‚‹
+	// result == NULL ã ã¨å€‹æ•°ã ã‘è¿”ã™
 	size_t getEdgesOfBody(const kmb::ElementContainer* body,kmb::ElementContainer* result=NULL) const;
-	// body ‚ÉŠÜ‚Ü‚ê‚é—v‘f‚Ì•Ó‚Ì‚¤‚¿Aplane ‚ÆŒğ·‚·‚é‚à‚Ì‚ğ
-	// SEGMENT —v‘f‚Æ‚µ‚Ä result ‚É“o˜^‚·‚é
-	// result == NULL ‚¾‚ÆŒÂ”‚¾‚¯•Ô‚·
+	// body ã«å«ã¾ã‚Œã‚‹è¦ç´ ã®è¾ºã®ã†ã¡ã€plane ã¨äº¤å·®ã™ã‚‹ã‚‚ã®ã‚’
+	// SEGMENT è¦ç´ ã¨ã—ã¦ result ã«ç™»éŒ²ã™ã‚‹
+	// result == NULL ã ã¨å€‹æ•°ã ã‘è¿”ã™
 	size_t getEdgesIntersectPlane(const kmb::ElementContainer* body, const kmb::Plane* plane,kmb::ElementContainer* result=NULL) const;
 private:
 	const Point3DContainer* points;

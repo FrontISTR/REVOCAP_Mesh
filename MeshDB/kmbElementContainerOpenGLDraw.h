@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementContainerOpenGLDraw                              #
@@ -13,17 +13,17 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 /**
- * OpenGL ‚Ì drawElement ‚Ìˆø”‚Æ‚µ‚Ä“n‚·‚±‚Æ‚ª‚Å‚«‚é‚æ‚¤‚È
- * OŠpŒ`‚Ü‚½‚ÍlŠpŒ`‚Ì”z—ñ
+ * OpenGL ã® drawElement ã®å¼•æ•°ã¨ã—ã¦æ¸¡ã™ã“ã¨ãŒã§ãã‚‹ã‚ˆã†ãª
+ * ä¸‰è§’å½¢ã¾ãŸã¯å››è§’å½¢ã®é…åˆ—
  *
- * OŠpŒ`”z—ñ
- * lŠpŒ`”z—ñ
- * OŠpŒ`‚Ì elementId ‚Ì”z—ñ
- * lŠpŒ`‚Ì elementId ‚Ì”z—ñ
- * OŠpŒ`‚ÌŒÂ”
- * lŠpŒ`‚ÌŒÂ”
+ * ä¸‰è§’å½¢é…åˆ—
+ * å››è§’å½¢é…åˆ—
+ * ä¸‰è§’å½¢ã® elementId ã®é…åˆ—
+ * å››è§’å½¢ã® elementId ã®é…åˆ—
+ * ä¸‰è§’å½¢ã®å€‹æ•°
+ * å››è§’å½¢ã®å€‹æ•°
  *
- * elementId ‚Í‡”Ô‚ª‚Î‚ç‚Î‚ç‚Å‚à‚æ‚¢
+ * elementId ã¯é †ç•ªãŒã°ã‚‰ã°ã‚‰ã§ã‚‚ã‚ˆã„
  *
  */
 
@@ -39,14 +39,14 @@ protected:
 	size_t triIndex;
 	size_t triSize;
 	unsigned int* triNodes;
-	// 2Ÿ—v‘f‚Ì’†ŠÔß“_•Û‘¶—pi•`‰æ‚É‚Íg‚í‚È‚¢j
+	// 2æ¬¡è¦ç´ ã®ä¸­é–“ç¯€ç‚¹ä¿å­˜ç”¨ï¼ˆæç”»ã«ã¯ä½¿ã‚ãªã„ï¼‰
 	unsigned int* tri2Nodes;
 	size_t quadIndex;
 	size_t quadSize;
 	unsigned int* quadNodes;
-	// 2Ÿ—v‘f‚Ì’†ŠÔß“_•Û‘¶—pi•`‰æ‚É‚Íg‚í‚È‚¢j
+	// 2æ¬¡è¦ç´ ã®ä¸­é–“ç¯€ç‚¹ä¿å­˜ç”¨ï¼ˆæç”»ã«ã¯ä½¿ã‚ãªã„ï¼‰
 	unsigned int* quad2Nodes;
-	// –@üƒxƒNƒgƒ‹—p
+	// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ç”¨
 	float* triNormals;
 	float* quadNormals;
 
@@ -81,8 +81,8 @@ public:
 		virtual kmb::elementIdType getId(void) const;
 		virtual bool getElement(kmb::elementType &etype,kmb::nodeIdType *nodes) const;
 		virtual kmb::elementType getType(void) const;
-		virtual kmb::nodeIdType getCellId(int cellIndex) const;
-		virtual bool setCellId(int cellIndex, kmb::nodeIdType nodeId);
+		virtual kmb::nodeIdType getNodeId(int cellIndex) const;
+		virtual bool setNodeId(int cellIndex, kmb::nodeIdType nodeId);
 		virtual kmb::nodeIdType operator[](const int i) const;
 		virtual ElementContainer::_iterator* operator++(void);
 		virtual ElementContainer::_iterator* operator++(int n);
@@ -100,9 +100,9 @@ public:
 	virtual iterator find(kmb::elementIdType id);
 	virtual const_iterator find(kmb::elementIdType id) const;
 
-	// Šù‚É¶¬Ï‚İ 0
-	// ‚±‚ÌŒÄ‚Ño‚µ‚É¶¬ 1
-	// ¶¬‚É¸”s -1
+	// æ—¢ã«ç”Ÿæˆæ¸ˆã¿ 0
+	// ã“ã®å‘¼ã³å‡ºã—æ™‚ã«ç”Ÿæˆ 1
+	// ç”Ÿæˆã«å¤±æ•— -1
 	int calcNormals(kmb::Point3DContainer* points);
 
 	const unsigned int* getTriNodeTable(void) const { return triNodes; }

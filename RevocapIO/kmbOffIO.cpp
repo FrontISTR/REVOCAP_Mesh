@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : OffIO                                                   #
@@ -82,7 +82,7 @@ int kmb::OffIO::saveFile(const char* filename,const kmb::MeshData* mesh)
 		return -1;
 	}
 	output << "OFF" << std::endl;
-	int polygonCount = 0;
+	size_t polygonCount = 0;
 	kmb::bodyIdType bodyCount = mesh->getBodyCount();
 	for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 		const kmb::Body* body = mesh->getBodyPtr(bodyId);

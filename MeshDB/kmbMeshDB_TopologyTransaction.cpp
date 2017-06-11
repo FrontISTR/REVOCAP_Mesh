@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshDB                                                  #
@@ -23,7 +23,7 @@
 #      "Innovative General-Purpose Coupled Analysis System"            #
 #                                                                      #
 ----------------------------------------------------------------------*/
-// ƒƒbƒVƒ…‚ÌˆÊ‘Š‚ÉŠÖ‚·‚éˆ—
+// ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½ç›¸ã«é–¢ã™ã‚‹å‡¦ç†
 
 #include "MeshDB/kmbMeshDB.h"
 #include "MeshDB/kmbElementContainer.h"
@@ -33,7 +33,7 @@
 
 #include "Geometry/kmbFramedPlane.h"
 
-//------------------- ‹ß–Tî•ñæ“¾ ------------------------
+//------------------- è¿‘å‚æƒ…å ±å–å¾— ------------------------
 
 void
 kmb::MeshDB::getSurroundingElements(nodeIdType nodeId,std::vector<elementIdType>& elements,bool cacheOnly) const
@@ -60,7 +60,7 @@ kmb::MeshDB::getSurroundingElements(nodeIdType nodeId,std::vector<elementIdType>
 }
 
 
-//------------------- OŠpŒ`•ªŠ„ --------------------------
+//------------------- ä¸‰è§’å½¢åˆ†å‰² --------------------------
 
 void
 kmb::MeshDB::triangulation(kmb::bodyIdType bodyId)

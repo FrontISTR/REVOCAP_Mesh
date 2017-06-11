@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Curve2D                                                 #
@@ -106,7 +106,7 @@ kmb::Curve2D::getNearest( const kmb::Point2D& point, double &t ) const
 		kmb::Point2D pt;
 		kmb::Vector2D vec;
 		kmb::Vector2D acc;
-		// pt vec acc ‚É t ‚Å‚Ì’l‚ª“ü‚Á‚Ä‚¢‚½‚ç true
+		// pt vec acc ã« t ã§ã®å€¤ãŒå…¥ã£ã¦ã„ãŸã‚‰ true
 		bool calc(double t){
 			if( t == t0 && calculated ){
 				return true;
@@ -148,15 +148,15 @@ kmb::Curve2D::getNearest( const kmb::Point2D& point, double &t ) const
 	double min_t, max_t;
 	getDomain(min_t,max_t);
 	double t0 = 0.0;
-	// ƒjƒ…[ƒgƒ“–@‚Ì‰Šú’l‚ğ‹——£ŠÖ”‚©‚çŒˆ‚ß‚é
+	// ãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ³æ³•ã®åˆæœŸå€¤ã‚’è·é›¢é–¢æ•°ã‹ã‚‰æ±ºã‚ã‚‹
 	opt.calcMinOnGrid( distObj, t0, min_t, max_t, 10 );
-	// Œ¸‘¬ƒjƒ…[ƒgƒ“–@
+	// æ¸›é€Ÿãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ³æ³•
 	double t1 = opt.calcZero_DN( optObj, t0 );
 	if( min_t <= t1 && t1 <= max_t ){
 		t = t1;
 		return true;
 	}else{
-		// û‘©‚µ‚È‚¢ê‡‚Í‰©‹à”ä–@
+		// åæŸã—ãªã„å ´åˆã¯é»„é‡‘æ¯”æ³•
 		t1 = opt.calcMin_GS( distObj, min_t, max_t );
 		if( min_t <= t1 && t1 <= max_t ){
 			t = t1;

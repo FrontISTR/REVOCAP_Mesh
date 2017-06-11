@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshDB                                                  #
@@ -82,19 +82,19 @@ kmb::MeshDB::MeshDB(void)
 	defaultElementContainerType = kmb::ElementContainerMap::CONTAINER_TYPE;
 }
 
-// virtual ƒfƒXƒgƒ‰ƒNƒ^‚Í©•ª©g‚ÌƒfƒXƒgƒ‰ƒNƒ^‚ğŒÄ‚ñ‚¾Œã‚ÉAeƒNƒ‰ƒX‚ÌƒfƒXƒgƒ‰ƒNƒ^‚ğŒÄ‚Ô
-// ç’·‚È‚Æ‚±‚ë‚ª‚ ‚é
+// virtual ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯è‡ªåˆ†è‡ªèº«ã®ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’å‘¼ã‚“ã å¾Œã«ã€è¦ªã‚¯ãƒ©ã‚¹ã®ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’å‘¼ã¶
+// å†—é•·ãªã¨ã“ã‚ãŒã‚ã‚‹
 kmb::MeshDB::~MeshDB(void)
 {
 	clearModel();
 }
 
-//----------------------- ƒƒ‚ƒŠŠÇ— --------------------------
+//----------------------- ãƒ¡ãƒ¢ãƒªç®¡ç† --------------------------
 
 void
 kmb::MeshDB::clearModel(void)
 {
-	// ƒfƒXƒgƒ‰ƒNƒ^‚©‚ç‚Í‚Q‰ñŒÄ‚Î‚ê‚Ä‚µ‚Ü‚¤
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‹ã‚‰ã¯ï¼’å›å‘¼ã°ã‚Œã¦ã—ã¾ã†
 	kmb::MeshData::clearModel();
 
 	this->maxElementId = kmb::Element::nullElementId;
@@ -180,7 +180,7 @@ kmb::MeshDB::setDefaultContainerType(const char* containerType)
 	}
 }
 
-//-------------------- ’¸“_ŠÇ— ---------------------
+//-------------------- é ‚ç‚¹ç®¡ç† ---------------------
 
 void
 kmb::MeshDB::beginNode(size_t size,kmb::Point3DContainer* point3Ds)
@@ -250,7 +250,7 @@ kmb::MeshDB::beginNode(size_t size,const char* containerType)
 		if( point2Ds ){
 			this->beginNode(size,point2Ds);
 		}else{
-			// ‚Ç‚ê‚É‚à‚ ‚Ä‚Í‚Ü‚ç‚È‚©‚Á‚½
+			// ã©ã‚Œã«ã‚‚ã‚ã¦ã¯ã¾ã‚‰ãªã‹ã£ãŸæ™‚
 			this->beginNode(size,new kmb::Point3DContainerMap());
 		}
 	}
@@ -456,13 +456,13 @@ kmb::MeshDB::duplicatePoint(nodeIdType nodeId)
 	}
 }
 
-//----------------------- —v‘fŠÇ— --------------------------
+//----------------------- è¦ç´ ç®¡ç† --------------------------
 
 kmb::bodyIdType
 kmb::MeshDB::beginElement(size_t size,kmb::ElementContainer* container)
 {
 	kmb:: bodyIdType bodyId = kmb::MeshData::beginElement(size,container);
-	// map type ˆÈŠO‚Ì‚à‚Ì‚Í offset ‚·‚é
+	// map type ä»¥å¤–ã®ã‚‚ã®ã¯ offset ã™ã‚‹
 	if( this->currentBody &&
 		strcmp( this->currentBody->getContainerType(), kmb::ElementContainerMap::CONTAINER_TYPE ) != 0 ){
 		this->currentBody->setOffsetId( this->maxElementId + 1 );
@@ -623,7 +623,7 @@ kmb::MeshDB::elementToFace( const kmb::ElementBase &element, kmb::Face &face, km
 	return false;
 }
 
-//---------------- —v‘fƒOƒ‹[ƒvŠÇ— ----------------------
+//---------------- è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ç®¡ç† ----------------------
 
 void
 kmb::MeshDB::endModel(void)
@@ -653,7 +653,7 @@ kmb::MeshDB::removeAllBodies(void)
 	this->elementBucket.clear();
 }
 
-//--------------------- –@üƒxƒNƒgƒ‹ -----------------------------
+//--------------------- æ³•ç·šãƒ™ã‚¯ãƒˆãƒ« -----------------------------
 
 kmb::Vector3D
 kmb::MeshDB::getNormalVector(kmb::elementIdType elementID,kmb::bodyIdType bodyID) const
@@ -750,19 +750,19 @@ kmb::MeshDB::getAreaVectorOfFaceGroup(const char* faceGroup) const
 				{
 				case kmb::TRIANGLE:
 				case kmb::TRIANGLE2:
-					if( getNode( eIter.getBoundaryCellId(i,0), p0 ) &&
-						getNode( eIter.getBoundaryCellId(i,1), p1 ) &&
-						getNode( eIter.getBoundaryCellId(i,2), p2 ) )
+					if( getNode( eIter.getBoundaryNodeId(i,0), p0 ) &&
+						getNode( eIter.getBoundaryNodeId(i,1), p1 ) &&
+						getNode( eIter.getBoundaryNodeId(i,2), p2 ) )
 					{
 						area += kmb::Point3D::areaVector( p0, p1, p2 );
 					}
 					break;
 				case kmb::QUAD:
 				case kmb::QUAD2:
-					if( getNode( eIter.getBoundaryCellId(i,0), p0 ) &&
-						getNode( eIter.getBoundaryCellId(i,1), p1 ) &&
-						getNode( eIter.getBoundaryCellId(i,2), p2 ) &&
-						getNode( eIter.getBoundaryCellId(i,3), p3 ) )
+					if( getNode( eIter.getBoundaryNodeId(i,0), p0 ) &&
+						getNode( eIter.getBoundaryNodeId(i,1), p1 ) &&
+						getNode( eIter.getBoundaryNodeId(i,2), p2 ) &&
+						getNode( eIter.getBoundaryNodeId(i,3), p3 ) )
 					{
 						area += kmb::Point3D::areaVector( p0, p1, p2 );
 						area += kmb::Point3D::areaVector( p0, p2, p3 );
@@ -777,14 +777,14 @@ kmb::MeshDB::getAreaVectorOfFaceGroup(const char* faceGroup) const
 	return area;
 }
 
-//------------------- •¨——ÊŠÇ— --------------------------
+//------------------- ç‰©ç†é‡ç®¡ç† --------------------------
 
-// defaultDataContainerType == "Post" ‚Ì‚Æ‚«‚ÍAƒ|ƒXƒgˆ——p‚Ì‚à‚Ì‚ğg‚¤
+// defaultDataContainerType == "Post" ã®ã¨ãã¯ã€ãƒã‚¹ãƒˆå‡¦ç†ç”¨ã®ã‚‚ã®ã‚’ä½¿ã†
 kmb::DataBindings*
 kmb::MeshDB::createDataBindings(const char* name,kmb::DataBindings::bindingMode bmode,PhysicalValue::valueType vtype,const char* stype,kmb::bodyIdType targetBodyId)
 {
 	if( name == NULL || this->getDataBindingsPtr( name, stype ) != NULL ){
-		// Šù‚Ég‚í‚ê‚Ä‚¢‚é
+		// æ—¢ã«ä½¿ã‚ã‚Œã¦ã„ã‚‹
 		return NULL;
 	}else{
 		kmb::DataBindings* data = NULL;
@@ -877,7 +877,7 @@ kmb::MeshDB::createDataBindings(const char* name,kmb::DataBindings::bindingMode 
 			}
 		}
 #endif
-		// ‚»‚Ì‘¼‚Ì“Áêƒf[ƒ^‚Ì¶¬
+		// ãã®ä»–ã®ç‰¹æ®Šãƒ‡ãƒ¼ã‚¿ã®ç”Ÿæˆ
 		if( data == NULL ){
 			if( vtype == kmb::PhysicalValue::Vector2withInt && bmode == kmb::DataBindings::NodeVariable ){
 				data = new kmb::Vector2WithIntBindings<kmb::nodeIdType>( getMaxNodeId()+1, bmode );

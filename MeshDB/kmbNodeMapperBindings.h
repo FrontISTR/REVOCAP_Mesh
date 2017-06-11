@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : NodeMapperBindings                                      #
@@ -29,7 +29,7 @@
 
 namespace kmb{
 
-// T �őz�肷��̂� nodeIdType elementIdType
+// T で想定するのは nodeIdType elementIdType
 template<typename T>
 class NodeMapperBindings : public DataBindings
 {

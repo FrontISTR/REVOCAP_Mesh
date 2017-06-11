@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : PatchOperation                                          #
@@ -24,7 +24,7 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// OŠpŒ`—v‘f‚©‚ç‚È‚éƒpƒbƒ`‚É‘Î‚·‚éˆÊ‘Šˆ—
+// ä¸‰è§’å½¢è¦ç´ ã‹ã‚‰ãªã‚‹ãƒ‘ãƒƒãƒã«å¯¾ã™ã‚‹ä½ç›¸å‡¦ç†
 //
 
 #pragma once
@@ -51,7 +51,7 @@ public:
 	PatchOperation(const kmb::Point3DContainer* points);
 	PatchOperation(void);
 	virtual ~PatchOperation(void);
-	// Œü‚«‚ğ‚»‚ë‚¦‚æ‚¤‚Æ‚·‚éBŒü‚«‚ğ•Ï‚¦‚½—v‘f‚ÌŒÂ”‚ğ•Ô‚·B
+	// å‘ãã‚’ãã‚ãˆã‚ˆã†ã¨ã™ã‚‹ã€‚å‘ãã‚’å¤‰ãˆãŸè¦ç´ ã®å€‹æ•°ã‚’è¿”ã™ã€‚
 	int uniformOrientation(kmb::MeshDB* mesh,kmb::bodyIdType bodyId,kmb::elementIdType elementId=kmb::Element::nullElementId);
 	// edgeId : by its nodes all segments (and triangles) are subdivided.
 	// tolerance : threshold distance between segment and nodes

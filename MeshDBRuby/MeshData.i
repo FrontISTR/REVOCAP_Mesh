@@ -16,29 +16,29 @@
 =begin
 = RevocapMesh::MeshData
 
-RevocapMesh::MeshData �N���X�̓��b�V���f�[�^�ɂ��ẴR���e�i�@�\�Ɋւ�����̂����������������N���X�ł���B
-�h�n�X�N���v�g�͂��̃N���X�Ŏ�������Ă��郁�\�b�h�݂̂�p���Ď�������悤�ɂ���B
-RevocapMesh::MeshDB �͂��̃N���X���p�����Ă���B
-���̃��b�V���R���e�i�N���X�ɂ��Ă��A���̃N���X�Œ�`����ă��\�b�h����������ƁA�h�n�X�N���v�g�𗘗p���邱�Ƃ��ł���B
+RevocapMesh::MeshData クラスはメッシュデータについてのコンテナ機能に関するものだけを実装した基底クラスである。
+ＩＯスクリプトはこのクラスで実装されているメソッドのみを用いて実装するようにする。
+RevocapMesh::MeshDB はこのクラスを継承している。
+他のメッシュコンテナクラスについても、このクラスで定義されてメソッドを実装すると、ＩＯスクリプトを利用することができる。
 
-==���\�b�h�ꗗ
+==メソッド一覧
 
-===�N���X���\�b�h
+===クラスメソッド
 
 ((<MeshData.new>))
 
-===���b�V���Ǘ�
+===メッシュ管理
 
 ((<beginModel>))
 ((<endModel>))
 ((<clearModel>))
 
-===���W�n
+===座標系
 
 ((<setCoordinate>))
 ((<translateCoordinate>))
 
-===�ߓ_�Ǘ�
+===節点管理
 
 ((<beginNode>))
 ((<addNode>))
@@ -53,7 +53,7 @@ RevocapMesh::MeshDB �͂��̃N���X���p�����Ă���B
 ((<updateNode>))
 ((<getNodeContainerType>))
 
-===�v�f�Ǘ�
+===要素管理
 
 ((<beginElement>))
 ((<addElement>))
@@ -76,7 +76,7 @@ RevocapMesh::MeshDB �͂��̃N���X���p�����Ă���B
 ((<getBodyCount>))
 ((<clearBody>))
 
-===�f�[�^�Ǘ�
+===データ管理
 
 ((<createData>))
 ((<getDataCount>))
@@ -116,9 +116,9 @@ class MeshData
 public:
 /**--------------------------------------------------------------------
 =begin
-== �N���X���\�b�h
+== クラスメソッド
 --- MeshData.new()
-	MeshData �N���X�̃R���X�g���N�^�ł���BMeshData �I�u�W�F�N�g�̃C���X�^���X�𐶐�����B
+	MeshData クラスのコンストラクタである。MeshData オブジェクトのインスタンスを生成する。
 =end
 ---------------------------------------------------------------------*/
 	MeshData(void);
@@ -126,28 +126,28 @@ public:
 
 /**--------------------------------------------------------------------
 =begin
-==���b�V���Ǘ�
+==メッシュ管理
 
 --- beginModel()
-	���b�V���̓o�^���J�n����B
+	メッシュの登録を開始する。
 	beginNode addNode endNode beginElement addElement endElement
-	���n�߂�O�ɌĂяo���B
+	を始める前に呼び出す。
 
 --- endModel()
-	���b�V���̓o�^���I������B
+	メッシュの登録を終了する。
 	* beginNode
 	* addNode
 	* endNode
 	* beginElement
 	* addElement
 	* endElement
-	�Ȃǂ̐ߓ_�E�v�f���A�����
+	などの節点・要素情報、および
 	* createData
 	* setValueAtId
 	* setValue
 	* addId
-	�Ȃǃv���E�|�X�g�̂��߂̏���ǂݍ��񂾌�Ɏ��s����B
-	�����ł͂��̃��\�b�h���Ă΂ꂽ���_�œ����f�[�^�̍œK�������s���B
+	などプリ・ポストのための情報を読み込んだ後に実行する。
+	実装ではこのメソッドが呼ばれた時点で内部データの最適化等を行う。
 
 =end
 ----------------------------------------------------------------------*/
@@ -157,7 +157,7 @@ public:
 /**---------------------------------------------------------------------
 =begin
 --- clearModel()
-	MeshDB �̂��ׂẴf�[�^���������A����������B
+	MeshDB のすべてのデータを消去し、初期化する。
 =end
 ------------------------------------------------------------------------*/
 	void clearModel(void);
@@ -166,7 +166,7 @@ public:
 =begin
 --- setCoordinate(mtrx)
 --- translateCoordinate(x,y,z)
-	���W�n���w�肷��B
+	座標系を指定する。
 
 =end
 ------------------------------------------------------------------------*/
@@ -174,26 +174,26 @@ public:
 	void translateCoordinate( double x, double y, double z );
 
 
-//////////////////////////// �ߓ_�Ǘ� //////////////////////////////
+//////////////////////////// 節点管理 //////////////////////////////
 /**----------------------------------------------------------------------
 =begin
-==�ߓ_�Ǘ�
+==節点管理
 
-MeshData �ł�3������ԓ��̓_�̍��W (x,y,z) ��ߓ_�Ƃ��ĊǗ�����B
-MeshData �ł͐ߓ_�ɂ͂��ׂĐߓ_Id���t�^�����B
+MeshData では3次元空間内の点の座標 (x,y,z) を節点として管理する。
+MeshData では節点にはすべて節点Idが付与される。
 
 --- beginNode(size=0,containerType=nil)
-	size �̐ߓ_�̓o�^���J�n����B
-	id ���A���łȂ��ꍇ�� size �ɂ͋󂫔ԍ��̌����܂߂����̂��w�肷��B
-	�Ⴆ�΁A�z��ł̎����Ȃ� 0 ���� size-1 �܂ł̐ߓ_Id���o�^�\�ɂȂ�B
-	containerType �͖ړI�ɉ����Đߓ_�R���e�i��ύX����ꍇ�ɗp����B
-	�f�t�H���g�ł͐ߓ_�R���e�i�Ƃ��Đߓ_ID���L�[�Ƃ����A�z�z���p����B
+	size 個の節点の登録を開始する。
+	id が連続でない場合は size には空き番号の個数も含めたものを指定する。
+	例えば、配列での実装なら 0 から size-1 までの節点Idが登録可能になる。
+	containerType は目的に応じて節点コンテナを変更する場合に用いる。
+	デフォルトでは節点コンテナとして節点IDをキーとした連想配列を用いる。
 
-	containerType �̗�
-	* �Q�����̐ߓ_�̘A�z�z�� "stl::map<id,Point2D*>"
-	* �R���e�i�� stl::map ���g���i�f�t�H���g�j "stl::map<id,Point3D*>"
-	* �R���e�i�� stl::vector ���g�� "stl::vector<Point3D*>"
-	* OpenGL �� glDrawArray ����� glDrawElements �𗘗p�\�ȂR�����z�� "double_array"
+	containerType の例
+	* ２次元の節点の連想配列 "stl::map<id,Point2D*>"
+	* コンテナに stl::map を使う（デフォルト） "stl::map<id,Point3D*>"
+	* コンテナに stl::vector を使う "stl::vector<Point3D*>"
+	* OpenGL で glDrawArray および glDrawElements を利用可能な３次元配列 "double_array"
 =end
 ------------------------------------------------------------------------*/
 	void beginNode(unsigned int size=0,const char* containerType=NULL);
@@ -202,13 +202,13 @@ MeshData �ł͐ߓ_�ɂ͂��ׂĐߓ_Id���t�^�����B
 =begin
 --- addNode(x,y,z)
 --- addNodeWithId(x,y,z,id)
-	addNode ���\�b�h�ł�
-	���W (x,y,z) ��^���āA
-	���̍��W�̐ߓ_��o�^���ĕt�^���ꂽ�ߓ_Id��Ԃ��B
-	�ʏ�͌��ݓo�^����Ă���ߓ_�̍ő�ߓ_Id+1���t�^�����B
-	addNodeWithId ���\�b�h�Őߓ_Id�����炩���ߗ^���ēo�^���邱�Ƃ��o����B
-	���̏ꍇ�͊��ɓo�^����Ă���ꍇ�� -1 ��Ԃ��B
-	�Q�����R���e�i�𗘗p���Ă��鎞�ɂ� z ���W�𖳎�����
+	addNode メソッドでは
+	座標 (x,y,z) を与えて、
+	その座標の節点を登録して付与された節点Idを返す。
+	通常は現在登録されている節点の最大節点Id+1が付与される。
+	addNodeWithId メソッドで節点Idをあらかじめ与えて登録することも出来る。
+	この場合は既に登録されている場合は -1 を返す。
+	２次元コンテナを利用している時には z 座標を無視する
 =end
 -------------------------------------------------------------------------*/
 	kmb::nodeIdType addNode(double x,double y,double z);
@@ -217,7 +217,7 @@ MeshData �ł͐ߓ_�ɂ͂��ׂĐߓ_Id���t�^�����B
 /**-----------------------------------------------------------------------
 =begin
 --- endNode()
-	�ߓ_�̓o�^���I������B
+	節点の登録を終了する。
 =end
 --------------------------------------------------------------------------*/
 	void endNode(void);
@@ -225,7 +225,7 @@ MeshData �ł͐ߓ_�ɂ͂��ׂĐߓ_Id���t�^�����B
 /**----------------------------------------------------------------------
 =begin
 --- getNodeContainerType()
-	�ߓ_�R���e�i�̖��O��Ԃ��B
+	節点コンテナの名前を返す。
 =end
 ------------------------------------------------------------------------*/
 	const char* getNodeContainerType(void);
@@ -233,15 +233,15 @@ MeshData �ł͐ߓ_�ɂ͂��ׂĐߓ_Id���t�^�����B
 /**------------------------------------------------------------------------
 =begin
 --- getNodeCount()
-	MeshDB�ɓo�^����Ă���ߓ_�̌���Ԃ��B
-	�ߓ_Id���s�A���̎��ɂ͂��̒l�Ɛߓ_Id�̍ő�l+1����v���Ă���Ƃ͌���Ȃ��B
+	MeshDBに登録されている節点の個数を返す。
+	節点Idが不連続の時にはこの値と節点Idの最大値+1が一致しているとは限らない。
 =end
 --------------------------------------------------------------------------*/
 	size_t getNodeCount(void);
 /**------------------------------------------------------------------------
 =begin
 --- getNode(nodeId)
-	�ߓ_Id �� nodeId �̐ߓ_�̍��W�� [x,y,z] �`���� Array �ŕԂ��B
+	節点Id が nodeId の節点の座標を [x,y,z] 形式の Array で返す。
 =end
 --------------------------------------------------------------------------*/
 	%extend{
@@ -260,7 +260,7 @@ MeshData �ł͐ߓ_�ɂ͂��ׂĐߓ_Id���t�^�����B
 /**------------------------------------------------------------------------
 =begin
 --- eachNode
-	�ߓ_�̃C�e���[�^�ł���B
+	節点のイテレータである。
 
 	 mesh.eachNode{ |node|
 	   x = node[0]
@@ -268,10 +268,10 @@ MeshData �ł͐ߓ_�ɂ͂��ׂĐߓ_Id���t�^�����B
 	   z = node[2]
 	 }
 
-	�̂悤�Ɏg���B
+	のように使う。
 
 --- eachNodeWithId
-	�ߓ_�Ɛߓ_ID�̃C�e���[�^�ł���B
+	節点と節点IDのイテレータである。
 
 	 mesh.eachNodeWithId{ |node,id|
 	   x = node[0]
@@ -279,10 +279,10 @@ MeshData �ł͐ߓ_�ɂ͂��ׂĐߓ_Id���t�^�����B
 	   z = node[2]
 	 }
 
-	�̂悤�Ɏg���B
+	のように使う。
 =end
 
-�����Feach �n�̃��\�b�h�ł� yield �̑O�ɃC�e���[�^��i�߂Ă���
+メモ：each 系のメソッドでは yield の前にイテレータを進めておく
 --------------------------------------------------------------------------*/
 %extend{
 	VALUE eachNode(void) const{
@@ -331,12 +331,12 @@ MeshData �ł͐ߓ_�ɂ͂��ׂĐߓ_Id���t�^�����B
 =begin
 --- insertNode(x,y,z)
 --- insertNodeWithId(x,y,z,id)
-	insertNode ���\�b�h�ł� endNode ���\�b�h��ǂ񂾌��
-	���W (x,y,z) ��^���āA
-	���̍��W�̐ߓ_��o�^���ĕt�^���ꂽ�ߓ_ID��Ԃ��B
-	�ʏ�͌��ݓo�^����Ă���ߓ_�̍ő�ߓ_ID+1���t�^�����B
-	insertNodeWithId ���\�b�h�Őߓ_ID�����炩���ߗ^���ēo�^���邱�Ƃ��o����B
-	���̏ꍇ�͊��ɓo�^����Ă���ꍇ�� -1 ��Ԃ��B
+	insertNode メソッドでは endNode メソッドを読んだ後に
+	座標 (x,y,z) を与えて、
+	その座標の節点を登録して付与された節点IDを返す。
+	通常は現在登録されている節点の最大節点ID+1が付与される。
+	insertNodeWithId メソッドで節点IDをあらかじめ与えて登録することも出来る。
+	この場合は既に登録されている場合は -1 を返す。
 =end
 -------------------------------------------------------------------------*/
 	kmb::nodeIdType insertNode(double x,double y,double z);
@@ -345,53 +345,53 @@ MeshData �ł͐ߓ_�ɂ͂��ׂĐߓ_Id���t�^�����B
 /**----------------------------------------------------------------------
 =begin
 --- updateNode(x,y,z,id)
-	���łɓo�^����Ă���ߓ_�̍��W���X�V����
+	すでに登録されている節点の座標を更新する
 =end
 -------------------------------------------------------------------------*/
 	bool updateNode(double x,double y,double z, kmb::nodeIdType id);
-//////////////////////////// �v�f�Ǘ� //////////////////////////////
+//////////////////////////// 要素管理 //////////////////////////////
 /**--------------------------------------------------------------------
 =begin
-==�v�f�Ǘ�
+==要素管理
 
-MeshData �ł͗v�f�͗v�f�^�C�v�Ɛߓ_�z��ŊǗ�����B
-�v�f�ɂ͂��ׂėv�fId���t�^�����B
+MeshData では要素は要素タイプと節点配列で管理する。
+要素にはすべて要素Idが付与される。
 
-MeshData �ň������Ƃ̂ł���v�f�^�C�v�͈ȉ��̂Ƃ���ł���B
-�ȉ��̃��\�b�h�ŗv�f�^�C�v�������ɗ^����ꍇ�͂��������ׂđ啶���̕�����܂��� getElementTypeMap ��
-�����鐮���l��^����B���ꂼ��̗v�f�̐ߓ_�z��̃R�l�N�e�B�r�e�B�ɂ��Ă͗v�f���C�u�����̍��Ő�������B
+MeshData で扱うことのできる要素タイプは以下のとおりである。
+以下のメソッドで要素タイプを引数に与える場合はこれらをすべて大文字の文字列または getElementTypeMap で
+得られる整数値を与える。それぞれの要素の節点配列のコネクティビティについては要素ライブラリの項で説明する。
 
-* SEGMENT       (����)
-* SEGMENT2      (2���̐���)
-* TRIANGLE      (�O�p�`)
-* TRIANGLE2     (2���̎O�p�`)
-* QUAD          (�l�p�`)
-* QUAD2         (2���̎l�p�`)
-* TETRAHEDRON   (�l�ʑ�)
-* TETRAHEDRON2  (2���̎l�ʑ�)
-* WEDGE         (�O�p��(���`�A�v���Y��))
-* WEDGE2        (2���̎O�p��)
-* PYRAMID       (�l�p��(�s���~�b�h))
-* PYRAMID2      (2���̎l�p��)
-* HEXAHEDRON    (�Z�ʑ�)
-* HEXAHEDRON2   (2���̘Z�ʑ�)
+* SEGMENT       (線分)
+* SEGMENT2      (2次の線分)
+* TRIANGLE      (三角形)
+* TRIANGLE2     (2次の三角形)
+* QUAD          (四角形)
+* QUAD2         (2次の四角形)
+* TETRAHEDRON   (四面体)
+* TETRAHEDRON2  (2次の四面体)
+* WEDGE         (三角柱(楔形、プリズム))
+* WEDGE2        (2次の三角柱)
+* PYRAMID       (四角柱(ピラミッド))
+* PYRAMID2      (2次の四角柱)
+* HEXAHEDRON    (六面体)
+* HEXAHEDRON2   (2次の六面体)
 
-�v�f�̏W�܂�͕����Ǘ����邱�Ƃ��ł���BMeshDB �ł͗v�f�̏W�܂�i�v�f�O���[�v�j�̂��Ƃ�
-Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
-�o�^���ꂽ�v�f�̏W����1�� Body �ɂȂ�B������ Body �����ʂ��邽�߂� BodyID ��
-���ꂼ��� Body �ɗ^�����Ă���BBodyId �� beginElement �̖߂�l�ŗ^�����鑼�A
-�܂��͕\�ʒ��o��̈敪���A���E�w�����Ȃǂœ�����B
+要素の集まりは複数管理することができる。MeshDB では要素の集まり（要素グループ）のことを
+Body と呼ぶ。以下の beginElement から endElement までの間に addElement で
+登録された要素の集合が1つの Body になる。複数の Body を識別するために BodyID が
+それぞれの Body に与えられている。BodyId は beginElement の戻り値で与えられる他、
+または表面抽出や領域分割、境界層生成などで得られる。
 
 --- beginElement(size=0)
-	size �̗v�f�̓o�^���J�n����B�v�f�O���[�v(=Body)��ID��Ԃ��B
-	id ���A���łȂ��ꍇ�� size �ɂ͋󂫔ԍ��̌����܂߂����̂��w�肷��B
-	containerType �͖ړI�ɉ����ėv�f�R���e�i��ύX����ꍇ�ɗp����B
-	�f�t�H���g�ł͗v�f�R���e�i�Ƃ��Đߓ_ID���L�[�Ƃ����A�z�z���p����B
+	size 個の要素の登録を開始する。要素グループ(=Body)のIDを返す。
+	id が連続でない場合は size には空き番号の個数も含めたものを指定する。
+	containerType は目的に応じて要素コンテナを変更する場合に用いる。
+	デフォルトでは要素コンテナとして節点IDをキーとした連想配列を用いる。
 
-	containerType �̗�
-	* �R���e�i�� stl::map ���g���i�f�t�H���g�j "stl::map"
-	* �|�C���^�̔z����g�� "element_array"
-	* OpenGL �� glDrawElements �ŗ��p�\�ȎO�p�`�z����g�� "triangle_array"
+	containerType の例
+	* コンテナに stl::map を使う（デフォルト） "stl::map"
+	* ポインタの配列を使う "element_array"
+	* OpenGL の glDrawElements で利用可能な三角形配列を使う "triangle_array"
 =end
 -----------------------------------------------------------------------*/
 	kmb::bodyIdType beginElement(unsigned int size=0,const char* containerType=NULL);
@@ -400,11 +400,11 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 =begin
 --- addElement(eType,ary)
 --- addElementWithId(eType,ary,id)
-	�v�f�^�C�v�������� eType �ŁA
-	�ߓ_�z�� Array �^�� ary �ŗ^����ꂽ�v�f��o�^����
-	�t�^���ꂽ�v�fID��Ԃ��B
-	addElementWithId ��p����Ηv�f Id ���w�肵�ēo�^���邱�Ƃ��ł���B
-	���ɂ��� Id ���g���Ă���ꍇ�͉������Ȃ��B
+	要素タイプが文字列 eType で、
+	節点配列が Array 型の ary で与えられた要素を登録して
+	付与された要素IDを返す。
+	addElementWithId を用いれば要素 Id を指定して登録することができる。
+	既にその Id が使われている場合は何もしない。
 =end
 ------------------------------------------------------------------------*/
 %extend{
@@ -451,7 +451,7 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 /**---------------------------------------------------------------------------
 =begin
 --- endElement(void)
-    �v�f�̓o�^���I������B
+    要素の登録を終了する。
 =end
 ----------------------------------------------------------------------------*/
 	void endElement(void);
@@ -459,8 +459,8 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 /**--------------------------------------------------------------------------
 =begin
 --- insertElement(bodyId,eType,ary)
-	endElement ������� bodyId �� Body ��
-	addElement �Ɠ����`���ŗv�f��o�^����B
+	endElement した後に bodyId の Body に
+	addElement と同じ形式で要素を登録する。
 =end
 ----------------------------------------------------------------------------*/
 %extend{
@@ -487,8 +487,8 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 /**--------------------------------------------------------------------------
 =begin
 --- insertElementWithId(bodyId,eType,ary,id)
-	endElement ������� bodyId �� Body ��
-	addElement �Ɠ����`���ŗv�f��o�^����B
+	endElement した後に bodyId の Body に
+	addElement と同じ形式で要素を登録する。
 =end
 ----------------------------------------------------------------------------*/
 %extend{
@@ -515,11 +515,11 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 /**--------------------------------------------------------------------------
 =begin
 --- getElementCount(bodyId)
-	�^����ꂽ Body �Ɋ܂܂��v�f�̌���Ԃ��B
+	与えられた Body に含まれる要素の個数を返す。
 --- getElementCount()
-	���ׂĂ� Body �̗v�f�̌��̍��v��Ԃ��B
+	すべての Body の要素の個数の合計を返す。
 --- getElementCountByType(bodyId)
-	�^����ꂽ Body �Ɋ܂܂��v�f�̌����^�ʂ� Hash �ŕԂ��B
+	与えられた Body に含まれる要素の個数を型別の Hash で返す。
 =end
 ---------------------------------------------------------------------------*/
 	int getElementCount(kmb::bodyIdType bodyId) const;
@@ -547,7 +547,7 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 =begin
 --- getDimension(bodyId)
 --- getDimension()
-	�v�f�O���[�v�̎����i�\�ʃ��b�V���Ȃ�2�A�̐σ��b�V���Ȃ�3�j
+	要素グループの次元（表面メッシュなら2、体積メッシュなら3）
 =end
 ---------------------------------------------------------------------------*/
 	int getDimension(kmb::bodyIdType bodyId) const;
@@ -556,7 +556,7 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 /**--------------------------------------------------------------------------
 =begin
 --- getDegree(bodyId)
-	�v�f�O���[�v�̎����i2���v�f�Ȃ�2�j
+	要素グループの次元（2次要素なら2）
 =end
 ---------------------------------------------------------------------------*/
 	int getDegree(kmb::bodyIdType bodyId) const;
@@ -564,8 +564,8 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 /**--------------------------------------------------------------------------
 =begin
 --- isUniqueElementType(bodyId,etype)
-	�v�f�̌^��\������������āA�v�f�O���[�v�����̗v�f�̌^�݂̂���
-	�Ȃ邩�ǂ����𔻒f����B
+	要素の型を表す文字列を入れて、要素グループがその要素の型のみから
+	なるかどうかを判断する。
 =end
 ---------------------------------------------------------------------------*/
 %extend{
@@ -577,12 +577,12 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 /**--------------------------------------------------------------------------
 =begin
 --- getBodyName(bodyId)
-	�v�f�O���[�v�̖��O�̎擾
+	要素グループの名前の取得
 --- setBodyName(bodyId,name)
-	�v�f�O���[�v�̖��O�̐ݒ�
+	要素グループの名前の設定
 --- getBodyIdByName(name)
-	�v�f�O���[�v������ id �����߂�
-	�Ȃ���� -a
+	要素グループ名から id を求める
+	なければ -a
 =end
 ---------------------------------------------------------------------------*/
 	const char* getBodyName(bodyIdType bodyId) const;
@@ -592,7 +592,7 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 /**--------------------------------------------------------------------------
 =begin
 --- getElementContainerType(bodyId)
-	�v�f�O���[�v�̃R���e�i�^�C�v��
+	要素グループのコンテナタイプ名
 =end
 ---------------------------------------------------------------------------*/
 	const char* getElementContainerType(bodyIdType bodyId) const;
@@ -600,12 +600,12 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 /**-------------------------------------------------------------------------
 =begin
 --- getElement(elementId,bodyId=-1)
-	bodyId �� Body �Ɋ܂܂��v�fID elementId
-	�̗v�f�����o���B�߂�l�� Array �ő�ꐬ����
-	�^�̕�����A��2�����ȉ��ɗv�f�̒��_�z�񂪒ǉ�����Ă���B
-	bodyId ��^���Ȃ��Ă����o�����Ƃ͂ł��邪�A�����̂��ߗ]���Ȏ��Ԃ�������B
+	bodyId の Body に含まれる要素ID elementId
+	の要素を取り出す。戻り値は Array で第一成分に
+	型の文字列、第2成分以下に要素の頂点配列が追加されている。
+	bodyId を与えなくても取り出すことはできるが、検索のため余分な時間がかかる。
 
-	�߂�l�̗�F
+	戻り値の例：
 	["TETRAHEDRON",100,103,106,110]
 =end
 ---------------------------------------------------------------------------*/
@@ -617,7 +617,7 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 			rb_ary_store(ary,0,rb_str_new2(element.getTypeString().c_str()));
 			const int len = element.getNodeCount();
 			for(int i=0; i<len; ++i){
-				rb_ary_store(ary,i+1,INT2FIX(element.getCellId(i)));
+				rb_ary_store(ary,i+1,INT2FIX(element.getNodeId(i)));
 			}
 			return ary;
 		}
@@ -628,11 +628,11 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 /**---------------------------------------------------------------------------
 =begin
 --- eachElement(bodyID)
-	bodyID �� Body �̗v�f�̃C�e���[�^��^����B
-	�C�e���[�^�̓����̃u���b�N�ł́A�v�f�� getElement �Ɠ����`���œ�����B
+	bodyID の Body の要素のイテレータを与える。
+	イテレータの内部のブロックでは、要素が getElement と同じ形式で得られる。
 
 --- eachElementWithId(bodyID)
-	bodyID �� Body �̗v�f�Ɨv�fID�̃C�e���[�^��^����B
+	bodyID の Body の要素と要素IDのイテレータを与える。
 
 =end
 -----------------------------------------------------------------------------*/
@@ -647,7 +647,7 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 				rb_ary_store(ary,0,rb_str_new2(eIter.getTypeString().c_str()));
 				const int len = eIter.getNodeCount();
 				for(int i=0; i<len; ++i){
-					rb_ary_store(ary,i+1,INT2FIX(eIter.getCellId(i)));
+					rb_ary_store(ary,i+1,INT2FIX(eIter.getNodeId(i)));
 				}
 				++eIter;
 				rb_yield(ary);
@@ -666,7 +666,7 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 				rb_ary_store(ary,0,rb_str_new2(eIter.getTypeString().c_str()));
 				const int len = eIter.getNodeCount();
 				for(int i=0; i<len; ++i){
-					rb_ary_store(ary,i+1,INT2FIX(eIter.getCellId(i)));
+					rb_ary_store(ary,i+1,INT2FIX(eIter.getNodeId(i)));
 				}
 				++eIter;
 				rb_yield_values(2,ary,INT2FIX(elementID));
@@ -679,7 +679,7 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 /**---------------------------------------------------------------------
 =begin
 --- getBodyCount()
-	�o�^����Ă��� Body �̌���Ԃ��B
+	登録されている Body の個数を返す。
 =end
 ------------------------------------------------------------------------*/
 	kmb::bodyIdType getBodyCount(void) const;
@@ -687,68 +687,68 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
 /**-------------------------------------------------------------------------
 =begin
 --- clearBody(bodyId)
-	bodyId �� Body �Ɋ܂܂�Ă���v�f�����ׂč폜����B
-	�v�f���폜���Ă��ߖT�v�f�̃L���b�V���܂ł̓N���A���Ȃ��B
+	bodyId の Body に含まれている要素をすべて削除する。
+	要素を削除しても近傍要素のキャッシュまではクリアしない。
 =end
 ---------------------------------------------------------------------------*/
 	void clearBody(kmb::bodyIdType bodyId);
 
-////////////////////////////// �f�[�^�Ǘ� ///////////////////////////////
+////////////////////////////// データ管理 ///////////////////////////////
 /**--------------------------------------------------------------------------
 =begin
-==�f�[�^�Ǘ�
+==データ管理
 
-���b�V���ɕt������v�������܂��̓|�X�g�����̂��߂̃f�[�^�̊Ǘ����s���B
-�f�[�^�̎�ނ̓��[�h�ƌ^�ŕ��ނ����B
-�\���o�|�����ʂ��邽�߂̃^�O���w��ł���B
+メッシュに付随するプリ処理またはポスト処理のためのデータの管理を行う。
+データの種類はモードと型で分類される。
+ソルバ－が識別するためのタグも指定できる。
 
-���[�h�͈ȉ��̕�����ŗ^����
+モードは以下の文字列で与える
 : "NODEGROUP"
-  �ߓ_�O���[�v�i�ߓ_ID�̏W�����`���A�����ʂ͐ߓ_�O���[�v�S�̂ɗ^����j
+  節点グループ（節点IDの集合を定義し、物理量は節点グループ全体に与える）
 : "ELEMENTGROUP"
-  �v�f�O���[�v�i�v�fID�̏W�����`���A�����ʂ͗v�f�O���[�v�S�̂ɗ^����j
+  要素グループ（要素IDの集合を定義し、物理量は要素グループ全体に与える）
 : "FACEGROUP"
-  �v�f�̕\�ʃO���[�v�iFaceID�̏W�����`���A�����ʂ͗v�f�\�ʃO���[�v�S�̂ɗ^����j
+  要素の表面グループ（FaceIDの集合を定義し、物理量は要素表面グループ全体に与える）
 : "BODYGROUP"
-  �{�f�B�O���[�v�iBodyID�̏W�����`���A�����ʂ̓{�f�B�O���[�v�S�̂ɗ^����j
+  ボディグループ（BodyIDの集合を定義し、物理量はボディグループ全体に与える）
 : "NODEVARIABLE"
-  �ߓ_��̕����ʂ��`����i�ߓ_ID�ƕ����ʂ̃y�A��o�^����j
+  節点上の物理量を定義する（節点IDと物理量のペアを登録する）
 : "ELEMENTVARIABLE"
-  �v�f��̕����ʂ��`����i�v�fID�ƕ����ʂ̃y�A��o�^����j
+  要素上の物理量を定義する（要素IDと物理量のペアを登録する）
 : "FACEVARIABLE"
-  �v�f�̖ʏ�ɕ����ʂ��`����iFaceID�ƕ����ʂ̃y�A��o�^����j
+  要素の面上に物理量を定義する（FaceIDと物理量のペアを登録する）
 : "BODYVARIABLE"
-  �̈悲�Ƃɕ����ʂ��`����iBodyID�ƕ����ʂ̃y�A��o�^����j
+  領域ごとに物理量を定義する（BodyIDと物理量のペアを登録する）
 : "GLOBAL"
-  �O���[�v�� ID ��o�^�����ɁA�O���[�o���ȕ����ʂ�ݒ肷�邽�߂̃��[�h
+  グループに ID を登録せずに、グローバルな物理量を設定するためのモード
 : "UNKNWON"
-  ��L�ȊO�̃��[�h�i�_���I�ɂ��̃��[�h�ɂȂ邱�Ƃ͖����B�f�o�b�O�p�B�j
+  上記以外のモード（論理的にこのモードになることは無い。デバッグ用。）
 
-�����ʂ̌^�͈ȉ��̕�����ŗ^����
+物理量の型は以下の文字列で与える
 : "INTEGER"
-  �����l
+  整数値
 : "SCALAR"
-  �X�J���[�l
+  スカラー値
 : "VECTOR2"
-  2�����̃x�N�g���l
+  2次元のベクトル値
 : "VECTOR3"
-  3�����̃x�N�g���l
+  3次元のベクトル値
 : "VECTOR4"
-  4�����̃x�N�g���l
+  4次元のベクトル値
 : "POINT3VECTOR3"
-  3�����̎n�_�ƃx�N�g���̑g [[x,y,z],[vx,vy,vz]] �̌`��
+  3次元の始点とベクトルの組 [[x,y,z],[vx,vy,vz]] の形式
 : "TENSOR6"
-  ���R�x6�̃e���\���l�i3�����̑Ώ̃e���\���j6�����̔z��ŗ^����
+  自由度6のテンソル値（3次元の対称テンソル）6次元の配列で与える
 : "STRING"
-  ������
+  文字列
 : "ARRAY"
-  �����ʂ̔z��
+  物理量の配列
 : "HASH"
-  ��������L�[�Ƃ��A�����ʂ�l�Ƃ���A�z�z��
+  文字列をキーとし、物理量を値とする連想配列
 : "NONE"
-  �����ʂȂ�
+  物理量なし
 
-�Ⴆ�� BodyID = 1,2,3 �̃{�f�B�̑S�̂ɕ����� "pressure" �̃X�J���[�l 10.0 ��^����ɂ�
+例えば BodyID = 1,2,3 のボディの全体に物理量 "pressure" のスカラー値 10.0 を与えるには
 
  mesh.createData("pressure","BODYGROUP","SCALAR")
  mesh.addId("pressure",1)
@@ -756,10 +756,10 @@ Body �ƌĂԁB�ȉ��� beginElement ���� endElement �܂ł̊Ԃ� addElement ��
  mesh.addId("pressure",3)
  mesh.setValue("pressure",10.0)
 
-�̂悤�ɂ���B
+のようにする。
 
-ID�ƕ����ʂ̃y�A��^����ꍇ�́AaddId �� setValue �̑����
-setValueAtId ���g���B
+IDと物理量のペアを与える場合は、addId と setValue の代わりに
+setValueAtId を使う。
 
  mesh.createData("displace","NODEVARIABLE","VECTOR3")
  mesh.setValueAtId("displace", 0, [0.0, 0.1, 0.2])
@@ -767,7 +767,7 @@ setValueAtId ���g���B
  mesh.setValueAtId("displace", 2, [0.4, 0.0, 0.0])
  mesh.setValueAtId("displace", 3, [0.6, 0.0, 0.1])
 
-�܂��́A�����̕����ʂ𓯎��ɗ^���������ɂ�
+または、複数の物理量を同時に与えたい時には
 
  mesh.createData("displace","NODEVARIABLE","VECTOR3")
  mesh.createData("mises","NODEVARIABLE","SCALAR")
@@ -777,46 +777,46 @@ setValueAtId ���g���B
  mesh.setMultiValuesAtId(2, [0.4, 0.0, 0.0, 0.03])
  mesh.setMultiValuesAtId(3, [0.6, 0.0, 0.1, 0.04])
 
-�̂悤�ɂ���B
+のようにする。
 
-Global�ɕ����ʂ�^���鎞��
+Globalに物理量を与える時は
 
  mesh.createData("absTemp","GLOBAL","SCALAR")
  mesh.setValue("absTemp",-273.15)
 
-�̂悤�ɂ���B
+のようにする。
 
-mode �� GROUP �n�Ŏw�肵������ setValueAtId �͉������Ȃ��B
-mode �� VARIABLE �n�Ŏw�肵������ addId ����� setValue �͉������Ȃ��B
-mode �� Global �Ɏw�肵������ addId ����� setValueAtId �͉������Ȃ��B
+mode を GROUP 系で指定した時は setValueAtId は何もしない。
+mode を VARIABLE 系で指定した時は addId および setValue は何もしない。
+mode を Global に指定した時は addId および setValueAtId は何もしない。
 
-FaceGroup �� FaceVariable �͗v�f ID �Ƃ��̗v�f�� FaceID �̑g�ɑ΂��āA
-�����ʂ�ݒ肷�邽�߂̃��[�h�ł���B
-�Ⴆ�� "wall" �Ƃ��� FaceGroup �Ɋi�[����Ă��� FACE ���擾����ɂ�
-���̂悤�ɂ���B
+FaceGroup と FaceVariable は要素 ID とその要素の FaceID の組に対して、
+物理量を設定するためのモードである。
+例えば "wall" という FaceGroup に格納されている FACE を取得するには
+次のようにする。
 
  mesh.eachId( "wall" ){ |faceId|
-   # faceId = [elementId,localId]  ex, [1001,2] �̂悤�Ȍ`��
+   # faceId = [elementId,localId]  ex, [1001,2] のような形式
    element = mesh.faceToElement(faceId)
-   # element = ['TRIANGLE',0,1,2] �̂悤�Ȍ`��
+   # element = ['TRIANGLE',0,1,2] のような形式
  }
 
-stype �͉�̓R�[�h�����E�����̕��ނ�����ꍇ�Ȃǂ̂��߂ɁA
-�f�[�^�ɗ^���邱�Ƃ̂ł��镶����̃^�O�ł���B���̕�������L�[�Ƃ���
-Name( stype ) ������ƁA�^����ꂽ stype �Ɉ�v����
-�f�[�^�̖��O�����̃C�e���[�^��������B
+stype は解析コードが境界条件の分類をする場合などのために、
+データに与えることのできる文字列のタグである。この文字列をキーとして
+Name( stype ) をすると、与えられた stype に一致する
+データの名前だけのイテレータが得られる。
 
  mesh.createData("Const_1","NODEGROUP","ARRAY","Constraint")
  mesh.createData("wall","FACEGROUP","SCALAR","Boundary")
 
-�Ȃǂ̂悤�ɂ��Ďg���B
+などのようにして使う。
 
-stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
+stype が異なる場合は、名前が重複していてもよい。
 
 --- createData(name,bmode,vtype,stype,bodyId)
-	���[�h�� bmode �ŕ����ʂ̌^�� vtype �ŗ^������f�[�^ name �𐶐�����B
-	stype bodyId �͏ȗ��\
-	���łɑ��݂��Ă���ꍇ�͉������Ȃ�
+	モードが bmode で物理量の型が vtype で与えられるデータ name を生成する。
+	stype bodyId は省略可能
+	すでに存在している場合は何もしない
 
 =end
 ---------------------------------------------------------------------------*/
@@ -836,8 +836,8 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 =begin
 --- getDataCount()
 --- getDataCount(specType)
-	�o�^����Ă���f�[�^�̖��O�̌���Ԃ��BspecType ��^�������͂��� specType �ɓo�^����Ă���
-	�f�[�^�̖��O�̌���Ԃ��B
+	登録されているデータの名前の個数を返す。specType を与えた時はその specType に登録されている
+	データの名前の個数を返す。
 =end
 ----------------------------------------------------------------------------*/
 	size_t getDataCount(const char* stype=NULL);
@@ -845,8 +845,8 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- hasData(name,stype=nil)
-	�f�[�^ name �� spec type �� stype �̂��̂��f�[�^�x�[�X�ɓo�^����Ă��邩�ǂ�����������B
-	stype=nil �̏ꍇ�� name �����Ō�������B
+	データ name で spec type が stype のものがデータベースに登録されているかどうか検索する。
+	stype=nil の場合は name だけで検索する。
 =end
 ----------------------------------------------------------------------------*/
 	bool hasData(const char* name,const char* stype=NULL);
@@ -854,9 +854,9 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- renameData(oldname,newname,stype=nil)
-	�f�[�^ oldname �� newname �ɖ��̕ύX����B
-	oldname ���o�^����Ă��āAnewname ���o�^����Ă��Ȃ����������s�����
-	�߂�l�� true / false
+	データ oldname を newname に名称変更する。
+	oldname が登録されていて、newname が登録されていない時だけ実行される
+	戻り値は true / false
 =end
 ----------------------------------------------------------------------------*/
 	bool renameData(const char* oldname,const char* newname,const char* stype=NULL);
@@ -864,7 +864,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- deleteData(name,stype=nil)
-	�f�[�^ name ���f�[�^�x�[�X����폜����
+	データ name をデータベースから削除する
 =end
 ----------------------------------------------------------------------------*/
 	bool deleteData(const char* name,const char* stype=NULL);
@@ -872,8 +872,8 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- clearData(name,stype=nil)
-	�f�[�^ name �̃f�[�^�x�[�X����ɂ���B
-	�f�[�^�x�[�X�̃R���e�i���폜����킯�ł͂Ȃ��B
+	データ name のデータベースを空にする。
+	データベースのコンテナを削除するわけではない。
 =end
 ----------------------------------------------------------------------------*/
 	bool clearData(const char* name,const char* stype=NULL);
@@ -881,7 +881,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- getDataMode(name,stype=nil);
-	�f�[�^ name �̃��[�h�𕶎���Ŏ擾����
+	データ name のモードを文字列で取得する
 =end
 ----------------------------------------------------------------------------*/
 %extend{
@@ -894,7 +894,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- getDataValueType(name,stype=nil)
-	�f�[�^ name �̕����ʂ̌^�𕶎���Ŏ擾����
+	データ name の物理量の型を文字列で取得する
 =end
 ----------------------------------------------------------------------------*/
 %extend{
@@ -907,7 +907,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- getDataSpecType(name)
-	�f�[�^ name �̕����ʂ̎�ނ𕶎���Ŏ擾����
+	データ name の物理量の種類を文字列で取得する
 =end
 ----------------------------------------------------------------------------*/
 %extend{
@@ -920,7 +920,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- setDataSpecType(name,oldstype,newstype)
-	Spec Type ��ݒ肷��
+	Spec Type を設定する
 =end
 ----------------------------------------------------------------------------*/
 	bool setDataSpecType(const char* name,const char* oldstype,const char* newstype);
@@ -928,7 +928,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- getDataContainerType(name,stype)
-	�R���e�i�^�C�v���擾����
+	コンテナタイプを取得する
 =end
 ----------------------------------------------------------------------------*/
 	const char* getDataContainerType(const char* name,const char* stype=NULL) const;
@@ -936,7 +936,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- getDataTargetBodyId(name,stype=nil)
-	�f�[�^ name �̑ΏۂƂ��� BodyId ��Ԃ�
+	データ name の対象とする BodyId を返す
 =end
 ----------------------------------------------------------------------------*/
 %extend{
@@ -954,7 +954,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 =begin
 --- eachDataName
 --- eachDataName(specType)
-	�o�^����Ă��� Data (������) �̖��O���o�͂��� iterator ��^����B
+	登録されている Data (物理量) の名前を出力する iterator を与える。
 =end
 -------------------------------------------------------------------------*/
 %extend{
@@ -988,12 +988,12 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**-------------------------------------------------------------------------
 =begin
 --- getIdCount(name,stype)
-	name �̃O���[�v�ɓo�^���ꂽ id �̌����o�͂���
-	NodeGroup / NodeVariable �Ȃ璸�_�̌��A
-	ElementGroup / ElementVariable �Ȃ�v�f�̌�
-	BodyGroup / BodyVariable �Ȃ痧�̂̌�
-	FaceGroup / FaceVariable �Ȃ� FACE �̌�
-	����ȊO�� 0 ��Ԃ�
+	name のグループに登録された id の個数を出力する
+	NodeGroup / NodeVariable なら頂点の個数、
+	ElementGroup / ElementVariable なら要素の個数
+	BodyGroup / BodyVariable なら立体の個数
+	FaceGroup / FaceVariable なら FACE の個数
+	それ以外は 0 を返す
 =end
 ---------------------------------------------------------------------------*/
 	int getIdCount(const char* name,const char* stype=NULL);
@@ -1001,8 +1001,8 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- setDefaultSpecType(specType)
-	�ȉ��̃��\�b�h�Q�ł� specType �̈����� nil �ł��肩�A
-	���̃��\�b�h�� default �l���ݒ肳��Ă���Ƃ��ɂ́A�����ŗ^����ꂽ specType �̒�����T���B
+	以下のメソッド群での specType の引数が nil でありかつ、
+	このメソッドで default 値が設定されているときには、ここで与えられた specType の中から探す。
 =end
 ----------------------------------------------------------------------------*/
 	void setDefaultSpecType(const char* specType);
@@ -1010,7 +1010,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**---------------------------------------------------------------------------
 =begin
 --- getValueAtId(name,id,stype=nil)
-	�O���[�v name �� id �ɒ�`���ꂽ�����ʂ��擾����BXXXVARIABLE ���[�h�̎������L���B
+	グループ name の id に定義された物理量を取得する。XXXVARIABLE モードの時だけ有効。
 =end
 ----------------------------------------------------------------------------*/
 %extend{
@@ -1142,7 +1142,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- setValueAtId(name,id,v,stype=nil)
-	�O���[�v name �� id �ɕ����� v ��^����BXXXVARIABLE ���[�h�̎������L���B
+	グループ name の id に物理量 v を与える。XXXVARIABLE モードの時だけ有効。
 =end
 ----------------------------------------------------------------------------*/
 %extend{
@@ -1169,7 +1169,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**---------------------------------------------------------------------------
 =begin
 --- getValue(name,stype=nil)
-	�O���[�v name �S�̂ɒ�`���ꂽ�����ʂ��擾����BXXXGROUP ���[�h�AGlobal ���[�h�̎������L���B
+	グループ name 全体に定義された物理量を取得する。XXXGROUP モード、Global モードの時だけ有効。
 =end
 ----------------------------------------------------------------------------*/
 	%extend{
@@ -1188,7 +1188,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**-------------------------------------------------------------------------
 =begin
 --- setValue(name,v,stype=nil)
-	�O���[�v name �S�̂ɕ����� v ���`����BXXXGROUP ���[�h�܂��� Global ���[�h�̎������L���B
+	グループ name 全体に物理量 v を定義する。XXXGROUP モードまたは Global モードの時だけ有効。
 =end
 ---------------------------------------------------------------------------*/
 	%extend{
@@ -1213,7 +1213,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- addId(name,id,stype=nil)
-	name �̃f�[�^�� id ��ǉ�����B
+	name のデータに id を追加する。
 =end
 ---------------------------------------------------------------------------*/
 	%extend{
@@ -1235,7 +1235,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- hasId(name,id,stype=nil)
-	name �̃f�[�^�� id ���܂ނ��ǂ�����Ԃ�
+	name のデータが id を含むかどうかを返す
 =end
 ---------------------------------------------------------------------------*/
 	%extend{
@@ -1257,7 +1257,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- deleteId(name,id,stype=nil)
-	name �̃f�[�^���� id ���폜����
+	name のデータから id を削除する
 =end
 ---------------------------------------------------------------------------*/
 	%extend{
@@ -1279,8 +1279,8 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- setTargetData(names,stype=nil)
-	setMultiValuesAtId �ŕ����̕����ʂ���x�ɗ^���邽�߂�
-	�Ώۂ�ݒ肷��
+	setMultiValuesAtId で複数の物理量を一度に与えるための
+	対象を設定する
 =end
 ----------------------------------------------------------------------------*/
 %extend{
@@ -1302,11 +1302,11 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- setMultiValuesAtId(id,v)
-	setTargetData �őΏۂ��^�����Ă��鎞��
-	�O���[�v name �� id �ɕ����ʂ̔z�� v ��^����BNodeVariable or ElementVariable ���[�h�̎������L���B
-	v �� setTargetData �œo�^���ꂽ�����ʂɗ^����l�����ɕ��ׂ� 1 �����z��B
-	��Fdisplace, stress, mises �� 3, 6, 1 �����œo�^����Ă����ꍇ��
-	3 + 6 + 1 = 10 ������ 1 �����z���^����B
+	setTargetData で対象が与えられている時に
+	グループ name の id に物理量の配列 v を与える。NodeVariable or ElementVariable モードの時だけ有効。
+	v は setTargetData で登録された物理量に与える値を順に並べた 1 次元配列。
+	例：displace, stress, mises が 3, 6, 1 次元で登録されていた場合は
+	3 + 6 + 1 = 10 次元の 1 次元配列を与える。
 =end
 ----------------------------------------------------------------------------*/
 %extend{
@@ -1343,7 +1343,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**-------------------------------------------------------------------------
 =begin
 --- eachId(name,stype=nil)
-	name �O���[�v�� Id ���o�͂��� iterator
+	name グループの Id を出力する iterator
 =end
 ---------------------------------------------------------------------------*/
 %extend{
@@ -1391,10 +1391,10 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**------------------------------------------------------------------------
 =begin
 --- eachIdWithValue(name,stype)
-	name �O���[�v�� Id �ƕ����ʂ̑g���o�͂��� iterator
-	�l�̌^�� Scalar �̎��� value �͒l���̂��́A
-	Vector3 �܂��� Tensor6 �̏ꍇ�́A�z��ŗ^������B
-	�ȉ��̂悤�ɂ��Ďg���B
+	name グループの Id と物理量の組を出力する iterator
+	値の型が Scalar の時は value は値そのもの、
+	Vector3 または Tensor6 の場合は、配列で与えられる。
+	以下のようにして使う。
 
 	 mesh.eachIdWithValue("weight"){ |id,val|
 	  puts "id = #{id} x = #{val[0]} y = #{val[1]} z = #{val[2]}"
@@ -1601,7 +1601,7 @@ stype ���قȂ�ꍇ�́A���O���d�����Ă��Ă��悢�B
 /**--------------------------------------------------------------------------
 =begin
 --- faceGroupToBody(name,stype=nil)
-	FaceGroup �̃f�[�^�� body �ɕϊ�����B
+	FaceGroup のデータを body に変換する。
 =end
 ----------------------------------------------------------------------------*/
 	kmb::bodyIdType faceGroupToBody(const char* name,const char* stype=NULL);

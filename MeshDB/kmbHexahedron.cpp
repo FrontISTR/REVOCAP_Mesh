@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Hexahedron                                              #
@@ -38,9 +38,9 @@
 /********************************************************************************
 =begin
 
-=== 1Ÿ˜Z–Ê‘Ì—v‘f (HEXAHEDRON)
+=== 1æ¬¡å…­é¢ä½“è¦ç´  (HEXAHEDRON)
 
-Ú‘±s—ñ
+æ¥ç¶šè¡Œåˆ—
 
 	{ 0, 1, 0, 1, 1, 0, 0, 0},
 	{ 1, 0, 1, 0, 0, 1, 0, 0},
@@ -51,7 +51,7 @@
 	{ 0, 0, 1, 0, 0, 1, 0, 1},
 	{ 0, 0, 0, 1, 1, 0, 1, 0}
 
-–Ê
+é¢
 
 	{ 3, 2, 1, 0},
 	{ 4, 5, 6, 7},
@@ -60,7 +60,7 @@
 	{ 3, 7, 6, 2},
 	{ 4, 7, 3, 0}
 
-•Ó
+è¾º
 
 	{ 0, 1},
 	{ 1, 2},
@@ -77,7 +77,7 @@
 
 =end
 
-‹Œƒo[ƒWƒ‡ƒ“
+æ—§ãƒãƒ¼ã‚¸ãƒ§ãƒ³
 	{ 3, 2, 1, 0},
 	{ 4, 5, 6, 7},
 	{ 0, 1, 5, 4},
@@ -86,7 +86,7 @@
 	{ 0, 4, 7, 3}
 
 
-Œ`óŠÖ”F
+å½¢çŠ¶é–¢æ•°ï¼š
 0 : 1/8(1-s)(1-t)(1-u) => (s,t,u) = (-1,-1,-1)
 1 : 1/8(1+s)(1-t)(1-u) => (s,t,u) = ( 1,-1,-1)
 2 : 1/8(1+s)(1+t)(1-u) => (s,t,u) = ( 1, 1,-1)
@@ -112,9 +112,9 @@ const int kmb::Hexahedron::connectionTable[8][8] =
 	{ 0, 0, 0, 1, 1, 0, 1, 0}
 };
 
-// –Ê‚ğ\¬‚·‚é‘½ŠpŒ`‚Ì“Y‚¦š”Ô†
-// ŠO‘¤‚©‚çŒ©‚Ä¶‰ñ‚è‚ª³
-// ‘Š‘Î‚·‚é–Ê‚Ìß“_”Ô†‚ª“¯ˆê–Ê‚Ì‘ÎŠp‚É‚ ‚é
+// é¢ã‚’æ§‹æˆã™ã‚‹å¤šè§’å½¢ã®æ·»ãˆå­—ç•ªå·
+// å¤–å´ã‹ã‚‰è¦‹ã¦å·¦å›ã‚ŠãŒæ­£
+// ç›¸å¯¾ã™ã‚‹é¢ã®ç¯€ç‚¹ç•ªå·ãŒåŒä¸€é¢ã®å¯¾è§’ã«ã‚ã‚‹
 const int kmb::Hexahedron::faceTable[6][4] =
 {
 	{ 3, 2, 1, 0},
@@ -145,13 +145,13 @@ bool
 kmb::Hexahedron::isEquivalent(int index[8])
 {
 	const int len = kmb::Element::getNodeCount(kmb::HEXAHEDRON);
-	// ’uŠ·‚¶‚á‚È‚¢‚Í–³ğŒ‚É‚¾‚ß
+	// ç½®æ›ã˜ã‚ƒãªã„æ™‚ã¯ç„¡æ¡ä»¶ã«ã ã‚
 	for(int i=0;i<len;++i){
 		if(index[i] < 0 || len <= index[i]){
 			return false;
 		}
 	}
-	// connection matrix ‚ª“¯‚¶‚È‚ç‚¢‚¢‚±‚Æ‚É‚·‚é
+	// connection matrix ãŒåŒã˜ãªã‚‰ã„ã„ã“ã¨ã«ã™ã‚‹
 	for(int i=0;i<len;++i){
 		for(int j=0;j<len;++j){
 			if( kmb::Hexahedron::connectionTable[i][j]
@@ -196,6 +196,16 @@ kmb::Hexahedron::~Hexahedron(void)
 {
 }
 
+kmb::nodeIdType kmb::Hexahedron::operator()(const int index,const int i) const
+{
+	return cell[kmb::Hexahedron::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Hexahedron::operator()(const int index,const int i)
+{
+	return cell[kmb::Hexahedron::faceTable[index][i]];
+}
+
 int
 kmb::Hexahedron::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nodeIdType tetrahedrons[][4])
 {
@@ -205,7 +215,7 @@ kmb::Hexahedron::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nod
 	}
 	int num = 0;
 
-	// ‘ÎŠpü‚ğ‚Ç‚Ì‚æ‚¤‚Éˆø‚­‚©Œˆ‚ß‚é                                      true  false
+	// å¯¾è§’ç·šã‚’ã©ã®ã‚ˆã†ã«å¼•ãã‹æ±ºã‚ã‚‹                                      true  false
 	bool b0 = element->getIndexMinNodeIdOfFace( 0 )%2 == 1; // [3,2,1,0]   20    13
 	bool b1 = element->getIndexMinNodeIdOfFace( 1 )%2 == 1; // [4,5,6,7]   57    46
 	bool b2 = element->getIndexMinNodeIdOfFace( 2 )%2 == 1; // [1,5,4,0]   50    14
@@ -213,9 +223,9 @@ kmb::Hexahedron::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nod
 	bool b4 = element->getIndexMinNodeIdOfFace( 4 )%2 == 1; // [3,7,6,2]   72    36
 	bool b5 = element->getIndexMinNodeIdOfFace( 5 )%2 == 1; // [4,7,3,0]   70    43
 
-	// ‘ÎŠpü‚Ì—^‚¦•û
-	// lŠpŒ`‚Ìß“_”Ô†‚ÌÅ¬‚Ì‚Æ‚±‚ë‚©‚ç•K‚¸‚R–{o‚é   ‚R–{o‚Ä‚¢‚éß“_‚Ìindex
-	//[b0,b1,b2,b3,b4,b5],[‚»‚ê‚¼‚ê‚Ì–Ê‚Ì‘ÎŠpü‚Ì—^‚¦•û],[’¸“_‚©‚ço‚Ä‚¢‚é‘ÎŠpü‚Ì–{”]
+	// å¯¾è§’ç·šã®ä¸ãˆæ–¹
+	// å››è§’å½¢ã®ç¯€ç‚¹ç•ªå·ã®æœ€å°ã®ã¨ã“ã‚ã‹ã‚‰å¿…ãšï¼“æœ¬å‡ºã‚‹   ï¼“æœ¬å‡ºã¦ã„ã‚‹ç¯€ç‚¹ã®index
+	//[b0,b1,b2,b3,b4,b5],[ãã‚Œãã‚Œã®é¢ã®å¯¾è§’ç·šã®ä¸ãˆæ–¹],[é ‚ç‚¹ã‹ã‚‰å‡ºã¦ã„ã‚‹å¯¾è§’ç·šã®æœ¬æ•°]
 	//[0, 0, 0, 0, 0, 0], [1, 3, 4, 6, 1, 4, 1, 6, 3, 6, 3, 4], [0, 3, 0, 3, 3, 0, 3, 0], [1, 3, 4, 6]
 	//[0, 0, 0, 0, 0, 1], [1, 3, 4, 6, 1, 4, 1, 6, 3, 6, 0, 7], [1, 3, 0, 2, 2, 0, 3, 1], [1, 6]
 	//[0, 0, 0, 0, 1, 0], [1, 3, 4, 6, 1, 4, 1, 6, 2, 7, 3, 4], [0, 3, 1, 2, 3, 0, 2, 1], [1, 4]
@@ -281,65 +291,65 @@ kmb::Hexahedron::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nod
 	//[1, 1, 1, 1, 1, 0], [0, 2, 5, 7, 0, 5, 2, 5, 2, 7, 3, 4], [2, 0, 3, 1, 1, 3, 0, 2], [2, 5]
 	//[1, 1, 1, 1, 1, 1], [0, 2, 5, 7, 0, 5, 2, 5, 2, 7, 0, 7], [3, 0, 3, 0, 0, 3, 0, 3], [0, 2, 5, 7]
 
-	// ‘ÎŠpü‚ğ‚Ç‚Ì‚æ‚¤‚Éˆø‚­‚©Œˆ‚ß‚é
+	// å¯¾è§’ç·šã‚’ã©ã®ã‚ˆã†ã«å¼•ãã‹æ±ºã‚ã‚‹
 
 	if( !b0 && !b1 && !b2 && !b3 && !b4 && !b5 )
 	{
 		// 0 0 0 0 0 0 [1,3] [4,6] [1,4] [1,6] [3,6] [3,4]  1,3,4,6
 		num = 5;
-		tetrahedrons[0][0] = element->getCellId(0);
-		tetrahedrons[0][1] = element->getCellId(1);
-		tetrahedrons[0][2] = element->getCellId(3);
-		tetrahedrons[0][3] = element->getCellId(4);
+		tetrahedrons[0][0] = element->getNodeId(0);
+		tetrahedrons[0][1] = element->getNodeId(1);
+		tetrahedrons[0][2] = element->getNodeId(3);
+		tetrahedrons[0][3] = element->getNodeId(4);
 
-		tetrahedrons[1][0] = element->getCellId(1);
-		tetrahedrons[1][1] = element->getCellId(5);
-		tetrahedrons[1][2] = element->getCellId(6);
-		tetrahedrons[1][3] = element->getCellId(4);
+		tetrahedrons[1][0] = element->getNodeId(1);
+		tetrahedrons[1][1] = element->getNodeId(5);
+		tetrahedrons[1][2] = element->getNodeId(6);
+		tetrahedrons[1][3] = element->getNodeId(4);
 
-		tetrahedrons[2][0] = element->getCellId(1);
-		tetrahedrons[2][1] = element->getCellId(2);
-		tetrahedrons[2][2] = element->getCellId(3);
-		tetrahedrons[2][3] = element->getCellId(6);
+		tetrahedrons[2][0] = element->getNodeId(1);
+		tetrahedrons[2][1] = element->getNodeId(2);
+		tetrahedrons[2][2] = element->getNodeId(3);
+		tetrahedrons[2][3] = element->getNodeId(6);
 
-		tetrahedrons[3][0] = element->getCellId(7);
-		tetrahedrons[3][1] = element->getCellId(6);
-		tetrahedrons[3][2] = element->getCellId(4);
-		tetrahedrons[3][3] = element->getCellId(3);
+		tetrahedrons[3][0] = element->getNodeId(7);
+		tetrahedrons[3][1] = element->getNodeId(6);
+		tetrahedrons[3][2] = element->getNodeId(4);
+		tetrahedrons[3][3] = element->getNodeId(3);
 
-		tetrahedrons[4][0] = element->getCellId(1);
-		tetrahedrons[4][1] = element->getCellId(3);
-		tetrahedrons[4][2] = element->getCellId(4);
-		tetrahedrons[4][3] = element->getCellId(6);
+		tetrahedrons[4][0] = element->getNodeId(1);
+		tetrahedrons[4][1] = element->getNodeId(3);
+		tetrahedrons[4][2] = element->getNodeId(4);
+		tetrahedrons[4][3] = element->getNodeId(6);
 	}
 	else if( b0 && b1 && b2 && b3 && b4 && b5 )
 	{
 		// 1 1 1 1 1 1 [0,2] [5,7] [1,4] [2,5] [2,7] [0,7]  0,2,5,7 
 		num = 5;
-		tetrahedrons[0][0] = element->getCellId(0);
-		tetrahedrons[0][1] = element->getCellId(1);
-		tetrahedrons[0][2] = element->getCellId(2);
-		tetrahedrons[0][3] = element->getCellId(5);
+		tetrahedrons[0][0] = element->getNodeId(0);
+		tetrahedrons[0][1] = element->getNodeId(1);
+		tetrahedrons[0][2] = element->getNodeId(2);
+		tetrahedrons[0][3] = element->getNodeId(5);
 
-		tetrahedrons[1][0] = element->getCellId(2);
-		tetrahedrons[1][1] = element->getCellId(5);
-		tetrahedrons[1][2] = element->getCellId(6);
-		tetrahedrons[1][3] = element->getCellId(7);
+		tetrahedrons[1][0] = element->getNodeId(2);
+		tetrahedrons[1][1] = element->getNodeId(5);
+		tetrahedrons[1][2] = element->getNodeId(6);
+		tetrahedrons[1][3] = element->getNodeId(7);
 
-		tetrahedrons[2][0] = element->getCellId(0);
-		tetrahedrons[2][1] = element->getCellId(4);
-		tetrahedrons[2][2] = element->getCellId(5);
-		tetrahedrons[2][3] = element->getCellId(7);
+		tetrahedrons[2][0] = element->getNodeId(0);
+		tetrahedrons[2][1] = element->getNodeId(4);
+		tetrahedrons[2][2] = element->getNodeId(5);
+		tetrahedrons[2][3] = element->getNodeId(7);
 
-		tetrahedrons[3][0] = element->getCellId(3);
-		tetrahedrons[3][1] = element->getCellId(0);
-		tetrahedrons[3][2] = element->getCellId(2);
-		tetrahedrons[3][3] = element->getCellId(7);
+		tetrahedrons[3][0] = element->getNodeId(3);
+		tetrahedrons[3][1] = element->getNodeId(0);
+		tetrahedrons[3][2] = element->getNodeId(2);
+		tetrahedrons[3][3] = element->getNodeId(7);
 
-		tetrahedrons[4][0] = element->getCellId(0);
-		tetrahedrons[4][1] = element->getCellId(5);
-		tetrahedrons[4][2] = element->getCellId(2);
-		tetrahedrons[4][3] = element->getCellId(7);
+		tetrahedrons[4][0] = element->getNodeId(0);
+		tetrahedrons[4][1] = element->getNodeId(5);
+		tetrahedrons[4][2] = element->getNodeId(2);
+		tetrahedrons[4][3] = element->getNodeId(7);
 	}
 	else
 	{
@@ -348,63 +358,63 @@ kmb::Hexahedron::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nod
 		kmb::Wedge* w1 = NULL;
 		if( !b0 &&  b1 )
 		{
-			// [1,3] [5,7] ‚Å Wedge ‚É•ª‚¯‚é
+			// [1,3] [5,7] ã§ Wedge ã«åˆ†ã‘ã‚‹
 			w0 = new kmb::Wedge(
-				element->getCellId(0),element->getCellId(1),element->getCellId(3),
-				element->getCellId(4),element->getCellId(5),element->getCellId(7));
+				element->getNodeId(0),element->getNodeId(1),element->getNodeId(3),
+				element->getNodeId(4),element->getNodeId(5),element->getNodeId(7));
 			w1 = new kmb::Wedge(
-				element->getCellId(1),element->getCellId(2),element->getCellId(3),
-				element->getCellId(5),element->getCellId(6),element->getCellId(7));
+				element->getNodeId(1),element->getNodeId(2),element->getNodeId(3),
+				element->getNodeId(5),element->getNodeId(6),element->getNodeId(7));
 		}
 		else if( b0 && !b1 )
 		{
-			// [0,2] [4,6] ‚Å Wedge ‚É•ª‚¯‚é
+			// [0,2] [4,6] ã§ Wedge ã«åˆ†ã‘ã‚‹
 			w0 = new kmb::Wedge(
-				element->getCellId(0),element->getCellId(1),element->getCellId(2),
-				element->getCellId(4),element->getCellId(5),element->getCellId(6));
+				element->getNodeId(0),element->getNodeId(1),element->getNodeId(2),
+				element->getNodeId(4),element->getNodeId(5),element->getNodeId(6));
 			w1 = new kmb::Wedge(
-				element->getCellId(0),element->getCellId(2),element->getCellId(3),
-				element->getCellId(4),element->getCellId(6),element->getCellId(7));
+				element->getNodeId(0),element->getNodeId(2),element->getNodeId(3),
+				element->getNodeId(4),element->getNodeId(6),element->getNodeId(7));
 		}
 		else if( !b2 && b4 )
 		{
-			// [1,4] [2,7] ‚Å Wedge ‚É•ª‚¯‚é
+			// [1,4] [2,7] ã§ Wedge ã«åˆ†ã‘ã‚‹
 			w0 = new kmb::Wedge(
-				element->getCellId(4),element->getCellId(5),element->getCellId(1),
-				element->getCellId(7),element->getCellId(6),element->getCellId(2));
+				element->getNodeId(4),element->getNodeId(5),element->getNodeId(1),
+				element->getNodeId(7),element->getNodeId(6),element->getNodeId(2));
 			w1 = new kmb::Wedge(
-				element->getCellId(4),element->getCellId(1),element->getCellId(0),
-				element->getCellId(7),element->getCellId(2),element->getCellId(3));
+				element->getNodeId(4),element->getNodeId(1),element->getNodeId(0),
+				element->getNodeId(7),element->getNodeId(2),element->getNodeId(3));
 		}
 		else if( b2 && !b4 )
 		{
-			// [0,5] [3,6] ‚Å Wedge ‚É•ª‚¯‚é
+			// [0,5] [3,6] ã§ Wedge ã«åˆ†ã‘ã‚‹
 			w0 = new kmb::Wedge(
-				element->getCellId(0),element->getCellId(5),element->getCellId(1),
-				element->getCellId(3),element->getCellId(6),element->getCellId(2));
+				element->getNodeId(0),element->getNodeId(5),element->getNodeId(1),
+				element->getNodeId(3),element->getNodeId(6),element->getNodeId(2));
 			w1 = new kmb::Wedge(
-				element->getCellId(0),element->getCellId(4),element->getCellId(5),
-				element->getCellId(3),element->getCellId(7),element->getCellId(6));
+				element->getNodeId(0),element->getNodeId(4),element->getNodeId(5),
+				element->getNodeId(3),element->getNodeId(7),element->getNodeId(6));
 		}
 		else if( !b3 && b5 )
 		{
-			// [1,6] [0,7] ‚Å Wedge ‚É•ª‚¯‚é
+			// [1,6] [0,7] ã§ Wedge ã«åˆ†ã‘ã‚‹
 			w0 = new kmb::Wedge(
-				element->getCellId(1),element->getCellId(6),element->getCellId(2),
-				element->getCellId(0),element->getCellId(7),element->getCellId(3));
+				element->getNodeId(1),element->getNodeId(6),element->getNodeId(2),
+				element->getNodeId(0),element->getNodeId(7),element->getNodeId(3));
 			w1 = new kmb::Wedge(
-				element->getCellId(1),element->getCellId(5),element->getCellId(6),
-				element->getCellId(0),element->getCellId(4),element->getCellId(7));
+				element->getNodeId(1),element->getNodeId(5),element->getNodeId(6),
+				element->getNodeId(0),element->getNodeId(4),element->getNodeId(7));
 		}
 		else if( b3 && !b5 )
 		{
-			// [2,5] [3,4] ‚Å Wedge ‚É•ª‚¯‚é
+			// [2,5] [3,4] ã§ Wedge ã«åˆ†ã‘ã‚‹
 			w0 = new kmb::Wedge(
-				element->getCellId(2),element->getCellId(5),element->getCellId(6),
-				element->getCellId(3),element->getCellId(4),element->getCellId(7));
+				element->getNodeId(2),element->getNodeId(5),element->getNodeId(6),
+				element->getNodeId(3),element->getNodeId(4),element->getNodeId(7));
 			w1 = new kmb::Wedge(
-				element->getCellId(1),element->getCellId(5),element->getCellId(2),
-				element->getCellId(0),element->getCellId(4),element->getCellId(3));
+				element->getNodeId(1),element->getNodeId(5),element->getNodeId(2),
+				element->getNodeId(0),element->getNodeId(4),element->getNodeId(3));
 		}
 		else
 		{
@@ -441,6 +451,42 @@ kmb::Hexahedron::shapeFunction(double s,double t,double u,double* coeff)
 	coeff[7] = 0.125*(1.0-s)*(1.0+t)*(1.0+u);
 }
 
+void kmb::Hexahedron::shapeFunction_ds(double s,double t,double u,double* coeff)
+{
+	coeff[0] = -0.125*(1.0-t)*(1.0-u);
+	coeff[1] =  0.125*(1.0-t)*(1.0-u);
+	coeff[2] =  0.125*(1.0+t)*(1.0-u);
+	coeff[3] = -0.125*(1.0+t)*(1.0-u);
+	coeff[4] = -0.125*(1.0-t)*(1.0+u);
+	coeff[5] =  0.125*(1.0-t)*(1.0+u);
+	coeff[6] =  0.125*(1.0+t)*(1.0+u);
+	coeff[7] = -0.125*(1.0+t)*(1.0+u);
+}
+
+void kmb::Hexahedron::shapeFunction_dt(double s,double t,double u,double* coeff)
+{
+	coeff[0] = -0.125*(1.0-s)*(1.0-u);
+	coeff[1] = -0.125*(1.0+s)*(1.0-u);
+	coeff[2] =  0.125*(1.0+s)*(1.0-u);
+	coeff[3] =  0.125*(1.0-s)*(1.0-u);
+	coeff[4] = -0.125*(1.0-s)*(1.0+u);
+	coeff[5] = -0.125*(1.0+s)*(1.0+u);
+	coeff[6] =  0.125*(1.0+s)*(1.0+u);
+	coeff[7] =  0.125*(1.0-s)*(1.0+u);
+}
+
+void kmb::Hexahedron::shapeFunction_du(double s,double t,double u,double* coeff)
+{
+	coeff[0] = -0.125*(1.0-s)*(1.0-t);
+	coeff[1] = -0.125*(1.0+s)*(1.0-t);
+	coeff[2] = -0.125*(1.0+s)*(1.0+t);
+	coeff[3] = -0.125*(1.0-s)*(1.0+t);
+	coeff[4] =  0.125*(1.0-s)*(1.0-t);
+	coeff[5] =  0.125*(1.0+s)*(1.0-t);
+	coeff[6] =  0.125*(1.0+s)*(1.0+t);
+	coeff[7] =  0.125*(1.0-s)*(1.0+t);
+}
+
 double
 kmb::Hexahedron::checkShapeFunctionDomain(double s,double t,double u)
 {
@@ -461,7 +507,7 @@ kmb::Hexahedron::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Poi
 		return false;
 	}
 	/*
-	 * —v‘fÀ•W‚ğ‹‚ß‚é‚½‚ß‚Éƒjƒ…[ƒgƒ“–@‚ğs‚¤
+	 * è¦ç´ åº§æ¨™ã‚’æ±‚ã‚ã‚‹ãŸã‚ã«ãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ³æ³•ã‚’è¡Œã†
 	 */
 	class nr_local : public kmb::OptTargetVV {
 	public:
@@ -485,7 +531,7 @@ kmb::Hexahedron::getNaturalCoordinates(const kmb::Point3D &target,const kmb::Poi
 		}
 		bool df(const ColumnVector &t,Matrix &jac){
 			for(int i=0;i<3;++i){
-				// s ‚Å”÷•ª
+				// s ã§å¾®åˆ†
 				jac.set(i,0,
 					0.125 * (
 					-(1.0-t[1])*(1.0-t[2])*points[0][i]
@@ -557,14 +603,14 @@ kmb::Hexahedron::isOppositeFace(const kmb::ElementBase* hexa,const kmb::ElementB
 		quad1 == NULL || quad1->getType() != kmb::QUAD ){
 		return -1;
 	}
-	// ’ˆÓF
-	// quad0 ‚Æ quad1 ‚Ì—¼•û‚ª hexa ‚Ì–Ê‚Å‚ ‚é‚±‚Æ‚ğŠm”F‚µ‚Ä‚¢‚È‚¢
+	// æ³¨æ„ï¼š
+	// quad0 ã¨ quad1 ã®ä¸¡æ–¹ãŒ hexa ã®é¢ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèªã—ã¦ã„ãªã„
 
 	// corr[ hexa index ] = quad0 index (0,1,2,3) or quad1 index (4,5,6,7)
 	int corr[8] = {-1,-1,-1,-1,-1,-1,-1,-1};
 	for(int i=0;i<4;++i){
-		int index0 = hexa->indexOf( quad0->getCellId(i) );
-		int index1 = hexa->indexOf( quad1->getCellId(i) );
+		int index0 = hexa->indexOf( quad0->getNodeId(i) );
+		int index1 = hexa->indexOf( quad1->getNodeId(i) );
 		if( index0 >= 0 && index1 >= 0 ){
 			corr[index0] = i;
 			corr[index1] = 4+i;
@@ -572,7 +618,7 @@ kmb::Hexahedron::isOppositeFace(const kmb::ElementBase* hexa,const kmb::ElementB
 			return -1;
 		}
 	}
-	// ‘ÎŠpü‚Ì‚Æ‚±‚ë‚Ì·‚Å”»’è‚·‚é
+	// å¯¾è§’ç·šã®ã¨ã“ã‚ã®å·®ã§åˆ¤å®šã™ã‚‹
 	if( corr[0] < 4 ){
 		return (corr[6]-corr[0]+2)%4;
 	}else{
@@ -642,7 +688,7 @@ kmb::Hexahedron::jacobian(double s, double t,double u,const kmb::Point3D* points
 		( jxs * jzt * jyu + jys * jxt * jzu + jzs * jyt * jxu );
 }
 
-// Hexa ‚Ìê‡‚Í Jacobian ‚Ì”÷ŒW”‚Í’è”‚É‚È‚ç‚È‚¢
+// Hexa ã®å ´åˆã¯ Jacobian ã®å¾®ä¿‚æ•°ã¯å®šæ•°ã«ãªã‚‰ãªã„
 
 double
 kmb::Hexahedron::jacobian_ds(double s, double t,double u,const kmb::Point3D* points)

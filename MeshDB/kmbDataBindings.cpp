@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : DataBindings                                            #
@@ -35,8 +35,8 @@
 #pragma warning(disable:869)
 #endif
 
-const kmb::DataBindings::iterator kmb::DataBindings::endIterator; // NULL ’l
-const kmb::DataBindings::const_iterator kmb::DataBindings::endConstIterator; // NULL ’l
+const kmb::DataBindings::iterator kmb::DataBindings::endIterator; // NULL å€¤
+const kmb::DataBindings::const_iterator kmb::DataBindings::endConstIterator; // NULL å€¤
 
 kmb::DataBindings::DataBindings(void)
 : type(kmb::PhysicalValue::Unknown)

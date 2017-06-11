@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Element                                                 #
@@ -24,13 +24,13 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 /*
- * 1ŸŒ³—v‘f connectionTable
- * 2ŸŒ³—v‘f connectionTable faceTable
- * 3ŸŒ³—v‘f connectionTable faceTable edgeTable
+ * 1æ¬¡å…ƒè¦ç´  connectionTable
+ * 2æ¬¡å…ƒè¦ç´  connectionTable faceTable
+ * 3æ¬¡å…ƒè¦ç´  connectionTable faceTable edgeTable
  *
- * 2Ÿ—v‘f‚É‚Â‚¢‚Ä–ÊA•Ó‚Ì1ŸŒ³—v‘f‚Í SEGMENT2
- * 2ŸŒ³—v‘f‚Ì faceTable ‚Ì‘æ3¬•ª‚Í index ‡‚Éƒ\[ƒg‚³‚ê‚Ä‚¢‚é
- * 3ŸŒ³—v‘f‚Ì edgeTable ‚Ì‘æ3¬•ª‚Í index ‡‚Éƒ\[ƒg‚³‚ê‚Ä‚¢‚é
+ * 2æ¬¡è¦ç´ ã«ã¤ã„ã¦é¢ã€è¾ºã®1æ¬¡å…ƒè¦ç´ ã¯ SEGMENT2
+ * 2æ¬¡å…ƒè¦ç´ ã® faceTable ã®ç¬¬3æˆåˆ†ã¯ index é †ã«ã‚½ãƒ¼ãƒˆã•ã‚Œã¦ã„ã‚‹
+ * 3æ¬¡å…ƒè¦ç´ ã® edgeTable ã®ç¬¬3æˆåˆ†ã¯ index é †ã«ã‚½ãƒ¼ãƒˆã•ã‚Œã¦ã„ã‚‹
  *
  */
 
@@ -47,15 +47,15 @@ namespace kmb{
 class MeshData;
 class Tetrahedron;
 
-// —v‘f‚ÉŠÖ‚·‚éˆ—‚ÅAnode table ‚Ì‚İ‚Åˆ—‚Å‚«‚é‚à‚Ì‚É‚Â‚¢‚Ä‚Í Base ƒNƒ‰ƒX‚Éƒƒ\ƒbƒh‚ğ’Ç‰Á‚·‚é
-// Point3D ‚à‚µ‚­‚Í Point2D ‚ÉˆË‘¶‚·‚é‚à‚Ì‚É‚Â‚¢‚Ä‚Í ElementEvaluator ‚ÉÀ‘•‚·‚é
+// è¦ç´ ã«é–¢ã™ã‚‹å‡¦ç†ã§ã€node table ã®ã¿ã§å‡¦ç†ã§ãã‚‹ã‚‚ã®ã«ã¤ã„ã¦ã¯ Base ã‚¯ãƒ©ã‚¹ã«ãƒ¡ã‚½ãƒƒãƒ‰ã‚’è¿½åŠ ã™ã‚‹
+// Point3D ã‚‚ã—ãã¯ Point2D ã«ä¾å­˜ã™ã‚‹ã‚‚ã®ã«ã¤ã„ã¦ã¯ ElementEvaluator ã«å®Ÿè£…ã™ã‚‹
 
 class ElementBase
 {
 public:
 	ElementBase(void){}
 	virtual ~ElementBase(void){}
-	// static ”Å
+	// static ç‰ˆ
 	// size of node table array
 	static int getNodeCount(kmb::elementType type);
 	// size of vertex ( which equals node count in case an element is 1st degree )
@@ -80,11 +80,11 @@ public:
 	static int getDiagIndex(kmb::elementType type,int index);
 	// basic virtual methods
 	virtual kmb::elementType getType(void) const = 0;
-	virtual kmb::nodeIdType getCellId(int cellIndex) const = 0;
-	virtual bool setCellId(int cellIndex, kmb::nodeIdType nodeId) = 0;
+	virtual kmb::nodeIdType getNodeId(int cellIndex) const = 0;
+	virtual bool setNodeId(int cellIndex, kmb::nodeIdType nodeId) = 0;
 	virtual kmb::nodeIdType operator[](const int i) const = 0;
 
-	// instance ”Å
+	// instance ç‰ˆ
 	int getNodeCount(void) const;
 	int getVertexCount(void) const;
 	int getBoundaryCount(void) const;
@@ -95,57 +95,57 @@ public:
 	int getBoundaryVertexCount(int index) const;
 	int getEdgeNodeCount(int index) const;
 	int getEdgeVertexCount(int index) const;
-	kmb::nodeIdType getBoundaryCellId(int index,int i) const;
-	kmb::nodeIdType getEdgeCellId(int index,int i) const;
+	kmb::nodeIdType getBoundaryNodeId(int index,int i) const;
+	kmb::nodeIdType getEdgeNodeId(int index,int i) const;
 	int getDimension(void) const;
 	int getDegree(void) const;
 	const std::string getTypeString(void) const;
 	kmb::elementType getLinearType(void) const;
 	kmb::elementType getSecondType(void) const;
 	int getDiagIndex(int index) const;
-	// •Ö—˜ŠÖ”Œn
+	// ä¾¿åˆ©é–¢æ•°ç³»
 	bool include(kmb::nodeIdType nodeId) const;
 	bool includeVertex(kmb::nodeIdType nodeId) const;
-	// ŠÜ‚Ü‚ê‚È‚©‚Á‚½‚ç -1 ‚ğ•Ô‚·
+	// å«ã¾ã‚Œãªã‹ã£ãŸã‚‰ -1 ã‚’è¿”ã™
 	int indexOf(kmb::nodeIdType nodeId) const;
 	int countCommonNode(kmb::ElementBase& other) const;
 	bool replaceNodeId(kmb::nodeIdType oldNodeId,kmb::nodeIdType newNodeId);
 	int replaceNodeId(std::map<nodeIdType,nodeIdType> &idmap);
-	// –Ê—v‘fA•Ó—v‘f‚Ì¶¬
+	// é¢è¦ç´ ã€è¾ºè¦ç´ ã®ç”Ÿæˆ
 	kmb::elementType getBoundaryElement(int index,kmb::nodeIdType* cell) const;
 	bool getBoundaryElement(int index,kmb::ElementBase& elem) const;
 	kmb::elementType getEdgeElement(int index,kmb::nodeIdType* cell) const;
 	bool getEdgeElement(int index,kmb::ElementBase& elem) const;
-	// index0 ‚Æ index1 ‚ª•Ó‚Å‚Â‚È‚ª‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚© 
-	// 1/-1 ‚Í1Ÿ—v‘f‚Æ‚İ‚½‚É‚Â‚È‚ª‚Á‚Ä‚¢‚é‚©
-	// •„†‚Í•½–Ê—v‘f‚Ì‚Æ‚«‚Ì‚İˆÓ–¡‚ª‚ ‚èA³‚ÌŒü‚«‚©•‰‚ÌŒü‚«‚©‚ğ¦‚·
-	// 2 2Ÿ—v‘f‚Æ‚İ‚½‚É‚Â‚È‚ª‚Á‚Ä‚¢‚é
-	// 0 ‚Â‚È‚ª‚Á‚Ä‚¢‚È‚¢
+	// index0 ã¨ index1 ãŒè¾ºã§ã¤ãªãŒã£ã¦ã„ã‚‹ã‹ã©ã†ã‹ 
+	// 1/-1 ã¯1æ¬¡è¦ç´ ã¨ã¿ãŸæ™‚ã«ã¤ãªãŒã£ã¦ã„ã‚‹ã‹
+	// ç¬¦å·ã¯å¹³é¢è¦ç´ ã®ã¨ãã®ã¿æ„å‘³ãŒã‚ã‚Šã€æ­£ã®å‘ãã‹è² ã®å‘ãã‹ã‚’ç¤ºã™
+	// 2 2æ¬¡è¦ç´ ã¨ã¿ãŸæ™‚ã«ã¤ãªãŒã£ã¦ã„ã‚‹
+	// 0 ã¤ãªãŒã£ã¦ã„ãªã„
 	int isConnected(int index0,int index1) const;
 	//
-	// –Ê‚ğ\¬‚·‚éß“_‚Ì“Y‚¦š‚ğ—^‚¦‚ÄA‰½”Ô–Ú‚Ì–Ê‚©‚ğ”»’è‚·‚é
-	// 1 ‡Œü‚«‚Ì–Ê
-	// -1 ‹tŒü‚«‚Ì–Ê
-	// 0 ‚»‚êˆÈŠO
+	// é¢ã‚’æ§‹æˆã™ã‚‹ç¯€ç‚¹ã®æ·»ãˆå­—ã‚’ä¸ãˆã¦ã€ä½•ç•ªç›®ã®é¢ã‹ã‚’åˆ¤å®šã™ã‚‹
+	// 1 é †å‘ãã®é¢
+	// -1 é€†å‘ãã®é¢
+	// 0 ãã‚Œä»¥å¤–
 	//
 	int isFace(int index0,int index1,int &faceIndex) const;
 	int isFace(int index0,int index1,int index2,int &faceIndex) const;
 	int isFace(int index0,int index1,int index2,int index3,int &faceIndex) const;
 	int isFace(const kmb::ElementBase &element, int &faceIndex) const;
-	// 2“_‚©‚çŒˆ‚Ü‚é–ÊA•Ó‚ğ“Á’è‚·‚é
+	// 2ç‚¹ã‹ã‚‰æ±ºã¾ã‚‹é¢ã€è¾ºã‚’ç‰¹å®šã™ã‚‹
 	int getFaceIndex(int index0,int index1) const;
-	// — •Ô‚·
+	// è£è¿”ã™
 	bool reverse(void);
 	static bool reverse( kmb::elementType etype, kmb::nodeIdType* nodes);
-	// ‚RŠpŒ`•ªŠ„
+	// ï¼“è§’å½¢åˆ†å‰²
 	int divideIntoTriangles(kmb::nodeIdType triangles[][3]) const;
-	// ‚S–Ê‘Ì•ªŠ„
+	// ï¼”é¢ä½“åˆ†å‰²
 	int divideIntoTetrahedrons(kmb::nodeIdType tetrahedrons[][4]) const;
-	// ß“_”Ô†‚ªÅ¬‚Ì’¸“_i’†ŠÔß“_‚ÍŠÜ‚ß‚È‚¢j‚ğ’²‚×‚ÄA‚»‚Ìß“_”z—ñ‚Ì“Y‚¦š”Ô†‚ğ‹‚ß‚é
-	// index ”Ô–Ú‚Ì Face ‚Åß“_”Ô†‚ªÅ¬‚Ìß“_“Y‚¦š”Ô†‚ğ‹‚ß‚é
+	// ç¯€ç‚¹ç•ªå·ãŒæœ€å°ã®é ‚ç‚¹ï¼ˆä¸­é–“ç¯€ç‚¹ã¯å«ã‚ãªã„ï¼‰ã‚’èª¿ã¹ã¦ã€ãã®ç¯€ç‚¹é…åˆ—ã®æ·»ãˆå­—ç•ªå·ã‚’æ±‚ã‚ã‚‹
+	// index ç•ªç›®ã® Face ã§ç¯€ç‚¹ç•ªå·ãŒæœ€å°ã®ç¯€ç‚¹æ·»ãˆå­—ç•ªå·ã‚’æ±‚ã‚ã‚‹
 	int getIndexMinNodeIdOfFace(int index) const;
 	int getIndexMinNodeId(void) const;
-	// •½–Ê—v‘f‚É‚Â‚¢‚ÄB’†ŠÔß“_‚Ìê‡‚Í nullNodeId ‚ğ•Ô‚·
+	// å¹³é¢è¦ç´ ã«ã¤ã„ã¦ã€‚ä¸­é–“ç¯€ç‚¹ã®å ´åˆã¯ nullNodeId ã‚’è¿”ã™
 	kmb::nodeIdType nextNode(kmb::nodeIdType nodeId) const;
 	kmb::nodeIdType previousNode(kmb::nodeIdType nodeId) const;
 };
@@ -170,19 +170,23 @@ public:
 	// clone with replacing node ids
 	Element* clone( std::map< kmb::nodeIdType, kmb::nodeIdType >& nodeMapper ) const;
 	Element* reverseClone( std::map< kmb::nodeIdType, kmb::nodeIdType >& nodeMapper ) const;
-	// ¶¬ƒƒ\ƒbƒh
-	// ary ‚Í”z—ñ‚Å‚È‚­ new ‚ÅŠm•Û‚³‚ê‚½ƒ|ƒCƒ“ƒ^‚ğ‘ã“ü‚·‚é‚±‚Æ
-	// ‚»‚Ìƒ|ƒCƒ“ƒ^‚ğ•Û‚·‚é‚Ì‚ÅAŒÄ‚Ño‚µ‘¤‚Å‚Í delete ‚µ‚È‚¢‚±‚ÆI
-	// ary = NULL ‚Ìê‡‚Í‚±‚Ìƒƒ\ƒbƒh‚Ì’†‚Å new ‚·‚éB
+	// ç”Ÿæˆãƒ¡ã‚½ãƒƒãƒ‰
+	// ary ã¯é…åˆ—ã§ãªã new ã§ç¢ºä¿ã•ã‚ŒãŸãƒã‚¤ãƒ³ã‚¿ã‚’ä»£å…¥ã™ã‚‹ã“ã¨
+	// ãã®ãƒã‚¤ãƒ³ã‚¿ã‚’ä¿æŒã™ã‚‹ã®ã§ã€å‘¼ã³å‡ºã—å´ã§ã¯ delete ã—ãªã„ã“ã¨ï¼
+	// ary = NULL ã®å ´åˆã¯ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã®ä¸­ã§ new ã™ã‚‹ã€‚
 	static Element* create(kmb::elementType type,kmb::nodeIdType *ary=NULL);
 	// get element type
 	virtual kmb::elementType getType() const;
 public:
 	// set/get node table
-	virtual bool setCellId(int index,kmb::nodeIdType nodeId);
-	virtual kmb::nodeIdType getCellId(int index) const;
+	virtual bool setNodeId(int index,kmb::nodeIdType nodeId);
+	virtual kmb::nodeIdType getNodeId(int index) const;
+	// nodeId ã¸ã®å‚ç…§
 	virtual kmb::nodeIdType operator[](const int i) const;
 	virtual kmb::nodeIdType& operator[](const int i);
+	// boundary nodeId ã¸ã®å‚ç…§
+	virtual kmb::nodeIdType operator()(const int index,const int i) const = 0;
+	virtual kmb::nodeIdType& operator()(const int index,const int i) = 0;
 protected:
 	elementType type;
 	nodeIdType *cell;

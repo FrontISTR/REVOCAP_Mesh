@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : IntegerMapBindings                                      #
@@ -13,8 +13,8 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 /*
- * nodeId/elementId/bodyId => integer �̑Ή����L�^����
- * getPhysicalValue �Ń|�C���^�l�𓾂��Ȃ��̂Œ��ӂ���
+ * nodeId/elementId/bodyId => integer の対応を記録する
+ * getPhysicalValue でポインタ値を得られないので注意する
  */
 
 #pragma once

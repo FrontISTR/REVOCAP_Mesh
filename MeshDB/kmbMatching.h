@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Matching                                                #
@@ -57,12 +57,12 @@ public:
 	// nodeMatching mesh0:body0 => mesh1:body1 within tolerance
 	// record mapping info to mesh0:data(coupleName)
 	// return count of record pair
-	// importBody ‚Ì‚Ég‚¤ nodeMapping data ‚Ì¶¬‚É—p‚¢‚é
+	// importBody ã®æ™‚ã«ä½¿ã† nodeMapping data ã®ç”Ÿæˆã«ç”¨ã„ã‚‹
 	int nodeMatchingBetweenBodies(kmb::MeshDB* mesh0, kmb::bodyIdType bodyId0, kmb::MeshDB* mesh1, kmb::bodyIdType bodyId1, double tolerance, const char* coupleName);
 	// nodeMatching mesh0:body0 => mesh1:all nodes within tolerance
 	// record mapping info to mesh0:data(coupleName)
 	// return count of record pair
-	// importBody ‚Ì‚Ég‚¤ nodeMapping data ‚Ì¶¬‚É—p‚¢‚é
+	// importBody ã®æ™‚ã«ä½¿ã† nodeMapping data ã®ç”Ÿæˆã«ç”¨ã„ã‚‹
 	int nodeMatchingOnBody(kmb::MeshDB* mesh0, kmb::bodyIdType bodyId0, kmb::MeshDB* mesh1, double tolerance, const char* coupleName);
 public:
 	//
@@ -92,8 +92,8 @@ public:
 	// if distance  < tolerance 
 	// nodeMapper[ nodeId of mesh1 on body ] = nodeId of mesh0
 	//
-	// mesh1 ‚Ì bodyId1 ‚Ì—Ìˆæã‚Ìß“_‚É‚Â‚¢‚Ä‚ÍAmesh0 ‚Ì’†‚ÌÅ‹ß“_‚ğ’T‚µ‚ÄA‹——£‚ª tolerance ˆÈ‰º‚Ì‚à‚Ì‚Í
-	// ‚»‚ê‚ğg‚¢Ag‚Á‚½Œ‹‰Ê‚ğ nodeMapper ‚É“o˜^‚µ‚Ä‚¨‚­
+	// mesh1 ã® bodyId1 ã®é ˜åŸŸä¸Šã®ç¯€ç‚¹ã«ã¤ã„ã¦ã¯ã€mesh0 ã®ä¸­ã®æœ€è¿‘ç‚¹ã‚’æ¢ã—ã¦ã€è·é›¢ãŒ tolerance ä»¥ä¸‹ã®ã‚‚ã®ã¯
+	// ãã‚Œã‚’ä½¿ã„ã€ä½¿ã£ãŸçµæœã‚’ nodeMapper ã«ç™»éŒ²ã—ã¦ãŠã
 	// 
 	static int matchNodeToNodeOnBody
 		(kmb::MeshDB* mesh0, kmb::MeshDB* mesh1, kmb::bodyIdType bodyId1,

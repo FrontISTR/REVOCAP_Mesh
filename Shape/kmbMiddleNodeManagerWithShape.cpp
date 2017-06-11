@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : FittingToSurface                                        #
@@ -106,13 +106,13 @@ kmb::MiddleNodeManagerWithShape::createMiddleNode(kmb::nodeIdType n0, kmb::nodeI
 		kmb::Surface3D* surface = NULL;
 		kmb::Point3D pt;
 		double u,v;
-		// n0 ‚Æ n1 ‚ª‹¤—L‚·‚é‹È–Ê‚ğ’T‚·
-		// ‹¤’Ê‚Ì–Ê‚ª•¡”‚ ‚é‚Í‚Ÿ‚Ì–Ê‚ğ—Dæ‚µ‚Ä’T‚·‚æ‚¤‚É‚·‚é‚×‚«‚©‚à
+		// n0 ã¨ n1 ãŒå…±æœ‰ã™ã‚‹æ›²é¢ã‚’æ¢ã™
+		// å…±é€šã®é¢ãŒè¤‡æ•°ã‚ã‚‹æ™‚ã¯é«˜æ¬¡ã®é¢ã‚’å„ªå…ˆã—ã¦æ¢ã™ã‚ˆã†ã«ã™ã‚‹ã¹ãã‹ã‚‚
 		if( mappingToSurface->isCommonIntval(n0,n1,v0,v1) > 0 )
 		{
-			// ‹¤’Ê‚Ì–Ê‚ª‚ ‚é‚Æ‚«‚ÍA(u,v) À•W‚Å’†“_‚ğŒvZ‚·‚é
+			// å…±é€šã®é¢ãŒã‚ã‚‹ã¨ãã¯ã€(u,v) åº§æ¨™ã§ä¸­ç‚¹ã‚’è¨ˆç®—ã™ã‚‹
 			if( nearestFlag ){
-				// nearest => (u,v) ‚Ì’†“_‚æ‚è‚àŠô‰½“I‚È’†“_‚É‹ß‚¢“_‚ª‚ ‚ê‚Î’u‚«Š·‚¦‚é
+				// nearest => (u,v) ã®ä¸­ç‚¹ã‚ˆã‚Šã‚‚å¹¾ä½•çš„ãªä¸­ç‚¹ã«è¿‘ã„ç‚¹ãŒã‚ã‚Œã°ç½®ãæ›ãˆã‚‹
 				kmb::nodeIdType nodeId = kmb::nullNodeId;
 				for(unsigned int i=0;i<v0.size();++i){
 					if( (surface = surfaces->at(v0[i].l)) != NULL ){
@@ -144,14 +144,14 @@ kmb::MiddleNodeManagerWithShape::createMiddleNode(kmb::nodeIdType n0, kmb::nodeI
 				}
 			}
 		}else{
-			// ‹¤’Ê‚Ì–Ê‚ª‚È‚¢
+			// å…±é€šã®é¢ãŒãªã„æ™‚
 		}
 	}
-	// fitting ‚È‚µ
+	// fitting ãªã—
 	return kmb::MiddleNodeManager::createMiddleNode(n0,n1);
 }
 
-// 4“_‚ª“¯ˆê‚Ì‚½‚¾ˆê‚Â‚Ì–Êã‚É‚ ‚é‚Æ‚«‚É’†“_‚ğ‹‚ß‚é
+// 4ç‚¹ãŒåŒä¸€ã®ãŸã ä¸€ã¤ã®é¢ä¸Šã«ã‚ã‚‹ã¨ãã«ä¸­ç‚¹ã‚’æ±‚ã‚ã‚‹
 kmb::nodeIdType
 kmb::MiddleNodeManagerWithShape::createMiddleNode4(kmb::nodeIdType n0, kmb::nodeIdType n1,kmb::nodeIdType n2, kmb::nodeIdType n3)
 {
@@ -160,7 +160,7 @@ kmb::MiddleNodeManagerWithShape::createMiddleNode4(kmb::nodeIdType n0, kmb::node
 		long index02 = 0L, index13 = 0L;
 		kmb::Surface3D* surface = NULL;
 		kmb::Point3D pt;
-		// ‹¤’Ê‚Ì–Ê‚ª‚ ‚é‚Æ‚«‚ÍA(u,v) À•W‚Å’†“_‚ğŒvZ‚·‚é
+		// å…±é€šã®é¢ãŒã‚ã‚‹ã¨ãã¯ã€(u,v) åº§æ¨™ã§ä¸­ç‚¹ã‚’è¨ˆç®—ã™ã‚‹
 		if( mappingToSurface->isCommonIntval(n0,n2,index02,u0,u2) &&
 			mappingToSurface->isCommonIntval(n1,n3,index13,u1,u3) &&
 			index02 == index13 &&

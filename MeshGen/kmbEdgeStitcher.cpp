@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : PatchOperation                                          #
@@ -105,8 +105,8 @@ kmb::EdgeStitcher::setEdgesWithinDistance(kmb::bodyIdType forward,kmb::bodyIdTyp
 		if( f != NULL && f->isUniqueType( kmb::SEGMENT )  &&
 			b != NULL && b->isUniqueType( kmb::SEGMENT )  )
 		{
-			// f ‚Æ b ‚Ì‹——£‚ª distance ˆÈ‰º
-			// ‚Ì‚à‚Ì‚ğ“o˜^‚·‚é
+			// f ã¨ b ã®è·é›¢ãŒ distance ä»¥ä¸‹
+			// ã®ã‚‚ã®ã‚’ç™»éŒ²ã™ã‚‹
 
 			kmb::ElementContainerMap fnear;
 			kmb::ElementContainerMap bnear;
@@ -118,14 +118,14 @@ kmb::EdgeStitcher::setEdgesWithinDistance(kmb::bodyIdType forward,kmb::bodyIdTyp
 			kmb::ElementContainer::iterator eIterf = f->begin();
 			while( !eIterf.isFinished() )
 			{
-				if( points->getPoint( eIterf.getCellId(0), p0 ) &&
-					points->getPoint( eIterf.getCellId(1), p1 ) )
+				if( points->getPoint( eIterf.getNodeId(0), p0 ) &&
+					points->getPoint( eIterf.getNodeId(1), p1 ) )
 				{
 					if( kmb::Matching::getDistanceEdgeToNodeWithParam( points, b, &p0, nearestId, param ) < distance &&
 						kmb::Matching::getDistanceEdgeToNodeWithParam( points, b, &p1, nearestId, param ) < distance )
 					{
-						cell[0] = eIterf.getCellId(0);
-						cell[1] = eIterf.getCellId(1);
+						cell[0] = eIterf.getNodeId(0);
+						cell[1] = eIterf.getNodeId(1);
 						fnear.addElement( kmb::SEGMENT, cell );
 					}
 				}
@@ -135,26 +135,26 @@ kmb::EdgeStitcher::setEdgesWithinDistance(kmb::bodyIdType forward,kmb::bodyIdTyp
 			kmb::ElementContainer::iterator eIterb = b->begin();
 			while( !eIterb.isFinished() )
 			{
-				if( points->getPoint( eIterb.getCellId(0), p0 ) &&
-					points->getPoint( eIterb.getCellId(1), p1 ) )
+				if( points->getPoint( eIterb.getNodeId(0), p0 ) &&
+					points->getPoint( eIterb.getNodeId(1), p1 ) )
 				{
 					if( kmb::Matching::getDistanceEdgeToNodeWithParam( points, f, &p0, nearestId, param ) < distance &&
 						kmb::Matching::getDistanceEdgeToNodeWithParam( points, f, &p1, nearestId, param ) < distance )
 					{
-						cell[0] = eIterb.getCellId(0);
-						cell[1] = eIterb.getCellId(1);
+						cell[0] = eIterb.getNodeId(0);
+						cell[1] = eIterb.getNodeId(1);
 						bnear.addElement( kmb::SEGMENT, cell );
 					}
 				}
 				++eIterb;
 			}
-			// Polygon ‚Í“à•”‚Å edges ‚Ì•¡»‚ğì‚é
+			// Polygon ã¯å†…éƒ¨ã§ edges ã®è¤‡è£½ã‚’ä½œã‚‹
 			this->forward.setEdges( &fnear );
 			this->backward.setEdges( &bnear );
 			kmb::nodeIdType initF=kmb::nullNodeId, endF=kmb::nullNodeId, initB=kmb::nullNodeId, endB=kmb::nullNodeId;
-			// ˜AŒ‹«ƒ`ƒFƒbƒN
+			// é€£çµæ€§ãƒã‚§ãƒƒã‚¯
 			if( !this->forward.getEndPoints(initF,endF) || !this->backward.getEndPoints(initB,endB) ){
-				// ‚Ç‚¿‚ç‚©‚ª˜AŒ‹‚Å‚Í‚È‚¢
+				// ã©ã¡ã‚‰ã‹ãŒé€£çµã§ã¯ãªã„
 				return false;
 			}
 			normal.zero();
@@ -236,7 +236,7 @@ kmb::EdgeStitcher::getNormalCheck(void) const
 void
 kmb::EdgeStitcher::setInitNormal(void)
 {
-	// ‰Šú–@üƒxƒNƒgƒ‹‚Í + edgesbackward ‚Ì–@üƒxƒNƒgƒ‹‚Æ - edgesforward ‚Ì–@üƒxƒNƒgƒ‹‚Ì˜a
+	// åˆæœŸæ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã¯ + edgesbackward ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã¨ - edgesforward ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã®å’Œ
 	kmb::nodeIdType n0 = b0;
 	kmb::nodeIdType n1 = backward.getNodeId( n0, -1 );
 	kmb::nodeIdType n2 = backward.getNodeId( n1, -1 );
@@ -264,32 +264,32 @@ kmb::EdgeStitcher::setInitialNode( kmb::nodeIdType forwardInit, kmb::nodeIdType 
 		return;
 	}
 	kmb::nodeIdType initF=kmb::nullNodeId, endF=kmb::nullNodeId, initB=kmb::nullNodeId, endB=kmb::nullNodeId;
-	// ˜AŒ‹«ƒ`ƒFƒbƒN
+	// é€£çµæ€§ãƒã‚§ãƒƒã‚¯
 	if( !forward.getEndPoints(initF,endF) || !backward.getEndPoints(initB,endB) ){
-		// ‚Ç‚¿‚ç‚©‚ª˜AŒ‹‚Å‚Í‚È‚¢
+		// ã©ã¡ã‚‰ã‹ãŒé€£çµã§ã¯ãªã„
 		return;
 	}
 	if( initF == kmb::nullNodeId && endB == kmb::nullNodeId ){
-		// —¼•ûƒ‹[ƒv‚Ì
+		// ä¸¡æ–¹ãƒ«ãƒ¼ãƒ—ã®æ™‚
 		if( f0 != kmb::nullNodeId ){
 			initF = f0;
 		}else if( b0 != kmb::nullNodeId ){
 			endB = b0;
 		}else{
-			initF = forward.getEdges()->begin().getCellId(0);
+			initF = forward.getEdges()->begin().getNodeId(0);
 		}
 	}
 	if( initF == kmb::nullNodeId && endB != kmb::nullNodeId ){
-		// backward ‚ªƒ‹[ƒv‚¶‚á‚È‚¢
-		// forward ‚Ì’†‚©‚ç backward ‚ÌÅ‹ß“_‚ğ’T‚·
+		// backward ãŒãƒ«ãƒ¼ãƒ—ã˜ã‚ƒãªã„
+		// forward ã®ä¸­ã‹ã‚‰ backward ã®æœ€è¿‘ç‚¹ã‚’æ¢ã™
 		kmb::Point3D node, target;
 		if( points->getPoint( endB, node ) ){
 			kmb::Minimizer min;
 			kmb::ElementContainer::const_iterator eIter = forward.getEdges()->begin();
 			while( !eIter.isFinished() ){
-				if( points->getPoint( eIter.getCellId(0), target ) ){
+				if( points->getPoint( eIter.getNodeId(0), target ) ){
 					if( min.update( node.distanceSq( target ) ) ){
-						initF = eIter.getCellId(0);
+						initF = eIter.getNodeId(0);
 					}
 				}
 				++eIter;
@@ -297,15 +297,15 @@ kmb::EdgeStitcher::setInitialNode( kmb::nodeIdType forwardInit, kmb::nodeIdType 
 		}
 	}
 	if( initF != kmb::nullNodeId && endB == kmb::nullNodeId ){
-		// backward ‚Ì’†‚©‚ç forward ‚ÌÅ‹ß“_‚ğ’T‚·
+		// backward ã®ä¸­ã‹ã‚‰ forward ã®æœ€è¿‘ç‚¹ã‚’æ¢ã™
 		kmb::Point3D node, target;
 		if( points->getPoint( initF, node ) ){
 			kmb::Minimizer min;
 			kmb::ElementContainer::const_iterator eIter = backward.getEdges()->begin();
 			while( !eIter.isFinished() ){
-				if( points->getPoint( eIter.getCellId(0), target ) ){
+				if( points->getPoint( eIter.getNodeId(0), target ) ){
 					if( min.update( node.distanceSq( target ) ) ){
-						endB = eIter.getCellId(0);
+						endB = eIter.getNodeId(0);
 					}
 				}
 				++eIter;
@@ -316,10 +316,10 @@ kmb::EdgeStitcher::setInitialNode( kmb::nodeIdType forwardInit, kmb::nodeIdType 
 	b0 = endB;
 }
 
-// ‘½ŠpŒ` forward ‚Ì“_ f0 ‚ğ‡•ûŒü‚É
-// ‘½ŠpŒ` backward ‚Ì“_ b0 ‚ğ‹t•ûŒü‚É
-// OŠpŒ`‚ğì‚éi1ƒXƒeƒbƒv‚¾‚¯j
-// fend bend ‚É“’B‚µ‚½‚ç‚»‚êˆÈã‚Íi‚ß‚È‚¢
+// å¤šè§’å½¢ forward ã®ç‚¹ f0 ã‚’é †æ–¹å‘ã«
+// å¤šè§’å½¢ backward ã®ç‚¹ b0 ã‚’é€†æ–¹å‘ã«
+// ä¸‰è§’å½¢ã‚’ä½œã‚‹ï¼ˆ1ã‚¹ãƒ†ãƒƒãƒ—ã ã‘ï¼‰
+// fend bend ã«åˆ°é”ã—ãŸã‚‰ãã‚Œä»¥ä¸Šã¯é€²ã‚ãªã„
 bool
 kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
 {
@@ -338,7 +338,7 @@ kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
 		if( b1 == kmb::nullNodeId ){
 			return false;
 		}else{
-			// b1 ‚Ì‚İg‚¦‚é
+			// b1 ã®ã¿ä½¿ãˆã‚‹
 			addTriangle( result, f0, b0, b1 );
 			if( normalCheck ){
 				normal = points->calcVerticalVector( f0, b0, b1 );
@@ -350,7 +350,7 @@ kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
 		}
 	}else{
 		if( b1 == kmb::nullNodeId ){
-			// f1 ‚Ì‚İg‚¦‚é
+			// f1 ã®ã¿ä½¿ãˆã‚‹
 			addTriangle( result, f0, b0, f1 );
 			if( normalCheck ){
 				normal = points->calcVerticalVector( f0, b0, f1 );
@@ -360,14 +360,14 @@ kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
 			}
 			f0 = f1;
 		}else{
-			// —¼•ûg‚¦‚é‚ÍŠp“x‚Å”»’f
+			// ä¸¡æ–¹ä½¿ãˆã‚‹æ™‚ã¯è§’åº¦ã§åˆ¤æ–­
 			kmb::Point3D pf0,pf1,pb0,pb1;
 			if( points->getPoint(f0,pf0) &&
 				points->getPoint(f1,pf1) &&
 				points->getPoint(b0,pb0) &&
 				points->getPoint(b1,pb1) )
 			{
-				// f0 f1 b1 b0 ‚©‚ç‚È‚élŠpŒ`‚Å cos ‚ªˆê”Ô¬‚³‚­‚È‚é‚Æ‚±‚ë‚ğ•ªŠ„‚·‚é‚æ‚¤‚ÈOŠpŒ`‚É‚·‚é
+				// f0 f1 b1 b0 ã‹ã‚‰ãªã‚‹å››è§’å½¢ã§ cos ãŒä¸€ç•ªå°ã•ããªã‚‹ã¨ã“ã‚ã‚’åˆ†å‰²ã™ã‚‹ã‚ˆã†ãªä¸‰è§’å½¢ã«ã™ã‚‹
 				kmb::nodeIdType nextId = kmb::nullNodeId;
 				kmb::Minimizer min;
 				if( min.update( Point3D::cos( pb0, pf0, pf1 ) ) ){
@@ -409,11 +409,11 @@ kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
 	return true;
 }
 
-// ‘½ŠpŒ` forward ‚Ì“_ f0 ‚ğ‡•ûŒü‚É
-// ‘½ŠpŒ` backward ‚Ì“_ b0 ‚ğ‹t•ûŒü‚É
-// lŠpŒ`‚ğì‚é
-// fend bend ‚É“’B‚µ‚½‚ç‚»‚êˆÈã‚Íi‚ß‚È‚¢
-// ‘I‘ğˆ‚ª•¡”‚ ‚é‚É‚Í–@üƒxƒNƒgƒ‹‚Æ•Ó‚Ì’·‚³‚Å”»’f‚·‚é
+// å¤šè§’å½¢ forward ã®ç‚¹ f0 ã‚’é †æ–¹å‘ã«
+// å¤šè§’å½¢ backward ã®ç‚¹ b0 ã‚’é€†æ–¹å‘ã«
+// å››è§’å½¢ã‚’ä½œã‚‹
+// fend bend ã«åˆ°é”ã—ãŸã‚‰ãã‚Œä»¥ä¸Šã¯é€²ã‚ãªã„
+// é¸æŠè‚¢ãŒè¤‡æ•°ã‚ã‚‹æ™‚ã«ã¯æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã¨è¾ºã®é•·ã•ã§åˆ¤æ–­ã™ã‚‹
 bool
 kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 {
@@ -425,7 +425,7 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 	kmb::nodeIdType b1 = (b0!=bend) ? backward.getNodeId(b0,-1) : kmb::nullNodeId;
 	kmb::nodeIdType b2 = (b1!=bend) ? backward.getNodeId(b1,-1) : kmb::nullNodeId;
 	unsigned int flag = 0;
-	// ’¸“_‚ği‚ß‚é‚©‚Ç‚¤‚©‚Ì”»’è
+	// é ‚ç‚¹ã‚’é€²ã‚ã‚‹ã‹ã©ã†ã‹ã®åˆ¤å®š
 	if( f1 != kmb::nullNodeId ) flag |= 0x01;
 	if( f2 != kmb::nullNodeId ) flag |= 0x02;
 	if( b1 != kmb::nullNodeId ) flag |= 0x04;
@@ -448,15 +448,15 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 	}
 	kmb::nodeIdType nodes[4] = {f0,b0,kmb::nullNodeId,kmb::nullNodeId};
 	switch(flag){
-		case 0x00: // ‚Ç‚¿‚ç‚Ì•Ó‚à‚·‚Å‚ÉI“_
-		case 0x01: // f1 forward 1‰ñ‚µ‚©i‚ß‚È‚¢
-		case 0x04: // b1 backward 1‰ñ‚µ‚©i‚ß‚È‚¢
+		case 0x00: // ã©ã¡ã‚‰ã®è¾ºã‚‚ã™ã§ã«çµ‚ç‚¹
+		case 0x01: // f1 forward 1å›ã—ã‹é€²ã‚ãªã„
+		case 0x04: // b1 backward 1å›ã—ã‹é€²ã‚ãªã„
 			return false;
 		case 0x03: // f1 f2
 			nodes[2] = f2;
 			nodes[3] = f1;
 			result->addElement( kmb::QUAD, nodes );
-			// ƒ‹[ƒv‚Ì‚Ì‚½‚ß‚ÉI—¹“_‚ğŠo‚¦‚Ä‚¨‚­
+			// ãƒ«ãƒ¼ãƒ—ã®æ™‚ã®ãŸã‚ã«çµ‚äº†ç‚¹ã‚’è¦šãˆã¦ãŠã
 			if( fend == kmb::nullNodeId ){
 				fend = f0;
 			}
@@ -467,7 +467,7 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 			nodes[2] = b1;
 			nodes[3] = f1;
 			result->addElement( kmb::QUAD, nodes );
-			// ƒ‹[ƒv‚Ì‚Ì‚½‚ß‚ÉI—¹“_‚ğŠo‚¦‚Ä‚¨‚­
+			// ãƒ«ãƒ¼ãƒ—ã®æ™‚ã®ãŸã‚ã«çµ‚äº†ç‚¹ã‚’è¦šãˆã¦ãŠã
 			if( fend == kmb::nullNodeId ){
 				fend = f0;
 			}
@@ -482,7 +482,7 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 			nodes[2] = b1;
 			nodes[3] = b2;
 			result->addElement( kmb::QUAD, nodes );
-			// ƒ‹[ƒv‚Ì‚Ì‚½‚ß‚ÉI—¹“_‚ğŠo‚¦‚Ä‚¨‚­
+			// ãƒ«ãƒ¼ãƒ—ã®æ™‚ã®ãŸã‚ã«çµ‚äº†ç‚¹ã‚’è¦šãˆã¦ãŠã
 			if( bend == kmb::nullNodeId ){
 				bend = b0;
 			}
@@ -491,7 +491,7 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 			return true;
 		case 0x07: // f1 f2 b1
 			{
-				// f1 b1 ‚Æ f1 f2 ‚Ì”äŠr
+				// f1 b1 ã¨ f1 f2 ã®æ¯”è¼ƒ
 				double f1b1 = points->distanceSq(f1,b1) + points->distanceSq(b1,b0);
 				double f1f2 = points->distanceSq(f1,f2) + points->distanceSq(f2,b0);
 				if( fabs(f1b1) <= fabs(f1f2) ){
@@ -499,7 +499,7 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 					nodes[2] = b1;
 					nodes[3] = f1;
 					result->addElement( kmb::QUAD, nodes );
-					// ƒ‹[ƒv‚Ì‚Ì‚½‚ß‚ÉI—¹“_‚ğŠo‚¦‚Ä‚¨‚­
+					// ãƒ«ãƒ¼ãƒ—ã®æ™‚ã®ãŸã‚ã«çµ‚äº†ç‚¹ã‚’è¦šãˆã¦ãŠã
 					if( fend == kmb::nullNodeId ){
 						fend = f0;
 					}
@@ -515,7 +515,7 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 					nodes[2] = f2;
 					nodes[3] = f1;
 					result->addElement( kmb::QUAD, nodes );
-					// ƒ‹[ƒv‚Ì‚Ì‚½‚ß‚ÉI—¹“_‚ğŠo‚¦‚Ä‚¨‚­
+					// ãƒ«ãƒ¼ãƒ—ã®æ™‚ã®ãŸã‚ã«çµ‚äº†ç‚¹ã‚’è¦šãˆã¦ãŠã
 					if( fend == kmb::nullNodeId ){
 						fend = f0;
 					}
@@ -526,7 +526,7 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 			}
 		case 0x0d: // f1 b1 b2
 			{
-				// f1 b1 ‚Æ b1 b2 ‚Ì”äŠr
+				// f1 b1 ã¨ b1 b2 ã®æ¯”è¼ƒ
 				double f1b1 = points->distanceSq(f0,f1) + points->distanceSq(f1,b1);
 				double b2b1 = points->distanceSq(f0,b2) + points->distanceSq(b2,b1);
 				if( fabs(f1b1) <= fabs(b2b1) ){
@@ -534,7 +534,7 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 					nodes[2] = b1;
 					nodes[3] = f1;
 					result->addElement( kmb::QUAD, nodes );
-					// ƒ‹[ƒv‚Ì‚Ì‚½‚ß‚ÉI—¹“_‚ğŠo‚¦‚Ä‚¨‚­
+					// ãƒ«ãƒ¼ãƒ—ã®æ™‚ã®ãŸã‚ã«çµ‚äº†ç‚¹ã‚’è¦šãˆã¦ãŠã
 					if( fend == kmb::nullNodeId ){
 						fend = f0;
 					}
@@ -550,7 +550,7 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 					nodes[2] = b1;
 					nodes[3] = b2;
 					result->addElement( kmb::QUAD, nodes );
-					// ƒ‹[ƒv‚Ì‚Ì‚½‚ß‚ÉI—¹“_‚ğŠo‚¦‚Ä‚¨‚­
+					// ãƒ«ãƒ¼ãƒ—ã®æ™‚ã®ãŸã‚ã«çµ‚äº†ç‚¹ã‚’è¦šãˆã¦ãŠã
 					if( bend == kmb::nullNodeId ){
 						bend = b0;
 					}
@@ -561,7 +561,7 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 			}
 		case 0x0f: // f1 f2 b1 b2
 			{
-				// f1 b1 ‚Æ f1 f2 ‚Æ b1 b2 ‚Ì”äŠr
+				// f1 b1 ã¨ f1 f2 ã¨ b1 b2 ã®æ¯”è¼ƒ
 				double f1b1 = points->distanceSq(f0,f1) + points->distanceSq(f1,b1) + points->distanceSq(b1,b0);
 				double f1f2 = points->distanceSq(f0,f1) + points->distanceSq(f1,f2) + points->distanceSq(f2,b0);
 				double b2b1 = points->distanceSq(f0,b2) + points->distanceSq(b2,b1) + points->distanceSq(b1,b0);
@@ -571,11 +571,11 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 						nodes[2] = b1;
 						nodes[3] = f1;
 						result->addElement( kmb::QUAD, nodes );
-						// ƒ‹[ƒv‚Ì‚Ì‚½‚ß‚ÉI—¹“_‚ğŠo‚¦‚Ä‚¨‚­
+						// ãƒ«ãƒ¼ãƒ—ã®æ™‚ã®ãŸã‚ã«çµ‚äº†ç‚¹ã‚’è¦šãˆã¦ãŠã
 						if( fend == kmb::nullNodeId ){
 							fend = f0;
 						}
-						// ƒ‹[ƒv‚Ì‚Ì‚½‚ß‚ÉI—¹“_‚ğŠo‚¦‚Ä‚¨‚­
+						// ãƒ«ãƒ¼ãƒ—ã®æ™‚ã®ãŸã‚ã«çµ‚äº†ç‚¹ã‚’è¦šãˆã¦ãŠã
 						if( bend == kmb::nullNodeId ){
 							bend = b0;
 						}
@@ -586,7 +586,7 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 						nodes[2] = b1;
 						nodes[3] = b2;
 						result->addElement( kmb::QUAD, nodes );
-						// ƒ‹[ƒv‚Ì‚Ì‚½‚ß‚ÉI—¹“_‚ğŠo‚¦‚Ä‚¨‚­
+						// ãƒ«ãƒ¼ãƒ—ã®æ™‚ã®ãŸã‚ã«çµ‚äº†ç‚¹ã‚’è¦šãˆã¦ãŠã
 						if( bend == kmb::nullNodeId ){
 							bend = b0;
 						}
@@ -598,7 +598,7 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 						nodes[2] = f2;
 						nodes[3] = f1;
 						result->addElement( kmb::QUAD, nodes );
-						// ƒ‹[ƒv‚Ì‚Ì‚½‚ß‚ÉI—¹“_‚ğŠo‚¦‚Ä‚¨‚­
+						// ãƒ«ãƒ¼ãƒ—ã®æ™‚ã®ãŸã‚ã«çµ‚äº†ç‚¹ã‚’è¦šãˆã¦ãŠã
 						if( fend == kmb::nullNodeId ){
 							fend = f0;
 						}
@@ -608,7 +608,7 @@ kmb::EdgeStitcher::stitchByQuad( kmb::ElementContainer* result )
 						nodes[2] = b1;
 						nodes[3] = b2;
 						result->addElement( kmb::QUAD, nodes );
-						// ƒ‹[ƒv‚Ì‚Ì‚½‚ß‚ÉI—¹“_‚ğŠo‚¦‚Ä‚¨‚­
+						// ãƒ«ãƒ¼ãƒ—ã®æ™‚ã®ãŸã‚ã«çµ‚äº†ç‚¹ã‚’è¦šãˆã¦ãŠã
 						if( bend == kmb::nullNodeId ){
 							bend = b0;
 						}
@@ -637,15 +637,15 @@ kmb::EdgeStitcher::stitchByQuadsWithNodeCount(int fCount,int bCount)
 		std::vector<kmb::nodeIdType> appendNodes;
 		kmb::ElementContainerMap* result = NULL;
 		result = new kmb::ElementContainerMap();
-		// ß“_‚ÌŒÂ”‚É‰‚¶‚Ä‚Â‚È‚¬•û‚ğ•Ï‚¦‚é
-		// 4“_ˆÈãß“_‚ğ’Ç‰Á‚·‚éê‡‚ÍA‚à‚¤‚¿‚å‚Á‚ÆH•v‚µ‚È‚¢‚ÆA
-		// “¯‚¶‚Æ‚±‚ë‚É‚¢‚­‚Â‚à“_‚ğ’Ç‰Á‚µ‚Ä‚µ‚Ü‚¤B
+		// ç¯€ç‚¹ã®å€‹æ•°ã«å¿œã˜ã¦ã¤ãªãæ–¹ã‚’å¤‰ãˆã‚‹
+		// 4ç‚¹ä»¥ä¸Šç¯€ç‚¹ã‚’è¿½åŠ ã™ã‚‹å ´åˆã¯ã€ã‚‚ã†ã¡ã‚‡ã£ã¨å·¥å¤«ã—ãªã„ã¨ã€
+		// åŒã˜ã¨ã“ã‚ã«ã„ãã¤ã‚‚ç‚¹ã‚’è¿½åŠ ã—ã¦ã—ã¾ã†ã€‚
 		if( forward.getSize() == 4 && backward.getSize() == 6 ){
-			// forward ‚Ì•û‚ª­‚È‚¢ê‡‚ÍA“K“–‚É“_‚ğ’Ç‰Á‚·‚é
+			// forward ã®æ–¹ãŒå°‘ãªã„å ´åˆã¯ã€é©å½“ã«ç‚¹ã‚’è¿½åŠ ã™ã‚‹
 			kmb::Point3D backCenter;
 			kmb::Point3D forwardCenter;
 			if( backward.getCenter( points, backCenter ) && forward.getCenter( points, forwardCenter ) ){
-				// dS‚Éˆê”Ô‹ß‚¢‚Æ‚±‚ë
+				// é‡å¿ƒã«ä¸€ç•ªè¿‘ã„ã¨ã“ã‚
 				kmb::nodeIdType a0 = forward.getNearestNode( points, backCenter );
 				kmb::nodeIdType nodes[4] = {kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId};
 				if( a0 != kmb::nullNodeId ){
@@ -656,15 +656,15 @@ kmb::EdgeStitcher::stitchByQuadsWithNodeCount(int fCount,int bCount)
 						kmb::Vector3D diffCenter( backCenter, forwardCenter );
 						kmb::Vector3D v_next( p_next, p0 );
 						kmb::Vector3D v_prev( p_prev, p0 );
-						// dS‚Ì‚¸‚ê‚Æ‚Ì•ûŒü‚ğ’²‚×‚é
+						// é‡å¿ƒã®ãšã‚Œã¨ã®æ–¹å‘ã‚’èª¿ã¹ã‚‹
 						if( v_next * diffCenter < v_prev * diffCenter ){
 							nodes[0] = a0;
 							nodes[1] = points->addPoint(p0);
 							nodes[2] = points->addPoint(p_next);
 							nodes[3] = a_next;
-							// forward ‚Å [f0,f0,f1,f1] ‚ğ’Ç‰Á
-							// [f0,f1,f2,f3] ‚Æ‚İ‚È‚·
-							// nodes[1] ‚Æ nodes[2] ‚Í‚Qd“_
+							// forward ã§ [f0,f0,f1,f1] ã‚’è¿½åŠ 
+							// [f0,f1,f2,f3] ã¨ã¿ãªã™
+							// nodes[1] ã¨ nodes[2] ã¯ï¼’é‡ç‚¹
 							forward.deleteSegment( nodes[0], nodes[3] );
 							forward.addSegment( nodes[0], nodes[1] );
 							forward.addSegment( nodes[1], nodes[2] );
@@ -674,15 +674,15 @@ kmb::EdgeStitcher::stitchByQuadsWithNodeCount(int fCount,int bCount)
 							nodes[1] = points->addPoint(p_prev);
 							nodes[2] = points->addPoint(p0);
 							nodes[3] = a0;
-							// forward ‚Å [f-1,f-1,f0,f0] ‚ğ’Ç‰Á
-							// [f-3,f-2,f-1,f0] ‚Æ‚İ‚È‚·
-							// nodes[1] ‚Æ nodes[2] ‚Í‚Qd“_
+							// forward ã§ [f-1,f-1,f0,f0] ã‚’è¿½åŠ 
+							// [f-3,f-2,f-1,f0] ã¨ã¿ãªã™
+							// nodes[1] ã¨ nodes[2] ã¯ï¼’é‡ç‚¹
 							forward.deleteSegment( nodes[0], nodes[3] );
 							forward.addSegment( nodes[0], nodes[1] );
 							forward.addSegment( nodes[1], nodes[2] );
 							forward.addSegment( nodes[2], nodes[3] );
 						}
-						// nodes[1] ‚Æ nodes[2] ‚Í‚ ‚Æ‚Å smoothing ‚·‚é
+						// nodes[1] ã¨ nodes[2] ã¯ã‚ã¨ã§ smoothing ã™ã‚‹
 						appendNodes.push_back( nodes[1] );
 						appendNodes.push_back( nodes[2] );
 						result->addElement( kmb::QUAD, nodes );
@@ -710,7 +710,7 @@ kmb::EdgeStitcher::stitchByQuadsWithNodeCount(int fCount,int bCount)
 		if( result->getCount() > 0 ){
 			kmb::bodyIdType bodyId = mesh->appendBody( result );
 			kmb::MeshSmoother smoother(mesh);
-			// ‚Q‰ñ smoothing ‚ğ‚©‚¯‚é
+			// ï¼’å› smoothing ã‚’ã‹ã‘ã‚‹
 			for(int i=0;i<2;++i){
 				smoother.init();
 				smoother.appendBody(bodyId);

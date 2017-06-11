@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshSmoother                                            #
@@ -34,29 +34,29 @@ protected:
 	kmb::MeshData* mesh;
 	kmb::Point3DContainer* shiftPoints;
 	std::multimap< kmb::nodeIdType, kmb::nodeIdType > nodeConnectTable;
-	// ŠÉ˜aŒW”i0.0 ‚Ì‚ÉdS‚Å’u‚«Š·‚¦A1.0‚Ì‚Í‚à‚Æ‚Ì‚Ü‚Üj
+	// ç·©å’Œä¿‚æ•°ï¼ˆ0.0 ã®æ™‚ã«é‡å¿ƒã§ç½®ãæ›ãˆã€1.0ã®æ™‚ã¯ã‚‚ã¨ã®ã¾ã¾ï¼‰
 	double relax;
 public:
 	MeshSmoother(kmb::MeshData* mesh);
 	virtual ~MeshSmoother(void);
 	void clear(void);
-	// Laplacian Smoothing ‚Ì‘ÎÛ‚Æ‚È‚é—v‘fƒOƒ‹[ƒv‚Ìİ’è
-	// –ß‚è’l‚Í nodeConnectTable ‚É“o˜^‚³‚ê‚½ŒÂ”
+	// Laplacian Smoothing ã®å¯¾è±¡ã¨ãªã‚‹è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã®è¨­å®š
+	// æˆ»ã‚Šå€¤ã¯ nodeConnectTable ã«ç™»éŒ²ã•ã‚ŒãŸå€‹æ•°
 	size_t appendBody(kmb::bodyIdType bodyId);
 	size_t appendBody(const kmb::ElementContainer* body);
 
-	// shiftPoints ‚Ì‰Šú‰»
+	// shiftPoints ã®åˆæœŸåŒ–
 	void init(void);
-	// ß“_‚ğü‚è‚Ì—v‘f‚É]‚Á‚Ä Laplacian smoothing ‚·‚é
-	// nodeConnectTable ‚É“o˜^‚³‚ê‚Ä‚¢‚È‚©‚Á‚½‚çˆÚ“®‚µ‚È‚¢
-	// –ß‚è’l‚ÍˆÚ“®‚µ‚½ß“_‚ÌŒÂ”
+	// ç¯€ç‚¹ã‚’å‘¨ã‚Šã®è¦ç´ ã«å¾“ã£ã¦ Laplacian smoothing ã™ã‚‹
+	// nodeConnectTable ã«ç™»éŒ²ã•ã‚Œã¦ã„ãªã‹ã£ãŸã‚‰ç§»å‹•ã—ãªã„
+	// æˆ»ã‚Šå€¤ã¯ç§»å‹•ã—ãŸç¯€ç‚¹ã®å€‹æ•°
 	int smoothingNode(kmb::nodeIdType nodeId);
 	int smoothingAllNode(void);
 	int smoothingNodeGroup(const char* name,const char* stype=NULL);
-	// smoothing ‚ÌŒ‹‰Ê‚ğ points ‚É“K—p
+	// smoothing ã®çµæœã‚’ points ã«é©ç”¨
 	void commit(void);
 private:
-	// nodeConnectTable ‚É“o˜^
+	// nodeConnectTable ã«ç™»éŒ²
 	bool appendConnectNode(kmb::nodeIdType n0,kmb::nodeIdType n1);
 };
 

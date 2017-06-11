@@ -24,12 +24,12 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// İŒvƒƒ‚
+// è¨­è¨ˆãƒ¡ãƒ¢
 //
-// ß“_‚Æ–Êi—v‘f‚Æ‚»‚Ì‹ÇŠ–Ê”Ô†j‚ÌŠÔ‚Ì‘Î‰‚ğ‹L˜^‚·‚é
-// ‚»‚ê‚É‚æ‚Á‚Ä“¾‚ç‚ê‚éˆÈ‰º‚Ìî•ñ‚ğæ“¾‚Å‚«‚é‚æ‚¤‚É‚·‚é
-// * ß“_‚Ìü‚è‚Ì–Ê‚ÌŒÂ”
-// * –Ê‚É—×Ú‚µ‚Ä‚¢‚é‘¼‚Ì–Ê
+// ç¯€ç‚¹ã¨é¢ï¼ˆè¦ç´ ã¨ãã®å±€æ‰€é¢ç•ªå·ï¼‰ã®é–“ã®å¯¾å¿œã‚’è¨˜éŒ²ã™ã‚‹
+// ãã‚Œã«ã‚ˆã£ã¦å¾—ã‚‰ã‚Œã‚‹ä»¥ä¸‹ã®æƒ…å ±ã‚’å–å¾—ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
+// * ç¯€ç‚¹ã®å‘¨ã‚Šã®é¢ã®å€‹æ•°
+// * é¢ã«éš£æ¥ã—ã¦ã„ã‚‹ä»–ã®é¢
 //
 #pragma once
 
@@ -54,7 +54,7 @@ public:
 	virtual ~NodeNeighborFaceInfo(void);
 	void clear(void);
 
-	// ‹t‘Î‰‚Ì“o˜^‚Æíœ
+	// é€†å¯¾å¿œã®ç™»éŒ²ã¨å‰Šé™¤
 private:
 	bool append( kmb::nodeIdType nodeID, kmb::Face faceID );
 	bool erase( kmb::nodeIdType nodeID, kmb::Face faceID );
@@ -63,29 +63,29 @@ public:
 	bool appendCoboundary( kmb::Face face, const kmb::MeshData* mesh );
 	bool appendCoboundary( const kmb::DataBindings* data, const kmb::ElementContainer* body );
 	bool appendCoboundary( const kmb::DataBindings* data, const kmb::MeshData* mesh );
-	// ‹t‘Î‰‚Ìíœ
+	// é€†å¯¾å¿œã®å‰Šé™¤
 	bool deleteCoboundary( kmb::Face face, const kmb::ElementContainer* body );
 
-	// ‹ß–Tî•ñAü•Óî•ñ‚Ìæ“¾
+	// è¿‘å‚æƒ…å ±ã€å‘¨è¾ºæƒ…å ±ã®å–å¾—
 	
-	// Face ‚ğ—^‚¦‚Ä‚»‚Ì‹ß–T Face ‚ğæ‚èo‚µAneighbors ‚É•Ô‚·
-	// neighbors ‚ÍŒÄ‚Ño‚µ‘¤‚Å‹«ŠE‚ÌŒÂ”‚¾‚¯‚ ‚ç‚©‚¶‚ß—pˆÓ‚µ‚Ä
-	// ŒÄ‚Ño‚µ‘¤‚Åƒƒ‚ƒŠ‚ÌŠm•ÛE‰ğ•ú‚ğs‚¤‚±‚Æ
-	// –ß‚è’l‚Í‹ß–T‚ÌŒÂ”
-	// ’ˆÓFneighbors ‚É“ü‚Á‚Ä‚¢‚é‹ß–T‚Ì‡”Ô‚ÍˆÓ–¡‚Í‚È‚¢i“r’†‚É NULL ‚Ío‚Ä‚±‚È‚¢j
+	// Face ã‚’ä¸ãˆã¦ãã®è¿‘å‚ Face ã‚’å–ã‚Šå‡ºã—ã€neighbors ã«è¿”ã™
+	// neighbors ã¯å‘¼ã³å‡ºã—å´ã§å¢ƒç•Œã®å€‹æ•°ã ã‘ã‚ã‚‰ã‹ã˜ã‚ç”¨æ„ã—ã¦
+	// å‘¼ã³å‡ºã—å´ã§ãƒ¡ãƒ¢ãƒªã®ç¢ºä¿ãƒ»è§£æ”¾ã‚’è¡Œã†ã“ã¨
+	// æˆ»ã‚Šå€¤ã¯è¿‘å‚ã®å€‹æ•°
+	// æ³¨æ„ï¼šneighbors ã«å…¥ã£ã¦ã„ã‚‹è¿‘å‚ã®é †ç•ªã¯æ„å‘³ã¯ãªã„ï¼ˆé€”ä¸­ã« NULL ã¯å‡ºã¦ã“ãªã„ï¼‰
 	int getFaceNeighbor( kmb::Face face, kmb::Face *neighbors, const kmb::ElementContainer* elements ) const;
 
-	// Face ‚ğ—^‚¦‚Ä‚»‚ê‚ğ‚PŸŒ³’á‚¢—v‘f‚Æl‚¦‚½‚Ì
-	// ‹«ŠE”Ô† index ‘¤‚ÉÚ‚µ‚Ä‚¢‚é Face ‚ğ•Ô‚·
-	// –ß‚è’l‚ª false ‚Ì‚Æ‚«‚É‚Í neighborFace ‚Í•ÏX‚µ‚Ä‚¢‚È‚¢‚±‚Æ‚ğ•ÛØ‚·‚é
+	// Face ã‚’ä¸ãˆã¦ãã‚Œã‚’ï¼‘æ¬¡å…ƒä½ã„è¦ç´ ã¨è€ƒãˆãŸæ™‚ã®
+	// å¢ƒç•Œç•ªå· index å´ã«æ¥ã—ã¦ã„ã‚‹ Face ã‚’è¿”ã™
+	// æˆ»ã‚Šå€¤ãŒ false ã®ã¨ãã«ã¯ neighborFace ã¯å¤‰æ›´ã—ã¦ã„ãªã„ã“ã¨ã‚’ä¿è¨¼ã™ã‚‹
 	bool getFaceNeighborByIndex( kmb::Face face, int index, const kmb::ElementContainer* elements, kmb::Face &neighborFace ) const;
 
-	// ß“_‚ğ—^‚¦‚Ä‚»‚Ìü•Ó—v‘f‚ÌŒÂ”
+	// ç¯€ç‚¹ã‚’ä¸ãˆã¦ãã®å‘¨è¾ºè¦ç´ ã®å€‹æ•°
 	size_t getFaceCountAroundNode(nodeIdType nodeID) const;
-	// ‚·‚×‚Ä‚Ì‹ß–Tî•ñ‚ÌŒÂ”
+	// ã™ã¹ã¦ã®è¿‘å‚æƒ…å ±ã®å€‹æ•°
 	size_t getSize(void) const;
 
-	// ß“_‚ğ—^‚¦‚Ä‚»‚Ì‹ß–T—v‘f‚Ì Iterator ‚ğ—^‚¦‚é
+	// ç¯€ç‚¹ã‚’ä¸ãˆã¦ãã®è¿‘å‚è¦ç´ ã® Iterator ã‚’ä¸ãˆã‚‹
 	NodeNeighborFace::iterator beginIteratorAt(kmb::nodeIdType nodeID){
 		return coboundaries.lower_bound(nodeID);
 	};

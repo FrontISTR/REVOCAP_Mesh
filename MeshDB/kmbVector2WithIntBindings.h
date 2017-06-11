@@ -13,9 +13,9 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// ƒpƒ‰ƒƒgƒŠƒbƒN‚È‹È–Ê‚Ì id ‚Æ‚»‚Ì (u,v) À•W‚ğ‹L˜^‚·‚é‚Æ‚«‚É—p‚¢‚é
-// “¯‚¶ id ‚É‘Î‚µ‚Äd•¡‚µ‚Äİ’è‚Å‚«‚È‚¢
-// ˆÙ‚È‚é id ‚É‘Î‚µ‚Ä‚Íd•¡İ’è‚Å‚«‚é
+// ãƒ‘ãƒ©ãƒ¡ãƒˆãƒªãƒƒã‚¯ãªæ›²é¢ã® id ã¨ãã® (u,v) åº§æ¨™ã‚’è¨˜éŒ²ã™ã‚‹ã¨ãã«ç”¨ã„ã‚‹
+// åŒã˜ id ã«å¯¾ã—ã¦é‡è¤‡ã—ã¦è¨­å®šã§ããªã„
+// ç•°ãªã‚‹ id ã«å¯¾ã—ã¦ã¯é‡è¤‡è¨­å®šã§ãã‚‹
 //
 
 #pragma once
@@ -80,7 +80,7 @@ public:
 		}
 		return false;
 	}
-	// •¡”‚ ‚é‚©‚à‚µ‚ê‚È‚¢‚Ì‚Å’ˆÓ
+	// è¤‡æ•°ã‚ã‚‹ã‹ã‚‚ã—ã‚Œãªã„ã®ã§æ³¨æ„
 	virtual bool getPhysicalValue(kmb::idType id, double *val) const{
 		typename std::multimap<T,valueType>::const_iterator i = mapper.find( static_cast<T>(id) );
 		if( val && i != mapper.end() ){
@@ -105,7 +105,7 @@ public:
 	virtual size_t getIdCount() const{
 		return mapper.size();
 	}
-	// ®”’l‚ª k ‚Å‚ ‚é‚æ‚¤‚Èƒf[ƒ^‚ª“o˜^‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	// æ•´æ•°å€¤ãŒ k ã§ã‚ã‚‹ã‚ˆã†ãªãƒ‡ãƒ¼ã‚¿ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
 	bool hasId(T t,long k) const{
 		if( mapper.count(t) == 0 ){
 			return false;
@@ -122,9 +122,9 @@ public:
 		}
 		return false;
 	}
-	// id0 => id1 ‚Ì‘Î‰‚ª—^‚¦‚ç‚ê‚½
-	// id0 ‚ª‚ ‚ê‚Î id1 ‚É’u‚«Š·‚¦‚é
-	// iMapper ‚É—^‚¦‚ç‚ê‚È‚¢‚à‚Ì‚ª‚ ‚ê‚Î‚»‚ê‚Í‚·‚×‚Äíœ
+	// id0 => id1 ã®å¯¾å¿œãŒä¸ãˆã‚‰ã‚ŒãŸæ™‚
+	// id0 ãŒã‚ã‚Œã° id1 ã«ç½®ãæ›ãˆã‚‹
+	// iMapper ã«ä¸ãˆã‚‰ã‚Œãªã„ã‚‚ã®ãŒã‚ã‚Œã°ãã‚Œã¯ã™ã¹ã¦å‰Šé™¤
 	size_t replaceIds( const std::map<T,T>& iMapper ){
 		size_t count = 0;
 		typename std::multimap<T,valueType> temp;
@@ -207,8 +207,8 @@ public:
 		_it->endIter = this->mapper.end();
 		return kmb::DataBindings::const_iterator(_it);
 	}
-	// Œ`ó•â³‹@”\‚Ì‚½‚ß‚Ì“Á•Êƒƒ\ƒbƒh
-	// ‹¤’Ê‚Ì®”’l‚ğ‚Â‚©‚Ç‚¤‚©‚ğ’²‚×‚ÄA‚»‚Ìê‡‚Í‚»‚ê‚¼‚ê‚Ì u,v ‚ğ•Ô‚·
+	// å½¢çŠ¶è£œæ­£æ©Ÿèƒ½ã®ãŸã‚ã®ç‰¹åˆ¥ãƒ¡ã‚½ãƒƒãƒ‰
+	// å…±é€šã®æ•´æ•°å€¤ã‚’æŒã¤ã‹ã©ã†ã‹ã‚’èª¿ã¹ã¦ã€ãã®å ´åˆã¯ãã‚Œãã‚Œã® u,v ã‚’è¿”ã™
 	bool isCommonIntval(T t0,T t1,long &index,double u0[2],double u1[2]) const{
 		std::pair< typename std::multimap<T,valueType>::const_iterator,
 			typename std::multimap<T,valueType>::const_iterator > range0 = this->mapper.equal_range(t0);
@@ -228,7 +228,7 @@ public:
 		}
 		return false;
 	}
-	// ‚Q‚ÂˆÈã‚ ‚é‚©‚à‚µ‚ê‚È‚¢‚Æ‚«
+	// ï¼’ã¤ä»¥ä¸Šã‚ã‚‹ã‹ã‚‚ã—ã‚Œãªã„ã¨ã
 	int isCommonIntval(T t0,T t1,std::vector< valueType > &v0, std::vector< valueType > &v1) const{
 		int count = 0;
 		std::pair< typename std::multimap<T,valueType>::const_iterator,
@@ -246,11 +246,11 @@ public:
 		}
 		return count;
 	}
-	// ’l‚ª‚¢‚­‚Â‚ ‚é‚©‚ğ•Ô‚·
+	// å€¤ãŒã„ãã¤ã‚ã‚‹ã‹ã‚’è¿”ã™
 	size_t countId(T t) const{
 		return this->mapper.count(t);
 	}
-	// •¡”’l‚ğæ“¾‚·‚é
+	// è¤‡æ•°å€¤ã‚’å–å¾—ã™ã‚‹
 	bool getValues(T t,double &u,double &v,long &l,size_t index=0) const{
 		std::pair< typename std::multimap<T,valueType>::const_iterator,
 			typename std::multimap<T,valueType>::const_iterator > range = this->mapper.equal_range(t);

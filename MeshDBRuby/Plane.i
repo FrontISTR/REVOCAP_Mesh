@@ -40,25 +40,25 @@ public:
 	FramedPlane(const double a0,const double b0,const double c0,const double d0);
 	FramedPlane(const Point3D &o,const Vector3D &v0,const Vector3D &v1);
 	virtual ~FramedPlane(void);
-	// origin ‚ğŒ´“_‚Æ‚·‚é‚æ‚¤‚È UV À•W‚ğ•Ô‚·
+	// origin ã‚’åŸç‚¹ã¨ã™ã‚‹ã‚ˆã†ãª UV åº§æ¨™ã‚’è¿”ã™
 	Point2D transformTo2D(const Point3D &point) const;
 	Point3D transformTo3D(const Point2D &point) const;
 	Point3D transformTo3D(double u,double v) const;
-	// UV À•W‚ÌŠî’êƒxƒNƒgƒ‹‚ğ‰ñ“]‚·‚é
+	// UV åº§æ¨™ã®åŸºåº•ãƒ™ã‚¯ãƒˆãƒ«ã‚’å›è»¢ã™ã‚‹
 	void rotateUVBase(const double angle);
-	// Œ´“_‚ÌˆÚ“®
+	// åŸç‚¹ã®ç§»å‹•
 	void setOrigin(const Point3D& point);
 	void setOrigin(double x,double y,double z);
 	// origin = origin + s * normal
 	void slideOrigin(double s);
-	// –@ü‚Ì•ÏX
+	// æ³•ç·šã®å¤‰æ›´
 	bool setNormal(double a,double b,double c);
-	// ƒ‰ƒWƒAƒ“
+	// ãƒ©ã‚¸ã‚¢ãƒ³
 	void setNormalPolar(double phi,double theta);
 /**--------------------------------------------------------------------
 =begin
 --- getOrigin()
-	Œ´“_‚ÌÀ•W‚ğ•Ô‚·B
+	åŸç‚¹ã®åº§æ¨™ã‚’è¿”ã™ã€‚
 =end
 ---------------------------------------------------------------------*/
 %extend{
@@ -76,8 +76,8 @@ public:
 /**--------------------------------------------------------------------
 =begin
 --- getNormalPolar()
-	–@üƒxƒNƒgƒ‹‚Ì‹…–Ê‹ÉÀ•W‚Ì’l (phi,theta) ‚ğ•Ô‚·B‚½‚¾‚µA
-	-PI < phi <= PI ‚¨‚æ‚Ñ 0 <= theta <= PI
+	æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã®çƒé¢æ¥µåº§æ¨™ã®å€¤ (phi,theta) ã‚’è¿”ã™ã€‚ãŸã ã—ã€
+	-PI < phi <= PI ãŠã‚ˆã³ 0 <= theta <= PI
 =end
 ---------------------------------------------------------------------*/
 %extend{
@@ -94,8 +94,8 @@ public:
 /**--------------------------------------------------------------------
 =begin
 --- getEquation()
-	‚±‚Ì•½–Ê‚ª•\‚·•û’ö® ax+by+cz+d=0 ‚ğ Array [a,b,c,d] ‚Å•Ô‚·B
-	[a,b,c] ‚Í³‹K‰»‚³‚ê‚Ä‚¢‚é‚à‚Ì‚Æ‚·‚éB
+	ã“ã®å¹³é¢ãŒè¡¨ã™æ–¹ç¨‹å¼ ax+by+cz+d=0 ã‚’ Array [a,b,c,d] ã§è¿”ã™ã€‚
+	[a,b,c] ã¯æ­£è¦åŒ–ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã¨ã™ã‚‹ã€‚
 =end
 ---------------------------------------------------------------------*/
 %extend{

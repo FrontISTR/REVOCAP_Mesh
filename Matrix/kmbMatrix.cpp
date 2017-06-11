@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Matrix                                                  #
@@ -35,7 +35,7 @@ kmb::Matrix::zero(void)
 	return true;
 }
 
-// Š|‚¯Z this * a = x
+// æ›ã‘ç®— this * a = x
 bool
 kmb::Matrix::multiply_left( const kmb::Matrix &a, kmb::Matrix &x ) const
 {
@@ -62,7 +62,7 @@ kmb::Matrix::multiply_left( const kmb::Matrix &a, kmb::Matrix &x ) const
 
 #include <cstdio>
 
-// ƒ}ƒXƒN‚Â‚«
+// ãƒã‚¹ã‚¯ã¤ã
 bool
 kmb::Matrix::multiply_left_mask( const kmb::Matrix &a, kmb::Matrix &x, kmb::Matrix::MASK m ) const
 {
@@ -125,9 +125,8 @@ kmb::Matrix::multiply_vect_left_mask(const double* a, double* x, kmb::Matrix::MA
 	return true;
 }
 
-// Š|‚¯Z a * this  = x
-bool
-kmb::Matrix::multiply_right( const kmb::Matrix &a, kmb::Matrix &x ) const
+// æ›ã‘ç®— a * this  = x
+bool kmb::Matrix::multiply_right( const kmb::Matrix &a, kmb::Matrix &x ) const
 {
 	int rSize = x.getRowSize();
 	int cSize = x.getColSize();
@@ -185,7 +184,7 @@ kmb::Matrix::substitute( const kmb::Matrix &a )
 	return true;
 }
 
-// Š|‚¯Z‘ã“ü this = a * b
+// æ›ã‘ç®—ä»£å…¥ this = a * b
 bool
 kmb::Matrix::product( const kmb::Matrix &a, const kmb::Matrix &b )
 {
@@ -210,7 +209,7 @@ kmb::Matrix::product( const kmb::Matrix &a, const kmb::Matrix &b )
 	return true;
 }
 
-// i s‚Æ—ñƒxƒNƒgƒ‹‚Ì“àÏ
+// i è¡Œã¨åˆ—ãƒ™ã‚¯ãƒˆãƒ«ã®å†…ç©
 double
 kmb::Matrix::rowProduct(int i, const kmb::ColumnVector &vec) const
 {
@@ -243,7 +242,7 @@ kmb::Matrix::rowProduct_mask(int i, const kmb::ColumnVector &vec, kmb::Matrix::M
 	}
 }
 
-// i —ñ‚ÆsƒxƒNƒgƒ‹‚Ì“àÏ
+// i åˆ—ã¨è¡Œãƒ™ã‚¯ãƒˆãƒ«ã®å†…ç©
 double
 kmb::Matrix::colProduct(int i, const kmb::RowVector &vec) const
 {
@@ -299,7 +298,7 @@ kmb::Matrix::setColumnVector(int j,const kmb::ColumnVector& col)
 	return true;
 }
 
-// —ñ‚²‚Æ‚É¬•ª‚Ìâ‘Î’l‚Ì˜a‚ğŒvZ‚µ‚½‚¤‚¿‚Å‚»‚ÌÅ‘å‚Ì‚à‚Ì
+// åˆ—ã”ã¨ã«æˆåˆ†ã®çµ¶å¯¾å€¤ã®å’Œã‚’è¨ˆç®—ã—ãŸã†ã¡ã§ãã®æœ€å¤§ã®ã‚‚ã®
 double
 kmb::Matrix::norm_1(void) const
 {
@@ -316,7 +315,7 @@ kmb::Matrix::norm_1(void) const
 	return maxVal.getMax();
 }
 
-// s‚²‚Æ‚É¬•ª‚Ìâ‘Î’l‚Ì˜a‚ğŒvZ‚µ‚½‚¤‚¿‚Å‚»‚ÌÅ‘å‚Ì‚à‚Ì
+// è¡Œã”ã¨ã«æˆåˆ†ã®çµ¶å¯¾å€¤ã®å’Œã‚’è¨ˆç®—ã—ãŸã†ã¡ã§ãã®æœ€å¤§ã®ã‚‚ã®
 double
 kmb::Matrix::norm_inf(void) const
 {
@@ -412,7 +411,7 @@ kmb::Matrix::countNonZeroBlock(int unitBSize) const
 	bool nonZeroFlag = false;
 	for(int i=0;i<rowBSize;++i){
 		for(int j=0;j<colBSize;++j){
-			// non zero block ‚ğ’T‚·
+			// non zero block ã‚’æ¢ã™
 			nonZeroFlag = false;
 			for(int i0=0;i0<unitBSize;++i0){
 				for(int j0=0;j0<unitBSize;++j0){
@@ -567,7 +566,7 @@ kmb::SquareMatrix::multiply_vect_right(const double* a, double* x) const
 	return true;
 }
 
-// ƒKƒEƒXÁ‹–@
+// ã‚¬ã‚¦ã‚¹æ¶ˆå»æ³•
 bool
 kmb::SquareMatrix::solve(const kmb::ColumnVector &b, kmb::ColumnVector &x) const
 {
@@ -590,7 +589,7 @@ kmb::SquareMatrix::solve(const kmb::ColumnVector &b, kmb::ColumnVector &x) const
 			return false;
 		}
 	}else{
-		// Á‹–@
+		// æ¶ˆå»æ³•
 		kmb::Matrix_DoubleArray mat(size,size+1);
 		for(int j=0;j<size;++j){
 			for(int i=0;i<size;++i){
@@ -602,7 +601,7 @@ kmb::SquareMatrix::solve(const kmb::ColumnVector &b, kmb::ColumnVector &x) const
 		}
 
 		for(int j=0;j<size;++j){
-			// j ‚©‚ç size-1 ‚Åâ‘Î’lÅ‘å‚ğ’T‚·
+			// j ã‹ã‚‰ size-1 ã§çµ¶å¯¾å€¤æœ€å¤§ã‚’æ¢ã™
 			int ind = -1;
 			double m = 0.0;
 			for(int i=j;i<size;++i){
@@ -653,7 +652,7 @@ kmb::SquareMatrix::solve(const double* b, double* x) const
 			return false;
 		}
 	}else{
-		// Á‹–@
+		// æ¶ˆå»æ³•
 		kmb::Matrix_DoubleArray mat(size,size+1);
 		for(int j=0;j<size;++j){
 			for(int i=0;i<size;++i){
@@ -665,7 +664,7 @@ kmb::SquareMatrix::solve(const double* b, double* x) const
 		}
 
 		for(int j=0;j<size;++j){
-			// j ‚©‚ç size-1 ‚Åâ‘Î’lÅ‘å‚ğ’T‚·
+			// j ã‹ã‚‰ size-1 ã§çµ¶å¯¾å€¤æœ€å¤§ã‚’æ¢ã™
 			int ind = -1;
 			double m = 0.0;
 			for(int i=j;i<size;++i){
@@ -764,8 +763,8 @@ kmb::SquareMatrix::diagonal_dominance(void) const
 	return minimizer.getMin();
 }
 
-kmb::TransposeMatrix_Wrapper::TransposeMatrix_Wrapper(const kmb::SquareMatrix* mtx)
-: SquareMatrix(mtx->getSize())
+kmb::TransposeMatrix_Wrapper::TransposeMatrix_Wrapper(const kmb::Matrix* mtx)
+: Matrix(mtx->getColSize(),mtx->getRowSize())
 , matrix(mtx)
 {
 }
@@ -778,6 +777,16 @@ const char*
 kmb::TransposeMatrix_Wrapper::getContainerType(void) const
 {
 	return "transpose_wrapper";
+}
+
+int kmb::TransposeMatrix_Wrapper::getRowSize(void) const
+{
+	return matrix->getColSize();
+}
+
+int kmb::TransposeMatrix_Wrapper::getColSize(void) const
+{
+	return matrix->getRowSize();
 }
 
 int
@@ -804,3 +813,42 @@ kmb::TransposeMatrix_Wrapper::add(int i,int j,double val)
 	return false;
 }
 
+kmb::TransposeSquareMatrix_Wrapper::TransposeSquareMatrix_Wrapper(const kmb::SquareMatrix* mtx)
+	: SquareMatrix(mtx->getSize())
+	, matrix(mtx)
+{
+}
+
+kmb::TransposeSquareMatrix_Wrapper::~TransposeSquareMatrix_Wrapper(void)
+{
+}
+
+const char*
+kmb::TransposeSquareMatrix_Wrapper::getContainerType(void) const
+{
+	return "transpose_square_wrapper";
+}
+
+int
+kmb::TransposeSquareMatrix_Wrapper::init(int rowSize, int colSize)
+{
+	return -1;
+}
+
+double
+kmb::TransposeSquareMatrix_Wrapper::get(int i, int j) const
+{
+	return matrix->get(j, i);
+}
+
+bool
+kmb::TransposeSquareMatrix_Wrapper::set(int i, int j, double val)
+{
+	return false;
+}
+
+bool
+kmb::TransposeSquareMatrix_Wrapper::add(int i, int j, double val)
+{
+	return false;
+}

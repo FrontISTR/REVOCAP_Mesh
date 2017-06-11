@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshGL                                                  #
@@ -78,7 +78,7 @@ void kmb::MeshGL::drawQuadByDividingPoint
 		s3*t31*n30->z() - s3*t30*n31->z());
 }
 
-// n0 , n1 ã‚É t0, t1 ‚ª‚ ‚é‚Æ‚«‚É 0 ‚Ì“_‚ğ—^‚¦‚é
+// n0 , n1 ä¸Šã« t0, t1 ãŒã‚ã‚‹ã¨ãã« 0 ã®ç‚¹ã‚’ä¸ãˆã‚‹
 //void glVertex3dAtZero(kmb::Node* n0,kmb::Node* n1,double t0,double t1){
 //	double s = 1.0/(t1-t0);
 //	::glVertex3d( 
@@ -254,7 +254,7 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 	switch( flag )
 	{
 //	std::cout << "_drawIsosurfTetrahedronContour " << flag << std::endl;
-	// ‚P‚Â‚¾‚¯³
+	// ï¼‘ã¤ã ã‘æ­£
 	case 0x01: // 0
 		{
 			// REMARK ORDER!!
@@ -323,7 +323,7 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-	// ‚Q‚Â‚¾‚¯³
+	// ï¼’ã¤ã ã‘æ­£
 	case 0x03: // 0 1
 		{
 			// REMARK ORDER!!
@@ -486,7 +486,7 @@ kmb::MeshGL::drawIsosurfTetrahedronContour
 			}
 		}
 		break;
-	// ‚R‚Â‚¾‚¯³
+	// ï¼“ã¤ã ã‘æ­£
 	case 0x07: // 0 1 2
 		{
 			// REMARK ORDER!!
@@ -621,7 +621,7 @@ kmb::MeshGL::drawIsosurface
 			case kmb::TETRAHEDRON2:
 				{
 					drawIsosurfTetrahedron(
-						eIter.getCellId(0), eIter.getCellId(1), eIter.getCellId(2), eIter.getCellId(3),
+						eIter.getNodeId(0), eIter.getNodeId(1), eIter.getNodeId(2), eIter.getNodeId(3),
 						data, val );
 				}
 				break;
@@ -665,10 +665,10 @@ void kmb::MeshGL::drawSection(kmb::bodyIdType bodyId,kmb::Plane* plane)
 			case kmb::TETRAHEDRON:
 			case kmb::TETRAHEDRON2:
 				{
-					if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-						mesh->getNode( eIter.getCellId(1), n1 ) &&
-						mesh->getNode( eIter.getCellId(2), n2 ) &&
-						mesh->getNode( eIter.getCellId(3), n3 ) )
+					if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+						mesh->getNode( eIter.getNodeId(1), n1 ) &&
+						mesh->getNode( eIter.getNodeId(2), n2 ) &&
+						mesh->getNode( eIter.getNodeId(3), n3 ) )
 					{
 						drawSectionTetrahedron( n0, n1, n2, n3,
 							plane->evaluate(n0),
@@ -734,14 +734,14 @@ kmb::MeshGL::drawSectionNodeContour
 				case kmb::TETRAHEDRON:
 				case kmb::TETRAHEDRON2:
 					{
-						if( mesh->getNode( eIter.getCellId(0), n0 )
-							&& mesh->getNode( eIter.getCellId(1), n1 )
-							&& mesh->getNode( eIter.getCellId(2), n2 )
-							&& mesh->getNode( eIter.getCellId(3), n3 )
-							&& data->getPhysicalValue( eIter.getCellId(0), &v0 )
-							&& data->getPhysicalValue( eIter.getCellId(1), &v1 )
-							&& data->getPhysicalValue( eIter.getCellId(2), &v2 )
-							&& data->getPhysicalValue( eIter.getCellId(3), &v3 ) )
+						if( mesh->getNode( eIter.getNodeId(0), n0 )
+							&& mesh->getNode( eIter.getNodeId(1), n1 )
+							&& mesh->getNode( eIter.getNodeId(2), n2 )
+							&& mesh->getNode( eIter.getNodeId(3), n3 )
+							&& data->getPhysicalValue( eIter.getNodeId(0), &v0 )
+							&& data->getPhysicalValue( eIter.getNodeId(1), &v1 )
+							&& data->getPhysicalValue( eIter.getNodeId(2), &v2 )
+							&& data->getPhysicalValue( eIter.getNodeId(3), &v3 ) )
 						{
 							drawIsosurfTetrahedronContour( &n0, &n1, &n2, &n3,
 								plane->evaluate(n0),
@@ -789,14 +789,14 @@ kmb::MeshGL::drawSectionNodeContour
 				case kmb::TETRAHEDRON:
 				case kmb::TETRAHEDRON2:
 					{
-						if( mesh->getNode( eIter.getCellId(0), n0 )
-							&& mesh->getNode( eIter.getCellId(1), n1 )
-							&& mesh->getNode( eIter.getCellId(2), n2 )
-							&& mesh->getNode( eIter.getCellId(3), n3 )
-							&& data->getPhysicalValue( eIter.getCellId(0), v0 )
-							&& data->getPhysicalValue( eIter.getCellId(1), v1 )
-							&& data->getPhysicalValue( eIter.getCellId(2), v2 )
-							&& data->getPhysicalValue( eIter.getCellId(3), v3 ) )
+						if( mesh->getNode( eIter.getNodeId(0), n0 )
+							&& mesh->getNode( eIter.getNodeId(1), n1 )
+							&& mesh->getNode( eIter.getNodeId(2), n2 )
+							&& mesh->getNode( eIter.getNodeId(3), n3 )
+							&& data->getPhysicalValue( eIter.getNodeId(0), v0 )
+							&& data->getPhysicalValue( eIter.getNodeId(1), v1 )
+							&& data->getPhysicalValue( eIter.getNodeId(2), v2 )
+							&& data->getPhysicalValue( eIter.getNodeId(3), v3 ) )
 						{
 							drawIsosurfTetrahedronContour( &n0, &n1, &n2, &n3,
 								plane->evaluate(n0),
@@ -852,14 +852,14 @@ kmb::MeshGL::drawSectionNodeContour
 				case kmb::TETRAHEDRON:
 				case kmb::TETRAHEDRON2:
 					{
-						if( mesh->getNode( eIter.getCellId(0), n0 )
-							&& mesh->getNode( eIter.getCellId(1), n1 )
-							&& mesh->getNode( eIter.getCellId(2), n2 )
-							&& mesh->getNode( eIter.getCellId(3), n3 )
-							&& data->getPhysicalValue( eIter.getCellId(0), v0 )
-							&& data->getPhysicalValue( eIter.getCellId(1), v1 )
-							&& data->getPhysicalValue( eIter.getCellId(2), v2 )
-							&& data->getPhysicalValue( eIter.getCellId(3), v3 ) )
+						if( mesh->getNode( eIter.getNodeId(0), n0 )
+							&& mesh->getNode( eIter.getNodeId(1), n1 )
+							&& mesh->getNode( eIter.getNodeId(2), n2 )
+							&& mesh->getNode( eIter.getNodeId(3), n3 )
+							&& data->getPhysicalValue( eIter.getNodeId(0), v0 )
+							&& data->getPhysicalValue( eIter.getNodeId(1), v1 )
+							&& data->getPhysicalValue( eIter.getNodeId(2), v2 )
+							&& data->getPhysicalValue( eIter.getNodeId(3), v3 ) )
 						{
 							drawIsosurfTetrahedronContour( &n0, &n1, &n2, &n3,
 								plane->evaluate(n0),
@@ -915,14 +915,14 @@ kmb::MeshGL::drawSectionNodeContour
 				case kmb::TETRAHEDRON:
 				case kmb::TETRAHEDRON2:
 					{
-						if( mesh->getNode( eIter.getCellId(0), n0 )
-							&& mesh->getNode( eIter.getCellId(1), n1 )
-							&& mesh->getNode( eIter.getCellId(2), n2 )
-							&& mesh->getNode( eIter.getCellId(3), n3 )
-							&& data->getPhysicalValue( eIter.getCellId(0), v0 )
-							&& data->getPhysicalValue( eIter.getCellId(1), v1 )
-							&& data->getPhysicalValue( eIter.getCellId(2), v2 )
-							&& data->getPhysicalValue( eIter.getCellId(3), v3 ) )
+						if( mesh->getNode( eIter.getNodeId(0), n0 )
+							&& mesh->getNode( eIter.getNodeId(1), n1 )
+							&& mesh->getNode( eIter.getNodeId(2), n2 )
+							&& mesh->getNode( eIter.getNodeId(3), n3 )
+							&& data->getPhysicalValue( eIter.getNodeId(0), v0 )
+							&& data->getPhysicalValue( eIter.getNodeId(1), v1 )
+							&& data->getPhysicalValue( eIter.getNodeId(2), v2 )
+							&& data->getPhysicalValue( eIter.getNodeId(3), v3 ) )
 						{
 							drawIsosurfTetrahedronContour( &n0, &n1, &n2, &n3,
 								plane->evaluate(n0),
@@ -1003,10 +1003,10 @@ void kmb::MeshGL::drawSectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,co
 					case kmb::TETRAHEDRON:
 					case kmb::TETRAHEDRON2:
 						{
-							if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-								mesh->getNode( eIter.getCellId(1), n1 ) &&
-								mesh->getNode( eIter.getCellId(2), n2 ) &&
-								mesh->getNode( eIter.getCellId(3), n3 ) )
+							if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+								mesh->getNode( eIter.getNodeId(1), n1 ) &&
+								mesh->getNode( eIter.getNodeId(2), n2 ) &&
+								mesh->getNode( eIter.getNodeId(3), n3 ) )
 							{
 								colorMap->setGLColor( v );
 								drawSectionTetrahedron(
@@ -1048,10 +1048,10 @@ void kmb::MeshGL::drawSectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,co
 					case kmb::TETRAHEDRON:
 					case kmb::TETRAHEDRON2:
 						{
-							if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-								mesh->getNode( eIter.getCellId(1), n1 ) &&
-								mesh->getNode( eIter.getCellId(2), n2 ) &&
-								mesh->getNode( eIter.getCellId(3), n3 ) )
+							if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+								mesh->getNode( eIter.getNodeId(1), n1 ) &&
+								mesh->getNode( eIter.getNodeId(2), n2 ) &&
+								mesh->getNode( eIter.getNodeId(3), n3 ) )
 							{
 								colorMap->setGLColor( kmb::Vector3D::abs(v) );
 								drawSectionTetrahedron(
@@ -1093,10 +1093,10 @@ void kmb::MeshGL::drawSectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,co
 					case kmb::TETRAHEDRON:
 					case kmb::TETRAHEDRON2:
 						{
-							if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-								mesh->getNode( eIter.getCellId(1), n1 ) &&
-								mesh->getNode( eIter.getCellId(2), n2 ) &&
-								mesh->getNode( eIter.getCellId(3), n3 ) )
+							if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+								mesh->getNode( eIter.getNodeId(1), n1 ) &&
+								mesh->getNode( eIter.getNodeId(2), n2 ) &&
+								mesh->getNode( eIter.getNodeId(3), n3 ) )
 							{
 								colorMap->setGLColor( v[comp] );
 								drawSectionTetrahedron(
@@ -1138,10 +1138,10 @@ void kmb::MeshGL::drawSectionContour(kmb::bodyIdType bodyId,kmb::Plane* plane,co
 					case kmb::TETRAHEDRON:
 					case kmb::TETRAHEDRON2:
 						{
-							if( mesh->getNode( eIter.getCellId(0), n0 ) &&
-								mesh->getNode( eIter.getCellId(1), n1 ) &&
-								mesh->getNode( eIter.getCellId(2), n2 ) &&
-								mesh->getNode( eIter.getCellId(3), n3 ) )
+							if( mesh->getNode( eIter.getNodeId(0), n0 ) &&
+								mesh->getNode( eIter.getNodeId(1), n1 ) &&
+								mesh->getNode( eIter.getNodeId(2), n2 ) &&
+								mesh->getNode( eIter.getNodeId(3), n3 ) )
 							{
 								colorMap->setGLColor( v[comp] );
 								drawSectionTetrahedron(
@@ -1191,8 +1191,8 @@ kmb::MeshGL::drawSectionVector(kmb::bodyIdType bodyId,kmb::Plane* plane,const ch
 	{
 		::glPushAttrib( GL_ENABLE_BIT );
 		::glEnable( GL_COLOR_MATERIAL );
-		// d•¡‚ğ–h‚®‚½‚ß‚ÌƒLƒƒƒbƒVƒ…
-		// ¬‚³‚¢•û‚ª‘æ‚P¬•ª
+		// é‡è¤‡ã‚’é˜²ããŸã‚ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥
+		// å°ã•ã„æ–¹ãŒç¬¬ï¼‘æˆåˆ†
 		std::set< std::pair<kmb::nodeIdType,kmb::nodeIdType> > nodePairs;
 		kmb::Node n0, n1;
 		double v0[3], v1[3];
@@ -1201,8 +1201,8 @@ kmb::MeshGL::drawSectionVector(kmb::bodyIdType bodyId,kmb::Plane* plane,const ch
 		{
 			int edgeCount = eIter.getEdgeCount();
 			for(int i =0;i< edgeCount;++i){
-				kmb::nodeIdType nodeId0 = eIter.getEdgeCellId(i,0);
-				kmb::nodeIdType nodeId1 = eIter.getEdgeCellId(i,1);
+				kmb::nodeIdType nodeId0 = eIter.getEdgeNodeId(i,0);
+				kmb::nodeIdType nodeId1 = eIter.getEdgeNodeId(i,1);
 				if( nodeId0 > nodeId1 ){
 					kmb::nodeIdType tmp = nodeId0;
 					nodeId0 = nodeId1;
@@ -1240,8 +1240,8 @@ void kmb::MeshGL::drawSectionField(kmb::bodyIdType bodyId,kmb::Plane* plane,cons
 	{
 		::glPushAttrib( GL_ENABLE_BIT );
 		::glEnable( GL_COLOR_MATERIAL );
-		// d•¡‚ğ–h‚®‚½‚ß‚ÌƒLƒƒƒbƒVƒ…
-		// ¬‚³‚¢•û‚ª‘æ‚P¬•ª
+		// é‡è¤‡ã‚’é˜²ããŸã‚ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥
+		// å°ã•ã„æ–¹ãŒç¬¬ï¼‘æˆåˆ†
 		std::set< std::pair<kmb::nodeIdType,kmb::nodeIdType> > nodePairs;
 		kmb::Node n0, n1;
 		double v0[3], v1[3];
@@ -1250,8 +1250,8 @@ void kmb::MeshGL::drawSectionField(kmb::bodyIdType bodyId,kmb::Plane* plane,cons
 		{
 			int edgeCount = eIter.getEdgeCount();
 			for(int i =0;i< edgeCount;++i){
-				kmb::nodeIdType nodeId0 = eIter.getEdgeCellId(i,0);
-				kmb::nodeIdType nodeId1 = eIter.getEdgeCellId(i,1);
+				kmb::nodeIdType nodeId0 = eIter.getEdgeNodeId(i,0);
+				kmb::nodeIdType nodeId1 = eIter.getEdgeNodeId(i,1);
 				if( nodeId0 > nodeId1 ){
 					kmb::nodeIdType tmp = nodeId0;
 					nodeId0 = nodeId1;

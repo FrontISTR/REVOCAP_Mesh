@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Common Definitions for Debug                                         #
@@ -14,26 +14,26 @@
 ----------------------------------------------------------------------*/
 #pragma once
 
-/* DEBUG ���b�Z�[�W */
+/* DEBUG メッセージ */
 /*
-REVOCAP_Debug ��ʓI�ȃf�o�b�O�p���b�Z�[�W
-REVOCAP_Debug_1 �ڍׂȃf�o�b�O�p���b�Z�[�W�P
-REVOCAP_Debug_2 �ڍׂȃf�o�b�O�p���b�Z�[�W�Q�i�t�@�C���o�͂̒��ł��g���Ă悢�j
-REVOCAP_Debug_3 �ڍׂȃf�o�b�O�p���b�Z�[�W�R�i���[�v�̒��ł��g���Ă悢�j
-REVOCAP_Debug_X �ڍׂȃf�o�b�O�p���b�Z�[�W�w�i�K���o�́j
+REVOCAP_Debug 一般的なデバッグ用メッセージ
+REVOCAP_Debug_1 詳細なデバッグ用メッセージ１
+REVOCAP_Debug_2 詳細なデバッグ用メッセージ２（ファイル出力の中でも使ってよい）
+REVOCAP_Debug_3 詳細なデバッグ用メッセージ３（ループの中でも使ってよい）
+REVOCAP_Debug_X 詳細なデバッグ用メッセージＸ（必ず出力）
 
-�f�o�b�O���ɋǏ��I�ɏo�͂������ꍇ��
+デバッグ時に局所的に出力したい場合は
 
 #define _DEBUG_ 3
 #include "Common/kmbDebug.h"
 
-... �����ł� _DEBUG_ = 3 ���L��
-... �����ŌĂяo�����֐����ł� REVOCAP_Debug() ���L���ɂȂ�
+... ここでは _DEBUG_ = 3 が有効
+... ここで呼び出した関数内でも REVOCAP_Debug() が有効になる
 
 #undef _DEBUG_
 #include "Common/kmbDebug.h"
 
-�ȂǂƋL�q���Ă�������
+などと記述してください
 */
 
 #include <cstdio>
@@ -51,7 +51,7 @@ REVOCAP_Debug_X �ڍׂȃf�o�b�O�p���b�Z�[�W�w�i�K���o�́j
 	#define REVOCAP_Debug_3(format)
 	#define REVOCAP_Debug_X(format)
 #else
-	/* _DEBUG �}�N���Ɋ֌W�Ȃ��o�� */
+	/* _DEBUG マクロに関係なく出力 */
 	#define REVOCAP_Debug_X(fmt, ...) fprintf(stderr,"%s, line %d: "fmt,__FILE__,__LINE__, ##__VA_ARGS__)
 
 	#if defined _DEBUG || _DEBUG_

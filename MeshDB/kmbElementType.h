@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementType                                             #
@@ -32,7 +32,7 @@ enum elementType{
 	PYRAMID2,
 	HEXAHEDRON,
 	HEXAHEDRON2,
-	ELEMENT_TYPE_NUM,    // elementType �̌�
+	ELEMENT_TYPE_NUM,    // elementType の個数
 	TRIANGLE_INTERFACE,
 	QUADRILATERAL_INTERFACE,
 	VERTEX,
@@ -44,6 +44,7 @@ enum elementType{
 	OTHERTYPE,
 	QUAD = QUADRILATERAL,
 	QUAD2 = QUADRILATERAL2,
+	kSegment = SEGMENT,
 	kTriangle = TRIANGLE,
 	kQuadrilateral = QUADRILATERAL,
 	kTetrahedron = TETRAHEDRON,

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshGL                                                  #
@@ -206,8 +206,8 @@ kmb::MeshGL::drawEdge(kmb::bodyIdType bodyId)
 		::glBegin( GL_LINES );
 		while( !eIter.isFinished() )
 		{
-			if( mesh->getNodeXYZ( eIter.getCellId(0), x0, y0, z0 ) &&
-				mesh->getNodeXYZ( eIter.getCellId(1), x1, y1, z1 ) )
+			if( mesh->getNodeXYZ( eIter.getNodeId(0), x0, y0, z0 ) &&
+				mesh->getNodeXYZ( eIter.getNodeId(1), x1, y1, z1 ) )
 			{
 				::glVertex3d( x0, y0, z0 );
 				::glVertex3d( x1, y1, z1 );
@@ -233,8 +233,8 @@ kmb::MeshGL::drawEdgeWithScale(kmb::bodyIdType bodyId,double x,double y,double z
 		::glBegin( GL_LINES );
 		while( !eIter.isFinished() )
 		{
-			if( mesh->getNodeXYZ( eIter.getCellId(0), x0, y0, z0 ) &&
-				mesh->getNodeXYZ( eIter.getCellId(1), x1, y1, z1 ) )
+			if( mesh->getNodeXYZ( eIter.getNodeId(0), x0, y0, z0 ) &&
+				mesh->getNodeXYZ( eIter.getNodeId(1), x1, y1, z1 ) )
 			{
 				::glVertex3d(
 					scale * ( x0 - x ) + x,
@@ -265,7 +265,7 @@ kmb::MeshGL::drawSurface(kmb::bodyIdType bodyId)
 			::glIsEnabled( GL_VERTEX_ARRAY ) == GL_TRUE &&
 			body->isUniqueDim(2) && body->getCount() > 0 )
 		{
-			// ::glEnable(GL_AUTO_NORMAL) ‚Í glMap2f ‚È‚Ç‚Æˆê‚É Nurbs ‚ğ‘‚­‚Æ‚«‚É‚Íg‚¦‚é
+			// ::glEnable(GL_AUTO_NORMAL) ã¯ glMap2f ãªã©ã¨ä¸€ç·’ã« Nurbs ã‚’æ›¸ãã¨ãã«ã¯ä½¿ãˆã‚‹
 			if( 0==strcmp(kmb::ElementContainerTriangleArray::CONTAINER_TYPE,body->getContainerType()) ){
 				::glEnableClientState(GL_VERTEX_ARRAY);
 				::glVertexPointer(3 , GL_DOUBLE , 0 ,
@@ -322,11 +322,11 @@ kmb::MeshGL::drawSurface(kmb::bodyIdType bodyId)
 							{
 							::glBegin( GL_TRIANGLES );
 							kmb::Vector3D normal = points->calcNormalVector
-								( eIter.getCellId(0), eIter.getCellId(1), eIter.getCellId(2) );
+								( eIter.getNodeId(0), eIter.getNodeId(1), eIter.getNodeId(2) );
 							::glNormal3d( normal.x(), normal.y(), normal.z() );
-							::glArrayElement( eIter.getCellId(0) );
-							::glArrayElement( eIter.getCellId(1) );
-							::glArrayElement( eIter.getCellId(2) );
+							::glArrayElement( eIter.getNodeId(0) );
+							::glArrayElement( eIter.getNodeId(1) );
+							::glArrayElement( eIter.getNodeId(2) );
 							::glEnd();
 							}
 							break;
@@ -335,12 +335,12 @@ kmb::MeshGL::drawSurface(kmb::bodyIdType bodyId)
 							{
 							::glBegin( GL_QUADS );
 							kmb::Vector3D normal = points->calcNormalVector
-								( eIter.getCellId(0), eIter.getCellId(1), eIter.getCellId(2), eIter.getCellId(3) );
+								( eIter.getNodeId(0), eIter.getNodeId(1), eIter.getNodeId(2), eIter.getNodeId(3) );
 							::glNormal3d( normal.x(), normal.y(), normal.z() );
-							::glArrayElement( eIter.getCellId(0) );
-							::glArrayElement( eIter.getCellId(1) );
-							::glArrayElement( eIter.getCellId(2) );
-							::glArrayElement( eIter.getCellId(3) );
+							::glArrayElement( eIter.getNodeId(0) );
+							::glArrayElement( eIter.getNodeId(1) );
+							::glArrayElement( eIter.getNodeId(2) );
+							::glArrayElement( eIter.getNodeId(3) );
 							::glEnd();
 							}
 							break;
@@ -363,9 +363,9 @@ kmb::MeshGL::drawSurface(kmb::bodyIdType bodyId)
 				switch( eIter.getType() ){
 					case kmb::TRIANGLE:
 					case kmb::TRIANGLE2:
-						if( mesh->getNodeXYZ( eIter.getCellId(0), x0, y0, z0 ) &&
-							mesh->getNodeXYZ( eIter.getCellId(1), x1, y1, z1 ) &&
-							mesh->getNodeXYZ( eIter.getCellId(2), x2, y2, z2 ) )
+						if( mesh->getNodeXYZ( eIter.getNodeId(0), x0, y0, z0 ) &&
+							mesh->getNodeXYZ( eIter.getNodeId(1), x1, y1, z1 ) &&
+							mesh->getNodeXYZ( eIter.getNodeId(2), x2, y2, z2 ) )
 						{
 							drawTriangle(
 								x0, y0, z0,
@@ -375,10 +375,10 @@ kmb::MeshGL::drawSurface(kmb::bodyIdType bodyId)
 						break;
 					case kmb::QUAD:
 					case kmb::QUAD2:
-						if( mesh->getNodeXYZ( eIter.getCellId(0), x0, y0, z0 ) &&
-							mesh->getNodeXYZ( eIter.getCellId(1), x1, y1, z1 ) &&
-							mesh->getNodeXYZ( eIter.getCellId(2), x2, y2, z2 ) &&
-							mesh->getNodeXYZ( eIter.getCellId(3), x3, y3, z3 ) )
+						if( mesh->getNodeXYZ( eIter.getNodeId(0), x0, y0, z0 ) &&
+							mesh->getNodeXYZ( eIter.getNodeId(1), x1, y1, z1 ) &&
+							mesh->getNodeXYZ( eIter.getNodeId(2), x2, y2, z2 ) &&
+							mesh->getNodeXYZ( eIter.getNodeId(3), x3, y3, z3 ) )
 						{
 							drawQuad(
 								x0, y0, z0,
@@ -419,9 +419,9 @@ kmb::MeshGL::drawSurface2D(kmb::bodyIdType bodyId)
 		switch( eIter.getType() ){
 		case kmb::TRIANGLE:
 		case kmb::TRIANGLE2:
-			if( points->getXY( eIter.getCellId(0), x0, y0 ) &&
-				points->getXY( eIter.getCellId(1), x1, y1 ) &&
-				points->getXY( eIter.getCellId(2), x2, y2 ) )
+			if( points->getXY( eIter.getNodeId(0), x0, y0 ) &&
+				points->getXY( eIter.getNodeId(1), x1, y1 ) &&
+				points->getXY( eIter.getNodeId(2), x2, y2 ) )
 			{
 				drawTriangle2D(
 					x0, y0,
@@ -431,10 +431,10 @@ kmb::MeshGL::drawSurface2D(kmb::bodyIdType bodyId)
 			break;
 		case kmb::QUAD:
 		case kmb::QUAD2:
-			if( points->getXY( eIter.getCellId(0), x0, y0 ) &&
-				points->getXY( eIter.getCellId(1), x1, y1 ) &&
-				points->getXY( eIter.getCellId(2), x2, y2 ) &&
-				points->getXY( eIter.getCellId(3), x3, y3 ) )
+			if( points->getXY( eIter.getNodeId(0), x0, y0 ) &&
+				points->getXY( eIter.getNodeId(1), x1, y1 ) &&
+				points->getXY( eIter.getNodeId(2), x2, y2 ) &&
+				points->getXY( eIter.getNodeId(3), x3, y3 ) )
 			{
 				drawQuad2D(
 					x0, y0,
@@ -511,9 +511,9 @@ kmb::MeshGL::drawFaceGroup(const char* faceName)
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
 							{
-								kmb::nodeIdType n0 = element.getBoundaryCellId(localId,0);
-								kmb::nodeIdType n1 = element.getBoundaryCellId(localId,1);
-								kmb::nodeIdType n2 = element.getBoundaryCellId(localId,2);
+								kmb::nodeIdType n0 = element.getBoundaryNodeId(localId,0);
+								kmb::nodeIdType n1 = element.getBoundaryNodeId(localId,1);
+								kmb::nodeIdType n2 = element.getBoundaryNodeId(localId,2);
 								::glBegin( GL_TRIANGLES );
 								kmb::Vector3D normal = points->calcNormalVector(n0,n1,n2);
 								::glNormal3d( normal.x(), normal.y(), normal.z() );
@@ -525,10 +525,10 @@ kmb::MeshGL::drawFaceGroup(const char* faceName)
 							}
 							case 4:
 							{
-								kmb::nodeIdType n0 = element.getBoundaryCellId(localId,0);
-								kmb::nodeIdType n1 = element.getBoundaryCellId(localId,1);
-								kmb::nodeIdType n2 = element.getBoundaryCellId(localId,2);
-								kmb::nodeIdType n3 = element.getBoundaryCellId(localId,3);
+								kmb::nodeIdType n0 = element.getBoundaryNodeId(localId,0);
+								kmb::nodeIdType n1 = element.getBoundaryNodeId(localId,1);
+								kmb::nodeIdType n2 = element.getBoundaryNodeId(localId,2);
+								kmb::nodeIdType n3 = element.getBoundaryNodeId(localId,3);
 								::glBegin( GL_QUADS );
 								kmb::Vector3D normal = points->calcNormalVector(n0,n1,n2,n3);
 								::glNormal3d( normal.x(), normal.y(), normal.z() );
@@ -564,9 +564,9 @@ kmb::MeshGL::drawFaceGroup(const char* faceName)
 						switch( element.getBoundaryVertexCount( localId ) ){
 							case 3:
 							{
-								if( mesh->getNodeXYZ( element.getBoundaryCellId(localId,0), x0, y0, z0 ) &&
-									mesh->getNodeXYZ( element.getBoundaryCellId(localId,1), x1, y1, z1 ) &&
-									mesh->getNodeXYZ( element.getBoundaryCellId(localId,2), x2, y2, z2 ) )
+								if( mesh->getNodeXYZ( element.getBoundaryNodeId(localId,0), x0, y0, z0 ) &&
+									mesh->getNodeXYZ( element.getBoundaryNodeId(localId,1), x1, y1, z1 ) &&
+									mesh->getNodeXYZ( element.getBoundaryNodeId(localId,2), x2, y2, z2 ) )
 								{
 									drawTriangle(
 										x0, y0, z0,
@@ -577,10 +577,10 @@ kmb::MeshGL::drawFaceGroup(const char* faceName)
 							}
 							case 4:
 							{
-								if( mesh->getNodeXYZ( element.getBoundaryCellId(localId,0), x0, y0, z0 ) &&
-									mesh->getNodeXYZ( element.getBoundaryCellId(localId,1), x1, y1, z1 ) &&
-									mesh->getNodeXYZ( element.getBoundaryCellId(localId,2), x2, y2, z2 ) &&
-									mesh->getNodeXYZ( element.getBoundaryCellId(localId,3), x3, y3, z3 ) )
+								if( mesh->getNodeXYZ( element.getBoundaryNodeId(localId,0), x0, y0, z0 ) &&
+									mesh->getNodeXYZ( element.getBoundaryNodeId(localId,1), x1, y1, z1 ) &&
+									mesh->getNodeXYZ( element.getBoundaryNodeId(localId,2), x2, y2, z2 ) &&
+									mesh->getNodeXYZ( element.getBoundaryNodeId(localId,3), x3, y3, z3 ) )
 								{
 									drawQuad(
 										x0, y0, z0,
@@ -630,12 +630,12 @@ kmb::MeshGL::deformSurface(kmb::bodyIdType bodyId, const char* displacement, dou
 				switch( eIter.getType() ){
 					case kmb::TRIANGLE:
 					case kmb::TRIANGLE2:
-						if( mesh->getNodeXYZ( eIter.getCellId(0), x0, y0, z0 ) &&
-							mesh->getNodeXYZ( eIter.getCellId(1), x1, y1, z1 ) &&
-							mesh->getNodeXYZ( eIter.getCellId(2), x2, y2, z2 ) &&
-							data->getPhysicalValue( eIter.getCellId(0), v0 ) &&
-							data->getPhysicalValue( eIter.getCellId(1), v1 ) &&
-							data->getPhysicalValue( eIter.getCellId(2), v2 ) )
+						if( mesh->getNodeXYZ( eIter.getNodeId(0), x0, y0, z0 ) &&
+							mesh->getNodeXYZ( eIter.getNodeId(1), x1, y1, z1 ) &&
+							mesh->getNodeXYZ( eIter.getNodeId(2), x2, y2, z2 ) &&
+							data->getPhysicalValue( eIter.getNodeId(0), v0 ) &&
+							data->getPhysicalValue( eIter.getNodeId(1), v1 ) &&
+							data->getPhysicalValue( eIter.getNodeId(2), v2 ) )
 						{
 							drawTriangle(
 								x0 + factor * v0[0],
@@ -651,14 +651,14 @@ kmb::MeshGL::deformSurface(kmb::bodyIdType bodyId, const char* displacement, dou
 						break;
 					case kmb::QUAD:
 					case kmb::QUAD2:
-						if( mesh->getNodeXYZ( eIter.getCellId(0), x0, y0, z0 ) &&
-							mesh->getNodeXYZ( eIter.getCellId(1), x1, y1, z1 ) &&
-							mesh->getNodeXYZ( eIter.getCellId(2), x2, y2, z2 ) &&
-							mesh->getNodeXYZ( eIter.getCellId(3), x3, y3, z3 ) &&
-							data->getPhysicalValue( eIter.getCellId(0), v0 ) &&
-							data->getPhysicalValue( eIter.getCellId(1), v1 ) &&
-							data->getPhysicalValue( eIter.getCellId(2), v2 ) &&
-							data->getPhysicalValue( eIter.getCellId(3), v3 ) )
+						if( mesh->getNodeXYZ( eIter.getNodeId(0), x0, y0, z0 ) &&
+							mesh->getNodeXYZ( eIter.getNodeId(1), x1, y1, z1 ) &&
+							mesh->getNodeXYZ( eIter.getNodeId(2), x2, y2, z2 ) &&
+							mesh->getNodeXYZ( eIter.getNodeId(3), x3, y3, z3 ) &&
+							data->getPhysicalValue( eIter.getNodeId(0), v0 ) &&
+							data->getPhysicalValue( eIter.getNodeId(1), v1 ) &&
+							data->getPhysicalValue( eIter.getNodeId(2), v2 ) &&
+							data->getPhysicalValue( eIter.getNodeId(3), v3 ) )
 						{
 							drawQuad(
 								x0 + factor * v0[0],
@@ -717,9 +717,9 @@ kmb::MeshGL::deformFaceGroup(const char* faceName, const char* displacement, dou
 					switch( element.getBoundaryVertexCount( localId ) ){
 						case 3:
 						{
-							kmb::nodeIdType nodeId0 = element.getBoundaryCellId(localId,0);
-							kmb::nodeIdType nodeId1 = element.getBoundaryCellId(localId,1);
-							kmb::nodeIdType nodeId2 = element.getBoundaryCellId(localId,2);
+							kmb::nodeIdType nodeId0 = element.getBoundaryNodeId(localId,0);
+							kmb::nodeIdType nodeId1 = element.getBoundaryNodeId(localId,1);
+							kmb::nodeIdType nodeId2 = element.getBoundaryNodeId(localId,2);
 							if( mesh->getNodeXYZ( nodeId0, x0, y0, z0 ) &&
 								mesh->getNodeXYZ( nodeId1, x1, y1, z1 ) &&
 								mesh->getNodeXYZ( nodeId2, x2, y2, z2 ) &&
@@ -742,10 +742,10 @@ kmb::MeshGL::deformFaceGroup(const char* faceName, const char* displacement, dou
 						}
 						case 4:
 						{
-							kmb::nodeIdType nodeId0 = element.getBoundaryCellId(localId,0);
-							kmb::nodeIdType nodeId1 = element.getBoundaryCellId(localId,1);
-							kmb::nodeIdType nodeId2 = element.getBoundaryCellId(localId,2);
-							kmb::nodeIdType nodeId3 = element.getBoundaryCellId(localId,3);
+							kmb::nodeIdType nodeId0 = element.getBoundaryNodeId(localId,0);
+							kmb::nodeIdType nodeId1 = element.getBoundaryNodeId(localId,1);
+							kmb::nodeIdType nodeId2 = element.getBoundaryNodeId(localId,2);
+							kmb::nodeIdType nodeId3 = element.getBoundaryNodeId(localId,3);
 							if( mesh->getNodeXYZ( nodeId0, x0, y0, z0 ) &&
 								mesh->getNodeXYZ( nodeId1, x1, y1, z1 ) &&
 								mesh->getNodeXYZ( nodeId2, x2, y2, z2 ) &&
@@ -821,9 +821,9 @@ kmb::MeshGL::deformXYZFaceGroup
 					switch( element.getBoundaryVertexCount( localId ) ){
 						case 3:
 						{
-							kmb::nodeIdType nodeId0 = element.getBoundaryCellId(localId,0);
-							kmb::nodeIdType nodeId1 = element.getBoundaryCellId(localId,1);
-							kmb::nodeIdType nodeId2 = element.getBoundaryCellId(localId,2);
+							kmb::nodeIdType nodeId0 = element.getBoundaryNodeId(localId,0);
+							kmb::nodeIdType nodeId1 = element.getBoundaryNodeId(localId,1);
+							kmb::nodeIdType nodeId2 = element.getBoundaryNodeId(localId,2);
 							if( mesh->getNodeXYZ( nodeId0, x0, y0, z0 ) &&
 								mesh->getNodeXYZ( nodeId1, x1, y1, z1 ) &&
 								mesh->getNodeXYZ( nodeId2, x2, y2, z2 ) )
@@ -855,10 +855,10 @@ kmb::MeshGL::deformXYZFaceGroup
 						}
 						case 4:
 						{
-							kmb::nodeIdType nodeId0 = element.getBoundaryCellId(localId,0);
-							kmb::nodeIdType nodeId1 = element.getBoundaryCellId(localId,1);
-							kmb::nodeIdType nodeId2 = element.getBoundaryCellId(localId,2);
-							kmb::nodeIdType nodeId3 = element.getBoundaryCellId(localId,3);
+							kmb::nodeIdType nodeId0 = element.getBoundaryNodeId(localId,0);
+							kmb::nodeIdType nodeId1 = element.getBoundaryNodeId(localId,1);
+							kmb::nodeIdType nodeId2 = element.getBoundaryNodeId(localId,2);
+							kmb::nodeIdType nodeId3 = element.getBoundaryNodeId(localId,3);
 							if( mesh->getNodeXYZ( nodeId0, x0, y0, z0 ) &&
 								mesh->getNodeXYZ( nodeId1, x1, y1, z1 ) &&
 								mesh->getNodeXYZ( nodeId2, x2, y2, z2 ) &&
@@ -1138,9 +1138,9 @@ kmb::MeshGL::getDeformFaceGroupBoundingBox(kmb::BoundingBox& bbox,const char* fa
 					switch( element.getBoundaryVertexCount( localId ) ){
 						case 3:
 						{
-							kmb::nodeIdType nodeId0 = element.getBoundaryCellId(localId,0);
-							kmb::nodeIdType nodeId1 = element.getBoundaryCellId(localId,1);
-							kmb::nodeIdType nodeId2 = element.getBoundaryCellId(localId,2);
+							kmb::nodeIdType nodeId0 = element.getBoundaryNodeId(localId,0);
+							kmb::nodeIdType nodeId1 = element.getBoundaryNodeId(localId,1);
+							kmb::nodeIdType nodeId2 = element.getBoundaryNodeId(localId,2);
 							if( mesh->getNodeXYZ( nodeId0, x0, y0, z0 ) &&
 								mesh->getNodeXYZ( nodeId1, x1, y1, z1 ) &&
 								mesh->getNodeXYZ( nodeId2, x2, y2, z2 ) &&
@@ -1165,10 +1165,10 @@ kmb::MeshGL::getDeformFaceGroupBoundingBox(kmb::BoundingBox& bbox,const char* fa
 						}
 						case 4:
 						{
-							kmb::nodeIdType nodeId0 = element.getBoundaryCellId(localId,0);
-							kmb::nodeIdType nodeId1 = element.getBoundaryCellId(localId,1);
-							kmb::nodeIdType nodeId2 = element.getBoundaryCellId(localId,2);
-							kmb::nodeIdType nodeId3 = element.getBoundaryCellId(localId,3);
+							kmb::nodeIdType nodeId0 = element.getBoundaryNodeId(localId,0);
+							kmb::nodeIdType nodeId1 = element.getBoundaryNodeId(localId,1);
+							kmb::nodeIdType nodeId2 = element.getBoundaryNodeId(localId,2);
+							kmb::nodeIdType nodeId3 = element.getBoundaryNodeId(localId,3);
 							if( mesh->getNodeXYZ( nodeId0, x0, y0, z0 ) &&
 								mesh->getNodeXYZ( nodeId1, x1, y1, z1 ) &&
 								mesh->getNodeXYZ( nodeId2, x2, y2, z2 ) &&
@@ -1244,9 +1244,9 @@ kmb::MeshGL::getDeformXYZFaceGroupBoundingBox(kmb::BoundingBox& bbox,const char*
 					switch( element.getBoundaryVertexCount( localId ) ){
 						case 3:
 						{
-							kmb::nodeIdType nodeId0 = element.getBoundaryCellId(localId,0);
-							kmb::nodeIdType nodeId1 = element.getBoundaryCellId(localId,1);
-							kmb::nodeIdType nodeId2 = element.getBoundaryCellId(localId,2);
+							kmb::nodeIdType nodeId0 = element.getBoundaryNodeId(localId,0);
+							kmb::nodeIdType nodeId1 = element.getBoundaryNodeId(localId,1);
+							kmb::nodeIdType nodeId2 = element.getBoundaryNodeId(localId,2);
 							if( mesh->getNodeXYZ( nodeId0, x0, y0, z0 ) &&
 								mesh->getNodeXYZ( nodeId1, x1, y1, z1 ) &&
 								mesh->getNodeXYZ( nodeId2, x2, y2, z2 ) )
@@ -1280,10 +1280,10 @@ kmb::MeshGL::getDeformXYZFaceGroupBoundingBox(kmb::BoundingBox& bbox,const char*
 						}
 						case 4:
 						{
-							kmb::nodeIdType nodeId0 = element.getBoundaryCellId(localId,0);
-							kmb::nodeIdType nodeId1 = element.getBoundaryCellId(localId,1);
-							kmb::nodeIdType nodeId2 = element.getBoundaryCellId(localId,2);
-							kmb::nodeIdType nodeId3 = element.getBoundaryCellId(localId,3);
+							kmb::nodeIdType nodeId0 = element.getBoundaryNodeId(localId,0);
+							kmb::nodeIdType nodeId1 = element.getBoundaryNodeId(localId,1);
+							kmb::nodeIdType nodeId2 = element.getBoundaryNodeId(localId,2);
+							kmb::nodeIdType nodeId3 = element.getBoundaryNodeId(localId,3);
 							if( mesh->getNodeXYZ( nodeId0, x0, y0, z0 ) &&
 								mesh->getNodeXYZ( nodeId1, x1, y1, z1 ) &&
 								mesh->getNodeXYZ( nodeId2, x2, y2, z2 ) &&
@@ -1342,7 +1342,7 @@ kmb::MeshGL::drawMarking(const char* condName,const char* mode)
 	if( mesh != NULL &&
 		(data = mesh->getDataBindingsPtr( condName )) != NULL )
 	{
-		// VECTOR ’è”’lƒ^ƒCƒv‚ÌƒAƒCƒRƒ“‚Í’·‚³‚ğƒ‚ƒfƒ‹‚Ì’¼Œa‚Ì1/20‚É‚·‚é
+		// VECTOR å®šæ•°å€¤ã‚¿ã‚¤ãƒ—ã®ã‚¢ã‚¤ã‚³ãƒ³ã¯é•·ã•ã‚’ãƒ¢ãƒ‡ãƒ«ã®ç›´å¾„ã®1/20ã«ã™ã‚‹
 		if( data->getBindingMode() == kmb::DataBindings::NodeGroup && strcmp(mode,"VECTOR") == 0 ){
 			if( data->getValueType() == kmb::PhysicalValue::Vector3 ){
 				double v[3] = {0.0, 0.0, 0.0};
@@ -1562,7 +1562,7 @@ kmb::MeshGL::drawMarking(const char* condName,const char* mode)
 							kmb::Point3D center;
 							for(int i=0;i<faceNodeCount;++i)
 							{
-								if( mesh->getNodeXYZ( element.getBoundaryCellId( localId, i ), x, y, z ) ){
+								if( mesh->getNodeXYZ( element.getBoundaryNodeId( localId, i ), x, y, z ) ){
 									center.addCoordinate( x, y, z );
 								}
 							}
@@ -1581,7 +1581,7 @@ kmb::MeshGL::drawMarking(const char* condName,const char* mode)
 							kmb::Point3D center;
 							for(int i=0;i<faceNodeCount;++i)
 							{
-								if( mesh->getNodeXYZ( element.getBoundaryCellId( localId, i ), x, y, z ) ){
+								if( mesh->getNodeXYZ( element.getBoundaryNodeId( localId, i ), x, y, z ) ){
 									center.addCoordinate( x, y, z );
 								}
 							}
@@ -1600,7 +1600,7 @@ kmb::MeshGL::drawMarking(const char* condName,const char* mode)
 							kmb::Point3D center;
 							for(int i=0;i<faceNodeCount;++i)
 							{
-								if( mesh->getNodeXYZ( element.getBoundaryCellId( localId, i ), x, y, z ) ){
+								if( mesh->getNodeXYZ( element.getBoundaryNodeId( localId, i ), x, y, z ) ){
 									center.addCoordinate( x, y, z );
 								}
 							}
@@ -1619,7 +1619,7 @@ kmb::MeshGL::drawMarking(const char* condName,const char* mode)
 							kmb::Point3D center;
 							for(int i=0;i<faceNodeCount;++i)
 							{
-								if( mesh->getNodeXYZ( element.getBoundaryCellId( localId, i ), x, y, z ) ){
+								if( mesh->getNodeXYZ( element.getBoundaryNodeId( localId, i ), x, y, z ) ){
 									center.addCoordinate( x, y, z );
 								}
 							}
@@ -1648,7 +1648,7 @@ kmb::MeshGL::drawMarking(const char* condName,const char* mode)
 							const int faceNodeCount = element.getBoundaryNodeCount( localId );
 							for(int i=0;i<faceNodeCount;++i)
 							{
-								nodeSet.insert( element.getBoundaryCellId( localId, i ) );
+								nodeSet.insert( element.getBoundaryNodeId( localId, i ) );
 							}
 						}
 					}
@@ -1717,7 +1717,7 @@ kmb::MeshGL::drawMarking(const char* condName,const char* mode)
 						kmb::Point3D center;
 						for(int i=0;i<nodeCount;++i)
 						{
-							if( mesh->getNodeXYZ( element.getCellId( i ), x, y, z ) ){
+							if( mesh->getNodeXYZ( element.getNodeId( i ), x, y, z ) ){
 								center.addCoordinate( x, y, z );
 							}
 						}
@@ -1744,7 +1744,7 @@ kmb::MeshGL::drawMarking(const char* condName,const char* mode)
 						kmb::Point3D center;
 						for(int i=0;i<nodeCount;++i)
 						{
-							if( mesh->getNodeXYZ( element.getCellId( i ), x, y, z ) ){
+							if( mesh->getNodeXYZ( element.getNodeId( i ), x, y, z ) ){
 								center.addCoordinate( x, y, z );
 							}
 						}
@@ -1771,7 +1771,7 @@ kmb::MeshGL::drawMarkingEdgeWithScale(kmb::bodyIdType bodyId,const char* mode,do
 		if( strcmp(mode,"TENSOR") == 0 ){
 			kmb::ElementContainer::const_iterator eIter = edge->begin();
 			while( !eIter.isFinished() ){
-				if( mesh->getNodeXYZ( eIter.getCellId(0), x0, y0, z0 ) ){
+				if( mesh->getNodeXYZ( eIter.getNodeId(0), x0, y0, z0 ) ){
 					drawTensorMark(
 						scale * ( x0 - x ) + x,
 						scale * ( y0 - y ) + y,
@@ -1783,7 +1783,7 @@ kmb::MeshGL::drawMarkingEdgeWithScale(kmb::bodyIdType bodyId,const char* mode,do
 		else if( strcmp(mode,"DAGGER") == 0 ){
 			kmb::ElementContainer::const_iterator eIter = edge->begin();
 			while( eIter != edge->end() ){
-				if( mesh->getNodeXYZ( eIter.getCellId(0), x0, y0, z0 ) ){
+				if( mesh->getNodeXYZ( eIter.getNodeId(0), x0, y0, z0 ) ){
 					drawDaggerMark(
 						scale * ( x0 - x ) + x,
 						scale * ( y0 - y ) + y,
@@ -1795,7 +1795,7 @@ kmb::MeshGL::drawMarkingEdgeWithScale(kmb::bodyIdType bodyId,const char* mode,do
 		else if( strcmp(mode,"CIRCLE") == 0 ){
 			kmb::ElementContainer::const_iterator eIter = edge->begin();
 			while( eIter != edge->end() ){
-				if( mesh->getNodeXYZ( eIter.getCellId(0), x0, y0, z0 ) ){
+				if( mesh->getNodeXYZ( eIter.getNodeId(0), x0, y0, z0 ) ){
 					drawCircleMark(
 						scale * ( x0 - x ) + x,
 						scale * ( y0 - y ) + y,
@@ -1807,7 +1807,7 @@ kmb::MeshGL::drawMarkingEdgeWithScale(kmb::bodyIdType bodyId,const char* mode,do
 		else if( strcmp(mode,"CROSS") == 0 || strcmp(mode,"CCROSS") == 0){
 			kmb::ElementContainer::const_iterator eIter = edge->begin();
 			while( eIter != edge->end() ){
-				if( mesh->getNodeXYZ( eIter.getCellId(0), x0, y0, z0 ) ){
+				if( mesh->getNodeXYZ( eIter.getNodeId(0), x0, y0, z0 ) ){
 					drawCrossMark(
 						scale * ( x0 - x ) + x,
 						scale * ( y0 - y ) + y,
@@ -1819,7 +1819,7 @@ kmb::MeshGL::drawMarkingEdgeWithScale(kmb::bodyIdType bodyId,const char* mode,do
 		else if( strcmp(mode,"DOT") == 0 || strcmp(mode,"CDOT") == 0){
 			kmb::ElementContainer::const_iterator eIter = edge->begin();
 			while( eIter != edge->end() ){
-				if( mesh->getNodeXYZ( eIter.getCellId(0), x0, y0, z0 ) ){
+				if( mesh->getNodeXYZ( eIter.getNodeId(0), x0, y0, z0 ) ){
 					drawDotMark(
 						scale * ( x0 - x ) + x,
 						scale * ( y0 - y ) + y,
@@ -1857,11 +1857,11 @@ double
 kmb::MeshGL::calcPerpendicular(double v0,double v1,double v2,kmb::Vector3D &normal)
 {
 	double mag = v0*v0 + v1*v1 + v2*v2;
-	// v2 ‚ª‘Š‘Î“I‚É¬‚³‚¢‚É‚ÍA‚Å‚«‚é‚¾‚¯ z ²‚É‹ß‚­‚·‚é
-	// ‚»‚¤‚¶‚á‚È‚¢‚Æ‚«‚É‚Í z ²‚Æ‚ÌŠOÏ‚ğæ‚é
+	// v2 ãŒç›¸å¯¾çš„ã«å°ã•ã„æ™‚ã«ã¯ã€ã§ãã‚‹ã ã‘ z è»¸ã«è¿‘ãã™ã‚‹
+	// ãã†ã˜ã‚ƒãªã„ã¨ãã«ã¯ z è»¸ã¨ã®å¤–ç©ã‚’å–ã‚‹
 	if( v2 == 0.0 || mag == 0.0 ){
 		normal.setCoordinate(0.0,0.0,1.0);
-	}else if( v2*v2 / mag <= 0.5 ){  // •ûŒü—]Œ·‚Ì‚Qæ‚ª 0.5 ˆÈ‰º Ì z²‚Æ‚Ì‚È‚·Šp‚ª 45 ‹ˆÈã
+	}else if( v2*v2 / mag <= 0.5 ){  // æ–¹å‘ä½™å¼¦ã®ï¼’ä¹—ãŒ 0.5 ä»¥ä¸‹ â‡” zè»¸ã¨ã®ãªã™è§’ãŒ 45 Â°ä»¥ä¸Š
 		normal.setCoordinate(-v0*v2,-v1*v2,1.0-v2*v2);
 		normal.normalize();
 	}else{
@@ -1874,12 +1874,12 @@ kmb::MeshGL::calcPerpendicular(double v0,double v1,double v2,kmb::Vector3D &norm
 double kmb::MeshGL::calcFrame(double v0,double v1,double v2,kmb::Vector3D &normal0,kmb::Vector3D &normal1)
 {
 	double mag = v0*v0 + v1*v1 + v2*v2;
-	// v2 ‚ª‘Š‘Î“I‚É¬‚³‚¢‚É‚ÍA‚Å‚«‚é‚¾‚¯ z ²‚É‹ß‚­‚·‚é
-	// ‚»‚¤‚¶‚á‚È‚¢‚Æ‚«‚É‚Í z ²‚Æ‚ÌŠOÏ‚ğæ‚é
+	// v2 ãŒç›¸å¯¾çš„ã«å°ã•ã„æ™‚ã«ã¯ã€ã§ãã‚‹ã ã‘ z è»¸ã«è¿‘ãã™ã‚‹
+	// ãã†ã˜ã‚ƒãªã„ã¨ãã«ã¯ z è»¸ã¨ã®å¤–ç©ã‚’å–ã‚‹
 	if( v2 == 0.0 || mag == 0.0 ){
 		normal0.setCoordinate(0.0,0.0,1.0);
 		normal1.setCoordinate(0.0,-1.0,0.0);
-	}else if( v2*v2 / mag <= 0.5 ){  // •ûŒü—]Œ·‚Ì‚Qæ‚ª 0.5 ˆÈ‰º Ì z²‚Æ‚Ì‚È‚·Šp‚ª 45 ‹ˆÈã
+	}else if( v2*v2 / mag <= 0.5 ){  // æ–¹å‘ä½™å¼¦ã®ï¼’ä¹—ãŒ 0.5 ä»¥ä¸‹ â‡” zè»¸ã¨ã®ãªã™è§’ãŒ 45 Â°ä»¥ä¸Š
 		normal0.setCoordinate(-v0*v2,-v1*v2,mag-v2*v2);
 		normal0.normalize();
 	}else{
@@ -1911,7 +1911,7 @@ kmb::MeshGL::drawVectorMark(double x,double y,double z,double v0,double v1,doubl
 	}else{
 		// r = 1 / length
 		double r = 1.0 / sqrt(mag);
-		// “ª‚Ì ƒ
+		// é ­ã® ï¼œ
 		::glBegin( GL_LINE_STRIP );
 		::glVertex3d(
 			x - v0*markSize*r + normal.x()*markSize*0.6,
@@ -1923,7 +1923,7 @@ kmb::MeshGL::drawVectorMark(double x,double y,double z,double v0,double v1,doubl
 			y - v1*markSize*r - normal.y()*markSize*0.6,
 			z - v2*markSize*r - normal.z()*markSize*0.6);
 		::glEnd();
-		// –_
+		// æ£’
 		::glBegin( GL_LINES );
 		::glVertex3d( x, y, z );
 		::glVertex3d( x - v0 , y - v1, z - v2 );
@@ -2135,7 +2135,7 @@ kmb::MeshGL::drawVector(double x,double y,double z,double v0,double v1,double v2
 	float rgb[3] = {0.0,0.0,0.0};
 	colorMap->getRGB( d, rgb );
 	::glColor3fv( rgb );
-	// “ª‚Ì ƒ
+	// é ­ã® ï¼œ
 	::glBegin( GL_LINE_STRIP );
 	::glVertex3d(
 			x+factor*(v0*0.75+normal.x()*d*0.1),
@@ -2147,7 +2147,7 @@ kmb::MeshGL::drawVector(double x,double y,double z,double v0,double v1,double v2
 			y+factor*(v1*0.75-normal.y()*d*0.1),
 			z+factor*(v2*0.75-normal.z()*d*0.1));
 	::glEnd();
-	// –_
+	// æ£’
 	::glBegin( GL_LINES );
 	::glVertex3d( x, y, z );
 	::glVertex3d( x+factor*v0, y+factor*v1, z+factor*v2 );
@@ -2204,8 +2204,8 @@ kmb::MeshGL::drawElementEdge(kmb::ElementBase& element)
 	::glBegin( GL_LINES );
 	double x0=0.0, y0=0.0, z0=0.0, x1=0.0, y1=0.0, z1=0.0;
 	for(int i=0;i<len;++i){
-		mesh->getNodeXYZ( element.getEdgeCellId(i,0), x0, y0, z0 );
-		mesh->getNodeXYZ( element.getEdgeCellId(i,1), x1, y1, z1 );
+		mesh->getNodeXYZ( element.getEdgeNodeId(i,0), x0, y0, z0 );
+		mesh->getNodeXYZ( element.getEdgeNodeId(i,1), x1, y1, z1 );
 		::glVertex3d( x0, y0, z0 );
 		::glVertex3d( x1, y1, z1 );
 	}
@@ -2230,7 +2230,7 @@ kmb::MeshGL::drawFaceEdge(kmb::ElementBase& element,int index)
 	}
 	double x0=0.0, y0=0.0, z0=0.0;
 	for(int i=0;i<len;++i){
-		mesh->getNodeXYZ( element.getBoundaryCellId(index,i), x0, y0, z0 );
+		mesh->getNodeXYZ( element.getBoundaryNodeId(index,i), x0, y0, z0 );
 		::glVertex3d( x0, y0, z0 );
 	}
 	::glEnd();

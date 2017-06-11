@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementContainerMixedArray                              #
@@ -411,7 +411,7 @@ kmb::ElementContainerMixedArray::_iteratorMA::getType(void) const
 }
 
 kmb::nodeIdType
-kmb::ElementContainerMixedArray::_iteratorMA::getCellId(int cellIndex) const
+kmb::ElementContainerMixedArray::_iteratorMA::getNodeId(int cellIndex) const
 {
 	kmb::elementType etype = static_cast<kmb::elementType>(elementContainer->etypeTable[index]);
 	if( etype == static_cast<char>(kmb::UNKNOWNTYPE) ){
@@ -426,7 +426,7 @@ kmb::ElementContainerMixedArray::_iteratorMA::getCellId(int cellIndex) const
 }
 
 bool
-kmb::ElementContainerMixedArray::_iteratorMA::setCellId(int cellIndex, kmb::nodeIdType nodeId)
+kmb::ElementContainerMixedArray::_iteratorMA::setNodeId(int cellIndex, kmb::nodeIdType nodeId)
 {
 	kmb::elementType etype = static_cast<kmb::elementType>(elementContainer->etypeTable[index]);
 	if( etype == static_cast<char>(kmb::UNKNOWNTYPE) ){

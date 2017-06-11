@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ArrayUtil                                               #
@@ -22,20 +22,38 @@ namespace kmb{
 class ArrayUtil
 {
 public:
-	// ary[i0] ‚©‚ç n0 ŒÂ‚ğ ary[i1] ‚©‚ç n1 ŒÂ‚Æ“ü‚ê‘Ö‚¦‚é
-	// n0 ‚Æ n1 ‚ªˆÙ‚È‚é‚Æ‚«‚ÍAŠÔ‚ğ’²ß‚·‚éB
-	// i0 < i1 ‚ğ‰¼’è
+	// å¤§ãã• n ã®å˜èª¿å¢—å¤§åˆ— ary ãŒä¸ãˆã‚‰ã‚ŒãŸã¨ãã€
+	// å€¤ v ãŒ ary[i] <= v < ary[i+1] ãªã‚‹ i ã‚’æ±‚ã‚ã‚‹
+	template <typename T> static int arrayIndex(int n, T* ary, T v)
+	{
+		int i0 = 0;     // ary[i0] <= v
+		int i1 = n - 1; // v < ary[i1]
+		if (v < ary[0]) return -1;
+		if (ary[n - 1] < v) return n-1;
+		while (i0 < i1-1) {
+			int i = (i0 + i1) / 2;
+			if (v < ary[i]) {
+				i1 = i;
+			}else {
+				i0 = i;
+			}
+		}
+		return i0;
+	}
+	// ary[i0] ã‹ã‚‰ n0 å€‹ã‚’ ary[i1] ã‹ã‚‰ n1 å€‹ã¨å…¥ã‚Œæ›¿ãˆã‚‹
+	// n0 ã¨ n1 ãŒç•°ãªã‚‹ã¨ãã¯ã€é–“ã‚’èª¿ç¯€ã™ã‚‹ã€‚
+	// i0 < i1 ã‚’ä»®å®š
 	template <typename T> static bool arraySwap(T* ary, int i0, int n0, int i1, int n1){
 		if( ary == NULL || i0 < 0 || n0 < 0 || i1 < 0 || n1 < 0 ){
 			return false;
 		}
-		// d‚È‚Á‚Ä‚¢‚½‚çƒGƒ‰[
+		// é‡ãªã£ã¦ã„ãŸã‚‰ã‚¨ãƒ©ãƒ¼
 		if( i0 + n0 > i1 ){
 			return false;
 		}
 		if( n0 == n1 ){
 			if( n0 > 0 ){
-				// ‚»‚Ì‚Ü‚ÜŒğŠ·
+				// ãã®ã¾ã¾äº¤æ›
 				T* tmp = new T[n0];
 				memmove(tmp,ary+i0,sizeof(T)*n0);
 				memmove(ary+i0,ary+i1,sizeof(T)*n0);
@@ -43,7 +61,7 @@ public:
 				delete[] tmp;
 			}
 		}else if( n0 < n1 ){
-			// ŠÔ‚ğŒã‚ë‚É‚¸‚ç‚·
+			// é–“ã‚’å¾Œã‚ã«ãšã‚‰ã™
 			T* tmp = new T[n1];
 			memmove(tmp,ary+i1,sizeof(T)*n1);
 			memmove(ary+i1+n1-n0,ary+i0,sizeof(T)*n0);
@@ -51,7 +69,7 @@ public:
 			memmove(ary+i0,tmp,sizeof(T)*n1);
 			delete[] tmp;
 		}else if( n0 > n1 ){
-			// ŠÔ‚ğ‘O‚É‚¸‚ç‚·
+			// é–“ã‚’å‰ã«ãšã‚‰ã™
 			T* tmp = new T[n0];
 			memmove(tmp,ary+i0,sizeof(T)*n0);
 			memmove(ary+i0,ary+i1,sizeof(T)*n1);

@@ -41,6 +41,9 @@ public:
 	static void shapeFunction(double s,double* coeff);
 
 	static double checkShapeFunctionDomain(double s);
+
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 };
 
 }

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+Ôªø/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Point3DContainerMArray                                  #
@@ -12,7 +12,7 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-// BLArray ÇégÇ¡ÇΩÉRÉìÉeÉi
+// BLArray „Çí‰Ωø„Å£„Åü„Ç≥„É≥„ÉÜ„Éä
 #pragma once
 #include "Geometry/kmbPoint3DContainer.h"
 #include "Common/kmbBLArray.h"

@@ -15,21 +15,21 @@
 /**--------------------------------------------------------------------
 =begin
 
-=RevocapMeshGen ƒ‚ƒWƒ…[ƒ‹
+=RevocapMeshGen ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
 
-==ƒ‚ƒWƒ…[ƒ‹’è”
+==ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«å®šæ•°
 
 ((<VERSION>))
 ((<COPYRIGHT>))
 
-== ƒ‚ƒWƒ…[ƒ‹’è”
+== ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«å®šæ•°
 --- VERSION
-	ƒo[ƒWƒ‡ƒ“î•ñ‚Ì•¶Žš—ñ
+	ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±ã®æ–‡å­—åˆ—
 --- COPYRIGHT
-	’˜ìŒ î•ñ‚Ì•¶Žš—ñ
+	è‘—ä½œæ¨©æƒ…å ±ã®æ–‡å­—åˆ—
 =end
 ---------------------------------------------------------------*/
-%module RevocapMeshGen  // create_makefile ‚Æ“¯‚¶–¼‘O‚É‚·‚é
+%module RevocapMeshGen  // create_makefile ã¨åŒã˜åå‰ã«ã™ã‚‹
 
 #ifndef VERSION
 namespace kmb{

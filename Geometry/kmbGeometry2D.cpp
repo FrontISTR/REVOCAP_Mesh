@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Geometry2D                                              #
@@ -146,6 +146,11 @@ kmb::Point2D::operator==(const Point2D& other) const
 	return (this->x() == other.x()) && (this->y() == other.y());
 }
 
+bool kmb::Point2D::operator!=(const Point2D& other) const
+{
+	return (this->x() != other.x()) || (this->y() != other.y());
+}
+
 double
 kmb::Point2D::distanceSqToSegment(const Point2D& a,const Point2D& b) const
 {
@@ -174,7 +179,7 @@ kmb::Point2D::distanceToSegment(const Point2D& a,const Point2D& b) const
 	return sqrt( distanceSqToSegment(a,b) );
 }
 
-// “à•ª“_
+// å†…åˆ†ç‚¹
 kmb::Point2D
 kmb::Point2D::dividingPoint(const Point2D& other,double m,double n) const
 {
@@ -195,8 +200,8 @@ kmb::Point2D::distanceSq(const kmb::Point2D& a,const kmb::Point2D& b)
 	return a.distanceSq(b);
 }
 
-// OŠpŒ`‚Ì–ÊÏ
-// a b c ‚ğ“ü‚ê‘Ö‚¦‚Ä‚à“™‚µ‚­‚È‚é‚æ‚¤‚É
+// ä¸‰è§’å½¢ã®é¢ç©
+// a b c ã‚’å…¥ã‚Œæ›¿ãˆã¦ã‚‚ç­‰ã—ããªã‚‹ã‚ˆã†ã«
 double 
 kmb::Point2D::area(const kmb::Point2D& a,const kmb::Point2D& b,const kmb::Point2D &c)
 {

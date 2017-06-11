@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : TriangleList                                            #
@@ -268,7 +268,7 @@ kmb::TriangleList::_iterator::getElement(kmb::elementType &etype,kmb::nodeIdType
 	if( tri ){
 		etype = kmb::TRIANGLE;
 		for(int i=0;i<3;++i){
-			nodes[i] = tri->getCellId(i);
+			nodes[i] = tri->getNodeId(i);
 		}
 		return true;
 	}else{
@@ -300,20 +300,20 @@ kmb::TriangleList::_iterator::getType(void) const
 }
 
 kmb::nodeIdType
-kmb::TriangleList::_iterator::getCellId(int cellIndex) const
+kmb::TriangleList::_iterator::getNodeId(int cellIndex) const
 {
 	if( tri ){
-		return tri->getCellId(cellIndex);
+		return tri->getNodeId(cellIndex);
 	}else{
 		return kmb::nullNodeId;
 	}
 }
 
 bool
-kmb::TriangleList::_iterator::setCellId(int cellIndex, kmb::nodeIdType nodeId)
+kmb::TriangleList::_iterator::setNodeId(int cellIndex, kmb::nodeIdType nodeId)
 {
 	if( tri ){
-		return tri->setCellId(cellIndex,nodeId);
+		return tri->setNodeId(cellIndex,nodeId);
 	}else{
 		return false;
 	}
@@ -323,7 +323,7 @@ kmb::nodeIdType
 kmb::TriangleList::_iterator::operator[](const int cellIndex) const
 {
 	if( tri ){
-		return tri->getCellId(cellIndex);
+		return tri->getNodeId(cellIndex);
 	}else{
 		return kmb::nullNodeId;
 	}

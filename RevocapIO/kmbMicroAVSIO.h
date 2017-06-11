@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MicroAVSIO                                              #
@@ -12,7 +12,7 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-// tetra ‚Ì‡˜‚ª REVOCAP ‚Æ‹t‚Å‚ ‚é‚±‚Æ‚É’ˆÓ‚·‚é‚±‚Æ
+// tetra ã®é †åºãŒ REVOCAP ã¨é€†ã§ã‚ã‚‹ã“ã¨ã«æ³¨æ„ã™ã‚‹ã“ã¨
 //
 // REVOCAP AVS
 // 0       1
@@ -43,29 +43,29 @@ private:
 	dataType dtype;
 	kmb::nodeIdType nodeOffset;
 	kmb::elementIdType elementOffset;
-	// ƒxƒNƒgƒ‹’l‚Æ‚µ‚Ä‰ğß
+	// ãƒ™ã‚¯ãƒˆãƒ«å€¤ã¨ã—ã¦è§£é‡ˆ
 	bool asVector3;
 	bool summary;
-	// avs ƒtƒ@ƒCƒ‹‚Ìƒo[ƒWƒ‡ƒ“
+	// avs ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³
 	int version;
 	int nodeCount;
 	int elementCount;
 	int nodeDimCount;
 	int elementDimCount;
 protected:
-	// Å‰‚ÌƒRƒƒ“ƒgˆÈŠO‚Ìs‚ª‚Ps‚ÌAver 9
-	// ‚»‚êˆÈŠO‚Ì‚Í ver 8
-	// -1 ‚È‚çƒGƒ‰[
+	// æœ€åˆã®ã‚³ãƒ¡ãƒ³ãƒˆä»¥å¤–ã®è¡ŒãŒï¼‘è¡Œã®æ™‚ã€ver 9
+	// ãã‚Œä»¥å¤–ã®æ™‚ã¯ ver 8
+	// -1 ãªã‚‰ã‚¨ãƒ©ãƒ¼
 	int getVersion(std::ifstream &input) const;
-	// ƒXƒeƒbƒv”‚ğ•Ô‚·
+	// ã‚¹ãƒ†ãƒƒãƒ—æ•°ã‚’è¿”ã™
 	int readHeader(std::ifstream &input);
 	int skipGeom(std::ifstream &input);
 	int readGeom(std::ifstream &input,kmb::MeshData* mesh);
 	int readData(std::ifstream &input,kmb::MeshData* mesh);
-	// ƒf[ƒ^‚Ì–¼‘O‚ğ’Šo‚·‚é
+	// ãƒ‡ãƒ¼ã‚¿ã®åå‰ã‚’æŠ½å‡ºã™ã‚‹
 	void getDataName(std::string &line);
 #ifndef REVOCAP_SUPPORT_RUBY
-	// Field ƒf[ƒ^QÆŒ^
+	// Field ãƒ‡ãƒ¼ã‚¿å‚ç…§å‹
 	int readCoord(int n,std::string filename,std::string filetype,int skip,int offset,int stride,kmb::StructuredGrid* grid);
 	int readVariable(std::string label,int n,std::string filename,std::string filetype,int skip,int offset,int stride,kmb::StructuredGrid* grid);
 #endif
@@ -76,13 +76,13 @@ public:
 #ifndef REVOCAP_SUPPORT_RUBY
 	int loadFromFile(const char* filename,kmb::StructuredGrid* grid);
 #endif
-	// grid ‚Í“Ç‚Ü‚¸‚É data ‚¾‚¯“Ç‚Ş
+	// grid ã¯èª­ã¾ãšã« data ã ã‘èª­ã‚€
 	int loadPostFromFile(const char* filename,kmb::MeshData* mesh);
 	int saveToFile(const char* filename,kmb::MeshData* mesh);
 	int saveToFile_V8(const char* filename,kmb::MeshData* mesh);
-	// Ši”[‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚ª 3 ‚Â‚µ‚©‚È‚¢‚É©“®“I‚ÉƒxƒNƒgƒ‹’l‚É‚·‚é
+	// æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ãŒ 3 ã¤ã—ã‹ãªã„æ™‚ã«è‡ªå‹•çš„ã«ãƒ™ã‚¯ãƒˆãƒ«å€¤ã«ã™ã‚‹
 	void setReadAsVector3( bool flag );
-	// FrontISTR ‚Ì MicroAVS Œ`®‚ğ©“®“I‚ÉƒxƒNƒgƒ‹’l‚É‚·‚é
+	// FrontISTR ã® MicroAVS å½¢å¼ã‚’è‡ªå‹•çš„ã«ãƒ™ã‚¯ãƒˆãƒ«å€¤ã«ã™ã‚‹
 	void setSummary( bool flag );
 };
 

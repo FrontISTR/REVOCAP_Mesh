@@ -16,20 +16,20 @@
 =begin
 =RevocapMeshGen::MeshSmoother
 
-==ŠT—v
+==æ¦‚è¦
 
-RevocapMeshGen::MeshSmoother ƒNƒ‰ƒX‚Í
-RevocapMesh::MeshData ‚ÉŠi”[‚³‚ê‚½ƒƒbƒVƒ…‚É‚Â‚¢‚Ä Laplacian smoothing ‚ğ
-s‚¤‚à‚Ì‚Å‚ ‚éB
+RevocapMeshGen::MeshSmoother ã‚¯ãƒ©ã‚¹ã¯
+RevocapMesh::MeshData ã«æ ¼ç´ã•ã‚ŒãŸãƒ¡ãƒƒã‚·ãƒ¥ã«ã¤ã„ã¦ Laplacian smoothing ã‚’
+è¡Œã†ã‚‚ã®ã§ã‚ã‚‹ã€‚
 
-g‚¢•ûF
+ä½¿ã„æ–¹ï¼š
  smoother = RevocapMeshGen::MeshSmoother.new(mesh)
  smoother.appendBody(bodyId)
- smoother.init                     # smoothing —p‚Ìˆê•Û‘¶—p‚Ì—ÌˆæŠm•Û
- smoother.smoothingNode(nodeId)    # •K—v‚É‰‚¶‚½ nodeId ‚É‚Â‚¢‚ÄŒJ‚è•Ô‚·
- smoother.commit                   # smoothing ‚µ‚½Œ‹‰Ê‚ğß“_À•W‚É”½‰f‚·‚é
+ smoother.init                     # smoothing ç”¨ã®ä¸€æ™‚ä¿å­˜ç”¨ã®é ˜åŸŸç¢ºä¿
+ smoother.smoothingNode(nodeId)    # å¿…è¦ã«å¿œã˜ãŸ nodeId ã«ã¤ã„ã¦ç¹°ã‚Šè¿”ã™
+ smoother.commit                   # smoothing ã—ãŸçµæœã‚’ç¯€ç‚¹åº§æ¨™ã«åæ˜ ã™ã‚‹
 
-==ƒƒ\ƒbƒhˆê——
+==ãƒ¡ã‚½ãƒƒãƒ‰ä¸€è¦§
 
 ((<MeshSmoother.new>))
 ((<appendBody>))
@@ -56,8 +56,8 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- MeshSmoother.new(mesh)
-	ƒƒbƒVƒ…‰~ŠŠ‰»ƒ‚ƒWƒ…[ƒ‹ RevocapMeshGen::MeshSmoother ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬‚·‚éB
-	ƒƒbƒVƒ…‚Æ‰~ŠŠ‰»‚Ì‘ÎÛ‚ğ mesh ‚Å—^‚¦‚éB
+	ãƒ¡ãƒƒã‚·ãƒ¥å††æ»‘åŒ–ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ« RevocapMeshGen::MeshSmoother ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã™ã‚‹ã€‚
+	ãƒ¡ãƒƒã‚·ãƒ¥ã¨å††æ»‘åŒ–ã®å¯¾è±¡ã‚’ mesh ã§ä¸ãˆã‚‹ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	MeshSmoother(kmb::MeshData* mesh);
@@ -66,22 +66,22 @@ public:
 /**--------------------------------------------------------------------------
 =begin
 --- init
-	ƒƒbƒVƒ…‰~ŠŠ‰»ƒ‚ƒWƒ…[ƒ‹‚Ì‰Šú‰»
+	ãƒ¡ãƒƒã‚·ãƒ¥å††æ»‘åŒ–ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®åˆæœŸåŒ–
 =end
 ---------------------------------------------------------------------------*/
 	void init(void);
 /**--------------------------------------------------------------------------
 =begin
 --- commit
-	ƒƒbƒVƒ…‰~ŠŠ‰»‚ÌŒ‹‰Ê‚ğß“_”z—ñ‚É”½‰f‚·‚é
+	ãƒ¡ãƒƒã‚·ãƒ¥å††æ»‘åŒ–ã®çµæœã‚’ç¯€ç‚¹é…åˆ—ã«åæ˜ ã™ã‚‹
 =end
 ---------------------------------------------------------------------------*/
 	void commit(void);
 /**--------------------------------------------------------------------------
 =begin
 --- smoothingNode(nodeId)
-	ß“_”Ô† nodeId ‚Ì“_‚ğ‰~ŠŠ‰»‚·‚éB
-	‚±‚Ìƒƒ\ƒbƒh‚ğÀs‚µ‚½‚¾‚¯‚Å‚Íß“_”z—ñ‚É‚Í”½‰f‚µ‚È‚¢B
+	ç¯€ç‚¹ç•ªå· nodeId ã®ç‚¹ã‚’å††æ»‘åŒ–ã™ã‚‹ã€‚
+	ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å®Ÿè¡Œã—ãŸã ã‘ã§ã¯ç¯€ç‚¹é…åˆ—ã«ã¯åæ˜ ã—ãªã„ã€‚
 =end
 ---------------------------------------------------------------------------*/
 	void smoothingNode(kmb::nodeIdType nodeId);

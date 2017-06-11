@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementEvaluator                                        #
@@ -13,11 +13,11 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// —v‘f‚Ì•i¿•]‰¿‚Ì‚½‚ß‚ÌŠÖ”ŒQ
-// http://www.jama.or.jp/cgi-bin/pdq/download_pdq.cgi ‚È‚Ç‚ğQl‚É‚·‚é
+// è¦ç´ ã®å“è³ªè©•ä¾¡ã®ãŸã‚ã®é–¢æ•°ç¾¤
+// http://www.jama.or.jp/cgi-bin/pdq/download_pdq.cgi ãªã©ã‚’å‚è€ƒã«ã™ã‚‹
 //
-// ‹ÇŠ“I‚É•]‰¿‚Å‚«‚é‚à‚Ì‚Ì‚İ‚ğ‘ÎÛ‚É‚·‚é
-// ‘åˆæ“I‚É•]‰¿‚·‚×‚«‚à‚Ì‚É‚Â‚¢‚Ä‚Íˆµ‚í‚È‚¢
+// å±€æ‰€çš„ã«è©•ä¾¡ã§ãã‚‹ã‚‚ã®ã®ã¿ã‚’å¯¾è±¡ã«ã™ã‚‹
+// å¤§åŸŸçš„ã«è©•ä¾¡ã™ã¹ãã‚‚ã®ã«ã¤ã„ã¦ã¯æ‰±ã‚ãªã„
 //
 
 #pragma once
@@ -40,84 +40,85 @@ public:
 	ElementEvaluator(const kmb::Point3DContainer* points);
 	ElementEvaluator(const kmb::Point2DContainer* point2Ds);
 	virtual ~ElementEvaluator(void);
-	// ŠOÚ‹…‚Ì”¼Œa‚Æ“àÚ‹…‚Ì”¼Œa‚Ì”ä
+	// å¤–æ¥çƒã®åŠå¾„ã¨å†…æ¥çƒã®åŠå¾„ã®æ¯”
 	double getAspectRatio(const kmb::ElementBase &eIter) const;
 	double getAspectRatio(kmb::nodeIdType n0,kmb::nodeIdType n1,kmb::nodeIdType n2,kmb::nodeIdType n3) const;
-	// “àÚ‹…‚Ì”¼Œa
+	// å†…æ¥çƒã®åŠå¾„
 	double getInscribedRadius(kmb::nodeIdType n0,kmb::nodeIdType n1,kmb::nodeIdType n2,kmb::nodeIdType n3) const;
-	// ŠOÚ‹…‚Ì”¼Œa
+	// å¤–æ¥çƒã®åŠå¾„
 	double getCircumRadius(kmb::nodeIdType n0,kmb::nodeIdType n1,kmb::nodeIdType n2,kmb::nodeIdType n3) const;
-	// Å’·•Ó‚Ì’·‚³‚ÆÅ’Z•Ó‚Ì’·‚³‚Ì”ä
+	// æœ€é•·è¾ºã®é•·ã•ã¨æœ€çŸ­è¾ºã®é•·ã•ã®æ¯”
 	double getEdgeLengthRatio(const kmb::ElementBase &eIter) const;
 	double getMaxEdgeLength(const kmb::ElementBase &eIter) const;
 	double getAverageEdgeLength(const kmb::ElementBase &eIter) const;
-	// OŠpŒ`‚ÌÅ¬Šp“xi–Ê‚Ì‚¤‚¿OŠpŒ`‚¾‚¯‚ğ’²‚×‚éj
+	// ä¸‰è§’å½¢ã®æœ€å°è§’åº¦ï¼ˆé¢ã®ã†ã¡ä¸‰è§’å½¢ã ã‘ã‚’èª¿ã¹ã‚‹ï¼‰
 	double getMinAngleTri(const kmb::ElementBase &eIter) const;
-	// Å¬Šp“x
+	// æœ€å°è§’åº¦
 	double getMinAngle(const kmb::ElementBase &eIter) const;
-	// Å‘åŠp“x
+	// æœ€å¤§è§’åº¦
 	double getMaxAngle(const kmb::ElementBase &eIter) const;
-	// ‘ÌÏ
+	// ä½“ç©
 	double getVolume(const kmb::ElementBase &eIter) const;
 	double getVolume(kmb::nodeIdType n0,kmb::nodeIdType n1,kmb::nodeIdType n2,kmb::nodeIdType n3) const;
-	// –ÊÏ
+	// é¢ç©
 	double getArea(const kmb::ElementBase &eIter) const;
 	double getArea(const kmb::ElementBase &eIter,kmb::idType localFaceId) const;
-	// ’·‚³
+	// é•·ã•
 	double getLength(const kmb::ElementBase &eIter) const;
-	// Šp“x
+	// è§’åº¦
 	double getAngle(const kmb::ElementBase &eIter,kmb::nodeIdType nodeId) const;
 	double getAngleByIndex(const kmb::ElementBase &eIter,int index) const;
 	double getCosByIndex(const kmb::ElementBase &eIter,int index) const;
-	// n0 ‚Ìë‚è‹ï‡
-	// n0->n3, n1->n3, n2->n3 ‚ğ³‹K‰»‚µ‚Ä‚©‚çOdÏ‚ğæ‚é
+	// n0 ã®å°–ã‚Šå…·åˆ
+	// n0->n3, n1->n3, n2->n3 ã‚’æ­£è¦åŒ–ã—ã¦ã‹ã‚‰ä¸‰é‡ç©ã‚’å–ã‚‹
 	double getSharpness(kmb::nodeIdType n0,kmb::nodeIdType n1,kmb::nodeIdType n2,kmb::nodeIdType n3) const;
 	// Bounding Box
 	bool getBoundingBox(const kmb::ElementBase &element,kmb::BoundingBox &bbox) const;
 	double getBoundingBoxRadius(const kmb::ElementBase &element) const;
 	// double getAngleBetweenFaces(const kmb::ElementBase &eIter,int index,int index) const;
-	// –@üƒxƒNƒgƒ‹
+	// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 	bool getNormalVector(const kmb::ElementBase &element, kmb::Vector3D &vect) const;
 	bool getNormalVector(const Face &face, const kmb::ElementContainer* elements, kmb::Vector3D &vect) const;
 	bool getNormalVectorOfFace(const kmb::ElementBase &element, int index, kmb::Vector3D &vect) const;
-	// —v‘f“à©‘RÀ•WŒn‚Ìæ“¾
+	// è¦ç´ å†…è‡ªç„¶åº§æ¨™ç³»ã®å–å¾—
 	bool getNaturalCoordinates(const kmb::ElementBase &element,const double x,const double y,const double z,double* retvals) const;
 	bool getNaturalCoordinatesOfFace(const kmb::ElementBase &element,int index,const double x,const double y,const double z,double* retvals) const;
 	double checkShapeFunctionDomain(const kmb::ElementBase &element,double s,double t,double u);
-	// —v‘f‚ÌŒ`óŠÖ”‚Å•]‰¿‚µ‚½‚Æ‚«‚Ì (x,y,z) ‚ÌŒW”
+	// è¦ç´ ã®å½¢çŠ¶é–¢æ•°ã§è©•ä¾¡ã—ãŸã¨ãã® (x,y,z) ã®ä¿‚æ•°
 	// (x,y,z) = \sum_i weights[i] * element[i].(x,y,z)
-	// –ß‚è’l‚Í checkShapeFunctionDomain ‚Æ“¯‚¶
+	// æˆ»ã‚Šå€¤ã¯ checkShapeFunctionDomain ã¨åŒã˜
 	double getWeightElement(const kmb::ElementBase &element,const double x,const double y,const double z,double* weights) const;
 	double getWeightElementFace(const kmb::ElementBase &element,int index,const double x,const double y,const double z,double* weights) const;
-	// —v‘f“à©‘RÀ•WŒn‚©‚ç•¨—À•W‚Ìæ“¾
+	// è¦ç´ å†…è‡ªç„¶åº§æ¨™ç³»ã‹ã‚‰ç‰©ç†åº§æ¨™ã®å–å¾—
 	bool getPhysicalCoordinates(const kmb::ElementBase &element,const double s,const double t,const double u,kmb::Point3D &target) const;
-	// —v‘f‚Ì–Ê‚Æ1“_ (x,y,z) ‚©‚ç‚È‚é‚S–Ê‘Ì‚Ì‘ÌÏ‚ÌÅ¬’l
-	// ‚±‚Ì’l‚ª³‚È‚ç‚ÎA“_ (x,y,z) ‚Í—v‘f‚Ì“à•”‚É‚ ‚é‚Æ‚µ‚Ä‚æ‚¢
+	// è¦ç´ ã®é¢ã¨1ç‚¹ (x,y,z) ã‹ã‚‰ãªã‚‹ï¼”é¢ä½“ã®ä½“ç©ã®æœ€å°å€¤
+	// ã“ã®å€¤ãŒæ­£ãªã‚‰ã°ã€ç‚¹ (x,y,z) ã¯è¦ç´ ã®å†…éƒ¨ã«ã‚ã‚‹ã¨ã—ã¦ã‚ˆã„
 	double getMinInnerVolume(const kmb::ElementBase &element,const double x,const double y,const double z) const;
-	// —v‘f‚Æ1“_ (x,y,z) ‚Ì‹——£
-	// 2ŸŒ³—v‘f‚Ì‚Ì‚İ
+	// è¦ç´ ã¨1ç‚¹ (x,y,z) ã®è·é›¢
+	// 2æ¬¡å…ƒè¦ç´ ã®æ™‚ã®ã¿
 	double getDistanceSq(const kmb::ElementBase &element,const double x,const double y,const double z) const;
-	// —v‘f‚Ì–Ê‚Æ1“_ (x,y,z) ‚Ì‹——£‚ÌÅ¬’l
+	// è¦ç´ ã®é¢ã¨1ç‚¹ (x,y,z) ã®è·é›¢ã®æœ€å°å€¤
 	double getDistanceSqOnBoundary(const kmb::ElementBase &element,const double x,const double y,const double z) const;
-	// lŠpŒ`‚Ì‘ÎŠpü‚Ì’·‚³‚Ì”ä
-	// lŠpŒ`‚ª“¯ˆê•½–Ê‚É‚ ‚é‚©‚Ç‚¤‚©
-	// •½–Ê—v‘f‚Ì‚È‚·Šp“x
+	// å››è§’å½¢ã®å¯¾è§’ç·šã®é•·ã•ã®æ¯”
+	// å››è§’å½¢ãŒåŒä¸€å¹³é¢ã«ã‚ã‚‹ã‹ã©ã†ã‹
+	// å¹³é¢è¦ç´ ã®ãªã™è§’åº¦
 	double getAngleBetweenElements(const kmb::ElementBase &element0,const kmb::ElementBase &element1) const;
-	// –Ê‚Ì‚È‚·Šp‚Ì cos = - –@üƒxƒNƒgƒ‹‚Ì“àÏ
-	// ‚±‚Ì’l‚ª³‚Ì‚ª–Ê‚Æ–Ê‚ª‰sŠp‚É‚È‚Á‚Ä‚¢‚é‚±‚Æ‚ğˆÓ–¡‚·‚é
+	// é¢ã®ãªã™è§’ã® cos = - æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã®å†…ç©
+	// ã“ã®å€¤ãŒæ­£ã®æ™‚ãŒé¢ã¨é¢ãŒé‹­è§’ã«ãªã£ã¦ã„ã‚‹ã“ã¨ã‚’æ„å‘³ã™ã‚‹
 	double getCosBetweenElements(const kmb::ElementBase &element0,const kmb::ElementBase &element1) const;
-	// lŠpŒ`‚É‰š“_‚ª‘¶İ‚·‚é‚©‚Ç‚¤‚©
-	// ‘¶İ‚µ‚½‚ç‚»‚Ì“_‚Ì index ‚ğ•Ô‚µA‘¶İ‚µ‚È‚¯‚ê‚Î -1 ‚ğ•Ô‚·
+	// å››è§’å½¢ã«å‡¹ç‚¹ãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹
+	// å­˜åœ¨ã—ãŸã‚‰ãã®ç‚¹ã® index ã‚’è¿”ã—ã€å­˜åœ¨ã—ãªã‘ã‚Œã° -1 ã‚’è¿”ã™
 	int getConcaveInQuad(const kmb::ElementBase &quad) const;
-	// ƒ„ƒRƒrƒAƒ“‚Ì—v‘f“à‚ÌÅ‘åÅ¬
-	// QUAD or HEXAHEDRON ‚Ìê‡‚Ì distorsion element ‚ğ’T‚·‚½‚ß
+	// ãƒ¤ã‚³ãƒ“ã‚¢ãƒ³ã®è¦ç´ å†…ã®æœ€å¤§æœ€å°
+	// QUAD or HEXAHEDRON ã®å ´åˆã® distorsion element ã‚’æ¢ã™ãŸã‚
 	bool getMinMaxJacobian(const kmb::ElementBase &element, double &min, double &max) const;
-	// d•¡ß“_”Ô†‚ÌŒÂ”
-	// ‘S‚Ä‚Ì‘g‚İ‡‚í‚¹‚Ì”äŠr‚Ì‚¤‚¿“™†‚É‚È‚Á‚½‚à‚Ì‚ÌŒÂ”
+	// é‡è¤‡ç¯€ç‚¹ç•ªå·ã®å€‹æ•°
+	// å…¨ã¦ã®çµ„ã¿åˆã‚ã›ã®æ¯”è¼ƒã®ã†ã¡ç­‰å·ã«ãªã£ãŸã‚‚ã®ã®å€‹æ•°
 	int getDuplicationNodeIdCount(const kmb::ElementBase &element) const;
+	int getCommonNodeCount(const kmb::ElementBase &element0, const kmb::ElementBase &element1) const;
 
-	// —v‘f„«ƒ}ƒgƒŠƒNƒX
-	// ß“_‚ÌŒÂ”‘å‚«‚³‚Ìƒ}ƒgƒŠƒNƒX‚É‘ã“üiƒCƒ“ƒfƒbƒNƒX‚Íß“_”Ô†‚Å‚Í‚È‚¢‚±‚Æ‚É’ˆÓj
+	// è¦ç´ å‰›æ€§ãƒãƒˆãƒªã‚¯ã‚¹
+	// ç¯€ç‚¹ã®å€‹æ•°å¤§ãã•ã®ãƒãƒˆãƒªã‚¯ã‚¹ã«ä»£å…¥ï¼ˆã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã¯ç¯€ç‚¹ç•ªå·ã§ã¯ãªã„ã“ã¨ã«æ³¨æ„ï¼‰
 	bool getStiffMatrix(const kmb::ElementBase &element,kmb::SquareMatrix &stiff) const;
 protected:
 	const kmb::Point3DContainer* points;

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Geometry3D                                              #
@@ -50,7 +50,7 @@ public:
 		this->v[1] = y;
 		this->v[2] = z;
 	}
-	// ‘ã“ü‰‰Zq‚É‚·‚é‚ÆAŒp³‚Ì‚É‚¨‚©‚µ‚È“®ì‚ğ‚·‚é
+	// ä»£å…¥æ¼”ç®—å­ã«ã™ã‚‹ã¨ã€ç¶™æ‰¿ã®æ™‚ã«ãŠã‹ã—ãªå‹•ä½œã‚’ã™ã‚‹
 	void set(const Tuple3D& other){
 		this->v[0] = other.v[0];
 		this->v[1] = other.v[1];
@@ -82,57 +82,62 @@ public:
 	Point3D& operator+=(const Vector3D& other);
 	Point3D& operator-=(const Vector3D& other);
 	virtual bool operator==(const Point3D& other) const;
+	virtual bool operator!=(const Point3D& other) const;
 	Point3D& operator=(const Point3D& other);
-	// this ‚Æ other ‚ğ m:n ‚É“à•ª‚µ‚½“_‚ğ•Ô‚·
+	// this ã¨ other ã‚’ m:n ã«å†…åˆ†ã—ãŸç‚¹ã‚’è¿”ã™
 	Point3D dividingPoint(const Point3D& other,double m,double n) const;
-	// this ‚ğ 0 ‚Æ‚µ‚Ä other ‚ğ 1 ‚Æ‚µ‚½‚É t ‚Æ‚È‚é“_‚ğ•Ô‚·
-	// t : 1-t ‚É“à•ª‚µ‚½“_‚ğ•Ô‚·‚Ì‚Æ“¯‚¶ˆÓ–¡
-	// t = m / (m+n) ‚Æ‚µ‚Ä dividingPoint ‚ğ‚µ‚½‚Ì‚Æ“¯‚¶ˆÓ–¡
+	// this ã‚’ 0 ã¨ã—ã¦ other ã‚’ 1 ã¨ã—ãŸæ™‚ã« t ã¨ãªã‚‹ç‚¹ã‚’è¿”ã™
+	// t : 1-t ã«å†…åˆ†ã—ãŸç‚¹ã‚’è¿”ã™ã®ã¨åŒã˜æ„å‘³
+	// t = m / (m+n) ã¨ã—ã¦ dividingPoint ã‚’ã—ãŸã®ã¨åŒã˜æ„å‘³
 	Point3D proportionalPoint(const Point3D& other,double t) const;
 
-	// ‚Q“_ŠÔ‚Ì‹——£
+	// ï¼’ç‚¹é–“ã®è·é›¢
 	double distance(const Point3D& other) const;
 	double distance(double x,double y,double z) const;
 	double distanceSq(const Point3D& other) const;
 	double distanceSq(double x,double y,double z) const;
-	// ü•ªi’¼ü‚Å‚Í‚È‚¢jAB ‚Æ‚ÌŠÔ‚Ì‹——£ ’F‚ü‚Ì‘«‚Ì’·‚³‚Å‚Í‚È‚¢
-	// a ‚©‚ç b ‚Ö‚Ìƒpƒ‰ƒ[ƒ^ t ‚à•Ô‚·
+	// ç·šåˆ†ï¼ˆç›´ç·šã§ã¯ãªã„ï¼‰AB ã¨ã®é–“ã®è·é›¢ æ³¨ï¼šå‚ç·šã®è¶³ã®é•·ã•ã§ã¯ãªã„
+	// a ã‹ã‚‰ b ã¸ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ t ã‚‚è¿”ã™
 	double distanceSqToSegment(const Point3D& a,const Point3D& b) const;
 	double distanceSqToSegment(const Point3D& a,const Point3D& b,double& t) const;
 	double distanceToSegment(const Point3D& a,const Point3D& b) const;
-	// OŠpŒ` ABC ‚Æ‚Ì‹——£
+	// ä¸‰è§’å½¢ ABC ã¨ã®è·é›¢
 	double distanceSqToTriangle(const Point3D& a,const Point3D& b,const Point3D& c,double* t=NULL) const;
 	double distanceToTriangle(const Point3D& a,const Point3D& b,const Point3D& c) const;
-	// ‚ü‚Ì‘«
-	// ‚±‚Ì“_‚ğ origin ‚ğŒ´“_‚Æ‚·‚é uv •½–Ê‚ÉË‰e‚µ‚½‚ü‚Ì‘«‚ª au + bv 
+	double distanceToTriangle(const Point3D& a, const Point3D& b, const Point3D& c, Point3D& nearest,int &flag) const;
+	// å‚ç·šã®è¶³
+	// ã“ã®ç‚¹ã‚’ origin ã‚’åŸç‚¹ã¨ã™ã‚‹ uv å¹³é¢ã«å°„å½±ã—ãŸå‚ç·šã®è¶³ãŒ au + bv 
 	bool getFootOfPerpendicular( const Point3D &origin, const Vector3D &u, const Vector3D &v, double &a, double &b) const;
 
-	// static ŠÖ”ŒQ
+	// static é–¢æ•°ç¾¤
 #ifndef REVOCAP_SUPPORT_RUBY
 	static Point3D dividingPoint(const Point3D& a,const Point3D& b,double m,double n);
 	static Point3D proportionalPoint(const Point3D& a,const Point3D& b,double t);
-	// ‹——£
+	// è·é›¢
 	static double distance(const Point3D& a,const Point3D& b);
 	static double distanceSq(const Point3D& a,const Point3D& b);
 #endif
-	// l–Ê‘Ì‚Ì‘ÌÏ
+	// å››é¢ä½“ã®ä½“ç©
 	static double volume(const Point3D& a,const Point3D& b,const Point3D &c,const Point3D &d);
-	// abc ‚ÌŒü‚«‚Å³‚©‚Ç‚¤‚©
+	// abc ã®å‘ãã§æ­£ã‹ã©ã†ã‹
 	static bool positive(const Point3D& a,const Point3D& b,const Point3D &c,const Point3D &x);
-	// OŠpŒ`‚Ì–ÊÏ
+	// ä¸‰è§’å½¢ã®é¢ç©
 	static double area(const Point3D& a,const Point3D& b,const Point3D &c);
 	static Vector3D areaVector(const Point3D& a,const Point3D& b,const Point3D &c);
-	// ’†“_AdS
+	// ä¸­ç‚¹ã€é‡å¿ƒ
 	static Point3D getCenter(const Point3D& a,const Point3D& b);
 	static Point3D getCenter(const Point3D& a,const Point3D& b,const Point3D &c);
+	static Point3D getCircumCenter(const Point3D& a,const Point3D& b,const Point3D &c);
+	static Point3D getCenter(const Point3D& a,const Point3D& b,const Point3D &c,const Point3D &d);
+	static Point3D getCircumCenter(const Point3D& a,const Point3D& b,const Point3D &c,const Point3D &d);
 
-	// Šp“xiƒ‰ƒWƒAƒ“jÚABC
+	// è§’åº¦ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰âˆ ABC
 	static double angle(const Point3D &a,const Point3D &b,const Point3D &c);
 	static double cos(const Point3D &a,const Point3D &b,const Point3D &c);
 	static double sin(const Point3D &a,const Point3D &b,const Point3D &c);
-	// ‘ÌÏÀ•W
+	// ä½“ç©åº§æ¨™
 	static void calcMinorCoordinate( const kmb::Point3D& a, const kmb::Point3D& b, const kmb::Point3D& c, const kmb::Point3D& d, const kmb::Point3D& x, double coordinate[4]);
-	// –@ü
+	// æ³•ç·š
 	static Vector3D calcNormalVector( const kmb::Point3D& a, const kmb::Point3D& b, const kmb::Point3D& c );
 	static Vector3D calcNormalVector( const kmb::Point3D& a, const kmb::Point3D& b, const kmb::Point3D& c, const kmb::Point3D& d );
 	static Vector3D calcNormalVector(
@@ -154,7 +159,7 @@ public:
 	Vector3D(const double x, const double y, const double z)
 		: Tuple3D(x,y,z){};
 	// p - q
-	// n“_‚ª q I“_‚ª p
+	// å§‹ç‚¹ãŒ q çµ‚ç‚¹ãŒ p
 	Vector3D(const Point3D& endPoint,const Point3D& startPoint);
 	Vector3D(const Tuple3D &other) : Tuple3D(other){};
 	virtual ~Vector3D(void){};
@@ -179,7 +184,7 @@ public:
 		v[2] -= other.v[2];
 		return *this;
 	}
-	/// ƒXƒJƒ‰[Ï
+	/// ã‚¹ã‚«ãƒ©ãƒ¼ç©
 	Vector3D scalar(const double s) const;
 	Vector3D operator*(const double s) const{
 		return Vector3D(s*v[0],s*v[1],s*v[2]);
@@ -187,11 +192,11 @@ public:
 	friend Vector3D operator*(const double scalar,const Vector3D& vect){
 		return vect * scalar;
 	}
-	/// “àÏ
+	/// å†…ç©
 	double operator*(const Vector3D& other) const{
 		return v[0]*other.v[0] + v[1]*other.v[1] + v[2]*other.v[2];
 	}
-	/// ŠOÏ
+	/// å¤–ç©
 	Vector3D operator%(const Vector3D& other) const{
 		return Vector3D(
 			v[1]*other.v[2] - v[2]*other.v[1],
@@ -200,7 +205,7 @@ public:
 	}
 	double lengthSq(void) const;
 	double length(void) const;
-	double abs(void) const; // length ‚Æ“¯‚¶ˆÓ–¡
+	double abs(void) const; // length ã¨åŒã˜æ„å‘³
 	double normalize();
 ///// static
 	static double triple(const Vector3D &v0,const Vector3D &v1,const Vector3D &v2);
@@ -212,13 +217,13 @@ public:
 };
 
 //
-// 3x3 s—ñ
+// 3x3 è¡Œåˆ—
 // 
 //	m[0] = m00;	m[3] = m01;	m[6] = m02;
 //	m[1] = m10;	m[4] = m11;	m[7] = m12;
 //	m[2] = m20;	m[5] = m21;	m[8] = m22;
 //
-// “Y‚¦š‚Ì‚Â‚«•û‚É’ˆÓ‚¹‚æ
+// æ·»ãˆå­—ã®ã¤ãæ–¹ã«æ³¨æ„ã›ã‚ˆ
 //
 
 class Tuple2D;
@@ -228,7 +233,7 @@ class Matrix3x3 : public SquareMatrix
 {
 public:
 	Matrix3x3(void);
-	// ’ˆÓFˆÈ‰º‚Ì‚Q‚Â‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Íˆø”‚Ì‡”Ô‚ªˆá‚¤
+	// æ³¨æ„ï¼šä»¥ä¸‹ã®ï¼’ã¤ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯å¼•æ•°ã®é †ç•ªãŒé•ã†
 	Matrix3x3(double m[9]);
 	Matrix3x3(
 		double m00,double m01,double m02,
@@ -243,6 +248,12 @@ public:
 	double get(int i,int j) const;
 	bool set(int i,int j,double val);
 	bool add(int i,int j,double val);
+	double operator()(int i,int j) const{
+		return m[i+j*3];
+	}
+	double& operator()(int i,int j){
+		return m[i+j*3];
+	}
 
 	bool identity(void);
 	bool zero(void);
@@ -251,7 +262,7 @@ public:
 	static Matrix3x3 createRotation(double angle,const char* axis="z");
 	static Matrix3x3 createRotation(double angle,const Vector3D& axis);
 	static Matrix3x3 createReflection(const Vector3D& axis);
-	// v0 ‚ª1—ñ–ÚAv1 ‚ª2—ñ–Ú‚É‚È‚é‚æ‚¤‚É Gram-Schmidt ’¼Œğ‰»s—ñ‚ğì‚é
+	// v0 ãŒ1åˆ—ç›®ã€v1 ãŒ2åˆ—ç›®ã«ãªã‚‹ã‚ˆã†ã« Gram-Schmidt ç›´äº¤åŒ–è¡Œåˆ—ã‚’ä½œã‚‹
 	static Matrix3x3 createSchmidtRotation(const Vector3D v0,const Vector3D v1,bool column=true);
 	double determinant(void) const;
 	double trace(void) const;
@@ -265,18 +276,17 @@ public:
 		double m20,double m21,double m22);
 	// get inverse matrix
 	Matrix3x3* getInverse(void) const;
-	/// this * x = b ‚È‚é•û’ö®‚Ì‰ğ‚Ì x ‚ğ•Ô‚·
-	Vector3D* solve(const Vector3D& b) const;
+	/// this * x = b ãªã‚‹æ–¹ç¨‹å¼ã®è§£ã® x ã‚’è¿”ã™
 	bool solve(const Vector3D& b,Vector3D& x) const;
 	bool solveSafely(const Vector3D& b,Vector3D& x,double thresh=1.0e-6) const;
-	/// s—ñ‚ÌŠ|‚¯ZiË‰e•ÏŠ·‚ğ{‚·j
-	// ‰E‚©‚çcƒxƒNƒgƒ‹‚ğŠ|‚¯‚é tuple = this * tuple
+	/// è¡Œåˆ—ã®æ›ã‘ç®—ï¼ˆå°„å½±å¤‰æ›ã‚’æ–½ã™ï¼‰
+	// å³ã‹ã‚‰ç¸¦ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ›ã‘ã‚‹ tuple = this * tuple
 	void convert(Tuple2D& tuple) const;
 	void convert(Tuple3D& tuple) const;
 	Vector2D operator*(const Vector2D& vect);
 	Vector3D operator*(const Vector3D& vect);
 	Matrix3x3 operator*(const Matrix3x3& other);
-	/// s—ñ‚Ì‘«‚µZAˆø‚«Z
+	/// è¡Œåˆ—ã®è¶³ã—ç®—ã€å¼•ãç®—
 	Matrix3x3 operator+(const Matrix3x3& other);
 	Matrix3x3 operator-(const Matrix3x3& other);
 protected:

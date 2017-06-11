@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Point3DContainerMap                                     #
@@ -30,12 +30,12 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4100) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for VC
+#pragma warning(disable:4100) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for VC
 #endif
 
 #ifdef __INTEL_COMPILER
 #pragma warning(push)
-#pragma warning(disable:869) // g‚í‚È‚¢ˆø”‚ª‚ ‚Á‚Ä‚àŒx‚ğo‚³‚È‚¢ for intel
+#pragma warning(disable:869) // ä½¿ã‚ãªã„å¼•æ•°ãŒã‚ã£ã¦ã‚‚è­¦å‘Šã‚’å‡ºã•ãªã„ for intel
 #endif
 
 ////////////////// Map //////////////////////
@@ -96,14 +96,14 @@ kmb::nodeIdType kmb::Point3DContainerMap::addPoint
 			boundBox.update( *point );
 			if( maxId == -1 )
 			{
-				// Å‰‚É’Ç‰Á‚·‚é‚Æ‚«
+				// æœ€åˆã«è¿½åŠ ã™ã‚‹ã¨ã
 				if( id == 1 ){
 					this->idContinuity = kmb::Point3DContainerMap::ONE_LEADING;
 				}else if( id > 1 ){
 					this->idContinuity = kmb::Point3DContainerMap::OTHER_LEADING;
 				}
 			}else if( id != this->maxId + 1 ){
-				// ˜A‘±‚µ‚Ä‚¢‚éó‘Ô‚ªI‚í‚éê‡
+				// é€£ç¶šã—ã¦ã„ã‚‹çŠ¶æ…‹ãŒçµ‚ã‚ã‚‹å ´åˆ
 				this->idContinuity = kmb::Point3DContainerMap::NOT_CONTINUOUS;
 			}
 
@@ -269,7 +269,7 @@ kmb::Point3DContainerMap::find(kmb::nodeIdType nodeId) const
 }
 
 //////////////////////////////////////////////////////////
-// –ˆ‰ñ Max ‚Æ Min ‚ğÄŒvZ‚µ‚Ä‚¢‚é‚Ì‚ÅA‰½“x‚àŒÄ‚Ô‚Æ’x‚¢‚æB
+// æ¯å› Max ã¨ Min ã‚’å†è¨ˆç®—ã—ã¦ã„ã‚‹ã®ã§ã€ä½•åº¦ã‚‚å‘¼ã¶ã¨é…ã„ã‚ˆã€‚
 bool
 kmb::Point3DContainerMap::replaceId(nodeIdType oldid,nodeIdType newid)
 {
@@ -333,8 +333,8 @@ kmb::Point3DContainerMap::updateMinMaxId(void)
 void
 kmb::Point3DContainerMap::idDefragment(nodeIdType initId, std::map<kmb::nodeIdType,kmb::nodeIdType>& idmap)
 {
-	// Šù‚É MinMax ‚ª³‚µ‚­ŒvZ‚³‚ê‚Ä‚¢‚é‚Æ‚·‚éB
-	// Šù‚É®—ñ‚³‚ê‚Ä‚¢‚é‚É‚Í‰½‚à‚µ‚È‚¢
+	// æ—¢ã« MinMax ãŒæ­£ã—ãè¨ˆç®—ã•ã‚Œã¦ã„ã‚‹ã¨ã™ã‚‹ã€‚
+	// æ—¢ã«æ•´åˆ—ã•ã‚Œã¦ã„ã‚‹æ™‚ã«ã¯ä½•ã‚‚ã—ãªã„
 	if( initId == 0 && this->idContinuity == kmb::Point3DContainerMap::ZERO_LEADING){
 		return;
 	}
@@ -342,22 +342,22 @@ kmb::Point3DContainerMap::idDefragment(nodeIdType initId, std::map<kmb::nodeIdTy
 		return;
 	}
 
-	// “ü‚ê‚é‚×‚« nodeId
+	// å…¥ã‚Œã‚‹ã¹ã nodeId
 	nodeIdType newId = initId;
 
-	// Œ»İ‚Ì nodeId ‚Æ‘}“ü‚·‚×‚« nodeId ‚Ì‚Q‚Â‚Ì iterator ‚ğ“¯‚Éi‚ß‚é
-	// “ü‚Á‚Ä‚¢‚é‰Â”\«‚Ì‚ ‚é‚Æ‚±‚ë‚Í 0 ‚©‚ç maxNodeID ‚Ü‚Å
+	// ç¾åœ¨ã® nodeId ã¨æŒ¿å…¥ã™ã¹ã nodeId ã®ï¼’ã¤ã® iterator ã‚’åŒæ™‚ã«é€²ã‚ã‚‹
+	// å…¥ã£ã¦ã„ã‚‹å¯èƒ½æ€§ã®ã‚ã‚‹ã¨ã“ã‚ã¯ 0 ã‹ã‚‰ maxNodeID ã¾ã§
 	for(nodeIdType i = 0;i <= this->maxId ;++i){
 		if( points.find(i) == points.end() ){
 			continue;
 		}
-		// ‹ó‚«”Ô†‚ğ’T‚·
+		// ç©ºãç•ªå·ã‚’æ¢ã™
 		while( points.find(newId) != points.end() ){
 			++newId;
 		}
 		if( initId <= i && i < newId ){
-			// ‚»‚Ì‚Ü‚Ü‚É‚µ‚Ä‚¨‚­ƒm[ƒh
-			// key ‚É newId ‚ª“ü‚é‰Â”\«‚à‚ ‚é‚ªA–³ŠQ‚È‚Ì‚Å‚Ù‚Á‚Ä‚¨‚­
+			// ãã®ã¾ã¾ã«ã—ã¦ãŠããƒãƒ¼ãƒ‰
+			// key ã« newId ãŒå…¥ã‚‹å¯èƒ½æ€§ã‚‚ã‚ã‚‹ãŒã€ç„¡å®³ãªã®ã§ã»ã£ã¦ãŠã
 			// idmap[i] = i;
 		}else{
 			idmap[i] = newId;
@@ -381,7 +381,7 @@ kmb::Point3DContainerMap::idDefragment(nodeIdType initId, std::map<kmb::nodeIdTy
 	}
 }
 
-// delete ‚µ‚È‚¢
+// delete ã—ãªã„
 kmb::Point3D*
 kmb::Point3DContainerMap::erasePoint(kmb::nodeIdType id)
 {

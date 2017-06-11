@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : TetraItem                                               #
@@ -13,12 +13,12 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// list “I‚Èl–Ê‘Ì‚ÌƒRƒ“ƒeƒi
-// —×Úî•ñ‚à•Û
+// list çš„ãªå››é¢ä½“ã®ã‚³ãƒ³ãƒ†ãƒŠ
+// éš£æ¥æƒ…å ±ã‚‚ä¿æŒ
 // neighborFace 
-// -2 : QÆ‚µ‚È‚¢
-// -1 : —×Ú‚·‚é tetra ‚ª‚È‚¢
-// 0, 1, 2, 3 : —×Ú tetra ‚Ì‘Šè‘¤‚Ì–Ê”Ô†
+// -2 : å‚ç…§ã—ãªã„
+// -1 : éš£æ¥ã™ã‚‹ tetra ãŒãªã„
+// 0, 1, 2, 3 : éš£æ¥ tetra ã®ç›¸æ‰‹å´ã®é¢ç•ªå·
 //
 #pragma once
 
@@ -33,21 +33,21 @@ class TetraN : public Tetrahedron
 {
 protected:
 	TetraN** neighbors;
-	// ‹ß–Tî•ñ
-	// ƒƒ‚ƒŠß–ñ‚Ì‚½‚ß‚Ì“à•”•\Œ» int[4](-2`3)
-	// -1 : —×Ú‚·‚é tetra ‚ª‚È‚¢
-	// -2 : QÆ‚µ‚È‚¢
+	// è¿‘å‚æƒ…å ±
+	// ãƒ¡ãƒ¢ãƒªç¯€ç´„ã®ãŸã‚ã®å†…éƒ¨è¡¨ç¾ int[4](-2ï½3)
+	// -1 : éš£æ¥ã™ã‚‹ tetra ãŒãªã„
+	// -2 : å‚ç…§ã—ãªã„
 	unsigned int face;
 public:
 	TetraN(nodeIdType n0,nodeIdType n1,nodeIdType n2,nodeIdType n3);
 	virtual ~TetraN(void);
-	// [this,index] <=> [nei,f] ‚ªÚ‚·‚é
+	// [this,index] <=> [nei,f] ãŒæ¥ã™ã‚‹
 	void setNeighbor(int index, kmb::TetraN* nei,int f);
-	// 0 1 2 3 ‚Í getNeighbor ‚Å“¾‚ç‚ê‚é—×Ú‚·‚é tetra ‚©‚ç‚İ‚½©•ª©g‚ªÚ‚·‚é–Ê”Ô†
-	// [this,i] ‚Æ [getNeighbor(i),getNeighborFace(i)] ‚ª—×Ú‚·‚é
+	// 0 1 2 3 ã¯ getNeighbor ã§å¾—ã‚‰ã‚Œã‚‹éš£æ¥ã™ã‚‹ tetra ã‹ã‚‰ã¿ãŸè‡ªåˆ†è‡ªèº«ãŒæ¥ã™ã‚‹é¢ç•ªå·
+	// [this,i] ã¨ [getNeighbor(i),getNeighborFace(i)] ãŒéš£æ¥ã™ã‚‹
 	kmb::TetraN* getNeighbor(int index) const;
 	int getNeighborFace(int index) const;
-	// nei ‚ª‰½”Ô–Ú‚Ì–Ê‚É—×Ú‚µ‚Ä‚¢‚é‚©
+	// nei ãŒä½•ç•ªç›®ã®é¢ã«éš£æ¥ã—ã¦ã„ã‚‹ã‹
 	int getNeighborIndex(kmb::TetraN* nei) const;
 };
 
@@ -57,10 +57,10 @@ protected:
 	kmb::TetraItem* previousTetra;
 	kmb::TetraItem* nextTetra;
 	kmb::TetraItem* neighbors[4];
-	// ‹ß–Tî•ñ
-	// ƒƒ‚ƒŠß–ñ‚Ì‚½‚ß‚Ì“à•”•\Œ» int[4](-2`3)
-	// -1 : —×Ú‚·‚é tetra ‚ª‚È‚¢
-	// -2 : QÆ‚µ‚È‚¢
+	// è¿‘å‚æƒ…å ±
+	// ãƒ¡ãƒ¢ãƒªç¯€ç´„ã®ãŸã‚ã®å†…éƒ¨è¡¨ç¾ int[4](-2ï½3)
+	// -1 : éš£æ¥ã™ã‚‹ tetra ãŒãªã„
+	// -2 : å‚ç…§ã—ãªã„
 	unsigned int face;
 public:
 	TetraItem(nodeIdType n0,nodeIdType n1,nodeIdType n2,nodeIdType n3);
@@ -71,32 +71,32 @@ public:
 	kmb::TetraItem* getNext(void) const { return nextTetra; }
 	void setNext(kmb::TetraItem* tetra){ nextTetra = tetra; }
 
-	// ƒŠƒXƒg‚©‚çŠO‚·
-	// this->nextTetra->previousTetra ‚ğ this ‚©‚ç this->previousTetra ‚É•Ï‚¦‚é
-	// this->previousTetra->nextTetra ‚ğ this ‚©‚ç this->nextTetra ‚É•Ï‚¦‚é
-	// ©•ª‚Ì previousTetra ‚Æ nextTetra ‚Í NULL ‚É‚·‚é
+	// ãƒªã‚¹ãƒˆã‹ã‚‰å¤–ã™
+	// this->nextTetra->previousTetra ã‚’ this ã‹ã‚‰ this->previousTetra ã«å¤‰ãˆã‚‹
+	// this->previousTetra->nextTetra ã‚’ this ã‹ã‚‰ this->nextTetra ã«å¤‰ãˆã‚‹
+	// è‡ªåˆ†ã® previousTetra ã¨ nextTetra ã¯ NULL ã«ã™ã‚‹
 	void detach(void);
 	void detach(kmb::TetraItem* &first,kmb::TetraItem* &last);
-	// ƒŠƒXƒg‚É’Ç‰Á
+	// ãƒªã‚¹ãƒˆã«è¿½åŠ 
 	void attach(kmb::TetraItem* last);
 	void attach(kmb::TetraItem* &first,kmb::TetraItem* &last);
 
-	// [this,index] <=> [nei,f] ‚ªÚ‚·‚é
+	// [this,index] <=> [nei,f] ãŒæ¥ã™ã‚‹
 	void setNeighbor(int index, kmb::TetraItem* nei,int f);
-	// 0 1 2 3 ‚Í getNeighbor ‚Å“¾‚ç‚ê‚é—×Ú‚·‚é tetra ‚©‚ç‚İ‚½©•ª©g‚ªÚ‚·‚é–Ê”Ô†
-	// [this,i] ‚Æ [getNeighbor(i),getNeighborFace(i)] ‚ª—×Ú‚·‚é
+	// 0 1 2 3 ã¯ getNeighbor ã§å¾—ã‚‰ã‚Œã‚‹éš£æ¥ã™ã‚‹ tetra ã‹ã‚‰ã¿ãŸè‡ªåˆ†è‡ªèº«ãŒæ¥ã™ã‚‹é¢ç•ªå·
+	// [this,i] ã¨ [getNeighbor(i),getNeighborFace(i)] ãŒéš£æ¥ã™ã‚‹
 	kmb::TetraItem* getNeighbor(int index) const;
 	int getNeighborFace(int index) const;
-	// nei ‚ª‰½”Ô–Ú‚Ì–Ê‚É—×Ú‚µ‚Ä‚¢‚é‚©
+	// nei ãŒä½•ç•ªç›®ã®é¢ã«éš£æ¥ã—ã¦ã„ã‚‹ã‹
 	int getNeighborIndex(kmb::TetraItem* nei) const;
 
-	// tetra ‚©‚çn‚Ü‚éƒŠƒXƒg‚É‚Â‚¢‚ÄA‹ß–TŠÖŒW‚ğ¶¬‚·‚é
+	// tetra ã‹ã‚‰å§‹ã¾ã‚‹ãƒªã‚¹ãƒˆã«ã¤ã„ã¦ã€è¿‘å‚é–¢ä¿‚ã‚’ç”Ÿæˆã™ã‚‹
 	static void generateNeighborRelations( kmb::TetraItem* tetra );
 
-	// t0 ‚Ì i0 ”Ô–Ú‚Ì–Ê‚Æ t1 ‚Ì i1 ”Ô–Ú‚Ì–Ê‚ªÚ‚µ‚Ä‚¢‚é‚Æ‚«
+	// t0 ã® i0 ç•ªç›®ã®é¢ã¨ t1 ã® i1 ç•ªç›®ã®é¢ãŒæ¥ã—ã¦ã„ã‚‹ã¨ã
 	static void setAdjacentPair(kmb::TetraItem* t0,int i0,kmb::TetraItem* t1,int i1);
-	// first ‚©‚çn‚Ü‚éƒŠƒXƒg‚ğíœ
-	// íœ‚µ‚½‚ç‚»‚ê‚É—×Ú‚µ‚Ä‚¢‚½ tetra ‚Ì neighborface ‚Í -2 ‚É‚·‚é
+	// first ã‹ã‚‰å§‹ã¾ã‚‹ãƒªã‚¹ãƒˆã‚’å‰Šé™¤
+	// å‰Šé™¤ã—ãŸã‚‰ãã‚Œã«éš£æ¥ã—ã¦ã„ãŸ tetra ã® neighborface ã¯ -2 ã«ã™ã‚‹
 	static int deleteItems( kmb::TetraItem* first );
 
 	// for debug

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : PatchOperation                                          #
@@ -30,15 +30,15 @@ class EdgeStitcher
 private:
 	kmb::MeshData* mesh;
 	kmb::Point3DContainer* points;
-	kmb::Polygon forward;			// ‡•ûŒüŒü‚«‚Ì‘½ŠpŒ`
-	kmb::nodeIdType f0;				// forward ‘½ŠpŒ`‚Ì’–Úß“_
-	kmb::nodeIdType fend;			// forward ‘½ŠpŒ`‚ÌI—¹ß“_
-	kmb::Polygon backward;			// ‹t•ûŒüŒü‚«‚Ì‘½ŠpŒ`
-	kmb::nodeIdType b0;				// backward ‘½ŠpŒ`‚Ì’–Úß“_
-	kmb::nodeIdType bend;			// backward ‘½ŠpŒ`‚ÌI—¹ß“_
-	kmb::Vector3D normal;			// ”»’è—p‚Ì–@üƒxƒNƒgƒ‹
-	bool normalCheck;				// –@üƒ`ƒFƒbƒN‚ğ‚·‚é‚©‚Ç‚¤‚©
-	void setInitNormal(void);		// ‰Šú–@üƒxƒNƒgƒ‹‚ğŒvZ‚·‚é
+	kmb::Polygon forward;			// é †æ–¹å‘å‘ãã®å¤šè§’å½¢
+	kmb::nodeIdType f0;				// forward å¤šè§’å½¢ã®æ³¨ç›®ç¯€ç‚¹
+	kmb::nodeIdType fend;			// forward å¤šè§’å½¢ã®çµ‚äº†ç¯€ç‚¹
+	kmb::Polygon backward;			// é€†æ–¹å‘å‘ãã®å¤šè§’å½¢
+	kmb::nodeIdType b0;				// backward å¤šè§’å½¢ã®æ³¨ç›®ç¯€ç‚¹
+	kmb::nodeIdType bend;			// backward å¤šè§’å½¢ã®çµ‚äº†ç¯€ç‚¹
+	kmb::Vector3D normal;			// åˆ¤å®šç”¨ã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+	bool normalCheck;				// æ³•ç·šãƒã‚§ãƒƒã‚¯ã‚’ã™ã‚‹ã‹ã©ã†ã‹
+	void setInitNormal(void);		// åˆæœŸæ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ã™ã‚‹
 
 public:
 	EdgeStitcher(void);
@@ -46,17 +46,17 @@ public:
 	
 	// for ruby interface
 	void setMesh(kmb::MeshData* mesh);
-	// FaceGroup ‚Å Edge ‚ğ—^‚¦‚é
-	// e Body ‚ğ•K‚¸—^‚¦‚Ä‚¨‚©‚È‚¯‚ê‚Î‚È‚ç‚È‚¢
+	// FaceGroup ã§ Edge ã‚’ä¸ãˆã‚‹
+	// è¦ª Body ã‚’å¿…ãšä¸ãˆã¦ãŠã‹ãªã‘ã‚Œã°ãªã‚‰ãªã„
 	bool setEdges(const char* forward,const char* backward);
 	bool setEdges(kmb::bodyIdType forward,kmb::bodyIdType backward);
 	bool setEdgesWithinDistance(kmb::bodyIdType forward,kmb::bodyIdType backward,double distance);
 	bool setEdgesWithInitNodes(kmb::bodyIdType forward,kmb::nodeIdType forwardInit,kmb::bodyIdType backward,kmb::nodeIdType backwardInit);
 	kmb::bodyIdType stitchEdgesByTriangles(void);
 	kmb::bodyIdType stitchEdgesByQuads(void);
-	// ‹«ŠE‚Ì—v‘f‚ÌŒÂ”‚ğƒ`ƒFƒbƒN‚µ‚È‚ª‚ç–D‚¢‡‚í‚¹‚é
-	// fCount : forward ‚ğ‹«ŠE‚É‚Â‚æ‚¤‚È patch ‚Ì—v‘f”
-	// bCount : backward ‚ğ‹«ŠE‚É‚Â‚æ‚¤‚È patch ‚Ì—v‘f”
+	// å¢ƒç•Œã®è¦ç´ ã®å€‹æ•°ã‚’ãƒã‚§ãƒƒã‚¯ã—ãªãŒã‚‰ç¸«ã„åˆã‚ã›ã‚‹
+	// fCount : forward ã‚’å¢ƒç•Œã«æŒã¤ã‚ˆã†ãª patch ã®è¦ç´ æ•°
+	// bCount : backward ã‚’å¢ƒç•Œã«æŒã¤ã‚ˆã†ãª patch ã®è¦ç´ æ•°
 	kmb::bodyIdType stitchByQuadsWithNodeCount(int fCount,int bCount);
 
 	void setNormalCheck(bool check);
@@ -64,8 +64,8 @@ public:
 
 	bool stitchByTriangle( kmb::ElementContainer* result );
 	bool stitchByQuad( kmb::ElementContainer* result );
-	// Å‰‚Ì’–Úß“_‚ğİ’è‚·‚éB
-	// nullNodeId ‚ğ“ü‚ê‚½ê‡‚ÍAˆê”Ô‹ß‚¢‚Æ‚±‚ë‚Å“K“–‚Éİ’è‚·‚éB
+	// æœ€åˆã®æ³¨ç›®ç¯€ç‚¹ã‚’è¨­å®šã™ã‚‹ã€‚
+	// nullNodeId ã‚’å…¥ã‚ŒãŸå ´åˆã¯ã€ä¸€ç•ªè¿‘ã„ã¨ã“ã‚ã§é©å½“ã«è¨­å®šã™ã‚‹ã€‚
 	void setInitialNode( kmb::nodeIdType forwardInit=kmb::nullNodeId, kmb::nodeIdType backwardInit=kmb::nullNodeId );
 };
 

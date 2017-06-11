@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : QuadOrientedSet                                         #
@@ -13,16 +13,16 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 //
-// Whisker Weaving –@‚Å—p‚¢‚é‚½‚ß‚ÌŒü‚«•t‚«‚ÌlŠpŒ`‚ÌƒRƒ“ƒeƒi
-// ‹tŒü‚«‚ÌlŠpŒ`‚ğ“o˜^‚·‚é‚ÆlŠpŒ`‚Ìíœ‚ğˆÓ–¡‚·‚é
+// Whisker Weaving æ³•ã§ç”¨ã„ã‚‹ãŸã‚ã®å‘ãä»˜ãã®å››è§’å½¢ã®ã‚³ãƒ³ãƒ†ãƒŠ
+// é€†å‘ãã®å››è§’å½¢ã‚’ç™»éŒ²ã™ã‚‹ã¨å››è§’å½¢ã®å‰Šé™¤ã‚’æ„å‘³ã™ã‚‹
 //
-// lŠpŒ`‚Ì‚·‚×‚Ä‚Ìß“_”Ô†‚ğƒL[‚É‚µ‚Äƒ|ƒCƒ“ƒ^‚ğ multimap ‚É“o˜^‚·‚é
-// —áF[10,20,30,40] => ƒL[ 10, 20, 30, 40 ‚»‚ê‚¼‚ê‚ÉlŠpŒ`‚Ìƒ|ƒCƒ“ƒ^‚ğ“o˜^‚·‚éi‡Œv‚S‰ñj
+// å››è§’å½¢ã®ã™ã¹ã¦ã®ç¯€ç‚¹ç•ªå·ã‚’ã‚­ãƒ¼ã«ã—ã¦ãƒã‚¤ãƒ³ã‚¿ã‚’ multimap ã«ç™»éŒ²ã™ã‚‹
+// ä¾‹ï¼š[10,20,30,40] => ã‚­ãƒ¼ 10, 20, 30, 40 ãã‚Œãã‚Œã«å››è§’å½¢ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ç™»éŒ²ã™ã‚‹ï¼ˆåˆè¨ˆï¼”å›ï¼‰
 //
-// ‚»‚ê‚É‚æ‚Á‚Ä‹ß–Tî•ñ‚à‚±‚ÌƒRƒ“ƒeƒi‚ÅŠÇ—‚·‚é‚±‚Æ‚ª‚Å‚«‚é
-// 3‚Â‚Ì4ŠpŒ`‚ªW‚Ü‚Á‚Ä‚¢‚é’¸“_‚ğ’T‚·‚±‚Æ‚à—eˆÕ
+// ãã‚Œã«ã‚ˆã£ã¦è¿‘å‚æƒ…å ±ã‚‚ã“ã®ã‚³ãƒ³ãƒ†ãƒŠã§ç®¡ç†ã™ã‚‹ã“ã¨ãŒã§ãã‚‹
+// 3ã¤ã®4è§’å½¢ãŒé›†ã¾ã£ã¦ã„ã‚‹é ‚ç‚¹ã‚’æ¢ã™ã“ã¨ã‚‚å®¹æ˜“
 //
-// ’Êí‚Ì ElementContainer ‚Ì Iterator ‚Å‚Ü‚í‚·‚Æ‚¿‚å‚Á‚Æ’x‚¢
+// é€šå¸¸ã® ElementContainer ã® Iterator ã§ã¾ã‚ã™ã¨ã¡ã‚‡ã£ã¨é…ã„
 //
 
 #pragma once
@@ -64,18 +64,18 @@ public:
 	int getElementNeighbor( const kmb::Quad* quad, kmb::Quad* neighbors[4] ) const;
 	size_t getElementCountAroundNode(kmb::nodeIdType nodeId) const;
 	// adjacent 
-	// 4ŠpŒ`‚Ì•Ó‚ğ—^‚¦‚ÄA‚»‚Ì•Ó‚ÆÚ‚µ‚Ä‚¢‚é—×‚Ì4ŠpŒ`‚ğ•Ô‚·
+	// 4è§’å½¢ã®è¾ºã‚’ä¸ãˆã¦ã€ãã®è¾ºã¨æ¥ã—ã¦ã„ã‚‹éš£ã®4è§’å½¢ã‚’è¿”ã™
 	kmb::Quad* getAdjacent( const kmb::Quad* quad, const int edgeNum, int &adjEdge ) const;
-	// 3’¸“_‚ğ—^‚¦‚ÄA‚»‚ê‚ğŠÜ‚Ş4ŠpŒ`‚ª‘¶İ‚µ‚½‚ç‚»‚ê‚ğ•Ô‚µAc‚è‚Ì1’¸“_‚Ì index ‚à•Ô‚·
+	// 3é ‚ç‚¹ã‚’ä¸ãˆã¦ã€ãã‚Œã‚’å«ã‚€4è§’å½¢ãŒå­˜åœ¨ã—ãŸã‚‰ãã‚Œã‚’è¿”ã—ã€æ®‹ã‚Šã®1é ‚ç‚¹ã® index ã‚‚è¿”ã™
 	kmb::Quad* getSharedThreeNodes(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::nodeIdType n2, int& restIndex) const;
 
 	// nodeContainer
 	NodeQuadMap::iterator beginNodeIterator(void);
 	NodeQuadMap::const_iterator beginNodeIterator(void) const;
-	// nodeId ‚ğw‚· iterator ‚ğ•Ô‚·
+	// nodeId ã‚’æŒ‡ã™ iterator ã‚’è¿”ã™
 	NodeQuadMap::iterator findNodeIterator(kmb::nodeIdType nodeId);
 	NodeQuadMap::const_iterator findNodeIterator(kmb::nodeIdType nodeId) const;
-	// nodeId ‚ÌŸ‚Ìß“_”Ô†‚ğw‚· iterator ‚ğ•Ô‚·
+	// nodeId ã®æ¬¡ã®ç¯€ç‚¹ç•ªå·ã‚’æŒ‡ã™ iterator ã‚’è¿”ã™
 	NodeQuadMap::iterator nextNodeIterator(kmb::nodeIdType nodeId);
 	NodeQuadMap::const_iterator nextNodeIterator(kmb::nodeIdType nodeId) const;
 
@@ -92,8 +92,8 @@ public:
 		virtual kmb::Element* getElement(void);
 		virtual const kmb::Element* getElement(void) const;
 		virtual kmb::elementType getType(void) const;
-		virtual kmb::nodeIdType getCellId(int cellIndex) const;
-		virtual bool setCellId(int cellIndex, kmb::nodeIdType nodeId);
+		virtual kmb::nodeIdType getNodeId(int cellIndex) const;
+		virtual bool setNodeId(int cellIndex, kmb::nodeIdType nodeId);
 		virtual kmb::nodeIdType operator[](const int cellIndex) const;
 		virtual ElementContainer::_iterator* operator++(void);
 		virtual ElementContainer::_iterator* operator++(int n);

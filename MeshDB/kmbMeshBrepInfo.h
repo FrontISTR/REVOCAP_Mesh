@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+ï»¿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : Advance/REVOCAP version 3.2                          #
 # Class Name : MeshBrepInfo                                            #
@@ -9,12 +9,12 @@
 ----------------------------------------------------------------------*/
 /**
  *
- * ƒƒbƒVƒ…‚ÌŠK‘w‹«ŠE\‘¢‚ğŠÇ—‚·‚é
+ * ãƒ¡ãƒƒã‚·ãƒ¥ã®éšå±¤å¢ƒç•Œæ§‹é€ ã‚’ç®¡ç†ã™ã‚‹
  *
- * entity : bodyId ‚Ü‚½‚Í FaceGroup ‚Ì¯•Êq
- * entity -> parent : e entity
- * entity -> children : q entity ‚ÌƒŠƒXƒg
- * entity -> outline : ŠÈˆÕ•\¦—p‚Ì entity
+ * entity : bodyId ã¾ãŸã¯ FaceGroup ã®è­˜åˆ¥å­
+ * entity -> parent : è¦ª entity
+ * entity -> children : å­ entity ã®ãƒªã‚¹ãƒˆ
+ * entity -> outline : ç°¡æ˜“è¡¨ç¤ºç”¨ã® entity
  *
  */
 #pragma once
@@ -35,12 +35,12 @@ public:
 	kmb::bodyIdType getBodyId(void) const;
 	const char* getGroup(void) const;
 private:
-	// Body ‚© FaceGroup ‚Ì‚Ç‚¿‚ç‚©‚ğw’è‚·‚é
-	// faceGroup ‚Í stype ‚ª Brep ‚Å‚ ‚é‚±‚Æ
+	// Body ã‹ FaceGroup ã®ã©ã¡ã‚‰ã‹ã‚’æŒ‡å®šã™ã‚‹
+	// faceGroup ã¯ stype ãŒ Brep ã§ã‚ã‚‹ã“ã¨
 	kmb::bodyIdType bodyId;
 	std::string faceGroup;
 	int dim;
-	// —ÖŠs‚ğ•\¦‚·‚é‚à‚Ì 1 ŸŒ³‚Ì—v‘fƒOƒ‹[ƒv‚Å‚ ‚é‚±‚Æ
+	// è¼ªéƒ­ã‚’è¡¨ç¤ºã™ã‚‹ã‚‚ã® 1 æ¬¡å…ƒã®è¦ç´ ã‚°ãƒ«ãƒ¼ãƒ—ã§ã‚ã‚‹ã“ã¨
 	kmb::bodyIdType outlineId;
 	MeshBrepItem* parent;
 	std::vector< const MeshBrepItem* > children;
@@ -81,22 +81,22 @@ public:
 	size_t getSurfaces(std::vector<kmb::bodyIdType>& bodyIds) const;
 	size_t getEdges(std::vector<kmb::bodyIdType>& bodyIds) const;
 
-	// ì¬—p
-	// volume ‚µ‚©‚È‚¢ƒƒbƒVƒ…‚©‚çì¬‚·‚é
-	// ‹«ŠE–Ê‚Í Surface ‚Åì‚é
+	// ä½œæˆç”¨
+	// volume ã—ã‹ãªã„ãƒ¡ãƒƒã‚·ãƒ¥ã‹ã‚‰ä½œæˆã™ã‚‹
+	// å¢ƒç•Œé¢ã¯ Surface ã§ä½œã‚‹
 	static MeshBrepInfo* create3DModel(kmb::MeshData *mesh,double angle=120.0,bool ridge=true);
-	// volume ‚µ‚©‚È‚¢ƒƒbƒVƒ…‚©‚çì¬‚·‚é
-	// ‹«ŠE–Ê‚Í FaceGroup ‚Åì‚é
+	// volume ã—ã‹ãªã„ãƒ¡ãƒƒã‚·ãƒ¥ã‹ã‚‰ä½œæˆã™ã‚‹
+	// å¢ƒç•Œé¢ã¯ FaceGroup ã§ä½œã‚‹
 	static MeshBrepInfo* create3DFaceModel(kmb::MeshData *mesh,double angle=120.0,bool ridge=true);
-	// ‚·‚Å‚É‹«ŠE–Ê’Šo‚µ‚Ä‚ ‚éê‡ieqŠÖŒW‚Í¸‚í‚ê‚Ä‚¢‚éj
-	// ‹«ŠE–Ê‚Í Surface ‚Å—^‚¦‚ç‚ê‚Ä‚¢‚é
-	// ‹tŒü‚«‚Ì‹«ŠE‚à‹–‚·‚Í reverse = true ‚É‚·‚é
+	// ã™ã§ã«å¢ƒç•Œé¢æŠ½å‡ºã—ã¦ã‚ã‚‹å ´åˆï¼ˆè¦ªå­é–¢ä¿‚ã¯å¤±ã‚ã‚Œã¦ã„ã‚‹ï¼‰
+	// å¢ƒç•Œé¢ã¯ Surface ã§ä¸ãˆã‚‰ã‚Œã¦ã„ã‚‹
+	// é€†å‘ãã®å¢ƒç•Œã‚‚è¨±ã™æ™‚ã¯ reverse = true ã«ã™ã‚‹
 	static MeshBrepInfo* create3DModelWithBoundary(kmb::MeshData *mesh,bool reverse=false);
-	// surface ‚µ‚©‚È‚¢ƒƒbƒVƒ…‚©‚çì¬‚·‚é
-	// –Ê‚Í‚·‚Å‚É•ªŠ„‚³‚ê‚Ä‚¢‚é
+	// surface ã—ã‹ãªã„ãƒ¡ãƒƒã‚·ãƒ¥ã‹ã‚‰ä½œæˆã™ã‚‹
+	// é¢ã¯ã™ã§ã«åˆ†å‰²ã•ã‚Œã¦ã„ã‚‹
 	static MeshBrepInfo* createPatchModel(kmb::MeshData *mesh,bool outline=false);
-	// surface ‚µ‚©‚È‚¢ƒƒbƒVƒ…‚©‚çì¬‚·‚é
-	// –Ê‚Í•ªŠ„‚·‚é
+	// surface ã—ã‹ãªã„ãƒ¡ãƒƒã‚·ãƒ¥ã‹ã‚‰ä½œæˆã™ã‚‹
+	// é¢ã¯åˆ†å‰²ã™ã‚‹
 	static MeshBrepInfo* createSurfaceModel(kmb::MeshData *mesh,double angle=120.0,bool ridge=true);
 };
 
