@@ -12,7 +12,10 @@
 #include "Geometry/kmbBucket.h"
 #include "Geometry/kmbBoxRegion.h"
 #include "Geometry/kmbPoint3DContainerMArray.h"
+#include "Common/kmbCommon.h"
 #include "Test/Test_Common.h"
+
+BOOST_AUTO_TEST_SUITE(Geometry)
 
 class Fixture{
 public:
@@ -100,31 +103,6 @@ BOOST_AUTO_TEST_CASE( CircumCenter4 )
 	}
 }
 
-BOOST_AUTO_TEST_CASE( Point_Bucket_Index )
-{
-	kmb::Point3DContainerMArray points;
-	points.initialize(2000);
-	for(int i=0;i<1000;i++){
-		points.addPoint( drand(), drand(), drand() );
-	}
-	// 同じ座標に格納する
-	for(int i=0;i<1000;i++){
-		kmb::Point3D pt;
-		points.getPoint(i,pt);
-		points.addPoint( pt.x(), pt.y(), pt.z() );
-	}
-	kmb::Bucket3DGrid bucket;
-	kmb::BoundingBox bbox = points.getBoundingBox();
-	bucket.setRegionGrid( bbox, 100 );
-	bucket.setContainer( &points );
-	bucket.appendAll();
-	for(kmb::nodeIdType i=0;i<1000;i++){
-		kmb::Point3D pt;
-		points.getPoint(i,pt);
-		int index = bucket.getIndex( pt.x(), pt.y(), pt.z() );
-		BOOST_CHECK( index >= 0 );
-	}
-}
 
 BOOST_AUTO_TEST_CASE( PointToLine )
 {
@@ -205,3 +183,34 @@ BOOST_AUTO_TEST_CASE( PointToTriangle )
 		}
 	}
 }
+
+BOOST_AUTO_TEST_CASE(SolidAngle)
+{
+	kmb::Point3D ao(0.0, 0.0, 0.0);
+	kmb::Point3D ax(1.0, 0.0, 0.0);
+	kmb::Point3D ay(0.0, 1.0, 0.0);
+	kmb::Point3D az(0.0, 0.0, 1.0);
+	kmb::Point3D a1(-1.0, -1.0, 0.0);
+	double s = kmb::Vector3D::solidAngle(kmb::Vector3D(ax, ao), kmb::Vector3D(ay, ao), kmb::Vector3D(az, ao));
+	BOOST_CHECK_CLOSE(0.5*PI, s, 1.0e-10);
+	s = kmb::Vector3D::solidAngle(kmb::Vector3D(ax, ao), kmb::Vector3D(ay, ao), kmb::Vector3D(a1, ao));
+	BOOST_CHECK_CLOSE(2.0*PI, s, 1.0e-10);
+	int loopCount = 10;
+	for (int counter = 0; counter < loopCount; ++counter) {
+		kmb::Point3D a0;
+		kmb::Point3D a1(drand(), drand(), drand());
+		kmb::Point3D a2(drand(), drand(), drand());
+		kmb::Point3D a3(drand(), drand(), drand());
+		kmb::Point3D a4(drand(), drand(), drand());
+		a0.x( 0.25 * (a1.x() + a2.x() + a3.x() + a4.x()));
+		a0.y( 0.25 * (a1.y() + a2.y() + a3.y() + a4.y()));
+		a0.z( 0.25 * (a1.z() + a2.z() + a3.z() + a4.z()));
+		double solidAngle123 = kmb::Vector3D::solidAngle(kmb::Vector3D(a1, a0), kmb::Vector3D(a2, a0), kmb::Vector3D(a3, a0));
+		double solidAngle142 = kmb::Vector3D::solidAngle(kmb::Vector3D(a1, a0), kmb::Vector3D(a4, a0), kmb::Vector3D(a2, a0));
+		double solidAngle134 = kmb::Vector3D::solidAngle(kmb::Vector3D(a1, a0), kmb::Vector3D(a3, a0), kmb::Vector3D(a4, a0));
+		double solidAngle243 = kmb::Vector3D::solidAngle(kmb::Vector3D(a2, a0), kmb::Vector3D(a4, a0), kmb::Vector3D(a3, a0));
+		BOOST_CHECK_CLOSE(4.0*PI, std::fabs(solidAngle123 + solidAngle142 + solidAngle134 + solidAngle243), 1.0e-10);
+	}
+}
+
+BOOST_AUTO_TEST_SUITE_END()
