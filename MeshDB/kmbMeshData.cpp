@@ -305,6 +305,16 @@ kmb::MeshData::getBoundingBox(void) const
 	}
 }
 
+kmb::MeshData::nodeIterator kmb::MeshData::beginNodeIterator() const
+{
+	return node3Ds->begin();
+}
+
+kmb::MeshData::nodeIterator kmb::MeshData::endNodeIterator() const
+{
+	return node3Ds->end();
+}
+
 kmb::bodyIdType
 kmb::MeshData::beginElement(size_t size,kmb::ElementContainer* container)
 {
@@ -538,6 +548,16 @@ kmb::MeshData::getBodyPtr(kmb::bodyIdType bodyId)
 	}
 }
 
+kmb::Body* kmb::MeshData::getElementContainer(bodyIdType bodyId)
+{
+	return getBodyPtr(bodyId);
+}
+
+const kmb::Body* kmb::MeshData::getElementContainer(bodyIdType bodyId) const
+{
+	return getBodyPtr(bodyId);
+}
+
 size_t
 kmb::MeshData::getElementCount(kmb::bodyIdType bodyId) const
 {
@@ -545,6 +565,17 @@ kmb::MeshData::getElementCount(kmb::bodyIdType bodyId) const
 	if( body ){
 		return body->getCount();
 	}else{
+		return 0;
+	}
+}
+
+size_t kmb::MeshData::getElementCountByType(kmb::bodyIdType bodyId, kmb::elementType etype) const
+{
+	const kmb::ElementContainer* body = this->getBodyPtr(bodyId);
+	if (body) {
+		return body->getCountByType(etype);
+	}
+	else {
 		return 0;
 	}
 }
@@ -692,6 +723,11 @@ kmb::MeshData::setBodyName(bodyIdType bodyId,const char* name)
 	}
 }
 
+void kmb::MeshData::setBodyName(kmb::bodyIdType bodyId, std::string name)
+{
+	setBodyName(bodyId, name.c_str());
+}
+
 kmb::bodyIdType
 kmb::MeshData::getBodyIdByName(const char* name) const
 {
@@ -760,6 +796,16 @@ kmb::MeshData::importBody(const kmb::MeshData& otherMesh,kmb::bodyIdType bodyId)
 	this->endElement();
 	delete[] cell;
 	return myBodyId;
+}
+
+kmb::MeshData::elementIterator kmb::MeshData::beginElementIterator(kmb::bodyIdType bodyId) const
+{
+	return this->getBodyPtr(bodyId)->begin();
+}
+
+kmb::MeshData::elementIterator kmb::MeshData::endElementIterator(kmb::bodyIdType bodyId) const
+{
+	return this->getBodyPtr(bodyId)->end();
 }
 
 const std::multimap< std::string, kmb::DataBindings* >&
@@ -911,6 +957,17 @@ kmb::MeshData::replaceData(const kmb::DataBindings* olddata, kmb::DataBindings* 
 		++bIter;
 	}
 	return false;
+}
+
+std::vector<std::string> kmb::MeshData::getDataNames(void) const
+{
+	std::vector<std::string> names;
+	std::multimap< std::string, kmb::DataBindings* >::const_iterator dIter = this->bindings.begin();
+	while (dIter != bindings.end()) {
+		names.push_back(dIter->first);
+		++dIter;
+	}
+	return names;
 }
 
 void
@@ -1292,6 +1349,16 @@ kmb::MeshData::getDataBindingsPtr(const char* name,const char* stype) const
 		++bIter;
 	}
 	return NULL;
+}
+
+kmb::DataBindings* kmb::MeshData::getData(std::string name)
+{
+	return getDataBindingsPtr(name.c_str());
+}
+
+const kmb::DataBindings* kmb::MeshData::getData(std::string name) const
+{
+	return getDataBindingsPtr(name.c_str());
 }
 
 bool

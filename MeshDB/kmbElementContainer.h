@@ -200,6 +200,8 @@ public:
 public:
 	void setBodyName(const char* name);
 	const char* getBodyName(void) const;
+	void setName(const char* name);
+	const char* getName(void) const;
 public:
 	static const kmb::bodyIdType nullBodyId;
 	static bool copy(const kmb::ElementContainer* org, kmb::ElementContainer* elements);

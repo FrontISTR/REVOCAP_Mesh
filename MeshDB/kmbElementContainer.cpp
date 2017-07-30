@@ -390,6 +390,17 @@ kmb::ElementContainer::getBodyName(void) const
 	return this->bodyName.c_str();
 }
 
+void kmb::ElementContainer::setName(const char* name)
+{
+	setBodyName(name);
+}
+
+const char* kmb::ElementContainer::getName(void) const
+{
+	return getBodyName();
+}
+
+
 //------------------ iterator ---------------------
 
 kmb::ElementContainer::iterator::iterator( const kmb::ElementContainer::iterator &other )

@@ -51,7 +51,7 @@ class MeshDB;
 class DataBindings
 {
 public:
-	enum bindingMode{
+	enum bindingMode {
 		NodeGroup,
 		ElementGroup,
 		FaceGroup,
@@ -62,7 +62,18 @@ public:
 		BodyVariable,
 		Global,
 		Undefined,
-		Unknown
+		Unknown,
+		kNodeGroup = NodeGroup,
+		kElementGroup = ElementGroup,
+		kFaceGroup = FaceGroup,
+		kBodyGroup = BodyGroup,
+		kNodeVariable = NodeVariable,
+		kElementVariable = ElementVariable,
+		kFaceVariable = FaceVariable,
+		kBodyVariable = BodyVariable,
+		kGlobal = Global,
+		kUndefined = Undefined,
+		kUnknown = Unknown,
 	};
 	static bindingMode string2bindingMode(std::string str){
 		if( str == "NODEGROUP" )			return DataBindings::NodeGroup;
@@ -125,6 +136,7 @@ protected:
 	std::string specType;
 public:
 	std::string getSpecType(void) const { return specType; };
+	std::string getTag(void) const { return specType; };
 	void setSpecType(std::string sname){ specType = sname; };
 //----------------- 対象となる BodyId (要素コンテナのId) ----------
 protected:
