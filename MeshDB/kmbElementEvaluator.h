@@ -67,6 +67,7 @@ public:
 	double getLength(const kmb::ElementBase &eIter) const;
 	// 角度
 	double getAngle(const kmb::ElementBase &eIter,kmb::nodeIdType nodeId) const;
+	// index は要素内の節点順番
 	double getAngleByIndex(const kmb::ElementBase &eIter,int index) const;
 	double getCosByIndex(const kmb::ElementBase &eIter,int index) const;
 	// n0 の尖り具合

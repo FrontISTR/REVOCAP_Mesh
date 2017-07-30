@@ -50,7 +50,7 @@ cloneBody(kmb::bodyIdType bodyID)
 			++eIter;
 		}
 		this->endElement();
-		delete cells;
+		delete[] cells;
 	}
 	return id;
 }

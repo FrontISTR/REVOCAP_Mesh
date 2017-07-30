@@ -77,13 +77,13 @@ kmb::FaceBucket::setAutoBucketSize(void)
 	// 他のところはほぼ同じ長さになるように分割
 	switch(minIndex){
 	case 0:
-		this->setGridSize( div, static_cast<int>(div * range[1] / range[0]), static_cast<int>(div * range[2] / range[0]) );
+		this->setBlockSize( div, static_cast<int>(div * range[1] / range[0]), static_cast<int>(div * range[2] / range[0]) );
 		break;
 	case 1:
-		this->setGridSize( static_cast<int>(div * range[0] / range[1]), div, static_cast<int>(div * range[2] / range[1]) );
+		this->setBlockSize( static_cast<int>(div * range[0] / range[1]), div, static_cast<int>(div * range[2] / range[1]) );
 		break;
 	case 2:
-		this->setGridSize( static_cast<int>(div * range[0] / range[2]), static_cast<int>(div * range[2] / range[0]), div );
+		this->setBlockSize( static_cast<int>(div * range[0] / range[2]), static_cast<int>(div * range[2] / range[0]), div );
 		break;
 	}
 }
