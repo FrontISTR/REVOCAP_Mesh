@@ -1,6 +1,6 @@
 ﻿/*----------------------------------------------------------------------
 #                                                                      #
-# Software Name : REVOCAP_PrePost version 1.7                          #
+# Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : OffIO                                                   #
 #                                                                      #
 #                                Written by                            #
@@ -11,19 +11,8 @@
 #      "Innovative General-Purpose Coupled Analysis System"            #
 #                                                                      #
 ----------------------------------------------------------------------*/
-#pragma once
+#include "RevocapIO/kmbOffIO_Generics.h"
+#include "MeshDB/kmbMeshData.h"
 
-namespace kmb{
-
-class OffIO
-{
-public:
-	OffIO(void){};
-	~OffIO(void){};
-	template<typename MContainer>
-	int loadPatch(const char* filename,MContainer* mesh);
-	template<typename MContainer>
-	int savePatch(const char* filename,const MContainer* mesh);
-};
-
-}
+template int kmb::OffIO::loadPatch<>(const char* filename, kmb::MeshData* patch);
+template int kmb::OffIO::savePatch<>(const char* filename, const kmb::MeshData* patch);

@@ -26,7 +26,6 @@ protected:
 	kmb::nodeIdType offsetNodeId;
 	kmb::elementIdType offsetElementId;
 public:
-#ifndef REVOCAP_SUPPORT_RUBY
 	enum gmshFormat{
 		k2_2,
 		kUndefined
@@ -67,7 +66,6 @@ public:
 		kHexahedron125=93,
 		kUndefinedElement=-1
 	};
-#endif
 	GmshIO();
 	int loadMeshFromFile(const char* filename,kmb::MeshData* mesh);
 protected:
