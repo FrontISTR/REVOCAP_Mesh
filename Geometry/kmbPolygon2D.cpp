@@ -96,7 +96,7 @@ kmb::Polygon2D::orientation kmb::Polygon2D::getOrientation(void) const
 			points->getPoint( nodeArray[i],   p1 ) &&
 			points->getPoint( nodeArray[nxt], p2 ) )
 		{
-			angle += kmb::Point2D::angle( p0, p1, p2 );
+			angle += kmb::Point2D::angle( p1, p0, p2 );
 		}
 	}
 	if( fabs(angle-2*PI) < 0.1 ){  // 少し余裕を持って
@@ -120,7 +120,7 @@ kmb::Region::locationType kmb::Polygon2D::intersect( kmb::Point2D &point ) const
 		if( points->getPoint( nodeArray[i],   p0 ) &&
 			points->getPoint( nodeArray[nxt], p1 ) )
 		{
-			angle += kmb::Point2D::angle( p0, point, p1 );
+			angle += kmb::Point2D::angle( point, p0, p1 );
 		}
 	}
 	// 反時計回りの内側にあるかどうか

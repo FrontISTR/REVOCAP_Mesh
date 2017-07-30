@@ -26,6 +26,7 @@
 #include <cmath>
 #include <cfloat>
 #include <cstdio>
+#include "Geometry/kmbGeometry.h"
 #include "Geometry/kmbGeometry3D.h"
 #include "Geometry/kmbGeometry2D.h"
 #include "Common/kmbCalculator.h"
@@ -247,19 +248,27 @@ kmb::Point3D kmb::Point3D::dividingPoint(const Point3D& other,double m,double n)
 		(n*this->z() + m*other.z()) / (m+n)); 
 }
 
-kmb::Point3D
-kmb::Point3D::proportionalPoint(const Point3D& other,double t) const
+void kmb::Point3D::dividingPoint(const kmb::Point3D &p0,const kmb::Point3D &p1, double t0, double t1, kmb::Point3D &p)
+{
+	p = dividingPoint(p0, p1, t0, t1);
+}
+
+kmb::Point3D kmb::Point3D::dividingPoint(const Point3D& p0, const Point3D& p1, double t0, double t1)
+{
+	double t = 1.0 / (t0 + t1);
+	return Point3D(
+		(t1*p0.x() + t0*p1.x()) * t,
+		(t1*p0.y() + t0*p1.y()) * t,
+		(t1*p0.z() + t0*p1.z()) * t
+	);
+}
+
+kmb::Point3D kmb::Point3D::proportionalPoint(const Point3D& other,double t) const
 {
 	return Point3D(
 		(1.0-t)*this->x() + t*other.x(), 
 		(1.0-t)*this->y() + t*other.y(), 
 		(1.0-t)*this->z() + t*other.z()); 
-}
-
-#ifndef REVOCAP_SUPPORT_RUBY
-kmb::Point3D kmb::Point3D::dividingPoint(const Point3D& a,const Point3D& b,double m,double n)
-{
-	return a.dividingPoint(b,m,n);
 }
 
 kmb::Point3D kmb::Point3D::proportionalPoint(const Point3D& a,const Point3D& b,double t)
@@ -278,7 +287,6 @@ kmb::Point3D::distanceSq(const Point3D& a,const Point3D& b)
 {
 	return a.distanceSq(b);
 }
-#endif
 
 // 体積計算
 double
@@ -388,25 +396,32 @@ kmb::Point3D kmb::Point3D::getCircumCenter(const Point3D &p0,const Point3D &p1,c
 
 double kmb::Point3D::angle(const Point3D &a,const Point3D &b,const Point3D &c)
 {
-	kmb::Vector3D v1(a,b);
-	kmb::Vector3D v2(c,b);
-	return kmb::Vector3D::angle(v1,v2);
+	double co = kmb::Point3D::cos(a,b,c);
+	return COS2ANGLE(co);
 }
 
-double
-kmb::Point3D::cos(const Point3D &a,const Point3D &b,const Point3D &c)
+double kmb::Point3D::cos(const Point3D &a,const Point3D &b,const Point3D &c)
 {
-	kmb::Vector3D v1(a,b);
-	kmb::Vector3D v2(c,b);
-	return kmb::Vector3D::cos(v1,v2);
+	return inner(a, b, c) / distance(a, b) / distance(a, c);
 }
 
 double
 kmb::Point3D::sin(const Point3D &a,const Point3D &b,const Point3D &c)
 {
-	kmb::Vector3D v1(a,b);
-	kmb::Vector3D v2(c,b);
+	kmb::Vector3D v1(b,a);
+	kmb::Vector3D v2(c,a);
 	return kmb::Vector3D::sin(v1,v2);
+}
+
+double kmb::Point3D::inner(const Point3D &a, const Point3D &b, const Point3D &c)
+{
+	double x0 = b.x() - a.x();
+	double y0 = b.y() - a.y();
+	double z0 = b.z() - a.z();
+	double x1 = c.x() - a.x();
+	double y1 = c.y() - a.y();
+	double z1 = c.z() - a.z();
+	return x0*x1 + y0*y1 + z0*z1;
 }
 
 void 

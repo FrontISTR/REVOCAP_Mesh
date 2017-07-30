@@ -122,7 +122,7 @@ public:
 			return false;
 		}
 	}
-	// ループの外側から k j i 
+	// ループの外側から k j i
 	// i から順に増やす operator < の順と違う
 	bool next_kji(const BucketIndex& maxIndex){
 		if( i < maxIndex.i-1 ){
@@ -142,7 +142,7 @@ public:
 			return false;
 		}
 	}
-	// ループの外側から k j i 
+	// ループの外側から k j i
 	// i から順に増やす operator < の順と違う
 	bool next_kji(const BucketIndex& maxIndex,const BucketIndex& minIndex){
 		if( i < maxIndex.i-1 ){
@@ -203,16 +203,21 @@ public:
 		box = this->bucketRegion;
 	};
 
-	void setGridSize(int numX, int numY, int numZ){
+	void setBlockSize(int numX, int numY, int numZ){
 		this->xnum = numX;
 		this->ynum = numY;
 		this->znum = numZ;
 	};
 
-	void getGridSize(int& numX, int& numY, int& numZ) const{
+	void getBlockSize(int& numX, int& numY, int& numZ) const{
 		numX = this->xnum;
 		numY = this->ynum;
 		numZ = this->znum;
+	};
+
+	// 全体のブロック数
+	int getBlockSize(void) const {
+		return this->xnum * this->ynum * this->znum;
 	};
 
 	// 全体が num 程度になるように x y z を配分して Grid を作る
@@ -228,18 +233,29 @@ public:
 		if( this->znum <= 0 ){ this->znum = 1; }
 	};
 
-	int getSize(void) const{
-		return this->xnum * this->ynum * this->znum;
-	};
-
+	// 全体に登録されている個数
 	size_t getCount(void) const{
 		return regions.size();
 	};
 
+	// (i,j,k) の bucket に登録されている個数
 	size_t getCount(int i,int j,int k) const{
 		return regions.count(getIndex(i,j,k));
 	};
 
+	// 0 => bucketRegion.minX()
+	// xnum => bucketRegion.maxX()
+	double getX(int i) const {
+		return bucketRegion.minX() + (i * bucketRegion.rangeX()) / xnum;
+	}
+	double getY(int j) const {
+		return bucketRegion.minY() + (j * bucketRegion.rangeY()) / ynum;
+	}
+	double getZ(int k) const {
+		return bucketRegion.minZ() + (k * bucketRegion.rangeZ()) / znum;
+	}
+
+	// (i,j,k) のブロックに t を追加
 	bool insert(int i,int j,int k,const T &t){
 		regions.insert( std::pair<indexType,T>( getIndex(i,j,k), t ) );
 		return true;
@@ -247,44 +263,8 @@ public:
 
 	// (i,j,k) 番目の格子を取得する
 	void getSubRegion(int i,int j,int k,kmb::BoxRegion& box) const{
-		box.setMinMax(
-			bucketRegion.minX() + (i * bucketRegion.rangeX()) / xnum,
-			bucketRegion.minY() + (j * bucketRegion.rangeY()) / ynum,
-			bucketRegion.minZ() + (k * bucketRegion.rangeZ()) / znum,
-			bucketRegion.minX() + ((i+1) * bucketRegion.rangeX()) / xnum,
-			bucketRegion.minY() + ((j+1) * bucketRegion.rangeY()) / ynum,
-			bucketRegion.minZ() + ((k+1) * bucketRegion.rangeZ()) / znum);
+		box.setMinMax(getX(i), getY(j), getZ(k), getX(i + 1), getY(j + 1), getZ(k + 1));
 	};
-
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4100) // 使わない引数があっても警告を出さない for VC
-#endif
-#ifdef __INTEL_COMPILER
-#pragma warning(push)
-#pragma warning(disable:869) // 使わない引数があっても警告を出さない for intel
-#endif
-	double getSubRegionMinX(int i,int j,int k) const{
-		return bucketRegion.minX() + (i * bucketRegion.rangeX()) / xnum;
-	};
-	double getSubRegionMinY(int i,int j,int k) const{
-		return bucketRegion.minY() + (j * bucketRegion.rangeY()) / ynum;
-	};
-	double getSubRegionMinZ(int i,int j,int k) const{
-		return bucketRegion.minZ() + (k * bucketRegion.rangeZ()) / znum;
-	};
-	double getSubRegionMaxX(int i,int j,int k) const{
-		return bucketRegion.minX() + ((i+1) * bucketRegion.rangeX()) / xnum;
-	};
-	double getSubRegionMaxY(int i,int j,int k) const{
-		return bucketRegion.minY() + ((j+1) * bucketRegion.rangeY()) / ynum;
-	};
-	double getSubRegionMaxZ(int i,int j,int k) const{
-		return bucketRegion.minZ() + ((k+1) * bucketRegion.rangeZ()) / znum;
-	};
-#if defined _MSC_VER || defined __INTEL_COMPILER
-#pragma warning(pop)
-#endif
 
 	bool getSubRegion(int index,kmb::BoxRegion& box) const{
 		if( index < 0 || index >= xnum*ynum*znum ){
@@ -301,33 +281,10 @@ public:
 	{
 		int i,j,k;
 		if( getSubIndices(x,y,z,i,j,k) ){
-			return ( i * ynum + j ) * znum + k;
+			return getIndex(i, j, k);
 		}else{
 			return -1;
 		}
-/*
-		if( bucketRegion.intersect(x,y,z) == kmb::BoxRegion::OUTSIDE ){
-			return -1;
-		}
-		indexType i = static_cast<indexType>( (x-bucketRegion.minX()) / bucketRegion.rangeX() * xnum );
-		indexType j = static_cast<indexType>( (y-bucketRegion.minY()) / bucketRegion.rangeY() * ynum );
-		indexType k = static_cast<indexType>( (z-bucketRegion.minZ()) / bucketRegion.rangeZ() * znum );
-		// maxX maxY maxZ のところだけ特別対応
-		if( x == bucketRegion.maxX() ){
-			i = xnum-1;
-		}
-		if( y == bucketRegion.maxY() ){
-			j = ynum-1;
-		}
-		if( z == bucketRegion.maxZ() ){
-			k = znum-1;
-		}
-		if( 0 <= i && i < xnum && 0 <= j && j < ynum && 0 <= k && k < znum ){
-			return ( i * ynum + j ) * znum + k;
-		}else{
-			return -1;
-		}
-*/
 	};
 
 	indexType getIndex(int i,int j,int k) const{
@@ -339,8 +296,9 @@ public:
 		friend class Bucket<T>;
 	protected:
 		typename std::multimap<int,T>::iterator it;
+		Bucket<T>* bucket;
+		iterator(Bucket<T>* _bucket) : bucket(_bucket){};
 	public:
-		iterator(void){};
 		virtual ~iterator(void){};
 
 		// 格納している T 型の参照を返す
@@ -353,6 +311,7 @@ public:
 		iterator  operator++(int n){
 			typename kmb::Bucket<T>::iterator itClone;
 			itClone.it = it;
+			itClone.bucket = bucket;
 			it++;
 			return itClone;
 		};
@@ -367,6 +326,7 @@ public:
 
 		iterator& operator=(const iterator& other){
 			it = other.it;
+			bucket = other.bucket;
 			return *this;
 		};
 
@@ -377,8 +337,9 @@ public:
 		friend class Bucket<T>;
 	protected:
 		typename std::multimap<int,T>::const_iterator it;
+		const Bucket<T>* bucket;
+		const_iterator(const Bucket<T>* _bucket) : bucket(_bucket) {};
 	public:
-		const_iterator(void){}
 		virtual ~const_iterator(void){}
 
 		const T& get(void) const{ return it->second; };
@@ -390,6 +351,7 @@ public:
 		const_iterator operator++(int n){
 			typename kmb::Bucket<T>::iterator itClone;
 			itClone.it = it;
+			itClone.bucket = bucket;
 			it++;
 			return itClone;
 		};
@@ -404,59 +366,61 @@ public:
 
 		const_iterator& operator=(const const_iterator& other){
 			it = other.it;
+			bucket = other.bucket;
 			return *this;
 		};
 
 		const_iterator& operator=(const iterator& other){
 			it = other.it;
+			bucket = other.bucket;
 			return *this;
 		};
 	};
 
 	iterator begin(int i,int j,int k){
-		typename kmb::Bucket<T>::iterator itClone;
+		typename kmb::Bucket<T>::iterator itClone(this);
 		itClone.it = regions.lower_bound(getIndex(i,j,k));
 		return itClone;
 	};
 
 	const_iterator begin(int i,int j,int k) const{
-		typename kmb::Bucket<T>::const_iterator itClone;
+		typename kmb::Bucket<T>::const_iterator itClone(this);
 		itClone.it = regions.lower_bound(getIndex(i,j,k));
 		return itClone;
 	};
 
 	iterator end(int i,int j,int k){
-		typename kmb::Bucket<T>::iterator itClone;
+		typename kmb::Bucket<T>::iterator itClone(this);
 		itClone.it = regions.upper_bound(getIndex(i,j,k));
 		return itClone;
 	};
 
 	const_iterator end(int i,int j,int k) const{
-		typename kmb::Bucket<T>::const_iterator itClone;
+		typename kmb::Bucket<T>::const_iterator itClone(this);
 		itClone.it = regions.upper_bound(getIndex(i,j,k));
 		return itClone;
 	};
 
 	iterator begin(void){
-		typename kmb::Bucket<T>::iterator itClone;
+		typename kmb::Bucket<T>::iterator itClone(this);
 		itClone.it = regions.begin();
 		return itClone;
 	};
 
 	const_iterator begin(void) const{
-		typename kmb::Bucket<T>::const_iterator itClone;
+		typename kmb::Bucket<T>::const_iterator itClone(this);
 		itClone.it = regions.begin();
 		return itClone;
 	};
 
 	iterator end(void){
-		typename kmb::Bucket<T>::iterator itClone;
+		typename kmb::Bucket<T>::iterator itClone(this);
 		itClone.it = regions.end();
 		return itClone;
 	};
 
 	const_iterator end(void) const{
-		typename kmb::Bucket<T>::const_iterator itClone;
+		typename kmb::Bucket<T>::const_iterator itClone(this);
 		itClone.it = regions.end();
 		return itClone;
 	};

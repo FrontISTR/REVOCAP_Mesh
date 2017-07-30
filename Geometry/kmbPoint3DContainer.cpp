@@ -395,8 +395,7 @@ kmb::Point3DContainer::distanceSq( kmb::nodeIdType n0, kmb::nodeIdType n1 ) cons
 	return DBL_MAX;
 }
 
-double
-kmb::Point3DContainer::cos( kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::nodeIdType n2 ) const
+double kmb::Point3DContainer::cos( kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::nodeIdType n2 ) const
 {
 	kmb::Point3D p0,p1,p2;
 	if( getPoint(n0,p0) && getPoint(n1,p1) && getPoint(n2,p2) ){

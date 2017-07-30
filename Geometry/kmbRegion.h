@@ -29,6 +29,7 @@
 
 namespace kmb{
 
+class Point3D;
 class BoxRegion;
 
 class Region

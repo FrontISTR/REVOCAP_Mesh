@@ -279,7 +279,7 @@ kmb::Optimization::calcZero_NR( OptTargetVV &obj, double* opt_t, const double* m
 			break;
 		}
 		if( h.solve(q,s) ){
-			t.setDifference(t0,s);
+			t.difference(t0,s);
 			for(int i=0;i<dim;++i){
 				if( t.getRow(i) < min_t[i] || t.getRow(i) > max_t[i] ){
 					t.setRow(i,0.5*(t.getRow(i)+t0.getRow(i)));

@@ -79,3 +79,30 @@ kmb::Tuple3D::operator =(const Tuple3D& other)
 	return *this;
 }
 
+bool kmb::Tuple3D::operator<(const kmb::Tuple3D& other) const
+{
+	if (v[0] < other.v[0]) {
+		return true;
+	}
+	else if (v[0] > other.v[0]) {
+		return false;
+	}
+	else {
+		if (v[1] < other.v[1]) {
+			return true;
+		}
+		else if (v[1] > other.v[1]) {
+			return false;
+		}
+		else {
+			if (v[2] < other.v[2]) {
+				return true;
+			}
+			else if (v[2] > other.v[2]) {
+				return false;
+			}
+		}
+	}
+	return false;
+}
+

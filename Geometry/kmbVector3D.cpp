@@ -31,10 +31,10 @@
 #include "Common/kmbCalculator.h"
 #include "Geometry/kmbGeometry.h"
 
-kmb::Vector3D::Vector3D(const Point3D& p,const Point3D& q)
+kmb::Vector3D::Vector3D(const Point3D& target,const Point3D& source)
 {
 	for(int i=0;i<3;++i){
-		v[i] = p.getCoordinate(i) - q.getCoordinate(i);
+		v[i] = target.getCoordinate(i) - source.getCoordinate(i);
 	}
 }
 
@@ -110,6 +110,19 @@ kmb::Vector3D::angle(const Vector3D &v0,const Vector3D &v1)
 {
 	double c = kmb::Vector3D::cos(v0,v1);
 	return COS2ANGLE(c);
+}
+
+double kmb::Vector3D::solidAngle(const kmb::Vector3D &v0, const kmb::Vector3D &v1, const kmb::Vector3D &v2)
+{
+	double a0 = v0.length();
+	double a1 = v1.length();
+	double a2 = v2.length();
+	double a01 = v0*v1;
+	double a12 = v1*v2;
+	double a20 = v2*v0;
+	double a012 = kmb::Vector3D::triple(v0, v1, v2);
+//	return 2.0 * std::atan(a012 / (a0*a1*a2 + a0*a12 + a1*a20 + a2*a01));
+	return 2.0 * std::atan2(a012, a0*a1*a2 + a0*a12 + a1*a20 + a2*a01);
 }
 
 double

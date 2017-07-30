@@ -38,6 +38,23 @@ namespace kmb{
 
 class Plane
 {
+public:
+	enum crossingTriangle {
+		kALL_NEGATIVE,	// 交わりなし三角形は負の側
+		kALL_POSITIVE,	// 交わりなし三角形は正の側
+		k034_1243,	// p0 p3 p4 が正の側 p1 p2 p4 p3 が負の側
+		k134_2043,	// p1 p3 p4 が正の側 p2 p0 p4 p3 が負の側
+		k234_0143,	// p2 p3 p4 が正の側 p0 p1 p4 p3 が負の側
+		k1243_034,	// p1 p2 p4 p3 が正の側 p0 p3 p4 が負の側
+		k2043_134,	// p2 p0 p4 p3 が正の側 p1 p3 p4 が負の側
+		k0143_234,	// p0 p1 p4 p3 が正の側 p2 p3 p4 が負の側
+		k0_013_032,	// p0 を通る p0 p1 p3 が正の側 p0 p3 p2 が負の側
+		k1_123_130,	// p1 を通る p1 p2 p3 が正の側 p1 p3 p0 が負の側
+		k2_203_231,	// p2 を通る p2 p0 p3 が正の側 p2 p3 p1 が負の側
+		k0_032_013,	// p0 を通る p0 p3 p2 が正の側 p0 p1 p3 が負の側
+		k1_130_123,	// p1 を通る p1 p3 p0 が正の側 p1 p2 p3 が負の側
+		k2_231_203	// p2 を通る p2 p3 p1 が正の側 p2 p0 p3 が負の側
+	};
 protected:
 	double a;
 	double b;
@@ -80,7 +97,7 @@ public:
 	// 9  p0 を通る p0 p3 p2 が正の側 p0 p1 p3 が負の側
 	// 10 p1 を通る p1 p3 p0 が正の側 p1 p2 p3 が負の側
 	// 11 p2 を通る p2 p3 p1 が正の側 p2 p0 p3 が負の側
-	int getIntersectionTriangle(const Point3D &p0,const Point3D &p1, const Point3D &p2, Point3D &p3, Point3D &p4) const;
+	enum crossingTriangle getIntersectionTriangle(const Point3D &p0,const Point3D &p1, const Point3D &p2, Point3D &p3, Point3D &p4) const;
 	// get foot of perpendicular
 	Point3D projectOnPlane(const Point3D& p) const;
 };
@@ -92,7 +109,7 @@ public:
 	virtual ~PlaneXY(void){};
 	void setZ(double z0);
 	static bool getIntersection(const double z0,const Point3D &p0,const Point3D &p1, Point3D &pt, double &t);
-	static int getIntersectionTriangle(const double z0,const Point3D &p0,const Point3D &p1, const Point3D &p2, Point3D &p3, Point3D &p4);
+	static enum crossingTriangle getIntersectionTriangle(const double z0,const Point3D &p0,const Point3D &p1, const Point3D &p2, Point3D &p3, Point3D &p4);
 };
 
 class PlaneYZ : public Plane
@@ -102,7 +119,7 @@ public:
 	virtual ~PlaneYZ(void){};
 	void setX(double x0);
 	static bool getIntersection(const double x0,const Point3D &p0,const Point3D &p1, Point3D &pt, double &t);
-	static int getIntersectionTriangle(const double x0,const Point3D &p0,const Point3D &p1, const Point3D &p2, Point3D &p3, Point3D &p4);
+	static enum crossingTriangle getIntersectionTriangle(const double x0,const Point3D &p0,const Point3D &p1, const Point3D &p2, Point3D &p3, Point3D &p4);
 };
 
 class PlaneZX : public Plane
@@ -112,8 +129,7 @@ public:
 	virtual ~PlaneZX(void){};
 	void setY(double y0);
 	static bool getIntersection(const double y0,const Point3D &p0,const Point3D &p1, Point3D &pt, double &t);
-	static int getIntersectionTriangle(
-		const double y0,const Point3D &p0,const Point3D &p1, const Point3D &p2, Point3D &p3, Point3D &p4);
+	static enum crossingTriangle getIntersectionTriangle(const double y0,const Point3D &p0,const Point3D &p1, const Point3D &p2, Point3D &p3, Point3D &p4);
 };
 
 }
