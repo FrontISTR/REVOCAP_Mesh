@@ -238,6 +238,13 @@ kmb::SquareMatrix_DoubleArray::add(int i,int j,double val)
 
 /// Column Vector
 
+kmb::ColumnVector_DoubleArray::ColumnVector_DoubleArray(void)
+: ColumnVector(0)
+, m(NULL)
+, size(size)
+{
+}
+
 kmb::ColumnVector_DoubleArray::ColumnVector_DoubleArray(int size)
 : ColumnVector(size)
 , m(NULL)
@@ -360,6 +367,13 @@ double* kmb::ColumnVector_DoubleArray::getPtr(void)
 const double* kmb::ColumnVector_DoubleArray::getPtr(void) const
 {
 	return m;
+}
+
+kmb::RowVector_DoubleArray::RowVector_DoubleArray(void)
+	: RowVector(0)
+	, m(NULL)
+	, size(size)
+{
 }
 
 kmb::RowVector_DoubleArray::RowVector_DoubleArray(int size)

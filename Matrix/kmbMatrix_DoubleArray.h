@@ -83,12 +83,14 @@ private:
 	double *m;
 	int size;
 public:
+	ColumnVector_DoubleArray(void);
 	ColumnVector_DoubleArray(int size);
 	// コピーしてから使う
 	ColumnVector_DoubleArray(int size,double* ary);
 	ColumnVector_DoubleArray(const kmb::ColumnVector &vec);
 	virtual ~ColumnVector_DoubleArray(void);
 	virtual int init(int rowSize, int colSize);
+	int initialize(int rowSize) { return init(rowSize, 1); }
 	virtual const char* getContainerType(void) const;
 	virtual int getSize(void) const;
 	virtual int getRowSize(void) const;
@@ -111,12 +113,14 @@ private:
 	double *m;
 	int size;
 public:
+	RowVector_DoubleArray(void);
 	RowVector_DoubleArray(int size);
 	// コピーしてから使う
 	RowVector_DoubleArray(int size,double* ary);
 	RowVector_DoubleArray(const kmb::RowVector &vec);
 	virtual ~RowVector_DoubleArray(void);
 	virtual int init(int rowSize, int colSize);
+	int initialize(int colSize) { return init(1, colSize); }
 	virtual const char* getContainerType(void) const;
 	virtual int getSize(void) const;
 	virtual double getColumn(int i) const;

@@ -98,7 +98,7 @@ public:
 		}
 	}
 	// 和代入
-	bool setSum(const ColumnVector& v0,const ColumnVector& v1){
+	bool sum(const ColumnVector& v0,const ColumnVector& v1){
 		int size = getSize();
 		for(int i=0;i<size;++i){
 			setRow(i,v0.getRow(i)+v1.getRow(i));
@@ -120,7 +120,7 @@ public:
 		return true;
 	}
 	// 差代入
-	bool setDifference(const ColumnVector& v0,const ColumnVector& v1){
+	bool difference(const ColumnVector& v0,const ColumnVector& v1){
 		int size = getSize();
 		for(int i=0;i<size;++i){
 			setRow(i,v0.getRow(i)-v1.getRow(i));
@@ -197,6 +197,13 @@ public:
 			sum += x[i] * x[i];
 		}
 		return sum;
+	}
+	// Frobenius norm
+	double norm_f(void) const {
+		return std::sqrt(normSq());
+	}
+	static double norm_f(const double* x, int size) {
+		return std::sqrt(normSq(x,size));
 	}
 	// 1-norm = 絶対値の和
 	double norm_1(void) const{
@@ -288,7 +295,7 @@ public:
 		}
 	}
 	// 和代入
-	bool setSum(const RowVector& v0,const RowVector& v1){
+	bool sum(const RowVector& v0,const RowVector& v1){
 		int size = getSize();
 		for(int i=0;i<size;++i){
 			setColumn(i,v0.getColumn(i)+v1.getColumn(i));
@@ -310,7 +317,7 @@ public:
 		return true;
 	}
 	// 差代入
-	bool setDifference(const RowVector& v0,const RowVector& v1){
+	bool difference(const RowVector& v0,const RowVector& v1){
 		int size = getSize();
 		for(int i=0;i<size;++i){
 			setColumn(i,v0.getColumn(i)-v1.getColumn(i));
@@ -387,6 +394,13 @@ public:
 			sum += x[i] * x[i];
 		}
 		return sum;
+	}
+	// Frobenius norm
+	double norm_f(void) const {
+		return std::sqrt(normSq());
+	}
+	static double norm_f(const double* x, int size) {
+		return std::sqrt(normSq(x, size));
 	}
 	// 1-norm = 絶対値の和
 	double norm_1(void) const{
