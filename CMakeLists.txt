@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0)
 project(REVOCAP_MESH CXX C Fortran)
-set(REVOCAP_MESH_VERSION "1.7.01")
+set(REVOCAP_Mesh_VERSION_MAJOR 1 CACHE STRING "Major version number of REVOCAP_Mesh")
+set(REVOCAP_Mesh_VERSION_MINOR 7 CACHE STRING "Minor version number of REVOCAP_Mesh")
+set(REVOCAP_Mesh_VERSION_PATCH 1 CACHE STRING "Patch version number of REVOCAP_Mesh")
 
 option(WITH_EXTENSION "Build with ruby extension libraries" ON)
 option(WITH_OPENCASCADE "Build with OpenCASCADE feature" ON)
@@ -108,11 +110,11 @@ if(BUILD_DOC)
   if(DOXYGEN_FOUND)
     message(STATUS "Generate API documents. Please type \"make doc\"")
     set(doxy_main_page "${CMAKE_SOURCE_DIR}/INSTALL.md")
-    set(doxyfile_in ${CMAKE_SOURCE_DIR}/doc/Doxyfile.in)
-    set(doxyfile ${CMAKE_BINARY_DIR}/doc/Doxyfile)
+    set(doxyfile_in ${CMAKE_SOURCE_DIR}/Documents/Doxyfile.in)
+    set(doxyfile ${CMAKE_BINARY_DIR}/Documents/Doxyfile)
     configure_file(${doxyfile_in} ${doxyfile} @ONLY)
 
-    add_custom_target(doc
+    add_custom_target(Documents
       COMMAND ${DOXYGEN_EXECUTABLE} ${doxyfile}
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
       COMMENT "Generate API documents."

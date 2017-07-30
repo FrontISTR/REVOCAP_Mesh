@@ -31,17 +31,6 @@ add_library(RcapRefiner STATIC
   $<TARGET_OBJECTS:Shape>
 )
 
-#add_library(RcapRefiner STATIC
-#	${refiner_sources}
-#	${common_sources}
-#	${matrix_sources}
-#	${geometry_sources}
-#	${meshdb_sources}
-#	${meshgen_sources}
-#	${revocapio_sources}
-#	${shape_sources}
-#)
-
 # Refiner Utils
 add_definitions(-D_CONSOLE)
 add_executable(rcapPreFitting mainPreFitting.cpp)

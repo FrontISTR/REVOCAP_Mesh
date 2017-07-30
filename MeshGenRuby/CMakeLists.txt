@@ -16,10 +16,16 @@ set_property(SOURCE ${RevocapMeshGen_INTERFACE}
   PROPERTY CPLUSPLUS ON
 )
 
-swig_add_module(RevocapMeshGen
-  ruby
-  ${RevocapMeshGen_INTERFACE}
+swig_add_library(RevocapMeshGen
+  TYPE MODULE
+  LANGUAGE ruby
+  SOURCES
+    ${RevocapMeshGen_INTERFACE}
 )
+
+set_target_properties(RevocapMeshGen
+  PROPERTIES SUFFIX ".so")
+
 swig_link_libraries(RevocapMeshGen
   ${RUBY_LIBRARY}
   RcapMeshGen

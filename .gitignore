@@ -13,6 +13,7 @@ lib
 build
 VS2012/**/Win32
 VS2012/**/x64
+VS2015/**/x64
 VS2012/Win32
 VS2012/x64
-build
+*/CMakeFiles

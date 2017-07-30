@@ -86,7 +86,7 @@ kmb::MeshGL::getListSize(void) const
 void
 kmb::MeshGL::setList(size_t index,GLuint list)
 {
-	if( 0 <= index && index < lists.size() ){
+	if( index < lists.size() ){
 		lists[index] = list;
 	}
 }
@@ -94,7 +94,7 @@ kmb::MeshGL::setList(size_t index,GLuint list)
 GLuint
 kmb::MeshGL::getList(size_t index) const
 {
-	if( 0 <= index && index < lists.size() ){
+	if( index < lists.size() ){
 		return lists[index];
 	}else{
 		return 0;

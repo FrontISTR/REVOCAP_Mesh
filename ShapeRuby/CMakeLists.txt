@@ -1,14 +1,18 @@
 cmake_minimum_required(VERSION 3.0)
 
+# msys2 の場合、上の行を下の行に修正する必要がある
+# similar https://github.com/Alexpux/MINGW-packages/issues/1870
+# /mingw64/lib/oce/OCE-libraries-release.cmake:  IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE "TKernel;TKService;TKV3d;glu32;opengl32;C:/building/msys64/mingw64/lib/libfreetype.dll.a;vfw32"
+# /mingw64/lib/oce/OCE-libraries-release.cmake:  IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE "TKernel;TKService;TKV3d;glu32;opengl32;C:/msys64/mingw64/lib/libfreetype.dll.a;vfw32"
+
+find_package(SWIG REQUIRED)
+find_package(Ruby REQUIRED)
+
 include(${SWIG_USE_FILE})
 
 set(Shape_INTERFACE
   RevocapShape.i
 )
-
-#add_definitions(
-#  -DREVOCAP_SUPPORT_RUBY
-#)
 
 set_property(SOURCE ${Shape_INTERFACE}
   PROPERTY CPLUSPLUS ON
@@ -21,16 +25,26 @@ if(WITH_OPENCASCADE)
   )
 endif()
 
-swig_add_module(RevocapShape
-  ruby
-  ${Shape_INTERFACE}
+swig_add_library(RevocapShape
+  TYPE MODULE
+  LANGUAGE ruby
+  SOURCES
+    ${Shape_INTERFACE}
 )
+
+set_target_properties(RevocapShape
+  PROPERTIES SUFFIX ".so")
 
 include_directories(
   ${RUBY_INCLUDE_DIRS}
 )
 
+include_directories(
+  ${FREETYPE_INCLUDE_DIRS}
+)
+
 if(WITH_OPENCASCADE)
+  find_package(freetype REQUIRED)
   link_directories($ENV{OCE_DIR})
   list(REMOVE_ITEM OCE_LIBRARIES "DRAWEXE")
   list(REMOVE_ITEM OCE_LIBRARIES "TKDraw")
@@ -41,19 +55,14 @@ if(WITH_OPENCASCADE)
   list(REMOVE_ITEM OCE_LIBRARIES "TKXDEDRAW")
   list(REMOVE_ITEM OCE_LIBRARIES "TKTObjDRAW")
   list(REMOVE_ITEM OCE_LIBRARIES "TKQADraw")
+  list(REMOVE_ITEM OCE_LIBRARIES "TKOpenGl")
+  list(REMOVE_ITEM OCE_LIBRARIES "FWOSPlugin")
 
   include_directories(
     ${OCE_INCLUDE_DIRS}
   )
-  set(EXTRA_LIBS
-    ${OCE_LIBRARIES}
-    ${GLEW_LIBRARIES}
-    ${GLU_LIBRARY}
-    ${OPENGL_LIBRARIES}
-  )
-#  swig_link_libraries(RevocapShape
-#    ${OCE_LIBRARIES}
-#  )
+#MESSAGE(STATUS "oce library = ${OCE_LIBRARIES}")
+#MESSAGE(STATUS "freetype library = ${FREETYPE_LIBRARIES} INC = ${FREETYPE_INCLUDE_DIRS}")
 endif()
 
 swig_link_libraries(RevocapShape
@@ -64,7 +73,8 @@ swig_link_libraries(RevocapShape
   RcapGeometry
   RcapMatrix
   RcapCommon
-  ${EXTRA_LIBS}
+  ${OCE_LIBRARIES}
+  ${FREETYPE_LIBRARIES}
 )
 
 install(TARGETS RevocapShape

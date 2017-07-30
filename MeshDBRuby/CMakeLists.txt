@@ -12,15 +12,22 @@ set(MeshDBRuby_INTERFACE
 )
 
 set_property(SOURCE ${MeshDBRuby_INTERFACE}
-  PROPERTY CPLUSPLUS ON
+  PROPERTY
+    CPLUSPLUS ON
 )
 
-swig_add_module(RevocapMesh
-  ruby
-  ${MeshDBRuby_INTERFACE}
-  kmbMeshDB_SWIG.h
-  kmbPhysicalValue_SWIG.h
+swig_add_library(RevocapMesh
+  TYPE MODULE
+  LANGUAGE ruby
+  SOURCES
+    ${MeshDBRuby_INTERFACE}
+    kmbMeshDB_SWIG.h
+    kmbPhysicalValue_SWIG.h
 )
+
+set_target_properties(RevocapMesh
+  PROPERTIES SUFFIX ".so")
+
 swig_link_libraries(RevocapMesh
   ${RUBY_LIBRARY}
   RcapMeshDB

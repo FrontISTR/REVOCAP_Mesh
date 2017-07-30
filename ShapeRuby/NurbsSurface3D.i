@@ -50,7 +50,7 @@
 
 namespace kmb{
 
-class NurbsSurface3D : public Surface3D
+class NurbsSurface3D
 {
 public:
 /**--------------------------------------------------------------------------
