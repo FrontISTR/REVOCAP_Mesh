@@ -23,8 +23,13 @@ swig_add_library(RevocapMeshGen
     ${RevocapMeshGen_INTERFACE}
 )
 
-set_target_properties(RevocapMeshGen
-  PROPERTIES SUFFIX ".so")
+if(APPLE)
+  set_target_properties(RevocapMeshGen
+    PROPERTIES SUFFIX ".bundle")
+else()
+  set_target_properties(RevocapMeshGen
+    PROPERTIES SUFFIX ".so")
+endif()
 
 swig_link_libraries(RevocapMeshGen
   ${RUBY_LIBRARY}

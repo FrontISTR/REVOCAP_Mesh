@@ -32,8 +32,13 @@ swig_add_library(RevocapShape
     ${Shape_INTERFACE}
 )
 
-set_target_properties(RevocapShape
-  PROPERTIES SUFFIX ".so")
+if(APPLE)
+  set_target_properties(RevocapShape
+    PROPERTIES SUFFIX ".bundle")
+else()
+  set_target_properties(RevocapShape
+    PROPERTIES SUFFIX ".so")
+endif()
 
 include_directories(
   ${RUBY_INCLUDE_DIRS}

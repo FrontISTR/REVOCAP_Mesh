@@ -30,8 +30,13 @@ swig_add_library(RevocapGL
     ${RevocapGL_INTERFACE}
 )
 
-set_target_properties(RevocapGL
-  PROPERTIES SUFFIX ".so")
+if(APPLE)
+  set_target_properties(RevocapGL
+    PROPERTIES SUFFIX ".bundle")
+else()
+  set_target_properties(RevocapGL
+    PROPERTIES SUFFIX ".so")
+endif()
 
 swig_link_libraries(RevocapGL
   ${RUBY_LIBRARY}

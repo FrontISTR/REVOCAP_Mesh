@@ -22,8 +22,13 @@ swig_add_library(RevocapIO
     ${RevocapIORuby_INTERFACE}
 )
 
-set_target_properties(RevocapIO
-  PROPERTIES SUFFIX ".so")
+if(APPLE)
+  set_target_properties(RevocapIO
+    PROPERTIES SUFFIX ".bundle")
+else()
+  set_target_properties(RevocapIO
+    PROPERTIES SUFFIX ".so")
+endif()
 
 swig_link_libraries(RevocapIO
   ${RUBY_LIBRARY}

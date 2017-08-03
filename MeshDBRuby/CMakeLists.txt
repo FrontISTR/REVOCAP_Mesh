@@ -25,8 +25,13 @@ swig_add_library(RevocapMesh
     kmbPhysicalValue_SWIG.h
 )
 
-set_target_properties(RevocapMesh
-  PROPERTIES SUFFIX ".so")
+if(APPLE)
+  set_target_properties(RevocapMesh
+    PROPERTIES SUFFIX ".bundle")
+else()
+  set_target_properties(RevocapMesh
+    PROPERTIES SUFFIX ".so")
+endif()
 
 swig_link_libraries(RevocapMesh
   ${RUBY_LIBRARY}
