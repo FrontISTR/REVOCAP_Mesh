@@ -1089,8 +1089,10 @@ kmb::MicroAVSIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 	return 0;
 }
 
+namespace kmb{
+
 template<>
-int kmb::MicroAVSIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
+int MicroAVSIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
 {
 	if( mesh == NULL ){
 		return -1;
@@ -1135,6 +1137,8 @@ int kmb::MicroAVSIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
 		input.close();
 		return 0;
 	}
+}
+
 }
 
 int

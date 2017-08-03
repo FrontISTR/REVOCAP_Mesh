@@ -10,6 +10,6 @@ add_test(
 
 add_test(
  NAME LoadLibrary_TestRuby
- COMMAND ruby -I MeshDBRuby:MeshGenRuby:MeshGLRuby:RevocapIORuby:ShapeRuby ${PROJECT_SOURCE_DIR}/LoadLibrary_Test.rb
+ COMMAND ruby -I MeshDBRuby -I MeshGenRuby -I MeshGLRuby -I RevocapIORuby -I ShapeRuby ${PROJECT_SOURCE_DIR}/LoadLibrary_Test.rb
  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )

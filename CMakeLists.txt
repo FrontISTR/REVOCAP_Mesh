@@ -102,6 +102,7 @@ if(WITH_TEST)
   message(STATUS "WITH_TEST=ON")
   enable_testing()
   add_subdirectory(Test)
+  add_subdirectory(TestRuby)
 endif()
 
 # -DBUILD_DOC
