@@ -13,3 +13,21 @@ add_test(
  COMMAND ruby -I MeshDBRuby -I MeshGenRuby -I MeshGLRuby -I RevocapIORuby -I ShapeRuby ${PROJECT_SOURCE_DIR}/LoadLibrary_Test.rb
  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
+
+add_test(
+ NAME Element_TestRuby
+ COMMAND ruby -I MeshDBRuby -I MeshGenRuby -I MeshGLRuby -I RevocapIORuby -I ShapeRuby -I ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/Element_Test.rb
+ WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+add_test(
+ NAME MeshData_TestRuby
+ COMMAND ruby -I MeshDBRuby -I MeshGenRuby -I MeshGLRuby -I RevocapIORuby -I ShapeRuby -I ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/MeshData_Test.rb
+ WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+add_test(
+ NAME BoundaryExtract_TestRuby
+ COMMAND ruby -I MeshDBRuby -I MeshGenRuby -I MeshGLRuby -I RevocapIORuby -I ShapeRuby -I ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/BoundaryExtract_Test.rb
+ WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
