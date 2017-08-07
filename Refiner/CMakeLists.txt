@@ -11,13 +11,10 @@ set(refiner_sources
   rcapRefinerInterface.F90
 )
 
-#file(GLOB common_sources   "../Common/*.cpp")
-#file(GLOB matrix_sources   "../Matrix/*.cpp")
-#file(GLOB geometry_sources   "../Geometry/*.cpp")
-#file(GLOB meshdb_sources   "../MeshDB/*.cpp")
-#file(GLOB meshgen_sources   "../MeshGen/*.cpp")
-#file(GLOB revocapio_sources   "../RevocapIO/*.cpp")
-#file(GLOB shape_sources   "../Shape/*.cpp")
+set(refiner_headers
+  rcapRefiner.h
+  rcapRefinerIO.h
+)
 
 add_library(Refiner OBJECT ${refiner_sources})
 add_library(RcapRefiner STATIC
@@ -39,12 +36,22 @@ target_link_libraries(rcapPreFitting RcapRefiner)
 add_subdirectory(Samples)
 
 install(TARGETS RcapRefiner
+  EXPORT RcapRefinerConfig
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
+  INCLUDES DESTINATION include
   COMPONENT DESTINATION lib
 )
-install(FILES rcapRefiner.h DESTINATION include)
-install(FILES rcapRefinerIO.h DESTINATION include)
+
+install(FILES ${refiner_headers}
+  DESTINATION include
+)
+
+install(EXPORT RcapRefinerConfig
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/share/
+  EXPORT_LINK_INTERFACE_LIBRARIES
+)
+
 
 # -DBUILD_DOC
 #if(BUILD_DOC)
