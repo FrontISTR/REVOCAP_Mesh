@@ -1,4 +1,5 @@
 #pragma once
+
 #include "RevocapIO/kmbTripatchIO.h"
 #include "Geometry/kmbIdTypes.h"
 #include "MeshDB/kmbElement.h"
@@ -88,6 +89,59 @@ int kmb::TripatchIO::savePatch(std::string filename, const MContainer* mesh)
 		size_t triCount = mesh->getElementCountByType(bodyId,kmb::kTriangle);
 		if( elemCount == triCount && elemCount > 0 ){
 			output << elemCount << " " << 0 << " " << 0 << std::endl;
+			typename MContainer::elementIterator eIter = mesh->beginElementIterator(bodyId);
+			typename MContainer::elementIterator eIterEnd = mesh->endElementIterator(bodyId);
+			while( eIter != eIterEnd ){
+				output <<
+					eIter[0] << " " <<
+					eIter[1] << " " <<
+					eIter[2] << std::endl;
+				++eIter;
+			}
+		}
+	}
+	return 0;
+}
+
+template<typename MContainer>
+int kmb::TripatchIO::savePatchPacked(std::string filename, const MContainer* mesh)
+{
+	if( mesh == NULL ){
+		return -1;
+	}
+	int patchCount = 0;
+	kmb::bodyIdType bodyCount = mesh->getBodyCount();
+	for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
+		size_t elemCount = mesh->getElementCount(bodyId);
+		size_t triCount = mesh->getElementCountByType(bodyId,kmb::kTriangle);
+		if( elemCount == triCount && elemCount > 0 ){
+			++patchCount;
+		}
+	}
+	std::ofstream output( filename.c_str(), std::ios_base::out );
+	if( output.fail() ){
+		return -1;
+	}
+	output << mesh->getNodeCount() << " " << 0 << " " << 1 << std::endl;
+	typename MContainer::nodeIterator nIter = mesh->beginNodeIterator();
+	typename MContainer::nodeIterator nIterEnd = mesh->endNodeIterator();
+	while( nIter != nIterEnd ){
+		output << std::setprecision(8) << nIter.x() << " " << nIter.y() << " " << nIter.z() << std::endl;
+		++nIter;
+	}
+	size_t allElementCount = 0;
+	for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
+		size_t elemCount = mesh->getElementCount(bodyId);
+		size_t triCount = mesh->getElementCountByType(bodyId,kmb::kTriangle);
+		if( elemCount == triCount ){
+			allElementCount += elemCount;
+		}
+	}
+	output << allElementCount << " " << 0 << " " << 0 << std::endl;
+	for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
+		size_t elemCount = mesh->getElementCount(bodyId);
+		size_t triCount = mesh->getElementCountByType(bodyId,kmb::kTriangle);
+		if( elemCount == triCount && elemCount > 0 ){
 			typename MContainer::elementIterator eIter = mesh->beginElementIterator(bodyId);
 			typename MContainer::elementIterator eIterEnd = mesh->endElementIterator(bodyId);
 			while( eIter != eIterEnd ){
