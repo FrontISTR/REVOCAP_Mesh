@@ -8,7 +8,7 @@ option(WITH_EXTENSION "Build with ruby extension libraries" ON)
 option(WITH_OPENCASCADE "Build with OpenCASCADE feature" ON)
 option(WITH_OPENMP "Enable OpenMP feature" ON)
 option(WITH_TEST "Enable tests" ON)
-option(BUILD_DOC "Generate API documents." ON)
+option(WITH_DOC "Generate API documents." ON)
 
 if(WITH_EXTENSION)
   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -107,8 +107,8 @@ if(WITH_TEST)
   endif()
 endif()
 
-# -DBUILD_DOC
-if(BUILD_DOC)
+# -DWITH_DOC
+if(WITH_DOC)
   find_package(Doxygen)
   if(DOXYGEN_FOUND)
     message(STATUS "Generate API documents. Please type \"make doc\"")
