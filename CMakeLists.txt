@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.8)
 project(REVOCAP_MESH CXX C Fortran)
 set(REVOCAP_Mesh_VERSION_MAJOR 1 CACHE STRING "Major version number of REVOCAP_Mesh")
 set(REVOCAP_Mesh_VERSION_MINOR 7 CACHE STRING "Minor version number of REVOCAP_Mesh")
