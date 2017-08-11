@@ -4,7 +4,7 @@ REVOCAP_Refiner のインストール方法については Refiner/INSTALL.md �
 
 ## Requirements
 
-- cmake-3.0 以上
+- cmake-3.8 以上
 - swig (ruby/C++インターフェース生成が有効なもの)
 - OpenCASCADE Community Edition
 - OpenGL, GLU
@@ -12,7 +12,6 @@ REVOCAP_Refiner のインストール方法については Refiner/INSTALL.md �
 - ruby (Ver.2.3 で動作確認済み)
 - boost (Ver.1.61.0 で動作確認済み）
 
-> cmake-2.8でもビルドは出来ますが、拡張モジュールの名前が`libXXX.so`になります。
 > boost は WITH_TEST=ON の時だけ利用します。
 
 ## Quick installation
@@ -87,7 +86,7 @@ OpenCASCADE(oce)をインストールする際、パスが通っているディ�
 予め`doxygen`と`graphviz`をインストールする必要があります。
 
 ```txt
-% cmake -DBUILD_DOC ..
+% cmake -DWITH_DOC ..
 % make doc
 % firefox doc/html/index.html
 ```

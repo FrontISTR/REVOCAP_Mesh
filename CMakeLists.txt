@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.8)
 project(REVOCAP_MESH CXX C Fortran)
 set(REVOCAP_Mesh_VERSION_MAJOR 1 CACHE STRING "Major version number of REVOCAP_Mesh")
 set(REVOCAP_Mesh_VERSION_MINOR 7 CACHE STRING "Minor version number of REVOCAP_Mesh")
@@ -8,7 +8,7 @@ option(WITH_EXTENSION "Build with ruby extension libraries" ON)
 option(WITH_OPENCASCADE "Build with OpenCASCADE feature" ON)
 option(WITH_OPENMP "Enable OpenMP feature" ON)
 option(WITH_TEST "Enable tests" ON)
-option(BUILD_DOC "Generate API documents." ON)
+option(WITH_DOC "Generate API documents." ON)
 
 if(WITH_EXTENSION)
   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -107,8 +107,8 @@ if(WITH_TEST)
   endif()
 endif()
 
-# -DBUILD_DOC
-if(BUILD_DOC)
+# -DWITH_DOC
+if(WITH_DOC)
   find_package(Doxygen)
   if(DOXYGEN_FOUND)
     message(STATUS "Generate API documents. Please type \"make doc\"")

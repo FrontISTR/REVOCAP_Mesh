@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.8)
 
 file(GLOB RevocapIO_SRCS *.cpp)
 file(GLOB RevocapIO_HEADERS *.h)
