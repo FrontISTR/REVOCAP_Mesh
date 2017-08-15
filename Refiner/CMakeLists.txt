@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.8)
 project(REVOCAP_Refiner C CXX Fortran)
 set(REVOCAP_REFINER_VERSION "1.2.0")
 

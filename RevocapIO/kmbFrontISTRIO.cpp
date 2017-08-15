@@ -641,7 +641,7 @@ void kmb::FrontISTRIO::count(std::string filename)
 {
 	nodeCount = 0;
 	elementCount = 0;
-	std::ifstream input(filename, std::ios_base::in);
+	std::ifstream input(filename.c_str(), std::ios_base::in);
 	if (input.fail()) {
 		return;
 	}

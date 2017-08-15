@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 3.0)
+ï»¿cmake_minimum_required(VERSION 3.8)
 
-# msys2 ‚Ìê‡Aã‚Ìs‚ğ‰º‚Ìs‚ÉC³‚·‚é•K—v‚ª‚ ‚é
+# msys2 ã®å ´åˆã€ä¸Šã®è¡Œã‚’ä¸‹ã®è¡Œã«ä¿®æ­£ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
 # similar https://github.com/Alexpux/MINGW-packages/issues/1870
 # /mingw64/lib/oce/OCE-libraries-release.cmake:  IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE "TKernel;TKService;TKV3d;glu32;opengl32;C:/building/msys64/mingw64/lib/libfreetype.dll.a;vfw32"
-# /mingw64/lib/oce/OCE-libraries-release.cmake:  IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE "TKernel;TKService;TKV3d;glu32;opengl32;C:/msys64/mingw64/lib/libfreetype.dll.a;vfw32"
+# /mingw64/lib/oce/OCE-libraries-release.cmake:  IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE "TKernel;TKService;TKV3d;glu32;opengl32;libfreetype.dll.a;vfw32"
 
 find_package(SWIG REQUIRED)
 find_package(Ruby REQUIRED)

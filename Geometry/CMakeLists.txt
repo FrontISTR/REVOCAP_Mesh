@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.8)
 
 file(GLOB Geometry_SRCS *.cpp)
 file(GLOB Geometry_HEADERS *.h)

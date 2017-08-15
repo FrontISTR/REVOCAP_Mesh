@@ -12,7 +12,7 @@ int kmb::FrontISTRIO::loadMesh(std::string filename, MContainer* mesh)
 	if (mesh == NULL) {
 		return -1;
 	}
-	std::ifstream input(filename, std::ios_base::in);
+	std::ifstream input(filename.c_str(), std::ios_base::in);
 	if (input.fail()) {
 		return -1;
 	}
@@ -224,7 +224,7 @@ int kmb::FrontISTRIO::saveMesh(std::string filename, MContainer* mesh)
 	if (mesh == NULL) {
 		return -1;
 	}
-	std::ofstream output(filename, std::ios_base::out);
+	std::ofstream output(filename.c_str(), std::ios_base::out);
 	if (output.fail()) {
 		return -1;
 	}
@@ -247,7 +247,7 @@ int kmb::FrontISTRIO::saveMesh(std::string filename, MContainer* mesh)
 	kmb::bodyIdType bodyCount = static_cast<kmb::bodyIdType>(mesh->getBodyCount());
 	for (kmb::bodyIdType bodyId = 0; bodyId < bodyCount; bodyId++) {
 		typename MContainer::ElementContainer* body = mesh->getElementContainer(bodyId);
-		if (body == nullptr) continue;
+		if (body == NULL) continue;
 		size_t tetNum = body->getCountByType(kmb::kTetrahedron);
 		std::string name = body->getName();
 		if (tetNum > 0) {
