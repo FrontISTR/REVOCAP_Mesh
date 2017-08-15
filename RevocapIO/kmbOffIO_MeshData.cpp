@@ -11,7 +11,7 @@
 #      "Innovative General-Purpose Coupled Analysis System"            #
 #                                                                      #
 ----------------------------------------------------------------------*/
-#include "RevocapIO/kmbOffIO_Generics.h"
+#include "RevocapIO/kmbOffIO_impl.hpp"
 #include "MeshDB/kmbMeshData.h"
 
 template int kmb::OffIO::loadPatch<>(const char* filename, kmb::MeshData* patch);
