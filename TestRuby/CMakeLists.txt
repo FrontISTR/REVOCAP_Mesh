@@ -31,3 +31,11 @@ add_test(
  COMMAND ruby -I MeshDBRuby -I MeshGenRuby -I MeshGLRuby -I RevocapIORuby -I ShapeRuby -I ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/BoundaryExtract_Test.rb
  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
+
+if(WITH_OPENCASCADE)
+ add_test(
+  NAME LoadRevocapShape_TestRuby
+  COMMAND ruby -I MeshDBRuby -I MeshGenRuby -I MeshGLRuby -I RevocapIORuby -I ShapeRuby ${PROJECT_SOURCE_DIR}/LoadRevocapShape_Test.rb
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+ )
+endif()

@@ -11,8 +11,6 @@ puts RevocapMesh::VERSION
 puts RevocapMesh::COPYRIGHT
 puts RevocapMeshGen::VERSION
 puts RevocapMeshGen::COPYRIGHT
-puts RevocapShape::VERSION
-puts RevocapShape::COPYRIGHT
 puts RevocapGL::VERSION
 puts RevocapGL::COPYRIGHT
 puts RevocapIO::VERSION
@@ -26,16 +24,6 @@ class TestRevocapMesh < Test::Unit::TestCase
 	end
 
 	def teardown
-	end
-
-	def test_exist_shape
-		assert( RevocapShape )
-		assert_instance_of( Module, RevocapShape )
-		assert_instance_of( Class, RevocapShape::ShapeData )
-		assert_instance_of( Class, RevocapShape::PatchGenerator )
-		assert_instance_of( Class, RevocapShape::CADFileIO )
-		shape = RevocapShape::ShapeData.new
-		assert_instance_of( RevocapShape::ShapeData, shape )
 	end
 
 	def test_exist_mesh
