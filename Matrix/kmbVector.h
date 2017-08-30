@@ -44,6 +44,7 @@ public:
 	virtual void addRow(int i,double val) = 0;
 	virtual double get(int i,int j) const{ return getRow(i); }
 	virtual bool set(int i,int j,double v){ setRow(i,v); return true; }
+	virtual bool set(int i,double v){ setRow(i,v); return true; }
 	virtual bool add(int i,int j,double v){ addRow(i,v); return true; }
 	virtual bool zero(void){
 		int size = getSize();

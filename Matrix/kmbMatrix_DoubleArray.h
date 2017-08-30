@@ -83,6 +83,9 @@ private:
 	double *m;
 	int size;
 public:
+	typedef double Component;
+	typedef double Field;
+	static const double F_MAX;
 	ColumnVector_DoubleArray(void);
 	ColumnVector_DoubleArray(int size);
 	// コピーしてから使う

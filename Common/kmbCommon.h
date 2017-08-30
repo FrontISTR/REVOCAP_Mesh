@@ -37,6 +37,7 @@
 #elif defined isfinite
 /* 既に定義されている */
 #else
+#include <cfloat>
 #define isfinite(x) ((fabs(x) <= DBL_MAX))
 #endif
 
