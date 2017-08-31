@@ -185,6 +185,9 @@ class ColumnVector;
 
 class SquareMatrix : public Matrix
 {
+public:
+	typedef double Component;
+	typedef double Field;
 protected:
 	int mSize;
 public:
