@@ -49,7 +49,7 @@ include_directories(
 )
 
 if(WITH_OPENCASCADE)
-  find_package(freetype REQUIRED)
+  find_package(Freetype REQUIRED)
   link_directories($ENV{OCE_DIR})
   list(REMOVE_ITEM OCE_LIBRARIES "DRAWEXE")
   list(REMOVE_ITEM OCE_LIBRARIES "TKDraw")
