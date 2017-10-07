@@ -1,4 +1,4 @@
-﻿#include "RevocapIO/kmbTetMeshIO_impl.hpp"
+#include "RevocapIO/kmbTetMeshIO_impl.hpp"
 #include "MeshDB/kmbMeshData.h"
 
 template int kmb::TetMeshIO::loadMesh<kmb::MeshData>(std::string filename, kmb::MeshData* mesh);

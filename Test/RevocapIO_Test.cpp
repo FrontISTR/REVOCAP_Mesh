@@ -1,4 +1,4 @@
-﻿#define BOOST_TEST_MODULE RevocapIOTest
+#define BOOST_TEST_MODULE RevocapIOTest
 
 #ifdef BOOST_TEST_NO_LIB
 #include <boost/test/included/unit_test.hpp>

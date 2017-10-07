@@ -1,4 +1,4 @@
-﻿# REVOCAP_Refiner のインストール方法
+# REVOCAP_Refiner のインストール方法
 
 ## Requirements
 

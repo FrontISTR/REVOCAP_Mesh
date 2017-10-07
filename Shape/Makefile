@@ -1,4 +1,4 @@
-﻿#
+#
 # https://github.com/tpaviot/oce.git
 #
 

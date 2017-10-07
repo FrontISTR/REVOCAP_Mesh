@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshGL                                                  #
@@ -38,7 +38,7 @@
 #include <set>
 #include <cstdio>
 
-#ifdef WIN32
+#ifdef _WIN32
  #if _MSC_VER >= 1400
   #define sprintf sprintf_s
  #endif

@@ -1,4 +1,4 @@
-﻿#define BOOST_TEST_MODULE BucketTest
+#define BOOST_TEST_MODULE BucketTest
 
 #ifdef BOOST_TEST_NO_LIB
 #include <boost/test/included/unit_test.hpp>

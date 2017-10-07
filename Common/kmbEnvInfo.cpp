@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : EnvInfo                                                 #
@@ -90,7 +90,7 @@ kmb::EnvInfo::printSize(void)
 void kmb::EnvInfo::getCurrentTimeString(std::string& str)
 {
 	std::time_t t = std::time(NULL);
-#if defined WIN32 && _MSC_VER >= 1400
+#if defined _WIN32 && _MSC_VER >= 1400
 	std::tm tm;
 	localtime_s(&tm,&t);
 #else

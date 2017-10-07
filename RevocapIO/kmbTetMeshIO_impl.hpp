@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "RevocapIO/kmbTetMeshIO.h"
 #include "Geometry/kmbIdTypes.h"

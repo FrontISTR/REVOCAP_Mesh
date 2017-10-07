@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.8)
 
 # msys2 の場合、上の行を下の行に修正する必要がある
 # similar https://github.com/Alexpux/MINGW-packages/issues/1870

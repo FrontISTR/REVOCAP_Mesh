@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : FBORendering                                            #
@@ -16,7 +16,7 @@
 
 #pragma once
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 #pragma comment(lib,"opengl32.lib")
 #pragma comment(lib,"glu32.lib")

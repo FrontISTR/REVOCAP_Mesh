@@ -1,59 +1,59 @@
 ================================================================================
 
-  README of REVOCAP_PrePost (Mesh ˆ—•”)
+  README of REVOCAP_PrePost (Mesh å‡¦ç†éƒ¨)
 
   2011.03.23  version 1.5
 
   The University of Tokyo, CISS Project
-  ŽŸ¢‘ã‚à‚Ì‚Ã‚­‚èƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“ƒVƒXƒeƒ€
+  æ¬¡ä¸–ä»£ã‚‚ã®ã¥ãã‚Šã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚·ã‚¹ãƒ†ãƒ 
 
-  ‚¨–â‚¢‡‚í‚¹æ
+  ãŠå•ã„åˆã‚ã›å…ˆ
     e-mail:  software@ciss.iis.u-tokyo.ac.jp
 
 ================================================================================
 
-‚±‚Ìƒtƒ@ƒCƒ‹‚Í REVOCAP_Mesh-1.5.XX.tgz ‚ð“WŠJ‚µ‚Ä‚Å‚«‚éƒtƒHƒ‹ƒ_‚Æƒtƒ@ƒCƒ‹‚Ìà–¾‘‚Å‚·B
+ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¯ REVOCAP_Mesh-1.5.XX.tgz ã‚’å±•é–‹ã—ã¦ã§ãã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã¨ãƒ•ã‚¡ã‚¤ãƒ«ã®èª¬æ˜Žæ›¸ã§ã™ã€‚
 
-== ƒtƒHƒ‹ƒ_‚Ì\‘¢
+== ãƒ•ã‚©ãƒ«ãƒ€ã®æ§‹é€ 
 
- +- README.txt             ( ‚±‚Ìƒtƒ@ƒCƒ‹ )
- +- Geometry               ( Šô‰½ˆ——pƒ‰ƒCƒuƒ‰ƒŠ )
- +- Matrix                 ( s—ñˆ——pƒ‰ƒCƒuƒ‰ƒŠ )
- +- MeshDB                 ( ƒƒbƒVƒ…ˆ——pƒ‰ƒCƒuƒ‰ƒŠ )
- +- MeshDBRuby             ( MeshDB Ruby Šg’£ƒ‰ƒCƒuƒ‰ƒŠì¬ )
- +- MeshGL                 ( ƒƒbƒVƒ…•\Ž¦—pƒ‰ƒCƒuƒ‰ƒŠ )
- +- MeshGLRuby             ( MeshGL Ruby Šg’£ƒ‰ƒCƒuƒ‰ƒŠì¬ )
- +- MeshGen                ( ƒƒbƒVƒ…¶¬—pƒ‰ƒCƒuƒ‰ƒŠ )
- +- MeshGenRuby            ( MeshGen Ruby Šg’£ƒ‰ƒCƒuƒ‰ƒŠì¬ )
- +- RevocapIO              ( ƒƒbƒVƒ…“üo—Í—pƒ‰ƒCƒuƒ‰ƒŠ )
- +- RevocapIORuby          ( RevocapIO Ruby Šg’£ƒ‰ƒCƒuƒ‰ƒŠì¬ )
- +- Shape                  ( CAD Œ`óˆ——pƒ‰ƒCƒuƒ‰ƒŠ )
- +- ShapeRuby              ( Shape Ruby Šg’£ƒ‰ƒCƒuƒ‰ƒŠì¬ )
- +- Makefile               ( ŽÀs‘Ìì¬—p‚ÌƒƒCƒNƒtƒ@ƒCƒ‹ )
- +- MakefileRuby.in        ( Ruby Šg’£ƒ‰ƒCƒuƒ‰ƒŠì¬—p‚ÌƒƒCƒNƒtƒ@ƒCƒ‹ )
- +- OPTIONS                ( Makefile ‚ÌƒIƒvƒVƒ‡ƒ“Žw’è—p‚Ìƒtƒ@ƒCƒ‹ )
- +- VERSION                ( ƒo[ƒWƒ‡ƒ“‹LÚƒtƒ@ƒCƒ‹ )
- +- Documents              ( ƒhƒLƒ…ƒƒ“ƒg—Þ )
+ +- README.txt             ( ã“ã®ãƒ•ã‚¡ã‚¤ãƒ« )
+ +- Geometry               ( å¹¾ä½•å‡¦ç†ç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª )
+ +- Matrix                 ( è¡Œåˆ—å‡¦ç†ç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª )
+ +- MeshDB                 ( ãƒ¡ãƒƒã‚·ãƒ¥å‡¦ç†ç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª )
+ +- MeshDBRuby             ( MeshDB Ruby æ‹¡å¼µãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½œæˆ )
+ +- MeshGL                 ( ãƒ¡ãƒƒã‚·ãƒ¥è¡¨ç¤ºç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª )
+ +- MeshGLRuby             ( MeshGL Ruby æ‹¡å¼µãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½œæˆ )
+ +- MeshGen                ( ãƒ¡ãƒƒã‚·ãƒ¥ç”Ÿæˆç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª )
+ +- MeshGenRuby            ( MeshGen Ruby æ‹¡å¼µãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½œæˆ )
+ +- RevocapIO              ( ãƒ¡ãƒƒã‚·ãƒ¥å…¥å‡ºåŠ›ç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª )
+ +- RevocapIORuby          ( RevocapIO Ruby æ‹¡å¼µãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½œæˆ )
+ +- Shape                  ( CAD å½¢çŠ¶å‡¦ç†ç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª )
+ +- ShapeRuby              ( Shape Ruby æ‹¡å¼µãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½œæˆ )
+ +- Makefile               ( å®Ÿè¡Œä½“ä½œæˆç”¨ã®ãƒ¡ã‚¤ã‚¯ãƒ•ã‚¡ã‚¤ãƒ« )
+ +- MakefileRuby.in        ( Ruby æ‹¡å¼µãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½œæˆç”¨ã®ãƒ¡ã‚¤ã‚¯ãƒ•ã‚¡ã‚¤ãƒ« )
+ +- OPTIONS                ( Makefile ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³æŒ‡å®šç”¨ã®ãƒ•ã‚¡ã‚¤ãƒ« )
+ +- VERSION                ( ãƒãƒ¼ã‚¸ãƒ§ãƒ³è¨˜è¼‰ãƒ•ã‚¡ã‚¤ãƒ« )
+ +- Documents              ( ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆé¡ž )
 
-‚²Žg—p‚Ì‘O‚ÉAŽg—p‹–‘øðŒ‚ÉŠÖ‚·‚é•¶‘
-Documents/CISS_lic_agree2011_ja.pdf (‰pŒê”ÅDocuments/CISS_lic_agree2011_en.pdf)
-‚Ì“à—e‚ð‚²Šm”F‚­‚¾‚³‚¢B
+ã”ä½¿ç”¨ã®å‰ã«ã€ä½¿ç”¨è¨±è«¾æ¡ä»¶ã«é–¢ã™ã‚‹æ–‡æ›¸
+Documents/CISS_lic_agree2011_ja.pdf (è‹±èªžç‰ˆDocuments/CISS_lic_agree2011_en.pdf)
+ã®å†…å®¹ã‚’ã”ç¢ºèªãã ã•ã„ã€‚
 
-Linux ŠÂ‹«‚Åƒ\[ƒX‚©‚çƒrƒ‹ƒh‚·‚éê‡
+Linux ç’°å¢ƒã§ã‚½ãƒ¼ã‚¹ã‹ã‚‰ãƒ“ãƒ«ãƒ‰ã™ã‚‹å ´åˆ
 
  * g++ gcc
- * Ruby (ruby,ruby-dev,rubygems‚È‚Çƒrƒ‹ƒh‚É•K—v‚ÈƒpƒbƒP[ƒW)
+ * Ruby (ruby,ruby-dev,rubygemsãªã©ãƒ“ãƒ«ãƒ‰ã«å¿…è¦ãªãƒ‘ãƒƒã‚±ãƒ¼ã‚¸)
  * OpenCASCADE
  * swig
 
-‚ð‚ ‚ç‚©‚¶‚ßƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚¨‚¢‚Ä‚­‚¾‚³‚¢BOPTIONS ƒtƒ@ƒCƒ‹‚ÉƒRƒ“ƒpƒCƒ‰“™‚Ì
-ƒIƒvƒVƒ‡ƒ“Ý’è‚Ìî•ñ‚ð‹L“ü‚µ‚Ä‚­‚¾‚³‚¢B
+ã‚’ã‚ã‚‰ã‹ã˜ã‚ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¦ãŠã„ã¦ãã ã•ã„ã€‚OPTIONS ãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚³ãƒ³ãƒ‘ã‚¤ãƒ©ç­‰ã®
+ã‚ªãƒ—ã‚·ãƒ§ãƒ³è¨­å®šã®æƒ…å ±ã‚’è¨˜å…¥ã—ã¦ãã ã•ã„ã€‚
 
-REVOCAP_PrePost ‚ÅŽg‚¤ê‡
+REVOCAP_PrePost ã§ä½¿ã†å ´åˆ
 
-make ƒRƒ}ƒ“ƒh‚Å RubyExtension ƒ^[ƒQƒbƒg‚ðŽÀs‚µ‚Ä‚­‚¾‚³‚¢B
+make ã‚³ãƒžãƒ³ãƒ‰ã§ RubyExtension ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’å®Ÿè¡Œã—ã¦ãã ã•ã„ã€‚
 RevocapMesh.so RevocapGL.so RevocapMeshGen.so RevocapIO.so RevocapShape.so
-‚ª¶¬‚Å‚«‚½‚çAREVOCAP_PrePost ‚Ì lib/{RUBY_PLATFORM} ƒfƒBƒŒƒNƒgƒŠ‚ÉƒRƒs[‚µ‚Ä‚­‚¾‚³‚¢B
-RUBY_PLATFORM ‚Í i486-linux i386-mswin32 ‚È‚Ç‚Ì Ruby ‚ÌŽÀsŠÂ‹«‚ð•\‚·•¶Žš—ñ‚Å‚·B
+ãŒç”Ÿæˆã§ããŸã‚‰ã€REVOCAP_PrePost ã® lib/{RUBY_PLATFORM} ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«ã‚³ãƒ”ãƒ¼ã—ã¦ãã ã•ã„ã€‚
+RUBY_PLATFORM ã¯ i486-linux i386-mswin32 ãªã©ã® Ruby ã®å®Ÿè¡Œç’°å¢ƒã‚’è¡¨ã™æ–‡å­—åˆ—ã§ã™ã€‚
 
-Ú×‚Íƒ}ƒjƒ…ƒAƒ‹‚ð‚²——‚­‚¾‚³‚¢B
+è©³ç´°ã¯ãƒžãƒ‹ãƒ¥ã‚¢ãƒ«ã‚’ã”è¦§ãã ã•ã„ã€‚

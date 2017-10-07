@@ -17,7 +17,7 @@
 
 namespace kmb {
 
-	// ‡˜‚Í Row Major
+	// é †åºã¯ Row Major
 	// i*colSize+j
 	class MatrixIndex {
 	public:

@@ -28,7 +28,7 @@ template <typename T1, typename T2> bool solveByGauss(const kmb::SquareMatrix& a
 		}
 	}
 	else {
-		// Á‹–@
+		// æ¶ˆå»æ³•
 		kmb::Matrix_DoubleArray mat(size, size + 1);
 		for (int j = 0; j<size; ++j) {
 			for (int i = 0; i<size; ++i) {
@@ -40,7 +40,7 @@ template <typename T1, typename T2> bool solveByGauss(const kmb::SquareMatrix& a
 		}
 
 		for (int j = 0; j<size; ++j) {
-			// j ‚©‚ç size-1 ‚Åâ‘Î’lÅ‘å‚ğ’T‚·
+			// j ã‹ã‚‰ size-1 ã§çµ¶å¯¾å€¤æœ€å¤§ã‚’æ¢ã™
 			int ind = -1;
 			double m = 0.0;
 			for (int i = j; i<size; ++i) {

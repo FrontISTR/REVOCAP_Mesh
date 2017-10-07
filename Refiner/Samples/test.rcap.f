@@ -1,4 +1,4 @@
-﻿      PROGRAM XXX
+      PROGRAM XXX
 	  USE RcapRefiner
       IMPLICIT NONE
 
