@@ -119,6 +119,7 @@ public:
 	static double distanceSq(const Point3D& a,const Point3D& b);
 	// 四面体の体積
 	static double volume(const Point3D& a,const Point3D& b,const Point3D &c,const Point3D &d);
+	static double triple(const Point3D& a, const Point3D& b, const Point3D &c, const Point3D &d);
 	// abc の向きで正かどうか
 	static bool positive(const Point3D& a,const Point3D& b,const Point3D &c,const Point3D &x);
 	// 三角形の面積
@@ -135,6 +136,8 @@ public:
 	static double angle(const Point3D &a,const Point3D &b,const Point3D &c);
 	static double cos(const Point3D &a,const Point3D &b,const Point3D &c);
 	static double sin(const Point3D &a,const Point3D &b,const Point3D &c);
+	// 点 p0 を中心とする p1 p2 p3 のなす立体角
+	static double solidAngle(const Point3D &p0, const Point3D &p1, const Point3D &p2, const Point3D &p3);
 	// ab と ac の内積
 	static double inner(const Point3D &a, const Point3D &b, const Point3D &c);
 	// 体積座標

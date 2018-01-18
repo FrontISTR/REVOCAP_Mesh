@@ -292,11 +292,15 @@ kmb::Point3D::distanceSq(const Point3D& a,const Point3D& b)
 double
 kmb::Point3D::volume(const kmb::Point3D& a,const kmb::Point3D& b,const kmb::Point3D &c,const kmb::Point3D &d)
 {
-	kmb::Vector3D ad(d,a);
-	kmb::Vector3D bd(d,b);
-	kmb::Vector3D cd(d,c);
+	return kmb::Point3D::triple(a, b, c, d) / 6.0;
+}
 
-	return kmb::Vector3D::triple(ad,bd,cd) / 6.0;
+double kmb::Point3D::triple(const kmb::Point3D& a, const kmb::Point3D& b, const kmb::Point3D &c, const kmb::Point3D &d)
+{
+	kmb::Vector3D ad(d, a);
+	kmb::Vector3D bd(d, b);
+	kmb::Vector3D cd(d, c);
+	return kmb::Vector3D::triple(ad, bd, cd);
 }
 
 // 表裏判定（遅いかも）
@@ -411,6 +415,18 @@ kmb::Point3D::sin(const Point3D &a,const Point3D &b,const Point3D &c)
 	kmb::Vector3D v1(b,a);
 	kmb::Vector3D v2(c,a);
 	return kmb::Vector3D::sin(v1,v2);
+}
+
+double kmb::Point3D::solidAngle(const kmb::Point3D &p0, const kmb::Point3D &p1, const kmb::Point3D &p2, const kmb::Point3D &p3)
+{
+	double t = kmb::Point3D::triple(p0, p1, p2, p3);
+	double d1 = kmb::Point3D::distance(p0, p1);
+	double d2 = kmb::Point3D::distance(p0, p2);
+	double d3 = kmb::Point3D::distance(p0, p3);
+	double c12 = kmb::Point3D::inner(p0, p1, p2);
+	double c23 = kmb::Point3D::inner(p0, p2, p3);
+	double c31 = kmb::Point3D::inner(p0, p3, p1);
+	return 2.0 * std::atan2( t, d1*d2*d3 + c12*d3 + c23*d1 + c31*d2 );
 }
 
 double kmb::Point3D::inner(const Point3D &a, const Point3D &b, const Point3D &c)
