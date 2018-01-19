@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <cstring>
 
 kmb::StereolithographyIO::fileType kmb::StereolithographyIO::checkFormat(std::string filename)
 {
