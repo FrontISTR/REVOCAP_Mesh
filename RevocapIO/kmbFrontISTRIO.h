@@ -472,7 +472,7 @@ public:
 	template<typename MContainer>
 	int loadMesh(std::string filename, MContainer* mesh);
 	template<typename MContainer>
-	int saveMesh(std::string filename, MContainer* mesh);
+	int saveMesh(std::string filename, const MContainer* mesh);
 protected:
 	void count(std::string filename);
 	void writeDummyMaterial(std::ostream& output);

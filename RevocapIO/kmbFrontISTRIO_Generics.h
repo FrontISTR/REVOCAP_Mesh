@@ -219,7 +219,7 @@ int kmb::FrontISTRIO::loadMesh(std::string filename, MContainer* mesh)
 }
 
 template<typename MContainer>
-int kmb::FrontISTRIO::saveMesh(std::string filename, MContainer* mesh)
+int kmb::FrontISTRIO::saveMesh(std::string filename, const MContainer* mesh)
 {
 	if (mesh == NULL) {
 		return -1;
@@ -246,7 +246,7 @@ int kmb::FrontISTRIO::saveMesh(std::string filename, MContainer* mesh)
 	}
 	kmb::bodyIdType bodyCount = static_cast<kmb::bodyIdType>(mesh->getBodyCount());
 	for (kmb::bodyIdType bodyId = 0; bodyId < bodyCount; bodyId++) {
-		typename MContainer::ElementContainer* body = mesh->getElementContainer(bodyId);
+		const typename MContainer::ElementContainer* body = mesh->getElementContainer(bodyId);
 		if (body == NULL) continue;
 		size_t tetNum = body->getCountByType(kmb::kTetrahedron);
 		std::string name = body->getName();
@@ -272,7 +272,7 @@ int kmb::FrontISTRIO::saveMesh(std::string filename, MContainer* mesh)
 	while (dIter != names.end()) {
 		std::string name = *dIter;
 		std::cout << name << std::endl;
-		typename MContainer::DataContainer* data = mesh->getData(name);
+		const typename MContainer::DataContainer* data = mesh->getData(name);
 		if (data) {
 			std::string tag = data->getTag();
 			if (tag == "BOUNDARY" ||
