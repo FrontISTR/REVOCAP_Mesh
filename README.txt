@@ -1,59 +1,50 @@
 ================================================================================
 
-  README of REVOCAP_PrePost (Mesh 処理部)
+  README of REVOCAP_Refiner
 
-  2011.03.23  version 1.5
+  2011.03.23  version 1.0
 
   The University of Tokyo, CISS Project
-  次世代ものづくりシミュレーションシステム
+  "次世代ものづくりシミュレーションシステム" Group.
 
   お問い合わせ先
     e-mail:  software@ciss.iis.u-tokyo.ac.jp
 
 ================================================================================
 
-このファイルは REVOCAP_Mesh-1.5.XX.tgz を展開してできるフォルダとファイルの説明書です。
+このファイルは REVOCAP_Refiner-1.0.XX.tgz を展開してできるフォルダとファイルの説明書です。
 
 == フォルダの構造
 
- +- README.txt             ( このファイル )
+ +- README_Refiner.txt     ( このファイル )
  +- Geometry               ( 幾何処理用ライブラリ )
  +- Matrix                 ( 行列処理用ライブラリ )
  +- MeshDB                 ( メッシュ処理用ライブラリ )
- +- MeshDBRuby             ( MeshDB Ruby 拡張ライブラリ作成 )
- +- MeshGL                 ( メッシュ表示用ライブラリ )
- +- MeshGLRuby             ( MeshGL Ruby 拡張ライブラリ作成 )
  +- MeshGen                ( メッシュ生成用ライブラリ )
- +- MeshGenRuby            ( MeshGen Ruby 拡張ライブラリ作成 )
- +- RevocapIO              ( メッシュ入出力用ライブラリ )
- +- RevocapIORuby          ( RevocapIO Ruby 拡張ライブラリ作成 )
  +- Shape                  ( CAD 形状処理用ライブラリ )
- +- ShapeRuby              ( Shape Ruby 拡張ライブラリ作成 )
+ +- Refiner                ( メッシュ細分化モジュール本体 )
  +- Makefile               ( 実行体作成用のメイクファイル )
- +- MakefileRuby.in        ( Ruby 拡張ライブラリ作成用のメイクファイル )
+ +- MakefileRefiner.in     ( Makefile の Refiner 用の設定ファイル )
  +- OPTIONS                ( Makefile のオプション指定用のファイル )
  +- VERSION                ( バージョン記載ファイル )
  +- Documents              ( ドキュメント類 )
+
+REVOCAP_Refiner のチュートリアルとマニュアルは Documents フォルダの中に入っています。
 
 ご使用の前に、使用許諾条件に関する文書
 Documents/CISS_lic_agree2011_ja.pdf (英語版Documents/CISS_lic_agree2011_en.pdf)
 の内容をご確認ください。
 
-Linux 環境でソースからビルドする場合
+REVOCAP_Refiner は幾何処理、メッシュ処理、メッシュ生成、メッシュ入出力ライブラリは
+REVOCAP_PrePost と共通のものを使っています。
 
- * g++ gcc
- * Ruby (ruby,ruby-dev,rubygemsなどビルドに必要なパッケージ)
- * OpenCASCADE
- * swig
+Makefile は REVOCAP_PrePost と共通になっているので注意してください。
 
-をあらかじめインストールしておいてください。OPTIONS ファイルにコンパイラ等の
-オプション設定の情報を記入してください。
+ライブラリの作り方とテスト
 
-REVOCAP_PrePost で使う場合
+(1) OPTIONS ファイルを見て、コンパイラやマクロ変数を編集してください
+(2) make Refiner          細分化モジュールをメイクします
+(3) make RefinerSampleC   C言語で書かれたサンプルプログラムをメイクします
+(3) make RefinerSampleF   Fortran言語で書かれたサンプルプログラムをメイクします
+(4) make RefinerClean     生成されたファイルを削除する
 
-make コマンドで RubyExtension ターゲットを実行してください。
-RevocapMesh.so RevocapGL.so RevocapMeshGen.so RevocapIO.so RevocapShape.so
-が生成できたら、REVOCAP_PrePost の lib/{RUBY_PLATFORM} ディレクトリにコピーしてください。
-RUBY_PLATFORM は i486-linux i386-mswin32 などの Ruby の実行環境を表す文字列です。
-
-詳細はマニュアルをご覧ください。
