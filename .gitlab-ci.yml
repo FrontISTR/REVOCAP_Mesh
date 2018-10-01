@@ -6,7 +6,8 @@ image: gcc
 
 build:
   stage: build
-  only: Refiner
+  only:
+    - Refiner
   before_script: 
     - apt update && apt -y install make 
   script: 
