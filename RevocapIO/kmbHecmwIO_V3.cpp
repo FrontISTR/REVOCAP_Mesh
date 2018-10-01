@@ -24,6 +24,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <cstdlib>
 
 #ifdef WIN32
  #if _MSC_VER >= 1400
