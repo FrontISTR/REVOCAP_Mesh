@@ -27,9 +27,6 @@
 namespace kmb{
 
 class MeshData;
-#ifndef REVOCAP_SUPPORT_RUBY
-class StructuredGrid;
-#endif
 
 class MicroAVSIO
 {
@@ -64,18 +61,10 @@ protected:
 	int readData(std::ifstream &input,kmb::MeshData* mesh);
 	// データの名前を抽出する
 	void getDataName(std::string &line);
-#ifndef REVOCAP_SUPPORT_RUBY
-	// Field データ参照型
-	int readCoord(int n,std::string filename,std::string filetype,int skip,int offset,int stride,kmb::StructuredGrid* grid);
-	int readVariable(std::string label,int n,std::string filename,std::string filetype,int skip,int offset,int stride,kmb::StructuredGrid* grid);
-#endif
 public:
 	MicroAVSIO(void);
 	virtual ~MicroAVSIO(void);
 	int loadFromFile(const char* filename,kmb::MeshData* mesh);
-#ifndef REVOCAP_SUPPORT_RUBY
-	int loadFromFile(const char* filename,kmb::StructuredGrid* grid);
-#endif
 	// grid は読まずに data だけ読む
 	int loadPostFromFile(const char* filename,kmb::MeshData* mesh);
 	int saveToFile(const char* filename,kmb::MeshData* mesh);

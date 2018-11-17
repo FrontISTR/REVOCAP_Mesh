@@ -325,7 +325,7 @@ public:
 	long getIValue(void) const{ return ival; };
 	void setValue(double u,double v){ this->value[0] = u; this->value[1] = v; }
 	bool setValue(double u,int i){ this->value[i] = u; return true; }
-	void setIValue(long id){ this->ival = ival; }
+	void setIValue(long id){ this->ival = id; }
 	virtual bool getValue(double* v) const {
 		v[0] = value[0];
 		v[1] = value[1];
