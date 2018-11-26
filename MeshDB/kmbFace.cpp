@@ -105,7 +105,7 @@ kmb::Face::createElement(const kmb::ElementBase &elem) const
 		if( clone ){
 			return clone;
 		}else{
-			delete cell;
+			delete[] cell;
 		}
 		return NULL;
 	}else if( this->localFaceId < elem.getBoundaryCount() ){

@@ -72,7 +72,7 @@ cloneReverseBody(kmb::bodyIdType bodyID)
 			++eIter;
 		}
 		this->endElement();
-		delete cells;
+		delete[] cells;
 	}
 	return id;
 }
@@ -111,7 +111,7 @@ kmb::MeshDB::cloneBodyWithNode(bodyIdType bodyID)
 			++eIter;
 		}
 		this->endElement();
-		delete cells;
+		delete[] cells;
 	}
 	return id;
 }

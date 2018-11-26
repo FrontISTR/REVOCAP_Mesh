@@ -83,6 +83,7 @@ private:
 	double *m;
 	int size;
 public:
+	ColumnVector_DoubleArray(void);
 	ColumnVector_DoubleArray(int size);
 	// コピーしてから使う
 	ColumnVector_DoubleArray(int size,double* ary);
@@ -111,6 +112,7 @@ private:
 	double *m;
 	int size;
 public:
+	RowVector_DoubleArray(void);
 	RowVector_DoubleArray(int size);
 	// コピーしてから使う
 	RowVector_DoubleArray(int size,double* ary);
