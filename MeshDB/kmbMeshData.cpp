@@ -741,6 +741,22 @@ kmb::MeshData::getBodyIdByName(const char* name) const
 	return kmb::Body::nullBodyId;
 }
 
+std::string kmb::MeshData::getMaterialName(kmb::bodyIdType bodyId) const
+{
+	std::map<kmb::bodyIdType, std::string>::const_iterator i = materialNames.find(bodyId);
+	if (i != materialNames.end()) {
+		return i->second;
+	}else {
+		return "";
+	}
+}
+
+void kmb::MeshData::setMaterialName(kmb::bodyIdType bodyId, std::string name)
+{
+	materialNames.insert(std::make_pair(bodyId, name));
+}
+
+
 const char*
 kmb::MeshData::getElementContainerType(bodyIdType bodyId) const
 {
@@ -1517,6 +1533,25 @@ kmb::MeshData::getPhysicalValueAtId(const char* name,kmb::Face f,double *val,con
 	}else{
 		return false;
 	}
+}
+
+double kmb::MeshData::getValue(std::string name, std::string key) const
+{
+	double v = 0.0;
+	const kmb::DataBindings* data = this->getData(name);
+	if (data != NULL) {
+		data->getValue(key, &v);
+	}
+	return v;
+}
+
+bool kmb::MeshData::setValue(std::string name, std::string key, double v)
+{
+	kmb::DataBindings* data = this->getData(name);
+	if (data == NULL) {
+		return false;
+	}
+	return data->setValue(key, &v);
 }
 
 kmb::bodyIdType

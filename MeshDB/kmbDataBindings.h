@@ -188,6 +188,10 @@ public:
 	virtual bool getPhysicalValue(kmb::Face f, double *value) const;
 	virtual bool getPhysicalValue(kmb::idType id, long *value) const;
 	virtual bool getPhysicalValue(kmb::Face f, long *value) const;
+
+	// グローバルデータ
+	virtual bool setValue(std::string key, double* v) { return false; };
+	virtual bool getValue(std::string key, double* v) const { return false; };
 //------------------ イテレータ -------------------
 public:
 	// 実態
@@ -299,6 +303,7 @@ public:
 protected:
 	// 定数値を与える
 	kmb::PhysicalValue* value;
+	std::map<std::string, double> values;
 public:
 	virtual bool setPhysicalValue(kmb::PhysicalValue* val){
 		if(val->getType() == type){
@@ -323,6 +328,17 @@ public:
 		}else{
 			return 0;
 		}
+	};
+	virtual bool setValue(std::string key, double* v) {
+		double val = *v;
+		values.insert(std::make_pair(key, val));
+		return true;
+	};
+	virtual bool getValue(std::string key, double* v) const {
+		std::map<std::string, double>::const_iterator iter = values.find(key);
+		if (iter == values.end()) { return false; }
+		*v = iter->second;
+		return true;
 	};
 public:
 	virtual iterator begin(void){

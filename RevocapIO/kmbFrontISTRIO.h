@@ -473,9 +473,13 @@ public:
 	int loadMesh(std::string filename, MContainer* mesh);
 	template<typename MContainer>
 	int saveMesh(std::string filename, const MContainer* mesh);
+	kmb::elementIdType getOffsetElementId(void) const;
+	void setOffsetElementId(kmb::elementIdType offset);
 protected:
 	void count(std::string filename);
-	void writeDummyMaterial(std::ostream& output);
+	template<typename MContainer>
+	void writeMaterial(std::ostream& output, const MContainer* mesh, std::string mat);
+	void writeSolidSection(std::ostream& output, std::string egrp, std::string mat);
 	static kmb::elementType getRevocapType(int etypeHec);
 };
 

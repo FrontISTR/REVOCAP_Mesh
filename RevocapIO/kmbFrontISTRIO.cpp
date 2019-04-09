@@ -444,6 +444,17 @@ kmb::FrontISTRIO::FrontISTRIO()
 {
 }
 
+kmb::elementIdType kmb::FrontISTRIO::getOffsetElementId(void) const
+{
+	return offsetElementId;
+}
+
+void kmb::FrontISTRIO::setOffsetElementId(kmb::elementIdType offset)
+{
+	offsetElementId = offset;
+}
+
+
 int kmb::FrontISTRIO::saveCntFile(const char* filename,const kmb::FrontISTRData* fdata,const kmb::MeshData* mesh)
 {
 	std::ofstream output(filename);
@@ -697,11 +708,9 @@ kmb::elementType kmb::FrontISTRIO::getRevocapType(int etype)
 	return kmb::UNKNOWNTYPE;
 }
 
-void kmb::FrontISTRIO::writeDummyMaterial(std::ostream& output)
+void kmb::FrontISTRIO::writeSolidSection(std::ostream& output, std::string egrp, std::string mat)
 {
-	output << "!MATERIAL, NAME=MAT, ITEM=1" << std::endl;
-	output << "!ITEM=1, SUBITEM=2" << std::endl;
-	output << " 0.0, 0.0" << std::endl;
+	output << "!SECTION, TYPE=SOLID, EGRP=" << egrp << ", MATERIAL=" << mat << std::endl;
 }
 
 

@@ -51,6 +51,8 @@ protected:
 	elementIdType maxElementId;
 	// coordinate system
 	kmb::Matrix4x4* coordMatrix;
+	// material name
+	std::map<kmb::bodyIdType, std::string> materialNames;
 public:
 	MeshData(void);
 	virtual ~MeshData(void);
@@ -177,6 +179,8 @@ public:
 	virtual void setBodyName(bodyIdType bodyId, const char* name);
 	virtual void setBodyName(bodyIdType bodyId, std::string name);
 	kmb::bodyIdType getBodyIdByName(const char* name) const;
+	std::string getMaterialName(kmb::bodyIdType bodyId) const;
+	void setMaterialName(kmb::bodyIdType bodyId, std::string name);
 	// コンテナタイプ
 	const char* getElementContainerType(bodyIdType bodyId) const;
 	// 外部メッシュから要素グループの追加
@@ -265,6 +269,9 @@ public:
 	// 登録されているデータに ElementGroup / ElementVariable があれば、
 	// orgElementId のデータを elementId が引き継ぐ
 	void deriveTargetData(kmb::elementIdType elementId,kmb::elementIdType orgElementId);
+	// Global Hash
+	double getValue(std::string name, std::string key) const;
+	bool setValue(std::string name, std::string key, double v);
 
 	// 変換系：データからボディを生成して登録
 	kmb::bodyIdType faceGroupToBody(const char* faceG,const char* stype=NULL);

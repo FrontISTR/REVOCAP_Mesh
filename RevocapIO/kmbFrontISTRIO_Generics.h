@@ -2,6 +2,7 @@
 
 #include "RevocapIO/kmbFrontISTRIO.h"
 #include "RevocapIO/kmbRevocapIOUtils.h"
+#include "MeshDB/kmbFace.h"
 #include <fstream>
 #include <sstream>
 #include <iomanip>
@@ -245,11 +246,15 @@ int kmb::FrontISTRIO::saveMesh(std::string filename, const MContainer* mesh)
 		++nIter;
 	}
 	kmb::bodyIdType bodyCount = static_cast<kmb::bodyIdType>(mesh->getBodyCount());
+	std::cout << "Body Count = " << bodyCount << std::endl;
 	for (kmb::bodyIdType bodyId = 0; bodyId < bodyCount; bodyId++) {
 		const typename MContainer::ElementContainer* body = mesh->getElementContainer(bodyId);
 		if (body == NULL) continue;
-		size_t tetNum = body->getCountByType(kmb::kTetrahedron);
 		std::string name = body->getName();
+		std::cout << "Name = " << name << std::endl;
+		std::cout << "Element Count = " << body->getCount() << std::endl;
+		size_t tetNum = body->getCountByType(kmb::kTetrahedron);
+		std::cout << "tet = " << tetNum << std::endl;
 		if (tetNum > 0) {
 			output << "!ELEMENT, TYPE=341, EGRP=" << name << std::endl;
 			typename MContainer::elementIterator eIter = body->begin();
@@ -265,8 +270,218 @@ int kmb::FrontISTRIO::saveMesh(std::string filename, const MContainer* mesh)
 				++eIter;
 			}
 		}
+		size_t tet2Num = body->getCountByType(kmb::kTetrahedron2);
+		std::cout << "tet2 = " << tet2Num << std::endl;
+		if (tet2Num > 0) {
+			output << "!ELEMENT, TYPE=342, EGRP=" << name << std::endl;
+			typename MContainer::elementIterator eIter = body->begin();
+			typename MContainer::elementIterator eIterEnd = body->end();
+			while (eIter != eIterEnd) {
+				if (eIter.getType() == kmb::kTetrahedron2) {
+					output << std::setw(9) << eIter.getId() + offsetElementId << ", " <<
+						eIter[0] + offsetNodeId << ", " <<
+						eIter[1] + offsetNodeId << ", " <<
+						eIter[2] + offsetNodeId << ", " <<
+						eIter[3] + offsetNodeId << ", " <<
+						eIter[4] + offsetNodeId << ", " <<
+						eIter[5] + offsetNodeId << ", " <<
+						eIter[6] + offsetNodeId << ", " <<
+						eIter[7] + offsetNodeId << ", " <<
+						eIter[8] + offsetNodeId << ", " <<
+						eIter[9] + offsetNodeId << std::endl;
+				}
+				++eIter;
+			}
+		}
+		size_t hexaNum = body->getCountByType(kmb::kHexahedron);
+		std::cout << "hexa = " << hexaNum << std::endl;
+		if (hexaNum > 0) {
+			output << "!ELEMENT, TYPE=361, EGRP=" << name << std::endl;
+			typename MContainer::elementIterator eIter = body->begin();
+			typename MContainer::elementIterator eIterEnd = body->end();
+			while (eIter != eIterEnd) {
+				if (eIter.getType() == kmb::kHexahedron) {
+					output << std::setw(9) << eIter.getId() + offsetElementId << ", " <<
+						eIter[0] + offsetNodeId << ", " <<
+						eIter[1] + offsetNodeId << ", " <<
+						eIter[2] + offsetNodeId << ", " <<
+						eIter[3] + offsetNodeId << ", " <<
+						eIter[4] + offsetNodeId << ", " <<
+						eIter[5] + offsetNodeId << ", " <<
+						eIter[6] + offsetNodeId << ", " <<
+						eIter[7] + offsetNodeId << std::endl;
+				}
+				++eIter;
+			}
+		}
+		size_t hexa2Num = body->getCountByType(kmb::kHexahedron2);
+		std::cout << "hexa2 = " << hexa2Num << std::endl;
+		if (hexa2Num > 0) {
+			output << "!ELEMENT, TYPE=362, EGRP=" << name << std::endl;
+			typename MContainer::elementIterator eIter = body->begin();
+			typename MContainer::elementIterator eIterEnd = body->end();
+			while (eIter != eIterEnd) {
+				if (eIter.getType() == kmb::kHexahedron2) {
+					output << std::setw(9) << eIter.getId() + offsetElementId << ", " <<
+						eIter[0] + offsetNodeId << ", " <<
+						eIter[1] + offsetNodeId << ", " <<
+						eIter[2] + offsetNodeId << ", " <<
+						eIter[3] + offsetNodeId << ", " <<
+						eIter[4] + offsetNodeId << ", " <<
+						eIter[5] + offsetNodeId << ", " <<
+						eIter[6] + offsetNodeId << ", " <<
+						eIter[7] + offsetNodeId << ", " <<
+						eIter[8] + offsetNodeId << ", " <<
+						eIter[9] + offsetNodeId << ", " <<
+						eIter[10] + offsetNodeId << ", " <<
+						eIter[11] + offsetNodeId << ", " <<
+						eIter[12] + offsetNodeId << ", " <<
+						eIter[13] + offsetNodeId << ", " <<
+						eIter[14] + offsetNodeId << ", " <<
+						eIter[15] + offsetNodeId << ", " <<
+						eIter[16] + offsetNodeId << ", " <<
+						eIter[17] + offsetNodeId << ", " <<
+						eIter[18] + offsetNodeId << ", " <<
+						eIter[19] + offsetNodeId << std::endl;
+				}
+				++eIter;
+			}
+		}
+		size_t prismNum = body->getCountByType(kmb::kPrism);
+		std::cout << "prism = " << prismNum << std::endl;
+		if (prismNum > 0) {
+			output << "!ELEMENT, TYPE=351, EGRP=" << name << std::endl;
+			typename MContainer::elementIterator eIter = body->begin();
+			typename MContainer::elementIterator eIterEnd = body->end();
+			while (eIter != eIterEnd) {
+				if (eIter.getType() == kmb::kPrism) {
+					output << std::setw(9) << eIter.getId() + offsetElementId << ", " <<
+						eIter[0] + offsetNodeId << ", " <<
+						eIter[1] + offsetNodeId << ", " <<
+						eIter[2] + offsetNodeId << ", " <<
+						eIter[3] + offsetNodeId << ", " <<
+						eIter[4] + offsetNodeId << ", " <<
+						eIter[5] + offsetNodeId << std::endl;
+				}
+				++eIter;
+			}
+		}
+		size_t prism2Num = body->getCountByType(kmb::kPrism2);
+		std::cout << "prism2 = " << prism2Num << std::endl;
+		if (prism2Num > 0) {
+			output << "!ELEMENT, TYPE=352, EGRP=" << name << std::endl;
+			typename MContainer::elementIterator eIter = body->begin();
+			typename MContainer::elementIterator eIterEnd = body->end();
+			while (eIter != eIterEnd) {
+				if (eIter.getType() == kmb::kPrism2) {
+					output << std::setw(9) << eIter.getId() + offsetElementId << ", " <<
+						eIter[0] + offsetNodeId << ", " <<
+						eIter[1] + offsetNodeId << ", " <<
+						eIter[2] + offsetNodeId << ", " <<
+						eIter[3] + offsetNodeId << ", " <<
+						eIter[4] + offsetNodeId << ", " <<
+						eIter[5] + offsetNodeId << ", " <<
+						eIter[6] + offsetNodeId << ", " <<
+						eIter[7] + offsetNodeId << ", " <<
+						eIter[8] + offsetNodeId << ", " <<
+						eIter[9] + offsetNodeId << ", " <<
+						eIter[10] + offsetNodeId << ", " <<
+						eIter[11] + offsetNodeId << ", " <<
+						eIter[12] + offsetNodeId << ", " <<
+						eIter[13] + offsetNodeId << ", " <<
+						eIter[14] + offsetNodeId << std::endl;
+				}
+				++eIter;
+			}
+		}
+		size_t pyramidNum = body->getCountByType(kmb::kPyramid);
+		std::cout << "pyramid = " << pyramidNum << std::endl;
+		size_t pyramid2Num = body->getCountByType(kmb::kPyramid2);
+		std::cout << "pyramid2 = " << pyramid2Num << std::endl;
+		size_t triNum = body->getCountByType(kmb::kTriangle);
+		std::cout << "tri = " << triNum << std::endl;
+		if (triNum > 0) {
+			output << "!ELEMENT, TYPE=231, EGRP=" << name << std::endl;
+			typename MContainer::elementIterator eIter = body->begin();
+			typename MContainer::elementIterator eIterEnd = body->end();
+			while (eIter != eIterEnd) {
+				if (eIter.getType() == kmb::kTriangle) {
+					output << std::setw(9) << eIter.getId() + offsetElementId << ", " <<
+						eIter[0] + offsetNodeId << ", " <<
+						eIter[1] + offsetNodeId << ", " <<
+						eIter[2] + offsetNodeId << std::endl;
+				}
+				++eIter;
+			}
+		}
+		size_t tri2Num = body->getCountByType(kmb::kTriangle2);
+		std::cout << "tri2 = " << tri2Num << std::endl;
+		if (tri2Num > 0) {
+			output << "!ELEMENT, TYPE=232, EGRP=" << name << std::endl;
+			typename MContainer::elementIterator eIter = body->begin();
+			typename MContainer::elementIterator eIterEnd = body->end();
+			while (eIter != eIterEnd) {
+				if (eIter.getType() == kmb::kTriangle2) {
+					output << std::setw(9) << eIter.getId() + offsetElementId << ", " <<
+						eIter[0] + offsetNodeId << ", " <<
+						eIter[1] + offsetNodeId << ", " <<
+						eIter[2] + offsetNodeId << ", " <<
+						eIter[3] + offsetNodeId << ", " <<
+						eIter[4] + offsetNodeId << ", " <<
+						eIter[5] + offsetNodeId << std::endl;
+				}
+				++eIter;
+			}
+		}
+		size_t quadNum = body->getCountByType(kmb::kQuadrilateral);
+		std::cout << "quad = " << quadNum << std::endl;
+		if (quadNum > 0) {
+			output << "!ELEMENT, TYPE=241, EGRP=" << name << std::endl;
+			typename MContainer::elementIterator eIter = body->begin();
+			typename MContainer::elementIterator eIterEnd = body->end();
+			while (eIter != eIterEnd) {
+				if (eIter.getType() == kmb::kQuadrilateral) {
+					output << std::setw(9) << eIter.getId() + offsetElementId << ", " <<
+						eIter[0] + offsetNodeId << ", " <<
+						eIter[1] + offsetNodeId << ", " <<
+						eIter[2] + offsetNodeId << ", " <<
+						eIter[3] + offsetNodeId << std::endl;
+				}
+				++eIter;
+			}
+		}
+		size_t quad2Num = body->getCountByType(kmb::kQuadrilateral2);
+		std::cout << "quad2 = " << quad2Num << std::endl;
+		if (quad2Num > 0) {
+			output << "!ELEMENT, TYPE=242, EGRP=" << name << std::endl;
+			typename MContainer::elementIterator eIter = body->begin();
+			typename MContainer::elementIterator eIterEnd = body->end();
+			while (eIter != eIterEnd) {
+				if (eIter.getType() == kmb::kQuadrilateral2) {
+					output << std::setw(9) << eIter.getId() + offsetElementId << ", " <<
+						eIter[0] + offsetNodeId << ", " <<
+						eIter[1] + offsetNodeId << ", " <<
+						eIter[2] + offsetNodeId << ", " <<
+						eIter[3] + offsetNodeId << ", " <<
+						eIter[4] + offsetNodeId << ", " <<
+						eIter[5] + offsetNodeId << ", " <<
+						eIter[6] + offsetNodeId << ", " <<
+						eIter[7] + offsetNodeId << std::endl;
+				}
+				++eIter;
+			}
+		}
 	}
-	writeDummyMaterial(output);
+	for (kmb::bodyIdType bodyId = 0; bodyId < bodyCount; bodyId++) {
+		const typename MContainer::ElementContainer* body = mesh->getElementContainer(bodyId);
+		if( body == NULL || body->getCount() == 0) continue;
+		std::string name = mesh->getBodyName(bodyId);
+		std::string mat = mesh->getMaterialName(bodyId);
+		if ( name.length() == 0 ) continue;
+		if (mat.length() == 0) { mat = "MAT"; }
+		writeMaterial(output, mesh, mat);
+		writeSolidSection(output, name, mat);
+	}
 	std::vector<std::string> names = mesh->getDataNames();
 	std::vector<std::string>::iterator dIter = names.begin();
 	while (dIter != names.end()) {
@@ -289,9 +504,56 @@ int kmb::FrontISTRIO::saveMesh(std::string filename, const MContainer* mesh)
 					++nIter;
 				}
 			}
+			if (tag == "DLOAD")
+			{
+				output << "!SGROUP, SGRP=" << name << std::endl;
+				kmb::Face f;
+				typename MContainer::dataIterator fIter = data->begin();
+				while (fIter != data->end()) {
+					fIter.getFace(f);
+					fIter.getFace(f);
+					switch (mesh->findElement(f.getElementId()).getType())
+					{
+					case kmb::TETRAHEDRON:
+					case kmb::TETRAHEDRON2:
+						output << f.getElementId() + offsetElementId << "," << tetFmap[f.getLocalFaceId()] << std::endl;
+						break;
+					case kmb::WEDGE:
+					case kmb::WEDGE2:
+						output << f.getElementId() + offsetElementId << "," << wedFmap[f.getLocalFaceId()] << std::endl;
+						break;
+					case kmb::HEXAHEDRON:
+					case kmb::HEXAHEDRON2:
+						output << f.getElementId() + offsetElementId << "," << hexFmap[f.getLocalFaceId()] << std::endl;
+						break;
+					case kmb::PYRAMID:
+					case kmb::PYRAMID2:
+						output << f.getElementId() + offsetElementId << "," << pyrFmap[f.getLocalFaceId()] << std::endl;
+						break;
+					default:
+						break;
+					}
+					++fIter;
+				}
+			}
 		}
 		++dIter;
 	}
 	output << "!END" << std::endl;
 	return 0;
+}
+
+template<typename MContainer>
+void kmb::FrontISTRIO::writeMaterial(std::ostream& output, const MContainer* mesh, std::string mat)
+{
+	double youngModulus = 0.0;
+	double poissonRatio = 0.0;
+	const typename MContainer::DataContainer* data = mesh->getData(mat);
+	if (data != NULL) {
+		data->getValue("YoungModulus", &youngModulus);
+		data->getValue("PoissonRatio", &poissonRatio);
+	}
+	output << "!MATERIAL, NAME=" << mat << ", ITEM=1" << std::endl;
+	output << "!ITEM=1, SUBITEM=2" << std::endl;
+	output << youngModulus << ", " << poissonRatio << std::endl;
 }
