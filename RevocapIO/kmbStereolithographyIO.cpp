@@ -21,3 +21,21 @@ kmb::StereolithographyIO::fileType kmb::StereolithographyIO::checkFormat(std::st
  	input.close();
 	return kmb::StereolithographyIO::kBINARY;
 }
+
+int kmb::StereolithographyIO::countFacet(std::string filename)
+{
+	std::ifstream input(filename.c_str(), std::ios_base::in);
+	if (input.fail()) {
+		std::cout << "Load Error : Can't Open File " << filename << "." << std::endl;
+		return -1;
+	}
+	std::string str;
+	int count = 0;
+	while (std::getline(input, str)) {
+		if (str.find("endfacet") != std::string::npos) {
+			count++;
+		}
+	}
+	input.close();
+	return count;
+}

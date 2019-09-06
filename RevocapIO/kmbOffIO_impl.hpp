@@ -32,17 +32,27 @@ int kmb::OffIO::loadPatch(const char* filename, MContainer* mesh)
 	if( input.fail() ){
 		return -1;
 	}
+	unsigned int nodeCount = 0;
+	unsigned int polygonCount = 0;
+	unsigned int edgeCount = 0;
 	std::string line;
+	std::istringstream tokenizer;
 	std::getline( input, line );
 	if( line.find("OFF") != 0 ){
 		return -1;
 	}
-	unsigned int nodeCount = 0;
-	unsigned int polygonCount = 0;
-	unsigned int edgeCount = 0;
-	do{ std::getline( input, line ); }while(line.size()==0 || line[0]=='#');
-	std::istringstream tokenizer(line);
-	tokenizer >> nodeCount >> polygonCount >> edgeCount;
+	else if (line.size() > 3) {
+		line.erase(0, 3);
+		tokenizer.str(line);
+		tokenizer.clear();
+		tokenizer >> nodeCount >> polygonCount >> edgeCount;
+	}
+	else {
+		do { std::getline(input, line); } while (line.size() == 0 || line[0] == '#');
+		tokenizer.str(line);
+		tokenizer.clear();
+		tokenizer >> nodeCount >> polygonCount >> edgeCount;
+	}
 	double x=0.0,y=0.0,z=0.0;
 	mesh->beginNode( nodeCount );
 	for(unsigned int i = 0;i<nodeCount;++i){

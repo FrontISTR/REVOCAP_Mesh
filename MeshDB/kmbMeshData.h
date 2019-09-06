@@ -95,6 +95,8 @@ public:
 	// each メソッド等はコンテナを取得してから
 	const kmb::Point3DContainer* getNodes(void) const;
 	kmb::Point3DContainer* getNodes(void);
+	const kmb::Point3DContainer* getNodeContainer(void) const { return this->getNodes(); };
+	kmb::Point3DContainer* getNodeContainer(void) { return this->getNodes(); };
 	virtual const kmb::Point2DContainer* getNode2Ds(void) const{ return NULL; };
 	kmb::Point3DContainer* replaceNodes(kmb::Point3DContainer* nodes);
 	// 節点数

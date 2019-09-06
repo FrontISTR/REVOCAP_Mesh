@@ -52,6 +52,9 @@ public:
 	virtual kmb::elementIdType addElement(kmb::elementType etype, const kmb::nodeIdType *nodes) = 0;
 	virtual kmb::elementIdType addElement(kmb::elementType etype, const kmb::nodeIdType *nodes, const kmb::elementIdType id) = 0;
 	virtual bool getElement(kmb::elementIdType id,kmb::elementType &etype,kmb::nodeIdType *nodes) const = 0;
+	void set(kmb::elementIdType elementId, kmb::elementType etype, kmb::nodeIdType *nodes) {
+		this->addElement(etype, nodes, elementId);
+	};
 	/// deleteElement は pointer を delete する
 	virtual bool deleteElement(const kmb::elementIdType id) = 0;
 	virtual bool includeElement(const kmb::elementIdType id) const = 0;

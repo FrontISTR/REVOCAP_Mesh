@@ -76,6 +76,7 @@ int kmb::StereolithographyIO::loadAsciiPatch(std::string filename, MContainer* p
 	if (patch == NULL) {
 		return -1;
 	}
+	int size = countFacet(filename);
 	std::ifstream input(filename.c_str(), std::ios_base::in );
 	if (input.fail()) {
 		std::cout << "Load Error : Can't Open File " << filename << "." << std::endl;
@@ -87,7 +88,7 @@ int kmb::StereolithographyIO::loadAsciiPatch(std::string filename, MContainer* p
 	double x,y,z,dist;
 	kmb::bodyIdType bodyId;
 	kmb::nodeIdType nodes[3] = {kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId};
-	patch->beginNode();
+	patch->beginNode(3*size);
 	while( std::getline( input, str ) ){
 		if( str.find("endsolid") != std::string::npos ){
 			patch->endElement();
@@ -95,7 +96,7 @@ int kmb::StereolithographyIO::loadAsciiPatch(std::string filename, MContainer* p
 			is >> tag >> name;
 			patch->setBodyName(bodyId,name.c_str());
 		}else if( str.find("solid") != std::string::npos ){
-			bodyId = patch->beginElement();
+			bodyId = patch->beginElement(size);
 		}else if( str.find("vertex") != std::string::npos && index < 3 ){
 			std::stringstream is(str);
 			is >> tag >> x >> y >> z;
@@ -170,5 +171,53 @@ int kmb::StereolithographyIO::savePatch(std::string filename, const MContainer* 
 		++eIter;
 	}
 	output.close();
+	return 0;
+}
+
+template<typename MContainer>
+int kmb::StereolithographyIO::saveAsciiPatch(std::string filename, const MContainer* patch)
+{
+	std::cout << "StereolithographyIO saveAsciiPatch" << std::endl;
+	if (patch == NULL) {
+		return -1;
+	}
+	std::ofstream output(filename.c_str(), std::ios_base::out);
+	if (output.fail()) {
+		std::cout << "Save Error : Can't Open File " << filename << "." << std::endl;
+		return -1;
+	}
+	kmb::bodyIdType bodyCount = patch->getBodyCount();
+	kmb::nodeIdType nodes[3] = { kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId };
+	kmb::Point3D p0, p1, p2;
+	kmb::Vector3D normal;
+	for (kmb::bodyIdType bodyId = 0; bodyId < bodyCount; ++bodyId) {
+		std::string name = patch->getBodyName(bodyId);
+		if (name.size() == 0) {
+			name = "patch_" + std::to_string(bodyId);
+		}
+		output << "solid " << name << std::endl;
+		typename MContainer::elementIterator eIter = patch->beginElementIterator(bodyId);
+		typename MContainer::elementIterator eIterEnd = patch->endElementIterator(bodyId);
+		while (eIter != eIterEnd) {
+			if (eIter.getType() == kmb::kTriangle) {
+				kmb::elementIdType e0 = eIter[0];
+				kmb::elementIdType e1 = eIter[1];
+				kmb::elementIdType e2 = eIter[2];
+				patch->getNode(e0, p0);
+				patch->getNode(e1, p1);
+				patch->getNode(e2, p2);
+				normal = kmb::Point3D::calcNormalVector(p0, p1, p2);
+				output << "  facet normal " << normal.x() << " " << normal.y() << " " << normal.z() << std::endl;
+				output << "    outer loop" << std::endl;
+				output << "     vertex " << p0.x() << " " << p0.y() << " " << p0.z() << std::endl;
+				output << "     vertex " << p1.x() << " " << p1.y() << " " << p1.z() << std::endl;
+				output << "     vertex " << p2.x() << " " << p2.y() << " " << p2.z() << std::endl;
+				output << "    endloop" << std::endl;
+				output << "  endfacet" << std::endl;
+			}
+			++eIter;
+		}
+		output << "endsolid " << name << std::endl;
+	}
 	return 0;
 }
