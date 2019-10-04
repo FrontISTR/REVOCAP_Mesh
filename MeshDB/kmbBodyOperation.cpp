@@ -64,7 +64,7 @@ kmb::BodyOperation::getEdgesOfBody( const kmb::ElementContainer* body, kmb::Elem
 size_t
 kmb::BodyOperation::getEdgesIntersectPlane(const kmb::ElementContainer* body,const kmb::Plane* plane,kmb::ElementContainer* result) const
 {
-	if( body && plane ){
+	if( body==NULL || plane==NULL ){
 		return 0;
 	}
 	std::set< std::pair<kmb::nodeIdType,kmb::nodeIdType> > nodePair;

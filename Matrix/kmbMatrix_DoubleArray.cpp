@@ -239,8 +239,6 @@ kmb::SquareMatrix_DoubleArray::add(int i,int j,double val)
 
 /// Column Vector
 
-const double kmb::ColumnVector_DoubleArray::F_MAX = DBL_MAX;
-
 kmb::ColumnVector_DoubleArray::ColumnVector_DoubleArray(void)
 : ColumnVector(0)
 , m(NULL)
@@ -373,9 +371,9 @@ const double* kmb::ColumnVector_DoubleArray::getPtr(void) const
 }
 
 kmb::RowVector_DoubleArray::RowVector_DoubleArray(void)
-	: RowVector(0)
-	, m(NULL)
-	, size(0)
+: RowVector(0)
+, m(NULL)
+, size(0)
 {
 }
 
