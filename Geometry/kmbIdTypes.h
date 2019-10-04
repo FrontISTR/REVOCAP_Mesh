@@ -32,8 +32,8 @@ namespace kmb{
 typedef int32_t nodeIdType;
 typedef int32_t idType;
 
-static const nodeIdType nullNodeId = -1;
-static const idType nullId = -1;
+static const nodeIdType nullNodeId = static_cast<nodeIdType>(-1);
+static const idType nullId = static_cast<idType>(-1);
 
 }
 

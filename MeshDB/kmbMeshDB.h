@@ -125,7 +125,6 @@ public:
 	const kmb::Point3D* getMaxPointPtr(void) const;
 	const kmb::Point3D* getMinPointPtr(void) const;
 	virtual const kmb::BoundingBox getBoundingBox(void) const;
-	void updateBoundingBox(void);
 	//
 	// replace node id of Point3DContainer, in addition Element and DataBindings
 	//

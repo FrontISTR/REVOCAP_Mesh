@@ -729,6 +729,7 @@ kmb::NodeNeighborInfo::getEndsOfEdge( const kmb::ElementContainer* edges, kmb::n
 	{
 		firstID = kmb::nullNodeId;
 		endID = kmb::nullNodeId;
+		return;
 	}
 
 	int count = 0;
