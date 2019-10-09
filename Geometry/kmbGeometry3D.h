@@ -102,8 +102,16 @@ public:
 	double distanceSqToSegment(const Point3D& a,const Point3D& b,double& t) const;
 	double distanceToSegment(const Point3D& a,const Point3D& b) const;
 	// 三角形 ABC との距離
+	// t[0]*a + t[1]*b + t[2]*c で最小距離を取る
 	double distanceSqToTriangle(const Point3D& a,const Point3D& b,const Point3D& c,double* t=NULL) const;
 	double distanceToTriangle(const Point3D& a,const Point3D& b,const Point3D& c) const;
+	// flag = 1 : aで最短距離を取る 
+	// flag = 2 : bで最短距離を取る 
+	// flag = 3 : abで最短距離を取る 
+	// flag = 4 : cで最短距離を取る 
+	// flag = 5 : caで最短距離を取る 
+	// flag = 6 : bcで最短距離を取る 
+	// flag = 7 : 三角形の内部で最短距離を取る 
 	double distanceToTriangle(const Point3D& a, const Point3D& b, const Point3D& c, Point3D& nearest,int &flag) const;
 	// 垂線の足
 	// この点を origin を原点とする uv 平面に射影した垂線の足が au + bv 

@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE( PointToTriangle )
 {
 	int loopCount = 10;
 	for(int k=0;k<loopCount;++k){
-		double u0[2] = { 0.0, 0.0 };
+		double u0[3] = { 0.0, 0.0, 0.0 };
 		kmb::Point3D a0(drand(),drand(),drand());
 		kmb::Point3D a1(drand(),drand(),drand());
 		kmb::Point3D a2(drand(),drand(),drand());

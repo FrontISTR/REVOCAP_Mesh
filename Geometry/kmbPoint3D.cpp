@@ -173,6 +173,7 @@ kmb::Point3D::getFootOfPerpendicular( const Point3D &origin, const Vector3D &u, 
 double kmb::Point3D::distanceSqToTriangle(const Point3D& a,const Point3D& b,const Point3D& c,double* t) const
 {
 	// this と a + t1(b-a) + t2(c-a) との距離の最小化
+	// this と t0*a + t1*b + t2*c との距離の最小化
 	// u0 + t1*u1 + t2*u2 の長さの最小化
 	kmb::Vector3D u0(a,*this);
 	kmb::Vector3D u1(b,a);
@@ -182,41 +183,70 @@ double kmb::Point3D::distanceSqToTriangle(const Point3D& a,const Point3D& b,cons
 		u2*u1, u2*u2);
 	kmb::Vector2D v(-(u1*u0),-(u2*u0));
 	kmb::Vector2D tmp;
+	kmb::Minimizer min;
 	if(mat.solve(v,tmp) &&
 		0.0 < tmp.x() && 0.0 < tmp.y() &&
 		tmp.x() + tmp.y() < 1.0 )
 	{
 		if( t != NULL ){
-			t[0] = tmp[0];
-			t[1] = tmp[1];
+			t[0] = 1.0 - tmp[0] - tmp[1];
+			t[1] = tmp[0];
+			t[2] = tmp[1];
 		}
 		double distSq = (u0 + u1.scalar(tmp[0]) + u2.scalar(tmp[1])).lengthSq();
-		return distSq;
-	}else{
-		// 境界で最小を取る
-		// 辺と点
-		kmb::Minimizer min;
-		double s=0.0;
-		if( min.update( this->distanceSqToSegment( a, b, s ) ) ){
-			if( t != NULL ){
-				t[0] = s;
-				t[1] = 0.0;
-			}
+		// 境界チェックをしないとき
+		if (0.01 < tmp.x() && 0.01 < tmp.y() && tmp.x() + tmp.y() < 0.99) {
+			return distSq;
 		}
-		if( min.update( this->distanceSqToSegment( b, c, s ) ) ){
-			if( t != NULL ){
-				t[0] = 1.0-s;
-				t[1] = s;
-			}
-		}
-		if( min.update( this->distanceSqToSegment( c, a, s ) ) ){
-			if( t != NULL ){
-				t[0] = 0.0;
-				t[1] = 1.0-s;
-			}
-		}
-		return min.getMin();
+		min.update(distSq);
 	}
+	// 境界で最小を取る
+	// 頂点
+	if (min.update(this->distanceSq(a))) {
+		if (t != NULL) {
+			t[0] = 1.0;
+			t[1] = 0.0;
+			t[2] = 0.0;
+		}
+	}
+	if (min.update(this->distanceSq(b))) {
+		if (t != NULL) {
+			t[0] = 0.0;
+			t[1] = 1.0;
+			t[2] = 0.0;
+		}
+	}
+	if (min.update(this->distanceSq(c))) {
+		if (t != NULL) {
+			t[0] = 0.0;
+			t[1] = 0.0;
+			t[2] = 1.0;
+		}
+	}
+	// 辺
+	double s=0.0;
+	if( min.update( this->distanceSqToSegment( a, b, s ) ) ){
+		if( t != NULL ){
+			t[0] = 1.0 - s;
+			t[1] = s;
+			t[2] = 0.0;
+		}
+	}
+	if( min.update( this->distanceSqToSegment( b, c, s ) ) ){
+		if( t != NULL ){
+			t[0] = 0.0;
+			t[1] = 1.0-s;
+			t[2] = s;
+		}
+	}
+	if( min.update( this->distanceSqToSegment( c, a, s ) ) ){
+		if( t != NULL ){
+			t[0] = s;
+			t[1] = 0.0;
+			t[2] = 1.0-s;
+		}
+	}
+	return min.getMin();
 }
 
 double kmb::Point3D::distanceToTriangle(const Point3D& a,const Point3D& b,const Point3D& c) const
@@ -226,15 +256,15 @@ double kmb::Point3D::distanceToTriangle(const Point3D& a,const Point3D& b,const 
 
 double kmb::Point3D::distanceToTriangle(const Point3D& a, const Point3D& b, const Point3D& c, Point3D& nearest,int &flag) const
 {
-	double t[2];
+	double t[3];
 	double distSq = distanceSqToTriangle(a, b, c, t);
 	flag = 0;
 	if (t[0] != 0.0) flag |= 0x01;
 	if (t[1] != 0.0) flag |= 0x02;
-	if (t[0] + t[1] != 1.0) flag |= 0x04;
-	nearest.x((1.0 - t[0] - t[1])*a.x() + t[0] * b.x() + t[1] * c.x());
-	nearest.y((1.0 - t[0] - t[1])*a.y() + t[0] * b.y() + t[1] * c.y());
-	nearest.z((1.0 - t[0] - t[1])*a.z() + t[0] * b.z() + t[1] * c.z());
+	if (t[2] != 0.0) flag |= 0x04;
+	nearest.x( t[0] * a.x() + t[1] * b.x() + t[2] * c.x());
+	nearest.y( t[0] * a.y() + t[1] * b.y() + t[2] * c.y());
+	nearest.z( t[0] * a.z() + t[1] * b.z() + t[2] * c.z());
 	return sqrt(distSq);
 }
 
