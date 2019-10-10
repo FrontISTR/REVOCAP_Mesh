@@ -97,8 +97,10 @@ public:
 	double distanceSq(const Point3D& other) const;
 	double distanceSq(double x,double y,double z) const;
 	// 線分（直線ではない）AB との間の距離 注：垂線の足の長さではない
-	// a から b へのパラメータ t も返す
 	double distanceSqToSegment(const Point3D& a,const Point3D& b) const;
+	// a から b へのパラメータ t も返す
+	// t = 0 : a
+	// t = 1 : b
 	double distanceSqToSegment(const Point3D& a,const Point3D& b,double& t) const;
 	double distanceToSegment(const Point3D& a,const Point3D& b) const;
 	// 三角形 ABC との距離
