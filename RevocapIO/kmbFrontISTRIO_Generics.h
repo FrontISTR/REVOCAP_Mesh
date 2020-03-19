@@ -397,8 +397,10 @@ int kmb::FrontISTRIO::saveMesh(std::string filename, const MContainer* mesh)
 		size_t pyramidNum = body->getCountByType(kmb::kPyramid);
 		std::cout << "pyramid = " << pyramidNum << std::endl;
 		size_t pyramid2Num = body->getCountByType(kmb::kPyramid2);
+
 		std::cout << "pyramid2 = " << pyramid2Num << std::endl;
 		size_t triNum = body->getCountByType(kmb::kTriangle);
+
 		std::cout << "tri = " << triNum << std::endl;
 		if (triNum > 0) {
 			output << "!ELEMENT, TYPE=231, EGRP=" << name << std::endl;
@@ -472,16 +474,6 @@ int kmb::FrontISTRIO::saveMesh(std::string filename, const MContainer* mesh)
 			}
 		}
 	}
-	for (kmb::bodyIdType bodyId = 0; bodyId < bodyCount; bodyId++) {
-		const typename MContainer::ElementContainer* body = mesh->getElementContainer(bodyId);
-		if( body == NULL || body->getCount() == 0) continue;
-		std::string name = mesh->getBodyName(bodyId);
-		std::string mat = mesh->getMaterialName(bodyId);
-		if ( name.length() == 0 ) continue;
-		if (mat.length() == 0) { mat = "MAT"; }
-		writeMaterial(output, mesh, mat);
-		writeSolidSection(output, name, mat);
-	}
 	std::vector<std::string> names = mesh->getDataNames();
 	std::vector<std::string>::iterator dIter = names.begin();
 	while (dIter != names.end()) {
@@ -539,21 +531,7 @@ int kmb::FrontISTRIO::saveMesh(std::string filename, const MContainer* mesh)
 		}
 		++dIter;
 	}
+	output << "!INCLUDE, INPUT=section_info.txt" << std::endl;
 	output << "!END" << std::endl;
 	return 0;
-}
-
-template<typename MContainer>
-void kmb::FrontISTRIO::writeMaterial(std::ostream& output, const MContainer* mesh, std::string mat)
-{
-	double youngModulus = 0.0;
-	double poissonRatio = 0.0;
-	const typename MContainer::DataContainer* data = mesh->getData(mat);
-	if (data != NULL) {
-		data->getValue("YoungModulus", &youngModulus);
-		data->getValue("PoissonRatio", &poissonRatio);
-	}
-	output << "!MATERIAL, NAME=" << mat << ", ITEM=1" << std::endl;
-	output << "!ITEM=1, SUBITEM=2" << std::endl;
-	output << youngModulus << ", " << poissonRatio << std::endl;
 }

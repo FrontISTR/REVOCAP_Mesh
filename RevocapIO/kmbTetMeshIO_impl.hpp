@@ -194,9 +194,9 @@ int kmb::TetMeshIO::saveMesh(std::string filename, const MContainer* mesh)
 	std::cout << "node count " << mesh->getNodeCount() << std::endl;
 	output << elementCount << std::endl;
 	for (kmb::bodyIdType bodyId = 0; bodyId < bodyCount; ++bodyId) {
-		const MContainer::ElementContainer* body = mesh->getElementContainer(bodyId);
+		const typename MContainer::ElementContainer* body = mesh->getElementContainer(bodyId);
 		if (body) {
-			MContainer::elementIterator eIter = body->begin();
+			typename MContainer::elementIterator eIter = body->begin();
 			while (eIter != body->end()) {
 				switch (eIter.getType()) {
 				case kmb::TETRAHEDRON:
@@ -286,10 +286,10 @@ int kmb::TetMeshIO::saveMesh(std::string filename, const MContainer* mesh)
 		int hex2Count = mesh->getElementCountByType(bodyId, kmb::HEXAHEDRON2);
 		int wedCount = mesh->getElementCountByType(bodyId, kmb::WEDGE);
 		int eCount = tetCount + tet2Count + hexCount + hex2Count + wedCount;
-		const MContainer::ElementContainer* body = mesh->getElementContainer(bodyId);
+		const typename MContainer::ElementContainer* body = mesh->getElementContainer(bodyId);
 		if (body && eCount > 0) {
 			output << eCount << std::endl;
-			MContainer::elementIterator eIter = body->begin();
+			typename MContainer::elementIterator eIter = body->begin();
 			while (eIter != body->end()) {
 				switch (eIter.getType()) {
 				case kmb::TETRAHEDRON:

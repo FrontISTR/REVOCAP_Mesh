@@ -741,22 +741,6 @@ kmb::MeshData::getBodyIdByName(const char* name) const
 	return kmb::Body::nullBodyId;
 }
 
-std::string kmb::MeshData::getMaterialName(kmb::bodyIdType bodyId) const
-{
-	std::map<kmb::bodyIdType, std::string>::const_iterator i = materialNames.find(bodyId);
-	if (i != materialNames.end()) {
-		return i->second;
-	}else {
-		return "";
-	}
-}
-
-void kmb::MeshData::setMaterialName(kmb::bodyIdType bodyId, std::string name)
-{
-	materialNames.insert(std::make_pair(bodyId, name));
-}
-
-
 const char*
 kmb::MeshData::getElementContainerType(bodyIdType bodyId) const
 {

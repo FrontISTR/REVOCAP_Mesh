@@ -51,8 +51,6 @@ protected:
 	elementIdType maxElementId;
 	// coordinate system
 	kmb::Matrix4x4* coordMatrix;
-	// material name
-	std::map<kmb::bodyIdType, std::string> materialNames;
 public:
 	MeshData(void);
 	virtual ~MeshData(void);
@@ -181,8 +179,6 @@ public:
 	virtual void setBodyName(bodyIdType bodyId, const char* name);
 	virtual void setBodyName(bodyIdType bodyId, std::string name);
 	kmb::bodyIdType getBodyIdByName(const char* name) const;
-	std::string getMaterialName(kmb::bodyIdType bodyId) const;
-	void setMaterialName(kmb::bodyIdType bodyId, std::string name);
 	// コンテナタイプ
 	const char* getElementContainerType(bodyIdType bodyId) const;
 	// 外部メッシュから要素グループの追加
