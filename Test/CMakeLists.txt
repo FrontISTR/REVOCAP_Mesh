@@ -6,11 +6,12 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 find_package(Boost
   REQUIRED
-  COMPONENTS unit_test_framework
+#  COMPONENTS unit_test_framework
 )
 
-#include_directories("${PROJECT_SOURCE_DIR}")
 include_directories(${Boost_INCLUDE_DIRS})
+add_definitions(-DBOOST_TEST_NO_LIB)
+
 add_executable(HelloWorld HelloWorld.cpp)
 add_test(
  NAME HelloWorld_Test

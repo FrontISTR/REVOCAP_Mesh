@@ -1,12 +1,15 @@
 cmake_minimum_required(VERSION 3.0)
-project(REVOCAP_MESH CXX C Fortran)
-set(REVOCAP_MESH_VERSION "1.7.01")
+project(REVOCAP_Mesh CXX C Fortran)
+set(REVOCAP_Mesh_VERSION "1.7.01")
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
 option(WITH_EXTENSION "Build with ruby extension libraries" ON)
 option(WITH_OPENCASCADE "Build with OpenCASCADE feature" ON)
 option(WITH_OPENMP "Enable OpenMP feature" ON)
 option(WITH_TEST "Enable tests" ON)
 option(BUILD_DOC "Generate API documents." ON)
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
 if(WITH_EXTENSION)
   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -122,3 +125,4 @@ if(BUILD_DOC)
     message(WARNING "doxygen not found.")
   endif()
 endif()
+

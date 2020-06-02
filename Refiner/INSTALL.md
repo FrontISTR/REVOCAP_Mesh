@@ -2,17 +2,18 @@
 
 ## Requirements
 
-- cmake-2.8 以上
+- cmake-3.0 以上
 
 ## Quick installation
 
 ```txt
 % mkdir build
 % cd build
-% cmake ../Refiner
+% cmake ..
 % make -j4
 % make install
 ```
+
 ## Tips
 
 ### インストール先の変更
@@ -34,7 +35,7 @@ mingw32-make
 予め`doxygen`と`graphviz`をインストールする必要があります。
 
 ```txt
-% cmake -DBUILD_DOC=ON ../Refiner
+% cmake -DBUILD_DOC=ON ..
 % make doc
 % firefox doc/html/index.html
 ```

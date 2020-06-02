@@ -201,7 +201,9 @@ int main(void)
 		if( orgtype == RCAP_SEGMENT ){
 			middle = rcapGetMiddle( orgtype, seg );
 			/* 中間節点 => 元の両端 => 中間節点 が同じものをさすこと */
-			assert( middle == refineTetras[j] );
+			if (middle != refineTetras[j]) {
+				printf("middle node error\n");
+			}
 		}else{
 			/* 中間節点ではない => 元からある節点 */
 			assert( refineTetras[j] <= (int32_t)nodeCount );
@@ -238,7 +240,9 @@ int main(void)
 				flag = 1;
 			}
 		}
-		assert( flag == 1 );
+		if (flag != 1) {
+			printf("node group error");
+		}
 	}
 	/* 細分後の節点グループの確認 */
 	for(j=0;j<ngCount;++j){
@@ -252,14 +256,18 @@ int main(void)
 					flag = 1;
 				}
 			}
-			assert( flag == 1 );
+			if (flag != 1) {
+				printf("node group middle node error\n");
+			}
 			flag = 0;
 			for(i=0;i<3;++i){
 				if( seg[1] == ng0[i] ){
 					flag = 1;
 				}
 			}
-			assert( flag == 1 );
+			if (flag != 1) {
+				printf("node group middle node error\n");
+			}
 		}else{
 			/* 中間節点ではない */
 			flag = 0;
@@ -268,7 +276,9 @@ int main(void)
 					flag = 1;
 				}
 			}
-			assert( flag == 1 );
+			if (flag != 1) {
+				printf("node group error\n");
+			}
 		}
 	}
 	free( result_ng0 );
@@ -308,7 +318,9 @@ int main(void)
 				flag = 0;
 			}
 		}
-		assert( flag == 1 );
+		if (flag != 1) {
+			printf("element group error");
+		}
 		free( result_eg0 );
 	}
 

@@ -722,9 +722,9 @@ void rcapCommit(void)
 			bext.appendBody(bodyId);
 		}
 		kmb::bodyIdType boundaryId = bext.getBoundary();
-		REVOCAP_Debug("rcapCommit boundary surface extract %d\n", rcapRefinerDoc.mesh->getElementCount(boundaryId) );
+		REVOCAP_Debug("rcapCommit boundary surface extract %zd\n", rcapRefinerDoc.mesh->getElementCount(boundaryId) );
 		kmb::ElementContainer* boundaryBody = rcapRefinerDoc.mesh->getBodyPtr(boundaryId);
-		REVOCAP_Debug("boundary element count => %d\n", boundaryBody->getCount());
+		REVOCAP_Debug("boundary element count => %zd\n", boundaryBody->getCount());
 		rcapRefinerDoc.boundaryRefiner->refineBody( boundaryBody, NULL );
 		rcapRefinerDoc.boundaryRefiner->commitData();
 	}
