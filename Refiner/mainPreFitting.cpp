@@ -335,14 +335,14 @@ int main(int argc, char* argv[])
 		kmb::nodeIdType nodeId = dIter.getId();
 		size_t s = fittingData->countId(nodeId);
 		if( fittingData->countId(nodeId) != 1 ){
-			printf("nodeId %d => number of fitting surface = %lu\n", nodeId, s);
+			printf("nodeId %d => number of fitting surface = %zd\n", nodeId, s);
 		}
 		++dIter;
 	}
 
 	printf("pre-fitting status report\n");
-	printf("boundary node count = %lu\n", nodeGroup->getIdCount());
-	printf("fitting node count = %lu\n", fittingData->getIdCount());
+	printf("boundary node count = %zd\n", nodeGroup->getIdCount());
+	printf("fitting node count = %zd\n", fittingData->getIdCount());
 
 	return 0;
 }

@@ -1,51 +1,41 @@
 cmake_minimum_required(VERSION 3.0)
 project(REVOCAP_Refiner C CXX Fortran)
-set(REVOCAP_REFINER_VERSION "1.2.0")
+set(REVOCAP_Refiner_VERSION "1.2.0")
 
-include_directories("${PROJECT_SOURCE_DIR}/..")
-include_directories("${PROJECT_SOURCE_DIR}")
+include_directories(
+  ${PROJECT_SOURCE_DIR}/..
+  ${PROJECT_SOURCE_DIR}
+)
 
-set(refiner_sources
+set(refiner_cxx_sources
   rcapRefiner.cpp
   rcapRefinerIO.cpp
+)
+
+set(refiner_fortran_sources
   rcapRefinerInterface.F90
 )
 
-#file(GLOB common_sources   "../Common/*.cpp")
-#file(GLOB matrix_sources   "../Matrix/*.cpp")
-#file(GLOB geometry_sources   "../Geometry/*.cpp")
-#file(GLOB meshdb_sources   "../MeshDB/*.cpp")
-#file(GLOB meshgen_sources   "../MeshGen/*.cpp")
-#file(GLOB revocapio_sources   "../RevocapIO/*.cpp")
-#file(GLOB shape_sources   "../Shape/*.cpp")
-
-add_library(Refiner OBJECT ${refiner_sources})
+add_library(RefinerC OBJECT ${refiner_cxx_sources})
+add_library(RefinerFortran OBJECT ${refiner_fortran_sources})
 add_library(RcapRefiner STATIC
-  $<TARGET_OBJECTS:Refiner>
-  $<TARGET_OBJECTS:Common>
-  $<TARGET_OBJECTS:Matrix>
-  $<TARGET_OBJECTS:Geometry>
-  $<TARGET_OBJECTS:MeshDB>
-  $<TARGET_OBJECTS:MeshGen>
+  $<TARGET_OBJECTS:RefinerC>
+  $<TARGET_OBJECTS:RefinerFortran>
+  $<TARGET_OBJECTS:Common_OBJS>
+  $<TARGET_OBJECTS:Matrix_OBJS>
+  $<TARGET_OBJECTS:Geometry_OBJS>
+  $<TARGET_OBJECTS:MeshDB_OBJS>
+  $<TARGET_OBJECTS:MeshGen_OBJS>
   $<TARGET_OBJECTS:RevocapIO_OBJS>
-  $<TARGET_OBJECTS:Shape>
+  $<TARGET_OBJECTS:Shape_OBJS>
 )
-
-#add_library(RcapRefiner STATIC
-#	${refiner_sources}
-#	${common_sources}
-#	${matrix_sources}
-#	${geometry_sources}
-#	${meshdb_sources}
-#	${meshgen_sources}
-#	${revocapio_sources}
-#	${shape_sources}
-#)
 
 # Refiner Utils
 add_definitions(-D_CONSOLE)
 add_executable(rcapPreFitting mainPreFitting.cpp)
-target_link_libraries(rcapPreFitting RcapRefiner)
+target_link_libraries(rcapPreFitting
+  RcapRefiner
+)
 
 add_subdirectory(Samples)
 

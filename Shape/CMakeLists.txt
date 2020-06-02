@@ -6,8 +6,8 @@ include_directories(
 
 file(GLOB Shape_SRCS *.cpp)
 
-add_library(Shape OBJECT ${Shape_SRCS})
-add_library(RcapShape STATIC $<TARGET_OBJECTS:Shape>)
+add_library(Shape_OBJS OBJECT ${Shape_SRCS})
+add_library(RcapShape STATIC $<TARGET_OBJECTS:Shape_OBJS>)
 
 install(TARGETS RcapShape
   ARCHIVE DESTINATION lib

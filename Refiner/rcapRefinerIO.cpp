@@ -76,9 +76,9 @@ int32_t rcapLoadHECFile( const char* hecfile )
 // FREE 5
 void rcapRefineFFbModel( void )
 {
-	REVOCAP_Debug("inlt data size => %d\n", rcapRefinerDoc.mesh->getIdCount("BC_INLT") );
-	REVOCAP_Debug("wall data size => %d\n", rcapRefinerDoc.mesh->getIdCount("BC_WALL") );
-	REVOCAP_Debug("free data size => %d\n", rcapRefinerDoc.mesh->getIdCount("BC_FREE") );
+	REVOCAP_Debug("inlt data size => %zd\n", rcapRefinerDoc.mesh->getIdCount("BC_INLT") );
+	REVOCAP_Debug("wall data size => %zd\n", rcapRefinerDoc.mesh->getIdCount("BC_WALL") );
+	REVOCAP_Debug("free data size => %zd\n", rcapRefinerDoc.mesh->getIdCount("BC_FREE") );
 	int32_t dataNum = 0;
 	dataNum += static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( "BC_INLT" ));
 	dataNum += static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( "BC_WALL" ));
@@ -162,7 +162,7 @@ void rcapRefineFFbModel( void )
 	rcapRefinerDoc.mesh->endElement();
 
 	// data convert
-	REVOCAP_Debug("refined data size = %d\n", rcapRefinerDoc.mesh->getIdCount("BC") );
+	REVOCAP_Debug("refined data size = %zd\n", rcapRefinerDoc.mesh->getIdCount("BC") );
 	kmb::DataBindings::iterator dIterBC = rcapRefinerDoc.mesh->getDataBindingsPtr( "BC" )->begin();
 	kmb::DataBindings* inlt = rcapRefinerDoc.mesh->getDataBindingsPtr( "BC_INLT" );
 	kmb::DataBindings* wall = rcapRefinerDoc.mesh->getDataBindingsPtr( "BC_WALL" );
@@ -189,9 +189,9 @@ void rcapRefineFFbModel( void )
 		}
 		++dIterBC;
 	}
-	REVOCAP_Debug("refined inlt data size => %d\n", inlt->getIdCount());
-	REVOCAP_Debug("refined wall data size => %d\n", wall->getIdCount());
-	REVOCAP_Debug("refined free data size => %d\n", free->getIdCount());
+	REVOCAP_Debug("refined inlt data size => %zd\n", inlt->getIdCount());
+	REVOCAP_Debug("refined wall data size => %zd\n", wall->getIdCount());
+	REVOCAP_Debug("refined free data size => %zd\n", free->getIdCount());
 
 	size_t nodeCount = rcapRefinerDoc.mesh->getNodeCount();
 	int8_t etype;
