@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.0)
 
+cmake_policy(SET CMP0078 OLD)
+cmake_policy(SET CMP0086 OLD)
+
 include(${SWIG_USE_FILE})
 
 set(Shape_INTERFACE
