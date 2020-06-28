@@ -482,12 +482,19 @@ int kmb::FrontISTRIO::saveMesh(std::string filename, const MContainer* mesh)
 		const typename MContainer::DataContainer* data = mesh->getData(name);
 		if (data) {
 			std::string tag = data->getTag();
-			if (tag == "BOUNDARY" ||
+			if ( data->getBindingMode() == kmb::DataBindings::kNodeGroup &&
+				(
+				tag == "BOUNDARY" ||
 				tag == "SPRING" ||
 				tag == "CLOAD" ||
+				tag == "TEMPERATURE" ||
 				tag == "FIXTEMP" ||
 				tag == "CFLUX" ||
-				tag == "TEMPERATURE")
+				tag == "CONTACT" ||
+				tag == "INITIAL" ||
+				tag == "MPC"
+				)
+			)
 			{
 				output << "!NGROUP, NGRP=" << name << std::endl;
 				typename MContainer::dataIterator nIter = data->begin();
@@ -496,7 +503,16 @@ int kmb::FrontISTRIO::saveMesh(std::string filename, const MContainer* mesh)
 					++nIter;
 				}
 			}
-			if (tag == "DLOAD")
+			else if (data->getBindingMode() == kmb::DataBindings::kFaceGroup &&
+				(
+				tag == "DLOAD" ||
+				tag == "DFLUX" ||
+				tag == "FILM" ||
+				tag == "RADIATE" ||
+				tag == "CONTACT" ||
+				tag == "MPC"
+				)
+			)
 			{
 				output << "!SGROUP, SGRP=" << name << std::endl;
 				kmb::Face f;
@@ -528,10 +544,419 @@ int kmb::FrontISTRIO::saveMesh(std::string filename, const MContainer* mesh)
 					++fIter;
 				}
 			}
+			else if (data->getBindingMode() == kmb::DataBindings::kGlobal) {
+				if (tag == "MPC") {
+					output << "!INCLUDE, INPUT=" << name << ".mpc" << std::endl;
+				}
+				else if (tag == "CONTACT") {
+					output << "!INCLUDE, INPUT=" << name << ".contact" << std::endl;
+				}
+			}
 		}
 		++dIter;
 	}
-	output << "!INCLUDE, INPUT=section_info.txt" << std::endl;
+	// section
+	std::string::size_type pos = filename.find_last_of("\\/")+1;
+	std::string basename = filename.substr(
+		pos,
+		filename.find_last_of('.')-pos);
+	output << "!INCLUDE, INPUT=" << basename << ".sec" << std::endl;
 	output << "!END" << std::endl;
+	return 0;
+}
+
+template<typename MContainer>
+int kmb::FrontISTRIO::loadResult(std::string filename, MContainer* mesh)
+{
+	if (mesh == NULL) {
+		return -1;
+	}
+	// 最初の１行でバイナリチェック
+	std::ifstream input(filename, std::ios_base::in | std::ios_base::binary);
+	if (input.fail()) {
+		return -1;
+	}
+	char buf[64];
+	input.read(buf, 19);
+	buf[19] = '\0';
+	if (strncmp("HECMW_BINARY_RESULT", buf, 19) == 0) {
+		input.close();
+		return loadResultBinary(filename, mesh);
+	}
+	else if (strncmp("*fstrresult 2.0", buf, 15) == 0) {
+		input.close();
+		return loadResultAscii(filename, mesh);
+	}
+	input.close();
+	return -2;
+}
+
+template<typename MContainer>
+int kmb::FrontISTRIO::loadResultAscii(std::string filename, MContainer* mesh)
+{
+	std::ifstream input(filename, std::ios_base::in);
+	if (input.fail()) {
+		return -1;
+	}
+	int nodeCount = 0;
+	int elementCount = 0;
+	int nodeValueCount = 0;
+	int elementValueCount = 0;
+	std::vector<int> nodeValDims;
+	std::vector<int> elementValDims;
+	std::string line;
+	// 最初の１行
+	if (std::getline(input, line)) {
+		if (line.find("*fstrresult 2.0") != 0) {
+			std::cout << "Warning Hecmw Result file format error." << std::endl;
+			input.close();
+			return -1;
+		}
+	}
+	// *data 行まで空読み
+	while (std::getline(input, line)) {
+		if (line.find("*data") == 0) {
+			break;
+		}
+	}
+	// nodecount , elementcount
+	if (std::getline(input, line)) {
+		std::istringstream tokenizer(line);
+		tokenizer >> nodeCount;
+		tokenizer >> elementCount;
+	}
+	// node value , element value
+	if (std::getline(input, line)) {
+		std::istringstream tokenizer(line);
+		tokenizer >> nodeValueCount;
+		tokenizer >> elementValueCount;
+	}
+	mesh->clearTargetData();
+	std::cout << "nodeValueCount " << nodeValueCount << std::endl;
+	if (nodeValueCount > 0) {
+		// node value dims
+		if (std::getline(input, line)) {
+			std::istringstream tokenizer(line);
+			for (int i = 0; i < nodeValueCount; ++i) {
+				int d = 0;
+				tokenizer >> d;
+				nodeValDims.push_back(d);
+			}
+		}
+		// node value names
+		int dim = 0;
+		for (int i = 0; i < nodeValueCount; ++i) {
+			kmb::RevocapIOUtils::readOneLine(input, line);
+			switch (nodeValDims[i]) {
+			case 1:
+				if (!mesh->hasData(line.c_str())) {
+					mesh->createDataBindings(line.c_str(), kmb::DataBindings::NodeVariable, kmb::PhysicalValue::Scalar, "post");
+				}
+				mesh->appendTargetData(line.c_str());
+				dim += 1;
+				break;
+			case 2:
+				if (!mesh->hasData(line.c_str())) {
+					mesh->createDataBindings(line.c_str(), kmb::DataBindings::NodeVariable, kmb::PhysicalValue::Vector2, "post");
+				}
+				mesh->appendTargetData(line.c_str());
+				dim += 2;
+				break;
+			case 3:
+				if (!mesh->hasData(line.c_str())) {
+					mesh->createDataBindings(line.c_str(), kmb::DataBindings::NodeVariable, kmb::PhysicalValue::Vector3, "post");
+				}
+				mesh->appendTargetData(line.c_str());
+				dim += 3;
+				break;
+			case 6:
+				if (!mesh->hasData(line.c_str())) {
+					mesh->createDataBindings(line.c_str(), kmb::DataBindings::NodeVariable, kmb::PhysicalValue::Tensor6, "post");
+				}
+				mesh->appendTargetData(line.c_str());
+				dim += 6;
+				break;
+			default:
+				break;
+			}
+		}
+		// node value
+		std::cout << "nodeCount " << nodeCount << " dim " << dim << std::endl;
+		kmb::nodeIdType nodeId = kmb::nullNodeId;
+		std::istringstream tokenizer;
+		double* v = new double[dim];
+		for (int i = 0; i < nodeCount; ++i) {
+			kmb::RevocapIOUtils::readOneLine(input, line);
+			tokenizer.str(line);
+			tokenizer.clear();
+			tokenizer >> nodeId;
+			kmb::RevocapIOUtils::readOneLine(input, line);
+			tokenizer.str(line);
+			tokenizer.clear();
+			for (int j = 0; j < dim; ++j) {
+				if (tokenizer.eof()) {
+					kmb::RevocapIOUtils::readOneLine(input, line);
+					tokenizer.str(line);
+					tokenizer.clear();
+				}
+				tokenizer >> v[j];
+			}
+			mesh->setMultiPhysicalValues(nodeId - this->offsetNodeId, v);
+		}
+		delete[] v;
+	}
+	mesh->clearTargetData();
+	std::cout << "elementValueCount " << elementValueCount << std::endl;
+	if (elementValueCount > 0) {
+		// element value dims
+		if (std::getline(input, line)) {
+			std::istringstream tokenizer(line);
+			for (int i = 0; i < elementValueCount; ++i) {
+				int d = 0;
+				tokenizer >> d;
+				elementValDims.push_back(d);
+			}
+		}
+		// element value names
+		int dim = 0;
+		for (int i = 0; i < elementValueCount; ++i) {
+			kmb::RevocapIOUtils::readOneLine(input, line);
+			switch (elementValDims[i]) {
+			case 1:
+				if (!mesh->hasData(line.c_str())) {
+					mesh->createDataBindings(line.c_str(), kmb::DataBindings::ElementVariable, kmb::PhysicalValue::Scalar, "post");
+				}
+				mesh->appendTargetData(line.c_str());
+				dim += 1;
+				break;
+			case 2:
+				if (!mesh->hasData(line.c_str())) {
+					mesh->createDataBindings(line.c_str(), kmb::DataBindings::ElementVariable, kmb::PhysicalValue::Vector2, "post");
+				}
+				mesh->appendTargetData(line.c_str());
+				dim += 2;
+				break;
+			case 3:
+				if (!mesh->hasData(line.c_str())) {
+					mesh->createDataBindings(line.c_str(), kmb::DataBindings::ElementVariable, kmb::PhysicalValue::Vector3, "post");
+				}
+				mesh->appendTargetData(line.c_str());
+				dim += 3;
+				break;
+			case 6:
+				if (!mesh->hasData(line.c_str())) {
+					mesh->createDataBindings(line.c_str(), kmb::DataBindings::ElementVariable, kmb::PhysicalValue::Tensor6, "post");
+				}
+				mesh->appendTargetData(line.c_str());
+				dim += 6;
+				break;
+			default:
+				break;
+			}
+		}
+		// element value
+		kmb::elementIdType elementId = kmb::Element::nullElementId;
+		std::istringstream tokenizer;
+		double* v = new double[dim];
+		for (int i = 0; i < elementCount; ++i) {
+			kmb::RevocapIOUtils::readOneLine(input, line);
+			tokenizer.str(line);
+			tokenizer.clear();
+			tokenizer >> elementId;
+			kmb::RevocapIOUtils::readOneLine(input, line);
+			tokenizer.str(line);
+			tokenizer.clear();
+			for (int j = 0; j < dim; ++j) {
+				if (tokenizer.eof()) {
+					kmb::RevocapIOUtils::readOneLine(input, line);
+					tokenizer.str(line);
+					tokenizer.clear();
+				}
+				tokenizer >> v[j];
+			}
+			mesh->setMultiPhysicalValues(elementId - this->offsetElementId, v);
+		}
+		delete[] v;
+	}
+	input.close();
+	// あえて clearTargetData をしない => boundary extractor で表面に値を引き継がせるため
+	return 0;
+}
+
+template<typename MContainer>
+int kmb::FrontISTRIO::loadResultBinary(std::string filename, MContainer* mesh)
+{
+	std::ifstream input(filename, std::ios_base::in | std::ios_base::binary);
+	if (input.fail()) {
+		return -1;
+	}
+	long nodeCount = 0;
+	long elementCount = 0;
+	long nodeValueCount = 0;
+	long elementValueCount = 0;
+	int dim = 0;
+	std::vector<int> nodeValDims;
+	std::vector<int> elementValDims;
+	// 最初の１行
+	char buf[128];
+	input.read(buf, 19);
+	buf[19] = '\0';
+	if (strncmp("HECMW_BINARY_RESULT", buf, 19) != 0) {
+		input.close();
+		return -1;
+	}
+	// long の大きさ = 4 byte = 32 bit を仮定
+	input.read(buf, 2);
+	buf[2] = '\0';
+	std::cout << "HECMW BINARY RESULT INTEGERSIZE : " << buf << std::endl;
+	// *fstrresult 2.0
+	input.get(buf, 128, '\0');
+	buf[15] = '\0';
+	if (strncmp("*fstrresult 2.0", buf, 15) != 0){
+		input.close();
+		return -2;
+	}
+	input.read(buf, 1);
+	// *comment
+	input.get(buf, 128, '\0');
+	input.read(buf, 1);
+	input.get(buf, 128, '\0');
+	input.read(buf, 1);
+	// *global
+	input.get(buf, 128, '\0');
+	input.read(buf, 1);
+	input.read(buf, sizeof(long));
+	input.read(buf, sizeof(long));
+	// *TOTALTIME
+	input.get(buf, 128, '\0');
+	input.read(buf, 1);
+	input.read(buf, sizeof(double));
+	// *data
+	input.get(buf, 128, '\0');
+	input.read(buf, 1);
+
+	input.read(reinterpret_cast<char*>(&nodeCount), sizeof(long));
+	input.read(reinterpret_cast<char*>(&elementCount), sizeof(long));
+	input.read(reinterpret_cast<char*>(&nodeValueCount), sizeof(long));
+	input.read(reinterpret_cast<char*>(&elementValueCount), sizeof(long));
+
+	// 節点データ
+	mesh->clearTargetData();
+	for (int i = 0; i < nodeValueCount; ++i) {
+		long dl = 0;
+		input.read(reinterpret_cast<char*>(&dl), sizeof(long));
+		int d = static_cast<int>(dl);
+		nodeValDims.push_back(d);
+	}
+	dim = 0;
+	for (int i = 0; i < nodeValueCount; ++i) {
+		input.get(buf, 128, '\0');
+		switch (nodeValDims[i]) {
+		case 1:
+			if (!mesh->hasData(buf)) {
+				mesh->createDataBindings(buf, kmb::DataBindings::NodeVariable, kmb::PhysicalValue::Scalar, "post");
+			}
+			mesh->appendTargetData(buf);
+			dim += 1;
+			break;
+		case 2:
+			if (!mesh->hasData(buf)) {
+				mesh->createDataBindings(buf, kmb::DataBindings::NodeVariable, kmb::PhysicalValue::Vector2, "post");
+			}
+			mesh->appendTargetData(buf);
+			dim += 2;
+			break;
+		case 3:
+			if (!mesh->hasData(buf)) {
+				mesh->createDataBindings(buf, kmb::DataBindings::NodeVariable, kmb::PhysicalValue::Vector3, "post");
+			}
+			mesh->appendTargetData(buf);
+			dim += 3;
+			break;
+		case 6:
+			if (!mesh->hasData(buf)) {
+				mesh->createDataBindings(buf, kmb::DataBindings::NodeVariable, kmb::PhysicalValue::Tensor6, "post");
+			}
+			mesh->appendTargetData(buf);
+			dim += 6;
+			break;
+		default:
+			break;
+		}
+		input.read(buf, 1);
+	}
+	if (nodeValueCount > 0) {
+		kmb::nodeIdType nodeId = kmb::nullNodeId;
+		double* v = new double[dim];
+		for (int i = 0; i < nodeCount; ++i) {
+			long il = 0;
+			input.read(reinterpret_cast<char*>(&il), sizeof(long));
+			nodeId = static_cast<kmb::nodeIdType>(il);
+			input.read(reinterpret_cast<char*>(v), sizeof(double)*dim);
+			mesh->setMultiPhysicalValues(nodeId - this->offsetNodeId, v);
+		}
+		delete[] v;
+	}
+
+	// 要素データ
+	mesh->clearTargetData();
+	for (int i = 0; i < elementValueCount; ++i) {
+		long dl = 0;
+		input.read(reinterpret_cast<char*>(&dl), sizeof(long));
+		int d = static_cast<int>(dl);
+		elementValDims.push_back(d);
+	}
+	dim = 0;
+	for (int i = 0; i < elementValueCount; ++i) {
+		input.get(buf, 128, '\0');
+		switch (elementValDims[i]) {
+		case 1:
+			if (!mesh->hasData(buf)) {
+				mesh->createDataBindings(buf, kmb::DataBindings::ElementVariable, kmb::PhysicalValue::Scalar, "post");
+			}
+			mesh->appendTargetData(buf);
+			dim += 1;
+			break;
+		case 2:
+			if (!mesh->hasData(buf)) {
+				mesh->createDataBindings(buf, kmb::DataBindings::ElementVariable, kmb::PhysicalValue::Vector2, "post");
+			}
+			mesh->appendTargetData(buf);
+			dim += 2;
+			break;
+		case 3:
+			if (!mesh->hasData(buf)) {
+				mesh->createDataBindings(buf, kmb::DataBindings::ElementVariable, kmb::PhysicalValue::Vector3, "post");
+			}
+			mesh->appendTargetData(buf);
+			dim += 3;
+			break;
+		case 6:
+			if (!mesh->hasData(buf)) {
+				mesh->createDataBindings(buf, kmb::DataBindings::ElementVariable, kmb::PhysicalValue::Tensor6, "post");
+			}
+			mesh->appendTargetData(buf);
+			dim += 6;
+			break;
+		default:
+			break;
+		}
+		input.read(buf, 1);
+	}
+	if (elementValueCount > 0) {
+		kmb::elementIdType elementId = kmb::Element::nullElementId;
+		double* v = new double[dim];
+		for (int i = 0; i < elementCount; ++i) {
+			long il = 0;
+			input.read(reinterpret_cast<char*>(&il), sizeof(long));
+			elementId = static_cast<kmb::elementIdType>(il);
+			input.read(reinterpret_cast<char*>(v), sizeof(double)*dim);
+			mesh->setMultiPhysicalValues(elementId - this->offsetElementId, v);
+		}
+		delete[] v;
+	}
+
+	input.close();
+	// あえて clearTargetData をしない => boundary extractor で表面に値を引き継がせるため
 	return 0;
 }

@@ -46,11 +46,17 @@ public:
 	int loadMesh(std::string filename, MContainer* mesh);
 	template<typename MContainer>
 	int saveMesh(std::string filename, const MContainer* mesh);
+	template<typename MContainer>
+	int loadResult(std::string filename, MContainer* mesh);
 	kmb::elementIdType getOffsetElementId(void) const;
 	void setOffsetElementId(kmb::elementIdType offset);
 protected:
 	void count(std::string filename);
 	static kmb::elementType getRevocapType(int etypeHec);
+	template<typename MContainer>
+	int loadResultBinary(std::string filename, MContainer* mesh);
+	template<typename MContainer>
+	int loadResultAscii(std::string filename, MContainer* mesh);
 };
 
 }
