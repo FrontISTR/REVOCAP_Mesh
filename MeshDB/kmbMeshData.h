@@ -270,6 +270,8 @@ public:
 	// Global Hash
 	double getValue(std::string name, std::string key) const;
 	bool setValue(std::string name, std::string key, double v);
+	double getValue(std::string name) const;
+	bool setValue(std::string name,double v);
 
 	// 変換系：データからボディを生成して登録
 	kmb::bodyIdType faceGroupToBody(const char* faceG,const char* stype=NULL);

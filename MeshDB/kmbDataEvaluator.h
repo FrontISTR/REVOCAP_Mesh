@@ -39,6 +39,7 @@ public:
 	DataEvaluator(const kmb::Point2DContainer* point2Ds);
 	virtual ~DataEvaluator(void);
 	bool getMinMax(const kmb::DataBindings* data, kmb::BoundingBox &bbox) const;
+	// comp == -1 ÇÕê‚ëŒíl
 	bool getMinMaxWithId(const kmb::DataBindings* data, kmb::MinMaxWithId<kmb::idType> &minmax,int comp=-1) const;
 	bool getAbsMinMax(const kmb::DataBindings* data, kmb::BoundingBox1D &bbox) const;
 	bool getMinMax(const kmb::DataBindings* data, kmb::BoundingBox1D &bbox) const;

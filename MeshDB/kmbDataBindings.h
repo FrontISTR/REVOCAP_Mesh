@@ -307,6 +307,7 @@ protected:
 public:
 	virtual bool setPhysicalValue(kmb::PhysicalValue* val){
 		if(val->getType() == type){
+			if (value != NULL) delete value;
 			this->value = val;
 			return true;
 		}else{

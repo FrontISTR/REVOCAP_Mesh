@@ -1538,6 +1538,25 @@ bool kmb::MeshData::setValue(std::string name, std::string key, double v)
 	return data->setValue(key, &v);
 }
 
+double kmb::MeshData::getValue(std::string name) const
+{
+	double v = 0.0;
+	const kmb::DataBindings* data = this->getData(name);
+	if (data != NULL) {
+		data->getPhysicalValue()->getValue(&v);
+	}
+	return v;
+}
+
+bool kmb::MeshData::setValue(std::string name, double v)
+{
+	kmb::DataBindings* data = this->getData(name);
+	if (data == NULL) {
+		return false;
+	}
+	return data->setPhysicalValue(new ScalarValue(v));
+}
+
 kmb::bodyIdType
 kmb::MeshData::faceGroupToBody(const char* faceG,const char* stype)
 {
