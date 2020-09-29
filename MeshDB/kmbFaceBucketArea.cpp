@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : FaceBucketArea                                          #
@@ -93,13 +93,13 @@ kmb::FaceBucketArea::setAutoBucketSize(void)
 	// 他のところはほぼ同じ長さになるように分割
 	switch(minIndex){
 	case 0:
-		this->setGridSize( div, static_cast<int>(div * range[1] / range[0]), static_cast<int>(div * range[2] / range[0]) );
+		this->setBlockSize( div, static_cast<int>(div * range[1] / range[0]), static_cast<int>(div * range[2] / range[0]) );
 		break;
 	case 1:
-		this->setGridSize( static_cast<int>(div * range[0] / range[1]), div, static_cast<int>(div * range[2] / range[1]) );
+		this->setBlockSize( static_cast<int>(div * range[0] / range[1]), div, static_cast<int>(div * range[2] / range[1]) );
 		break;
 	case 2:
-		this->setGridSize( static_cast<int>(div * range[0] / range[2]), static_cast<int>(div * range[2] / range[0]), div );
+		this->setBlockSize( static_cast<int>(div * range[0] / range[2]), static_cast<int>(div * range[2] / range[0]), div );
 		break;
 	}
 }
@@ -266,63 +266,63 @@ kmb::FaceBucketArea::appendSubBucket(int i0,int i1,int j0,int j1,int k0,int k1,c
 			// i の幅が最大
 			int i = (i0 + i1)/2;
 			// i と i+1 の境界の x
-			double x = getSubRegionMaxX(i,j0,k0);
+			double x = getX(i+1);
 			switch( kmb::PlaneYZ::getIntersectionTriangle(x,a,b,c,p,q) ){
-			case -2:
+			case kmb::Plane::kALL_NEGATIVE:
 				return appendSubBucket(i0,i,j0,j1,k0,k1,a,b,c,f);
-			case -1:
+			case kmb::Plane::kALL_POSITIVE:
 				return appendSubBucket(i+1,i1,j0,j1,k0,k1,a,b,c,f);
-			case 0:
+			case kmb::Plane::k034_1243:
 				return
 					appendSubBucket(i0,  i,j0,j1,k0,k1,b,c,q,f) +
 					appendSubBucket(i0,  i,j0,j1,k0,k1,b,q,p,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,a,p,q,f);
-			case 1:
+			case kmb::Plane::k134_2043:
 				return
 					appendSubBucket(i0,  i,j0,j1,k0,k1,c,a,q,f) +
 					appendSubBucket(i0,  i,j0,j1,k0,k1,c,q,p,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,b,p,q,f);
-			case 2:
+			case kmb::Plane::k234_0143:
 				return
 					appendSubBucket(i0,  i,j0,j1,k0,k1,a,b,q,f) +
 					appendSubBucket(i0,  i,j0,j1,k0,k1,a,q,p,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,c,p,q,f);
-			case 3:
+			case kmb::Plane::k1243_034:
 				return
 					appendSubBucket(i0,  i,j0,j1,k0,k1,a,p,q,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,b,c,q,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,b,q,p,f);
-			case 4:
+			case kmb::Plane::k2043_134:
 				return
 					appendSubBucket(i0,  i,j0,j1,k0,k1,b,p,q,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,c,a,q,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,c,q,p,f);
-			case 5:
+			case kmb::Plane::k0143_234:
 				return
 					appendSubBucket(i0,  i,j0,j1,k0,k1,c,p,q,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,a,b,q,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,a,q,p,f);
-			case 6:
+			case kmb::Plane::k0_013_032:
 				return
 					appendSubBucket(i0,  i,j0,j1,k0,k1,a,p,c,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,a,b,p,f);
-			case 7:
+			case kmb::Plane::k1_123_130:
 				return
 					appendSubBucket(i0,  i,j0,j1,k0,k1,b,p,a,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,b,c,p,f);
-			case 8:
+			case kmb::Plane::k2_203_231:
 				return
 					appendSubBucket(i0,  i,j0,j1,k0,k1,c,p,b,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,c,a,p,f);
-			case 9:
+			case kmb::Plane::k0_032_013:
 				return
 					appendSubBucket(i0,  i,j0,j1,k0,k1,a,b,p,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,a,p,c,f);
-			case 10:
+			case kmb::Plane::k1_130_123:
 				return
 					appendSubBucket(i0,  i,j0,j1,k0,k1,b,c,p,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,b,p,a,f);
-			case 11:
+			case kmb::Plane::k2_231_203:
 				return
 					appendSubBucket(i0,  i,j0,j1,k0,k1,c,a,p,f) +
 					appendSubBucket(i+1,i1,j0,j1,k0,k1,c,p,b,f);
@@ -335,63 +335,63 @@ kmb::FaceBucketArea::appendSubBucket(int i0,int i1,int j0,int j1,int k0,int k1,c
 			// j の幅が最大
 			int j = (j0 + j1)/2;
 			// j と j+1 の境界の y
-			double y = getSubRegionMaxY(i0,j,k0);
+			double y = getY(j+1);
 			switch( kmb::PlaneZX::getIntersectionTriangle(y,a,b,c,p,q) ){
-			case -2:
+			case kmb::Plane::kALL_NEGATIVE:
 				return appendSubBucket(i0,i1,j0,j,k0,k1,a,b,c,f);
-			case -1:
+			case kmb::Plane::kALL_POSITIVE:
 				return appendSubBucket(i0,i1,j+1,j1,k0,k1,a,b,c,f);
-			case 0:
+			case kmb::Plane::k034_1243:
 				return
 					appendSubBucket(i0,i1,j0, j, k0,k1,b,c,q,f) +
 					appendSubBucket(i0,i1,j0, j, k0,k1,b,q,p,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,a,p,q,f);
-			case 1:
+			case kmb::Plane::k134_2043:
 				return
 					appendSubBucket(i0,i1,j0, j, k0,k1,c,a,q,f) +
 					appendSubBucket(i0,i1,j0, j, k0,k1,c,q,p,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,b,p,q,f);
-			case 2:
+			case kmb::Plane::k234_0143:
 				return
 					appendSubBucket(i0,i1,j0, j, k0,k1,a,b,q,f) +
 					appendSubBucket(i0,i1,j0, j, k0,k1,a,q,p,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,c,p,q,f);
-			case 3:
+			case kmb::Plane::k1243_034:
 				return
 					appendSubBucket(i0,i1,j0, j, k0,k1,a,p,q,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,b,c,q,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,b,q,p,f);
-			case 4:
+			case kmb::Plane::k2043_134:
 				return
 					appendSubBucket(i0,i1,j0, j, k0,k1,b,p,q,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,c,a,q,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,c,q,p,f);
-			case 5:
+			case kmb::Plane::k0143_234:
 				return
 					appendSubBucket(i0,i1,j0, j, k0,k1,c,p,q,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,a,b,q,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,a,q,p,f);
-			case 6:
+			case kmb::Plane::k0_013_032:
 				return
 					appendSubBucket(i0,i1,j0, j, k0,k1,a,p,c,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,a,b,p,f);
-			case 7:
+			case kmb::Plane::k1_123_130:
 				return
 					appendSubBucket(i0,i1,j0, j, k0,k1,b,p,a,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,b,c,p,f);
-			case 8:
+			case kmb::Plane::k2_203_231:
 				return
 					appendSubBucket(i0,i1,j0, j, k0,k1,c,p,b,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,c,a,p,f);
-			case 9:
+			case kmb::Plane::k0_032_013:
 				return
 					appendSubBucket(i0,i1,j0, j, k0,k1,a,b,p,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,a,p,c,f);
-			case 10:
+			case kmb::Plane::k1_130_123:
 				return
 					appendSubBucket(i0,i1,j0, j, k0,k1,b,c,p,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,b,p,a,f);
-			case 11:
+			case kmb::Plane::k2_231_203:
 				return
 					appendSubBucket(i0,i1,j0, j, k0,k1,c,a,p,f) +
 					appendSubBucket(i0,i1,j+1,j1,k0,k1,c,p,b,f);
@@ -404,63 +404,63 @@ kmb::FaceBucketArea::appendSubBucket(int i0,int i1,int j0,int j1,int k0,int k1,c
 			// k の幅が最大
 			int k = (k0 + k1)/2;
 			// k と k+1 の境界の z
-			double z = getSubRegionMaxZ(i0,j0,k);
+			double z = getZ(k+1);
 			switch( kmb::PlaneXY::getIntersectionTriangle(z,a,b,c,p,q) ){
-			case -2:
+			case kmb::Plane::kALL_NEGATIVE:
 				return appendSubBucket(i0,i1,j0,j1,k0, k, a,b,c,f);
-			case -1:
+			case kmb::Plane::kALL_POSITIVE:
 				return appendSubBucket(i0,i1,j0,j1,k+1,k1,a,b,c,f);
-			case 0:
+			case kmb::Plane::k034_1243:
 				return
 					appendSubBucket(i0,i1,j0,j1,k0, k, b,c,q,f) +
 					appendSubBucket(i0,i1,j0,j1,k0, k, b,q,p,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,a,p,q,f);
-			case 1:
+			case kmb::Plane::k134_2043:
 				return
 					appendSubBucket(i0,i1,j0,j1,k0, k, c,a,q,f) +
 					appendSubBucket(i0,i1,j0,j1,k0, k, c,q,p,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,b,p,q,f);
-			case 2:
+			case kmb::Plane::k234_0143:
 				return
 					appendSubBucket(i0,i1,j0,j1,k0, k, a,b,q,f) +
 					appendSubBucket(i0,i1,j0,j1,k0, k, a,q,p,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,c,p,q,f);
-			case 3:
+			case kmb::Plane::k1243_034:
 				return
 					appendSubBucket(i0,i1,j0,j1,k0, k, a,p,q,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,b,c,q,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,b,q,p,f);
-			case 4:
+			case kmb::Plane::k2043_134:
 				return
 					appendSubBucket(i0,i1,j0,j1,k0, k, b,p,q,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,c,a,q,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,c,q,p,f);
-			case 5:
+			case kmb::Plane::k0143_234:
 				return
 					appendSubBucket(i0,i1,j0,j1,k0, k, c,p,q,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,a,b,q,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,a,q,p,f);
-			case 6:
+			case kmb::Plane::k0_013_032:
 				return
 					appendSubBucket(i0,i1,j0,j1,k0, k, a,p,c,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,a,b,p,f);
-			case 7:
+			case kmb::Plane::k1_123_130:
 				return
 					appendSubBucket(i0,i1,j0,j1,k0, k, b,p,a,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,b,c,p,f);
-			case 8:
+			case kmb::Plane::k2_203_231:
 				return
 					appendSubBucket(i0,i1,j0,j1,k0, k, c,p,b,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,c,a,p,f);
-			case 9:
+			case kmb::Plane::k0_032_013:
 				return
 					appendSubBucket(i0,i1,j0,j1,k0, k, a,b,p,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,a,p,c,f);
-			case 10:
+			case kmb::Plane::k1_130_123:
 				return
 					appendSubBucket(i0,i1,j0,j1,k0, k, b,c,p,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,b,p,a,f);
-			case 11:
+			case kmb::Plane::k2_231_203:
 				return
 					appendSubBucket(i0,i1,j0,j1,k0, k, c,a,p,f) +
 					appendSubBucket(i0,i1,j0,j1,k+1,k1,c,p,b,f);
