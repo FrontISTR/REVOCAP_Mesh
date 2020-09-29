@@ -1542,7 +1542,7 @@ double kmb::MeshData::getValue(std::string name) const
 {
 	double v = 0.0;
 	const kmb::DataBindings* data = this->getData(name);
-	if (data != NULL) {
+	if (data != NULL && data->getValueType() == kmb::PhysicalValue::Scalar) {
 		data->getPhysicalValue()->getValue(&v);
 	}
 	return v;
@@ -1555,6 +1555,49 @@ bool kmb::MeshData::setValue(std::string name, double v)
 		return false;
 	}
 	return data->setPhysicalValue(new ScalarValue(v));
+}
+
+bool kmb::MeshData::getValue(std::string name, double* v) const
+{
+	const kmb::DataBindings* data = this->getData(name);
+	if (data == NULL) {
+		return false;
+	}
+	const kmb::PhysicalValue* value = data->getPhysicalValue();
+	if (value == NULL) {
+		return false;
+	}
+	return value->getValue(v);
+}
+
+bool kmb::MeshData::setValue(std::string name, double* v)
+{
+	std::cout << "set value " << name << " " << v[0] << " " << v[1] << " " << v[2] << std::endl;
+	kmb::DataBindings* data = this->getData(name);
+	if (data == NULL) {
+		return false;
+	}
+	kmb::PhysicalValue* value = data->getPhysicalValue();
+	if (value == NULL) {
+		switch (data->getValueType()) {
+		case kmb::PhysicalValue::Scalar:
+			data->setPhysicalValue(new kmb::ScalarValue(v[0]));
+			return true;
+		case kmb::PhysicalValue::Vector2:
+			data->setPhysicalValue(new kmb::Vector2Value(v[0],v[1]));
+			return true;
+		case kmb::PhysicalValue::Vector3:
+			data->setPhysicalValue(new kmb::Vector3Value(v[0], v[1], v[2]));
+			return true;
+		case kmb::PhysicalValue::Tensor6:
+			data->setPhysicalValue(new kmb::Tensor6Value(v[0], v[1], v[2], v[3], v[4], v[5]));
+			return true;
+		default:
+			break;
+		}
+		return false;
+	}
+	return value->setValue(v);
 }
 
 kmb::bodyIdType

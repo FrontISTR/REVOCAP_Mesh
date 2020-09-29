@@ -14,6 +14,17 @@ kmb::bodyIdType kmb::MeshBrep::getVolume(int index) const
 	return volumes[index];
 }
 
+kmb::bodyIdType kmb::MeshBrep::getParent(std::string face) const
+{
+	std::map< std::string, kmb::bodyIdType >::const_iterator f = parents.find(face);
+	if (f != parents.end()) {
+		return f->second;
+	}
+	else {
+		return kmb::Body::nullBodyId;
+	}
+}
+
 size_t kmb::MeshBrep::getVolumeCount(void) const
 {
 	return volumes.size();
@@ -93,6 +104,9 @@ kmb::MeshBrep* kmb::MeshBrep::create3DFaceModel(kmb::MeshData *mesh, double angl
 				std::vector< std::string > subfaces;
 				surfOp.divideFaceGroup(ss.str(), angle, subfaces);
 				brep->faces.insert(std::make_pair(bodyId, subfaces));
+				for (std::string face : subfaces) {
+					brep->parents.insert(std::make_pair(face, bodyId));
+				}
 				mesh->deleteData(ss.str().c_str());
 			}
 			else {
@@ -101,6 +115,7 @@ kmb::MeshBrep* kmb::MeshBrep::create3DFaceModel(kmb::MeshData *mesh, double angl
 				bext.getBoundaryFace(bodyId, ss.str().c_str());
 				std::vector< std::string > subfaces;
 				subfaces.push_back(ss.str());
+				brep->parents.insert(std::make_pair(ss.str(), bodyId));
 				brep->faces.insert(std::make_pair(bodyId, subfaces));
 			}
 		}

@@ -18,7 +18,10 @@ private:
 	std::vector< kmb::bodyIdType > edges;
 	std::map< kmb::bodyIdType, std::vector<std::string> > faces;
 	std::map< kmb::bodyIdType, std::vector<kmb::bodyIdType> > surfaces;
+	std::map< std::string, kmb::bodyIdType > parents;
 public:
+	// FaceGroup から Volume を取得する
+	kmb::bodyIdType getParent(std::string face) const;
 	kmb::bodyIdType getVolume(int index) const;
 	size_t getVolumeCount(void) const;
 	kmb::bodyIdType getPatch(int index) const;
