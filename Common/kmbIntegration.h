@@ -23,12 +23,13 @@
 // 1変数m成分関数fを2次のガウス・ルジャンドル積分公式を使う場合
 // void f(double,double*,int m)
 // double s[m];
-// GaussQuadrature<2>::evaluate_n(f,s);
+// GaussQuadrature<2>::evaluate_n(f,s,m);
 // 2変数関数fを第1変数を2次で、第2変数を3次で積分公式を使う場合
 // GaussQuadrature2<2,3>::evaluate(f)
-// 2変数n成分関数fを第1変数を2次で、第2変数を2次で積分公式を使う場合
+// 2変数m成分関数fを第1変数を2次で、第2変数を2次で積分公式を使う場合
+// void f(double,double,double*,int m)
 // double s[m];
-// GaussQuadrature2<2,2>::evaluate_n(f,s);
+// GaussQuadrature2<2,2>::evaluate_n(f,s,m);
 //
 
 namespace kmb{

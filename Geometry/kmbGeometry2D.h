@@ -57,6 +57,7 @@ public:
 	double& operator[](const int i){ return v[i]; }
 	double operator[](const int i) const { return v[i]; }
 	Tuple2D& operator=(const Tuple2D& other);
+	bool operator<(const Tuple2D& other)const;
 protected:
 	double v[2];
 };
@@ -92,16 +93,14 @@ public:
 
 	// static 関数群
 	// 距離
-#ifndef REVOCAP_SUPPORT_RUBY
 	static double distance(const Point2D& a,const Point2D& b);
 	static double distanceSq(const Point2D& a,const Point2D& b);
-#endif
 	// 三角形の面積
 	// a,b,c が半時計回りの時に正
 	static double area(const Point2D& a,const Point2D& b,const Point2D &c);
 	static Point2D getCenter(const Point2D& a,const Point2D& b);
 	static Point2D getCenter(const Point2D& a,const Point2D& b,const Point2D &c);
-	// 角度（ラジアン）
+	// 角度（ラジアン）∠BAC
 	// -PI < theta <= PI
 	static double angle(const Point2D &a,const Point2D &b,const Point2D &c);
 	// 0 <= theta < 2*PI
@@ -157,7 +156,9 @@ public:
 ///// static
 	static double cos(const Vector2D &v0,const Vector2D &v1);
 	static double sin(const Vector2D &v0,const Vector2D &v1);
+	// -PI から PI まで
 	static double angle(const Vector2D &v0,const Vector2D &v1);
+	// 0 から 2PI まで
 	static double angle2(const Vector2D &v0,const Vector2D &v1);
 	static double abs(const double v[2]);
 };

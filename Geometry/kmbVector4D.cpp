@@ -72,13 +72,48 @@ kmb::Tuple4D::scale(const double r)
 }
 
 kmb::Tuple4D&
-kmb::Tuple4D::operator =(const Tuple4D& other)
+kmb::Tuple4D::operator=(const Tuple4D& other)
 {
 	this->v[0] = other.x();
 	this->v[1] = other.y();
 	this->v[2] = other.z();
 	this->v[3] = other.w();
 	return *this;
+}
+
+bool kmb::Tuple4D::operator<(const kmb::Tuple4D& other) const
+{
+	if (v[0] < other.v[0]) {
+		return true;
+	}
+	else if (v[0] > other.v[0]) {
+		return false;
+	}
+	else {
+		if (v[1] < other.v[1]) {
+			return true;
+		}
+		else if (v[1] > other.v[1]) {
+			return false;
+		}
+		else {
+			if (v[2] < other.v[2]) {
+				return true;
+			}
+			else if (v[2] > other.v[2]) {
+				return false;
+			}
+			else {
+				if (v[3] < other.v[3]) {
+					return true;
+				}
+				else if (v[3] > other.v[3]) {
+					return false;
+				}
+			}
+		}
+	}
+	return false;
 }
 
 /// スカラー積
