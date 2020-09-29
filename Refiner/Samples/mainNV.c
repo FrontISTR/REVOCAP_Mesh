@@ -91,8 +91,8 @@ int main(void)
 	int32_t bnv0Count = 3;
 	int32_t i = 0;
 	int32_t j = 0;
-	int32_t middle = -1;
-	int32_t flag = 0;
+	int32_t middle;
+	int32_t flag;
 	char mode[32];
 	/* 節点番号のオフセット値を与える */
 	rcapInitRefiner( &nodeOffset, &elementOffset );
@@ -248,7 +248,9 @@ int main(void)
 		orgtype = rcapGetOriginal( result_bnv0[i], seg );
 		if( orgtype == RCAP_SEGMENT ){
 			middle = rcapGetMiddle( orgtype, seg );
-			assert( middle == result_bnv0[i] );
+			if (middle != result_bnv0[i]) {
+				printf("middle node error\n");
+			}
 			/* 小さい方になっていることを確かめる */
 			flag = 0;
 			for(j=0;j<bnv0Count;++j){
@@ -265,7 +267,9 @@ int main(void)
 					}
 				}
 			}
-			assert( flag == 1 );
+			if (flag != 1) {
+				printf("node variable error\n");
+			}
 		}
 	}
 	free( result_bnv0 );

@@ -35,7 +35,7 @@ kmb::Color3fValueBindings::Color3fValueBindings(size_t count,kmb::DataBindings::
 	this->bMode = bmode;
 	this->size = static_cast<int>( count );
 	values = new float[3*this->size];
-	std::fill(values,values+(3*this->size),0.0);
+	std::fill(values,values+(3*this->size),0.0f);
 }
 
 kmb::Color3fValueBindings::~Color3fValueBindings(void)

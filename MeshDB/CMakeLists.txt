@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.8)
 file(GLOB MeshDB_SRCS *.cpp)
 file(GLOB MeshDB_HEADERS *.h)
 
-add_library(MeshDB OBJECT ${MeshDB_SRCS})
-add_library(RcapMeshDB STATIC $<TARGET_OBJECTS:MeshDB>)
+add_library(MeshDB_OBJS OBJECT ${MeshDB_SRCS})
+add_library(RcapMeshDB STATIC $<TARGET_OBJECTS:MeshDB_OBJS>)
 
 install(TARGETS RcapMeshDB
   ARCHIVE DESTINATION lib
