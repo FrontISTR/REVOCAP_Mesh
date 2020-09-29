@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : PatchOperation                                          #
@@ -320,8 +320,7 @@ kmb::EdgeStitcher::setInitialNode( kmb::nodeIdType forwardInit, kmb::nodeIdType 
 // 多角形 backward の点 b0 を逆方向に
 // 三角形を作る（1ステップだけ）
 // fend bend に到達したらそれ以上は進めない
-bool
-kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
+bool kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
 {
 	if( result == NULL ){
 		return false;
@@ -370,16 +369,16 @@ kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
 				// f0 f1 b1 b0 からなる四角形で cos が一番小さくなるところを分割するような三角形にする
 				kmb::nodeIdType nextId = kmb::nullNodeId;
 				kmb::Minimizer min;
-				if( min.update( Point3D::cos( pb0, pf0, pf1 ) ) ){
+				if( min.update( Point3D::cos( pf0, pb0, pf1 ) ) ){
 					nextId = b1;
 				}
-				if( min.update( Point3D::cos( pf1, pb1, pb0 ) ) ){
+				if( min.update( Point3D::cos( pb1, pf1, pb0 ) ) ){
 					nextId = b1;
 				}
-				if( min.update( Point3D::cos( pb1, pb0, pf0 ) ) ){
+				if( min.update( Point3D::cos( pb0, pb1, pf0 ) ) ){
 					nextId = f1;
 				}
-				if( min.update( Point3D::cos( pf0, pf1, pb1 ) ) ){
+				if( min.update( Point3D::cos( pf1, pf0, pb1 ) ) ){
 					nextId = f1;
 				}
 				if( nextId == b1 ){

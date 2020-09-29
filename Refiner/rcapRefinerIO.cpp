@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_Refiner version 1.1                          #
 # Program Name : rcapRefinerIO                                         #
@@ -39,7 +39,7 @@
 #include <cstring>
 #include <vector>
 
-#ifdef WIN32
+#ifdef _WIN32
  #if _MSC_VER >= 1400
   #define strcpy(ss0,ss1) strcpy_s(ss0,sizeof(ss1),ss1)
  #endif
