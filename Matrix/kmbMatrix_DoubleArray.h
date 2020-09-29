@@ -79,6 +79,10 @@ protected:
 };
 
 class ColumnVector_DoubleArray : public ColumnVector{
+public:
+	typedef double Component;
+	typedef double Field;
+	static const Field F_MAX;
 private:
 	double *m;
 	int size;
@@ -90,6 +94,7 @@ public:
 	ColumnVector_DoubleArray(const kmb::ColumnVector &vec);
 	virtual ~ColumnVector_DoubleArray(void);
 	virtual int init(int rowSize, int colSize);
+	int initialize(int rowSize) { return init(rowSize, 1); }
 	virtual const char* getContainerType(void) const;
 	virtual int getSize(void) const;
 	virtual int getRowSize(void) const;
@@ -119,6 +124,7 @@ public:
 	RowVector_DoubleArray(const kmb::RowVector &vec);
 	virtual ~RowVector_DoubleArray(void);
 	virtual int init(int rowSize, int colSize);
+	int initialize(int colSize) { return init(1, colSize); }
 	virtual const char* getContainerType(void) const;
 	virtual int getSize(void) const;
 	virtual double getColumn(int i) const;

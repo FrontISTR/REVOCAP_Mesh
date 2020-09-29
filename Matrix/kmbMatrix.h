@@ -37,22 +37,7 @@ class RowVector;
 class LowerTriangularMatrix;
 class UpperTriangularMatrix;
 class DiagonalMatrix;
-
-// 順序は Row Major
-// i*colSize+j
-class MatrixIndex{
-public:
-	int rowIndex;
-	int colIndex;
-	MatrixIndex(int i,int j)
-	: rowIndex(i)
-	, colIndex(j)
-	{}
-	bool operator<(const MatrixIndex &other)const{
-		return (rowIndex < other.rowIndex) ||
-			(rowIndex==other.rowIndex && colIndex < other.colIndex);
-	}
-};
+class MatrixIndex;
 
 class Matrix
 {
@@ -92,6 +77,7 @@ public:
 	virtual bool multiply_vect_left_mask(const double* a, double* x, kmb::Matrix::MASK m ) const;
 	// 自分を右から掛ける a * this = x
 	virtual bool multiply_vect_right(const double* a, double* x) const;
+	virtual bool multiply_vector(const kmb::ColumnVector& a, kmb::ColumnVector& x) const;
 
 	// 代入 this = a
 	virtual bool substitute( const kmb::Matrix &a );
@@ -199,6 +185,9 @@ class ColumnVector;
 
 class SquareMatrix : public Matrix
 {
+public:
+	typedef double Component;
+	typedef double Field;
 protected:
 	int mSize;
 public:
@@ -222,20 +211,10 @@ public:
 
 	// 2次形式
 	// T = kmb::ColumnVector&, double*
-	template <typename T> double quadratic(const T x,const T y) const
-	{
-		double sum = 0.0;
-		int size = getSize();
-		for(int i=0;i<size;++i){
-			for(int j=0;j<size;++j){
-				sum += x[i] * get(i,j) * y[j];
-			}
-		}
-		return sum;
-	}
+	template <typename T> double quadratic(const T x,const T y) const;
 
 	// this * x = b をガウス消去法で解く
-	// コードは同じだけど、仮想関数なのでテンプレートが使えない
+	// 仮想関数版
 	virtual bool solve(const kmb::ColumnVector &b, kmb::ColumnVector &x) const;
 	virtual bool solve(const double* b, double* x) const;
 
@@ -281,6 +260,8 @@ public:
 };
 
 }
+
+#include "Matrix/kmbSquareMatrix_quadratic.h"
 
 #if defined _MSC_VER || defined __INTEL_COMPILER
 #pragma warning(pop)

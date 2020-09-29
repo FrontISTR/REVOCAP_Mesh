@@ -15,6 +15,7 @@
 #include "Matrix/kmbMatrix_DoubleArray.h"
 
 #include <algorithm>
+#include <cfloat>
 
 kmb::Matrix_DoubleArray::Matrix_DoubleArray(int rSize, int cSize)
 : Matrix(rSize,cSize)
