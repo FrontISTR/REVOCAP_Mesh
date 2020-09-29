@@ -10,9 +10,8 @@
 *.bak
 *.u2d
 lib
-build
+build*
 VS2012/**/Win32
 VS2012/**/x64
 VS2012/Win32
 VS2012/x64
-build
