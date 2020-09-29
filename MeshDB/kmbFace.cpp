@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Face                                                    #
@@ -116,7 +116,7 @@ kmb::Face::createElement(const kmb::ElementBase &elem) const
 		if( boundary ){
 			return boundary;
 		}else{
-			delete cell;
+			delete[] cell;
 		}
 	}else if( elem.getDimension() == 3 && this->localFaceId < elem.getBoundaryCount() + elem.getEdgeCount() ){
 		const int edgeId = this->localFaceId - elem.getBoundaryCount();
@@ -127,7 +127,7 @@ kmb::Face::createElement(const kmb::ElementBase &elem) const
 		if( edge ){
 			return edge;
 		}else{
-			delete cell;
+			delete[] cell;
 		}
 	}
 	return NULL;

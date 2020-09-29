@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Collision                                               #
@@ -89,16 +89,16 @@ double kmb::Collision::testSegTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D
 		// 境界で最小を取る
 		kmb::Minimizer min;
 		// 三角形と点
-		double tt[2];
+		double tt[3];
 		if( min.update( p0.distanceSqToTriangle( q0, q1, q2, tt ) ) ){
 			s = 0.0;
-			t[0] = tt[0];
-			t[1] = tt[1];
+			t[0] = tt[1];
+			t[1] = tt[2];
 		}
 		if( min.update( p1.distanceSqToTriangle( q0, q1, q2, tt ) ) ){
 			s = 1.0;
-			t[0] = tt[0];
-			t[1] = tt[1];
+			t[0] = tt[1];
+			t[1] = tt[2];
 		}
 		// 辺と辺
 		double ss0,ss1;

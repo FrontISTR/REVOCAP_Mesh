@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Collision                                               #
@@ -37,7 +37,8 @@ public:
 	void setAccuracy(double acc);
 	double getAccuracy(void) const;
 	// 点と三角形・四角形の距離
-	double distanceSqPtTri(kmb::nodeIdType nodeId,kmb::ElementBase& tri,double s[2]) const;
+	// s[0]*tri[0] + s[1]*tri[1] + s[2]*tri[2] で最短
+	double distanceSqPtTri(kmb::nodeIdType nodeId,kmb::ElementBase& tri,double s[3]) const;
 	double distanceSqPtQuad(kmb::Point3D& pt,kmb::ElementBase& quad) const;
 	// 線分同士の距離
 	double distanceSqSegSeg(kmb::nodeIdType a0,kmb::nodeIdType a1,kmb::nodeIdType b0,kmb::nodeIdType b1,double &t1, double &t2) const;
