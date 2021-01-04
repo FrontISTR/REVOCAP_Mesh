@@ -51,6 +51,7 @@ public:
 	kmb::elementIdType getOffsetElementId(void) const;
 	void setOffsetElementId(kmb::elementIdType offset);
 protected:
+	// 内部の変数に個数を代入する
 	void count(std::string filename);
 	static kmb::elementType getRevocapType(int etypeHec);
 	template<typename MContainer>
