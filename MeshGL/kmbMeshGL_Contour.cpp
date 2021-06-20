@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshGL                                                  #
@@ -3822,10 +3822,10 @@ kmb::MeshGL::drawNodeContourAllNodes(const char* physicalValue, kmb::ColorMap* c
 	}
 }
 
-void
-kmb::MeshGL::deformFaceGroupNodeContour
-(const char* faceName, const char* displacement, double factor,
- const char* physicalValue, kmb::ColorMap* colorMap,int comp)
+void kmb::MeshGL::deformFaceGroupNodeContour(
+	const char* faceName, const char* displacement, double factor,
+	const char* physicalValue, kmb::ColorMap* colorMap,int comp
+)
 {
 	const kmb::DataBindings* data = NULL;
 	const kmb::DataBindings* displace = NULL;
@@ -4028,7 +4028,7 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					++fIter;
 				}
 			}
-		}else if( data->getValueType() == kmb::PhysicalValue::Vector3 && comp == -1){
+		}else if(nodeValue->getValueType() == kmb::PhysicalValue::Vector3 && comp == -1){
 			double v0[3] = {0.0, 0.0, 0.0},
 				v1[3] = {0.0, 0.0, 0.0},
 				v2[3] = {0.0, 0.0, 0.0},
@@ -4217,7 +4217,7 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					++fIter;
 				}
 			}
-		}else if( data->getValueType() == kmb::PhysicalValue::Vector3 && 0 <= comp && comp < 3){
+		}else if( nodeValue->getValueType() == kmb::PhysicalValue::Vector3 && 0 <= comp && comp < 3){
 			double v0[3] = {0.0, 0.0, 0.0},
 				v1[3] = {0.0, 0.0, 0.0},
 				v2[3] = {0.0, 0.0, 0.0},
@@ -4406,7 +4406,7 @@ kmb::MeshGL::deformFaceGroupNodeContour
 					++fIter;
 				}
 			}
-		}else if( data->getValueType() == kmb::PhysicalValue::Tensor6 && 0 <= comp && comp < 6){
+		}else if( nodeValue->getValueType() == kmb::PhysicalValue::Tensor6 && 0 <= comp && comp < 6){
 			double v0[] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
 				v1[] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
 				v2[] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
