@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : HecmwIO                                                 #
@@ -51,7 +51,7 @@
 #include <algorithm>
 
 
-#ifdef WIN32
+#ifdef _WIN32
  #if _MSC_VER >= 1400
   #define sprintf sprintf_s
  #endif
@@ -613,12 +613,12 @@ kmb::HecmwIO::readSection( std::ifstream &input, std::string &line, kmb::MeshDat
 				// なければ新規登録
 				index = createEgrpInfo( name, matname );
 			}
-			std::cout << "section " << egrpInfo[index].bodyId << " " << egrpInfo[index].egrpName << " => " << egrpInfo[index].materialName << std::endl;
 			// Body の生成（入れ物だけ）
 			bodyId = mesh->beginElement( egrpInfo[index].egrpCount );
 			mesh->endElement();
 			mesh->setBodyName( bodyId, name.c_str() );
 			egrpInfo[index].bodyId = bodyId;
+			std::cout << "section " << egrpInfo[index].bodyId << " " << egrpInfo[index].egrpName << " => " << egrpInfo[index].materialName << std::endl;
 			// Section データの解析
 			kmb::HashValue* hash = new kmb::HashValue();
 			std::string typestr = kmb::RevocapIOUtils::getValue( line, "TYPE" );
@@ -996,6 +996,7 @@ kmb::HecmwIO::readEGroup( std::ifstream &input, std::string &line, kmb::MeshData
 {
 	size_t count = 0;
 	if( mesh == NULL ){
+		// 名前と個数を調べるだけで読み込まない
 		std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
 		// egrpInfo から探す
 		int index = getEgrpInfoIndex( name );
@@ -1631,7 +1632,7 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 			kmb::PhysicalValue::Hash,
 			"SECTION");
 		// １回目の読み込み時に要素だけすべて読む
-		kmb::ElementContainerMap elements;
+		kmb::ElementContainerMap* elements = new kmb::ElementContainerMap();
 		// 読み込み時のテンポラリ
 		size_t nodeCount = 0;
 		std::string line;
@@ -1670,7 +1671,7 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 						index = createEgrpInfo( "ALL", "" );
 					}
 
-					count = readElement( input, line, &elements );
+					count = readElement( input, line, elements );
 					egrpInfo[index].egrpCount += count;
 				}
 			}else if( line.find("!SECTION") == 0 ){
@@ -1707,7 +1708,7 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 					}
 					if( egrpIter->egrpName == "ALL" ){
 						kmb::ElementContainer* body = mesh->getBodyPtr( egrpIter->bodyId );
-						kmb::ElementContainer::iterator eIter = elements.begin();
+						kmb::ElementContainer::iterator eIter = elements->begin();
 						kmb::nodeIdType* nodeTable = new kmb::nodeIdType[ kmb::Element::MAX_NODE_COUNT ];
 						kmb::elementType etype = kmb::UNKNOWNTYPE;
 						while( !eIter.isFinished() ){
@@ -1716,16 +1717,16 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 							++eIter;
 						}
 						delete[] nodeTable;
-						elements.clear();
+						elements->clear();
 						break;
 					}
 				}
 				++egrpIter;
 			}
 		}
-
 		// 本番
 		// !NODE が複数回現れてもよいようにする
+		std::cout << "Node Count " << nodeCount << std::endl;
 		mesh->beginNode( nodeCount );
 		mesh->endNode();
 		// 最初の１行
@@ -1734,9 +1735,13 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 			// ヘッダ部の解析
 			if( line.find("!HEADER") == 0 ){
 				readHeader( input, line );
+				std::cout << "Complete" << std::endl;
 			}else if( line.find("!NODE") == 0 ){
+				std::cout << "Read Node ";
 				readNode( input, line, mesh );
+				std::cout << "Complete" << std::endl;
 			}else if( line.find("!ELEMENT") == 0 ){
+				std::cout << "Read Element ";
 				std::string name = kmb::RevocapIOUtils::getValue( line, "EGRP" );
 				if( name == "" ){
 					// EGRP が定義されていない場合は ALL として既に読み込み済み
@@ -1758,18 +1763,25 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 					if( bodyId_eg != kmb::Body::nullBodyId ){
 						// SECTION に定義済みの時は本番読み
 						kmb::ElementContainer* body = mesh->getBodyPtr( bodyId_eg );
-						readElement( input, line, body );
+						size_t size = readElement( input, line, body );
+						std::cout << "Count " << size << " ";
 					}else{
 						// SECTION に定義されていない時は ALL として読む
-						readElement( input, line, NULL );
+						size_t size = readElement( input, line, NULL );
+						std::cout << "Count " << size << " ";
 					}
 				}
+				std::cout << "Complete" << std::endl;
 			}else if( line.find("!SECTION") == 0 ){
+				std::cout << "Read Section ";
 				readSection( input, line, NULL );
+				std::cout << "Complete" << std::endl;
 			}else if( line.find("!MATERIAL") == 0 ){
+				std::cout << "Read Material ";
 				readMaterial( input, line, NULL );
+				std::cout << "Complete" << std::endl;
 			}else if( line.find("!EGROUP") == 0 ){
-				readEGroup( input, line, mesh, &elements );
+				readEGroup( input, line, mesh, elements );
 			}else if( line.find("!NGROUP") == 0 ){
 				readNGroup( input, line, mesh );
 			}else if( line.find("!SGROUP") == 0 ){
@@ -1779,6 +1791,11 @@ kmb::HecmwIO::loadFromFile(const char* filename,MeshData* mesh)
 			}
 		}
 		input.close();
+		std::cout << "size of temporary element container " << elements->getCount() << std::endl;
+		elements->clear();
+		std::cout << "clear temporary element container" << std::endl;
+		delete elements;
+		std::cout << "delete element container" << std::endl;
 		return 0;
 	}
 }

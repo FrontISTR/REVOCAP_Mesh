@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : HecmwIO (Ver.3)                                         #
@@ -27,7 +27,7 @@
 #include <cstdlib>
 #include <cstring>
 
-#ifdef WIN32
+#ifdef _WIN32
  #if _MSC_VER >= 1400
   #define sprintf sprintf_s
  #endif

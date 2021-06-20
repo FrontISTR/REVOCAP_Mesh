@@ -128,7 +128,6 @@ public:
 		const_iterator(const iterator& other);
 		~const_iterator(void){ if( _it ) delete _it; }
 		nodeIdType getId(void) const;
-		const kmb::Point3D* getPoint(void) const;
 		bool getXYZ(double &x,double &y,double &z) const;
 		bool getPoint( kmb::Point3D &point ) const;
 		double x() const;

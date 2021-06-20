@@ -55,6 +55,7 @@ public:
 	double& operator[](const int i){ return v[i]; }
 	double operator[](const int i) const { return v[i]; }
 	Tuple4D& operator=(const Tuple4D& other);
+	bool operator<(const Tuple4D& other)const;
 protected:
 	double v[4];
 };
@@ -73,8 +74,8 @@ public:
 	Point4D operator-(const Vector4D& other) const;
 	Point4D& operator+=(const Vector4D& other);
 	Point4D& operator-=(const Vector4D& other);
-	virtual bool operator==(const Point4D& other) const;
-	virtual bool operator!=(const Point4D& other) const;
+	bool operator==(const Point4D& other) const;
+	bool operator!=(const Point4D& other) const;
 	// ２点間の距離
 	double distance(const Point4D& other) const;
 	double distance(double x,double y,double z,double w) const;
@@ -82,10 +83,8 @@ public:
 	double distanceSq(double x,double y,double z,double w) const;
 	// static 関数群
 	// 距離
-#ifndef REVOCAP_SUPPORT_RUBY
 	static double distance(const Point4D& a,const Point4D& b);
 	static double distanceSq(const Point4D& a,const Point4D& b);
-#endif
 	static Point4D infinity;
 };
 

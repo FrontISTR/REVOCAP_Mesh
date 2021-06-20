@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Element                                                 #
@@ -2489,6 +2489,87 @@ kmb::nodeIdType kmb::Element::operator[](const int i) const
 kmb::nodeIdType& kmb::Element::operator[](const int i)
 {
 	return cell[i];
+}
+
+kmb::nodeIdType kmb::Element::operator()(const int index, const int i) const
+{
+	switch (getType())
+	{
+	case SEGMENT:
+	case SEGMENT2:
+		return cell[index];
+	case TRIANGLE:
+		return cell[kmb::Triangle::faceTable[index][i]];
+	case TRIANGLE2:
+		return cell[kmb::Triangle2::faceTable[index][i]];
+	case QUAD:
+		return cell[kmb::Quad::faceTable[index][i]];
+	case QUAD2:
+		return cell[kmb::Quad2::faceTable[index][i]];
+	case TETRAHEDRON:
+		return cell[kmb::Tetrahedron::faceTable[index][i]];
+	case TETRAHEDRON2:
+		return cell[kmb::Tetrahedron2::faceTable[index][i]];
+	case WEDGE:
+		return cell[kmb::Wedge::faceTable[index][i]];
+	case WEDGE2:
+		return cell[kmb::Wedge2::faceTable[index][i]];
+	case PYRAMID:
+		return cell[kmb::Pyramid::faceTable[index][i]];
+	case PYRAMID2:
+		return cell[kmb::Pyramid2::faceTable[index][i]];
+	case HEXAHEDRON:
+		return cell[kmb::Hexahedron::faceTable[index][i]];
+	case HEXAHEDRON2:
+		return cell[kmb::Hexahedron2::faceTable[index][i]];
+	case QUADRILATERAL_INTERFACE:
+		return cell[kmb::QuadInterface::faceTable[index][i]];
+	case TRIANGLE_INTERFACE:
+		return cell[kmb::TriInterface::faceTable[index][i]];
+	default:
+		break;
+	}
+	return kmb::nullNodeId;
+}
+
+kmb::nodeIdType& kmb::Element::operator()(const int index, const int i)
+{
+	switch (getType())
+	{
+	case SEGMENT:
+	case SEGMENT2:
+		return cell[index];
+	case TRIANGLE:
+		return cell[kmb::Triangle::faceTable[index][i]];
+	case TRIANGLE2:
+		return cell[kmb::Triangle2::faceTable[index][i]];
+	case QUAD:
+		return cell[kmb::Quad::faceTable[index][i]];
+	case QUAD2:
+		return cell[kmb::Quad2::faceTable[index][i]];
+	case TETRAHEDRON:
+		return cell[kmb::Tetrahedron::faceTable[index][i]];
+	case TETRAHEDRON2:
+		return cell[kmb::Tetrahedron2::faceTable[index][i]];
+	case WEDGE:
+		return cell[kmb::Wedge::faceTable[index][i]];
+	case WEDGE2:
+		return cell[kmb::Wedge2::faceTable[index][i]];
+	case PYRAMID:
+		return cell[kmb::Pyramid::faceTable[index][i]];
+	case PYRAMID2:
+		return cell[kmb::Pyramid2::faceTable[index][i]];
+	case HEXAHEDRON:
+		return cell[kmb::Hexahedron::faceTable[index][i]];
+	case HEXAHEDRON2:
+		return cell[kmb::Hexahedron2::faceTable[index][i]];
+	case QUADRILATERAL_INTERFACE:
+		return cell[kmb::QuadInterface::faceTable[index][i]];
+	case TRIANGLE_INTERFACE:
+		return cell[kmb::TriInterface::faceTable[index][i]];
+	default:
+		return cell[-1];
+	}
 }
 
 //---------------- 型情報 ------------------------

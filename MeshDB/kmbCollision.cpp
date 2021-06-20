@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Collision                                               #
@@ -67,7 +67,7 @@ kmb::Collision::getAccuracy(void) const
 }
 
 double
-kmb::Collision::distanceSqPtTri(kmb::nodeIdType nodeId,kmb::ElementBase& tri,double s[2]) const
+kmb::Collision::distanceSqPtTri(kmb::nodeIdType nodeId,kmb::ElementBase& tri,double s[3]) const
 {
 	kmb::Point3D p0,q0,q1,q2;
 	if( points &&

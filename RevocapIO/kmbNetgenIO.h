@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : NetgenIO                                                #
@@ -23,8 +23,8 @@ class NetgenIO
 public:
 	NetgenIO(void){};
 	~NetgenIO(void){};
-	int loadFromFile(const char* filename,kmb::MeshData* mesh);
-	int saveToFile(const char* filename,const kmb::MeshData* mesh);
+	int loadMesh(const char* filename,kmb::MeshData* mesh);
+	int saveMesh(const char* filename,const kmb::MeshData* mesh);
 };
 
 }

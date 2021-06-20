@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementEvaluator                                        #
@@ -406,8 +406,7 @@ kmb::ElementEvaluator::getAverageEdgeLength(const kmb::ElementBase &eIter) const
 	return -1.0;
 }
 
-double
-kmb::ElementEvaluator::getMinAngleCos(const kmb::ElementBase &eIter) const
+double kmb::ElementEvaluator::getMinAngleCos(const kmb::ElementBase &eIter) const
 {
 	kmb::Minimizer min;
 	if( points != NULL ){
@@ -438,10 +437,10 @@ kmb::ElementEvaluator::getMinAngleCos(const kmb::ElementBase &eIter) const
 				 && points->getPoint( eIter[3], n3 )
 				 )
 				{
-					min.update( kmb::Point3D::cos(n0,n1,n2) );
-					min.update( kmb::Point3D::cos(n1,n2,n3) );
-					min.update( kmb::Point3D::cos(n2,n3,n0) );
-					min.update( kmb::Point3D::cos(n3,n0,n1) );
+					min.update( kmb::Point3D::cos(n0,n1,n3) );
+					min.update( kmb::Point3D::cos(n1,n2,n0) );
+					min.update( kmb::Point3D::cos(n2,n3,n1) );
+					min.update( kmb::Point3D::cos(n3,n0,n2) );
 				}
 			}
 			break;
@@ -452,8 +451,7 @@ kmb::ElementEvaluator::getMinAngleCos(const kmb::ElementBase &eIter) const
 	return min.getMin();
 }
 
-double
-kmb::ElementEvaluator::getMaxAngleCos(const kmb::ElementBase &eIter) const
+double kmb::ElementEvaluator::getMaxAngleCos(const kmb::ElementBase &eIter) const
 {
 	kmb::Maximizer max;
 	if( points != NULL ){
@@ -484,10 +482,10 @@ kmb::ElementEvaluator::getMaxAngleCos(const kmb::ElementBase &eIter) const
 				 && points->getPoint( eIter[3], n3 )
 				 )
 				{
-					max.update( kmb::Point3D::cos(n0,n1,n2) );
-					max.update( kmb::Point3D::cos(n1,n2,n3) );
-					max.update( kmb::Point3D::cos(n2,n3,n0) );
-					max.update( kmb::Point3D::cos(n3,n0,n1) );
+					max.update( kmb::Point3D::cos(n0,n1,n3) );
+					max.update( kmb::Point3D::cos(n1,n2,n0) );
+					max.update( kmb::Point3D::cos(n2,n3,n1) );
+					max.update( kmb::Point3D::cos(n3,n0,n2) );
 				}
 			}
 			break;
@@ -1068,8 +1066,7 @@ kmb::ElementEvaluator::getAngle(const kmb::ElementBase &eIter,kmb::nodeIdType no
 	return kmb::ElementEvaluator::getAngleByIndex(eIter,index);
 }
 
-double
-kmb::ElementEvaluator::getAngleByIndex(const kmb::ElementBase &eIter,int index) const
+double kmb::ElementEvaluator::getAngleByIndex(const kmb::ElementBase &eIter,int index) const
 {
 	double angle = -PI;
 	if( points != NULL ){
@@ -1082,24 +1079,24 @@ kmb::ElementEvaluator::getAngleByIndex(const kmb::ElementBase &eIter,int index) 
 		case TRIANGLE2:
 			switch(index){
 			case 0:
-				if( points->getPoint( eIter[2], p0 ) &&
-					points->getPoint( eIter[0], p1 ) &&
+				if( points->getPoint( eIter[2], p1 ) &&
+					points->getPoint( eIter[0], p0 ) &&
 					points->getPoint( eIter[1], p2 ) )
 				{
 					angle = kmb::Point3D::angle(p0,p1,p2);
 				}
 				break;
 			case 1:
-				if( points->getPoint( eIter[0], p0 ) &&
-					points->getPoint( eIter[1], p1 ) &&
+				if( points->getPoint( eIter[0], p1 ) &&
+					points->getPoint( eIter[1], p0 ) &&
 					points->getPoint( eIter[2], p2 ) )
 				{
 					angle = kmb::Point3D::angle(p0,p1,p2);
 				}
 				break;
 			case 2:
-				if( points->getPoint( eIter[1], p0 ) &&
-					points->getPoint( eIter[2], p1 ) &&
+				if( points->getPoint( eIter[1], p1 ) &&
+					points->getPoint( eIter[2], p0 ) &&
 					points->getPoint( eIter[0], p2 ) )
 				{
 					angle = kmb::Point3D::angle(p0,p1,p2);
@@ -1113,32 +1110,32 @@ kmb::ElementEvaluator::getAngleByIndex(const kmb::ElementBase &eIter,int index) 
 		case QUAD2:
 			switch(index){
 			case 0:
-				if( points->getPoint( eIter[3], p0 ) &&
-					points->getPoint( eIter[0], p1 ) &&
+				if( points->getPoint( eIter[3], p1 ) &&
+					points->getPoint( eIter[0], p0 ) &&
 					points->getPoint( eIter[1], p2 ) )
 				{
 					angle = kmb::Point3D::angle(p0,p1,p2);
 				}
 				break;
 			case 1:
-				if( points->getPoint( eIter[0], p0 ) &&
-					points->getPoint( eIter[1], p1 ) &&
+				if( points->getPoint( eIter[0], p1 ) &&
+					points->getPoint( eIter[1], p0 ) &&
 					points->getPoint( eIter[2], p2 ) )
 				{
 					angle = kmb::Point3D::angle(p0,p1,p2);
 				}
 				break;
 			case 2:
-				if( points->getPoint( eIter[1], p0 ) &&
-					points->getPoint( eIter[2], p1 ) &&
+				if( points->getPoint( eIter[1], p1 ) &&
+					points->getPoint( eIter[2], p0 ) &&
 					points->getPoint( eIter[3], p2 ) )
 				{
 					angle = kmb::Point3D::angle(p0,p1,p2);
 				}
 				break;
 			case 3:
-				if( points->getPoint( eIter[2], p0 ) &&
-					points->getPoint( eIter[3], p1 ) &&
+				if( points->getPoint( eIter[2], p1 ) &&
+					points->getPoint( eIter[3], p0 ) &&
 					points->getPoint( eIter[0], p2 ) )
 				{
 					angle = kmb::Point3D::angle(p0,p1,p2);
@@ -1160,24 +1157,24 @@ kmb::ElementEvaluator::getAngleByIndex(const kmb::ElementBase &eIter,int index) 
 		case TRIANGLE2:
 			switch(index){
 			case 0:
-				if( point2Ds->getPoint( eIter[2], p0 ) &&
-					point2Ds->getPoint( eIter[0], p1 ) &&
+				if( point2Ds->getPoint( eIter[2], p1 ) &&
+					point2Ds->getPoint( eIter[0], p0 ) &&
 					point2Ds->getPoint( eIter[1], p2 ) )
 				{
 					angle = kmb::Point2D::angle(p0,p1,p2);
 				}
 				break;
 			case 1:
-				if( point2Ds->getPoint( eIter[0], p0 ) &&
-					point2Ds->getPoint( eIter[1], p1 ) &&
+				if( point2Ds->getPoint( eIter[0], p1 ) &&
+					point2Ds->getPoint( eIter[1], p0 ) &&
 					point2Ds->getPoint( eIter[2], p2 ) )
 				{
 					angle = kmb::Point2D::angle(p0,p1,p2);
 				}
 				break;
 			case 2:
-				if( point2Ds->getPoint( eIter[1], p0 ) &&
-					point2Ds->getPoint( eIter[2], p1 ) &&
+				if( point2Ds->getPoint( eIter[1], p1 ) &&
+					point2Ds->getPoint( eIter[2], p0 ) &&
 					point2Ds->getPoint( eIter[0], p2 ) )
 				{
 					angle = kmb::Point2D::angle(p0,p1,p2);
@@ -1191,32 +1188,32 @@ kmb::ElementEvaluator::getAngleByIndex(const kmb::ElementBase &eIter,int index) 
 		case QUAD2:
 			switch(index){
 			case 0:
-				if( point2Ds->getPoint( eIter[3], p0 ) &&
-					point2Ds->getPoint( eIter[0], p1 ) &&
+				if( point2Ds->getPoint( eIter[3], p1 ) &&
+					point2Ds->getPoint( eIter[0], p0 ) &&
 					point2Ds->getPoint( eIter[1], p2 ) )
 				{
 					angle = kmb::Point2D::angle(p0,p1,p2);
 				}
 				break;
 			case 1:
-				if( point2Ds->getPoint( eIter[0], p0 ) &&
-					point2Ds->getPoint( eIter[1], p1 ) &&
+				if( point2Ds->getPoint( eIter[0], p1 ) &&
+					point2Ds->getPoint( eIter[1], p0 ) &&
 					point2Ds->getPoint( eIter[2], p2 ) )
 				{
 					angle = kmb::Point2D::angle(p0,p1,p2);
 				}
 				break;
 			case 2:
-				if( point2Ds->getPoint( eIter[1], p0 ) &&
-					point2Ds->getPoint( eIter[2], p1 ) &&
+				if( point2Ds->getPoint( eIter[1], p1 ) &&
+					point2Ds->getPoint( eIter[2], p0 ) &&
 					point2Ds->getPoint( eIter[3], p2 ) )
 				{
 					angle = kmb::Point2D::angle(p0,p1,p2);
 				}
 				break;
 			case 3:
-				if( point2Ds->getPoint( eIter[2], p0 ) &&
-					point2Ds->getPoint( eIter[3], p1 ) &&
+				if( point2Ds->getPoint( eIter[2], p1 ) &&
+					point2Ds->getPoint( eIter[3], p0 ) &&
 					point2Ds->getPoint( eIter[0], p2 ) )
 				{
 					angle = kmb::Point2D::angle(p0,p1,p2);
@@ -1232,8 +1229,7 @@ kmb::ElementEvaluator::getAngleByIndex(const kmb::ElementBase &eIter,int index) 
 	return angle;
 }
 
-double
-kmb::ElementEvaluator::getCosByIndex(const kmb::ElementBase &eIter,int index) const
+double kmb::ElementEvaluator::getCosByIndex(const kmb::ElementBase &eIter,int index) const
 {
 	double c = -1.0;
 	if( points != NULL ){
@@ -1246,14 +1242,6 @@ kmb::ElementEvaluator::getCosByIndex(const kmb::ElementBase &eIter,int index) co
 		case TRIANGLE2:
 			switch(index){
 			case 0:
-				if( points->getPoint( eIter[2], p0 ) &&
-					points->getPoint( eIter[0], p1 ) &&
-					points->getPoint( eIter[1], p2 ) )
-				{
-					c = kmb::Point3D::cos(p0,p1,p2);
-				}
-				break;
-			case 1:
 				if( points->getPoint( eIter[0], p0 ) &&
 					points->getPoint( eIter[1], p1 ) &&
 					points->getPoint( eIter[2], p2 ) )
@@ -1261,10 +1249,18 @@ kmb::ElementEvaluator::getCosByIndex(const kmb::ElementBase &eIter,int index) co
 					c = kmb::Point3D::cos(p0,p1,p2);
 				}
 				break;
-			case 2:
+			case 1:
 				if( points->getPoint( eIter[1], p0 ) &&
 					points->getPoint( eIter[2], p1 ) &&
 					points->getPoint( eIter[0], p2 ) )
+				{
+					c = kmb::Point3D::cos(p0,p1,p2);
+				}
+				break;
+			case 2:
+				if( points->getPoint( eIter[2], p0 ) &&
+					points->getPoint( eIter[0], p1 ) &&
+					points->getPoint( eIter[1], p2 ) )
 				{
 					c = kmb::Point3D::cos(p0,p1,p2);
 				}
@@ -1277,33 +1273,33 @@ kmb::ElementEvaluator::getCosByIndex(const kmb::ElementBase &eIter,int index) co
 		case QUAD2:
 			switch(index){
 			case 0:
-				if( points->getPoint( eIter[3], p0 ) &&
-					points->getPoint( eIter[0], p1 ) &&
-					points->getPoint( eIter[1], p2 ) )
-				{
-					c = kmb::Point3D::cos(p0,p1,p2);
-				}
-				break;
-			case 1:
 				if( points->getPoint( eIter[0], p0 ) &&
 					points->getPoint( eIter[1], p1 ) &&
-					points->getPoint( eIter[2], p2 ) )
-				{
-					c = kmb::Point3D::cos(p0,p1,p2);
-				}
-				break;
-			case 2:
-				if( points->getPoint( eIter[1], p0 ) &&
-					points->getPoint( eIter[2], p1 ) &&
 					points->getPoint( eIter[3], p2 ) )
 				{
 					c = kmb::Point3D::cos(p0,p1,p2);
 				}
 				break;
-			case 3:
+			case 1:
+				if( points->getPoint( eIter[1], p0 ) &&
+					points->getPoint( eIter[2], p1 ) &&
+					points->getPoint( eIter[0], p2 ) )
+				{
+					c = kmb::Point3D::cos(p0,p1,p2);
+				}
+				break;
+			case 2:
 				if( points->getPoint( eIter[2], p0 ) &&
 					points->getPoint( eIter[3], p1 ) &&
-					points->getPoint( eIter[0], p2 ) )
+					points->getPoint( eIter[1], p2 ) )
+				{
+					c = kmb::Point3D::cos(p0,p1,p2);
+				}
+				break;
+			case 3:
+				if( points->getPoint( eIter[3], p0 ) &&
+					points->getPoint( eIter[0], p1 ) &&
+					points->getPoint( eIter[2], p2 ) )
 				{
 					c = kmb::Point3D::cos(p0,p1,p2);
 				}
@@ -1324,14 +1320,6 @@ kmb::ElementEvaluator::getCosByIndex(const kmb::ElementBase &eIter,int index) co
 		case TRIANGLE2:
 			switch(index){
 			case 0:
-				if( point2Ds->getPoint( eIter[2], p0 ) &&
-					point2Ds->getPoint( eIter[0], p1 ) &&
-					point2Ds->getPoint( eIter[1], p2 ) )
-				{
-					c = kmb::Point2D::cos(p0,p1,p2);
-				}
-				break;
-			case 1:
 				if( point2Ds->getPoint( eIter[0], p0 ) &&
 					point2Ds->getPoint( eIter[1], p1 ) &&
 					point2Ds->getPoint( eIter[2], p2 ) )
@@ -1339,10 +1327,18 @@ kmb::ElementEvaluator::getCosByIndex(const kmb::ElementBase &eIter,int index) co
 					c = kmb::Point2D::cos(p0,p1,p2);
 				}
 				break;
-			case 2:
+			case 1:
 				if( point2Ds->getPoint( eIter[1], p0 ) &&
 					point2Ds->getPoint( eIter[2], p1 ) &&
 					point2Ds->getPoint( eIter[0], p2 ) )
+				{
+					c = kmb::Point2D::cos(p0,p1,p2);
+				}
+				break;
+			case 2:
+				if( point2Ds->getPoint( eIter[2], p0 ) &&
+					point2Ds->getPoint( eIter[0], p1 ) &&
+					point2Ds->getPoint( eIter[1], p2 ) )
 				{
 					c = kmb::Point2D::cos(p0,p1,p2);
 				}
@@ -1355,33 +1351,33 @@ kmb::ElementEvaluator::getCosByIndex(const kmb::ElementBase &eIter,int index) co
 		case QUAD2:
 			switch(index){
 			case 0:
-				if( point2Ds->getPoint( eIter[3], p0 ) &&
-					point2Ds->getPoint( eIter[0], p1 ) &&
-					point2Ds->getPoint( eIter[1], p2 ) )
-				{
-					c = kmb::Point2D::cos(p0,p1,p2);
-				}
-				break;
-			case 1:
 				if( point2Ds->getPoint( eIter[0], p0 ) &&
 					point2Ds->getPoint( eIter[1], p1 ) &&
-					point2Ds->getPoint( eIter[2], p2 ) )
-				{
-					c = kmb::Point2D::cos(p0,p1,p2);
-				}
-				break;
-			case 2:
-				if( point2Ds->getPoint( eIter[1], p0 ) &&
-					point2Ds->getPoint( eIter[2], p1 ) &&
 					point2Ds->getPoint( eIter[3], p2 ) )
 				{
 					c = kmb::Point2D::cos(p0,p1,p2);
 				}
 				break;
-			case 3:
+			case 1:
+				if( point2Ds->getPoint( eIter[1], p0 ) &&
+					point2Ds->getPoint( eIter[2], p1 ) &&
+					point2Ds->getPoint( eIter[0], p2 ) )
+				{
+					c = kmb::Point2D::cos(p0,p1,p2);
+				}
+				break;
+			case 2:
 				if( point2Ds->getPoint( eIter[2], p0 ) &&
 					point2Ds->getPoint( eIter[3], p1 ) &&
-					point2Ds->getPoint( eIter[0], p2 ) )
+					point2Ds->getPoint( eIter[1], p2 ) )
+				{
+					c = kmb::Point2D::cos(p0,p1,p2);
+				}
+				break;
+			case 3:
+				if( point2Ds->getPoint( eIter[3], p0 ) &&
+					point2Ds->getPoint( eIter[0], p1 ) &&
+					point2Ds->getPoint( eIter[2], p2 ) )
 				{
 					c = kmb::Point2D::cos(p0,p1,p2);
 				}

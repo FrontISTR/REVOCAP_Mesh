@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Element                                                 #
@@ -185,8 +185,8 @@ public:
 	virtual kmb::nodeIdType operator[](const int i) const;
 	virtual kmb::nodeIdType& operator[](const int i);
 	// boundary nodeId への参照
-	virtual kmb::nodeIdType operator()(const int index,const int i) const = 0;
-	virtual kmb::nodeIdType& operator()(const int index,const int i) = 0;
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 protected:
 	elementType type;
 	nodeIdType *cell;

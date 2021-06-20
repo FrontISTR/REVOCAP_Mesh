@@ -532,8 +532,7 @@ kmb::Polygon::dividePolygonsByDiagonals(
 	}
 }
 
-kmb::nodeIdType
-kmb::Polygon::getNextNode(
+kmb::nodeIdType kmb::Polygon::getNextNode(
 	kmb::nodeIdType prevId,
 	kmb::nodeIdType nodeId,
 	const kmb::Point2DContainer* points,
@@ -570,7 +569,7 @@ kmb::Polygon::getNextNode(
 		{
 			kmb::Point2D nextPoint;
 			if( points->getPoint( nIter->second, nextPoint ) && nIter->second != prevId ){
-				double ang = Point2D::angle2( prevPoint, nowPoint, nextPoint );
+				double ang = Point2D::angle2(nowPoint, prevPoint, nextPoint );
 				if( maximizer.update( ang ) ){
 					nextIter = nIter;
 				}

@@ -26,6 +26,7 @@
 #include <cmath>
 #include <cfloat>
 #include <cstdio>
+#include "Geometry/kmbGeometry.h"
 #include "Geometry/kmbGeometry3D.h"
 #include "Geometry/kmbGeometry2D.h"
 #include "Common/kmbCalculator.h"
@@ -173,6 +174,7 @@ kmb::Point3D::getFootOfPerpendicular( const Point3D &origin, const Vector3D &u, 
 double kmb::Point3D::distanceSqToTriangle(const Point3D& a,const Point3D& b,const Point3D& c,double* t) const
 {
 	// this と a + t1(b-a) + t2(c-a) との距離の最小化
+	// this と t0*a + t1*b + t2*c との距離の最小化
 	// u0 + t1*u1 + t2*u2 の長さの最小化
 	kmb::Vector3D u0(a,*this);
 	kmb::Vector3D u1(b,a);
@@ -182,41 +184,70 @@ double kmb::Point3D::distanceSqToTriangle(const Point3D& a,const Point3D& b,cons
 		u2*u1, u2*u2);
 	kmb::Vector2D v(-(u1*u0),-(u2*u0));
 	kmb::Vector2D tmp;
+	kmb::Minimizer min;
 	if(mat.solve(v,tmp) &&
 		0.0 < tmp.x() && 0.0 < tmp.y() &&
 		tmp.x() + tmp.y() < 1.0 )
 	{
 		if( t != NULL ){
-			t[0] = tmp[0];
-			t[1] = tmp[1];
+			t[0] = 1.0 - tmp[0] - tmp[1];
+			t[1] = tmp[0];
+			t[2] = tmp[1];
 		}
 		double distSq = (u0 + u1.scalar(tmp[0]) + u2.scalar(tmp[1])).lengthSq();
-		return distSq;
-	}else{
-		// 境界で最小を取る
-		// 辺と点
-		kmb::Minimizer min;
-		double s=0.0;
-		if( min.update( this->distanceSqToSegment( a, b, s ) ) ){
-			if( t != NULL ){
-				t[0] = s;
-				t[1] = 0.0;
-			}
+		// 境界チェックをしないとき
+		if (0.01 < tmp.x() && 0.01 < tmp.y() && tmp.x() + tmp.y() < 0.99) {
+			return distSq;
 		}
-		if( min.update( this->distanceSqToSegment( b, c, s ) ) ){
-			if( t != NULL ){
-				t[0] = 1.0-s;
-				t[1] = s;
-			}
-		}
-		if( min.update( this->distanceSqToSegment( c, a, s ) ) ){
-			if( t != NULL ){
-				t[0] = 0.0;
-				t[1] = 1.0-s;
-			}
-		}
-		return min.getMin();
+		min.update(distSq);
 	}
+	// 境界で最小を取る
+	// 頂点
+	if (min.update(this->distanceSq(a))) {
+		if (t != NULL) {
+			t[0] = 1.0;
+			t[1] = 0.0;
+			t[2] = 0.0;
+		}
+	}
+	if (min.update(this->distanceSq(b))) {
+		if (t != NULL) {
+			t[0] = 0.0;
+			t[1] = 1.0;
+			t[2] = 0.0;
+		}
+	}
+	if (min.update(this->distanceSq(c))) {
+		if (t != NULL) {
+			t[0] = 0.0;
+			t[1] = 0.0;
+			t[2] = 1.0;
+		}
+	}
+	// 辺
+	double s=0.0;
+	if( min.update( this->distanceSqToSegment( a, b, s ) ) ){
+		if( t != NULL ){
+			t[0] = 1.0 - s;
+			t[1] = s;
+			t[2] = 0.0;
+		}
+	}
+	if( min.update( this->distanceSqToSegment( b, c, s ) ) ){
+		if( t != NULL ){
+			t[0] = 0.0;
+			t[1] = 1.0-s;
+			t[2] = s;
+		}
+	}
+	if( min.update( this->distanceSqToSegment( c, a, s ) ) ){
+		if( t != NULL ){
+			t[0] = s;
+			t[1] = 0.0;
+			t[2] = 1.0-s;
+		}
+	}
+	return min.getMin();
 }
 
 double kmb::Point3D::distanceToTriangle(const Point3D& a,const Point3D& b,const Point3D& c) const
@@ -226,15 +257,15 @@ double kmb::Point3D::distanceToTriangle(const Point3D& a,const Point3D& b,const 
 
 double kmb::Point3D::distanceToTriangle(const Point3D& a, const Point3D& b, const Point3D& c, Point3D& nearest,int &flag) const
 {
-	double t[2];
+	double t[3];
 	double distSq = distanceSqToTriangle(a, b, c, t);
 	flag = 0;
 	if (t[0] != 0.0) flag |= 0x01;
 	if (t[1] != 0.0) flag |= 0x02;
-	if (t[0] + t[1] != 1.0) flag |= 0x04;
-	nearest.x((1.0 - t[0] - t[1])*a.x() + t[0] * b.x() + t[1] * c.x());
-	nearest.y((1.0 - t[0] - t[1])*a.y() + t[0] * b.y() + t[1] * c.y());
-	nearest.z((1.0 - t[0] - t[1])*a.z() + t[0] * b.z() + t[1] * c.z());
+	if (t[2] != 0.0) flag |= 0x04;
+	nearest.x( t[0] * a.x() + t[1] * b.x() + t[2] * c.x());
+	nearest.y( t[0] * a.y() + t[1] * b.y() + t[2] * c.y());
+	nearest.z( t[0] * a.z() + t[1] * b.z() + t[2] * c.z());
 	return sqrt(distSq);
 }
 
@@ -247,19 +278,27 @@ kmb::Point3D kmb::Point3D::dividingPoint(const Point3D& other,double m,double n)
 		(n*this->z() + m*other.z()) / (m+n)); 
 }
 
-kmb::Point3D
-kmb::Point3D::proportionalPoint(const Point3D& other,double t) const
+void kmb::Point3D::dividingPoint(const kmb::Point3D &p0,const kmb::Point3D &p1, double t0, double t1, kmb::Point3D &p)
+{
+	p = dividingPoint(p0, p1, t0, t1);
+}
+
+kmb::Point3D kmb::Point3D::dividingPoint(const Point3D& p0, const Point3D& p1, double t0, double t1)
+{
+	double t = 1.0 / (t0 + t1);
+	return Point3D(
+		(t1*p0.x() + t0*p1.x()) * t,
+		(t1*p0.y() + t0*p1.y()) * t,
+		(t1*p0.z() + t0*p1.z()) * t
+	);
+}
+
+kmb::Point3D kmb::Point3D::proportionalPoint(const Point3D& other,double t) const
 {
 	return Point3D(
 		(1.0-t)*this->x() + t*other.x(), 
 		(1.0-t)*this->y() + t*other.y(), 
 		(1.0-t)*this->z() + t*other.z()); 
-}
-
-#ifndef REVOCAP_SUPPORT_RUBY
-kmb::Point3D kmb::Point3D::dividingPoint(const Point3D& a,const Point3D& b,double m,double n)
-{
-	return a.dividingPoint(b,m,n);
 }
 
 kmb::Point3D kmb::Point3D::proportionalPoint(const Point3D& a,const Point3D& b,double t)
@@ -278,17 +317,20 @@ kmb::Point3D::distanceSq(const Point3D& a,const Point3D& b)
 {
 	return a.distanceSq(b);
 }
-#endif
 
 // 体積計算
 double
 kmb::Point3D::volume(const kmb::Point3D& a,const kmb::Point3D& b,const kmb::Point3D &c,const kmb::Point3D &d)
 {
-	kmb::Vector3D ad(d,a);
-	kmb::Vector3D bd(d,b);
-	kmb::Vector3D cd(d,c);
+	return kmb::Point3D::triple(a, b, c, d) / 6.0;
+}
 
-	return kmb::Vector3D::triple(ad,bd,cd) / 6.0;
+double kmb::Point3D::triple(const kmb::Point3D& a, const kmb::Point3D& b, const kmb::Point3D &c, const kmb::Point3D &d)
+{
+	kmb::Vector3D ad(d, a);
+	kmb::Vector3D bd(d, b);
+	kmb::Vector3D cd(d, c);
+	return kmb::Vector3D::triple(ad, bd, cd);
 }
 
 // 表裏判定（遅いかも）
@@ -388,25 +430,44 @@ kmb::Point3D kmb::Point3D::getCircumCenter(const Point3D &p0,const Point3D &p1,c
 
 double kmb::Point3D::angle(const Point3D &a,const Point3D &b,const Point3D &c)
 {
-	kmb::Vector3D v1(a,b);
-	kmb::Vector3D v2(c,b);
-	return kmb::Vector3D::angle(v1,v2);
+	double co = kmb::Point3D::cos(a,b,c);
+	return COS2ANGLE(co);
 }
 
-double
-kmb::Point3D::cos(const Point3D &a,const Point3D &b,const Point3D &c)
+double kmb::Point3D::cos(const Point3D &a,const Point3D &b,const Point3D &c)
 {
-	kmb::Vector3D v1(a,b);
-	kmb::Vector3D v2(c,b);
-	return kmb::Vector3D::cos(v1,v2);
+	return inner(a, b, c) / distance(a, b) / distance(a, c);
 }
 
 double
 kmb::Point3D::sin(const Point3D &a,const Point3D &b,const Point3D &c)
 {
-	kmb::Vector3D v1(a,b);
-	kmb::Vector3D v2(c,b);
+	kmb::Vector3D v1(b,a);
+	kmb::Vector3D v2(c,a);
 	return kmb::Vector3D::sin(v1,v2);
+}
+
+double kmb::Point3D::solidAngle(const kmb::Point3D &p0, const kmb::Point3D &p1, const kmb::Point3D &p2, const kmb::Point3D &p3)
+{
+	double t = kmb::Point3D::triple(p0, p1, p2, p3);
+	double d1 = kmb::Point3D::distance(p0, p1);
+	double d2 = kmb::Point3D::distance(p0, p2);
+	double d3 = kmb::Point3D::distance(p0, p3);
+	double c12 = kmb::Point3D::inner(p0, p1, p2);
+	double c23 = kmb::Point3D::inner(p0, p2, p3);
+	double c31 = kmb::Point3D::inner(p0, p3, p1);
+	return 2.0 * std::atan2( t, d1*d2*d3 + c12*d3 + c23*d1 + c31*d2 );
+}
+
+double kmb::Point3D::inner(const Point3D &a, const Point3D &b, const Point3D &c)
+{
+	double x0 = b.x() - a.x();
+	double y0 = b.y() - a.y();
+	double z0 = b.z() - a.z();
+	double x1 = c.x() - a.x();
+	double y1 = c.y() - a.y();
+	double z1 = c.z() - a.z();
+	return x0*x1 + y0*y1 + z0*z1;
 }
 
 void 

@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementContainer                                        #
@@ -389,6 +389,17 @@ kmb::ElementContainer::getBodyName(void) const
 {
 	return this->bodyName.c_str();
 }
+
+void kmb::ElementContainer::setName(const char* name)
+{
+	setBodyName(name);
+}
+
+const char* kmb::ElementContainer::getName(void) const
+{
+	return getBodyName();
+}
+
 
 //------------------ iterator ---------------------
 

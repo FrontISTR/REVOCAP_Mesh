@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : NodeEvaluator                                           #
@@ -31,8 +31,8 @@ kmb::NodeEvaluator::setMesh(kmb::MeshData* mesh)
 	this->mesh = mesh;
 }
 
-int
-kmb::NodeEvaluator::calcCurvature(const char* name,const char* stype)
+// 曲率を計算して name で与えられる data に格納する
+int kmb::NodeEvaluator::calcCurvature(const char* name,const char* stype)
 {
 	if( mesh == NULL ){
 		return -1;
@@ -49,6 +49,9 @@ kmb::NodeEvaluator::calcCurvature(const char* name,const char* stype)
 		return -1;
 	}
 	double angle(0.0);
+	// 面要素の角度の和の -1 倍を格納する
+	// 面ごとにループを回して
+	// すでに格納されていれば角度を引く
 	kmb::bodyIdType bCount = mesh->getBodyCount();
 	for(kmb::bodyIdType bodyId=0;bodyId<bCount;++bodyId){
 		kmb::ElementContainer* body = mesh->getBodyPtr(bodyId);
@@ -67,23 +70,23 @@ kmb::NodeEvaluator::calcCurvature(const char* name,const char* stype)
 						points->getPoint( eIter[2], n2 ) )
 					{
 						if( data->getPhysicalValue( eIter[0], &angle ) ){
-							angle -= kmb::Point3D::angle(n2,n0,n1);
-						}else{
-							angle = -kmb::Point3D::angle(n2,n0,n1);
-						}
-						data->setPhysicalValue( eIter[0], &angle );
-
-						if( data->getPhysicalValue( eIter[1], &angle ) ){
 							angle -= kmb::Point3D::angle(n0,n1,n2);
 						}else{
 							angle = -kmb::Point3D::angle(n0,n1,n2);
 						}
-						data->setPhysicalValue( eIter[1], &angle );
+						data->setPhysicalValue( eIter[0], &angle );
 
-						if( data->getPhysicalValue( eIter[2], &angle ) ){
+						if( data->getPhysicalValue( eIter[1], &angle ) ){
 							angle -= kmb::Point3D::angle(n1,n2,n0);
 						}else{
 							angle = -kmb::Point3D::angle(n1,n2,n0);
+						}
+						data->setPhysicalValue( eIter[1], &angle );
+
+						if( data->getPhysicalValue( eIter[2], &angle ) ){
+							angle -= kmb::Point3D::angle(n2,n0,n1);
+						}else{
+							angle = -kmb::Point3D::angle(n2,n0,n1);
 						}
 						data->setPhysicalValue( eIter[2], &angle );
 					}
@@ -96,30 +99,30 @@ kmb::NodeEvaluator::calcCurvature(const char* name,const char* stype)
 						points->getPoint( eIter[3], n3 ) )
 					{
 						if( data->getPhysicalValue( eIter[0], &angle ) ){
-							angle -= kmb::Point3D::angle(n3,n0,n1);
+							angle -= kmb::Point3D::angle(n0,n1,n3);
 						}else{
-							angle = -kmb::Point3D::angle(n3,n0,n1);
+							angle = -kmb::Point3D::angle(n0,n1,n3);
 						}
 						data->setPhysicalValue( eIter[0], &angle );
 
 						if( data->getPhysicalValue( eIter[1], &angle ) ){
-							angle -= kmb::Point3D::angle(n0,n1,n2);
+							angle -= kmb::Point3D::angle(n1,n2,n0);
 						}else{
-							angle = -kmb::Point3D::angle(n0,n1,n2);
+							angle = -kmb::Point3D::angle(n1,n2,n0);
 						}
 						data->setPhysicalValue( eIter[1], &angle );
 
 						if( data->getPhysicalValue( eIter[2], &angle ) ){
-							angle -= kmb::Point3D::angle(n1,n2,n3);
+							angle -= kmb::Point3D::angle(n2,n3,n1);
 						}else{
-							angle = -kmb::Point3D::angle(n1,n2,n3);
+							angle = -kmb::Point3D::angle(n2,n3,n1);
 						}
 						data->setPhysicalValue( eIter[2], &angle );
 
 						if( data->getPhysicalValue( eIter[3], &angle ) ){
-							angle -= kmb::Point3D::angle(n2,n3,n0);
+							angle -= kmb::Point3D::angle(n3,n0,n2);
 						}else{
-							angle = -kmb::Point3D::angle(n2,n3,n0);
+							angle = -kmb::Point3D::angle(n3,n0,n2);
 						}
 						data->setPhysicalValue( eIter[3], &angle );
 					}

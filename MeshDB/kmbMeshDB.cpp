@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshDB                                                  #
@@ -66,7 +66,7 @@
 #include <cmath>
 #include <cfloat>
 #include <cstdlib>
-#ifdef WIN32
+#ifdef _WIN32
  #define tempnam _tempnam
 #else
 #endif

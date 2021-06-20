@@ -1,10 +1,10 @@
 /*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
-# Class Name : FBORendering                                            #
+# Class Name : MatrixIndex                                             #
 #                                                                      #
 #                                Written by                            #
-#                                           K. Tokunaga 2012/03/23     #
+#                                           K. Tokunaga 2016/09/19     #
 #                                                                      #
 #      Contact Address: IIS, The University of Tokyo CISS              #
 #                                                                      #
@@ -12,44 +12,25 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-#ifdef REVOCAP_SUPPORT_GLEW
 
 #pragma once
 
-#ifdef _WIN32
-#include <windows.h>
-#pragma comment(lib,"opengl32.lib")
-#pragma comment(lib,"glu32.lib")
-#pragma comment(lib,"glew32.lib")
-#endif
+namespace kmb {
 
-#include <GL/glew.h>
-
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#else
-#include <GL/gl.h>
-#endif
-
-namespace kmb{
-
-class FBORendering
-{
-private:
-	GLuint framebuffer_name;
-	GLuint texture_name;
-	GLuint renderbuffer_name;
-public:
-	FBORendering(void);
-	virtual ~FBORendering(void);
-	virtual bool init(int width,int height);
-	virtual bool saveBMPFile(const char* szFilename );
-	virtual void setContext(void) const;
-	virtual void releaseContext(void);
-	virtual void getSize(int size[2]) const;
-	void clear(void);
-};
+	// 順序は Row Major
+	// i*colSize+j
+	class MatrixIndex {
+	public:
+		int rowIndex;
+		int colIndex;
+		MatrixIndex(int i, int j)
+			: rowIndex(i)
+			, colIndex(j)
+		{}
+		bool operator<(const MatrixIndex &other)const {
+			return (rowIndex < other.rowIndex) ||
+				(rowIndex == other.rowIndex && colIndex < other.colIndex);
+		}
+	};
 
 }
-
-#endif

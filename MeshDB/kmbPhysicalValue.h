@@ -325,7 +325,7 @@ public:
 	long getIValue(void) const{ return ival; };
 	void setValue(double u,double v){ this->value[0] = u; this->value[1] = v; }
 	bool setValue(double u,int i){ this->value[i] = u; return true; }
-	void setIValue(long id){ this->ival = id; }
+	void setIValue(long iv){ this->ival = iv; }
 	virtual bool getValue(double* v) const {
 		v[0] = value[0];
 		v[1] = value[1];
@@ -371,7 +371,7 @@ public:
 	long getIValue(void) const{ return ival; };
 	void setValue(double u,double v,double w){ this->value[0] = u; this->value[1] = v; this->value[2] = w; }
 	bool setValue(double u,int i){ this->value[i] = u; return true; }
-	void setIValue(long id){ this->ival = id; }
+	void setIValue(long iv){ this->ival = iv; }
 	virtual bool getValue(double* v) const {
 		v[0] = value[0];
 		v[1] = value[1];
@@ -421,7 +421,7 @@ public:
 	long getIValue(void) const{ return ival; };
 	void setValue(double u,double v,double w,double z){ this->value[0] = u; this->value[1] = v; this->value[2] = w; this->value[3] = z; }
 	bool setValue(double u,int i){ this->value[i] = u; return true; }
-	void setIValue(long id){ this->ival = id; }
+	void setIValue(long iv){ this->ival = iv; }
 	virtual bool getValue(double* v) const {
 		v[0] = value[0];
 		v[1] = value[1];
