@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : DataEvaluator                                           #
@@ -212,7 +212,7 @@ kmb::DataEvaluator::getMinMaxOnBody(const kmb::DataBindings* data, const kmb::El
 			while( !eIter.isFinished() ){
 				const int nodeCount = eIter.getNodeCount();
 				for(int i=0;i<nodeCount;++i){
-					if( data->getPhysicalValue( eIter.getCellId(i), value ) ){
+					if( data->getPhysicalValue( eIter.getNodeId(i), value ) ){
 						bbox.update( value[0], value[1], value[2] );
 					}
 				}
@@ -243,7 +243,7 @@ kmb::DataEvaluator::getAbsMinMaxOnBody(const kmb::DataBindings* data, const kmb:
 			while( !eIter.isFinished() ){
 				const int nodeCount = eIter.getNodeCount();
 				for(int i=0;i<nodeCount;++i){
-					if( data->getPhysicalValue( eIter.getCellId(i), value ) ){
+					if( data->getPhysicalValue( eIter.getNodeId(i), value ) ){
 						bbox.update( kmb::Vector3D::abs(value) );
 					}
 				}
@@ -274,7 +274,7 @@ kmb::DataEvaluator::getMinMaxOnBody(const kmb::DataBindings* data, const kmb::El
 			while( !eIter.isFinished() ){
 				const int nodeCount = eIter.getNodeCount();
 				for(int i=0;i<nodeCount;++i){
-					if( data->getPhysicalValue( eIter.getCellId(i), &value ) ){
+					if( data->getPhysicalValue( eIter.getNodeId(i), &value ) ){
 						bbox.update( value );
 					}
 				}
@@ -315,7 +315,7 @@ kmb::DataEvaluator::getAverageOnBody(const kmb::DataBindings* data, const kmb::E
 				const int nodeCount = eIter.getNodeCount();
 				double dataOnElement = 0.0;
 				for(int i=0;i<nodeCount;++i){
-					if( data->getPhysicalValue( eIter.getCellId(i), &value ) ){
+					if( data->getPhysicalValue( eIter.getNodeId(i), &value ) ){
 						dataOnElement += value;
 					}
 				}
@@ -346,7 +346,7 @@ kmb::DataEvaluator::getAverageOnBody(const kmb::DataBindings* data, const kmb::E
 				dataOnElement[1] = 0.0;
 				dataOnElement[2] = 0.0;
 				for(int i=0;i<nodeCount;++i){
-					if( data->getPhysicalValue( eIter.getCellId(i), value ) ){
+					if( data->getPhysicalValue( eIter.getNodeId(i), value ) ){
 						dataOnElement[0] = value[0];
 						dataOnElement[1] = value[1];
 						dataOnElement[2] = value[2];
@@ -382,7 +382,7 @@ kmb::DataEvaluator::getAverageOnBody(const kmb::DataBindings* data, const kmb::E
 				const int nodeCount = eIter.getNodeCount();
 				double dataOnElement = 0.0;
 				for(int i=0;i<nodeCount;++i){
-					if( data->getPhysicalValue( eIter.getCellId(i), &value ) ){
+					if( data->getPhysicalValue( eIter.getNodeId(i), &value ) ){
 						dataOnElement += value;
 					}
 				}
@@ -413,7 +413,7 @@ kmb::DataEvaluator::getAverageOnBody(const kmb::DataBindings* data, const kmb::E
 				dataOnElement[1] = 0.0;
 				dataOnElement[2] = 0.0;
 				for(int i=0;i<nodeCount;++i){
-					if( data->getPhysicalValue( eIter.getCellId(i), value ) ){
+					if( data->getPhysicalValue( eIter.getNodeId(i), value ) ){
 						dataOnElement[0] = value[0];
 						dataOnElement[1] = value[1];
 						dataOnElement[2] = value[2];

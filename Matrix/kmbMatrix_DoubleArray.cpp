@@ -15,6 +15,7 @@
 #include "Matrix/kmbMatrix_DoubleArray.h"
 
 #include <algorithm>
+#include <cfloat>
 
 kmb::Matrix_DoubleArray::Matrix_DoubleArray(int rSize, int cSize)
 : Matrix(rSize,cSize)
@@ -238,6 +239,13 @@ kmb::SquareMatrix_DoubleArray::add(int i,int j,double val)
 
 /// Column Vector
 
+kmb::ColumnVector_DoubleArray::ColumnVector_DoubleArray(void)
+: ColumnVector(0)
+, m(NULL)
+, size(0)
+{
+}
+
 kmb::ColumnVector_DoubleArray::ColumnVector_DoubleArray(int size)
 : ColumnVector(size)
 , m(NULL)
@@ -362,6 +370,13 @@ const double* kmb::ColumnVector_DoubleArray::getPtr(void) const
 	return m;
 }
 
+kmb::RowVector_DoubleArray::RowVector_DoubleArray(void)
+: RowVector(0)
+, m(NULL)
+, size(0)
+{
+}
+
 kmb::RowVector_DoubleArray::RowVector_DoubleArray(int size)
 : RowVector(size)
 , m(NULL)
@@ -480,4 +495,3 @@ const double* kmb::RowVector_DoubleArray::getPtr(void) const
 {
 	return m;
 }
-

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : PatchOperation                                          #
@@ -137,8 +137,8 @@ kmb::PatchOperation::edgeSubdivider
 					seg = edge->find(targetElementId);
 					// initialize node id
 					if( !seg.isFinished() ){
-						n0 = seg.getCellId(0);
-						n1 = seg.getCellId(0);
+						n0 = seg.getNodeId(0);
+						n1 = seg.getNodeId(0);
 					}
 				}
 				if( 0.0 < mIter->t && mIter->t < 1.0 )
@@ -154,7 +154,7 @@ kmb::PatchOperation::edgeSubdivider
 				++mIter;
 				if( mIter == matchingInfo.end() || targetElementId != mIter->elementId ){
 					// insert last segment
-					n1 = seg.getCellId(1);
+					n1 = seg.getNodeId(1);
 					if( n0 != n1 ){
 						kmb::nodeIdType divSeg[2] = {n0,n1};
 						edge->addElement(kmb::SEGMENT,divSeg,mesh->generateElementId());
@@ -370,31 +370,31 @@ kmb::PatchOperation::triangleSubdivider
 			{
 				// search triangle whose face is seg
 				faceId = -1;
-				n0 = seg.getCellId(0);
-				n1 = seg.getCellId(1);
+				n0 = seg.getNodeId(0);
+				n1 = seg.getNodeId(1);
 				kmb::NodeNeighbor::iterator tIter = neighborInfo.beginIteratorAt(n0);
 				while( tIter != neighborInfo.endIteratorAt(n0) ){
 					kmb::ElementContainer::iterator elem = patch->find( tIter->second );
 					if( elem.getType() == kmb::TRIANGLE ){
 						for(int i=0;i<3;++i){
-							if( elem.getBoundaryCellId(i,0) == seg.getCellId(0) &&
-								elem.getBoundaryCellId(i,1) == seg.getCellId(1) )
+							if( elem.getBoundaryNodeId(i,0) == seg.getNodeId(0) &&
+								elem.getBoundaryNodeId(i,1) == seg.getNodeId(1) )
 							{
-								n0 = seg.getCellId(0);
-								n1 = seg.getCellId(1);
-								n2 = elem.getCellId(i);  // elem = [n0,n1,n2]
+								n0 = seg.getNodeId(0);
+								n1 = seg.getNodeId(1);
+								n2 = elem.getNodeId(i);  // elem = [n0,n1,n2]
 								tri = elem;
 								triangleId = tIter->second;
 								faceId = i;
 								orient = true;
 								break;
 							}else
-							if( elem.getBoundaryCellId(i,0) == seg.getCellId(1) &&
-								elem.getBoundaryCellId(i,1) == seg.getCellId(0) )
+							if( elem.getBoundaryNodeId(i,0) == seg.getNodeId(1) &&
+								elem.getBoundaryNodeId(i,1) == seg.getNodeId(0) )
 							{
-								n0 = seg.getCellId(1);
-								n1 = seg.getCellId(0);
-								n2 = elem.getCellId(i);  // elem = [n0,n1,n2]
+								n0 = seg.getNodeId(1);
+								n1 = seg.getNodeId(0);
+								n2 = elem.getNodeId(i);  // elem = [n0,n1,n2]
 								tri = elem;
 								triangleId = tIter->second;
 								faceId = i;
@@ -422,7 +422,7 @@ kmb::PatchOperation::triangleSubdivider
 		++mIter;
 		if( faceId != -1 && (mIter == matchingInfo.end() || targetElementId != mIter->elementId ) ){
 			// insert last triangle
-			n1 = (orient)? seg.getCellId(1) : seg.getCellId(0);
+			n1 = (orient)? seg.getNodeId(1) : seg.getNodeId(0);
 			if( n0 != n1 ){
 				kmb::nodeIdType insTri[3] = {n2,n0,n1};
 				patch->addElement( kmb::TRIANGLE, insTri, mesh->generateElementId() );
@@ -543,9 +543,9 @@ kmb::PatchOperation::divideByPlane
 	{
 		kmb::elementIdType elementId = eIter.getId();
 		// 三角形きめうち
-		kmb::nodeIdType n0 = eIter.getCellId(0);
-		kmb::nodeIdType n1 = eIter.getCellId(1);
-		kmb::nodeIdType n2 = eIter.getCellId(2);
+		kmb::nodeIdType n0 = eIter.getNodeId(0);
+		kmb::nodeIdType n1 = eIter.getNodeId(1);
+		kmb::nodeIdType n2 = eIter.getNodeId(2);
 		++eIter;
 		if( mesh->getNode(n0,p0) &&
 			mesh->getNode(n1,p1) &&
@@ -897,9 +897,9 @@ kmb::PatchOperation::divideByPlane
 			kmb::ElementContainerMap::iterator tIter = triangles.begin();
 			while( tIter != triangles.end() )
 			{
-				kmb::nodeIdType n0 = tIter.getCellId(0);
-				kmb::nodeIdType n1 = tIter.getCellId(1);
-				kmb::nodeIdType n2 = tIter.getCellId(2);
+				kmb::nodeIdType n0 = tIter.getNodeId(0);
+				kmb::nodeIdType n1 = tIter.getNodeId(1);
+				kmb::nodeIdType n2 = tIter.getNodeId(2);
 				kmb::nodeIdType tripos[3] = {n0,n2,n1};
 				positive->addElement(kmb::TRIANGLE,tripos,mesh->generateElementId());
 				if( duplicateFlag ){

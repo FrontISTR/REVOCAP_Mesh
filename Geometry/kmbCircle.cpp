@@ -172,11 +172,10 @@ kmb::Circle::getCircumscribedCenter(const Point2D &a,const Point2D &b,const Poin
 	double bb = b.x()*b.x() + b.y()*b.y();
 	double cc = c.x()*c.x() + c.y()*c.y();
 	kmb::Vector2D vec((aa-cc)*.5,(aa-bb)*.5);
-	kmb::Vector2D* ans = mat.solve(vec);
-	if( ans ){
-		double x = ans->x();
-		double y = ans->y();
-		delete ans;
+	kmb::Vector2D ans;
+	if( mat.solve(vec,ans) ){
+		double x = ans.x();
+		double y = ans.y();
 		return kmb::Point2D(x,y);
 	}else{
 		return kmb::Point2D(DBL_MAX,DBL_MAX);
@@ -314,11 +313,10 @@ kmb::Circle3D::getCircumscribedCenter(const Point3D &a,const Point3D &b,const Po
 	double c2 = ac.lengthSq();
 	kmb::Matrix2x2 mat(bc ,c2, b2, bc);
 	kmb::Vector2D vec(c2*.5,b2*.5);
-	kmb::Vector2D* ans = mat.solve(vec);
-	if( ans ){
-		double x = ans->x();
-		double y = ans->y();
-		delete ans;
+	kmb::Vector2D ans;
+	if( mat.solve(vec,ans) ){
+		double x = ans.x();
+		double y = ans.y();
 		return Point3D( a + ab.scalar(x) + ac.scalar(y) );
 	}else{
 		return Point3D( DBL_MAX, DBL_MAX, DBL_MAX );

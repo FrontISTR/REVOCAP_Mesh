@@ -43,7 +43,7 @@
 //
 // 文字列は len + 実体(\0を除く)
 
-#ifdef WIN32
+#ifdef _WIN32
 // 引数の型が違うのでこのままでは使えない
 // #if _MSC_VER >= 1400
 //  #define fopen fopen_s
@@ -400,7 +400,7 @@ kmb::RevocapMeshDumpIO::saveElementData(const kmb::MeshData* mesh,std::ostream &
 						output.write( reinterpret_cast<char*>(&elementId), sizeof(int32_t) );
 						int nSize = kmb::Element::getNodeCount( static_cast<kmb::elementType>(eType) );
 						for(int j=0;j<nSize;++j){
-							nodes[j] = eIter.getCellId(j);
+							nodes[j] = eIter.getNodeId(j);
 						}
 						output.write( reinterpret_cast<char*>(nodes), sizeof(int32_t)*nSize );
 					}else{

@@ -26,7 +26,7 @@
 #pragma once
 
 //
-// Point2D に ID を付けてメモリに格納するコンテナ類
+// Point2D に Id を付けてメモリに格納するコンテナ類
 //
 
 #include <map>
@@ -56,6 +56,8 @@ public:
 
 	virtual bool getXY(nodeIdType id,double &x,double &y) const = 0;
 	virtual bool getPoint(nodeIdType id,kmb::Point2D &point) const = 0;
+	virtual double x(kmb::nodeIdType nodeId) const = 0;
+	virtual double y(kmb::nodeIdType nodeId) const = 0;
 	virtual nodeIdType getMaxId(void) const = 0;
 	virtual nodeIdType getMinId(void) const = 0;
 	virtual size_t getCount(void) const = 0;
@@ -190,6 +192,8 @@ public:
 	virtual nodeIdType addPoint(const kmb::Point2D& point,const nodeIdType id);
 	virtual bool getXY(nodeIdType id,double &x,double &y) const;
 	virtual bool getPoint(nodeIdType id,kmb::Point2D &point) const;
+	virtual double x(kmb::nodeIdType nodeId) const;
+	virtual double y(kmb::nodeIdType nodeId) const;
 	virtual nodeIdType getMaxId(void) const;
 	virtual nodeIdType getMinId(void) const;
 	virtual size_t getCount(void) const;
@@ -258,6 +262,8 @@ public:
 	virtual nodeIdType addPoint(const kmb::Point2D& point,const nodeIdType id);
 	virtual bool getXY(nodeIdType id,double &x,double &y) const;
 	virtual bool getPoint(nodeIdType id,kmb::Point2D &point) const;
+	virtual double x(kmb::nodeIdType nodeId) const;
+	virtual double y(kmb::nodeIdType nodeId) const;
 	virtual nodeIdType getMaxId(void) const;
 	virtual nodeIdType getMinId(void) const;
 	virtual size_t getCount(void) const;

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementContainerMArray                                  #
@@ -173,7 +173,7 @@ kmb::ElementContainerMArray::getElement(kmb::elementIdType id,kmb::elementType &
 			etype = element->getType();
 			const int len = element->getNodeCount();
 			for(int j=0;j<len;++j){
-				nodes[j] = element->getCellId(j);
+				nodes[j] = element->getNodeId(j);
 			}
 			return true;
 		}
@@ -361,7 +361,7 @@ kmb::ElementContainerMArray::_iteratorMArray::getElement(kmb::elementType &etype
 		etype = element->getType();
 		int nodeCount = element->getNodeCount();
 		for(int i=0;i<nodeCount;++i){
-			nodes[i] = element->getCellId(i);
+			nodes[i] = element->getNodeId(i);
 		}
 		return true;
 	}
@@ -380,24 +380,24 @@ kmb::ElementContainerMArray::_iteratorMArray::getType(void) const
 }
 
 kmb::nodeIdType
-kmb::ElementContainerMArray::_iteratorMArray::getCellId(int cellIndex) const
+kmb::ElementContainerMArray::_iteratorMArray::getNodeId(int cellIndex) const
 {
 	kmb::Element* element = this->elementContainer->elementArray.get( aIndex );
 	if( element ){
-		return element->getCellId(cellIndex);
+		return element->getNodeId(cellIndex);
 	}else{
 		return kmb::nullNodeId;
 	}
 }
 
 bool
-kmb::ElementContainerMArray::_iteratorMArray::setCellId(int cellIndex, kmb::nodeIdType nodeId)
+kmb::ElementContainerMArray::_iteratorMArray::setNodeId(int cellIndex, kmb::nodeIdType nodeId)
 {
 	kmb::Element* element = this->elementContainer->elementArray.get( aIndex );
 	if( element ){
 		const int nodeCount = element->getNodeCount();
 		if( 0 <= cellIndex && cellIndex < nodeCount ){
-			return element->setCellId(cellIndex,nodeId);
+			return element->setNodeId(cellIndex,nodeId);
 		}
 	}
 	return false;
@@ -408,7 +408,7 @@ kmb::ElementContainerMArray::_iteratorMArray::operator[](int cellIndex) const
 {
 	kmb::Element* element = this->elementContainer->elementArray.get( aIndex );
 	if( element ){
-		return element->getCellId(cellIndex);
+		return element->getNodeId(cellIndex);
 	}else{
 		return kmb::nullNodeId;
 	}

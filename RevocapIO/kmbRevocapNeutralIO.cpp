@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : RevocapNeutralIO                                        #
@@ -38,13 +38,14 @@ int kmb::RevocapNeutralIO::loadFromRNFFile(const char* filename,kmb::MeshData* m
 	if( mesh == NULL ){
 		return -1;
 	}else{
-		std::ifstream input( filename, std::ios_base::in );
+		std::ifstream input( filename, std::ios_base::in|std::ios_base::binary );
 		if( input.fail() ){
 			return -1;
 		}
 		std::string line;
 		std::string tag;
-		while( !std::getline( input, line ).eof() ){
+		while( input.good() ){
+			std::getline( input, line );
 			if( line.size() == 0 || line[0] == '#' ){
 				continue;
 			}
@@ -77,8 +78,7 @@ kmb::RevocapNeutralIO::saveHeader(const char* filename)
 	return 0;
 }
 
-int
-kmb::RevocapNeutralIO::appendHeader(const char* filename)
+int kmb::RevocapNeutralIO::appendHeader(const char* filename)
 {
 	std::ofstream output( filename, std::ios_base::app );
 	if( output.fail() ){
@@ -89,8 +89,7 @@ kmb::RevocapNeutralIO::appendHeader(const char* filename)
 	return 0;
 }
 
-int
-kmb::RevocapNeutralIO::appendDataToRNFFile(const char* filename,kmb::MeshData* mesh,const char* name,const char* stype)
+int kmb::RevocapNeutralIO::appendDataToRNFFile(const char* filename,kmb::MeshData* mesh,const char* name,const char* stype)
 {
 	kmb::DataBindings* data = NULL;
 	if( mesh == NULL || (data=mesh->getDataBindingsPtr(name,stype))==NULL ){
@@ -107,8 +106,7 @@ kmb::RevocapNeutralIO::appendDataToRNFFile(const char* filename,kmb::MeshData* m
 	return 0;
 }
 
-int
-kmb::RevocapNeutralIO::saveToRNFFile(const char* filename,kmb::MeshData* mesh)
+int kmb::RevocapNeutralIO::saveToRNFFile(const char* filename,kmb::MeshData* mesh)
 {
 	if( mesh == NULL || !mesh->getNodes() ){
 		return -1;
@@ -149,7 +147,7 @@ kmb::RevocapNeutralIO::saveToRNFFile(const char* filename,kmb::MeshData* mesh)
 					output << eIter.getTypeString();
 					int num = eIter.getNodeCount();
 					for(int i=0;i<num;++i){
-						output << ", " << eIter.getCellId(i);
+						output << ", " << eIter.getNodeId(i);
 					}
 					output << "]" << std::endl;
 					++eIter;
@@ -168,8 +166,7 @@ kmb::RevocapNeutralIO::saveToRNFFile(const char* filename,kmb::MeshData* mesh)
 	return 0;
 }
 
-int
-kmb::RevocapNeutralIO::readNode(std::ifstream &input,kmb::MeshData* mesh)
+int kmb::RevocapNeutralIO::readNode(std::ifstream &input,kmb::MeshData* mesh)
 {
 	std::string line;
 	std::string tag;
@@ -214,9 +211,7 @@ kmb::RevocapNeutralIO::readNode(std::ifstream &input,kmb::MeshData* mesh)
 }
 
 // element は element: タグの下の配列要素
-// input.seekg( pos ); で読み込んだタグは戻しておく
-int
-kmb::RevocapNeutralIO::readElement(std::ifstream &input,kmb::MeshData* mesh)
+int kmb::RevocapNeutralIO::readElement(std::ifstream &input,kmb::MeshData* mesh)
 {
 	std::string line;
 	std::string tag;
@@ -232,6 +227,7 @@ kmb::RevocapNeutralIO::readElement(std::ifstream &input,kmb::MeshData* mesh)
 			continue;
 		}
 		if( line[0] != ' ' ){
+			// 次の tag が見つかったときはその行頭に戻って終了
 			input.seekg( pos );
 			return 0;
 		}
@@ -295,8 +291,7 @@ kmb::RevocapNeutralIO::readElement(std::ifstream &input,kmb::MeshData* mesh)
 // input.seekg( pos ); で読み込んだタグは戻しておく
 // Group 系のみ実装
 // Variable 系は Vector2Int のみ
-int
-kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
+int kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 {
 	std::string line;
 	std::string tag;
@@ -319,6 +314,7 @@ kmb::RevocapNeutralIO::readData(std::ifstream &input,kmb::MeshData* mesh)
 			continue;
 		}
 		if( line[0] != ' ' ){
+			// 次の tag が見つかったときはその行頭に戻って終了
 			input.seekg( pos );
 			return 0;
 		}

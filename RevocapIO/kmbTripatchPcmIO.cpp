@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : TripatchPcmIO                                           #
@@ -137,9 +137,9 @@ kmb::TripatchPcmIO::saveToFile(const char* filename,const kmb::MeshData* mesh,in
 				kmb::ElementContainer::const_iterator eIter = body->begin();
 				while( eIter != body->end() ){
 					output <<
-						eIter.getCellId(0) << " " <<
-						eIter.getCellId(1) << " " <<
-						eIter.getCellId(2) << std::endl;
+						eIter.getNodeId(0) << " " <<
+						eIter.getNodeId(1) << " " <<
+						eIter.getNodeId(2) << std::endl;
 					++eIter;
 				}
 			}

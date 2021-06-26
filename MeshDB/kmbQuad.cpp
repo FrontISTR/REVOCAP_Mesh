@@ -105,6 +105,16 @@ kmb::Quad::~Quad(void)
 {
 }
 
+kmb::nodeIdType kmb::Quad::operator()(const int index,const int i) const
+{
+	return cell[kmb::Quad::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Quad::operator()(const int index,const int i)
+{
+	return cell[kmb::Quad::faceTable[index][i]];
+}
+
 void
 kmb::Quad::shapeFunction(double s,double t,double* coeff)
 {
@@ -335,7 +345,7 @@ kmb::Quad::edgeSwap(kmb::ElementBase &quad0,kmb::ElementBase &quad1,bool orienta
 		unsigned int flag = 0x0001;
 		for(int i=0;i<4;++i){
 			for(int j=0;j<4;++j){
-				if( quad0.getCellId(i) == quad1.getCellId(j) )	rel |= flag;
+				if( quad0.getNodeId(i) == quad1.getNodeId(j) )	rel |= flag;
 				flag = flag << 1;
 			}
 		}
@@ -344,147 +354,147 @@ kmb::Quad::edgeSwap(kmb::ElementBase &quad0,kmb::ElementBase &quad1,bool orienta
 		// nodes[0] と nodes[3] が結びついているとする
 		switch( rel ){
 		case 0x0081:  // (0,0) (1,3)
-			nodes[0] = quad0.getCellId(0);
-			nodes[1] = quad1.getCellId(1);
-			nodes[2] = quad1.getCellId(2);
-			nodes[3] = quad0.getCellId(1);
-			nodes[4] = quad0.getCellId(2);
-			nodes[5] = quad0.getCellId(3);
+			nodes[0] = quad0.getNodeId(0);
+			nodes[1] = quad1.getNodeId(1);
+			nodes[2] = quad1.getNodeId(2);
+			nodes[3] = quad0.getNodeId(1);
+			nodes[4] = quad0.getNodeId(2);
+			nodes[5] = quad0.getNodeId(3);
 			swapped = true;
 			break;
 		case 0x0012:  // (0,1) (1,0)
-			nodes[0] = quad0.getCellId(0);
-			nodes[1] = quad1.getCellId(2);
-			nodes[2] = quad1.getCellId(3);
-			nodes[3] = quad0.getCellId(1);
-			nodes[4] = quad0.getCellId(2);
-			nodes[5] = quad0.getCellId(3);
+			nodes[0] = quad0.getNodeId(0);
+			nodes[1] = quad1.getNodeId(2);
+			nodes[2] = quad1.getNodeId(3);
+			nodes[3] = quad0.getNodeId(1);
+			nodes[4] = quad0.getNodeId(2);
+			nodes[5] = quad0.getNodeId(3);
 			swapped = true;
 			break;
 		case 0x0024:  // (0,2) (1,1)
-			nodes[0] = quad0.getCellId(0);
-			nodes[1] = quad1.getCellId(3);
-			nodes[2] = quad1.getCellId(0);
-			nodes[3] = quad0.getCellId(1);
-			nodes[4] = quad0.getCellId(2);
-			nodes[5] = quad0.getCellId(3);
+			nodes[0] = quad0.getNodeId(0);
+			nodes[1] = quad1.getNodeId(3);
+			nodes[2] = quad1.getNodeId(0);
+			nodes[3] = quad0.getNodeId(1);
+			nodes[4] = quad0.getNodeId(2);
+			nodes[5] = quad0.getNodeId(3);
 			swapped = true;
 			break;
 		case 0x0048:  // (0,3) (1,2)
-			nodes[0] = quad0.getCellId(0);
-			nodes[1] = quad1.getCellId(0);
-			nodes[2] = quad1.getCellId(1);
-			nodes[3] = quad0.getCellId(1);
-			nodes[4] = quad0.getCellId(2);
-			nodes[5] = quad0.getCellId(3);
+			nodes[0] = quad0.getNodeId(0);
+			nodes[1] = quad1.getNodeId(0);
+			nodes[2] = quad1.getNodeId(1);
+			nodes[3] = quad0.getNodeId(1);
+			nodes[4] = quad0.getNodeId(2);
+			nodes[5] = quad0.getNodeId(3);
 			swapped = true;
 			break;
 		case 0x0810:  // (1,0) (2,3)
-			nodes[0] = quad0.getCellId(1);
-			nodes[1] = quad1.getCellId(1);
-			nodes[2] = quad1.getCellId(2);
-			nodes[3] = quad0.getCellId(2);
-			nodes[4] = quad0.getCellId(3);
-			nodes[5] = quad0.getCellId(0);
+			nodes[0] = quad0.getNodeId(1);
+			nodes[1] = quad1.getNodeId(1);
+			nodes[2] = quad1.getNodeId(2);
+			nodes[3] = quad0.getNodeId(2);
+			nodes[4] = quad0.getNodeId(3);
+			nodes[5] = quad0.getNodeId(0);
 			swapped = true;
 			break;
 		case 0x0120:  // (1,1) (2,0)
-			nodes[0] = quad0.getCellId(1);
-			nodes[1] = quad1.getCellId(2);
-			nodes[2] = quad1.getCellId(3);
-			nodes[3] = quad0.getCellId(2);
-			nodes[4] = quad0.getCellId(3);
-			nodes[5] = quad0.getCellId(0);
+			nodes[0] = quad0.getNodeId(1);
+			nodes[1] = quad1.getNodeId(2);
+			nodes[2] = quad1.getNodeId(3);
+			nodes[3] = quad0.getNodeId(2);
+			nodes[4] = quad0.getNodeId(3);
+			nodes[5] = quad0.getNodeId(0);
 			swapped = true;
 			break;
 		case 0x0240:  // (1,2) (2,1)
-			nodes[0] = quad0.getCellId(1);
-			nodes[1] = quad1.getCellId(3);
-			nodes[2] = quad1.getCellId(0);
-			nodes[3] = quad0.getCellId(2);
-			nodes[4] = quad0.getCellId(3);
-			nodes[5] = quad0.getCellId(0);
+			nodes[0] = quad0.getNodeId(1);
+			nodes[1] = quad1.getNodeId(3);
+			nodes[2] = quad1.getNodeId(0);
+			nodes[3] = quad0.getNodeId(2);
+			nodes[4] = quad0.getNodeId(3);
+			nodes[5] = quad0.getNodeId(0);
 			swapped = true;
 			break;
 		case 0x0480:  // (1,3) (2,2)
-			nodes[0] = quad0.getCellId(1);
-			nodes[1] = quad1.getCellId(0);
-			nodes[2] = quad1.getCellId(1);
-			nodes[3] = quad0.getCellId(2);
-			nodes[4] = quad0.getCellId(3);
-			nodes[5] = quad0.getCellId(0);
+			nodes[0] = quad0.getNodeId(1);
+			nodes[1] = quad1.getNodeId(0);
+			nodes[2] = quad1.getNodeId(1);
+			nodes[3] = quad0.getNodeId(2);
+			nodes[4] = quad0.getNodeId(3);
+			nodes[5] = quad0.getNodeId(0);
 			swapped = true;
 			break;
 		case 0x8100:  // (2,0) (3,3)
-			nodes[0] = quad0.getCellId(2);
-			nodes[1] = quad1.getCellId(1);
-			nodes[2] = quad1.getCellId(2);
-			nodes[3] = quad0.getCellId(3);
-			nodes[4] = quad0.getCellId(0);
-			nodes[5] = quad0.getCellId(1);
+			nodes[0] = quad0.getNodeId(2);
+			nodes[1] = quad1.getNodeId(1);
+			nodes[2] = quad1.getNodeId(2);
+			nodes[3] = quad0.getNodeId(3);
+			nodes[4] = quad0.getNodeId(0);
+			nodes[5] = quad0.getNodeId(1);
 			swapped = true;
 			break;
 		case 0x1200:  // (2,1) (3,0)
-			nodes[0] = quad0.getCellId(2);
-			nodes[1] = quad1.getCellId(2);
-			nodes[2] = quad1.getCellId(3);
-			nodes[3] = quad0.getCellId(3);
-			nodes[4] = quad0.getCellId(0);
-			nodes[5] = quad0.getCellId(1);
+			nodes[0] = quad0.getNodeId(2);
+			nodes[1] = quad1.getNodeId(2);
+			nodes[2] = quad1.getNodeId(3);
+			nodes[3] = quad0.getNodeId(3);
+			nodes[4] = quad0.getNodeId(0);
+			nodes[5] = quad0.getNodeId(1);
 			swapped = true;
 			break;
 		case 0x2400:  // (2,2) (3,1)
-			nodes[0] = quad0.getCellId(2);
-			nodes[1] = quad1.getCellId(3);
-			nodes[2] = quad1.getCellId(0);
-			nodes[3] = quad0.getCellId(3);
-			nodes[4] = quad0.getCellId(0);
-			nodes[5] = quad0.getCellId(1);
+			nodes[0] = quad0.getNodeId(2);
+			nodes[1] = quad1.getNodeId(3);
+			nodes[2] = quad1.getNodeId(0);
+			nodes[3] = quad0.getNodeId(3);
+			nodes[4] = quad0.getNodeId(0);
+			nodes[5] = quad0.getNodeId(1);
 			swapped = true;
 			break;
 		case 0x4800:  // (2,3) (3,2)
-			nodes[0] = quad0.getCellId(2);
-			nodes[1] = quad1.getCellId(0);
-			nodes[2] = quad1.getCellId(1);
-			nodes[3] = quad0.getCellId(3);
-			nodes[4] = quad0.getCellId(0);
-			nodes[5] = quad0.getCellId(1);
+			nodes[0] = quad0.getNodeId(2);
+			nodes[1] = quad1.getNodeId(0);
+			nodes[2] = quad1.getNodeId(1);
+			nodes[3] = quad0.getNodeId(3);
+			nodes[4] = quad0.getNodeId(0);
+			nodes[5] = quad0.getNodeId(1);
 			swapped = true;
 			break;
 		case 0x1008:  // (3,0) (0,3)
-			nodes[0] = quad0.getCellId(3);
-			nodes[1] = quad1.getCellId(1);
-			nodes[2] = quad1.getCellId(2);
-			nodes[3] = quad0.getCellId(0);
-			nodes[4] = quad0.getCellId(1);
-			nodes[5] = quad0.getCellId(2);
+			nodes[0] = quad0.getNodeId(3);
+			nodes[1] = quad1.getNodeId(1);
+			nodes[2] = quad1.getNodeId(2);
+			nodes[3] = quad0.getNodeId(0);
+			nodes[4] = quad0.getNodeId(1);
+			nodes[5] = quad0.getNodeId(2);
 			swapped = true;
 			break;
 		case 0x2001:  // (3,1) (0,0)
-			nodes[0] = quad0.getCellId(3);
-			nodes[1] = quad1.getCellId(2);
-			nodes[2] = quad1.getCellId(3);
-			nodes[3] = quad0.getCellId(0);
-			nodes[4] = quad0.getCellId(1);
-			nodes[5] = quad0.getCellId(2);
+			nodes[0] = quad0.getNodeId(3);
+			nodes[1] = quad1.getNodeId(2);
+			nodes[2] = quad1.getNodeId(3);
+			nodes[3] = quad0.getNodeId(0);
+			nodes[4] = quad0.getNodeId(1);
+			nodes[5] = quad0.getNodeId(2);
 			swapped = true;
 			break;
 		case 0x4002:  // (3,2) (0,1)
-			nodes[0] = quad0.getCellId(3);
-			nodes[1] = quad1.getCellId(3);
-			nodes[2] = quad1.getCellId(0);
-			nodes[3] = quad0.getCellId(0);
-			nodes[4] = quad0.getCellId(1);
-			nodes[5] = quad0.getCellId(2);
+			nodes[0] = quad0.getNodeId(3);
+			nodes[1] = quad1.getNodeId(3);
+			nodes[2] = quad1.getNodeId(0);
+			nodes[3] = quad0.getNodeId(0);
+			nodes[4] = quad0.getNodeId(1);
+			nodes[5] = quad0.getNodeId(2);
 			swapped = true;
 			break;
 		case 0x8004:  // (3,3) (0,2)
-			nodes[0] = quad0.getCellId(3);
-			nodes[1] = quad1.getCellId(0);
-			nodes[2] = quad1.getCellId(1);
-			nodes[3] = quad0.getCellId(0);
-			nodes[4] = quad0.getCellId(1);
-			nodes[5] = quad0.getCellId(2);
+			nodes[0] = quad0.getNodeId(3);
+			nodes[1] = quad1.getNodeId(0);
+			nodes[2] = quad1.getNodeId(1);
+			nodes[3] = quad0.getNodeId(0);
+			nodes[4] = quad0.getNodeId(1);
+			nodes[5] = quad0.getNodeId(2);
 			swapped = true;
 			break;
 		default:
@@ -493,24 +503,24 @@ kmb::Quad::edgeSwap(kmb::ElementBase &quad0,kmb::ElementBase &quad1,bool orienta
 		if( swapped ){
 			if( orientation ){
 				// 1,4 をつなぐ
-				quad0.setCellId(0, nodes[1]);
-				quad0.setCellId(1, nodes[2]);
-				quad0.setCellId(2, nodes[3]);
-				quad0.setCellId(3, nodes[4]);
-				quad1.setCellId(0, nodes[0]);
-				quad1.setCellId(1, nodes[1]);
-				quad1.setCellId(2, nodes[4]);
-				quad1.setCellId(3, nodes[5]);
+				quad0.setNodeId(0, nodes[1]);
+				quad0.setNodeId(1, nodes[2]);
+				quad0.setNodeId(2, nodes[3]);
+				quad0.setNodeId(3, nodes[4]);
+				quad1.setNodeId(0, nodes[0]);
+				quad1.setNodeId(1, nodes[1]);
+				quad1.setNodeId(2, nodes[4]);
+				quad1.setNodeId(3, nodes[5]);
 			}else{
 				// 2,5 をつなぐ
-				quad0.setCellId(0, nodes[0]);
-				quad0.setCellId(1, nodes[1]);
-				quad0.setCellId(2, nodes[2]);
-				quad0.setCellId(3, nodes[5]);
-				quad1.setCellId(0, nodes[2]);
-				quad1.setCellId(1, nodes[3]);
-				quad1.setCellId(2, nodes[4]);
-				quad1.setCellId(3, nodes[5]);
+				quad0.setNodeId(0, nodes[0]);
+				quad0.setNodeId(1, nodes[1]);
+				quad0.setNodeId(2, nodes[2]);
+				quad0.setNodeId(3, nodes[5]);
+				quad1.setNodeId(0, nodes[2]);
+				quad1.setNodeId(1, nodes[3]);
+				quad1.setNodeId(2, nodes[4]);
+				quad1.setNodeId(3, nodes[5]);
 			}
 		}
 	}

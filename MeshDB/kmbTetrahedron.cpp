@@ -161,6 +161,16 @@ kmb::Tetrahedron::~Tetrahedron(void)
 {
 }
 
+kmb::nodeIdType kmb::Tetrahedron::operator()(const int index,const int i) const
+{
+	return cell[kmb::Tetrahedron::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Tetrahedron::operator()(const int index,const int i)
+{
+	return cell[kmb::Tetrahedron::faceTable[index][i]];
+}
+
 void
 kmb::Tetrahedron::shapeFunction(double s,double t,double u,double* coeff)
 {

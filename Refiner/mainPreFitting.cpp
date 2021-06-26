@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_Refiner version 1.1                          #
 # Sample Program PreFitting                                            #
@@ -13,11 +13,11 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 /*
- * Fitting �̑O�������s��
+ * Fitting の前処理を行う
  *
- * �ʏ�̃��b�V���̏ꍇ�A�\�ʏ�̐ߓ_�ɑ΂��āANURBS �Ȗʂ̃p�����[�^���t�Z����
+ * 通常のメッシュの場合、表面上の節点に対して、NURBS 曲面のパラメータを逆算する
  *
- * Debug �p => REVOCAP YAML ���b�V�� NodeGroup �Ƃ��� "boundary" �Ƃ������O�ō���Ă����΂悢
+ * Debug 用 => REVOCAP YAML メッシュ NodeGroup として "boundary" という名前で作っておけばよい
  */
 
 #ifdef _CONSOLE
@@ -37,7 +37,6 @@
 #include "RevocapIO/kmbHecmwIO.h"
 #include "RevocapIO/kmbFFbIO.h"
 #include "RevocapIO/kmbRevocapNeutralIO.h"
-#include "Refiner/rcapRefinerMacros.h"
 
 enum meshformat{
 	ADVENTURE_TETMESH,
@@ -202,11 +201,11 @@ int main(int argc, char* argv[])
 	kmb::Vector2WithIntBindings<kmb::nodeIdType>* fittingData =
 		reinterpret_cast< kmb::Vector2WithIntBindings<kmb::nodeIdType>* >( mesh.createDataBindings("fitting",kmb::DataBindings::NodeVariable,kmb::PhysicalValue::Vector2withInt) );
 
-
+	// ファイルヘッダ出力
 	rnfIO.saveHeader( outputfile );
 
 	{
-
+		// Newton法閾値
 		double epsilon = 1.0e-8;
 		int iterMax = 1000;
 		const char* tags[1];
@@ -219,7 +218,7 @@ int main(int argc, char* argv[])
 		kmb::RnfShapeIO rnfshape;
 		rnfshape.appendSurfaceHeaderToFile( outputfile );
 		rnfshape.loadFromFile( shapefile, surfaces );
-
+		// surface Id は 0 番目からつけ直す
 		long surfaceId = 0;
 		std::cout << "surface count = " << surfaces.size() << std::endl;
 
@@ -265,9 +264,9 @@ int main(int argc, char* argv[])
 							mesh.getNode(nodeId,pt);
 							printf("fitting %d => ", nodeId);
 							if( bbox.intersect(pt) != kmb::Region::OUTSIDE ){
-
+								// ここで NURBS 曲面上の最も近い点を求める
 								if( nurbs->getNearest(pt,u,v) ){
-
+									// pt0 => 曲面上の点
 									nurbs->getPoint(u,v,pt0);
 									if( pt.distance(pt0) < distthresh ){
 										printf("%f %f\n", u, v);
@@ -288,7 +287,7 @@ int main(int argc, char* argv[])
 				default:
 					break;
 				}
-
+				// ファイル出力
 				rnfshape.appendSurfaceToFile( outputfile, surf );
 				++surfaceId;
 			}
@@ -296,7 +295,7 @@ int main(int argc, char* argv[])
 		}
 	}
 
-
+	// 複数の曲面に適合しているもので、自明でないものを除去
 	{
 		kmb::DataBindings::iterator dIter = fittingData->begin();
 		while( !dIter.isFinished() ){
@@ -311,16 +310,16 @@ int main(int argc, char* argv[])
 			if( surf ){
 				kmb::Point3D pt2;
 				surf->getPoint(uv[0],uv[1],pt2);
-				printf("%d %d %f\n", nodeId, surfaceId, pt.distance(pt2));
+				printf("%d %ld %f\n", nodeId, surfaceId, pt.distance(pt2));
 			}
 			++dIter;
 		}
 	}
 
-
+	// ファイル出力
 	rnfIO.appendDataToRNFFile( outputfile, &mesh, "fitting" );
 
-
+	// 終了処理
 	std::vector< kmb::Surface3D* >::iterator sIter = surfaces.begin();
 	while( sIter != surfaces.end () ){
 		kmb::Surface3D* surf = *sIter;
@@ -336,14 +335,14 @@ int main(int argc, char* argv[])
 		kmb::nodeIdType nodeId = dIter.getId();
 		size_t s = fittingData->countId(nodeId);
 		if( fittingData->countId(nodeId) != 1 ){
-			printf("nodeId %d => number of fitting surface = %u\n", nodeId, s);
+			printf("nodeId %d => number of fitting surface = %zd\n", nodeId, s);
 		}
 		++dIter;
 	}
 
 	printf("pre-fitting status report\n");
-	printf("boundary node count = %d\n", nodeGroup->getIdCount());
-	printf("fitting node count = %d\n", fittingData->getIdCount());
+	printf("boundary node count = %zd\n", nodeGroup->getIdCount());
+	printf("fitting node count = %zd\n", fittingData->getIdCount());
 
 	return 0;
 }

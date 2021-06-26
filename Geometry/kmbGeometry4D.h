@@ -55,6 +55,7 @@ public:
 	double& operator[](const int i){ return v[i]; }
 	double operator[](const int i) const { return v[i]; }
 	Tuple4D& operator=(const Tuple4D& other);
+	bool operator<(const Tuple4D& other)const;
 protected:
 	double v[4];
 };
@@ -73,7 +74,8 @@ public:
 	Point4D operator-(const Vector4D& other) const;
 	Point4D& operator+=(const Vector4D& other);
 	Point4D& operator-=(const Vector4D& other);
-	virtual bool operator==(const Point4D& other) const;
+	bool operator==(const Point4D& other) const;
+	bool operator!=(const Point4D& other) const;
 	// ２点間の距離
 	double distance(const Point4D& other) const;
 	double distance(double x,double y,double z,double w) const;
@@ -81,10 +83,8 @@ public:
 	double distanceSq(double x,double y,double z,double w) const;
 	// static 関数群
 	// 距離
-#ifndef REVOCAP_SUPPORT_RUBY
 	static double distance(const Point4D& a,const Point4D& b);
 	static double distanceSq(const Point4D& a,const Point4D& b);
-#endif
 	static Point4D infinity;
 };
 
@@ -191,7 +191,6 @@ public:
 		double m20,double m21,double m22,double m23,
 		double m30,double m31,double m32,double m33);
 	/// this * x = b なる方程式の解の x を返す
-	Vector4D* solve(const Vector4D& b) const;
 	bool solve(const Vector4D& b,Vector4D& x) const;
 	bool solveSafely(const Vector4D& b,Vector4D& x,double thresh=1.0e-6) const;
 	/// 行列の掛け算

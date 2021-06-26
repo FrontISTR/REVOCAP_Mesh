@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : BLMGenerator                                            #
@@ -246,7 +246,7 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 		}
 		mesh->addElement( bIter.getType(), orgNodeTable );
 		for(int i=0;i<num;++i){
-			bIter.setCellId(i,nodeTable[i]);
+			bIter.setNodeId(i,nodeTable[i]);
 		}
 		++bIter;
 	}
@@ -260,7 +260,7 @@ kmb::BLMGenerator::intrude(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId)
 		for(int i=0;i<len;++i){
 			std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( eIter[i] );
 			if( nIter != nodeMapper.end() ){
-				eIter.setCellId( i, nIter->second );
+				eIter.setNodeId( i, nIter->second );
 			}
 		}
 		++eIter;
@@ -372,7 +372,7 @@ kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId
 		}
 		mesh->addElement( bIter.getType(), orgNodeTable );
 		for(int i=0;i<num;++i){
-			bIter.setCellId(i,nodeTable[i]);
+			bIter.setNodeId(i,nodeTable[i]);
 		}
 		++bIter;
 	}
@@ -385,7 +385,7 @@ kmb::BLMGenerator::intrudeB(kmb::bodyIdType parentId,kmb::bodyIdType &boundaryId
 		for(int i=0;i<len;++i){
 			std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( eIter[i] );
 			if( nIter != nodeMapper.end() ){
-				eIter.setCellId( i, nIter->second );
+				eIter.setNodeId( i, nIter->second );
 			}
 		}
 		++eIter;
@@ -491,7 +491,7 @@ kmb::BLMGenerator::extrudeFromData(const char* faceGroup)
 			if( !eIter.isFinished() ){
 				int bnum = eIter.getBoundaryNodeCount(localId);
 				for(int i=0;i<bnum;++i){
-					getDuplicatedNodeId( eIter.getBoundaryCellId(localId,i) );
+					getDuplicatedNodeId( eIter.getBoundaryNodeId(localId,i) );
 				}
 			}
 		}
@@ -549,7 +549,7 @@ kmb::BLMGenerator::extrudeFromData(const char* faceGroup)
 				kmb::idType localId = f.getLocalFaceId();
 				int len = elem.getBoundaryNodeCount(localId);
 				for(int i=0;i<len;++i){
-					oldNodeId[i] = elem.getBoundaryCellId(localId,i);
+					oldNodeId[i] = elem.getBoundaryNodeId(localId,i);
 				}
 				kmb::Face outerFace = appendLayerElements( elem.getBoundaryType(localId), oldNodeId, false );
 				faceData2->addId( outerFace );
@@ -600,7 +600,7 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 			if( !eIter.isFinished() ){
 				int bnum = eIter.getBoundaryNodeCount(localId);
 				for(int i=0;i<bnum;++i){
-					nodes[i] = eIter.getBoundaryCellId(localId,i);
+					nodes[i] = eIter.getBoundaryNodeId(localId,i);
 					getDuplicatedNodeId( nodes[i] );
 				}
 				boundaryBody.addElement( eIter.getBoundaryType(localId), nodes );
@@ -616,7 +616,7 @@ kmb::BLMGenerator::intrudeFromData(const char* faceGroup)
 		for(int i=0;i<len;++i){
 			std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( eIter[i] );
 			if( nIter != nodeMapper.end() ){
-				eIter.setCellId( i, nIter->second );
+				eIter.setNodeId( i, nIter->second );
 			}
 		}
 		++eIter;
@@ -713,7 +713,7 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 			if( !eIter.isFinished() ){
 				int bnum = eIter.getBoundaryNodeCount(localId);
 				for(int i=0;i<bnum;++i){
-					nodes[i] = eIter.getBoundaryCellId(localId,i);
+					nodes[i] = eIter.getBoundaryNodeId(localId,i);
 					getDuplicatedNodeId( nodes[i] );
 				}
 				outerBoundaryBody.addElement( eIter.getBoundaryType(localId), nodes );
@@ -729,7 +729,7 @@ kmb::BLMGenerator::intrudeBFromData(const char* faceGroup)
 		for(int i=0;i<len;++i){
 			std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( eIter[i] );
 			if( nIter != nodeMapper.end() ){
-				eIter.setCellId( i, nIter->second );
+				eIter.setNodeId( i, nIter->second );
 			}
 		}
 		++eIter;
@@ -841,9 +841,9 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 			if( !eIter.isFinished() ){
 				int bnum = eIter.getBoundaryNodeCount(localId);
 				for(int i=0;i<bnum;++i){
-					kmb::nodeIdType nodeId = eIter.getBoundaryCellId(localId,i);
+					kmb::nodeIdType nodeId = eIter.getBoundaryNodeId(localId,i);
 					if( !boundNG->hasId( nodeId ) ){
-						getDuplicatedNodeId( eIter.getBoundaryCellId(localId,i) );
+						getDuplicatedNodeId( eIter.getBoundaryNodeId(localId,i) );
 					}
 				}
 			}
@@ -904,7 +904,7 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 				kmb::idType localId = f.getLocalFaceId();
 				int len = elem.getBoundaryNodeCount(localId);
 				for(int i=0;i<len;++i){
-					oldNodeId[i] = elem.getBoundaryCellId(localId,i);
+					oldNodeId[i] = elem.getBoundaryNodeId(localId,i);
 				}
 				kmb::Face outerFace = appendLayerElements( elem.getBoundaryType(localId), oldNodeId );
 				faceData2->addId( outerFace );
@@ -932,7 +932,7 @@ kmb::BLMGenerator::generateInnerFromData(const char* faceGroup,kmb::bodyIdType &
 		for(int i=0;i<len;++i){
 			std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( eIter[i] );
 			if( nIter != nodeMapper.end() ){
-				eIter.setCellId( i, nIter->second );
+				eIter.setNodeId( i, nIter->second );
 			}
 		}
 		++eIter;
@@ -1044,7 +1044,7 @@ kmb::BLMGenerator::generateInner(kmb::bodyIdType bodyId,kmb::bodyIdType parentId
 		for(int i=0;i<len;++i){
 			std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( eIter[i] );
 			if( nIter != nodeMapper.end() ){
-				eIter.setCellId( i, nIter->second );
+				eIter.setNodeId( i, nIter->second );
 			}
 		}
 		++eIter;

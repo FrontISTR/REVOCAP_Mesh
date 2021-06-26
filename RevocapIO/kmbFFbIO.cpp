@@ -25,7 +25,7 @@
 #include <iostream>
 #include <iomanip>
 
-#ifdef WIN32
+#ifdef _WIN32
  #if _MSC_VER >= 1400
   #define sprintf sprintf_s
   #define strcpy strcpy_s
@@ -976,9 +976,9 @@ kmb::FFbIO::writeNode2D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 			output << std::setw(12) << body->getCount() << std::endl;
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
-				nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-				nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-				nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
+				nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+				nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+				nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
 				index += 3;
 				if( index >= 6 ){
 					for(int i=0;i<6;++i){
@@ -1004,10 +1004,10 @@ kmb::FFbIO::writeNode2D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 			output << std::setw(12) << body->getCount() << std::endl;
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
-				nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-				nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-				nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-				nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
+				nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+				nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+				nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+				nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
 				index += 4;
 				if( index >= 6 ){
 					for(int i=0;i<6;++i){
@@ -1050,10 +1050,10 @@ kmb::FFbIO::writeNode3D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 			output << std::setw(12) << body->getCount() << std::endl;
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
-				nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-				nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-				nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-				nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
+				nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+				nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+				nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+				nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
 				index += 4;
 				while( index >= 6 ){
 					for(int i=0;i<6;++i){
@@ -1079,11 +1079,11 @@ kmb::FFbIO::writeNode3D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 			output << std::setw(12) << body->getCount() << std::endl;
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
-				nodes[index]   = eIter.getCellId(1) + offsetNodeId;
-				nodes[index+1] = eIter.getCellId(2) + offsetNodeId;
-				nodes[index+2] = eIter.getCellId(3) + offsetNodeId;
-				nodes[index+3] = eIter.getCellId(4) + offsetNodeId;
-				nodes[index+4] = eIter.getCellId(0) + offsetNodeId;
+				nodes[index]   = eIter.getNodeId(1) + offsetNodeId;
+				nodes[index+1] = eIter.getNodeId(2) + offsetNodeId;
+				nodes[index+2] = eIter.getNodeId(3) + offsetNodeId;
+				nodes[index+3] = eIter.getNodeId(4) + offsetNodeId;
+				nodes[index+4] = eIter.getNodeId(0) + offsetNodeId;
 				index += 5;
 				while( index >= 6 ){
 					for(int i=0;i<6;++i){
@@ -1109,12 +1109,12 @@ kmb::FFbIO::writeNode3D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 			output << std::setw(12) << body->getCount() << std::endl;
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
-				nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-				nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-				nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-				nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
-				nodes[index+4] = eIter.getCellId(4) + offsetNodeId;
-				nodes[index+5] = eIter.getCellId(5) + offsetNodeId;
+				nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+				nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+				nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+				nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
+				nodes[index+4] = eIter.getNodeId(4) + offsetNodeId;
+				nodes[index+5] = eIter.getNodeId(5) + offsetNodeId;
 				index += 6;
 				while( index >= 6 ){
 					for(int i=0;i<6;++i){
@@ -1140,14 +1140,14 @@ kmb::FFbIO::writeNode3D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 			output << std::setw(12) << body->getCount() << std::endl;
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
-				nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-				nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-				nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-				nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
-				nodes[index+4] = eIter.getCellId(4) + offsetNodeId;
-				nodes[index+5] = eIter.getCellId(5) + offsetNodeId;
-				nodes[index+6] = eIter.getCellId(6) + offsetNodeId;
-				nodes[index+7] = eIter.getCellId(7) + offsetNodeId;
+				nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+				nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+				nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+				nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
+				nodes[index+4] = eIter.getNodeId(4) + offsetNodeId;
+				nodes[index+5] = eIter.getNodeId(5) + offsetNodeId;
+				nodes[index+6] = eIter.getNodeId(6) + offsetNodeId;
+				nodes[index+7] = eIter.getNodeId(7) + offsetNodeId;
 				index += 8;
 				while( index >= 6 ){
 					for(int i=0;i<6;++i){
@@ -1175,45 +1175,45 @@ kmb::FFbIO::writeNode3D(std::ofstream &output,const kmb::MeshData* mesh,kmb::bod
 			while( !eIter.isFinished() ){
 				switch( eIter.getType() ){
 				case kmb::TETRAHEDRON:
-					nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
 					nodes[index+4] = 0;
 					nodes[index+5] = 0;
 					nodes[index+6] = 0;
 					nodes[index+7] = 0;
 					break;
 				case kmb::PYRAMID:
-					nodes[index]   = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(3) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(4) + offsetNodeId;
-					nodes[index+4] = eIter.getCellId(0) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(3) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(4) + offsetNodeId;
+					nodes[index+4] = eIter.getNodeId(0) + offsetNodeId;
 					nodes[index+5] = 0;
 					nodes[index+6] = 0;
 					nodes[index+7] = 0;
 					break;
 				case kmb::WEDGE:
-					nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
-					nodes[index+4] = eIter.getCellId(4) + offsetNodeId;
-					nodes[index+5] = eIter.getCellId(5) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
+					nodes[index+4] = eIter.getNodeId(4) + offsetNodeId;
+					nodes[index+5] = eIter.getNodeId(5) + offsetNodeId;
 					nodes[index+6] = 0;
 					nodes[index+7] = 0;
 					break;
 				case kmb::HEXAHEDRON:
-					nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
 
-					nodes[index+4] = eIter.getCellId(4) + offsetNodeId;
-					nodes[index+5] = eIter.getCellId(5) + offsetNodeId;
-					nodes[index+6] = eIter.getCellId(6) + offsetNodeId;
-					nodes[index+7] = eIter.getCellId(7) + offsetNodeId;
+					nodes[index+4] = eIter.getNodeId(4) + offsetNodeId;
+					nodes[index+5] = eIter.getNodeId(5) + offsetNodeId;
+					nodes[index+6] = eIter.getNodeId(6) + offsetNodeId;
+					nodes[index+7] = eIter.getNodeId(7) + offsetNodeId;
 					break;
 				default:
 					nodes[index]   = 0;
@@ -1271,18 +1271,18 @@ kmb::FFbIO::writeNode2DVer6(std::ofstream &output,const kmb::MeshData* mesh,kmb:
 				switch( eIter.getType() ){
 				case kmb::TRIANGLE:
 					{
-						nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-						nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-						nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
+						nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+						nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+						nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
 						nodes[index+3] = 0;
 					}
 					break;
 				case kmb::QUAD:
 					{
-						nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-						nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-						nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-						nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
+						nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+						nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+						nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+						nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
 					}
 					break;
 				default:
@@ -1332,44 +1332,44 @@ kmb::FFbIO::writeNode3DVer6(std::ofstream &output,const kmb::MeshData* mesh,kmb:
 			while( !eIter.isFinished() ){
 				switch( eIter.getType() ){
 				case kmb::TETRAHEDRON:
-					nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
 					nodes[index+4] = 0;
 					nodes[index+5] = 0;
 					nodes[index+6] = 0;
 					nodes[index+7] = 0;
 					break;
 				case kmb::PYRAMID:
-					nodes[index]   = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(3) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(4) + offsetNodeId;
-					nodes[index+4] = eIter.getCellId(0) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(3) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(4) + offsetNodeId;
+					nodes[index+4] = eIter.getNodeId(0) + offsetNodeId;
 					nodes[index+5] = 0;
 					nodes[index+6] = 0;
 					nodes[index+7] = 0;
 					break;
 				case kmb::WEDGE:
-					nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
-					nodes[index+4] = eIter.getCellId(4) + offsetNodeId;
-					nodes[index+5] = eIter.getCellId(5) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
+					nodes[index+4] = eIter.getNodeId(4) + offsetNodeId;
+					nodes[index+5] = eIter.getNodeId(5) + offsetNodeId;
 					nodes[index+6] = 0;
 					nodes[index+7] = 0;
 					break;
 				case kmb::HEXAHEDRON:
-					nodes[index]   = eIter.getCellId(0) + offsetNodeId;
-					nodes[index+1] = eIter.getCellId(1) + offsetNodeId;
-					nodes[index+2] = eIter.getCellId(2) + offsetNodeId;
-					nodes[index+3] = eIter.getCellId(3) + offsetNodeId;
-					nodes[index+4] = eIter.getCellId(4) + offsetNodeId;
-					nodes[index+5] = eIter.getCellId(5) + offsetNodeId;
-					nodes[index+6] = eIter.getCellId(6) + offsetNodeId;
-					nodes[index+7] = eIter.getCellId(7) + offsetNodeId;
+					nodes[index]   = eIter.getNodeId(0) + offsetNodeId;
+					nodes[index+1] = eIter.getNodeId(1) + offsetNodeId;
+					nodes[index+2] = eIter.getNodeId(2) + offsetNodeId;
+					nodes[index+3] = eIter.getNodeId(3) + offsetNodeId;
+					nodes[index+4] = eIter.getNodeId(4) + offsetNodeId;
+					nodes[index+5] = eIter.getNodeId(5) + offsetNodeId;
+					nodes[index+6] = eIter.getNodeId(6) + offsetNodeId;
+					nodes[index+7] = eIter.getNodeId(7) + offsetNodeId;
 					break;
 				default:
 					nodes[index]   = 0;

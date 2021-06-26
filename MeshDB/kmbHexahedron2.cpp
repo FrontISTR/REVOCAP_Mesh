@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Hexahedron2                                             #
@@ -182,6 +182,16 @@ kmb::Hexahedron2::Hexahedron2(kmb::nodeIdType *ary)
 
 kmb::Hexahedron2::~Hexahedron2(void)
 {
+}
+
+kmb::nodeIdType kmb::Hexahedron2::operator()(const int index,const int i) const
+{
+	return cell[kmb::Hexahedron2::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Hexahedron2::operator()(const int index,const int i)
+{
+	return cell[kmb::Hexahedron2::faceTable[index][i]];
 }
 
 void

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshDB                                                  #
@@ -70,7 +70,7 @@ kmb::MeshDB::getNearestNodeInBody(const kmb::Point3D& point, kmb::bodyIdType bod
 		{
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				const kmb::nodeIdType nodeId = eIter.getCellId(i);
+				const kmb::nodeIdType nodeId = eIter.getNodeId(i);
 				if( this->getNode( nodeId, node ) ){
 					if( minimizer.update( node.distanceSq( point ) ) ){
 						nearestId = nodeId;
@@ -117,7 +117,7 @@ kmb::MeshDB::getNearestNodeInBody(const kmb::nodeIdType id,kmb::bodyIdType bodyI
 		{
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				const kmb::nodeIdType target_nodeId = eIter.getCellId(i);
+				const kmb::nodeIdType target_nodeId = eIter.getNodeId(i);
 				if( this->getNode( target_nodeId, targetNode ) && id != target_nodeId ){
 					if( minimizer.update( targetNode.distanceSq( node ) ) ){
 						nearestId = target_nodeId;

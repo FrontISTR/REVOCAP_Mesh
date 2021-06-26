@@ -112,8 +112,8 @@ kmb::Polygon::setEdgesByFaceGroup( const kmb::DataBindings* facegroup, const kmb
 		if( fIter.getFace(f) ){
 			kmb::ElementContainer::const_iterator eIter = patches->find( f.getElementId() );
 			kmb::Segment* segment = new kmb::Segment(
-				eIter.getBoundaryCellId(f.getLocalFaceId(),0),
-				eIter.getBoundaryCellId(f.getLocalFaceId(),1));
+				eIter.getBoundaryNodeId(f.getLocalFaceId(),0),
+				eIter.getBoundaryNodeId(f.getLocalFaceId(),1));
 			if( segment ){
 				this->edges->addElement( segment );
 			}
@@ -184,7 +184,7 @@ kmb::Polygon::getCenter(const kmb::Point2DContainer* points,kmb::Point2D &center
 	double x=0.0, y=0.0;
 	kmb::ElementContainer::iterator eIter = edges->begin();
 	while( !eIter.isFinished() ){
-		kmb::nodeIdType nodeId = eIter.getCellId(0);
+		kmb::nodeIdType nodeId = eIter.getNodeId(0);
 		points->getXY( nodeId, x, y );
 		center.addCoordinate( x, y );
 		++eIter;
@@ -203,7 +203,7 @@ kmb::Polygon::getCenter(const kmb::Point3DContainer* points,kmb::Point3D &center
 	double x=0.0, y=0.0, z=0.0;
 	kmb::ElementContainer::iterator eIter = edges->begin();
 	while( !eIter.isFinished() ){
-		kmb::nodeIdType nodeId = eIter.getCellId(0);
+		kmb::nodeIdType nodeId = eIter.getNodeId(0);
 		points->getXYZ( nodeId, x, y, z );
 		center.addCoordinate( x, y, z );
 		++eIter;
@@ -223,7 +223,7 @@ kmb::Polygon::getNearestNode(const kmb::Point2DContainer* points,kmb::Point2D &p
 	double x=0.0, y=0.0;
 	kmb::ElementContainer::iterator eIter = edges->begin();
 	while( !eIter.isFinished() ){
-		kmb::nodeIdType nodeId = eIter.getCellId(0);
+		kmb::nodeIdType nodeId = eIter.getNodeId(0);
 		if( points->getXY(nodeId,x,y) && minimizer.update( point.distanceSq(x,y) ) ){
 			nearestId = nodeId;
 		}
@@ -243,7 +243,7 @@ kmb::Polygon::getNearestNode(const kmb::Point3DContainer* points,kmb::Point3D &p
 	double x=0.0, y=0.0, z=0.0;
 	kmb::ElementContainer::iterator eIter = edges->begin();
 	while( !eIter.isFinished() ){
-		kmb::nodeIdType nodeId = eIter.getCellId(0);
+		kmb::nodeIdType nodeId = eIter.getNodeId(0);
 		if( points->getXYZ(nodeId,x,y,z) && minimizer.update( point.distanceSq(x,y,z) ) ){
 			nearestId = nodeId;
 		}
@@ -290,7 +290,7 @@ kmb::Polygon::isClosed(void) const
 	while( !eIter.isFinished() )
 	{
 		// 節点のまわりに2つの要素があることを確認
-		kmb::nodeIdType nodeId = eIter.getCellId(0);
+		kmb::nodeIdType nodeId = eIter.getNodeId(0);
 		int innerElement = 0;
 		int outerElement = 0;
 		kmb::NodeNeighbor::const_iterator nIter = neighborInfo.beginIteratorAt( nodeId );
@@ -330,7 +330,7 @@ kmb::Polygon::hasDoubleNode(void) const
 	while( eIter != edges->end() )
 	{
 		// 節点のまわりに2つより多くの要素があることを確認
-		kmb::nodeIdType nodeId = eIter.getCellId(0);
+		kmb::nodeIdType nodeId = eIter.getNodeId(0);
 		if( neighborInfo.getElementCountAroundNode( nodeId ) > 2 ){
 			irregalNodeId = nodeId;
 			break;
@@ -375,10 +375,10 @@ kmb::Polygon::getNextNode
 	{
 		kmb::elementIdType elemID = eIter->second;
 		kmb::ElementContainer::const_iterator elem = edges->find( elemID );
-		if( !elem.isFinished() && elem.getCellId( (order) ? 0 : 1 ) == nodeID )
+		if( !elem.isFinished() && elem.getNodeId( (order) ? 0 : 1 ) == nodeID )
 		{
 			++count;
-			nextID = elem.getCellId( (order) ? 1 : 0 );
+			nextID = elem.getNodeId( (order) ? 1 : 0 );
 		}
 		++eIter;
 	}
@@ -402,7 +402,7 @@ kmb::Polygon::getNextElement
 	if( nowElement.isFinished() )
 		return nextID;
 
-	kmb::nodeIdType nodeID = nowElement.getCellId( (order) ? 1 : 0 );
+	kmb::nodeIdType nodeID = nowElement.getNodeId( (order) ? 1 : 0 );
 
 	int count = 0;
 	kmb::NodeNeighbor::const_iterator
@@ -411,7 +411,7 @@ kmb::Polygon::getNextElement
 	{
 		kmb::elementIdType elemID = eIter->second;
 		kmb::ElementContainer::const_iterator elem = edges->find( elemID );
-		if( !elem.isFinished() && elem.getCellId( (order) ? 0 : 1 ) == nodeID )
+		if( !elem.isFinished() && elem.getNodeId( (order) ? 0 : 1 ) == nodeID )
 		{
 			++count;
 			nextID = elemID;
@@ -440,7 +440,7 @@ kmb::Polygon::getElementByNode
 	{
 		kmb::elementIdType elemID = eIter->second;
 		kmb::ElementContainer::iterator elem = edges->find( elemID );
-		if( !elem.isFinished() && elem.getCellId( (order) ? 0 : 1 ) == nodeID )
+		if( !elem.isFinished() && elem.getNodeId( (order) ? 0 : 1 ) == nodeID )
 		{
 			++count;
 			nextID = elemID;
@@ -472,7 +472,7 @@ kmb::Polygon::dividePolygonsByDiagonals(
 	while( !eIter.isFinished() )
 	{
 		nodePairs.insert( std::pair< kmb::nodeIdType, kmb::nodeIdType >
-			( eIter.getCellId(0), eIter.getCellId(1) ) );
+			( eIter.getNodeId(0), eIter.getNodeId(1) ) );
 		++eIter;
 	}
 	// 対角線の登録
@@ -532,8 +532,7 @@ kmb::Polygon::dividePolygonsByDiagonals(
 	}
 }
 
-kmb::nodeIdType
-kmb::Polygon::getNextNode(
+kmb::nodeIdType kmb::Polygon::getNextNode(
 	kmb::nodeIdType prevId,
 	kmb::nodeIdType nodeId,
 	const kmb::Point2DContainer* points,
@@ -570,7 +569,7 @@ kmb::Polygon::getNextNode(
 		{
 			kmb::Point2D nextPoint;
 			if( points->getPoint( nIter->second, nextPoint ) && nIter->second != prevId ){
-				double ang = Point2D::angle2( prevPoint, nowPoint, nextPoint );
+				double ang = Point2D::angle2(nowPoint, prevPoint, nextPoint );
 				if( maximizer.update( ang ) ){
 					nextIter = nIter;
 				}
@@ -598,8 +597,8 @@ kmb::Polygon::getEndPoints( kmb::nodeIdType &initial, kmb::nodeIdType &end ) con
 	// edge の先頭と最後の点を探す
 	kmb::ElementContainer::iterator eIter = edges->begin();
 	while( !eIter.isFinished() ){
-		kmb::nodeIdType node0 = eIter.getCellId(0);
-		kmb::nodeIdType node1 = eIter.getCellId(1);
+		kmb::nodeIdType node0 = eIter.getNodeId(0);
+		kmb::nodeIdType node1 = eIter.getNodeId(1);
 		if( neighborInfo.getElementCountAroundNode(node0) == 1 ){
 			++count;
 			initial = node0;

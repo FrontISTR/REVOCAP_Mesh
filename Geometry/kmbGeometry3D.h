@@ -64,6 +64,7 @@ public:
 	double& operator[](const int i){ return v[i]; }
 	double operator[](const int i) const { return v[i]; }
 	Tuple3D& operator=(const Tuple3D& other);
+	bool operator<(const Tuple3D& other)const;
 protected:
 	double v[3];
 };
@@ -81,7 +82,8 @@ public:
 	Point3D operator-(const Vector3D& other) const;
 	Point3D& operator+=(const Vector3D& other);
 	Point3D& operator-=(const Vector3D& other);
-	virtual bool operator==(const Point3D& other) const;
+	bool operator==(const Point3D& other) const;
+	bool operator!=(const Point3D& other) const;
 	Point3D& operator=(const Point3D& other);
 	// this と other を m:n に内分した点を返す
 	Point3D dividingPoint(const Point3D& other,double m,double n) const;
@@ -96,27 +98,38 @@ public:
 	double distanceSq(const Point3D& other) const;
 	double distanceSq(double x,double y,double z) const;
 	// 線分（直線ではない）AB との間の距離 注：垂線の足の長さではない
-	// a から b へのパラメータ t も返す
 	double distanceSqToSegment(const Point3D& a,const Point3D& b) const;
+	// a から b へのパラメータ t も返す
+	// t = 0 : a
+	// t = 1 : b
 	double distanceSqToSegment(const Point3D& a,const Point3D& b,double& t) const;
 	double distanceToSegment(const Point3D& a,const Point3D& b) const;
 	// 三角形 ABC との距離
+	// t[0]*a + t[1]*b + t[2]*c で最小距離を取る
 	double distanceSqToTriangle(const Point3D& a,const Point3D& b,const Point3D& c,double* t=NULL) const;
 	double distanceToTriangle(const Point3D& a,const Point3D& b,const Point3D& c) const;
+	// flag = 1 : aで最短距離を取る 
+	// flag = 2 : bで最短距離を取る 
+	// flag = 3 : abで最短距離を取る 
+	// flag = 4 : cで最短距離を取る 
+	// flag = 5 : caで最短距離を取る 
+	// flag = 6 : bcで最短距離を取る 
+	// flag = 7 : 三角形の内部で最短距離を取る 
+	double distanceToTriangle(const Point3D& a, const Point3D& b, const Point3D& c, Point3D& nearest,int &flag) const;
 	// 垂線の足
 	// この点を origin を原点とする uv 平面に射影した垂線の足が au + bv 
 	bool getFootOfPerpendicular( const Point3D &origin, const Vector3D &u, const Vector3D &v, double &a, double &b) const;
 
 	// static 関数群
-#ifndef REVOCAP_SUPPORT_RUBY
-	static Point3D dividingPoint(const Point3D& a,const Point3D& b,double m,double n);
+	static Point3D dividingPoint(const Point3D& p0,const Point3D& p1,double t0,double t1);
+	static void dividingPoint(const Point3D &p0, const Point3D &p1, double t0, double t1, Point3D &p);
 	static Point3D proportionalPoint(const Point3D& a,const Point3D& b,double t);
 	// 距離
 	static double distance(const Point3D& a,const Point3D& b);
 	static double distanceSq(const Point3D& a,const Point3D& b);
-#endif
 	// 四面体の体積
 	static double volume(const Point3D& a,const Point3D& b,const Point3D &c,const Point3D &d);
+	static double triple(const Point3D& a, const Point3D& b, const Point3D &c, const Point3D &d);
 	// abc の向きで正かどうか
 	static bool positive(const Point3D& a,const Point3D& b,const Point3D &c,const Point3D &x);
 	// 三角形の面積
@@ -125,11 +138,18 @@ public:
 	// 中点、重心
 	static Point3D getCenter(const Point3D& a,const Point3D& b);
 	static Point3D getCenter(const Point3D& a,const Point3D& b,const Point3D &c);
+	static Point3D getCircumCenter(const Point3D& a,const Point3D& b,const Point3D &c);
+	static Point3D getCenter(const Point3D& a,const Point3D& b,const Point3D &c,const Point3D &d);
+	static Point3D getCircumCenter(const Point3D& a,const Point3D& b,const Point3D &c,const Point3D &d);
 
-	// 角度（ラジアン）∠ABC
+	// 角度（ラジアン）∠BAC
 	static double angle(const Point3D &a,const Point3D &b,const Point3D &c);
 	static double cos(const Point3D &a,const Point3D &b,const Point3D &c);
 	static double sin(const Point3D &a,const Point3D &b,const Point3D &c);
+	// 点 p0 を中心とする p1 p2 p3 のなす立体角
+	static double solidAngle(const Point3D &p0, const Point3D &p1, const Point3D &p2, const Point3D &p3);
+	// ab と ac の内積
+	static double inner(const Point3D &a, const Point3D &b, const Point3D &c);
 	// 体積座標
 	static void calcMinorCoordinate( const kmb::Point3D& a, const kmb::Point3D& b, const kmb::Point3D& c, const kmb::Point3D& d, const kmb::Point3D& x, double coordinate[4]);
 	// 法線
@@ -153,9 +173,9 @@ public:
 	Vector3D(void) : Tuple3D(){};
 	Vector3D(const double x, const double y, const double z)
 		: Tuple3D(x,y,z){};
-	// p - q
-	// 始点が q 終点が p
-	Vector3D(const Point3D& endPoint,const Point3D& startPoint);
+	/// p - q
+	/// 始点が q 終点が p
+	Vector3D(const Point3D& target,const Point3D& source);
 	Vector3D(const Tuple3D &other) : Tuple3D(other){};
 	virtual ~Vector3D(void){};
 	Vector3D operator+(const Vector3D& other) const{
@@ -207,7 +227,11 @@ public:
 	static double cos(const Vector3D &v0,const Vector3D &v1);
 	static double sin(const Vector3D &v0,const Vector3D &v1);
 	static double angle(const Vector3D &v0,const Vector3D &v1);
+	// 球の中心からv0 v1 v2 が張る三角形を見込む立体角
+	// v0 v1 v2 に平行なものがあるときは 0 になる（球面上の三角形の辺が決まらないので）
+	static double solidAngle(const Vector3D &v0, const Vector3D &v1, const Vector3D &v2);
 	static double abs(const double v[3]);
+	// 内積
 	static double inner(const double v0[3],const double v1[3]);
 };
 
@@ -243,6 +267,12 @@ public:
 	double get(int i,int j) const;
 	bool set(int i,int j,double val);
 	bool add(int i,int j,double val);
+	double operator()(int i,int j) const{
+		return m[i+j*3];
+	}
+	double& operator()(int i,int j){
+		return m[i+j*3];
+	}
 
 	bool identity(void);
 	bool zero(void);
@@ -266,7 +296,6 @@ public:
 	// get inverse matrix
 	Matrix3x3* getInverse(void) const;
 	/// this * x = b なる方程式の解の x を返す
-	Vector3D* solve(const Vector3D& b) const;
 	bool solve(const Vector3D& b,Vector3D& x) const;
 	bool solveSafely(const Vector3D& b,Vector3D& x,double thresh=1.0e-6) const;
 	/// 行列の掛け算（射影変換を施す）

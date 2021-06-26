@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : TetraItem                                               #
@@ -34,7 +34,7 @@ class TetraN : public Tetrahedron
 protected:
 	TetraN** neighbors;
 	// 近傍情報
-	// メモリ節約のための内部表現 int[4](-2〜3)
+	// メモリ節約のための内部表現 int[4](-2～3)
 	// -1 : 隣接する tetra がない
 	// -2 : 参照しない
 	unsigned int face;
@@ -58,7 +58,7 @@ protected:
 	kmb::TetraItem* nextTetra;
 	kmb::TetraItem* neighbors[4];
 	// 近傍情報
-	// メモリ節約のための内部表現 int[4](-2〜3)
+	// メモリ節約のための内部表現 int[4](-2～3)
 	// -1 : 隣接する tetra がない
 	// -2 : 参照しない
 	unsigned int face;

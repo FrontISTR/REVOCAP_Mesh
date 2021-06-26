@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshDB                                                  #
@@ -100,8 +100,8 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while( !eIter.isFinished() ){
 				kmb::elementIdType eid = eIter.getId();
-				if( this->getNode( eIter.getCellId(0), n0 ) &&
-					this->getNode( eIter.getCellId(1), n1 ) )
+				if( this->getNode( eIter.getNodeId(0), n0 ) &&
+					this->getNode( eIter.getNodeId(1), n1 ) )
 				{
 					double d = pt.distanceSqToSegment( n0, n1 );
 					if( minimizer.update( d ) ){
@@ -123,9 +123,9 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 				{
 				case kmb::TRIANGLE:
 				case kmb::TRIANGLE2:
-					if( this->getNode( eIter.getCellId(0), n0 ) &&
-						this->getNode( eIter.getCellId(1), n1 ) &&
-						this->getNode( eIter.getCellId(2), n2 ) )
+					if( this->getNode( eIter.getNodeId(0), n0 ) &&
+						this->getNode( eIter.getNodeId(1), n1 ) &&
+						this->getNode( eIter.getNodeId(2), n2 ) )
 					{
 						double d = pt.distanceSqToTriangle( n0, n1, n2 );
 						if( minimizer.update( d ) ){
@@ -135,10 +135,10 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 					break;
 				case QUAD:
 				case QUAD2:
-					if( this->getNode( eIter.getCellId(0), n0 ) &&
-						this->getNode( eIter.getCellId(1), n1 ) &&
-						this->getNode( eIter.getCellId(2), n2 ) &&
-						this->getNode( eIter.getCellId(3), n3 ) )
+					if( this->getNode( eIter.getNodeId(0), n0 ) &&
+						this->getNode( eIter.getNodeId(1), n1 ) &&
+						this->getNode( eIter.getNodeId(2), n2 ) &&
+						this->getNode( eIter.getNodeId(3), n3 ) )
 					{
 						double d = kmb::Minimizer::getMin(
 								pt.distanceSqToTriangle( n0, n1, n2 ),
@@ -216,8 +216,8 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 				kmb::elementIdType eid = dIter.getId();
 				kmb::ElementContainer::const_iterator eIter = body->find( eid );
 				if( !eIter.isFinished() ){
-					if( this->getNode( eIter.getCellId(0), n0 ) &&
-						this->getNode( eIter.getCellId(1), n1 ) )
+					if( this->getNode( eIter.getNodeId(0), n0 ) &&
+						this->getNode( eIter.getNodeId(1), n1 ) )
 					{
 						double d = pt.distanceSqToSegment( n0, n1 );
 						if( minimizer.update( d ) ){
@@ -238,9 +238,9 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 					{
 					case kmb::TRIANGLE:
 					case kmb::TRIANGLE2:
-						if( this->getNode( eIter.getCellId(0), n0 ) &&
-							this->getNode( eIter.getCellId(1), n1 ) &&
-							this->getNode( eIter.getCellId(2), n2 ) )
+						if( this->getNode( eIter.getNodeId(0), n0 ) &&
+							this->getNode( eIter.getNodeId(1), n1 ) &&
+							this->getNode( eIter.getNodeId(2), n2 ) )
 						{
 							double d = pt.distanceSqToTriangle( n0, n1, n2 );
 							if( minimizer.update( d ) ){
@@ -250,10 +250,10 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 						break;
 					case QUAD:
 					case QUAD2:
-						if( this->getNode( eIter.getCellId(0), n0 ) &&
-							this->getNode( eIter.getCellId(1), n1 ) &&
-							this->getNode( eIter.getCellId(2), n2 ) &&
-							this->getNode( eIter.getCellId(3), n3 ) )
+						if( this->getNode( eIter.getNodeId(0), n0 ) &&
+							this->getNode( eIter.getNodeId(1), n1 ) &&
+							this->getNode( eIter.getNodeId(2), n2 ) &&
+							this->getNode( eIter.getNodeId(3), n3 ) )
 						{
 							double d = kmb::Minimizer::getMin(
 									pt.distanceSqToTriangle( n0, n1, n2 ),
@@ -301,7 +301,7 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 				kmb::idType localId = f.getLocalFaceId();
 				kmb::ElementContainer::const_iterator eIter = body->find( eid );
 				if( !eIter.isFinished() ){
-					if( this->getNode( eIter.getBoundaryCellId(localId,0), n0 ) )
+					if( this->getNode( eIter.getBoundaryNodeId(localId,0), n0 ) )
 					{
 						double d = pt.distanceSq( n0 );
 						if( minimizer.update( d ) ){
@@ -319,8 +319,8 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 				kmb::idType localId = f.getLocalFaceId();
 				kmb::ElementContainer::const_iterator eIter = body->find( eid );
 				if( !eIter.isFinished() ){
-					if( this->getNode( eIter.getBoundaryCellId(localId,0), n0 ) &&
-						this->getNode( eIter.getBoundaryCellId(localId,1), n1 ) )
+					if( this->getNode( eIter.getBoundaryNodeId(localId,0), n0 ) &&
+						this->getNode( eIter.getBoundaryNodeId(localId,1), n1 ) )
 					{
 						double d = pt.distanceSqToSegment( n0, n1 );
 						if( minimizer.update( d ) ){
@@ -343,9 +343,9 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 					{
 					case kmb::TRIANGLE:
 					case kmb::TRIANGLE2:
-						if( this->getNode( eIter.getBoundaryCellId(localId,0), n0 ) &&
-							this->getNode( eIter.getBoundaryCellId(localId,1), n1 ) &&
-							this->getNode( eIter.getBoundaryCellId(localId,2), n2 ) )
+						if( this->getNode( eIter.getBoundaryNodeId(localId,0), n0 ) &&
+							this->getNode( eIter.getBoundaryNodeId(localId,1), n1 ) &&
+							this->getNode( eIter.getBoundaryNodeId(localId,2), n2 ) )
 						{
 							double d = pt.distanceSqToTriangle( n0, n1, n2 );
 							if( minimizer.update( d ) ){
@@ -356,10 +356,10 @@ kmb::MeshDB::searchElementInData(const char* name,double x,double y,double z,dou
 						break;
 					case QUAD:
 					case QUAD2:
-						if( this->getNode( eIter.getBoundaryCellId(localId,0), n0 ) &&
-							this->getNode( eIter.getBoundaryCellId(localId,1), n1 ) &&
-							this->getNode( eIter.getBoundaryCellId(localId,2), n2 ) &&
-							this->getNode( eIter.getBoundaryCellId(localId,3), n3 ) )
+						if( this->getNode( eIter.getBoundaryNodeId(localId,0), n0 ) &&
+							this->getNode( eIter.getBoundaryNodeId(localId,1), n1 ) &&
+							this->getNode( eIter.getBoundaryNodeId(localId,2), n2 ) &&
+							this->getNode( eIter.getBoundaryNodeId(localId,3), n3 ) )
 						{
 							double d = kmb::Minimizer::getMin(
 									pt.distanceSqToTriangle( n0, n1, n2 ),
@@ -412,8 +412,8 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 			while( !eIter.isFinished() )
 			{
 				kmb::elementIdType eid = eIter.getId();
-				if( this->getNode( eIter.getCellId(0), n0 ) &&
-					this->getNode( eIter.getCellId(1), n1 ) )
+				if( this->getNode( eIter.getNodeId(0), n0 ) &&
+					this->getNode( eIter.getNodeId(1), n1 ) )
 				{
 					double d = pt.distanceSqToSegment( n0, n1 );
 					if( d < toleranceSq && minimizer.update( d ) ){
@@ -434,9 +434,9 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 				{
 				case kmb::TRIANGLE:
 				case kmb::TRIANGLE2:
-					if( this->getNode( eIter.getCellId(0), n0 ) &&
-						this->getNode( eIter.getCellId(1), n1 ) &&
-						this->getNode( eIter.getCellId(2), n2 ) )
+					if( this->getNode( eIter.getNodeId(0), n0 ) &&
+						this->getNode( eIter.getNodeId(1), n1 ) &&
+						this->getNode( eIter.getNodeId(2), n2 ) )
 					{
 						double d = pt.distanceSqToTriangle( n0, n1, n2 );
 						if( d < toleranceSq && minimizer.update( d ) ){
@@ -450,10 +450,10 @@ kmb::MeshDB::searchElement(kmb::bodyIdType bodyId,double x,double y,double z,dou
 					break;
 				case QUAD:
 				case QUAD2:
-					if( this->getNode( eIter.getCellId(0), n0 ) &&
-						this->getNode( eIter.getCellId(1), n1 ) &&
-						this->getNode( eIter.getCellId(2), n2 ) &&
-						this->getNode( eIter.getCellId(3), n3 ) )
+					if( this->getNode( eIter.getNodeId(0), n0 ) &&
+						this->getNode( eIter.getNodeId(1), n1 ) &&
+						this->getNode( eIter.getNodeId(2), n2 ) &&
+						this->getNode( eIter.getNodeId(3), n3 ) )
 					{
 						double d = kmb::Minimizer::getMin(
 								pt.distanceSqToTriangle( n0, n1, n2 ),
@@ -563,9 +563,9 @@ kmb::MeshDB::searchElementWithNormal(kmb::bodyIdType bodyId,double x,double y,do
 				kmb::elementIdType eid = eIter.getId();
 				if( evaluator->getNormalVector( eIter, vect ) &&
 					vect*normal > 0 &&
-					this->getNode( eIter.getCellId(0), n0 ) &&
-					this->getNode( eIter.getCellId(1), n1 ) &&
-					this->getNode( eIter.getCellId(2), n2 ) )
+					this->getNode( eIter.getNodeId(0), n0 ) &&
+					this->getNode( eIter.getNodeId(1), n1 ) &&
+					this->getNode( eIter.getNodeId(2), n2 ) )
 				{
 					double d = pt.distanceSqToTriangle( n0, n1, n2 );
 					if( d < toleranceSq && minimizer.update( d ) ){
@@ -588,10 +588,10 @@ kmb::MeshDB::searchElementWithNormal(kmb::bodyIdType bodyId,double x,double y,do
 				kmb::elementIdType eid = eIter.getId();
 				if( evaluator->getNormalVector( eIter, vect ) &&
 					vect*normal > 0 &&
-					this->getNode( eIter.getCellId(0), n0 ) &&
-					this->getNode( eIter.getCellId(1), n1 ) &&
-					this->getNode( eIter.getCellId(1), n2 ) &&
-					this->getNode( eIter.getCellId(2), n3 ) )
+					this->getNode( eIter.getNodeId(0), n0 ) &&
+					this->getNode( eIter.getNodeId(1), n1 ) &&
+					this->getNode( eIter.getNodeId(1), n2 ) &&
+					this->getNode( eIter.getNodeId(2), n3 ) )
 				{
 					double d = kmb::Minimizer::getMin(
 							pt.distanceSqToTriangle( n0, n1, n2 ),
@@ -837,9 +837,9 @@ kmb::MeshDB::getNearestElement(kmb::bodyIdType bodyId,double x,double y,double z
 			while( eIter != body->end() ){
 				kmb::Element* triangle = eIter.getElement();
 				if( triangle ){
-					if( this->getNode( triangle->getCellId(0), n0 ) &&
-						this->getNode( triangle->getCellId(1), n1 ) &&
-						this->getNode( triangle->getCellId(2), n2 ) &&
+					if( this->getNode( triangle->getNodeId(0), n0 ) &&
+						this->getNode( triangle->getNodeId(1), n1 ) &&
+						this->getNode( triangle->getNodeId(2), n2 ) &&
 						min.update( pt.distanceSqToTriangle( n0, n1, n2 ) ) ){
 						nearestId = eIter.getId();
 					}
@@ -852,8 +852,8 @@ kmb::MeshDB::getNearestElement(kmb::bodyIdType bodyId,double x,double y,double z
 			while( eIter != body->end() ){
 				kmb::Element* segment = eIter.getElement();
 				if( segment ){
-					if( this->getNode( segment->getCellId(0), n0 ) &&
-						this->getNode( segment->getCellId(1), n1 ) &&
+					if( this->getNode( segment->getNodeId(0), n0 ) &&
+						this->getNode( segment->getNodeId(1), n1 ) &&
 						min.update( pt.distanceSqToSegment( n0, n1 ) ) ){
 						nearestId = eIter.getId();
 					}

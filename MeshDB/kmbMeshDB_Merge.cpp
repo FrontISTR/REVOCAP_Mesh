@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshDB                                                  #
@@ -194,7 +194,7 @@ kmb::MeshDB::importBody(kmb::MeshData& otherMesh, kmb::bodyIdType bodyId, const 
 		while( !eIter.isFinished() ){
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				kmb::nodeIdType yourId = eIter.getCellId(i);
+				kmb::nodeIdType yourId = eIter.getNodeId(i);
 				cell[i] = kmb::nullNodeId;
 				if( slaveCoupleData->getPhysicalValue( yourId, &l ) ){
 					cell[i] = static_cast< kmb::nodeIdType >( l );
@@ -214,7 +214,7 @@ kmb::MeshDB::importBody(kmb::MeshData& otherMesh, kmb::bodyIdType bodyId, const 
 		while( !eIter.isFinished() ){
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				kmb::nodeIdType yourId = eIter.getCellId(i);
+				kmb::nodeIdType yourId = eIter.getNodeId(i);
 				cell[i] = kmb::nullNodeId;
 				if( slaveCoupleData->getPhysicalValue( yourId, &l ) ){
 					cell[i] = static_cast< kmb::nodeIdType >( l );
@@ -235,7 +235,7 @@ kmb::MeshDB::importBody(kmb::MeshData& otherMesh, kmb::bodyIdType bodyId, const 
 		while( !eIter.isFinished() ){
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				kmb::nodeIdType yourId = eIter.getCellId(i);
+				kmb::nodeIdType yourId = eIter.getNodeId(i);
 				cell[i] = kmb::nullNodeId;
 				std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( yourId );
 				if( nIter != nodeMapper.end() ){
@@ -256,7 +256,7 @@ kmb::MeshDB::importBody(kmb::MeshData& otherMesh, kmb::bodyIdType bodyId, const 
 		while( !eIter.isFinished() ){
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				kmb::nodeIdType yourId = eIter.getCellId(i);
+				kmb::nodeIdType yourId = eIter.getNodeId(i);
 				cell[i] = kmb::nullNodeId;
 				std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( yourId );
 				if( nIter != nodeMapper.end() ){
@@ -320,7 +320,7 @@ kmb::MeshDB::importBodyWithNodeMatching(kmb::MeshData& otherMesh, kmb::bodyIdTyp
 		while( !eIter.isFinished() ){
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				kmb::nodeIdType yourId = eIter.getCellId(i);
+				kmb::nodeIdType yourId = eIter.getNodeId(i);
 				cell[i] = kmb::nullNodeId;
 				if( coupleData->getPhysicalValue( yourId, &l ) ){
 					cell[i] = static_cast< kmb::nodeIdType >(l);
@@ -343,7 +343,7 @@ kmb::MeshDB::importBodyWithNodeMatching(kmb::MeshData& otherMesh, kmb::bodyIdTyp
 		while( !eIter.isFinished() ){
 			const int len = eIter.getNodeCount();
 			for(int i=0;i<len;++i){
-				kmb::nodeIdType yourId = eIter.getCellId(i);
+				kmb::nodeIdType yourId = eIter.getNodeId(i);
 				cell[i] = kmb::nullNodeId;
 				std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( yourId );
 				if( nIter != nodeMapper.end() ){

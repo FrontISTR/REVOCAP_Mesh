@@ -14,7 +14,7 @@
 ----------------------------------------------------------------------*/
 #include "RevocapIO/kmbFortranIO.h"
 
-#ifdef WIN32
+#ifdef _WIN32
  typedef unsigned char uint8_t;
  #if _MSC_VER >= 1400
   #define sprintf sprintf_s

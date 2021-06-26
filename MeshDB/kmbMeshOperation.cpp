@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.7                          #
 # Class Name : MeshOperation                                           #
@@ -208,12 +208,12 @@ int kmb::MeshOperation::duplicateNodeIdOfBody(kmb::bodyIdType bodyId,const char*
 				if( !data->hasId( orgNodeId ) ){
 					++count;
 					newNodeId = points->duplicatePoint( orgNodeId );
-					eIter.setCellId(i,newNodeId);
+					eIter.setNodeId(i,newNodeId);
 					l = static_cast<long>(newNodeId);
 					data->setPhysicalValue( orgNodeId, &l );
 				}else if( data->getPhysicalValue( orgNodeId, &l ) ){
 					newNodeId = static_cast<kmb::nodeIdType>(l);
-					eIter.setCellId(i,newNodeId);
+					eIter.setNodeId(i,newNodeId);
 				}
 			}
 			++eIter;

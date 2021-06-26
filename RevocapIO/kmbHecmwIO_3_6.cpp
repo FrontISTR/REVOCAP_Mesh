@@ -27,7 +27,7 @@
 #include <cstdlib>
 #include <cstring>
 
-#ifdef WIN32
+#ifdef _WIN32
  #if _MSC_VER >= 1400
   #define sprintf sprintf_s
  #endif

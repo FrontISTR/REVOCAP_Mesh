@@ -77,13 +77,13 @@ kmb::FaceBucket::setAutoBucketSize(void)
 	// 他のところはほぼ同じ長さになるように分割
 	switch(minIndex){
 	case 0:
-		this->setGridSize( div, static_cast<int>(div * range[1] / range[0]), static_cast<int>(div * range[2] / range[0]) );
+		this->setBlockSize( div, static_cast<int>(div * range[1] / range[0]), static_cast<int>(div * range[2] / range[0]) );
 		break;
 	case 1:
-		this->setGridSize( static_cast<int>(div * range[0] / range[1]), div, static_cast<int>(div * range[2] / range[1]) );
+		this->setBlockSize( static_cast<int>(div * range[0] / range[1]), div, static_cast<int>(div * range[2] / range[1]) );
 		break;
 	case 2:
-		this->setGridSize( static_cast<int>(div * range[0] / range[2]), static_cast<int>(div * range[2] / range[0]), div );
+		this->setBlockSize( static_cast<int>(div * range[0] / range[2]), static_cast<int>(div * range[2] / range[0]), div );
 		break;
 	}
 }
@@ -106,7 +106,7 @@ kmb::FaceBucket::appendAll(void)
 				const int len = elem.getBoundaryNodeCount(f.getLocalFaceId());
 				for(int i=0;i<len;++i)
 				{
-					if( mesh->getNode( elem.getBoundaryCellId(f.getLocalFaceId(),i), node ) ){
+					if( mesh->getNode( elem.getBoundaryNodeId(f.getLocalFaceId(),i), node ) ){
 						_bbox.update( node );
 					}
 				}
@@ -146,19 +146,19 @@ kmb::FaceBucket::getNearestInBucket(const kmb::Point3D& pt,int i,int j,int k,dou
 			const int len = elem.getBoundaryVertexCount(localId);
 			switch(len){
 			case 3:
-				mesh->getNode(elem.getBoundaryCellId(localId,0),n0);
-				mesh->getNode(elem.getBoundaryCellId(localId,1),n1);
-				mesh->getNode(elem.getBoundaryCellId(localId,2),n2);
+				mesh->getNode(elem.getBoundaryNodeId(localId,0),n0);
+				mesh->getNode(elem.getBoundaryNodeId(localId,1),n1);
+				mesh->getNode(elem.getBoundaryNodeId(localId,2),n2);
 				if( minimizer.update(pt.distanceSqToTriangle(n0,n1,n2)) )
 				{
 					f = f0;
 				}
 				break;
 			case 4:
-				mesh->getNode(elem.getBoundaryCellId(localId,0),n0);
-				mesh->getNode(elem.getBoundaryCellId(localId,1),n1);
-				mesh->getNode(elem.getBoundaryCellId(localId,2),n2);
-				mesh->getNode(elem.getBoundaryCellId(localId,3),n3);
+				mesh->getNode(elem.getBoundaryNodeId(localId,0),n0);
+				mesh->getNode(elem.getBoundaryNodeId(localId,1),n1);
+				mesh->getNode(elem.getBoundaryNodeId(localId,2),n2);
+				mesh->getNode(elem.getBoundaryNodeId(localId,3),n3);
 				if( minimizer.update(kmb::Minimizer::getMin(
 					pt.distanceSqToTriangle( n0, n1, n2 ),
 					pt.distanceSqToTriangle( n2, n3, n0 ) ) ) )
@@ -225,19 +225,19 @@ kmb::FaceBucket::getNearest(double x,double y,double z,double &dist,kmb::Face &f
 				const int len = elem.getBoundaryVertexCount(localId);
 				switch(len){
 				case 3:
-					mesh->getNode(elem.getBoundaryCellId(localId,0),n0);
-					mesh->getNode(elem.getBoundaryCellId(localId,1),n1);
-					mesh->getNode(elem.getBoundaryCellId(localId,2),n2);
+					mesh->getNode(elem.getBoundaryNodeId(localId,0),n0);
+					mesh->getNode(elem.getBoundaryNodeId(localId,1),n1);
+					mesh->getNode(elem.getBoundaryNodeId(localId,2),n2);
 					if( minimizer.update(pt.distanceSqToTriangle(n0,n1,n2)) )
 					{
 						f = f0;
 					}
 					break;
 				case 4:
-					mesh->getNode(elem.getBoundaryCellId(localId,0),n0);
-					mesh->getNode(elem.getBoundaryCellId(localId,1),n1);
-					mesh->getNode(elem.getBoundaryCellId(localId,2),n2);
-					mesh->getNode(elem.getBoundaryCellId(localId,3),n3);
+					mesh->getNode(elem.getBoundaryNodeId(localId,0),n0);
+					mesh->getNode(elem.getBoundaryNodeId(localId,1),n1);
+					mesh->getNode(elem.getBoundaryNodeId(localId,2),n2);
+					mesh->getNode(elem.getBoundaryNodeId(localId,3),n3);
 					if( minimizer.update(kmb::Minimizer::getMin(
 						pt.distanceSqToTriangle( n0, n1, n2 ),
 						pt.distanceSqToTriangle( n2, n3, n0 ) ) ) )

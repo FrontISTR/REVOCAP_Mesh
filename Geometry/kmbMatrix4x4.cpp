@@ -406,18 +406,6 @@ kmb::Matrix4x4::determinant(
 	return det;
 }
 
-kmb::Vector4D*
-kmb::Matrix4x4::solve(const Vector4D& b) const
-{
-	kmb::Vector4D* answer = new kmb::Vector4D();
-	if( solve(b,*answer) ){
-		return answer;
-	}else{
-		delete answer;
-		return NULL;
-	}
-}
-
 bool
 kmb::Matrix4x4::solve(const Vector4D& b,Vector4D& x) const
 {

@@ -118,14 +118,14 @@ kmb::EdgeStitcher::setEdgesWithinDistance(kmb::bodyIdType forward,kmb::bodyIdTyp
 			kmb::ElementContainer::iterator eIterf = f->begin();
 			while( !eIterf.isFinished() )
 			{
-				if( points->getPoint( eIterf.getCellId(0), p0 ) &&
-					points->getPoint( eIterf.getCellId(1), p1 ) )
+				if( points->getPoint( eIterf.getNodeId(0), p0 ) &&
+					points->getPoint( eIterf.getNodeId(1), p1 ) )
 				{
 					if( kmb::Matching::getDistanceEdgeToNodeWithParam( points, b, &p0, nearestId, param ) < distance &&
 						kmb::Matching::getDistanceEdgeToNodeWithParam( points, b, &p1, nearestId, param ) < distance )
 					{
-						cell[0] = eIterf.getCellId(0);
-						cell[1] = eIterf.getCellId(1);
+						cell[0] = eIterf.getNodeId(0);
+						cell[1] = eIterf.getNodeId(1);
 						fnear.addElement( kmb::SEGMENT, cell );
 					}
 				}
@@ -135,14 +135,14 @@ kmb::EdgeStitcher::setEdgesWithinDistance(kmb::bodyIdType forward,kmb::bodyIdTyp
 			kmb::ElementContainer::iterator eIterb = b->begin();
 			while( !eIterb.isFinished() )
 			{
-				if( points->getPoint( eIterb.getCellId(0), p0 ) &&
-					points->getPoint( eIterb.getCellId(1), p1 ) )
+				if( points->getPoint( eIterb.getNodeId(0), p0 ) &&
+					points->getPoint( eIterb.getNodeId(1), p1 ) )
 				{
 					if( kmb::Matching::getDistanceEdgeToNodeWithParam( points, f, &p0, nearestId, param ) < distance &&
 						kmb::Matching::getDistanceEdgeToNodeWithParam( points, f, &p1, nearestId, param ) < distance )
 					{
-						cell[0] = eIterb.getCellId(0);
-						cell[1] = eIterb.getCellId(1);
+						cell[0] = eIterb.getNodeId(0);
+						cell[1] = eIterb.getNodeId(1);
 						bnear.addElement( kmb::SEGMENT, cell );
 					}
 				}
@@ -276,7 +276,7 @@ kmb::EdgeStitcher::setInitialNode( kmb::nodeIdType forwardInit, kmb::nodeIdType 
 		}else if( b0 != kmb::nullNodeId ){
 			endB = b0;
 		}else{
-			initF = forward.getEdges()->begin().getCellId(0);
+			initF = forward.getEdges()->begin().getNodeId(0);
 		}
 	}
 	if( initF == kmb::nullNodeId && endB != kmb::nullNodeId ){
@@ -287,9 +287,9 @@ kmb::EdgeStitcher::setInitialNode( kmb::nodeIdType forwardInit, kmb::nodeIdType 
 			kmb::Minimizer min;
 			kmb::ElementContainer::const_iterator eIter = forward.getEdges()->begin();
 			while( !eIter.isFinished() ){
-				if( points->getPoint( eIter.getCellId(0), target ) ){
+				if( points->getPoint( eIter.getNodeId(0), target ) ){
 					if( min.update( node.distanceSq( target ) ) ){
-						initF = eIter.getCellId(0);
+						initF = eIter.getNodeId(0);
 					}
 				}
 				++eIter;
@@ -303,9 +303,9 @@ kmb::EdgeStitcher::setInitialNode( kmb::nodeIdType forwardInit, kmb::nodeIdType 
 			kmb::Minimizer min;
 			kmb::ElementContainer::const_iterator eIter = backward.getEdges()->begin();
 			while( !eIter.isFinished() ){
-				if( points->getPoint( eIter.getCellId(0), target ) ){
+				if( points->getPoint( eIter.getNodeId(0), target ) ){
 					if( min.update( node.distanceSq( target ) ) ){
-						endB = eIter.getCellId(0);
+						endB = eIter.getNodeId(0);
 					}
 				}
 				++eIter;
@@ -320,8 +320,7 @@ kmb::EdgeStitcher::setInitialNode( kmb::nodeIdType forwardInit, kmb::nodeIdType 
 // 多角形 backward の点 b0 を逆方向に
 // 三角形を作る（1ステップだけ）
 // fend bend に到達したらそれ以上は進めない
-bool
-kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
+bool kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
 {
 	if( result == NULL ){
 		return false;
@@ -370,16 +369,16 @@ kmb::EdgeStitcher::stitchByTriangle( kmb::ElementContainer* result )
 				// f0 f1 b1 b0 からなる四角形で cos が一番小さくなるところを分割するような三角形にする
 				kmb::nodeIdType nextId = kmb::nullNodeId;
 				kmb::Minimizer min;
-				if( min.update( Point3D::cos( pb0, pf0, pf1 ) ) ){
+				if( min.update( Point3D::cos( pf0, pb0, pf1 ) ) ){
 					nextId = b1;
 				}
-				if( min.update( Point3D::cos( pf1, pb1, pb0 ) ) ){
+				if( min.update( Point3D::cos( pb1, pf1, pb0 ) ) ){
 					nextId = b1;
 				}
-				if( min.update( Point3D::cos( pb1, pb0, pf0 ) ) ){
+				if( min.update( Point3D::cos( pb0, pb1, pf0 ) ) ){
 					nextId = f1;
 				}
-				if( min.update( Point3D::cos( pf0, pf1, pb1 ) ) ){
+				if( min.update( Point3D::cos( pf1, pf0, pb1 ) ) ){
 					nextId = f1;
 				}
 				if( nextId == b1 ){

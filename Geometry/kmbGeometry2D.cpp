@@ -75,11 +75,30 @@ kmb::Tuple2D::scale(const double r)
 }
 
 kmb::Tuple2D&
-kmb::Tuple2D::operator =(const Tuple2D& other)
+kmb::Tuple2D::operator =(const kmb::Tuple2D& other)
 {
 	this->v[0] = other.x();
 	this->v[1] = other.y();
 	return *this;
+}
+
+bool kmb::Tuple2D::operator<(const kmb::Tuple2D& other) const
+{
+	if (v[0] < other.v[0]) {
+		return true;
+	}
+	else if (v[0] > other.v[0]) {
+		return false;
+	}
+	else {
+		if (v[1] < other.v[1]) {
+			return true;
+		}
+		else if (v[1] > other.v[1]) {
+			return false;
+		}
+	}
+	return false;
 }
 
 kmb::Point2D kmb::Point2D::infinity(DBL_MAX,DBL_MAX);
@@ -144,6 +163,11 @@ bool
 kmb::Point2D::operator==(const Point2D& other) const
 {
 	return (this->x() == other.x()) && (this->y() == other.y());
+}
+
+bool kmb::Point2D::operator!=(const Point2D& other) const
+{
+	return (this->x() != other.x()) || (this->y() != other.y());
 }
 
 double
@@ -271,8 +295,8 @@ kmb::Point2D::getCenter(const kmb::Point2D& a,const kmb::Point2D& b,const kmb::P
 
 double kmb::Point2D::angle(const kmb::Point2D &a,const kmb::Point2D &b,const kmb::Point2D &c)
 {
-	kmb::Vector2D v1(a,b);
-	kmb::Vector2D v2(c,b);
+	kmb::Vector2D v1(b,a);
+	kmb::Vector2D v2(c,a);
 	return kmb::Vector2D::angle(v1,v2);
 }
 
@@ -281,8 +305,8 @@ double kmb::Point2D::angle2(const Point2D &a,const Point2D &b,const Point2D &c)
 	if( a == c ){
 		return 0.0;
 	}
-	kmb::Vector2D v1(a,b);
-	kmb::Vector2D v2(c,b);
+	kmb::Vector2D v1(b,a);
+	kmb::Vector2D v2(c,a);
 	return kmb::Vector2D::angle2(v1,v2);
 }
 

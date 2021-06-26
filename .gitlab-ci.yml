@@ -1,27 +1,30 @@
-# This file is a template, and might need editing before it works on your project.
-# use the official gcc image, based on debian
-# can use verions as well, like gcc:5.2
-# see https://hub.docker.com/_/gcc/
-image: gcc
+image: ubuntu:20.04
 
-build:
+before_script:
+  - apt-get -y update
+  - apt-get -y install gcc
+  - apt-get -y install g++
+  - apt-get -y install gfortran
+  - apt-get -y install libgl-dev
+  - apt-get -y install libglu-dev
+  - apt-get -y install libglew-dev
+  - apt-get -y install libocct-modeling-algorithms-dev
+  - apt-get -y install libboost-dev
+  - apt-get -y install cmake
+
+build_revocap:
   stage: build
-  only:
-    - Refiner
-  before_script: 
-    - apt update && apt -y install make 
-  script: 
+  script:
+    - mkdir build
+    - cd build
+    - cmake -DWITH_EXTENSION=OFF -DWITH_OPENCASCADE=OFF ..
     - make
-#  artifacts:
-#    paths:
-#      - mybinary
-  # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
-  # cache:
-  #   paths:
-  #     - "*.o"
+  artifacts:
+    paths:
+      - build
 
-# run tests using the binary built before
-#test:
-#  stage: test
-#  script:
-#    - ./runmytests.sh
+test_revocap:
+  stage: test
+  script:
+    - cd build
+    - make test

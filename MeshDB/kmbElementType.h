@@ -44,12 +44,21 @@ enum elementType{
 	OTHERTYPE,
 	QUAD = QUADRILATERAL,
 	QUAD2 = QUADRILATERAL2,
+	kUnknownType = UNKNOWNTYPE,
+	kSegment = SEGMENT,
+	kSegment2 = SEGMENT2,
 	kTriangle = TRIANGLE,
+	kTriangle2 = TRIANGLE2,
 	kQuadrilateral = QUADRILATERAL,
+	kQuadrilateral2 = QUADRILATERAL2,
 	kTetrahedron = TETRAHEDRON,
+	kTetrahedron2 = TETRAHEDRON2,
 	kHexahedron = HEXAHEDRON,
+	kHexahedron2 = HEXAHEDRON2,
 	kPyramid = PYRAMID,
-	kPrism = WEDGE
+	kPyramid2 = PYRAMID2,
+	kPrism = WEDGE,
+	kPrism2 = WEDGE2,
 };
 
 }

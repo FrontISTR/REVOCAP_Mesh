@@ -80,8 +80,8 @@ public:
 	static int getDiagIndex(kmb::elementType type,int index);
 	// basic virtual methods
 	virtual kmb::elementType getType(void) const = 0;
-	virtual kmb::nodeIdType getCellId(int cellIndex) const = 0;
-	virtual bool setCellId(int cellIndex, kmb::nodeIdType nodeId) = 0;
+	virtual kmb::nodeIdType getNodeId(int cellIndex) const = 0;
+	virtual bool setNodeId(int cellIndex, kmb::nodeIdType nodeId) = 0;
 	virtual kmb::nodeIdType operator[](const int i) const = 0;
 
 	// instance 版
@@ -95,8 +95,8 @@ public:
 	int getBoundaryVertexCount(int index) const;
 	int getEdgeNodeCount(int index) const;
 	int getEdgeVertexCount(int index) const;
-	kmb::nodeIdType getBoundaryCellId(int index,int i) const;
-	kmb::nodeIdType getEdgeCellId(int index,int i) const;
+	kmb::nodeIdType getBoundaryNodeId(int index,int i) const;
+	kmb::nodeIdType getEdgeNodeId(int index,int i) const;
 	int getDimension(void) const;
 	int getDegree(void) const;
 	const std::string getTypeString(void) const;
@@ -179,10 +179,14 @@ public:
 	virtual kmb::elementType getType() const;
 public:
 	// set/get node table
-	virtual bool setCellId(int index,kmb::nodeIdType nodeId);
-	virtual kmb::nodeIdType getCellId(int index) const;
+	virtual bool setNodeId(int index,kmb::nodeIdType nodeId);
+	virtual kmb::nodeIdType getNodeId(int index) const;
+	// nodeId への参照
 	virtual kmb::nodeIdType operator[](const int i) const;
 	virtual kmb::nodeIdType& operator[](const int i);
+	// boundary nodeId への参照
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 protected:
 	elementType type;
 	nodeIdType *cell;

@@ -27,15 +27,14 @@ double kmb::Collision::testSegSeg(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D
 		u1*u1, u1*u2,
 		u2*u1, u2*u2);
 	kmb::Vector2D v(-(u1*u0),-(u2*u0));
-	kmb::Vector2D* t = mat.solve(v);
-	if( t &&
-		0.0 < t->x() && t->x() < 1.0 &&
-		0.0 < t->y() && t->y() < 1.0 )
+	kmb::Vector2D t;
+	if(mat.solve(v,t) &&
+		0.0 < t.x() && t.x() < 1.0 &&
+		0.0 < t.y() && t.y() < 1.0 )
 	{
 		// 内部で最小を取る
-		t1 = t->x();
-		t2 = t->y();
-		delete t;
+		t1 = t[0];
+		t2 = t[1];
 		return (u0 + u1.scalar(t1) + u2.scalar(t2)).lengthSq();
 	}else{
 		// 境界で最小を取る
@@ -57,9 +56,6 @@ double kmb::Collision::testSegSeg(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D
 			t1 = tmp;
 			t2 = 1.0;
 		}
-		if( t ){
-			delete t;
-		}
 		return min.getMin();
 	}
 }
@@ -78,32 +74,31 @@ double kmb::Collision::testSegTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D
 		u2*u1, u2*u2, u2*u3,
 		u3*u1, u3*u2, u3*u3);
 	kmb::Vector3D v(-(u1*u0),-(u2*u0),-(u3*u0));
-	kmb::Vector3D* tmp = mat.solve(v);
-	if( tmp &&
-		0.0 < tmp->x() && tmp->x() < 1.0 &&
-		0.0 < tmp->y() && 0.0 < tmp->z() &&
-		tmp->y() + tmp->z() < 1.0 )
+	kmb::Vector3D tmp;
+	if(mat.solve(v,tmp) &&
+		0.0 < tmp.x() && tmp.x() < 1.0 &&
+		0.0 < tmp.y() && 0.0 < tmp.z() &&
+		tmp.y() + tmp.z() < 1.0 )
 	{
 		// 内部で最小を取る
-		s = tmp->getCoordinate(0);
-		t[0] = tmp->getCoordinate(1);
-		t[1] = tmp->getCoordinate(2);
-		delete tmp;
+		s = tmp[0];
+		t[0] = tmp[1];
+		t[1] = tmp[2];
 		return (u0 + u1.scalar(s) + u2.scalar(t[0]) + u3.scalar(t[1])).lengthSq();
 	}else{
 		// 境界で最小を取る
 		kmb::Minimizer min;
 		// 三角形と点
-		double tt[2];
+		double tt[3];
 		if( min.update( p0.distanceSqToTriangle( q0, q1, q2, tt ) ) ){
 			s = 0.0;
-			t[0] = tt[0];
-			t[1] = tt[1];
+			t[0] = tt[1];
+			t[1] = tt[2];
 		}
 		if( min.update( p1.distanceSqToTriangle( q0, q1, q2, tt ) ) ){
 			s = 1.0;
-			t[0] = tt[0];
-			t[1] = tt[1];
+			t[0] = tt[1];
+			t[1] = tt[2];
 		}
 		// 辺と辺
 		double ss0,ss1;
@@ -121,9 +116,6 @@ double kmb::Collision::testSegTri(kmb::Point3D& p0,kmb::Point3D& p1,kmb::Point3D
 			s = ss0;
 			t[0] = 0.0;
 			t[1] = ss1;
-		}
-		if( tmp ){
-			delete tmp;
 		}
 		return min.getMin();
 	}

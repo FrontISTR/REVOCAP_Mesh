@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : BoundaryExtractor                                       #
@@ -237,7 +237,7 @@ kmb::BoundaryExtractor::appendElement(kmb::elementIdType elementId,kmb::ElementB
 			int vertexNum = kmb::ElementBase::getBoundaryVertexCount( etype, i );
 			for(int j=0;j<vertexNum;++j)
 			{
-				sum += element.getBoundaryCellId(i,j);
+				sum += element.getBoundaryNodeId(i,j);
 			}
 			if( facemap.find(sum) == facemap.end() )
 			{
@@ -252,8 +252,8 @@ kmb::BoundaryExtractor::appendElement(kmb::elementIdType elementId,kmb::ElementB
 			switch(vertexNum){
 				case 2:
 				{
-					kmb::nodeIdType a0 = element.getBoundaryCellId(i,0);
-					kmb::nodeIdType a1 = element.getBoundaryCellId(i,1);
+					kmb::nodeIdType a0 = element.getBoundaryNodeId(i,0);
+					kmb::nodeIdType a1 = element.getBoundaryNodeId(i,1);
 					while( fIter != end )
 					{
 						kmb::ElementContainer::const_iterator eIter0 =
@@ -262,8 +262,8 @@ kmb::BoundaryExtractor::appendElement(kmb::elementIdType elementId,kmb::ElementB
 						kmb::idType id0 = fIter->second.getLocalFaceId();
 						if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 2 )
 						{
-							kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-							kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
+							kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+							kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
 							kmb::ElementRelation::relationType rel = kmb::ElementRelation::getSegmentRelation( a0,a1,b0,b1,index,otherIndex );
 							if( rel == kmb::ElementRelation::REVERSE )
 							{
@@ -287,9 +287,9 @@ findElement2:
 				}
 				case 3:
 				{
-					kmb::nodeIdType a0 = element.getBoundaryCellId(i,0);
-					kmb::nodeIdType a1 = element.getBoundaryCellId(i,1);
-					kmb::nodeIdType a2 = element.getBoundaryCellId(i,2);
+					kmb::nodeIdType a0 = element.getBoundaryNodeId(i,0);
+					kmb::nodeIdType a1 = element.getBoundaryNodeId(i,1);
+					kmb::nodeIdType a2 = element.getBoundaryNodeId(i,2);
 					while( fIter != end )
 					{
 						kmb::ElementContainer::const_iterator eIter0 =
@@ -298,9 +298,9 @@ findElement2:
 						kmb::idType id0 = fIter->second.getLocalFaceId();
 						if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 3 )
 						{
-							kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-							kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
-							kmb::nodeIdType b2 = eIter0.getBoundaryCellId(id0,2);
+							kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+							kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
+							kmb::nodeIdType b2 = eIter0.getBoundaryNodeId(id0,2);
 							kmb::ElementRelation::relationType rel = kmb::ElementRelation::getTriangleRelation( a0,a1,a2,b0,b1,b2,index,otherIndex );
 							if( rel == kmb::ElementRelation::REVERSE )
 							{
@@ -324,10 +324,10 @@ findElement3:
 				}
 				case 4:
 				{
-					kmb::nodeIdType a0 = element.getBoundaryCellId(i,0);
-					kmb::nodeIdType a1 = element.getBoundaryCellId(i,1);
-					kmb::nodeIdType a2 = element.getBoundaryCellId(i,2);
-					kmb::nodeIdType a3 = element.getBoundaryCellId(i,3);
+					kmb::nodeIdType a0 = element.getBoundaryNodeId(i,0);
+					kmb::nodeIdType a1 = element.getBoundaryNodeId(i,1);
+					kmb::nodeIdType a2 = element.getBoundaryNodeId(i,2);
+					kmb::nodeIdType a3 = element.getBoundaryNodeId(i,3);
 					while( fIter != end )
 					{
 						kmb::ElementContainer::const_iterator eIter0 =
@@ -336,10 +336,10 @@ findElement3:
 						kmb::idType id0 = fIter->second.getLocalFaceId();
 						if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 4 )
 						{
-							kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-							kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
-							kmb::nodeIdType b2 = eIter0.getBoundaryCellId(id0,2);
-							kmb::nodeIdType b3 = eIter0.getBoundaryCellId(id0,3);
+							kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+							kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
+							kmb::nodeIdType b2 = eIter0.getBoundaryNodeId(id0,2);
+							kmb::nodeIdType b3 = eIter0.getBoundaryNodeId(id0,3);
 							kmb::ElementRelation::relationType rel = kmb::ElementRelation::getQuadRelation( a0,a1,a2,a3,b0,b1,b2,b3,index,otherIndex );
 							if( rel == kmb::ElementRelation::REVERSE )
 							{
@@ -378,7 +378,7 @@ kmb::BoundaryExtractor::appendFaceMap(kmb::elementIdType elementId,kmb::ElementB
 		int vertexNum = kmb::ElementBase::getBoundaryVertexCount( etype, static_cast<int>(faceId) );
 		for(int j=0;j<vertexNum;++j)
 		{
-			sum += element.getBoundaryCellId(static_cast<int>(faceId),j);
+			sum += element.getBoundaryNodeId(static_cast<int>(faceId),j);
 		}
 		if( facemap.find(sum) == facemap.end() )
 		{
@@ -394,8 +394,8 @@ kmb::BoundaryExtractor::appendFaceMap(kmb::elementIdType elementId,kmb::ElementB
 		switch(vertexNum){
 			case 2:
 			{
-				kmb::nodeIdType a0 = element.getBoundaryCellId(faceId,0);
-				kmb::nodeIdType a1 = element.getBoundaryCellId(faceId,1);
+				kmb::nodeIdType a0 = element.getBoundaryNodeId(faceId,0);
+				kmb::nodeIdType a1 = element.getBoundaryNodeId(faceId,1);
 				while( fIter != end )
 				{
 					kmb::ElementContainer::const_iterator eIter0 =
@@ -404,8 +404,8 @@ kmb::BoundaryExtractor::appendFaceMap(kmb::elementIdType elementId,kmb::ElementB
 					kmb::idType id0 = fIter->second.getLocalFaceId();
 					if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 2 )
 					{
-						kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-						kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
+						kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+						kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
 						kmb::ElementRelation::relationType rel = kmb::ElementRelation::getSegmentRelation( a0,a1,b0,b1,index,otherIndex );
 						if( rel== kmb::ElementRelation::REVERSE )
 						{
@@ -429,9 +429,9 @@ findElement2:
 			}
 			case 3:
 			{
-				kmb::nodeIdType a0 = element.getBoundaryCellId(faceId,0);
-				kmb::nodeIdType a1 = element.getBoundaryCellId(faceId,1);
-				kmb::nodeIdType a2 = element.getBoundaryCellId(faceId,2);
+				kmb::nodeIdType a0 = element.getBoundaryNodeId(faceId,0);
+				kmb::nodeIdType a1 = element.getBoundaryNodeId(faceId,1);
+				kmb::nodeIdType a2 = element.getBoundaryNodeId(faceId,2);
 				while( fIter != end )
 				{
 					kmb::ElementContainer::const_iterator eIter0 =
@@ -440,9 +440,9 @@ findElement2:
 					kmb::idType id0 = fIter->second.getLocalFaceId();
 					if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 3 )
 					{
-						kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-						kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
-						kmb::nodeIdType b2 = eIter0.getBoundaryCellId(id0,2);
+						kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+						kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
+						kmb::nodeIdType b2 = eIter0.getBoundaryNodeId(id0,2);
 						kmb::ElementRelation::relationType rel = kmb::ElementRelation::getTriangleRelation( a0,a1,a2,b0,b1,b2,index,otherIndex );
 						if( rel == kmb::ElementRelation::REVERSE )
 						{
@@ -466,10 +466,10 @@ findElement3:
 			}
 			case 4:
 			{
-				kmb::nodeIdType a0 = element.getBoundaryCellId(faceId,0);
-				kmb::nodeIdType a1 = element.getBoundaryCellId(faceId,1);
-				kmb::nodeIdType a2 = element.getBoundaryCellId(faceId,2);
-				kmb::nodeIdType a3 = element.getBoundaryCellId(faceId,3);
+				kmb::nodeIdType a0 = element.getBoundaryNodeId(faceId,0);
+				kmb::nodeIdType a1 = element.getBoundaryNodeId(faceId,1);
+				kmb::nodeIdType a2 = element.getBoundaryNodeId(faceId,2);
+				kmb::nodeIdType a3 = element.getBoundaryNodeId(faceId,3);
 				while( fIter != end )
 				{
 					kmb::ElementContainer::const_iterator eIter0 =
@@ -478,10 +478,10 @@ findElement3:
 					kmb::idType id0 = fIter->second.getLocalFaceId();
 					if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 4 )
 					{
-						kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-						kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
-						kmb::nodeIdType b2 = eIter0.getBoundaryCellId(id0,2);
-						kmb::nodeIdType b3 = eIter0.getBoundaryCellId(id0,3);
+						kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+						kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
+						kmb::nodeIdType b2 = eIter0.getBoundaryNodeId(id0,2);
+						kmb::nodeIdType b3 = eIter0.getBoundaryNodeId(id0,3);
 						kmb::ElementRelation::relationType rel = kmb::ElementRelation::getQuadRelation( a0,a1,a2,a3,b0,b1,b2,b3,index,otherIndex );
 						if( rel == kmb::ElementRelation::REVERSE )
 						{
@@ -519,7 +519,7 @@ kmb::BoundaryExtractor::eraseFaceMap(kmb::ElementBase &element,kmb::idType faceI
 		int vertexNum = kmb::ElementBase::getBoundaryVertexCount( etype, static_cast<int>(faceId) );
 		for(int j=0;j<vertexNum;++j)
 		{
-			sum += element.getBoundaryCellId(static_cast<int>(faceId),j);
+			sum += element.getBoundaryNodeId(static_cast<int>(faceId),j);
 		}
 		if( facemap.find(sum) == facemap.end() )
 		{
@@ -534,8 +534,8 @@ kmb::BoundaryExtractor::eraseFaceMap(kmb::ElementBase &element,kmb::idType faceI
 		switch(vertexNum){
 			case 2:
 			{
-				kmb::nodeIdType a0 = element.getBoundaryCellId(faceId,0);
-				kmb::nodeIdType a1 = element.getBoundaryCellId(faceId,1);
+				kmb::nodeIdType a0 = element.getBoundaryNodeId(faceId,0);
+				kmb::nodeIdType a1 = element.getBoundaryNodeId(faceId,1);
 				while( fIter != end )
 				{
 					kmb::ElementContainer::const_iterator eIter0 =
@@ -544,8 +544,8 @@ kmb::BoundaryExtractor::eraseFaceMap(kmb::ElementBase &element,kmb::idType faceI
 					kmb::idType id0 = fIter->second.getLocalFaceId();
 					if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 2 )
 					{
-						kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-						kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
+						kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+						kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
 						kmb::ElementRelation::relationType rel = kmb::ElementRelation::getSegmentRelation( a0,a1,b0,b1,index,otherIndex );
 						if( reverse && rel == kmb::ElementRelation::REVERSE )
 						{
@@ -566,9 +566,9 @@ kmb::BoundaryExtractor::eraseFaceMap(kmb::ElementBase &element,kmb::idType faceI
 			}
 			case 3:
 			{
-				kmb::nodeIdType a0 = element.getBoundaryCellId(faceId,0);
-				kmb::nodeIdType a1 = element.getBoundaryCellId(faceId,1);
-				kmb::nodeIdType a2 = element.getBoundaryCellId(faceId,2);
+				kmb::nodeIdType a0 = element.getBoundaryNodeId(faceId,0);
+				kmb::nodeIdType a1 = element.getBoundaryNodeId(faceId,1);
+				kmb::nodeIdType a2 = element.getBoundaryNodeId(faceId,2);
 				while( fIter != end )
 				{
 					kmb::ElementContainer::const_iterator eIter0 =
@@ -577,9 +577,9 @@ kmb::BoundaryExtractor::eraseFaceMap(kmb::ElementBase &element,kmb::idType faceI
 					kmb::idType id0 = fIter->second.getLocalFaceId();
 					if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 3 )
 					{
-						kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-						kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
-						kmb::nodeIdType b2 = eIter0.getBoundaryCellId(id0,2);
+						kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+						kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
+						kmb::nodeIdType b2 = eIter0.getBoundaryNodeId(id0,2);
 						kmb::ElementRelation::relationType rel = kmb::ElementRelation::getTriangleRelation( a0,a1,a2,b0,b1,b2,index,otherIndex );
 						if( reverse && rel == kmb::ElementRelation::REVERSE )
 						{
@@ -600,10 +600,10 @@ kmb::BoundaryExtractor::eraseFaceMap(kmb::ElementBase &element,kmb::idType faceI
 			}
 			case 4:
 			{
-				kmb::nodeIdType a0 = element.getBoundaryCellId(faceId,0);
-				kmb::nodeIdType a1 = element.getBoundaryCellId(faceId,1);
-				kmb::nodeIdType a2 = element.getBoundaryCellId(faceId,2);
-				kmb::nodeIdType a3 = element.getBoundaryCellId(faceId,3);
+				kmb::nodeIdType a0 = element.getBoundaryNodeId(faceId,0);
+				kmb::nodeIdType a1 = element.getBoundaryNodeId(faceId,1);
+				kmb::nodeIdType a2 = element.getBoundaryNodeId(faceId,2);
+				kmb::nodeIdType a3 = element.getBoundaryNodeId(faceId,3);
 				while( fIter != end )
 				{
 					kmb::ElementContainer::const_iterator eIter0 =
@@ -612,10 +612,10 @@ kmb::BoundaryExtractor::eraseFaceMap(kmb::ElementBase &element,kmb::idType faceI
 					kmb::idType id0 = fIter->second.getLocalFaceId();
 					if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 4 )
 					{
-						kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-						kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
-						kmb::nodeIdType b2 = eIter0.getBoundaryCellId(id0,2);
-						kmb::nodeIdType b3 = eIter0.getBoundaryCellId(id0,3);
+						kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+						kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
+						kmb::nodeIdType b2 = eIter0.getBoundaryNodeId(id0,2);
+						kmb::nodeIdType b3 = eIter0.getBoundaryNodeId(id0,3);
 						kmb::ElementRelation::relationType rel = kmb::ElementRelation::getQuadRelation( a0,a1,a2,a3,b0,b1,b2,b3,index,otherIndex );
 						if( reverse && rel == kmb::ElementRelation::REVERSE )
 						{
@@ -770,7 +770,7 @@ kmb::BoundaryExtractor::getInterfaceBoundary(kmb::bodyIdType bodyId) const
 					int vertexNum = kmb::ElementBase::getBoundaryVertexCount( etype, i );
 					for(int j=0;j<vertexNum;++j)
 					{
-						sum += eIter.getBoundaryCellId(i,j);
+						sum += eIter.getBoundaryNodeId(i,j);
 					}
 					if( facemap.find(sum) != facemap.end() )
 					{
@@ -782,16 +782,16 @@ kmb::BoundaryExtractor::getInterfaceBoundary(kmb::bodyIdType bodyId) const
 						switch(vertexNum){
 						case 2:
 						{
-							kmb::nodeIdType a0 = eIter.getBoundaryCellId(i,0);
-							kmb::nodeIdType a1 = eIter.getBoundaryCellId(i,1);
+							kmb::nodeIdType a0 = eIter.getBoundaryNodeId(i,0);
+							kmb::nodeIdType a1 = eIter.getBoundaryNodeId(i,1);
 							while( fIter != end )
 							{
 								kmb::ElementContainer::const_iterator eIter0 = mesh->findElement( fIter->second.getElementId() );
 								kmb::idType id0 = fIter->second.getLocalFaceId();
 								if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 2 )
 								{
-									kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-									kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
+									kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+									kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
 									kmb::ElementRelation::relationType rel = kmb::ElementRelation::getSegmentRelation( a0,a1,b0,b1,index,otherIndex );
 									if( rel == kmb::ElementRelation::REVERSE )
 									{
@@ -806,18 +806,18 @@ kmb::BoundaryExtractor::getInterfaceBoundary(kmb::bodyIdType bodyId) const
 						}
 						case 3:
 						{
-							kmb::nodeIdType a0 = eIter.getBoundaryCellId(i,0);
-							kmb::nodeIdType a1 = eIter.getBoundaryCellId(i,1);
-							kmb::nodeIdType a2 = eIter.getBoundaryCellId(i,2);
+							kmb::nodeIdType a0 = eIter.getBoundaryNodeId(i,0);
+							kmb::nodeIdType a1 = eIter.getBoundaryNodeId(i,1);
+							kmb::nodeIdType a2 = eIter.getBoundaryNodeId(i,2);
 							while( fIter != end )
 							{
 								kmb::ElementContainer::const_iterator eIter0 = mesh->findElement( fIter->second.getElementId() );
 								kmb::idType id0 = fIter->second.getLocalFaceId();
 								if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 3 )
 								{
-									kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-									kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
-									kmb::nodeIdType b2 = eIter0.getBoundaryCellId(id0,2);
+									kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+									kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
+									kmb::nodeIdType b2 = eIter0.getBoundaryNodeId(id0,2);
 									kmb::ElementRelation::relationType rel = kmb::ElementRelation::getTriangleRelation( a0,a1,a2,b0,b1,b2,index,otherIndex );
 									if( rel == kmb::ElementRelation::REVERSE )
 									{
@@ -832,20 +832,20 @@ kmb::BoundaryExtractor::getInterfaceBoundary(kmb::bodyIdType bodyId) const
 						}
 						case 4:
 						{
-							kmb::nodeIdType a0 = eIter.getBoundaryCellId(i,0);
-							kmb::nodeIdType a1 = eIter.getBoundaryCellId(i,1);
-							kmb::nodeIdType a2 = eIter.getBoundaryCellId(i,2);
-							kmb::nodeIdType a3 = eIter.getBoundaryCellId(i,3);
+							kmb::nodeIdType a0 = eIter.getBoundaryNodeId(i,0);
+							kmb::nodeIdType a1 = eIter.getBoundaryNodeId(i,1);
+							kmb::nodeIdType a2 = eIter.getBoundaryNodeId(i,2);
+							kmb::nodeIdType a3 = eIter.getBoundaryNodeId(i,3);
 							while( fIter != end )
 							{
 								kmb::ElementContainer::const_iterator eIter0 = mesh->findElement( fIter->second.getElementId() );
 								kmb::idType id0 = fIter->second.getLocalFaceId();
 								if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 4 )
 								{
-									kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-									kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
-									kmb::nodeIdType b2 = eIter0.getBoundaryCellId(id0,2);
-									kmb::nodeIdType b3 = eIter0.getBoundaryCellId(id0,3);
+									kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+									kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
+									kmb::nodeIdType b2 = eIter0.getBoundaryNodeId(id0,2);
+									kmb::nodeIdType b3 = eIter0.getBoundaryNodeId(id0,3);
 									kmb::ElementRelation::relationType rel = kmb::ElementRelation::getQuadRelation( a0,a1,a2,a3,b0,b1,b2,b3,index,otherIndex );
 									if( rel == kmb::ElementRelation::REVERSE )
 									{
@@ -907,7 +907,7 @@ bool kmb::BoundaryExtractor::getInterfaceBoundaryFace(kmb::bodyIdType bodyId,con
 				int vertexNum = kmb::ElementBase::getBoundaryVertexCount( etype, i );
 				for(int j=0;j<vertexNum;++j)
 				{
-					sum += eIter.getBoundaryCellId(i,j);
+					sum += eIter.getBoundaryNodeId(i,j);
 				}
 				if( facemap.find(sum) != facemap.end() )
 				{
@@ -919,16 +919,16 @@ bool kmb::BoundaryExtractor::getInterfaceBoundaryFace(kmb::bodyIdType bodyId,con
 					switch(vertexNum){
 					case 2:
 					{
-						kmb::nodeIdType a0 = eIter.getBoundaryCellId(i,0);
-						kmb::nodeIdType a1 = eIter.getBoundaryCellId(i,1);
+						kmb::nodeIdType a0 = eIter.getBoundaryNodeId(i,0);
+						kmb::nodeIdType a1 = eIter.getBoundaryNodeId(i,1);
 						while( fIter != end )
 						{
 							kmb::ElementContainer::const_iterator eIter0 = mesh->findElement( fIter->second.getElementId() );
 							kmb::idType id0 = fIter->second.getLocalFaceId();
 							if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 2 )
 							{
-								kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-								kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
+								kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+								kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
 								kmb::ElementRelation::relationType rel = kmb::ElementRelation::getSegmentRelation( a0,a1,b0,b1,index,otherIndex );
 								if( rel == kmb::ElementRelation::REVERSE )
 								{
@@ -942,18 +942,18 @@ bool kmb::BoundaryExtractor::getInterfaceBoundaryFace(kmb::bodyIdType bodyId,con
 					}
 					case 3:
 					{
-						kmb::nodeIdType a0 = eIter.getBoundaryCellId(i,0);
-						kmb::nodeIdType a1 = eIter.getBoundaryCellId(i,1);
-						kmb::nodeIdType a2 = eIter.getBoundaryCellId(i,2);
+						kmb::nodeIdType a0 = eIter.getBoundaryNodeId(i,0);
+						kmb::nodeIdType a1 = eIter.getBoundaryNodeId(i,1);
+						kmb::nodeIdType a2 = eIter.getBoundaryNodeId(i,2);
 						while( fIter != end )
 						{
 							kmb::ElementContainer::const_iterator eIter0 = mesh->findElement( fIter->second.getElementId() );
 							kmb::idType id0 = fIter->second.getLocalFaceId();
 							if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 3 )
 							{
-								kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-								kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
-								kmb::nodeIdType b2 = eIter0.getBoundaryCellId(id0,2);
+								kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+								kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
+								kmb::nodeIdType b2 = eIter0.getBoundaryNodeId(id0,2);
 								kmb::ElementRelation::relationType rel = kmb::ElementRelation::getTriangleRelation( a0,a1,a2,b0,b1,b2,index,otherIndex );
 								if( rel == kmb::ElementRelation::REVERSE )
 								{
@@ -967,20 +967,20 @@ bool kmb::BoundaryExtractor::getInterfaceBoundaryFace(kmb::bodyIdType bodyId,con
 					}
 					case 4:
 					{
-						kmb::nodeIdType a0 = eIter.getBoundaryCellId(i,0);
-						kmb::nodeIdType a1 = eIter.getBoundaryCellId(i,1);
-						kmb::nodeIdType a2 = eIter.getBoundaryCellId(i,2);
-						kmb::nodeIdType a3 = eIter.getBoundaryCellId(i,3);
+						kmb::nodeIdType a0 = eIter.getBoundaryNodeId(i,0);
+						kmb::nodeIdType a1 = eIter.getBoundaryNodeId(i,1);
+						kmb::nodeIdType a2 = eIter.getBoundaryNodeId(i,2);
+						kmb::nodeIdType a3 = eIter.getBoundaryNodeId(i,3);
 						while( fIter != end )
 						{
 							kmb::ElementContainer::const_iterator eIter0 = mesh->findElement( fIter->second.getElementId() );
 							kmb::idType id0 = fIter->second.getLocalFaceId();
 							if( !eIter0.isFinished() && kmb::ElementBase::getBoundaryVertexCount( eIter0.getType(), id0 ) == 4 )
 							{
-								kmb::nodeIdType b0 = eIter0.getBoundaryCellId(id0,0);
-								kmb::nodeIdType b1 = eIter0.getBoundaryCellId(id0,1);
-								kmb::nodeIdType b2 = eIter0.getBoundaryCellId(id0,2);
-								kmb::nodeIdType b3 = eIter0.getBoundaryCellId(id0,3);
+								kmb::nodeIdType b0 = eIter0.getBoundaryNodeId(id0,0);
+								kmb::nodeIdType b1 = eIter0.getBoundaryNodeId(id0,1);
+								kmb::nodeIdType b2 = eIter0.getBoundaryNodeId(id0,2);
+								kmb::nodeIdType b3 = eIter0.getBoundaryNodeId(id0,3);
 								kmb::ElementRelation::relationType rel = kmb::ElementRelation::getQuadRelation( a0,a1,a2,a3,b0,b1,b2,b3,index,otherIndex );
 								if( rel == kmb::ElementRelation::REVERSE )
 								{
@@ -1017,30 +1017,30 @@ kmb::BoundaryExtractor::getFaceRelation(kmb::ElementBase &e0,kmb::idType f0,kmb:
 	int otherIndex = -1;
 	switch(vertexNum0){
 		case 2:{
-			kmb::nodeIdType a0 = e0.getBoundaryCellId(f0,0);
-			kmb::nodeIdType a1 = e0.getBoundaryCellId(f0,1);
-			kmb::nodeIdType b0 = e1.getBoundaryCellId(f1,0);
-			kmb::nodeIdType b1 = e1.getBoundaryCellId(f1,1);
+			kmb::nodeIdType a0 = e0.getBoundaryNodeId(f0,0);
+			kmb::nodeIdType a1 = e0.getBoundaryNodeId(f0,1);
+			kmb::nodeIdType b0 = e1.getBoundaryNodeId(f1,0);
+			kmb::nodeIdType b1 = e1.getBoundaryNodeId(f1,1);
 			return kmb::ElementRelation::getSegmentRelation( a0,a1,b0,b1,index,otherIndex );
 		}
 		case 3:{
-			kmb::nodeIdType a0 = e0.getBoundaryCellId(f0,0);
-			kmb::nodeIdType a1 = e0.getBoundaryCellId(f0,1);
-			kmb::nodeIdType a2 = e0.getBoundaryCellId(f0,2);
-			kmb::nodeIdType b0 = e1.getBoundaryCellId(f1,0);
-			kmb::nodeIdType b1 = e1.getBoundaryCellId(f1,1);
-			kmb::nodeIdType b2 = e1.getBoundaryCellId(f1,2);
+			kmb::nodeIdType a0 = e0.getBoundaryNodeId(f0,0);
+			kmb::nodeIdType a1 = e0.getBoundaryNodeId(f0,1);
+			kmb::nodeIdType a2 = e0.getBoundaryNodeId(f0,2);
+			kmb::nodeIdType b0 = e1.getBoundaryNodeId(f1,0);
+			kmb::nodeIdType b1 = e1.getBoundaryNodeId(f1,1);
+			kmb::nodeIdType b2 = e1.getBoundaryNodeId(f1,2);
 			return kmb::ElementRelation::getTriangleRelation( a0,a1,a2,b0,b1,b2,index,otherIndex );
 		}
 		case 4:{
-			kmb::nodeIdType a0 = e0.getBoundaryCellId(f0,0);
-			kmb::nodeIdType a1 = e0.getBoundaryCellId(f0,1);
-			kmb::nodeIdType a2 = e0.getBoundaryCellId(f0,2);
-			kmb::nodeIdType a3 = e0.getBoundaryCellId(f0,3);
-			kmb::nodeIdType b0 = e1.getBoundaryCellId(f1,0);
-			kmb::nodeIdType b1 = e1.getBoundaryCellId(f1,1);
-			kmb::nodeIdType b2 = e1.getBoundaryCellId(f1,2);
-			kmb::nodeIdType b3 = e1.getBoundaryCellId(f1,3);
+			kmb::nodeIdType a0 = e0.getBoundaryNodeId(f0,0);
+			kmb::nodeIdType a1 = e0.getBoundaryNodeId(f0,1);
+			kmb::nodeIdType a2 = e0.getBoundaryNodeId(f0,2);
+			kmb::nodeIdType a3 = e0.getBoundaryNodeId(f0,3);
+			kmb::nodeIdType b0 = e1.getBoundaryNodeId(f1,0);
+			kmb::nodeIdType b1 = e1.getBoundaryNodeId(f1,1);
+			kmb::nodeIdType b2 = e1.getBoundaryNodeId(f1,2);
+			kmb::nodeIdType b3 = e1.getBoundaryNodeId(f1,3);
 			return kmb::ElementRelation::getQuadRelation( a0,a1,a2,a3,b0,b1,b2,b3,index,otherIndex );
 		}
 		default:
@@ -1195,8 +1195,8 @@ kmb::BoundaryExtractor::getBoundaryFace(const kmb::ElementBase& elem,kmb::Face &
 			kmb::idType localId = fIter->second.getLocalFaceId();
 			kmb::ElementContainer::const_iterator eIter = mesh->findElement( elementId );
 			if( !eIter.isFinished() && eIter.getBoundaryVertexCount( localId ) == 2 ){
-				kmb::nodeIdType b0 = eIter.getBoundaryCellId(localId,0);
-				kmb::nodeIdType b1 = eIter.getBoundaryCellId(localId,1);
+				kmb::nodeIdType b0 = eIter.getBoundaryNodeId(localId,0);
+				kmb::nodeIdType b1 = eIter.getBoundaryNodeId(localId,1);
 				kmb::ElementRelation::relationType rel = kmb::ElementRelation::getSegmentRelation( a0,a1,b0,b1,aind,bind );
 				if( rel == kmb::ElementRelation::EQUAL || (reverseMode && rel == kmb::ElementRelation::REVERSE) ){
 					f.setId(elementId,localId);
@@ -1222,9 +1222,9 @@ kmb::BoundaryExtractor::getBoundaryFace(const kmb::ElementBase& elem,kmb::Face &
 			kmb::idType localId = fIter->second.getLocalFaceId();
 			kmb::ElementContainer::const_iterator eIter = mesh->findElement( elementId );
 			if( !eIter.isFinished() && eIter.getBoundaryVertexCount( localId ) == 3 ){
-				kmb::nodeIdType b0 = eIter.getBoundaryCellId(localId,0);
-				kmb::nodeIdType b1 = eIter.getBoundaryCellId(localId,1);
-				kmb::nodeIdType b2 = eIter.getBoundaryCellId(localId,2);
+				kmb::nodeIdType b0 = eIter.getBoundaryNodeId(localId,0);
+				kmb::nodeIdType b1 = eIter.getBoundaryNodeId(localId,1);
+				kmb::nodeIdType b2 = eIter.getBoundaryNodeId(localId,2);
 				kmb::ElementRelation::relationType rel = kmb::ElementRelation::getTriangleRelation( a0,a1,a2,b0,b1,b2,aind,bind );
 				if( rel == kmb::ElementRelation::EQUAL || (reverseMode && rel == kmb::ElementRelation::REVERSE) ){
 					f.setId(elementId,localId);
@@ -1251,10 +1251,10 @@ kmb::BoundaryExtractor::getBoundaryFace(const kmb::ElementBase& elem,kmb::Face &
 			kmb::idType localId = fIter->second.getLocalFaceId();
 			kmb::ElementContainer::const_iterator eIter = mesh->findElement( elementId );
 			if( !eIter.isFinished() && eIter.getBoundaryVertexCount( localId ) == 4 ){
-				kmb::nodeIdType b0 = eIter.getBoundaryCellId(localId,0);
-				kmb::nodeIdType b1 = eIter.getBoundaryCellId(localId,1);
-				kmb::nodeIdType b2 = eIter.getBoundaryCellId(localId,2);
-				kmb::nodeIdType b3 = eIter.getBoundaryCellId(localId,3);
+				kmb::nodeIdType b0 = eIter.getBoundaryNodeId(localId,0);
+				kmb::nodeIdType b1 = eIter.getBoundaryNodeId(localId,1);
+				kmb::nodeIdType b2 = eIter.getBoundaryNodeId(localId,2);
+				kmb::nodeIdType b3 = eIter.getBoundaryNodeId(localId,3);
 				kmb::ElementRelation::relationType rel = kmb::ElementRelation::getQuadRelation( a0,a1,a2,a3,b0,b1,b2,b3,aind,bind );
 				if( rel == kmb::ElementRelation::EQUAL || (reverseMode && rel == kmb::ElementRelation::REVERSE) ){
 					f.setId(elementId,localId);
@@ -1289,7 +1289,7 @@ kmb::BoundaryExtractor::getBoundary(const kmb::ElementContainer* parent,kmb::Ele
 			kmb::elementType etype = eIter.getType();
 			int boundaryNodeCount = kmb::ElementBase::getBoundaryNodeCount( etype, faceIndex );
 			for(int i=0;i<boundaryNodeCount;++i){
-				nodes[i] = eIter.getBoundaryCellId( faceIndex, i );
+				nodes[i] = eIter.getBoundaryNodeId( faceIndex, i );
 			}
 			boundary->addElement( eIter.getBoundaryType(faceIndex), nodes );
 		}
@@ -1313,7 +1313,7 @@ kmb::BoundaryExtractor::getBoundaryNodeGroup(const kmb::ElementContainer* parent
 		if( !eIter.isFinished() ){
 			int boundaryNodeCount = eIter.getBoundaryNodeCount( faceIndex );
 			for(int i=0;i<boundaryNodeCount;++i){
-				if( nodeGroup->addId( eIter.getBoundaryCellId( faceIndex, i ) ) ){
+				if( nodeGroup->addId( eIter.getBoundaryNodeId( faceIndex, i ) ) ){
 					++count;
 				}
 			}

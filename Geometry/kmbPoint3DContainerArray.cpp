@@ -120,6 +120,21 @@ kmb::Point3DContainerArray::getPoint(nodeIdType id,kmb::Point3D &point) const
 	}
 }
 
+double kmb::Point3DContainerArray::x(kmb::nodeIdType nodeId) const
+{
+	return pointArray[3*nodeId];
+}
+
+double kmb::Point3DContainerArray::y(kmb::nodeIdType nodeId) const
+{
+	return pointArray[3*nodeId+1];
+}
+
+double kmb::Point3DContainerArray::z(kmb::nodeIdType nodeId) const
+{
+	return pointArray[3*nodeId+2];
+}
+
 kmb::nodeIdType
 kmb::Point3DContainerArray::getMaxId(void) const
 {

@@ -35,6 +35,8 @@ public:
 	Triangle2(void);
 	Triangle2(kmb::nodeIdType *ary);
 	virtual ~Triangle2(void);
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 
 public:
 	static const int connectionTable[6][6];

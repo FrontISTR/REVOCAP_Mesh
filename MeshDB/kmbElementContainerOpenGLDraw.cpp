@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementContainerOpenGLDraw                              #
@@ -663,7 +663,7 @@ kmb::ElementContainerOpenGLDraw::_iteratorOG::getType(void) const
 }
 
 kmb::nodeIdType
-kmb::ElementContainerOpenGLDraw::_iteratorOG::getCellId(int cellIndex) const
+kmb::ElementContainerOpenGLDraw::_iteratorOG::getNodeId(int cellIndex) const
 {
 	size_t index = elementIter->second;
 	if( index < elementContainer->triSize && elementContainer->triNodes[ 3*index ] != unsignedNullNodeId ){
@@ -698,7 +698,7 @@ kmb::ElementContainerOpenGLDraw::_iteratorOG::getCellId(int cellIndex) const
 }
 
 bool
-kmb::ElementContainerOpenGLDraw::_iteratorOG::setCellId(int cellIndex, kmb::nodeIdType nodeId)
+kmb::ElementContainerOpenGLDraw::_iteratorOG::setNodeId(int cellIndex, kmb::nodeIdType nodeId)
 {
 	size_t index = elementIter->second;
 	if( index < elementContainer->triSize && elementContainer->triNodes[ 3*index ] != unsignedNullNodeId ){

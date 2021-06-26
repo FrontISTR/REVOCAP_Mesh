@@ -168,6 +168,16 @@ kmb::Wedge::~Wedge(void)
 {
 }
 
+kmb::nodeIdType kmb::Wedge::operator()(const int index,const int i) const
+{
+	return cell[kmb::Wedge::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Wedge::operator()(const int index,const int i)
+{
+	return cell[kmb::Wedge::faceTable[index][i]];
+}
+
 void
 kmb::Wedge::shapeFunction(double s,double t,double u,double* coeff)
 {
@@ -300,110 +310,110 @@ kmb::Wedge::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nodeIdTy
 	if( !n2 && !n3 && n4 )
 	{
 		// [0,4] [1,5] [0,5]			0 0 1
-		tetrahedrons[0][0] = element->getCellId(0);
-		tetrahedrons[0][1] = element->getCellId(4);
-		tetrahedrons[0][2] = element->getCellId(5);
-		tetrahedrons[0][3] = element->getCellId(3);
+		tetrahedrons[0][0] = element->getNodeId(0);
+		tetrahedrons[0][1] = element->getNodeId(4);
+		tetrahedrons[0][2] = element->getNodeId(5);
+		tetrahedrons[0][3] = element->getNodeId(3);
 
-		tetrahedrons[1][0] = element->getCellId(0);
-		tetrahedrons[1][1] = element->getCellId(1);
-		tetrahedrons[1][2] = element->getCellId(5);
-		tetrahedrons[1][3] = element->getCellId(4);
+		tetrahedrons[1][0] = element->getNodeId(0);
+		tetrahedrons[1][1] = element->getNodeId(1);
+		tetrahedrons[1][2] = element->getNodeId(5);
+		tetrahedrons[1][3] = element->getNodeId(4);
 
-		tetrahedrons[2][0] = element->getCellId(0);
-		tetrahedrons[2][1] = element->getCellId(1);
-		tetrahedrons[2][2] = element->getCellId(2);
-		tetrahedrons[2][3] = element->getCellId(5);
+		tetrahedrons[2][0] = element->getNodeId(0);
+		tetrahedrons[2][1] = element->getNodeId(1);
+		tetrahedrons[2][2] = element->getNodeId(2);
+		tetrahedrons[2][3] = element->getNodeId(5);
 	}
 	else if( !n2 && n3 && n4 )
 	{
 		// [0,4] [2,4] [0,5]			0 1 1
-		tetrahedrons[0][0] = element->getCellId(0);
-		tetrahedrons[0][1] = element->getCellId(4);
-		tetrahedrons[0][2] = element->getCellId(5);
-		tetrahedrons[0][3] = element->getCellId(3);
+		tetrahedrons[0][0] = element->getNodeId(0);
+		tetrahedrons[0][1] = element->getNodeId(4);
+		tetrahedrons[0][2] = element->getNodeId(5);
+		tetrahedrons[0][3] = element->getNodeId(3);
 
-		tetrahedrons[1][0] = element->getCellId(0);
-		tetrahedrons[1][1] = element->getCellId(1);
-		tetrahedrons[1][2] = element->getCellId(2);
-		tetrahedrons[1][3] = element->getCellId(4);
+		tetrahedrons[1][0] = element->getNodeId(0);
+		tetrahedrons[1][1] = element->getNodeId(1);
+		tetrahedrons[1][2] = element->getNodeId(2);
+		tetrahedrons[1][3] = element->getNodeId(4);
 
-		tetrahedrons[2][0] = element->getCellId(0);
-		tetrahedrons[2][1] = element->getCellId(4);
-		tetrahedrons[2][2] = element->getCellId(2);
-		tetrahedrons[2][3] = element->getCellId(5);
+		tetrahedrons[2][0] = element->getNodeId(0);
+		tetrahedrons[2][1] = element->getNodeId(4);
+		tetrahedrons[2][2] = element->getNodeId(2);
+		tetrahedrons[2][3] = element->getNodeId(5);
 	}
 	else if( !n2 && n3 && !n4 )
 	{
 		// [0,4] [2,4] [2,3]			0 1 0
-		tetrahedrons[0][0] = element->getCellId(0);
-		tetrahedrons[0][1] = element->getCellId(4);
-		tetrahedrons[0][2] = element->getCellId(2);
-		tetrahedrons[0][3] = element->getCellId(3);
+		tetrahedrons[0][0] = element->getNodeId(0);
+		tetrahedrons[0][1] = element->getNodeId(4);
+		tetrahedrons[0][2] = element->getNodeId(2);
+		tetrahedrons[0][3] = element->getNodeId(3);
 
-		tetrahedrons[1][0] = element->getCellId(0);
-		tetrahedrons[1][1] = element->getCellId(1);
-		tetrahedrons[1][2] = element->getCellId(2);
-		tetrahedrons[1][3] = element->getCellId(4);
+		tetrahedrons[1][0] = element->getNodeId(0);
+		tetrahedrons[1][1] = element->getNodeId(1);
+		tetrahedrons[1][2] = element->getNodeId(2);
+		tetrahedrons[1][3] = element->getNodeId(4);
 
-		tetrahedrons[2][0] = element->getCellId(2);
-		tetrahedrons[2][1] = element->getCellId(3);
-		tetrahedrons[2][2] = element->getCellId(4);
-		tetrahedrons[2][3] = element->getCellId(5);
+		tetrahedrons[2][0] = element->getNodeId(2);
+		tetrahedrons[2][1] = element->getNodeId(3);
+		tetrahedrons[2][2] = element->getNodeId(4);
+		tetrahedrons[2][3] = element->getNodeId(5);
 	}
 	else if( n2 && !n3 && n4 )
 	{
 		// [1,3] [1,5] [0,5]			1 0 1
-		tetrahedrons[0][0] = element->getCellId(0);
-		tetrahedrons[0][1] = element->getCellId(1);
-		tetrahedrons[0][2] = element->getCellId(5);
-		tetrahedrons[0][3] = element->getCellId(3);
+		tetrahedrons[0][0] = element->getNodeId(0);
+		tetrahedrons[0][1] = element->getNodeId(1);
+		tetrahedrons[0][2] = element->getNodeId(5);
+		tetrahedrons[0][3] = element->getNodeId(3);
 
-		tetrahedrons[1][0] = element->getCellId(1);
-		tetrahedrons[1][1] = element->getCellId(5);
-		tetrahedrons[1][2] = element->getCellId(3);
-		tetrahedrons[1][3] = element->getCellId(4);
+		tetrahedrons[1][0] = element->getNodeId(1);
+		tetrahedrons[1][1] = element->getNodeId(5);
+		tetrahedrons[1][2] = element->getNodeId(3);
+		tetrahedrons[1][3] = element->getNodeId(4);
 
-		tetrahedrons[2][0] = element->getCellId(0);
-		tetrahedrons[2][1] = element->getCellId(1);
-		tetrahedrons[2][2] = element->getCellId(2);
-		tetrahedrons[2][3] = element->getCellId(5);
+		tetrahedrons[2][0] = element->getNodeId(0);
+		tetrahedrons[2][1] = element->getNodeId(1);
+		tetrahedrons[2][2] = element->getNodeId(2);
+		tetrahedrons[2][3] = element->getNodeId(5);
 	}
 	else if( n2 && !n3 && !n4 )
 	{
 		// [1,3] [1,5] [2,3]			1 0 0
-		tetrahedrons[0][0] = element->getCellId(0);
-		tetrahedrons[0][1] = element->getCellId(1);
-		tetrahedrons[0][2] = element->getCellId(2);
-		tetrahedrons[0][3] = element->getCellId(3);
+		tetrahedrons[0][0] = element->getNodeId(0);
+		tetrahedrons[0][1] = element->getNodeId(1);
+		tetrahedrons[0][2] = element->getNodeId(2);
+		tetrahedrons[0][3] = element->getNodeId(3);
 
-		tetrahedrons[1][0] = element->getCellId(1);
-		tetrahedrons[1][1] = element->getCellId(5);
-		tetrahedrons[1][2] = element->getCellId(3);
-		tetrahedrons[1][3] = element->getCellId(4);
+		tetrahedrons[1][0] = element->getNodeId(1);
+		tetrahedrons[1][1] = element->getNodeId(5);
+		tetrahedrons[1][2] = element->getNodeId(3);
+		tetrahedrons[1][3] = element->getNodeId(4);
 
-		tetrahedrons[2][0] = element->getCellId(1);
-		tetrahedrons[2][1] = element->getCellId(5);
-		tetrahedrons[2][2] = element->getCellId(2);
-		tetrahedrons[2][3] = element->getCellId(3);
+		tetrahedrons[2][0] = element->getNodeId(1);
+		tetrahedrons[2][1] = element->getNodeId(5);
+		tetrahedrons[2][2] = element->getNodeId(2);
+		tetrahedrons[2][3] = element->getNodeId(3);
 	}
 	else if( n2 && n3 && !n4 )
 	{
 		// [1,3] [2,4] [2,3]			1 1 0
-		tetrahedrons[0][0] = element->getCellId(0);
-		tetrahedrons[0][1] = element->getCellId(1);
-		tetrahedrons[0][2] = element->getCellId(2);
-		tetrahedrons[0][3] = element->getCellId(3);
+		tetrahedrons[0][0] = element->getNodeId(0);
+		tetrahedrons[0][1] = element->getNodeId(1);
+		tetrahedrons[0][2] = element->getNodeId(2);
+		tetrahedrons[0][3] = element->getNodeId(3);
 
-		tetrahedrons[1][0] = element->getCellId(1);
-		tetrahedrons[1][1] = element->getCellId(4);
-		tetrahedrons[1][2] = element->getCellId(2);
-		tetrahedrons[1][3] = element->getCellId(3);
+		tetrahedrons[1][0] = element->getNodeId(1);
+		tetrahedrons[1][1] = element->getNodeId(4);
+		tetrahedrons[1][2] = element->getNodeId(2);
+		tetrahedrons[1][3] = element->getNodeId(3);
 
-		tetrahedrons[2][0] = element->getCellId(2);
-		tetrahedrons[2][1] = element->getCellId(3);
-		tetrahedrons[2][2] = element->getCellId(4);
-		tetrahedrons[2][3] = element->getCellId(5);
+		tetrahedrons[2][0] = element->getNodeId(2);
+		tetrahedrons[2][1] = element->getNodeId(3);
+		tetrahedrons[2][2] = element->getNodeId(4);
+		tetrahedrons[2][3] = element->getNodeId(5);
 	}
 	else
 	{

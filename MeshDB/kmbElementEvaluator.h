@@ -67,6 +67,7 @@ public:
 	double getLength(const kmb::ElementBase &eIter) const;
 	// 角度
 	double getAngle(const kmb::ElementBase &eIter,kmb::nodeIdType nodeId) const;
+	// index は要素内の節点順番
 	double getAngleByIndex(const kmb::ElementBase &eIter,int index) const;
 	double getCosByIndex(const kmb::ElementBase &eIter,int index) const;
 	// n0 の尖り具合
@@ -115,6 +116,7 @@ public:
 	// 重複節点番号の個数
 	// 全ての組み合わせの比較のうち等号になったものの個数
 	int getDuplicationNodeIdCount(const kmb::ElementBase &element) const;
+	int getCommonNodeCount(const kmb::ElementBase &element0, const kmb::ElementBase &element1) const;
 
 	// 要素剛性マトリクス
 	// 節点の個数大きさのマトリクスに代入（インデックスは節点番号ではないことに注意）

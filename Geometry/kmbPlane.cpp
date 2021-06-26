@@ -142,100 +142,65 @@ void kmb::Plane::setOrigin(double x,double y,double z)
 	d = -a*x-b*y-c*z;
 }
 
-kmb::Point3D*
-kmb::Plane::createIntersectPoint(const kmb::Point3D &p0, const kmb::Point3D &p1) const
+kmb::Point3D* kmb::Plane::createIntersectPoint(const kmb::Point3D &p0, const kmb::Point3D &p1) const
 {
 	kmb::Point3D* point = NULL;
 	double t0 = this->evaluate( p0 );
 	double t1 = this->evaluate( p1 );
 	if( t0 * t1 < 0 ){
-		point = new kmb::Point3D(
-		( t1*p0.x() - t0*p1.x() ) / ( t1-t0 ),
-		( t1*p0.y() - t0*p1.y() ) / ( t1-t0 ),
-		( t1*p0.z() - t0*p1.z() ) / ( t1-t0 ) );
+		point = new kmb::Point3D();
+		kmb::Point3D::dividingPoint(p0, p1, t0, -t1, *point);
 	}
 	return point;
 }
 
-bool
-kmb::Plane::getIntersection(const kmb::Point3D &p0, const kmb::Point3D &p1, kmb::Point3D &pt, double &t) const
+bool kmb::Plane::getIntersection(const kmb::Point3D &p0, const kmb::Point3D &p1, kmb::Point3D &pt, double &t) const
 {
 	double t0 = this->evaluate( p0 );
 	double t1 = this->evaluate( p1 );
 	if( t0 != t1 ){
-		pt.setCoordinate(
-		( t1*p0.x() - t0*p1.x() ) / ( t1-t0 ),
-		( t1*p0.y() - t0*p1.y() ) / ( t1-t0 ),
-		( t1*p0.z() - t0*p1.z() ) / ( t1-t0 ) );
+		kmb::Point3D::dividingPoint(p0, p1, t0, -t1, pt);
 		t = t0 / (t0-t1);
 		return true;
 	}
 	return false;
 }
 
-int
-kmb::Plane::getIntersectionTriangle
+enum kmb::Plane::crossingTriangle kmb::Plane::getIntersectionTriangle
 (const kmb::Point3D &p0,const kmb::Point3D &p1, const kmb::Point3D &p2, kmb::Point3D &p3, kmb::Point3D &p4) const
 {
 	double t0 = this->evaluate( p0 );
 	double t1 = this->evaluate( p1 );
 	double t2 = this->evaluate( p2 );
 	if( t0 * t1 < 0.0 && t0 * t2 < 0.0 ){
-		p3.setCoordinate(
-		( t1*p0.x() - t0*p1.x() ) / ( t1-t0 ),
-		( t1*p0.y() - t0*p1.y() ) / ( t1-t0 ),
-		( t1*p0.z() - t0*p1.z() ) / ( t1-t0 ) );
-		p4.setCoordinate(
-		( t2*p0.x() - t0*p2.x() ) / ( t2-t0 ),
-		( t2*p0.y() - t0*p2.y() ) / ( t2-t0 ),
-		( t2*p0.z() - t0*p2.z() ) / ( t2-t0 ) );
-		return (t0 > 0.0) ? 0 : 3;
+		kmb::Point3D::dividingPoint(p0, p1, t0, -t1, p3);
+		kmb::Point3D::dividingPoint(p0, p2, t0, -t2, p4);
+		return (t0 > 0.0) ? k034_1243 : k1243_034;
 	}else if( t1 * t2 < 0.0 && t1 * t0 < 0.0 ){
-		p3.setCoordinate(
-		( t2*p1.x() - t1*p2.x() ) / ( t2-t1 ),
-		( t2*p1.y() - t1*p2.y() ) / ( t2-t1 ),
-		( t2*p1.z() - t1*p2.z() ) / ( t2-t1 ) );
-		p4.setCoordinate(
-		( t0*p1.x() - t1*p0.x() ) / ( t0-t1 ),
-		( t0*p1.y() - t1*p0.y() ) / ( t0-t1 ),
-		( t0*p1.z() - t1*p0.z() ) / ( t0-t1 ) );
-		return (t1 > 0.0) ? 1 : 4;
+		kmb::Point3D::dividingPoint(p1, p2, t1, -t2, p3);
+		kmb::Point3D::dividingPoint(p1, p0, t1, -t0, p4);
+		return (t1 > 0.0) ? k134_2043 : k2043_134;
 	}else if( t2 * t0 < 0.0 && t2 * t1 < 0.0 ){
-		p3.setCoordinate(
-		( t0*p2.x() - t2*p0.x() ) / ( t0-t2 ),
-		( t0*p2.y() - t2*p0.y() ) / ( t0-t2 ),
-		( t0*p2.z() - t2*p0.z() ) / ( t0-t2 ) );
-		p4.setCoordinate(
-		( t1*p2.x() - t2*p1.x() ) / ( t1-t2 ),
-		( t1*p2.y() - t2*p1.y() ) / ( t1-t2 ),
-		( t1*p2.z() - t2*p1.z() ) / ( t1-t2 ) );
-		return (t2 > 0.0) ? 2 : 5;
+		kmb::Point3D::dividingPoint(p2, p0, t2, -t0, p3);
+		kmb::Point3D::dividingPoint(p2, p1, t2, -t1, p4);
+		return (t2 > 0.0) ? k234_0143 : k0143_234;
 	}else if( t1 * t2 < 0.0 ){
 		// t0 * t1 >= 0.0 かつ t0 * t2 >= 0.0
 		// p0 を通るとみなす
-		p3.setCoordinate(
-		( t1*p2.x() - t2*p1.x() ) / ( t1-t2 ),
-		( t1*p2.y() - t2*p1.y() ) / ( t1-t2 ),
-		( t1*p2.z() - t2*p1.z() ) / ( t1-t2 ) );
-		return (t1 > 0.0) ? 6 : 9;
+		kmb::Point3D::dividingPoint(p1, p2, t1, -t2, p3);
+		return (t1 > 0.0) ? k0_013_032 : k0_032_013;
 	}else if( t2 * t0 < 0.0 ){
 		// t1 * t2 >= 0.0 かつ t1 * t0 >= 0.0
 		// p1 を通るとみなす
-		p3.setCoordinate(
-		( t2*p0.x() - t0*p2.x() ) / ( t2-t0 ),
-		( t2*p0.y() - t0*p2.y() ) / ( t2-t0 ),
-		( t2*p0.z() - t0*p2.z() ) / ( t2-t0 ) );
-		return (t2 > 0.0) ? 7 : 10;
+		kmb::Point3D::dividingPoint(p2, p0, t2, -t0, p3);
+		return (t2 > 0.0) ? k1_123_130 : k1_130_123;
 	}else if( t0 * t1 < 0.0 ){
 		// t2 * t0 >= 0.0 かつ t2 * t1 >= 0.0
 		// p2 を通るとみなす
-		p3.setCoordinate(
-		( t0*p1.x() - t1*p0.x() ) / ( t0-t1 ),
-		( t0*p1.y() - t1*p0.y() ) / ( t0-t1 ),
-		( t0*p1.z() - t1*p0.z() ) / ( t0-t1 ) );
-		return (t0 > 0.0) ? 8 : 11;
+		kmb::Point3D::dividingPoint(p0, p1, t0, -t1, p3);
+		return (t0 > 0.0) ? k2_203_231 : k2_231_203;
 	}
-	return (t0 > 0.0) ? -1 : -2;
+	return (t0 > 0.0) ? kALL_POSITIVE : kALL_NEGATIVE;
 }
 
 kmb::Point3D
@@ -257,230 +222,178 @@ kmb::PlaneYZ::setX(double x0)
 	this->d = -x0;
 }
 
-void
-kmb::PlaneZX::setY(double y0)
+void kmb::PlaneZX::setY(double y0)
 {
 	this->d = -y0;
 }
 
-bool
-kmb::PlaneXY::getIntersection(const double z0,const kmb::Point3D &p0,const kmb::Point3D &p1, kmb::Point3D &pt, double &t)
+// local function
+double intersectXY(double zz, const kmb::Point3D &p0, const kmb::Point3D &p1, double z0, double z1, kmb::Point3D &pt)
+{
+	double t1 = 1.0 / (z1 - z0);
+	double t0 = -z0 * t1;
+	t1 =  z1 * t1;
+	pt.setCoordinate(
+		t1*p0.x() + t0*p1.x(),
+		t1*p0.y() + t0*p1.y(),
+		zz);
+	return t0;
+}
+
+bool kmb::PlaneXY::getIntersection(const double z0,const kmb::Point3D &p0,const kmb::Point3D &p1, kmb::Point3D &pt, double &t)
 {
 	double diffZ = p1.z() - p0.z();
 	if( diffZ != 0.0 ){
-		t = ( z0 - p0.z() ) / diffZ;
-		pt.setCoordinate( (1.0-t) * p0.x() + t * p1.x(), (1.0-t) * p0.y() + t * p1.y(), z0 );
+		t = intersectXY(z0,p0,p1,p0.z()-z0,p1.z()-z0,pt);
 		return true;
 	}
 	return false;
 }
 
-bool
-kmb::PlaneYZ::getIntersection(const double x0,const kmb::Point3D &p0,const kmb::Point3D &p1, kmb::Point3D &pt, double &t)
+double intersectYZ(double xx, const kmb::Point3D &p0, const kmb::Point3D &p1, double x0, double x1, kmb::Point3D &pt)
+{
+	double t1 = 1.0 / (x1 - x0);
+	double t0 = -x0 * t1;
+	t1 = x1 * t1;
+	pt.setCoordinate(
+		xx,
+		t1*p0.y() + t0*p1.y(),
+		t1*p0.z() + t0*p1.z()
+	);
+	return t0;
+}
+
+bool kmb::PlaneYZ::getIntersection(const double x0,const kmb::Point3D &p0,const kmb::Point3D &p1, kmb::Point3D &pt, double &t)
 {
 	double diffX = p1.x() - p0.x();
 	if( diffX != 0.0 ){
-		t = ( x0 - p0.x() ) / diffX;
-		pt.setCoordinate( x0, (1.0-t) * p0.y() + t * p1.y(), (1.0-t) * p0.z() + t * p1.z() );
+		t = intersectYZ(x0, p0, p1, p0.x() - x0, p1.x() - x0, pt);
 		return true;
 	}
 	return false;
 }
 
-bool
-kmb::PlaneZX::getIntersection(const double y0,const kmb::Point3D &p0,const kmb::Point3D &p1, kmb::Point3D &pt, double &t)
+double intersectZX(double yy, const kmb::Point3D &p0, const kmb::Point3D &p1, double y0, double y1, kmb::Point3D &pt)
+{
+	double t1 = 1.0 / (y1 - y0);
+	double t0 = -y0 * t1;
+	t1 = y1 * t1;
+	pt.setCoordinate(
+		t1*p0.x() + t0*p1.x(),
+		yy,
+		t1*p0.z() + t0*p1.z()
+	);
+	return t0;
+}
+
+bool kmb::PlaneZX::getIntersection(const double y0,const kmb::Point3D &p0,const kmb::Point3D &p1, kmb::Point3D &pt, double &t)
 {
 	double diffY = p1.y() - p0.y();
 	if( diffY != 0.0 ){
-		t = ( y0 - p0.y() ) / diffY;
-		pt.setCoordinate( (1.0-t) * p0.x() + t * p1.x(), y0, (1.0-t) * p0.z() + t * p1.z() );
+		t = intersectZX(y0, p0, p1, p0.y() - y0, p1.y() - y0, pt);
 		return true;
 	}
 	return false;
 }
 
-int
-kmb::PlaneXY::getIntersectionTriangle(
+enum kmb::Plane::crossingTriangle kmb::PlaneXY::getIntersectionTriangle(
 		const double zz,const kmb::Point3D &p0,const kmb::Point3D &p1, const kmb::Point3D &p2,kmb::Point3D &p3, kmb::Point3D &p4)
 {
 	double z0 = p0.z() - zz;
 	double z1 = p1.z() - zz;
 	double z2 = p2.z() - zz;
 	if( z0 * z1 < 0.0 && z0 * z2 < 0.0 ){
-		p3.setCoordinate(
-			( z1*p0.x() - z0*p1.x() ) / ( z1-z0 ),
-			( z1*p0.y() - z0*p1.y() ) / ( z1-z0 ),
-			zz );
-		p4.setCoordinate(
-			( z2*p0.x() - z0*p2.x() ) / ( z2-z0 ),
-			( z2*p0.y() - z0*p2.y() ) / ( z2-z0 ),
-			zz );
-		return (z0 > 0.0) ? 0 : 3;
+		intersectXY(zz, p0, p1, z0, z1, p3);
+		intersectXY(zz, p0, p2, z0, z2, p4);
+		return (z0 > 0.0) ? k034_1243 : k1243_034;
 	}else if( z1 * z2 < 0.0 && z1 * z0 < 0.0 ){
-		p3.setCoordinate(
-			( z2*p1.x() - z1*p2.x() ) / ( z2-z1 ),
-			( z2*p1.y() - z1*p2.y() ) / ( z2-z1 ),
-			zz );
-		p4.setCoordinate(
-			( z0*p1.x() - z1*p0.x() ) / ( z0-z1 ),
-			( z0*p1.y() - z1*p0.y() ) / ( z0-z1 ),
-			zz );
-		return (z1 > 0.0) ? 1 : 4;
+		intersectXY(zz, p1, p2, z1, z2, p3);
+		intersectXY(zz, p1, p0, z1, z0, p4);
+		return (z1 > 0.0) ? k134_2043 : k2043_134;
 	}else if( z2 * z0 < 0.0 && z2 * z1 < 0.0 ){
-		p3.setCoordinate(
-			( z0*p2.x() - z2*p0.x() ) / ( z0-z2 ),
-			( z0*p2.y() - z2*p0.y() ) / ( z0-z2 ),
-			zz );
-		p4.setCoordinate(
-			( z1*p2.x() - z2*p1.x() ) / ( z1-z2 ),
-			( z1*p2.y() - z2*p1.y() ) / ( z1-z2 ),
-			zz );
-		return (z2 > 0.0) ? 2 : 5;
+		intersectXY(zz, p2, p0, z2, z0, p3);
+		intersectXY(zz, p2, p1, z2, z1, p4);
+		return (z2 > 0.0) ? k234_0143 : k0143_234;
 	}else if( z1 * z2 < 0.0 && fabs(z0) < kmb::Tolerance::geometric ){
 		// p0 を通るとみなす
-		p3.setCoordinate(
-			( z1*p2.x() - z2*p1.x() ) / ( z1-z2 ),
-			( z1*p2.y() - z2*p1.y() ) / ( z1-z2 ),
-			zz );
-		return (z1 > 0.0) ? 6 : 9;
+		intersectXY(zz, p1, p2, z1, z2, p3);
+		return (z1 > 0.0) ? k0_013_032 : k0_032_013;
 	}else if( z2 * z0 < 0.0 && fabs(z1) < kmb::Tolerance::geometric ){
 		// p1 を通るとみなす
-		p3.setCoordinate(
-			( z2*p0.x() - z0*p2.x() ) / ( z2-z0 ),
-			( z2*p0.y() - z0*p2.y() ) / ( z2-z0 ),
-			zz );
-		return (z2 > 0.0) ? 7 : 10;
+		intersectXY(zz, p2, p0, z2, z0, p3);
+		return (z2 > 0.0) ? k1_123_130 : k1_130_123;
 	}else if( z0 * z1 < 0.0 && fabs(z2) < kmb::Tolerance::geometric ){
 		// p2 を通るとみなす
-		p3.setCoordinate(
-			( z0*p1.x() - z1*p0.x() ) / ( z0-z1 ),
-			( z0*p1.y() - z1*p0.y() ) / ( z0-z1 ),
-			zz );
-		return (z0 > 0.0) ? 8 : 11;
+		intersectXY(zz, p0, p1, z0, z1, p3);
+		return (z0 > 0.0) ? k2_203_231 : k2_231_203;
 	}
-	return (z0+z1+z2 > 0.0) ? -1 : -2;
+	return (z0+z1+z2 > 0.0) ? kALL_POSITIVE : kALL_NEGATIVE;
 }
 
-int
-kmb::PlaneYZ::getIntersectionTriangle(
+enum kmb::Plane::crossingTriangle kmb::PlaneYZ::getIntersectionTriangle(
 		const double xx,const kmb::Point3D &p0,const kmb::Point3D &p1, const kmb::Point3D &p2,kmb::Point3D &p3, kmb::Point3D &p4)
 {
 	double x0 = p0.x() - xx;
 	double x1 = p1.x() - xx;
 	double x2 = p2.x() - xx;
 	if( x0 * x1 < 0.0 && x0 * x2 < 0.0 ){
-		p3.setCoordinate(
-			xx,
-			( x1*p0.y() - x0*p1.y() ) / ( x1-x0 ),
-			( x1*p0.z() - x0*p1.z() ) / ( x1-x0 ) );
-		p4.setCoordinate(
-			xx,
-			( x2*p0.y() - x0*p2.y() ) / ( x2-x0 ),
-			( x2*p0.z() - x0*p2.z() ) / ( x2-x0 ) );
-		return (x0 > 0.0) ? 0 : 3;
+		intersectYZ(xx, p0, p1, x0, x1, p3);
+		intersectYZ(xx, p0, p2, x0, x2, p4);
+		return (x0 > 0.0) ? k034_1243 : k1243_034;
 	}else if( x1 * x2 < 0.0 && x1 * x0 < 0.0 ){
-		p3.setCoordinate(
-			xx,
-			( x2*p1.y() - x1*p2.y() ) / ( x2-x1 ),
-			( x2*p1.z() - x1*p2.z() ) / ( x2-x1 ) );
-		p4.setCoordinate(
-			xx,
-			( x0*p1.y() - x1*p0.y() ) / ( x0-x1 ),
-			( x0*p1.z() - x1*p0.z() ) / ( x0-x1 ) );
-		return (x1 > 0.0) ? 1 : 4;
+		intersectYZ(xx, p1, p2, x1, x2, p3);
+		intersectYZ(xx, p1, p0, x1, x0, p4);
+		return (x1 > 0.0) ? k134_2043 : k2043_134;
 	}else if( x2 * x0 < 0.0 && x2 * x1 < 0.0 ){
-		p3.setCoordinate(
-			xx,
-			( x0*p2.y() - x2*p0.y() ) / ( x0-x2 ),
-			( x0*p2.z() - x2*p0.z() ) / ( x0-x2 ) );
-		p4.setCoordinate(
-			xx,
-			( x1*p2.y() - x2*p1.y() ) / ( x1-x2 ),
-			( x1*p2.z() - x2*p1.z() ) / ( x1-x2 ) );
-		return (x2 > 0.0) ? 2 : 5;
+		intersectYZ(xx, p2, p0, x2, x0, p3);
+		intersectYZ(xx, p2, p1, x2, x1, p4);
+		return (x2 > 0.0) ? k234_0143 : k0143_234;
 	}else if( x1 * x2 < 0.0 && fabs(x0) < kmb::Tolerance::geometric ){
 		// p0 を通るとみなす
-		p3.setCoordinate(
-			xx,
-			( x1*p2.y() - x2*p1.y() ) / ( x1-x2 ),
-			( x1*p2.z() - x2*p1.z() ) / ( x1-x2 ) );
-		return (x1 > 0.0) ? 6 : 9;
+		intersectYZ(xx, p1, p2, x1, x2, p3);
+		return (x1 > 0.0) ? k0_013_032 : k0_032_013;
 	}else if( x2 * x0 < 0.0 && fabs(x1) < kmb::Tolerance::geometric ){
 		// p1 を通るとみなす
-		p3.setCoordinate(
-			xx,
-			( x2*p0.y() - x0*p2.y() ) / ( x2-x0 ),
-			( x2*p0.z() - x0*p2.z() ) / ( x2-x0 ) );
-		return (x2 > 0.0) ? 7 : 10;
+		intersectYZ(xx, p2, p0, x2, x0, p3);
+		return (x2 > 0.0) ? k1_123_130 : k1_130_123;
 	}else if( x0 * x1 < 0.0 && fabs(x2) < kmb::Tolerance::geometric ){
 		// p2 を通るとみなす
-		p3.setCoordinate(
-			xx,
-			( x0*p1.y() - x1*p0.y() ) / ( x0-x1 ),
-			( x0*p1.z() - x1*p0.z() ) / ( x0-x1 ) );
-		return (x0 > 0.0) ? 8 : 11;
+		intersectYZ(xx, p0, p1, x0, x1, p3);
+		return (x0 > 0.0) ? k2_203_231 : k2_231_203;
 	}
-	return (x0+x1+x2 > 0.0) ? -1 : -2;
+	return (x0+x1+x2 > 0.0) ? kALL_POSITIVE : kALL_NEGATIVE;
 }
 
-int
-kmb::PlaneZX::getIntersectionTriangle(
+enum kmb::Plane::crossingTriangle kmb::PlaneZX::getIntersectionTriangle(
 		const double yy,const kmb::Point3D &p0,const kmb::Point3D &p1, const kmb::Point3D &p2,kmb::Point3D &p3, kmb::Point3D &p4)
 {
 	double y0 = p0.y() - yy;
 	double y1 = p1.y() - yy;
 	double y2 = p2.y() - yy;
 	if( y0 * y1 < 0.0 && y0 * y2 < 0.0 ){
-		p3.setCoordinate(
-			( y1*p0.x() - y0*p1.x() ) / ( y1-y0 ),
-			yy,
-			( y1*p0.z() - y0*p1.z() ) / ( y1-y0 ) );
-		p4.setCoordinate(
-			( y2*p0.x() - y0*p2.x() ) / ( y2-y0 ),
-			yy,
-			( y2*p0.z() - y0*p2.z() ) / ( y2-y0 ) );
-		return (y0 > 0.0) ? 0 : 3;
+		intersectZX(yy, p0, p1, y0, y1, p3);
+		intersectZX(yy, p0, p2, y0, y2, p4);
+		return (y0 > 0.0) ? k034_1243 : k1243_034;
 	}else if( y1 * y2 < 0.0 && y1 * y0 < 0.0 ){
-		p3.setCoordinate(
-			( y2*p1.x() - y1*p2.x() ) / ( y2-y1 ),
-			yy,
-			( y2*p1.z() - y1*p2.z() ) / ( y2-y1 ) );
-		p4.setCoordinate(
-			( y0*p1.x() - y1*p0.x() ) / ( y0-y1 ),
-			yy,
-			( y0*p1.z() - y1*p0.z() ) / ( y0-y1 ) );
-		return (y1 > 0.0) ? 1 : 4;
+		intersectZX(yy, p1, p2, y1, y2, p3);
+		intersectZX(yy, p1, p0, y1, y0, p4);
+		return (y1 > 0.0) ? k134_2043 : k2043_134;
 	}else if( y2 * y0 < 0.0 && y2 * y1 < 0.0 ){
-		p3.setCoordinate(
-		( y0*p2.x() - y2*p0.x() ) / ( y0-y2 ),
-		yy,
-		( y0*p2.z() - y2*p0.z() ) / ( y0-y2 ) );
-		p4.setCoordinate(
-		( y1*p2.x() - y2*p1.x() ) / ( y1-y2 ),
-		yy,
-		( y1*p2.z() - y2*p1.z() ) / ( y1-y2 ) );
-		return (y2 > 0.0) ? 2 : 5;
+		intersectZX(yy, p2, p0, y2, y0, p3);
+		intersectZX(yy, p2, p1, y2, y1, p4);
+		return (y2 > 0.0) ?k234_0143 : k0143_234;
 	}else if( y1 * y2 < 0.0 && fabs(y0) < kmb::Tolerance::geometric ){
 		// p0 を通るとみなす
-		p3.setCoordinate(
-			( y1*p2.x() - y2*p1.x() ) / ( y1-y2 ),
-			yy,
-			( y1*p2.z() - y2*p1.z() ) / ( y1-y2 ) );
-		return (y1 > 0.0) ? 6 : 9;
+		intersectZX(yy, p1, p2, y1, y2, p3);
+		return (y1 > 0.0) ? k0_013_032 : k0_032_013;
 	}else if( y2 * y0 < 0.0 && fabs(y1) < kmb::Tolerance::geometric ){
 		// p1 を通るとみなす
-		p3.setCoordinate(
-			( y2*p0.x() - y0*p2.x() ) / ( y2-y0 ),
-			yy,
-			( y2*p0.z() - y0*p2.z() ) / ( y2-y0 ) );
-		return (y2 > 0.0) ? 7 : 10;
+		intersectZX(yy, p2, p0, y2, y0, p3);
+		return (y2 > 0.0) ? k1_123_130 : k1_130_123;
 	}else if( y0 * y1 < 0.0 && fabs(y2) < kmb::Tolerance::geometric ){
 		// p2 を通るとみなす
-		p3.setCoordinate(
-			( y0*p1.x() - y1*p0.x() ) / ( y0-y1 ),
-			yy,
-			( y0*p1.z() - y1*p0.z() ) / ( y0-y1 ) );
-		return (y0 > 0.0) ? 8 : 11;
+		intersectZX(yy, p0, p1, y0, y1, p3);
+		return (y0 > 0.0) ? k2_203_231 : k2_231_203;
 	}
-	return (y0+y1+y2 > 0.0) ? -1 : -2;
+	return (y0+y1+y2 > 0.0) ? kALL_POSITIVE : kALL_NEGATIVE;
 }

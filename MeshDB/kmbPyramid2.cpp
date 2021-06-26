@@ -155,6 +155,16 @@ kmb::Pyramid2::~Pyramid2(void)
 {
 }
 
+kmb::nodeIdType kmb::Pyramid2::operator()(const int index,const int i) const
+{
+	return cell[kmb::Pyramid2::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Pyramid2::operator()(const int index,const int i)
+{
+	return cell[kmb::Pyramid2::faceTable[index][i]];
+}
+
 void
 kmb::Pyramid2::shapeFunction(double s,double t,double u,double* coeff)
 {

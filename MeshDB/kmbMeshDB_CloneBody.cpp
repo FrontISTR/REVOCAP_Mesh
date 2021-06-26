@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshDB                                                  #
@@ -50,7 +50,7 @@ cloneBody(kmb::bodyIdType bodyID)
 			++eIter;
 		}
 		this->endElement();
-		delete cells;
+		delete[] cells;
 	}
 	return id;
 }
@@ -72,7 +72,7 @@ cloneReverseBody(kmb::bodyIdType bodyID)
 			++eIter;
 		}
 		this->endElement();
-		delete cells;
+		delete[] cells;
 	}
 	return id;
 }
@@ -111,7 +111,7 @@ kmb::MeshDB::cloneBodyWithNode(bodyIdType bodyID)
 			++eIter;
 		}
 		this->endElement();
-		delete cells;
+		delete[] cells;
 	}
 	return id;
 }
@@ -150,7 +150,7 @@ kmb::MeshDB::cloneReverseBodyWithNode(bodyIdType bodyID)
 			++eIter;
 		}
 		this->endElement();
-		delete cells;
+		delete[] cells;
 	}
 	return id;
 }

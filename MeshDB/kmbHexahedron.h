@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Hexahedron                                              #
@@ -57,6 +57,9 @@ public:
 	static const int edgeTable[12][2];
 
 	static void shapeFunction(double s,double t,double u,double* coeff);
+	static void shapeFunction_ds(double s,double t,double u,double* coeff);
+	static void shapeFunction_dt(double s,double t,double u,double* coeff);
+	static void shapeFunction_du(double s,double t,double u,double* coeff);
 
 	static bool getNaturalCoordinates(const kmb::Point3D &target,const kmb::Point3D* points,double naturalCoords[3]);
 	static bool getPhysicalCoordinates(const double naturalCoords[3],const kmb::Point3D* points,kmb::Point3D &target);
@@ -67,6 +70,9 @@ public:
 	static double jacobian_ds(double s, double t,double u,const kmb::Point3D* points);
 	static double jacobian_dt(double s, double t,double u,const kmb::Point3D* points);
 	static double jacobian_du(double s, double t,double u,const kmb::Point3D* points);
+
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 };
 
 }

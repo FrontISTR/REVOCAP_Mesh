@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : TetMeshMIO                                              #
@@ -189,66 +189,66 @@ kmb::TetMeshMIO::saveToFile(const char* filename, const kmb::MeshData* mesh)
 					switch( eIter.getType() ){
 					case kmb::TETRAHEDRON:
 						output <<
-							eIter.getCellId(0) << " " <<
-							eIter.getCellId(1) << " " <<
-							eIter.getCellId(2) << " " <<
-							eIter.getCellId(3) << std::endl;
+							eIter.getNodeId(0) << " " <<
+							eIter.getNodeId(1) << " " <<
+							eIter.getNodeId(2) << " " <<
+							eIter.getNodeId(3) << std::endl;
 						break;
 					case kmb::TETRAHEDRON2:
 						output <<
-							eIter.getCellId(0) << " " <<
-							eIter.getCellId(1) << " " <<
-							eIter.getCellId(2) << " " <<
-							eIter.getCellId(3) << " " <<
-							eIter.getCellId(6) << " " <<
-							eIter.getCellId(5) << " " <<
-							eIter.getCellId(7) << " " <<
-							eIter.getCellId(4) << " " <<
-							eIter.getCellId(9) << " " <<
-							eIter.getCellId(8) << std::endl;
+							eIter.getNodeId(0) << " " <<
+							eIter.getNodeId(1) << " " <<
+							eIter.getNodeId(2) << " " <<
+							eIter.getNodeId(3) << " " <<
+							eIter.getNodeId(6) << " " <<
+							eIter.getNodeId(5) << " " <<
+							eIter.getNodeId(7) << " " <<
+							eIter.getNodeId(4) << " " <<
+							eIter.getNodeId(9) << " " <<
+							eIter.getNodeId(8) << std::endl;
 						break;
 					case kmb::WEDGE:
 						output <<
-							eIter.getCellId(0) << " " <<
-							eIter.getCellId(1) << " " <<
-							eIter.getCellId(2) << " " <<
-							eIter.getCellId(3) << " " <<
-							eIter.getCellId(4) << " " <<
-							eIter.getCellId(5) << std::endl;
+							eIter.getNodeId(0) << " " <<
+							eIter.getNodeId(1) << " " <<
+							eIter.getNodeId(2) << " " <<
+							eIter.getNodeId(3) << " " <<
+							eIter.getNodeId(4) << " " <<
+							eIter.getNodeId(5) << std::endl;
 						break;
 					case kmb::HEXAHEDRON:
 						output <<
-							eIter.getCellId(0) << " " <<
-							eIter.getCellId(1) << " " <<
-							eIter.getCellId(2) << " " <<
-							eIter.getCellId(3) << " " <<
-							eIter.getCellId(4) << " " <<
-							eIter.getCellId(5) << " " <<
-							eIter.getCellId(6) << " " <<
-							eIter.getCellId(7) << std::endl;
+							eIter.getNodeId(0) << " " <<
+							eIter.getNodeId(1) << " " <<
+							eIter.getNodeId(2) << " " <<
+							eIter.getNodeId(3) << " " <<
+							eIter.getNodeId(4) << " " <<
+							eIter.getNodeId(5) << " " <<
+							eIter.getNodeId(6) << " " <<
+							eIter.getNodeId(7) << std::endl;
 						break;
 					case kmb::HEXAHEDRON2:
 						output <<
-							eIter.getCellId(0) << " " <<
-							eIter.getCellId(1) << " " <<
-							eIter.getCellId(2) << " " <<
-							eIter.getCellId(3) << " " <<
-							eIter.getCellId(4) << " " <<
-							eIter.getCellId(5) << " " <<
-							eIter.getCellId(6) << " " <<
-							eIter.getCellId(7) << " " <<
-							eIter.getCellId(8) << " " <<
-							eIter.getCellId(9) << " " <<
-							eIter.getCellId(10) << " " <<
-							eIter.getCellId(11) << " " <<
-							eIter.getCellId(16) << " " <<
-							eIter.getCellId(17) << " " <<
-							eIter.getCellId(18) << " " <<
-							eIter.getCellId(19) << " " <<
-							eIter.getCellId(12) << " " <<
-							eIter.getCellId(13) << " " <<
-							eIter.getCellId(14) << " " <<
-							eIter.getCellId(15) << std::endl;
+							eIter.getNodeId(0) << " " <<
+							eIter.getNodeId(1) << " " <<
+							eIter.getNodeId(2) << " " <<
+							eIter.getNodeId(3) << " " <<
+							eIter.getNodeId(4) << " " <<
+							eIter.getNodeId(5) << " " <<
+							eIter.getNodeId(6) << " " <<
+							eIter.getNodeId(7) << " " <<
+							eIter.getNodeId(8) << " " <<
+							eIter.getNodeId(9) << " " <<
+							eIter.getNodeId(10) << " " <<
+							eIter.getNodeId(11) << " " <<
+							eIter.getNodeId(16) << " " <<
+							eIter.getNodeId(17) << " " <<
+							eIter.getNodeId(18) << " " <<
+							eIter.getNodeId(19) << " " <<
+							eIter.getNodeId(12) << " " <<
+							eIter.getNodeId(13) << " " <<
+							eIter.getNodeId(14) << " " <<
+							eIter.getNodeId(15) << std::endl;
 						break;
 					default:
 						break;

@@ -106,6 +106,16 @@ kmb::Triangle2::~Triangle2(void)
 {
 }
 
+kmb::nodeIdType kmb::Triangle2::operator()(const int index,const int i) const
+{
+	return cell[kmb::Triangle2::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Triangle2::operator()(const int index,const int i)
+{
+	return cell[kmb::Triangle2::faceTable[index][i]];
+}
+
 void
 kmb::Triangle2::shapeFunction(double s,double t,double* coeff)
 {

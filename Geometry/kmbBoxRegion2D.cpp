@@ -38,21 +38,7 @@ kmb::BoxRegion2D::BoxRegion2D(const kmb::Point2D &l,const kmb::Point2D &u)
 kmb::BoxRegion2D::
 BoxRegion2D(double x0,double y0,double x1,double y1)
 {
-	if(x0 < x1){
-		this->minPoint.x( x0 );
-		this->maxPoint.x( x1 );
-	}else{
-		this->minPoint.x( x1 );
-		this->maxPoint.x( x0 );
-	}
-
-	if(y0 < y1){
-		this->minPoint.y( y0 );
-		this->maxPoint.y( y1 );
-	}else{
-		this->minPoint.y( y1 );
-		this->maxPoint.y( y0 );
-	}
+	setMinMax(x0,y0,x1,y1);
 }
 
 kmb::BoxRegion2D::BoxRegion2D(const kmb::BoxRegion2D &other)
@@ -71,6 +57,30 @@ kmb::BoxRegion2D::operator=(const kmb::BoxRegion2D &other)
 	maxPoint = other.maxPoint;
 	minPoint = other.minPoint;
 	return *this;
+}
+
+void kmb::BoxRegion2D::setMinMax(double x0,double y0,double x1,double y1)
+{
+	if(x0 < x1){
+		this->minPoint.x( x0 );
+		this->maxPoint.x( x1 );
+	}else{
+		this->minPoint.x( x1 );
+		this->maxPoint.x( x0 );
+	}
+
+	if(y0 < y1){
+		this->minPoint.y( y0 );
+		this->maxPoint.y( y1 );
+	}else{
+		this->minPoint.y( y1 );
+		this->maxPoint.y( y0 );
+	}
+}
+
+void kmb::BoxRegion2D::setMinMax(kmb::Point2D& minPoint,kmb::Point2D& maxPoint)
+{
+	setMinMax(minPoint.x(),minPoint.y(),maxPoint.x(),maxPoint.y());
 }
 
 double

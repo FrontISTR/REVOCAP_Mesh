@@ -29,7 +29,7 @@
 #endif
 
 int
-kmb::NetgenIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
+kmb::NetgenIO::loadMesh(const char* filename,kmb::MeshData* mesh)
 {
 	if( mesh == NULL ){
 		return -1;
@@ -98,7 +98,7 @@ kmb::NetgenIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
 }
 
 int
-kmb::NetgenIO::saveToFile(const char* filename, const kmb::MeshData* mesh)
+kmb::NetgenIO::saveMesh(const char* filename, const kmb::MeshData* mesh)
 {
 	if( mesh == NULL || !mesh->getNodes() ){
 		return -1;

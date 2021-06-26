@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshRefiner                                             #
@@ -123,9 +123,9 @@ kmb::MeshRefiner::setSecondNodes( kmb::ElementBase& element )
 		const int ecount = element.getEdgeCount();
 		for(int i=0;i<ecount;++i){
 			middleMan->setDividedNode(
-				element.getEdgeCellId(i,2),
-				element.getEdgeCellId(i,0),
-				element.getEdgeCellId(i,1) );
+				element.getEdgeNodeId(i,2),
+				element.getEdgeNodeId(i,0),
+				element.getEdgeNodeId(i,1) );
 		}
 	}
 }
@@ -219,10 +219,10 @@ kmb::MeshRefiner::convertToSecondBody(kmb::bodyIdType bodyId)
 			const int ecount = eIter.getEdgeCount();
 			const int vcount = eIter.getVertexCount();
 			for(int i=0;i<ecount;++i){
-				// 1 次要素の getEdgeCellId で与えられる順番と
+				// 1 次要素の getEdgeNodeId で与えられる順番と
 				// 2 次要素の nodes で与える順番は等しいことが保証されている
-				kmb::nodeIdType n0 = eIter.getEdgeCellId(i,0);
-				kmb::nodeIdType n1 = eIter.getEdgeCellId(i,1);
+				kmb::nodeIdType n0 = eIter.getEdgeNodeId(i,0);
+				kmb::nodeIdType n1 = eIter.getEdgeNodeId(i,1);
 				kmb::nodeIdType n01 = nodes[vcount+i] = middleMan->getDividedNode( n0, n1 );
 				std::vector< kmb::MeshRefiner::DataPair >::iterator pIter = dataPairs.begin();
 				while( pIter != dataPairs.end() ){
@@ -442,11 +442,11 @@ kmb::MeshRefiner::refineSegment( kmb::elementIdType elementId, const kmb::Elemen
 	kmb::elementIdType e[2] = {
 		kmb::Element::nullElementId,
 		kmb::Element::nullElementId};
-	kmb::nodeIdType n01 = middleMan->getDividedNode( segment.getCellId(0), segment.getCellId(1), elementId );
+	kmb::nodeIdType n01 = middleMan->getDividedNode( segment.getNodeId(0), segment.getNodeId(1), elementId );
 	if( refinedBody ){
-		nodeTable[0] = segment.getCellId(0); nodeTable[1] = n01;
+		nodeTable[0] = segment.getNodeId(0); nodeTable[1] = n01;
 		e[0] = refinedBody->addElement( kmb::SEGMENT, nodeTable );
-		nodeTable[0] = n01; nodeTable[1] = segment.getCellId(01);
+		nodeTable[0] = n01; nodeTable[1] = segment.getNodeId(01);
 		e[1] = refinedBody->addElement( kmb::SEGMENT, nodeTable );
 	}
 	const int faceNum = kmb::Element::getBoundaryCount( kmb::SEGMENT );
@@ -454,12 +454,12 @@ kmb::MeshRefiner::refineSegment( kmb::elementIdType elementId, const kmb::Elemen
 	std::vector< kmb::MeshRefiner::DataPair >::iterator dIter = dataPairs.begin();
 	while( dIter != dataPairs.end() ){
 		if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeGroup ){
-			nodeGroupUpdate( segment.getCellId(0), segment.getCellId(1), n01, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( segment.getNodeId(0), segment.getNodeId(1), n01, dIter->originalData, dIter->refinedData );
 		}
 		else if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeVariable &&
 			dIter->originalData->getValueType() == kmb::PhysicalValue::Integer )
 		{
-			nodeVariableUpdate( segment.getCellId(0), segment.getCellId(1), n01, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( segment.getNodeId(0), segment.getNodeId(1), n01, dIter->originalData, dIter->refinedData );
 		}
 		else if( refinedBody && dIter->originalData->getBindingMode() == kmb::DataBindings::FaceGroup ){
 			for(int i=0;i<faceNum;++i){
@@ -504,12 +504,12 @@ kmb::MeshRefiner::refineSegment2( kmb::elementIdType elementId, const kmb::Eleme
 		n12 = middleMan->getDividedNode( segment2[1], segment2[2] );
 	}
 	if( refinedBody ){
-		nodeTable[0] = segment2.getCellId(0);
-		nodeTable[1] = segment2.getCellId(2);
+		nodeTable[0] = segment2.getNodeId(0);
+		nodeTable[1] = segment2.getNodeId(2);
 		nodeTable[2] = n02;
 		e[0] = refinedBody->addElement( kmb::SEGMENT2, nodeTable );
-		nodeTable[0] = segment2.getCellId(2);
-		nodeTable[1] = segment2.getCellId(1);
+		nodeTable[0] = segment2.getNodeId(2);
+		nodeTable[1] = segment2.getNodeId(1);
 		nodeTable[2] = n12;
 		e[1] = refinedBody->addElement( kmb::SEGMENT2, nodeTable );
 	}
@@ -518,14 +518,14 @@ kmb::MeshRefiner::refineSegment2( kmb::elementIdType elementId, const kmb::Eleme
 	std::vector< kmb::MeshRefiner::DataPair >::iterator dIter = dataPairs.begin();
 	while( dIter != dataPairs.end() ){
 		if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeGroup ){
-			nodeGroupUpdate( segment2.getCellId(0), segment2.getCellId(2), n02, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( segment2.getCellId(1), segment2.getCellId(2), n12, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( segment2.getNodeId(0), segment2.getNodeId(2), n02, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( segment2.getNodeId(1), segment2.getNodeId(2), n12, dIter->originalData, dIter->refinedData );
 		}
 		else if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeVariable &&
 			dIter->originalData->getValueType() == kmb::PhysicalValue::Integer )
 		{
-			nodeVariableUpdate( segment2.getCellId(0), segment2.getCellId(2), n02, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( segment2.getCellId(1), segment2.getCellId(2), n12, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( segment2.getNodeId(0), segment2.getNodeId(2), n02, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( segment2.getNodeId(1), segment2.getNodeId(2), n12, dIter->originalData, dIter->refinedData );
 		}
 		else if( refinedBody && dIter->originalData->getBindingMode() == kmb::DataBindings::FaceGroup ){
 			for(int i=0;i<faceNum;++i){
@@ -568,19 +568,19 @@ kmb::MeshRefiner::refineTriangle( kmb::elementIdType elementId, const kmb::Eleme
 	kmb::nodeIdType n02 = middleMan->getCenterNode( triangle, 1, elementId );
 	kmb::nodeIdType n01 = middleMan->getCenterNode( triangle, 2, elementId );
 	if( refinedBody ){
-		nodeTable[0] = triangle.getCellId(0);
+		nodeTable[0] = triangle.getNodeId(0);
 		nodeTable[1] = n01;
 		nodeTable[2] = n02;
 		e[0] = refinedBody->addElement( kmb::TRIANGLE, nodeTable );
 
 		nodeTable[0] = n01;
-		nodeTable[1] = triangle.getCellId(1);
+		nodeTable[1] = triangle.getNodeId(1);
 		nodeTable[2] = n12;
 		e[1] = refinedBody->addElement( kmb::TRIANGLE, nodeTable );
 
 		nodeTable[0] = n02;
 		nodeTable[1] = n12;
-		nodeTable[2] = triangle.getCellId(2);
+		nodeTable[2] = triangle.getNodeId(2);
 		e[2] = refinedBody->addElement( kmb::TRIANGLE, nodeTable );
 
 		nodeTable[0] = n12;
@@ -595,17 +595,17 @@ kmb::MeshRefiner::refineTriangle( kmb::elementIdType elementId, const kmb::Eleme
 	while( dIter != dataPairs.end() ){
 		if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeGroup ){
 			// Node Group の更新
-			nodeGroupUpdate( triangle.getCellId(0), triangle.getCellId(1), n01, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( triangle.getCellId(0), triangle.getCellId(2), n02, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( triangle.getCellId(1), triangle.getCellId(2), n12, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( triangle.getNodeId(0), triangle.getNodeId(1), n01, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( triangle.getNodeId(0), triangle.getNodeId(2), n02, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( triangle.getNodeId(1), triangle.getNodeId(2), n12, dIter->originalData, dIter->refinedData );
 		}
 		else if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeVariable &&
 			dIter->originalData->getValueType() == kmb::PhysicalValue::Integer )
 		{
 			// Node Variable の更新
-			nodeVariableUpdate( triangle.getCellId(0), triangle.getCellId(1), n01, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( triangle.getCellId(0), triangle.getCellId(2), n02, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( triangle.getCellId(1), triangle.getCellId(2), n12, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( triangle.getNodeId(0), triangle.getNodeId(1), n01, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( triangle.getNodeId(0), triangle.getNodeId(2), n02, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( triangle.getNodeId(1), triangle.getNodeId(2), n12, dIter->originalData, dIter->refinedData );
 		}
 		else if( refinedBody && dIter->originalData->getBindingMode() == kmb::DataBindings::FaceGroup ){
 			// Face Group の更新
@@ -691,33 +691,33 @@ kmb::MeshRefiner::refineTriangle2( kmb::elementIdType elementId, const kmb::Elem
 		n45 = middleMan->getDividedNode( triangle2[4], triangle2[5] );
 	}
 	if( refinedBody ){
-		nodeTable[0] = triangle2.getCellId(0);
-		nodeTable[1] = triangle2.getCellId(5);
-		nodeTable[2] = triangle2.getCellId(4);
+		nodeTable[0] = triangle2.getNodeId(0);
+		nodeTable[1] = triangle2.getNodeId(5);
+		nodeTable[2] = triangle2.getNodeId(4);
 		nodeTable[3] = n45;
 		nodeTable[4] = n04;
 		nodeTable[5] = n05;
 		e[0] = refinedBody->addElement( kmb::TRIANGLE2, nodeTable );
 
-		nodeTable[0] = triangle2.getCellId(5);
-		nodeTable[1] = triangle2.getCellId(1);
-		nodeTable[2] = triangle2.getCellId(3);
+		nodeTable[0] = triangle2.getNodeId(5);
+		nodeTable[1] = triangle2.getNodeId(1);
+		nodeTable[2] = triangle2.getNodeId(3);
 		nodeTable[3] = n13;
 		nodeTable[4] = n35;
 		nodeTable[5] = n15;
 		e[1] = refinedBody->addElement( kmb::TRIANGLE2, nodeTable );
 
-		nodeTable[0] = triangle2.getCellId(4);
-		nodeTable[1] = triangle2.getCellId(3);
-		nodeTable[2] = triangle2.getCellId(2);
+		nodeTable[0] = triangle2.getNodeId(4);
+		nodeTable[1] = triangle2.getNodeId(3);
+		nodeTable[2] = triangle2.getNodeId(2);
 		nodeTable[3] = n23;
 		nodeTable[4] = n24;
 		nodeTable[5] = n34;
 		e[2] = refinedBody->addElement( kmb::TRIANGLE2, nodeTable );
 
-		nodeTable[0] = triangle2.getCellId(3);
-		nodeTable[1] = triangle2.getCellId(4);
-		nodeTable[2] = triangle2.getCellId(5);
+		nodeTable[0] = triangle2.getNodeId(3);
+		nodeTable[1] = triangle2.getNodeId(4);
+		nodeTable[2] = triangle2.getNodeId(5);
 		nodeTable[3] = n45;
 		nodeTable[4] = n35;
 		nodeTable[5] = n34;
@@ -730,29 +730,29 @@ kmb::MeshRefiner::refineTriangle2( kmb::elementIdType elementId, const kmb::Elem
 	while( dIter != dataPairs.end() ){
 		if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeGroup ){
 			// Node Group の更新
-			nodeGroupUpdate( triangle2.getCellId(0), triangle2.getCellId(4), n04, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( triangle2.getCellId(0), triangle2.getCellId(5), n05, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( triangle2.getCellId(1), triangle2.getCellId(3), n13, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( triangle2.getCellId(1), triangle2.getCellId(5), n15, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( triangle2.getCellId(2), triangle2.getCellId(3), n23, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( triangle2.getCellId(2), triangle2.getCellId(4), n24, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( triangle2.getCellId(3), triangle2.getCellId(4), n34, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( triangle2.getCellId(3), triangle2.getCellId(5), n35, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( triangle2.getCellId(4), triangle2.getCellId(5), n45, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( triangle2.getNodeId(0), triangle2.getNodeId(4), n04, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( triangle2.getNodeId(0), triangle2.getNodeId(5), n05, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( triangle2.getNodeId(1), triangle2.getNodeId(3), n13, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( triangle2.getNodeId(1), triangle2.getNodeId(5), n15, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( triangle2.getNodeId(2), triangle2.getNodeId(3), n23, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( triangle2.getNodeId(2), triangle2.getNodeId(4), n24, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( triangle2.getNodeId(3), triangle2.getNodeId(4), n34, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( triangle2.getNodeId(3), triangle2.getNodeId(5), n35, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( triangle2.getNodeId(4), triangle2.getNodeId(5), n45, dIter->originalData, dIter->refinedData );
 		}
 		else if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeVariable &&
 			dIter->originalData->getValueType() == kmb::PhysicalValue::Integer )
 		{
 			// Node Variable の更新
-			nodeVariableUpdate( triangle2.getCellId(0), triangle2.getCellId(4), n04, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( triangle2.getCellId(0), triangle2.getCellId(5), n05, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( triangle2.getCellId(1), triangle2.getCellId(3), n13, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( triangle2.getCellId(1), triangle2.getCellId(5), n15, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( triangle2.getCellId(2), triangle2.getCellId(3), n23, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( triangle2.getCellId(2), triangle2.getCellId(4), n24, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( triangle2.getCellId(3), triangle2.getCellId(4), n34, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( triangle2.getCellId(3), triangle2.getCellId(5), n35, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( triangle2.getCellId(4), triangle2.getCellId(5), n45, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( triangle2.getNodeId(0), triangle2.getNodeId(4), n04, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( triangle2.getNodeId(0), triangle2.getNodeId(5), n05, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( triangle2.getNodeId(1), triangle2.getNodeId(3), n13, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( triangle2.getNodeId(1), triangle2.getNodeId(5), n15, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( triangle2.getNodeId(2), triangle2.getNodeId(3), n23, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( triangle2.getNodeId(2), triangle2.getNodeId(4), n24, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( triangle2.getNodeId(3), triangle2.getNodeId(4), n34, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( triangle2.getNodeId(3), triangle2.getNodeId(5), n35, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( triangle2.getNodeId(4), triangle2.getNodeId(5), n45, dIter->originalData, dIter->refinedData );
 		}
 		else if( refinedBody && dIter->originalData->getBindingMode() == kmb::DataBindings::FaceGroup ){
 			// Face Group の更新
@@ -811,28 +811,28 @@ kmb::MeshRefiner::refineQuad( kmb::elementIdType elementId, const kmb::ElementBa
 	kmb::nodeIdType n30 = middleMan->getCenterNode( quad, 3, elementId );
 	kmb::nodeIdType c   = middleMan->getCenterNode( quad, elementId );
 	if( refinedBody ){
-		nodeTable[0] = quad.getCellId(0);
+		nodeTable[0] = quad.getNodeId(0);
 		nodeTable[1] = n01;
 		nodeTable[2] = c;
 		nodeTable[3] = n30;
 		e[0] = refinedBody->addElement( kmb::QUAD, nodeTable );
 
 		nodeTable[0] = n01;
-		nodeTable[1] = quad.getCellId(1);
+		nodeTable[1] = quad.getNodeId(1);
 		nodeTable[2] = n12;
 		nodeTable[3] = c;
 		e[1] = refinedBody->addElement( kmb::QUAD, nodeTable );
 
 		nodeTable[0] = c;
 		nodeTable[1] = n12;
-		nodeTable[2] = quad.getCellId(2);
+		nodeTable[2] = quad.getNodeId(2);
 		nodeTable[3] = n23;
 		e[2] = refinedBody->addElement( kmb::QUAD, nodeTable );
 
 		nodeTable[0] = n30;
 		nodeTable[1] = c;
 		nodeTable[2] = n23;
-		nodeTable[3] = quad.getCellId(3);
+		nodeTable[3] = quad.getNodeId(3);
 		e[3] = refinedBody->addElement( kmb::QUAD, nodeTable );
 	}
 
@@ -957,19 +957,19 @@ kmb::MeshRefiner::refineQuad2( kmb::elementIdType elementId, const kmb::ElementB
 		n7c = middleMan->getDividedNode( quad2[7], c );
 	}
 	if( refinedBody ){
-		nodeTable[0] = quad2.getCellId(0);
-		nodeTable[1] = quad2.getCellId(4);
+		nodeTable[0] = quad2.getNodeId(0);
+		nodeTable[1] = quad2.getNodeId(4);
 		nodeTable[2] = c;
-		nodeTable[3] = quad2.getCellId(7);
+		nodeTable[3] = quad2.getNodeId(7);
 		nodeTable[4] = n04;
 		nodeTable[5] = n4c;
 		nodeTable[6] = n7c;
 		nodeTable[7] = n07;
 		e[0] = refinedBody->addElement( kmb::QUAD2, nodeTable );
 
-		nodeTable[0] = quad2.getCellId(4);
-		nodeTable[1] = quad2.getCellId(1);
-		nodeTable[2] = quad2.getCellId(5);
+		nodeTable[0] = quad2.getNodeId(4);
+		nodeTable[1] = quad2.getNodeId(1);
+		nodeTable[2] = quad2.getNodeId(5);
 		nodeTable[3] = c;
 		nodeTable[4] = n14;
 		nodeTable[5] = n15;
@@ -978,19 +978,19 @@ kmb::MeshRefiner::refineQuad2( kmb::elementIdType elementId, const kmb::ElementB
 		e[1] = refinedBody->addElement( kmb::QUAD2, nodeTable );
 
 		nodeTable[0] = c;
-		nodeTable[1] = quad2.getCellId(5);
-		nodeTable[2] = quad2.getCellId(2);
-		nodeTable[3] = quad2.getCellId(6);
+		nodeTable[1] = quad2.getNodeId(5);
+		nodeTable[2] = quad2.getNodeId(2);
+		nodeTable[3] = quad2.getNodeId(6);
 		nodeTable[4] = n5c;
 		nodeTable[5] = n25;
 		nodeTable[6] = n26;
 		nodeTable[7] = n6c;
 		e[2] = refinedBody->addElement( kmb::QUAD2, nodeTable );
 
-		nodeTable[0] = quad2.getCellId(7);
+		nodeTable[0] = quad2.getNodeId(7);
 		nodeTable[1] = c;
-		nodeTable[2] = quad2.getCellId(6);
-		nodeTable[3] = quad2.getCellId(3);
+		nodeTable[2] = quad2.getNodeId(6);
+		nodeTable[3] = quad2.getNodeId(3);
 		nodeTable[4] = n7c;
 		nodeTable[5] = n6c;
 		nodeTable[6] = n36;
@@ -1005,36 +1005,36 @@ kmb::MeshRefiner::refineQuad2( kmb::elementIdType elementId, const kmb::ElementB
 		if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeGroup ){
 			// Node Group の更新
 			nodeGroupUpdate( quad2, c, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( quad2.getCellId(0), quad2.getCellId(4), n04, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( quad2.getCellId(1), quad2.getCellId(4), n14, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( quad2.getCellId(1), quad2.getCellId(5), n15, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( quad2.getCellId(2), quad2.getCellId(5), n25, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( quad2.getCellId(2), quad2.getCellId(6), n26, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( quad2.getCellId(3), quad2.getCellId(6), n36, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( quad2.getCellId(3), quad2.getCellId(7), n37, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( quad2.getCellId(0), quad2.getCellId(7), n07, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( quad2.getCellId(4), c, n4c, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( quad2.getCellId(5), c, n5c, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( quad2.getCellId(6), c, n6c, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( quad2.getCellId(7), c, n7c, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( quad2.getNodeId(0), quad2.getNodeId(4), n04, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( quad2.getNodeId(1), quad2.getNodeId(4), n14, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( quad2.getNodeId(1), quad2.getNodeId(5), n15, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( quad2.getNodeId(2), quad2.getNodeId(5), n25, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( quad2.getNodeId(2), quad2.getNodeId(6), n26, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( quad2.getNodeId(3), quad2.getNodeId(6), n36, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( quad2.getNodeId(3), quad2.getNodeId(7), n37, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( quad2.getNodeId(0), quad2.getNodeId(7), n07, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( quad2.getNodeId(4), c, n4c, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( quad2.getNodeId(5), c, n5c, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( quad2.getNodeId(6), c, n6c, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( quad2.getNodeId(7), c, n7c, dIter->refinedData, dIter->refinedData );
 		}
 		else if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeVariable &&
 			dIter->originalData->getValueType() == kmb::PhysicalValue::Integer )
 		{
 			// Node Variable の更新
 			nodeVariableUpdate( quad2, c, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( quad2.getCellId(0), quad2.getCellId(4), n04, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( quad2.getCellId(1), quad2.getCellId(4), n14, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( quad2.getCellId(1), quad2.getCellId(5), n15, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( quad2.getCellId(2), quad2.getCellId(5), n25, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( quad2.getCellId(2), quad2.getCellId(6), n26, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( quad2.getCellId(3), quad2.getCellId(6), n36, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( quad2.getCellId(3), quad2.getCellId(7), n37, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( quad2.getCellId(0), quad2.getCellId(7), n07, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( quad2.getCellId(4), c, n4c, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( quad2.getCellId(5), c, n5c, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( quad2.getCellId(6), c, n6c, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( quad2.getCellId(7), c, n7c, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( quad2.getNodeId(0), quad2.getNodeId(4), n04, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( quad2.getNodeId(1), quad2.getNodeId(4), n14, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( quad2.getNodeId(1), quad2.getNodeId(5), n15, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( quad2.getNodeId(2), quad2.getNodeId(5), n25, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( quad2.getNodeId(2), quad2.getNodeId(6), n26, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( quad2.getNodeId(3), quad2.getNodeId(6), n36, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( quad2.getNodeId(3), quad2.getNodeId(7), n37, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( quad2.getNodeId(0), quad2.getNodeId(7), n07, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( quad2.getNodeId(4), c, n4c, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( quad2.getNodeId(5), c, n5c, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( quad2.getNodeId(6), c, n6c, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( quad2.getNodeId(7), c, n7c, dIter->refinedData, dIter->refinedData );
 		}
 		else if( refinedBody && dIter->originalData->getBindingMode() == kmb::DataBindings::FaceGroup ){
 			// Face Group の更新
@@ -1106,36 +1106,36 @@ kmb::MeshRefiner::refineTetrahedron( kmb::elementIdType elementId, const kmb::El
 		kmb::Element::nullElementId,
 		kmb::Element::nullElementId};
 	kmb::nodeIdType nodeTable[4];
-	kmb::nodeIdType n12 = middleMan->getDividedNode( tetra.getCellId(1), tetra.getCellId(2) );
-	kmb::nodeIdType n02 = middleMan->getDividedNode( tetra.getCellId(0), tetra.getCellId(2) );
-	kmb::nodeIdType n01 = middleMan->getDividedNode( tetra.getCellId(0), tetra.getCellId(1) );
-	kmb::nodeIdType n03 = middleMan->getDividedNode( tetra.getCellId(0), tetra.getCellId(3) );
-	kmb::nodeIdType n13 = middleMan->getDividedNode( tetra.getCellId(1), tetra.getCellId(3) );
-	kmb::nodeIdType n23 = middleMan->getDividedNode( tetra.getCellId(2), tetra.getCellId(3) );
+	kmb::nodeIdType n12 = middleMan->getDividedNode( tetra.getNodeId(1), tetra.getNodeId(2) );
+	kmb::nodeIdType n02 = middleMan->getDividedNode( tetra.getNodeId(0), tetra.getNodeId(2) );
+	kmb::nodeIdType n01 = middleMan->getDividedNode( tetra.getNodeId(0), tetra.getNodeId(1) );
+	kmb::nodeIdType n03 = middleMan->getDividedNode( tetra.getNodeId(0), tetra.getNodeId(3) );
+	kmb::nodeIdType n13 = middleMan->getDividedNode( tetra.getNodeId(1), tetra.getNodeId(3) );
+	kmb::nodeIdType n23 = middleMan->getDividedNode( tetra.getNodeId(2), tetra.getNodeId(3) );
 
 	if( refinedBody ){
-		nodeTable[0] = tetra.getCellId(0);
+		nodeTable[0] = tetra.getNodeId(0);
 		nodeTable[1] = n01;
 		nodeTable[2] = n02;
 		nodeTable[3] = n03;
 		e[0] = refinedBody->addElement( kmb::TETRAHEDRON, nodeTable );
 
 		nodeTable[0] = n01;
-		nodeTable[1] = tetra.getCellId(1);
+		nodeTable[1] = tetra.getNodeId(1);
 		nodeTable[2] = n12;
 		nodeTable[3] = n13;
 		e[1] = refinedBody->addElement( kmb::TETRAHEDRON, nodeTable );
 
 		nodeTable[0] = n02;
 		nodeTable[1] = n12;
-		nodeTable[2] = tetra.getCellId(2);
+		nodeTable[2] = tetra.getNodeId(2);
 		nodeTable[3] = n23;
 		e[2] = refinedBody->addElement( kmb::TETRAHEDRON, nodeTable );
 
 		nodeTable[0] = n03;
 		nodeTable[1] = n13;
 		nodeTable[2] = n23;
-		nodeTable[3] = tetra.getCellId(3);
+		nodeTable[3] = tetra.getNodeId(3);
 		e[3] = refinedBody->addElement( kmb::TETRAHEDRON, nodeTable );
 
 		// 内部の４要素の判定
@@ -1233,22 +1233,22 @@ kmb::MeshRefiner::refineTetrahedron( kmb::elementIdType elementId, const kmb::El
 	std::vector< kmb::MeshRefiner::DataPair >::iterator dIter = dataPairs.begin();
 	while( dIter != dataPairs.end() ){
 		if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeGroup ){
-			nodeGroupUpdate( tetra.getCellId(1), tetra.getCellId(2), n12, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra.getCellId(0), tetra.getCellId(2), n02, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra.getCellId(0), tetra.getCellId(1), n01, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra.getCellId(0), tetra.getCellId(3), n03, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra.getCellId(1), tetra.getCellId(3), n13, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra.getCellId(2), tetra.getCellId(3), n23, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra.getNodeId(1), tetra.getNodeId(2), n12, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra.getNodeId(0), tetra.getNodeId(2), n02, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra.getNodeId(0), tetra.getNodeId(1), n01, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra.getNodeId(0), tetra.getNodeId(3), n03, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra.getNodeId(1), tetra.getNodeId(3), n13, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra.getNodeId(2), tetra.getNodeId(3), n23, dIter->originalData, dIter->refinedData );
 		}
 		else if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeVariable &&
 			dIter->originalData->getValueType() == kmb::PhysicalValue::Integer )
 		{
-			nodeVariableUpdate( tetra.getCellId(1), tetra.getCellId(2), n12, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra.getCellId(0), tetra.getCellId(2), n02, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra.getCellId(0), tetra.getCellId(1), n01, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra.getCellId(0), tetra.getCellId(3), n03, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra.getCellId(1), tetra.getCellId(3), n13, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra.getCellId(2), tetra.getCellId(3), n23, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra.getNodeId(1), tetra.getNodeId(2), n12, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra.getNodeId(0), tetra.getNodeId(2), n02, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra.getNodeId(0), tetra.getNodeId(1), n01, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra.getNodeId(0), tetra.getNodeId(3), n03, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra.getNodeId(1), tetra.getNodeId(3), n13, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra.getNodeId(2), tetra.getNodeId(3), n23, dIter->originalData, dIter->refinedData );
 		}
 		else if( refinedBody && dIter->originalData->getBindingMode() == kmb::DataBindings::FaceGroup ){
 			for(int i=0;i<faceNum;++i){
@@ -1364,38 +1364,38 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 		n79 = middleMan->getDividedNode5( tetra2[7], tetra2[9], tetra2[0], tetra2[2], tetra2[5] );
 		n89 = middleMan->getDividedNode5( tetra2[8], tetra2[9], tetra2[1], tetra2[2], tetra2[4] );
 	}else{
-		n05 = middleMan->getDividedNode( tetra2.getCellId(0), tetra2.getCellId(5) );
-		n06 = middleMan->getDividedNode( tetra2.getCellId(0), tetra2.getCellId(6) );
-		n07 = middleMan->getDividedNode( tetra2.getCellId(0), tetra2.getCellId(7) );
-		n14 = middleMan->getDividedNode( tetra2.getCellId(1), tetra2.getCellId(4) );
-		n16 = middleMan->getDividedNode( tetra2.getCellId(1), tetra2.getCellId(6) );
-		n18 = middleMan->getDividedNode( tetra2.getCellId(1), tetra2.getCellId(8) );
-		n24 = middleMan->getDividedNode( tetra2.getCellId(2), tetra2.getCellId(4) );
-		n25 = middleMan->getDividedNode( tetra2.getCellId(2), tetra2.getCellId(5) );
-		n29 = middleMan->getDividedNode( tetra2.getCellId(2), tetra2.getCellId(9) );
-		n37 = middleMan->getDividedNode( tetra2.getCellId(3), tetra2.getCellId(7) );
-		n38 = middleMan->getDividedNode( tetra2.getCellId(3), tetra2.getCellId(8) );
-		n39 = middleMan->getDividedNode( tetra2.getCellId(3), tetra2.getCellId(9) );
+		n05 = middleMan->getDividedNode( tetra2.getNodeId(0), tetra2.getNodeId(5) );
+		n06 = middleMan->getDividedNode( tetra2.getNodeId(0), tetra2.getNodeId(6) );
+		n07 = middleMan->getDividedNode( tetra2.getNodeId(0), tetra2.getNodeId(7) );
+		n14 = middleMan->getDividedNode( tetra2.getNodeId(1), tetra2.getNodeId(4) );
+		n16 = middleMan->getDividedNode( tetra2.getNodeId(1), tetra2.getNodeId(6) );
+		n18 = middleMan->getDividedNode( tetra2.getNodeId(1), tetra2.getNodeId(8) );
+		n24 = middleMan->getDividedNode( tetra2.getNodeId(2), tetra2.getNodeId(4) );
+		n25 = middleMan->getDividedNode( tetra2.getNodeId(2), tetra2.getNodeId(5) );
+		n29 = middleMan->getDividedNode( tetra2.getNodeId(2), tetra2.getNodeId(9) );
+		n37 = middleMan->getDividedNode( tetra2.getNodeId(3), tetra2.getNodeId(7) );
+		n38 = middleMan->getDividedNode( tetra2.getNodeId(3), tetra2.getNodeId(8) );
+		n39 = middleMan->getDividedNode( tetra2.getNodeId(3), tetra2.getNodeId(9) );
 
-		n45 = middleMan->getDividedNode( tetra2.getCellId(4), tetra2.getCellId(5) );
-		n46 = middleMan->getDividedNode( tetra2.getCellId(4), tetra2.getCellId(6) );
-		n48 = middleMan->getDividedNode( tetra2.getCellId(4), tetra2.getCellId(8) );
-		n49 = middleMan->getDividedNode( tetra2.getCellId(4), tetra2.getCellId(9) );
-		n56 = middleMan->getDividedNode( tetra2.getCellId(5), tetra2.getCellId(6) );
-		n57 = middleMan->getDividedNode( tetra2.getCellId(5), tetra2.getCellId(7) );
-		n59 = middleMan->getDividedNode( tetra2.getCellId(5), tetra2.getCellId(9) );
-		n67 = middleMan->getDividedNode( tetra2.getCellId(6), tetra2.getCellId(7) );
-		n68 = middleMan->getDividedNode( tetra2.getCellId(6), tetra2.getCellId(8) );
-		n78 = middleMan->getDividedNode( tetra2.getCellId(7), tetra2.getCellId(8) );
-		n79 = middleMan->getDividedNode( tetra2.getCellId(7), tetra2.getCellId(9) );
-		n89 = middleMan->getDividedNode( tetra2.getCellId(8), tetra2.getCellId(9) );
+		n45 = middleMan->getDividedNode( tetra2.getNodeId(4), tetra2.getNodeId(5) );
+		n46 = middleMan->getDividedNode( tetra2.getNodeId(4), tetra2.getNodeId(6) );
+		n48 = middleMan->getDividedNode( tetra2.getNodeId(4), tetra2.getNodeId(8) );
+		n49 = middleMan->getDividedNode( tetra2.getNodeId(4), tetra2.getNodeId(9) );
+		n56 = middleMan->getDividedNode( tetra2.getNodeId(5), tetra2.getNodeId(6) );
+		n57 = middleMan->getDividedNode( tetra2.getNodeId(5), tetra2.getNodeId(7) );
+		n59 = middleMan->getDividedNode( tetra2.getNodeId(5), tetra2.getNodeId(9) );
+		n67 = middleMan->getDividedNode( tetra2.getNodeId(6), tetra2.getNodeId(7) );
+		n68 = middleMan->getDividedNode( tetra2.getNodeId(6), tetra2.getNodeId(8) );
+		n78 = middleMan->getDividedNode( tetra2.getNodeId(7), tetra2.getNodeId(8) );
+		n79 = middleMan->getDividedNode( tetra2.getNodeId(7), tetra2.getNodeId(9) );
+		n89 = middleMan->getDividedNode( tetra2.getNodeId(8), tetra2.getNodeId(9) );
 	}
 
 	if( refinedBody ){
-		nodeTable[0] = tetra2.getCellId(0);
-		nodeTable[1] = tetra2.getCellId(6);
-		nodeTable[2] = tetra2.getCellId(5);
-		nodeTable[3] = tetra2.getCellId(7);
+		nodeTable[0] = tetra2.getNodeId(0);
+		nodeTable[1] = tetra2.getNodeId(6);
+		nodeTable[2] = tetra2.getNodeId(5);
+		nodeTable[3] = tetra2.getNodeId(7);
 		nodeTable[4] = n56;
 		nodeTable[5] = n05;
 		nodeTable[6] = n06;
@@ -1404,10 +1404,10 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 		nodeTable[9] = n57;
 		e[0] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
-		nodeTable[0] = tetra2.getCellId(6);
-		nodeTable[1] = tetra2.getCellId(1);
-		nodeTable[2] = tetra2.getCellId(4);
-		nodeTable[3] = tetra2.getCellId(8);
+		nodeTable[0] = tetra2.getNodeId(6);
+		nodeTable[1] = tetra2.getNodeId(1);
+		nodeTable[2] = tetra2.getNodeId(4);
+		nodeTable[3] = tetra2.getNodeId(8);
 		nodeTable[4] = n14;
 		nodeTable[5] = n46;
 		nodeTable[6] = n16;
@@ -1416,10 +1416,10 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 		nodeTable[9] = n48;
 		e[1] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
-		nodeTable[0] = tetra2.getCellId(5);
-		nodeTable[1] = tetra2.getCellId(4);
-		nodeTable[2] = tetra2.getCellId(2);
-		nodeTable[3] = tetra2.getCellId(9);
+		nodeTable[0] = tetra2.getNodeId(5);
+		nodeTable[1] = tetra2.getNodeId(4);
+		nodeTable[2] = tetra2.getNodeId(2);
+		nodeTable[3] = tetra2.getNodeId(9);
 		nodeTable[4] = n24;
 		nodeTable[5] = n25;
 		nodeTable[6] = n45;
@@ -1428,10 +1428,10 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 		nodeTable[9] = n29;
 		e[2] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
-		nodeTable[0] = tetra2.getCellId(7);
-		nodeTable[1] = tetra2.getCellId(8);
-		nodeTable[2] = tetra2.getCellId(9);
-		nodeTable[3] = tetra2.getCellId(3);
+		nodeTable[0] = tetra2.getNodeId(7);
+		nodeTable[1] = tetra2.getNodeId(8);
+		nodeTable[2] = tetra2.getNodeId(9);
+		nodeTable[3] = tetra2.getNodeId(3);
 		nodeTable[4] = n89;
 		nodeTable[5] = n79;
 		nodeTable[6] = n78;
@@ -1452,12 +1452,12 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 		double d6_9 = mesh->getNodes()->distanceSq( tetra2[6], tetra2[9] );
 		if( d4_7 <= d5_8 && d4_7 <= d6_9 ){
 			// 4 -- 7 = 12 -- 03
-			n47 = middleMan->getDividedNode( tetra2.getCellId(4), tetra2.getCellId(7) );
+			n47 = middleMan->getDividedNode( tetra2.getNodeId(4), tetra2.getNodeId(7) );
 
-			nodeTable[0] = tetra2.getCellId(7); // 03
-			nodeTable[1] = tetra2.getCellId(4); // 12
-			nodeTable[2] = tetra2.getCellId(9); // 23
-			nodeTable[3] = tetra2.getCellId(8); // 13
+			nodeTable[0] = tetra2.getNodeId(7); // 03
+			nodeTable[1] = tetra2.getNodeId(4); // 12
+			nodeTable[2] = tetra2.getNodeId(9); // 23
+			nodeTable[3] = tetra2.getNodeId(8); // 13
 			nodeTable[4] = n49;
 			nodeTable[5] = n79;
 			nodeTable[6] = n47;
@@ -1466,10 +1466,10 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 			nodeTable[9] = n89;
 			ef[0] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
-			nodeTable[0] = tetra2.getCellId(4); // 12
-			nodeTable[1] = tetra2.getCellId(7); // 03
-			nodeTable[2] = tetra2.getCellId(9); // 23
-			nodeTable[3] = tetra2.getCellId(5); // 02
+			nodeTable[0] = tetra2.getNodeId(4); // 12
+			nodeTable[1] = tetra2.getNodeId(7); // 03
+			nodeTable[2] = tetra2.getNodeId(9); // 23
+			nodeTable[3] = tetra2.getNodeId(5); // 02
 			nodeTable[4] = n79;
 			nodeTable[5] = n49;
 			nodeTable[6] = n47;
@@ -1478,10 +1478,10 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 			nodeTable[9] = n59;
 			ef[1] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
-			nodeTable[0] = tetra2.getCellId(4); // 12
-			nodeTable[1] = tetra2.getCellId(7); // 03
-			nodeTable[2] = tetra2.getCellId(6); // 01
-			nodeTable[3] = tetra2.getCellId(8); // 13
+			nodeTable[0] = tetra2.getNodeId(4); // 12
+			nodeTable[1] = tetra2.getNodeId(7); // 03
+			nodeTable[2] = tetra2.getNodeId(6); // 01
+			nodeTable[3] = tetra2.getNodeId(8); // 13
 			nodeTable[4] = n67;
 			nodeTable[5] = n46;
 			nodeTable[6] = n47;
@@ -1490,10 +1490,10 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 			nodeTable[9] = n68;
 			ef[2] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
-			nodeTable[0] = tetra2.getCellId(7); // 03
-			nodeTable[1] = tetra2.getCellId(4); // 12
-			nodeTable[2] = tetra2.getCellId(6); // 01
-			nodeTable[3] = tetra2.getCellId(5); // 02
+			nodeTable[0] = tetra2.getNodeId(7); // 03
+			nodeTable[1] = tetra2.getNodeId(4); // 12
+			nodeTable[2] = tetra2.getNodeId(6); // 01
+			nodeTable[3] = tetra2.getNodeId(5); // 02
 			nodeTable[4] = n46;
 			nodeTable[5] = n67;
 			nodeTable[6] = n47;
@@ -1504,12 +1504,12 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 
 		}else if( d5_8 <= d4_7 && d5_8 <= d6_9 ){
 			// 5 -- 8 == 02 -- 13
-			n58 = middleMan->getDividedNode( tetra2.getCellId(5), tetra2.getCellId(8) );
+			n58 = middleMan->getDividedNode( tetra2.getNodeId(5), tetra2.getNodeId(8) );
 
-			nodeTable[0] = tetra2.getCellId(5); // 02
-			nodeTable[1] = tetra2.getCellId(8); // 13
-			nodeTable[2] = tetra2.getCellId(4); // 12
-			nodeTable[3] = tetra2.getCellId(9); // 23
+			nodeTable[0] = tetra2.getNodeId(5); // 02
+			nodeTable[1] = tetra2.getNodeId(8); // 13
+			nodeTable[2] = tetra2.getNodeId(4); // 12
+			nodeTable[3] = tetra2.getNodeId(9); // 23
 			nodeTable[4] = n48;
 			nodeTable[5] = n45;
 			nodeTable[6] = n58;
@@ -1518,10 +1518,10 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 			nodeTable[9] = n49;
 			ef[0] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
-			nodeTable[0] = tetra2.getCellId(8); // 13
-			nodeTable[1] = tetra2.getCellId(5); // 02
-			nodeTable[2] = tetra2.getCellId(7); // 03
-			nodeTable[3] = tetra2.getCellId(9); // 23
+			nodeTable[0] = tetra2.getNodeId(8); // 13
+			nodeTable[1] = tetra2.getNodeId(5); // 02
+			nodeTable[2] = tetra2.getNodeId(7); // 03
+			nodeTable[3] = tetra2.getNodeId(9); // 23
 			nodeTable[4] = n57;
 			nodeTable[5] = n78;
 			nodeTable[6] = n58;
@@ -1530,10 +1530,10 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 			nodeTable[9] = n79;
 			ef[1] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
-			nodeTable[0] = tetra2.getCellId(5); // 02
-			nodeTable[1] = tetra2.getCellId(8); // 13
-			nodeTable[2] = tetra2.getCellId(7); // 03
-			nodeTable[3] = tetra2.getCellId(6); // 01
+			nodeTable[0] = tetra2.getNodeId(5); // 02
+			nodeTable[1] = tetra2.getNodeId(8); // 13
+			nodeTable[2] = tetra2.getNodeId(7); // 03
+			nodeTable[3] = tetra2.getNodeId(6); // 01
 			nodeTable[4] = n78;
 			nodeTable[5] = n57;
 			nodeTable[6] = n58;
@@ -1542,10 +1542,10 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 			nodeTable[9] = n67;
 			ef[2] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
-			nodeTable[0] = tetra2.getCellId(8); // 13
-			nodeTable[1] = tetra2.getCellId(5); // 02
-			nodeTable[2] = tetra2.getCellId(4); // 12
-			nodeTable[3] = tetra2.getCellId(6); // 01
+			nodeTable[0] = tetra2.getNodeId(8); // 13
+			nodeTable[1] = tetra2.getNodeId(5); // 02
+			nodeTable[2] = tetra2.getNodeId(4); // 12
+			nodeTable[3] = tetra2.getNodeId(6); // 01
 			nodeTable[4] = n45;
 			nodeTable[5] = n48;
 			nodeTable[6] = n58;
@@ -1556,12 +1556,12 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 
 		}else{
 			// 6 -- 9 == 01 -- 23
-			n69 = middleMan->getDividedNode( tetra2.getCellId(6), tetra2.getCellId(9) );
+			n69 = middleMan->getDividedNode( tetra2.getNodeId(6), tetra2.getNodeId(9) );
 
-			nodeTable[0] = tetra2.getCellId(6); // 01
-			nodeTable[1] = tetra2.getCellId(9); // 23
-			nodeTable[2] = tetra2.getCellId(8); // 13
-			nodeTable[3] = tetra2.getCellId(4); // 12
+			nodeTable[0] = tetra2.getNodeId(6); // 01
+			nodeTable[1] = tetra2.getNodeId(9); // 23
+			nodeTable[2] = tetra2.getNodeId(8); // 13
+			nodeTable[3] = tetra2.getNodeId(4); // 12
 			nodeTable[4] = n89;
 			nodeTable[5] = n68;
 			nodeTable[6] = n69;
@@ -1570,10 +1570,10 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 			nodeTable[9] = n48;
 			ef[0] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
-			nodeTable[0] = tetra2.getCellId(6); // 01
-			nodeTable[1] = tetra2.getCellId(9); // 23
-			nodeTable[2] = tetra2.getCellId(5); // 02
-			nodeTable[3] = tetra2.getCellId(7); // 03
+			nodeTable[0] = tetra2.getNodeId(6); // 01
+			nodeTable[1] = tetra2.getNodeId(9); // 23
+			nodeTable[2] = tetra2.getNodeId(5); // 02
+			nodeTable[3] = tetra2.getNodeId(7); // 03
 			nodeTable[4] = n59;
 			nodeTable[5] = n56;
 			nodeTable[6] = n69;
@@ -1582,10 +1582,10 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 			nodeTable[9] = n57;
 			ef[1] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
-			nodeTable[0] = tetra2.getCellId(9); // 23
-			nodeTable[1] = tetra2.getCellId(6); // 01
-			nodeTable[2] = tetra2.getCellId(8); // 13
-			nodeTable[3] = tetra2.getCellId(7); // 03
+			nodeTable[0] = tetra2.getNodeId(9); // 23
+			nodeTable[1] = tetra2.getNodeId(6); // 01
+			nodeTable[2] = tetra2.getNodeId(8); // 13
+			nodeTable[3] = tetra2.getNodeId(7); // 03
 			nodeTable[4] = n68;
 			nodeTable[5] = n89;
 			nodeTable[6] = n69;
@@ -1594,10 +1594,10 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 			nodeTable[9] = n78;
 			ef[2] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
-			nodeTable[0] = tetra2.getCellId(9); // 23
-			nodeTable[1] = tetra2.getCellId(6); // 01
-			nodeTable[2] = tetra2.getCellId(5); // 02
-			nodeTable[3] = tetra2.getCellId(4); // 12
+			nodeTable[0] = tetra2.getNodeId(9); // 23
+			nodeTable[1] = tetra2.getNodeId(6); // 01
+			nodeTable[2] = tetra2.getNodeId(5); // 02
+			nodeTable[3] = tetra2.getNodeId(4); // 12
 			nodeTable[4] = n56;
 			nodeTable[5] = n59;
 			nodeTable[6] = n69;
@@ -1613,68 +1613,68 @@ kmb::MeshRefiner::refineTetrahedron2( kmb::elementIdType elementId, const kmb::E
 	std::vector< kmb::MeshRefiner::DataPair >::iterator dIter = dataPairs.begin();
 	while( dIter != dataPairs.end() ){
 		if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeGroup ){
-			nodeGroupUpdate( tetra2.getCellId(0), tetra2.getCellId(5), n05, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(0), tetra2.getCellId(6), n06, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(0), tetra2.getCellId(7), n07, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(1), tetra2.getCellId(4), n14, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(1), tetra2.getCellId(6), n16, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(1), tetra2.getCellId(8), n18, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(2), tetra2.getCellId(4), n24, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(2), tetra2.getCellId(5), n25, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(2), tetra2.getCellId(9), n29, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(3), tetra2.getCellId(7), n37, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(3), tetra2.getCellId(8), n38, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(3), tetra2.getCellId(9), n39, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(0), tetra2.getNodeId(5), n05, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(0), tetra2.getNodeId(6), n06, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(0), tetra2.getNodeId(7), n07, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(1), tetra2.getNodeId(4), n14, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(1), tetra2.getNodeId(6), n16, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(1), tetra2.getNodeId(8), n18, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(2), tetra2.getNodeId(4), n24, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(2), tetra2.getNodeId(5), n25, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(2), tetra2.getNodeId(9), n29, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(3), tetra2.getNodeId(7), n37, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(3), tetra2.getNodeId(8), n38, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(3), tetra2.getNodeId(9), n39, dIter->originalData, dIter->refinedData );
 
-			nodeGroupUpdate( tetra2.getCellId(4), tetra2.getCellId(5), n45, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(4), tetra2.getCellId(6), n46, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(4), tetra2.getCellId(8), n48, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(4), tetra2.getCellId(9), n49, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(5), tetra2.getCellId(6), n56, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(5), tetra2.getCellId(7), n57, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(5), tetra2.getCellId(9), n59, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(6), tetra2.getCellId(7), n67, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(6), tetra2.getCellId(8), n68, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(7), tetra2.getCellId(8), n78, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(7), tetra2.getCellId(9), n79, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(8), tetra2.getCellId(9), n89, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(4), tetra2.getNodeId(5), n45, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(4), tetra2.getNodeId(6), n46, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(4), tetra2.getNodeId(8), n48, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(4), tetra2.getNodeId(9), n49, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(5), tetra2.getNodeId(6), n56, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(5), tetra2.getNodeId(7), n57, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(5), tetra2.getNodeId(9), n59, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(6), tetra2.getNodeId(7), n67, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(6), tetra2.getNodeId(8), n68, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(7), tetra2.getNodeId(8), n78, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(7), tetra2.getNodeId(9), n79, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(8), tetra2.getNodeId(9), n89, dIter->originalData, dIter->refinedData );
 			// どれか一つだけ有効
-			nodeGroupUpdate( tetra2.getCellId(4), tetra2.getCellId(7), n47, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(5), tetra2.getCellId(8), n58, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( tetra2.getCellId(6), tetra2.getCellId(9), n69, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(4), tetra2.getNodeId(7), n47, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(5), tetra2.getNodeId(8), n58, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( tetra2.getNodeId(6), tetra2.getNodeId(9), n69, dIter->originalData, dIter->refinedData );
 		}
 		else if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeVariable &&
 			dIter->originalData->getValueType() == kmb::PhysicalValue::Integer )
 		{
-			nodeVariableUpdate( tetra2.getCellId(0), tetra2.getCellId(5), n05, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(0), tetra2.getCellId(6), n06, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(0), tetra2.getCellId(7), n07, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(1), tetra2.getCellId(4), n14, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(1), tetra2.getCellId(6), n16, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(1), tetra2.getCellId(8), n18, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(2), tetra2.getCellId(4), n24, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(2), tetra2.getCellId(5), n25, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(2), tetra2.getCellId(9), n29, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(3), tetra2.getCellId(7), n37, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(3), tetra2.getCellId(8), n38, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(3), tetra2.getCellId(9), n39, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(0), tetra2.getNodeId(5), n05, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(0), tetra2.getNodeId(6), n06, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(0), tetra2.getNodeId(7), n07, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(1), tetra2.getNodeId(4), n14, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(1), tetra2.getNodeId(6), n16, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(1), tetra2.getNodeId(8), n18, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(2), tetra2.getNodeId(4), n24, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(2), tetra2.getNodeId(5), n25, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(2), tetra2.getNodeId(9), n29, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(3), tetra2.getNodeId(7), n37, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(3), tetra2.getNodeId(8), n38, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(3), tetra2.getNodeId(9), n39, dIter->originalData, dIter->refinedData );
 
-			nodeVariableUpdate( tetra2.getCellId(4), tetra2.getCellId(5), n45, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(4), tetra2.getCellId(6), n46, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(4), tetra2.getCellId(8), n48, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(4), tetra2.getCellId(9), n49, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(5), tetra2.getCellId(6), n56, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(5), tetra2.getCellId(7), n57, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(5), tetra2.getCellId(9), n59, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(6), tetra2.getCellId(7), n67, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(6), tetra2.getCellId(8), n68, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(7), tetra2.getCellId(8), n78, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(7), tetra2.getCellId(9), n79, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(8), tetra2.getCellId(9), n89, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(4), tetra2.getNodeId(5), n45, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(4), tetra2.getNodeId(6), n46, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(4), tetra2.getNodeId(8), n48, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(4), tetra2.getNodeId(9), n49, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(5), tetra2.getNodeId(6), n56, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(5), tetra2.getNodeId(7), n57, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(5), tetra2.getNodeId(9), n59, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(6), tetra2.getNodeId(7), n67, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(6), tetra2.getNodeId(8), n68, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(7), tetra2.getNodeId(8), n78, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(7), tetra2.getNodeId(9), n79, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(8), tetra2.getNodeId(9), n89, dIter->originalData, dIter->refinedData );
 			// どれか一つだけ有効
-			nodeVariableUpdate( tetra2.getCellId(4), tetra2.getCellId(7), n47, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(5), tetra2.getCellId(8), n58, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( tetra2.getCellId(6), tetra2.getCellId(9), n69, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(4), tetra2.getNodeId(7), n47, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(5), tetra2.getNodeId(8), n58, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( tetra2.getNodeId(6), tetra2.getNodeId(9), n69, dIter->originalData, dIter->refinedData );
 		}
 		else if( refinedBody && dIter->originalData->getBindingMode() == kmb::DataBindings::FaceGroup ){
 			for(int i=0;i<faceNum;++i){
@@ -1739,7 +1739,7 @@ kmb::MeshRefiner::refineHexahedron( kmb::elementIdType elementId, const kmb::Ele
 	// 12 = kmb::Element::getEdgeCount( kmb::HEXAHEDRON )
 	kmb::nodeIdType ne[12];
 	for(int i=0;i<12;++i){
-		ne[i] = middleMan->getDividedNode( hexa.getEdgeCellId(i,0), hexa.getEdgeCellId(i,1) );
+		ne[i] = middleMan->getDividedNode( hexa.getEdgeNodeId(i,0), hexa.getEdgeNodeId(i,1) );
 	}
 	// ne[0] = n01
 	// ne[1] = n12
@@ -1763,7 +1763,7 @@ kmb::MeshRefiner::refineHexahedron( kmb::elementIdType elementId, const kmb::Ele
 
 
 	if( refinedBody ){
-		nodeTable[0] = hexa.getCellId(0);
+		nodeTable[0] = hexa.getNodeId(0);
 		nodeTable[1] = ne[0];
 		nodeTable[2] = nf0;
 		nodeTable[3] = ne[3];
@@ -1774,7 +1774,7 @@ kmb::MeshRefiner::refineHexahedron( kmb::elementIdType elementId, const kmb::Ele
 		e[0] = refinedBody->addElement( kmb::HEXAHEDRON, nodeTable );
 
 		nodeTable[0] = ne[0];
-		nodeTable[1] = hexa.getCellId(1);
+		nodeTable[1] = hexa.getNodeId(1);
 		nodeTable[2] = ne[1];
 		nodeTable[3] = nf0;
 		nodeTable[4] = nf2;
@@ -1785,7 +1785,7 @@ kmb::MeshRefiner::refineHexahedron( kmb::elementIdType elementId, const kmb::Ele
 
 		nodeTable[0] = nf0;
 		nodeTable[1] = ne[1];
-		nodeTable[2] = hexa.getCellId(2);
+		nodeTable[2] = hexa.getNodeId(2);
 		nodeTable[3] = ne[2];
 		nodeTable[4] = c;
 		nodeTable[5] = nf3;
@@ -1796,7 +1796,7 @@ kmb::MeshRefiner::refineHexahedron( kmb::elementIdType elementId, const kmb::Ele
 		nodeTable[0] = ne[3];
 		nodeTable[1] = nf0;
 		nodeTable[2] = ne[2];
-		nodeTable[3] = hexa.getCellId(3);
+		nodeTable[3] = hexa.getNodeId(3);
 		nodeTable[4] = nf5;
 		nodeTable[5] = c;
 		nodeTable[6] = nf4;
@@ -1807,7 +1807,7 @@ kmb::MeshRefiner::refineHexahedron( kmb::elementIdType elementId, const kmb::Ele
 		nodeTable[1] = nf2;
 		nodeTable[2] = c;
 		nodeTable[3] = nf5;
-		nodeTable[4] = hexa.getCellId(4);
+		nodeTable[4] = hexa.getNodeId(4);
 		nodeTable[5] = ne[4];
 		nodeTable[6] = nf1;
 		nodeTable[7] = ne[7];
@@ -1818,7 +1818,7 @@ kmb::MeshRefiner::refineHexahedron( kmb::elementIdType elementId, const kmb::Ele
 		nodeTable[2] = nf3;
 		nodeTable[3] = c;
 		nodeTable[4] = ne[4];
-		nodeTable[5] = hexa.getCellId(5);
+		nodeTable[5] = hexa.getNodeId(5);
 		nodeTable[6] = ne[5];
 		nodeTable[7] = nf1;
 		e[5] = refinedBody->addElement( kmb::HEXAHEDRON, nodeTable );
@@ -1829,7 +1829,7 @@ kmb::MeshRefiner::refineHexahedron( kmb::elementIdType elementId, const kmb::Ele
 		nodeTable[3] = nf4;
 		nodeTable[4] = nf1;
 		nodeTable[5] = ne[5];
-		nodeTable[6] = hexa.getCellId(6);
+		nodeTable[6] = hexa.getNodeId(6);
 		nodeTable[7] = ne[6];
 		e[6] = refinedBody->addElement( kmb::HEXAHEDRON, nodeTable );
 
@@ -1840,7 +1840,7 @@ kmb::MeshRefiner::refineHexahedron( kmb::elementIdType elementId, const kmb::Ele
 		nodeTable[4] = ne[7];
 		nodeTable[5] = nf1;
 		nodeTable[6] = ne[6];
-		nodeTable[7] = hexa.getCellId(7);
+		nodeTable[7] = hexa.getNodeId(7);
 		e[7] = refinedBody->addElement( kmb::HEXAHEDRON, nodeTable );
 	}
 	const int faceNum = kmb::Element::getBoundaryCount( kmb::HEXAHEDRON );
@@ -1855,7 +1855,7 @@ kmb::MeshRefiner::refineHexahedron( kmb::elementIdType elementId, const kmb::Ele
 			nodeGroupUpdate( hexa, 4, nf4, dIter->originalData, dIter->refinedData );
 			nodeGroupUpdate( hexa, 5, nf5, dIter->originalData, dIter->refinedData );
 			for(int i=0;i<12;++i){
-				nodeGroupUpdate( hexa.getEdgeCellId(i,0), hexa.getEdgeCellId(i,1), ne[i], dIter->originalData, dIter->refinedData );
+				nodeGroupUpdate( hexa.getEdgeNodeId(i,0), hexa.getEdgeNodeId(i,1), ne[i], dIter->originalData, dIter->refinedData );
 			}
 			nodeGroupUpdate( hexa, c, dIter->originalData, dIter->refinedData );
 		}
@@ -1869,7 +1869,7 @@ kmb::MeshRefiner::refineHexahedron( kmb::elementIdType elementId, const kmb::Ele
 			nodeVariableUpdate( hexa, 4, nf4, dIter->originalData, dIter->refinedData );
 			nodeVariableUpdate( hexa, 5, nf5, dIter->originalData, dIter->refinedData );
 			for(int i=0;i<12;++i){
-				nodeVariableUpdate( hexa.getEdgeCellId(i,0), hexa.getEdgeCellId(i,1), ne[i], dIter->originalData, dIter->refinedData );
+				nodeVariableUpdate( hexa.getEdgeNodeId(i,0), hexa.getEdgeNodeId(i,1), ne[i], dIter->originalData, dIter->refinedData );
 			}
 			nodeVariableUpdate( hexa, c, dIter->originalData, dIter->refinedData );
 		}
@@ -2005,8 +2005,8 @@ kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, const kmb::El
 
 	if( secondFitting ){
 		for(int i=0;i<12;++i){
-			ne0[i] = middleMan->getDividedNode3( hexa2.getEdgeCellId(i,0), hexa2.getEdgeCellId(i,2), hexa2.getEdgeCellId(i,1) );
-			ne1[i] = middleMan->getDividedNode3( hexa2.getEdgeCellId(i,1), hexa2.getEdgeCellId(i,2), hexa2.getEdgeCellId(i,0) );
+			ne0[i] = middleMan->getDividedNode3( hexa2.getEdgeNodeId(i,0), hexa2.getEdgeNodeId(i,2), hexa2.getEdgeNodeId(i,1) );
+			ne1[i] = middleMan->getDividedNode3( hexa2.getEdgeNodeId(i,1), hexa2.getEdgeNodeId(i,2), hexa2.getEdgeNodeId(i,0) );
 		}
 		nf0 = middleMan->getCenterNode2( hexa2, 0, elementId );
 		nf1 = middleMan->getCenterNode2( hexa2, 1, elementId );
@@ -2053,8 +2053,8 @@ kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, const kmb::El
 		nf5_c  = middleMan->getDividedNode3( nf5, c, nf3 );
 	}else{
 		for(int i=0;i<12;++i){
-			ne0[i] = middleMan->getDividedNode( hexa2.getEdgeCellId(i,0), hexa2.getEdgeCellId(i,2) );
-			ne1[i] = middleMan->getDividedNode( hexa2.getEdgeCellId(i,2), hexa2.getEdgeCellId(i,1) );
+			ne0[i] = middleMan->getDividedNode( hexa2.getEdgeNodeId(i,0), hexa2.getEdgeNodeId(i,2) );
+			ne1[i] = middleMan->getDividedNode( hexa2.getEdgeNodeId(i,2), hexa2.getEdgeNodeId(i,1) );
 		}
 		nf0 = middleMan->getCenterNode( hexa2, 0, elementId );
 		nf1 = middleMan->getCenterNode( hexa2, 1, elementId );
@@ -2102,11 +2102,11 @@ kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, const kmb::El
 	}
 
 	if( refinedBody ){
-		nodeTable[0] = hexa2.getCellId(0);
-		nodeTable[1] = hexa2.getCellId(8);
+		nodeTable[0] = hexa2.getNodeId(0);
+		nodeTable[1] = hexa2.getNodeId(8);
 		nodeTable[2] = nf0;
-		nodeTable[3] = hexa2.getCellId(11);
-		nodeTable[4] = hexa2.getCellId(16);
+		nodeTable[3] = hexa2.getNodeId(11);
+		nodeTable[4] = hexa2.getNodeId(16);
 		nodeTable[5] = nf2;
 		nodeTable[6] = c;
 		nodeTable[7] = nf5;
@@ -2128,12 +2128,12 @@ kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, const kmb::El
 
 		e[0] = refinedBody->addElement( kmb::HEXAHEDRON2, nodeTable );
 
-		nodeTable[0] = hexa2.getCellId(8);
-		nodeTable[1] = hexa2.getCellId(1);
-		nodeTable[2] = hexa2.getCellId(9);
+		nodeTable[0] = hexa2.getNodeId(8);
+		nodeTable[1] = hexa2.getNodeId(1);
+		nodeTable[2] = hexa2.getNodeId(9);
 		nodeTable[3] = nf0;
 		nodeTable[4] = nf2;
-		nodeTable[5] = hexa2.getCellId(17);
+		nodeTable[5] = hexa2.getNodeId(17);
 		nodeTable[6] = nf3;
 		nodeTable[7] = c;
 
@@ -2155,12 +2155,12 @@ kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, const kmb::El
 		e[1] = refinedBody->addElement( kmb::HEXAHEDRON2, nodeTable );
 
 		nodeTable[0] = nf0;
-		nodeTable[1] = hexa2.getCellId(9);
-		nodeTable[2] = hexa2.getCellId(2);
-		nodeTable[3] = hexa2.getCellId(10);
+		nodeTable[1] = hexa2.getNodeId(9);
+		nodeTable[2] = hexa2.getNodeId(2);
+		nodeTable[3] = hexa2.getNodeId(10);
 		nodeTable[4] = c;
 		nodeTable[5] = nf3;
-		nodeTable[6] = hexa2.getCellId(18);
+		nodeTable[6] = hexa2.getNodeId(18);
 		nodeTable[7] = nf4;
 
 		nodeTable[8] = nf0_9;
@@ -2180,14 +2180,14 @@ kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, const kmb::El
 
 		e[2] = refinedBody->addElement( kmb::HEXAHEDRON2, nodeTable );
 
-		nodeTable[0] = hexa2.getCellId(11);
+		nodeTable[0] = hexa2.getNodeId(11);
 		nodeTable[1] = nf0;
-		nodeTable[2] = hexa2.getCellId(10);;
-		nodeTable[3] = hexa2.getCellId(3);
+		nodeTable[2] = hexa2.getNodeId(10);;
+		nodeTable[3] = hexa2.getNodeId(3);
 		nodeTable[4] = nf5;
 		nodeTable[5] = c;
 		nodeTable[6] = nf4;
-		nodeTable[7] = hexa2.getCellId(19);;
+		nodeTable[7] = hexa2.getNodeId(19);;
 
 		nodeTable[8] = nf0_11;
 		nodeTable[9] = nf0_10;
@@ -2206,14 +2206,14 @@ kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, const kmb::El
 
 		e[3] = refinedBody->addElement( kmb::HEXAHEDRON2, nodeTable );
 
-		nodeTable[0] = hexa2.getCellId(16);
+		nodeTable[0] = hexa2.getNodeId(16);
 		nodeTable[1] = nf2;
 		nodeTable[2] = c;
 		nodeTable[3] = nf5;
-		nodeTable[4] = hexa2.getCellId(4);
-		nodeTable[5] = hexa2.getCellId(12);
+		nodeTable[4] = hexa2.getNodeId(4);
+		nodeTable[5] = hexa2.getNodeId(12);
 		nodeTable[6] = nf1;
-		nodeTable[7] = hexa2.getCellId(15);
+		nodeTable[7] = hexa2.getNodeId(15);
 
 		nodeTable[8] = nf2_16;
 		nodeTable[9] = nf2_c;
@@ -2233,12 +2233,12 @@ kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, const kmb::El
 		e[4] = refinedBody->addElement( kmb::HEXAHEDRON2, nodeTable );
 
 		nodeTable[0] = nf2;
-		nodeTable[1] = hexa2.getCellId(17);
+		nodeTable[1] = hexa2.getNodeId(17);
 		nodeTable[2] = nf3;
 		nodeTable[3] = c;
-		nodeTable[4] = hexa2.getCellId(12);
-		nodeTable[5] = hexa2.getCellId(5);
-		nodeTable[6] = hexa2.getCellId(13);
+		nodeTable[4] = hexa2.getNodeId(12);
+		nodeTable[5] = hexa2.getNodeId(5);
+		nodeTable[6] = hexa2.getNodeId(13);
 		nodeTable[7] = nf1;
 
 		nodeTable[8] = nf2_17;
@@ -2260,12 +2260,12 @@ kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, const kmb::El
 
 		nodeTable[0] = c;
 		nodeTable[1] = nf3;
-		nodeTable[2] = hexa2.getCellId(18);
+		nodeTable[2] = hexa2.getNodeId(18);
 		nodeTable[3] = nf4;
 		nodeTable[4] = nf1;
-		nodeTable[5] = hexa2.getCellId(13);
-		nodeTable[6] = hexa2.getCellId(6);
-		nodeTable[7] = hexa2.getCellId(14);
+		nodeTable[5] = hexa2.getNodeId(13);
+		nodeTable[6] = hexa2.getNodeId(6);
+		nodeTable[7] = hexa2.getNodeId(14);
 
 		nodeTable[8] = nf3_c;
 		nodeTable[9] = nf3_18;
@@ -2287,11 +2287,11 @@ kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, const kmb::El
 		nodeTable[0] = nf5;
 		nodeTable[1] = c;
 		nodeTable[2] = nf4;
-		nodeTable[3] = hexa2.getCellId(19);
-		nodeTable[4] = hexa2.getCellId(15);
+		nodeTable[3] = hexa2.getNodeId(19);
+		nodeTable[4] = hexa2.getNodeId(15);
 		nodeTable[5] = nf1;
-		nodeTable[6] = hexa2.getCellId(14);
-		nodeTable[7] = hexa2.getCellId(7);
+		nodeTable[6] = hexa2.getNodeId(14);
+		nodeTable[7] = hexa2.getNodeId(7);
 
 		nodeTable[8] = nf5_c;
 		nodeTable[9] = nf4_c;
@@ -2316,8 +2316,8 @@ kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, const kmb::El
 	while( dIter != dataPairs.end() ){
 		if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeGroup ){
 			for(int i=0;i<12;++i){
-				nodeGroupUpdate( hexa2.getEdgeCellId(i,0), hexa2.getEdgeCellId(i,2), ne0[i], dIter->originalData, dIter->refinedData );
-				nodeGroupUpdate( hexa2.getEdgeCellId(i,2), hexa2.getEdgeCellId(i,1), ne1[i], dIter->originalData, dIter->refinedData );
+				nodeGroupUpdate( hexa2.getEdgeNodeId(i,0), hexa2.getEdgeNodeId(i,2), ne0[i], dIter->originalData, dIter->refinedData );
+				nodeGroupUpdate( hexa2.getEdgeNodeId(i,2), hexa2.getEdgeNodeId(i,1), ne1[i], dIter->originalData, dIter->refinedData );
 			}
 			nodeGroupUpdate( hexa2, 0, nf0, dIter->originalData, dIter->refinedData );
 			nodeGroupUpdate( hexa2, 1, nf1, dIter->originalData, dIter->refinedData );
@@ -2327,48 +2327,48 @@ kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, const kmb::El
 			nodeGroupUpdate( hexa2, 5, nf5, dIter->originalData, dIter->refinedData );
 			nodeGroupUpdate( hexa2, c, dIter->originalData, dIter->refinedData );
 
-			nodeGroupUpdate( nf0, hexa2.getCellId(8),  nf0_8,  dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf0, hexa2.getCellId(9),  nf0_9,  dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf0, hexa2.getCellId(10), nf0_10, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf0, hexa2.getCellId(11), nf0_11, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf0, hexa2.getNodeId(8),  nf0_8,  dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf0, hexa2.getNodeId(9),  nf0_9,  dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf0, hexa2.getNodeId(10), nf0_10, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf0, hexa2.getNodeId(11), nf0_11, dIter->refinedData, dIter->refinedData );
 			nodeGroupUpdate( nf0, c, nf0_c, dIter->refinedData, dIter->refinedData );
 
-			nodeGroupUpdate( nf1, hexa2.getCellId(12), nf1_12, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf1, hexa2.getCellId(13), nf1_13, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf1, hexa2.getCellId(14), nf1_14, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf1, hexa2.getCellId(15), nf1_15, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf1, hexa2.getNodeId(12), nf1_12, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf1, hexa2.getNodeId(13), nf1_13, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf1, hexa2.getNodeId(14), nf1_14, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf1, hexa2.getNodeId(15), nf1_15, dIter->refinedData, dIter->refinedData );
 			nodeGroupUpdate( nf1, c, nf1_c, dIter->refinedData, dIter->refinedData );
 
-			nodeGroupUpdate( nf2, hexa2.getCellId(8),  nf2_8,  dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf2, hexa2.getCellId(12), nf2_12, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf2, hexa2.getCellId(16), nf2_16, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf2, hexa2.getCellId(17), nf2_17, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf2, hexa2.getNodeId(8),  nf2_8,  dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf2, hexa2.getNodeId(12), nf2_12, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf2, hexa2.getNodeId(16), nf2_16, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf2, hexa2.getNodeId(17), nf2_17, dIter->refinedData, dIter->refinedData );
 			nodeGroupUpdate( nf2, c, nf2_c, dIter->refinedData, dIter->refinedData );
 
-			nodeGroupUpdate( nf3, hexa2.getCellId(9),  nf3_9,  dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf3, hexa2.getCellId(13), nf3_13, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf3, hexa2.getCellId(17), nf3_17, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf3, hexa2.getCellId(18), nf3_18, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf3, hexa2.getNodeId(9),  nf3_9,  dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf3, hexa2.getNodeId(13), nf3_13, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf3, hexa2.getNodeId(17), nf3_17, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf3, hexa2.getNodeId(18), nf3_18, dIter->refinedData, dIter->refinedData );
 			nodeGroupUpdate( nf3, c, nf3_c, dIter->refinedData, dIter->refinedData );
 
-			nodeGroupUpdate( nf4, hexa2.getCellId(10), nf4_10, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf4, hexa2.getCellId(14), nf4_14, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf4, hexa2.getCellId(18), nf4_18, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf4, hexa2.getCellId(19), nf4_19, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf4, hexa2.getNodeId(10), nf4_10, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf4, hexa2.getNodeId(14), nf4_14, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf4, hexa2.getNodeId(18), nf4_18, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf4, hexa2.getNodeId(19), nf4_19, dIter->refinedData, dIter->refinedData );
 			nodeGroupUpdate( nf4, c, nf4_c, dIter->refinedData, dIter->refinedData );
 
-			nodeGroupUpdate( nf5, hexa2.getCellId(11), nf5_11, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf5, hexa2.getCellId(15), nf5_15, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf5, hexa2.getCellId(16), nf5_16, dIter->refinedData, dIter->refinedData );
-			nodeGroupUpdate( nf5, hexa2.getCellId(19), nf5_19, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf5, hexa2.getNodeId(11), nf5_11, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf5, hexa2.getNodeId(15), nf5_15, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf5, hexa2.getNodeId(16), nf5_16, dIter->refinedData, dIter->refinedData );
+			nodeGroupUpdate( nf5, hexa2.getNodeId(19), nf5_19, dIter->refinedData, dIter->refinedData );
 			nodeGroupUpdate( nf5, c, nf5_c, dIter->refinedData, dIter->refinedData );
 		}
 		else if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeVariable &&
 			dIter->originalData->getValueType() == kmb::PhysicalValue::Integer )
 		{
 			for(int i=0;i<12;++i){
-				nodeVariableUpdate( hexa2.getEdgeCellId(i,0), hexa2.getEdgeCellId(i,2), ne0[i], dIter->originalData, dIter->refinedData );
-				nodeVariableUpdate( hexa2.getEdgeCellId(i,0), hexa2.getEdgeCellId(i,1), ne1[i], dIter->originalData, dIter->refinedData );
+				nodeVariableUpdate( hexa2.getEdgeNodeId(i,0), hexa2.getEdgeNodeId(i,2), ne0[i], dIter->originalData, dIter->refinedData );
+				nodeVariableUpdate( hexa2.getEdgeNodeId(i,0), hexa2.getEdgeNodeId(i,1), ne1[i], dIter->originalData, dIter->refinedData );
 			}
 			nodeVariableUpdate( hexa2, 0, nf0, dIter->originalData, dIter->refinedData );
 			nodeVariableUpdate( hexa2, 1, nf1, dIter->originalData, dIter->refinedData );
@@ -2378,40 +2378,40 @@ kmb::MeshRefiner::refineHexahedron2( kmb::elementIdType elementId, const kmb::El
 			nodeVariableUpdate( hexa2, 5, nf5, dIter->originalData, dIter->refinedData );
 			nodeVariableUpdate( hexa2, c, dIter->originalData, dIter->refinedData );
 
-			nodeVariableUpdate( nf0, hexa2.getCellId(8),  nf0_8,  dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf0, hexa2.getCellId(9),  nf0_9,  dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf0, hexa2.getCellId(10), nf0_10, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf0, hexa2.getCellId(11), nf0_11, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf0, hexa2.getNodeId(8),  nf0_8,  dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf0, hexa2.getNodeId(9),  nf0_9,  dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf0, hexa2.getNodeId(10), nf0_10, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf0, hexa2.getNodeId(11), nf0_11, dIter->refinedData, dIter->refinedData );
 			nodeVariableUpdate( nf0, c, nf0_c, dIter->refinedData, dIter->refinedData );
 
-			nodeVariableUpdate( nf1, hexa2.getCellId(12), nf1_12, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf1, hexa2.getCellId(13), nf1_13, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf1, hexa2.getCellId(14), nf1_14, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf1, hexa2.getCellId(15), nf1_15, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf1, hexa2.getNodeId(12), nf1_12, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf1, hexa2.getNodeId(13), nf1_13, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf1, hexa2.getNodeId(14), nf1_14, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf1, hexa2.getNodeId(15), nf1_15, dIter->refinedData, dIter->refinedData );
 			nodeVariableUpdate( nf1, c, nf1_c, dIter->refinedData, dIter->refinedData );
 
-			nodeVariableUpdate( nf2, hexa2.getCellId(8),  nf2_8,  dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf2, hexa2.getCellId(12), nf2_12, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf2, hexa2.getCellId(16), nf2_16, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf2, hexa2.getCellId(17), nf2_17, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf2, hexa2.getNodeId(8),  nf2_8,  dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf2, hexa2.getNodeId(12), nf2_12, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf2, hexa2.getNodeId(16), nf2_16, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf2, hexa2.getNodeId(17), nf2_17, dIter->refinedData, dIter->refinedData );
 			nodeVariableUpdate( nf2, c, nf2_c, dIter->refinedData, dIter->refinedData );
 
-			nodeVariableUpdate( nf3, hexa2.getCellId(9),  nf3_9,  dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf3, hexa2.getCellId(13), nf3_13, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf3, hexa2.getCellId(17), nf3_17, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf3, hexa2.getCellId(18), nf3_18, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf3, hexa2.getNodeId(9),  nf3_9,  dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf3, hexa2.getNodeId(13), nf3_13, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf3, hexa2.getNodeId(17), nf3_17, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf3, hexa2.getNodeId(18), nf3_18, dIter->refinedData, dIter->refinedData );
 			nodeVariableUpdate( nf3, c, nf3_c, dIter->refinedData, dIter->refinedData );
 
-			nodeVariableUpdate( nf4, hexa2.getCellId(10), nf4_10, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf4, hexa2.getCellId(14), nf4_14, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf4, hexa2.getCellId(18), nf4_18, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf4, hexa2.getCellId(19), nf4_19, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf4, hexa2.getNodeId(10), nf4_10, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf4, hexa2.getNodeId(14), nf4_14, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf4, hexa2.getNodeId(18), nf4_18, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf4, hexa2.getNodeId(19), nf4_19, dIter->refinedData, dIter->refinedData );
 			nodeVariableUpdate( nf4, c, nf4_c, dIter->refinedData, dIter->refinedData );
 
-			nodeVariableUpdate( nf5, hexa2.getCellId(11), nf5_11, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf5, hexa2.getCellId(15), nf5_15, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf5, hexa2.getCellId(16), nf5_16, dIter->refinedData, dIter->refinedData );
-			nodeVariableUpdate( nf5, hexa2.getCellId(19), nf5_19, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf5, hexa2.getNodeId(11), nf5_11, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf5, hexa2.getNodeId(15), nf5_15, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf5, hexa2.getNodeId(16), nf5_16, dIter->refinedData, dIter->refinedData );
+			nodeVariableUpdate( nf5, hexa2.getNodeId(19), nf5_19, dIter->refinedData, dIter->refinedData );
 			nodeVariableUpdate( nf5, c, nf5_c, dIter->refinedData, dIter->refinedData );
 		}
 		else if( refinedBody && dIter->originalData->getBindingMode() == kmb::DataBindings::FaceGroup ){
@@ -2486,14 +2486,14 @@ kmb::MeshRefiner::refineWedge( kmb::elementIdType elementId, const kmb::ElementB
 	// 9 = kmb::Element::getEdgeCount( kmb::WEDGE )
 	kmb::nodeIdType ne[9];
 	for(int i=0;i<9;++i){
-		ne[i] = middleMan->getDividedNode( wedge.getEdgeCellId(i,0), wedge.getEdgeCellId(i,1) );
+		ne[i] = middleMan->getDividedNode( wedge.getEdgeNodeId(i,0), wedge.getEdgeNodeId(i,1) );
 	}
 	kmb::nodeIdType nf2 = middleMan->getCenterNode( wedge, 2, elementId );
 	kmb::nodeIdType nf3 = middleMan->getCenterNode( wedge, 3, elementId );
 	kmb::nodeIdType nf4 = middleMan->getCenterNode( wedge, 4, elementId );
 
 	if( refinedBody ){
-		nodeTable[0] = wedge.getCellId(0);
+		nodeTable[0] = wedge.getNodeId(0);
 		nodeTable[1] = ne[2];
 		nodeTable[2] = ne[1];
 		nodeTable[3] = ne[6];
@@ -2502,7 +2502,7 @@ kmb::MeshRefiner::refineWedge( kmb::elementIdType elementId, const kmb::ElementB
 		e[0] = refinedBody->addElement( kmb::WEDGE, nodeTable );
 
 		nodeTable[0] = ne[2];
-		nodeTable[1] = wedge.getCellId(1);
+		nodeTable[1] = wedge.getNodeId(1);
 		nodeTable[2] = ne[0];
 		nodeTable[3] = nf2;
 		nodeTable[4] = ne[7];
@@ -2511,7 +2511,7 @@ kmb::MeshRefiner::refineWedge( kmb::elementIdType elementId, const kmb::ElementB
 
 		nodeTable[0] = ne[1];
 		nodeTable[1] = ne[0];
-		nodeTable[2] = wedge.getCellId(2);
+		nodeTable[2] = wedge.getNodeId(2);
 		nodeTable[3] = nf4;
 		nodeTable[4] = nf3;
 		nodeTable[5] = ne[8];
@@ -2520,7 +2520,7 @@ kmb::MeshRefiner::refineWedge( kmb::elementIdType elementId, const kmb::ElementB
 		nodeTable[0] = ne[6];
 		nodeTable[1] = nf2;
 		nodeTable[2] = nf4;
-		nodeTable[3] = wedge.getCellId(3);
+		nodeTable[3] = wedge.getNodeId(3);
 		nodeTable[4] = ne[5];
 		nodeTable[5] = ne[4];
 		e[3] = refinedBody->addElement( kmb::WEDGE, nodeTable );
@@ -2529,7 +2529,7 @@ kmb::MeshRefiner::refineWedge( kmb::elementIdType elementId, const kmb::ElementB
 		nodeTable[1] = ne[7];
 		nodeTable[2] = nf3;
 		nodeTable[3] = ne[5];
-		nodeTable[4] = wedge.getCellId(4);
+		nodeTable[4] = wedge.getNodeId(4);
 		nodeTable[5] = ne[3];
 		e[4] = refinedBody->addElement( kmb::WEDGE, nodeTable );
 
@@ -2538,7 +2538,7 @@ kmb::MeshRefiner::refineWedge( kmb::elementIdType elementId, const kmb::ElementB
 		nodeTable[2] = ne[8];
 		nodeTable[3] = ne[4];
 		nodeTable[4] = ne[3];
-		nodeTable[5] = wedge.getCellId(5);
+		nodeTable[5] = wedge.getNodeId(5);
 		e[5] = refinedBody->addElement( kmb::WEDGE, nodeTable );
 
 		nodeTable[0] = ne[2];
@@ -2566,7 +2566,7 @@ kmb::MeshRefiner::refineWedge( kmb::elementIdType elementId, const kmb::ElementB
 			nodeGroupUpdate( wedge, 3, nf3, dIter->originalData, dIter->refinedData );
 			nodeGroupUpdate( wedge, 4, nf4, dIter->originalData, dIter->refinedData );
 			for(int i=0;i<9;++i){
-				nodeGroupUpdate( wedge.getEdgeCellId(i,0), wedge.getEdgeCellId(i,1), ne[i], dIter->originalData, dIter->refinedData );
+				nodeGroupUpdate( wedge.getEdgeNodeId(i,0), wedge.getEdgeNodeId(i,1), ne[i], dIter->originalData, dIter->refinedData );
 			}
 		}
 		else if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeVariable &&
@@ -2576,7 +2576,7 @@ kmb::MeshRefiner::refineWedge( kmb::elementIdType elementId, const kmb::ElementB
 			nodeVariableUpdate( wedge, 3, nf3, dIter->originalData, dIter->refinedData );
 			nodeVariableUpdate( wedge, 4, nf4, dIter->originalData, dIter->refinedData );
 			for(int i=0;i<9;++i){
-				nodeVariableUpdate( wedge.getEdgeCellId(i,0), wedge.getEdgeCellId(i,1), ne[i], dIter->originalData, dIter->refinedData );
+				nodeVariableUpdate( wedge.getEdgeNodeId(i,0), wedge.getEdgeNodeId(i,1), ne[i], dIter->originalData, dIter->refinedData );
 			}
 		}
 		else if( refinedBody && dIter->originalData->getBindingMode() == kmb::DataBindings::FaceGroup ){
@@ -2697,8 +2697,8 @@ kmb::MeshRefiner::refineWedge2( kmb::elementIdType elementId, const kmb::Element
 
 	if( secondFitting ){
 		for(int i=0;i<9;++i){
-			ne0[i] = middleMan->getDividedNode3( wedge2.getEdgeCellId(i,0), wedge2.getEdgeCellId(i,2), wedge2.getEdgeCellId(i,1) );
-			ne1[i] = middleMan->getDividedNode3( wedge2.getEdgeCellId(i,1), wedge2.getEdgeCellId(i,2), wedge2.getEdgeCellId(i,0) );
+			ne0[i] = middleMan->getDividedNode3( wedge2.getEdgeNodeId(i,0), wedge2.getEdgeNodeId(i,2), wedge2.getEdgeNodeId(i,1) );
+			ne1[i] = middleMan->getDividedNode3( wedge2.getEdgeNodeId(i,1), wedge2.getEdgeNodeId(i,2), wedge2.getEdgeNodeId(i,0) );
 		}
 		nf2 = middleMan->getCenterNode2( wedge2, 2, elementId );
 		nf3 = middleMan->getCenterNode2( wedge2, 3, elementId );
@@ -2732,8 +2732,8 @@ kmb::MeshRefiner::refineWedge2( kmb::elementIdType elementId, const kmb::Element
 		n10_11 = middleMan->getDividedNode5( wedge2[10], wedge2[11], wedge2[5], wedge2[4], wedge2[9] );
 	}else{
 		for(int i=0;i<9;++i){
-			ne0[i] = middleMan->getDividedNode( wedge2.getEdgeCellId(i,0), wedge2.getEdgeCellId(i,2) );
-			ne1[i] = middleMan->getDividedNode( wedge2.getEdgeCellId(i,2), wedge2.getEdgeCellId(i,1) );
+			ne0[i] = middleMan->getDividedNode( wedge2.getEdgeNodeId(i,0), wedge2.getEdgeNodeId(i,2) );
+			ne1[i] = middleMan->getDividedNode( wedge2.getEdgeNodeId(i,2), wedge2.getEdgeNodeId(i,1) );
 		}
 		nf2 = middleMan->getCenterNode( wedge2, 2, elementId );
 		nf3 = middleMan->getCenterNode( wedge2, 3, elementId );
@@ -2768,10 +2768,10 @@ kmb::MeshRefiner::refineWedge2( kmb::elementIdType elementId, const kmb::Element
 	}
 
 	if( refinedBody ){
-		nodeTable[0] = wedge2.getCellId(0);
-		nodeTable[1] = wedge2.getCellId(8);
-		nodeTable[2] = wedge2.getCellId(7);
-		nodeTable[3] = wedge2.getCellId(12);
+		nodeTable[0] = wedge2.getNodeId(0);
+		nodeTable[1] = wedge2.getNodeId(8);
+		nodeTable[2] = wedge2.getNodeId(7);
+		nodeTable[3] = wedge2.getNodeId(12);
 		nodeTable[4] = nf2;
 		nodeTable[5] = nf4;
 		nodeTable[6] = n7_8;
@@ -2786,11 +2786,11 @@ kmb::MeshRefiner::refineWedge2( kmb::elementIdType elementId, const kmb::Element
 		e[0] = refinedBody->addElement( kmb::WEDGE2, nodeTable );
 
 // => [ n8,  n1,  n6,  nf2, n13, nf3, ne00, n6_8, ne12, nf3_13, nf2_f3, nf2_13, nf2_8, ne07, nf3_6]
-		nodeTable[0] = wedge2.getCellId(8);
-		nodeTable[1] = wedge2.getCellId(1);
-		nodeTable[2] = wedge2.getCellId(6);
+		nodeTable[0] = wedge2.getNodeId(8);
+		nodeTable[1] = wedge2.getNodeId(1);
+		nodeTable[2] = wedge2.getNodeId(6);
 		nodeTable[3] = nf2;
-		nodeTable[4] = wedge2.getCellId(13);
+		nodeTable[4] = wedge2.getNodeId(13);
 		nodeTable[5] = nf3;
 		nodeTable[6] = ne0[0];
 		nodeTable[7] = n6_8;
@@ -2804,12 +2804,12 @@ kmb::MeshRefiner::refineWedge2( kmb::elementIdType elementId, const kmb::Element
 		e[1] = refinedBody->addElement( kmb::WEDGE2, nodeTable );
 
 // => [ n7,  n6,  n2,  nf4, nf3, n14, ne10, ne11, n6_7, nf3_14, nf4_14, nf3_f4, nf4_7, nf3_6, ne08]
-		nodeTable[0] = wedge2.getCellId(7);
-		nodeTable[1] = wedge2.getCellId(6);
-		nodeTable[2] = wedge2.getCellId(2);
+		nodeTable[0] = wedge2.getNodeId(7);
+		nodeTable[1] = wedge2.getNodeId(6);
+		nodeTable[2] = wedge2.getNodeId(2);
 		nodeTable[3] = nf4;
 		nodeTable[4] = nf3;
-		nodeTable[5] = wedge2.getCellId(14);
+		nodeTable[5] = wedge2.getNodeId(14);
 		nodeTable[6] = ne1[0];
 		nodeTable[7] = ne1[1];
 		nodeTable[8] = n6_7;
@@ -2822,12 +2822,12 @@ kmb::MeshRefiner::refineWedge2( kmb::elementIdType elementId, const kmb::Element
 		e[2] = refinedBody->addElement( kmb::WEDGE2, nodeTable );
 
 // => [ n12, nf2, nf4, n3,  n11, n10, nf2_f4, nf4_12, nf2_12, n10_11, ne04, ne05, ne16, nf2_11, nf4_10]
-		nodeTable[0] = wedge2.getCellId(12);
+		nodeTable[0] = wedge2.getNodeId(12);
 		nodeTable[1] = nf2;
 		nodeTable[2] = nf4;
-		nodeTable[3] = wedge2.getCellId(3);
-		nodeTable[4] = wedge2.getCellId(11);
-		nodeTable[5] = wedge2.getCellId(10);
+		nodeTable[3] = wedge2.getNodeId(3);
+		nodeTable[4] = wedge2.getNodeId(11);
+		nodeTable[5] = wedge2.getNodeId(10);
 		nodeTable[6] = nf2_f4;
 		nodeTable[7] = nf4_12;
 		nodeTable[8] = nf2_12;
@@ -2841,11 +2841,11 @@ kmb::MeshRefiner::refineWedge2( kmb::elementIdType elementId, const kmb::Element
 
 // => [ nf2, n13, nf3, n11, n4,  n9,  nf3_13, nf2_f3, nf2_13, ne03, n9_11, ne15, nf2_11, ne17, nf3_9]
 		nodeTable[0] = nf2;
-		nodeTable[1] = wedge2.getCellId(13);
+		nodeTable[1] = wedge2.getNodeId(13);
 		nodeTable[2] = nf3;
-		nodeTable[3] = wedge2.getCellId(11);
-		nodeTable[4] = wedge2.getCellId(4);
-		nodeTable[5] = wedge2.getCellId(9);
+		nodeTable[3] = wedge2.getNodeId(11);
+		nodeTable[4] = wedge2.getNodeId(4);
+		nodeTable[5] = wedge2.getNodeId(9);
 		nodeTable[6] = nf3_13;
 		nodeTable[7] = nf2_f3;
 		nodeTable[8] = nf2_13;
@@ -2860,10 +2860,10 @@ kmb::MeshRefiner::refineWedge2( kmb::elementIdType elementId, const kmb::Element
 // => [ nf4, nf3, n14, n10, n9 , n5,  nf3_14, nf4_14, nf3_f4, ne13, ne14, n9_10, nf4_10, nf3_9, ne18]
 		nodeTable[0] = nf4;
 		nodeTable[1] = nf3;
-		nodeTable[2] = wedge2.getCellId(14);
-		nodeTable[3] = wedge2.getCellId(10);
-		nodeTable[4] = wedge2.getCellId(9);
-		nodeTable[5] = wedge2.getCellId(5);
+		nodeTable[2] = wedge2.getNodeId(14);
+		nodeTable[3] = wedge2.getNodeId(10);
+		nodeTable[4] = wedge2.getNodeId(9);
+		nodeTable[5] = wedge2.getNodeId(5);
 		nodeTable[6] = nf3_14;
 		nodeTable[7] = nf4_14;
 		nodeTable[8] = nf3_f4;
@@ -2876,9 +2876,9 @@ kmb::MeshRefiner::refineWedge2( kmb::elementIdType elementId, const kmb::Element
 		e[5] = refinedBody->addElement( kmb::WEDGE2, nodeTable );
 
 // => [ n8,  n6,  n7,  nf2, nf3, nf4, n6_7, n7_8, n6_8, nf3_f4, nf2_f4, nf2_f3, nf2_8, nf3_6, nf4_7]
-		nodeTable[0] = wedge2.getCellId(8);
-		nodeTable[1] = wedge2.getCellId(6);
-		nodeTable[2] = wedge2.getCellId(7);
+		nodeTable[0] = wedge2.getNodeId(8);
+		nodeTable[1] = wedge2.getNodeId(6);
+		nodeTable[2] = wedge2.getNodeId(7);
 		nodeTable[3] = nf2;
 		nodeTable[4] = nf3;
 		nodeTable[5] = nf4;
@@ -2894,9 +2894,9 @@ kmb::MeshRefiner::refineWedge2( kmb::elementIdType elementId, const kmb::Element
 		e[6] = refinedBody->addElement( kmb::WEDGE2, nodeTable );
 
 // => [ n11, n10, n9,  nf2, nf4, nf3, n9_10, n9_11, n10_11, nf3_f4, nf2_f3, nf2_f4, nf2_11, nf4_10, nf3_9]
-		nodeTable[0] = wedge2.getCellId(11);
-		nodeTable[1] = wedge2.getCellId(10);
-		nodeTable[2] = wedge2.getCellId(9);
+		nodeTable[0] = wedge2.getNodeId(11);
+		nodeTable[1] = wedge2.getNodeId(10);
+		nodeTable[2] = wedge2.getNodeId(9);
 		nodeTable[3] = nf2;
 		nodeTable[4] = nf4;
 		nodeTable[5] = nf3;
@@ -2917,79 +2917,79 @@ kmb::MeshRefiner::refineWedge2( kmb::elementIdType elementId, const kmb::Element
 	while( dIter != dataPairs.end() ){
 		if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeGroup ){
 			for(int i=0;i<9;++i){
-				nodeGroupUpdate( wedge2.getEdgeCellId(i,0), wedge2.getEdgeCellId(i,2), ne0[i], dIter->originalData, dIter->refinedData );
-				nodeGroupUpdate( wedge2.getEdgeCellId(i,2), wedge2.getEdgeCellId(i,1), ne0[i], dIter->originalData, dIter->refinedData );
+				nodeGroupUpdate( wedge2.getEdgeNodeId(i,0), wedge2.getEdgeNodeId(i,2), ne0[i], dIter->originalData, dIter->refinedData );
+				nodeGroupUpdate( wedge2.getEdgeNodeId(i,2), wedge2.getEdgeNodeId(i,1), ne0[i], dIter->originalData, dIter->refinedData );
 			}
 
 			nodeGroupUpdate( wedge2, 2, nf2, dIter->originalData, dIter->refinedData );
 			nodeGroupUpdate( wedge2, 3, nf3, dIter->originalData, dIter->refinedData );
 			nodeGroupUpdate( wedge2, 4, nf4, dIter->originalData, dIter->refinedData );
 
-			nodeGroupUpdate( nf2, wedge2.getCellId(8),  nf2_8, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf2, wedge2.getCellId(11), nf2_11, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf2, wedge2.getCellId(12), nf2_12, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf2, wedge2.getCellId(13), nf2_13, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf2, wedge2.getNodeId(8),  nf2_8, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf2, wedge2.getNodeId(11), nf2_11, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf2, wedge2.getNodeId(12), nf2_12, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf2, wedge2.getNodeId(13), nf2_13, dIter->originalData, dIter->refinedData );
 
-			nodeGroupUpdate( nf3, wedge2.getCellId(6),  nf3_6, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf3, wedge2.getCellId(9),  nf3_9, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf3, wedge2.getCellId(13), nf3_13, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf3, wedge2.getCellId(14), nf3_14, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf3, wedge2.getNodeId(6),  nf3_6, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf3, wedge2.getNodeId(9),  nf3_9, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf3, wedge2.getNodeId(13), nf3_13, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf3, wedge2.getNodeId(14), nf3_14, dIter->originalData, dIter->refinedData );
 
-			nodeGroupUpdate( nf4, wedge2.getCellId(7),  nf4_7, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf4, wedge2.getCellId(10), nf4_10, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf4, wedge2.getCellId(12), nf4_12, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf4, wedge2.getCellId(14), nf4_14, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf4, wedge2.getNodeId(7),  nf4_7, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf4, wedge2.getNodeId(10), nf4_10, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf4, wedge2.getNodeId(12), nf4_12, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf4, wedge2.getNodeId(14), nf4_14, dIter->originalData, dIter->refinedData );
 
 			nodeGroupUpdate( nf2, nf3, nf2_f3, dIter->originalData, dIter->refinedData );
 			nodeGroupUpdate( nf2, nf4, nf3_f4, dIter->originalData, dIter->refinedData );
 			nodeGroupUpdate( nf3, nf4, nf3_f4, dIter->originalData, dIter->refinedData );
 
-			nodeGroupUpdate( wedge2.getCellId(6), wedge2.getCellId(7), n6_7, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( wedge2.getCellId(6), wedge2.getCellId(8), n6_8, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( wedge2.getCellId(7), wedge2.getCellId(8), n7_8, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( wedge2.getNodeId(6), wedge2.getNodeId(7), n6_7, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( wedge2.getNodeId(6), wedge2.getNodeId(8), n6_8, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( wedge2.getNodeId(7), wedge2.getNodeId(8), n7_8, dIter->originalData, dIter->refinedData );
 
-			nodeGroupUpdate( wedge2.getCellId(9),  wedge2.getCellId(10), n9_10, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( wedge2.getCellId(9),  wedge2.getCellId(11), n9_11, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( wedge2.getCellId(10), wedge2.getCellId(11), n10_11, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( wedge2.getNodeId(9),  wedge2.getNodeId(10), n9_10, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( wedge2.getNodeId(9),  wedge2.getNodeId(11), n9_11, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( wedge2.getNodeId(10), wedge2.getNodeId(11), n10_11, dIter->originalData, dIter->refinedData );
 		}
 		else if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeVariable &&
 			dIter->originalData->getValueType() == kmb::PhysicalValue::Integer )
 		{
 			for(int i=0;i<9;++i){
-				nodeVariableUpdate( wedge2.getEdgeCellId(i,0), wedge2.getEdgeCellId(i,2), ne0[i], dIter->originalData, dIter->refinedData );
-				nodeVariableUpdate( wedge2.getEdgeCellId(i,2), wedge2.getEdgeCellId(i,1), ne0[i], dIter->originalData, dIter->refinedData );
+				nodeVariableUpdate( wedge2.getEdgeNodeId(i,0), wedge2.getEdgeNodeId(i,2), ne0[i], dIter->originalData, dIter->refinedData );
+				nodeVariableUpdate( wedge2.getEdgeNodeId(i,2), wedge2.getEdgeNodeId(i,1), ne0[i], dIter->originalData, dIter->refinedData );
 			}
 
 			nodeVariableUpdate( wedge2, 2, nf2, dIter->originalData, dIter->refinedData );
 			nodeVariableUpdate( wedge2, 3, nf3, dIter->originalData, dIter->refinedData );
 			nodeVariableUpdate( wedge2, 4, nf4, dIter->originalData, dIter->refinedData );
 
-			nodeVariableUpdate( nf2, wedge2.getCellId(8),  nf2_8, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf2, wedge2.getCellId(11), nf2_11, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf2, wedge2.getCellId(12), nf2_12, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf2, wedge2.getCellId(13), nf2_13, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf2, wedge2.getNodeId(8),  nf2_8, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf2, wedge2.getNodeId(11), nf2_11, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf2, wedge2.getNodeId(12), nf2_12, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf2, wedge2.getNodeId(13), nf2_13, dIter->originalData, dIter->refinedData );
 
-			nodeVariableUpdate( nf3, wedge2.getCellId(6),  nf3_6, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf3, wedge2.getCellId(9),  nf3_9, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf3, wedge2.getCellId(13), nf3_13, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf3, wedge2.getCellId(14), nf3_14, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf3, wedge2.getNodeId(6),  nf3_6, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf3, wedge2.getNodeId(9),  nf3_9, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf3, wedge2.getNodeId(13), nf3_13, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf3, wedge2.getNodeId(14), nf3_14, dIter->originalData, dIter->refinedData );
 
-			nodeVariableUpdate( nf4, wedge2.getCellId(7),  nf4_7, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf4, wedge2.getCellId(10), nf4_10, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf4, wedge2.getCellId(12), nf4_12, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf4, wedge2.getCellId(14), nf4_14, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf4, wedge2.getNodeId(7),  nf4_7, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf4, wedge2.getNodeId(10), nf4_10, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf4, wedge2.getNodeId(12), nf4_12, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf4, wedge2.getNodeId(14), nf4_14, dIter->originalData, dIter->refinedData );
 
 			nodeVariableUpdate( nf2, nf3, nf2_f3, dIter->originalData, dIter->refinedData );
 			nodeVariableUpdate( nf2, nf4, nf3_f4, dIter->originalData, dIter->refinedData );
 			nodeVariableUpdate( nf3, nf4, nf3_f4, dIter->originalData, dIter->refinedData );
 
-			nodeVariableUpdate( wedge2.getCellId(6), wedge2.getCellId(7), n6_7, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( wedge2.getCellId(6), wedge2.getCellId(8), n6_8, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( wedge2.getCellId(7), wedge2.getCellId(8), n7_8, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( wedge2.getNodeId(6), wedge2.getNodeId(7), n6_7, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( wedge2.getNodeId(6), wedge2.getNodeId(8), n6_8, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( wedge2.getNodeId(7), wedge2.getNodeId(8), n7_8, dIter->originalData, dIter->refinedData );
 
-			nodeVariableUpdate( wedge2.getCellId(9),  wedge2.getCellId(10), n9_10, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( wedge2.getCellId(9),  wedge2.getCellId(11), n9_11, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( wedge2.getCellId(10), wedge2.getCellId(11), n10_11, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( wedge2.getNodeId(9),  wedge2.getNodeId(10), n9_10, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( wedge2.getNodeId(9),  wedge2.getNodeId(11), n9_11, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( wedge2.getNodeId(10), wedge2.getNodeId(11), n10_11, dIter->originalData, dIter->refinedData );
 		}
 		else if( refinedBody && dIter->originalData->getBindingMode() == kmb::DataBindings::FaceGroup ){
 			for(int i=0;i<faceNum;++i){
@@ -3067,12 +3067,12 @@ kmb::MeshRefiner::refinePyramid( kmb::elementIdType elementId, const kmb::Elemen
 	// 8 = kmb::Element::getEdgeCount( kmb::PYRAMID )
 	kmb::nodeIdType ne[8];
 	for(int i=0;i<8;++i){
-		ne[i] = middleMan->getDividedNode( pyramid.getEdgeCellId(i,0), pyramid.getEdgeCellId(i,1) );
+		ne[i] = middleMan->getDividedNode( pyramid.getEdgeNodeId(i,0), pyramid.getEdgeNodeId(i,1) );
 	}
 	kmb::nodeIdType nf4 = middleMan->getCenterNode( pyramid, 4, elementId );
 
 	if( refinedBody ){
-		nodeTable[0] = pyramid.getCellId(0);
+		nodeTable[0] = pyramid.getNodeId(0);
 		nodeTable[1] = ne[0];
 		nodeTable[2] = ne[1];
 		nodeTable[3] = ne[2];
@@ -3080,7 +3080,7 @@ kmb::MeshRefiner::refinePyramid( kmb::elementIdType elementId, const kmb::Elemen
 		e[0] = refinedBody->addElement( kmb::PYRAMID, nodeTable );
 
 		nodeTable[0] = ne[0];
-		nodeTable[1] = pyramid.getCellId(1);
+		nodeTable[1] = pyramid.getNodeId(1);
 		nodeTable[2] = ne[4];
 		nodeTable[3] = nf4;
 		nodeTable[4] = ne[7];
@@ -3088,7 +3088,7 @@ kmb::MeshRefiner::refinePyramid( kmb::elementIdType elementId, const kmb::Elemen
 
 		nodeTable[0] = ne[1];
 		nodeTable[1] = ne[4];
-		nodeTable[2] = pyramid.getCellId(2);
+		nodeTable[2] = pyramid.getNodeId(2);
 		nodeTable[3] = ne[5];
 		nodeTable[4] = nf4;
 		e[2] = refinedBody->addElement( kmb::PYRAMID, nodeTable );
@@ -3096,7 +3096,7 @@ kmb::MeshRefiner::refinePyramid( kmb::elementIdType elementId, const kmb::Elemen
 		nodeTable[0] = ne[2];
 		nodeTable[1] = nf4;
 		nodeTable[2] = ne[5];
-		nodeTable[3] = pyramid.getCellId(3);
+		nodeTable[3] = pyramid.getNodeId(3);
 		nodeTable[4] = ne[6];
 		e[3] = refinedBody->addElement( kmb::PYRAMID, nodeTable );
 
@@ -3104,7 +3104,7 @@ kmb::MeshRefiner::refinePyramid( kmb::elementIdType elementId, const kmb::Elemen
 		nodeTable[1] = ne[7];
 		nodeTable[2] = nf4;
 		nodeTable[3] = ne[6];
-		nodeTable[4] = pyramid.getCellId(4);
+		nodeTable[4] = pyramid.getNodeId(4);
 		e[4] = refinedBody->addElement( kmb::PYRAMID, nodeTable );
 
 		nodeTable[0] = nf4;
@@ -3144,7 +3144,7 @@ kmb::MeshRefiner::refinePyramid( kmb::elementIdType elementId, const kmb::Elemen
 		if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeGroup ){
 			nodeGroupUpdate( pyramid, 4, nf4, dIter->originalData, dIter->refinedData );
 			for(int i=0;i<8;++i){
-				nodeGroupUpdate( pyramid.getEdgeCellId(i,0), pyramid.getEdgeCellId(i,1), ne[i], dIter->originalData, dIter->refinedData );
+				nodeGroupUpdate( pyramid.getEdgeNodeId(i,0), pyramid.getEdgeNodeId(i,1), ne[i], dIter->originalData, dIter->refinedData );
 			}
 		}
 		else if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeVariable &&
@@ -3152,7 +3152,7 @@ kmb::MeshRefiner::refinePyramid( kmb::elementIdType elementId, const kmb::Elemen
 		{
 			nodeVariableUpdate( pyramid, 4, nf4, dIter->originalData, dIter->refinedData );
 			for(int i=0;i<8;++i){
-				nodeVariableUpdate( pyramid.getEdgeCellId(i,0), pyramid.getEdgeCellId(i,1), ne[i], dIter->originalData, dIter->refinedData );
+				nodeVariableUpdate( pyramid.getEdgeNodeId(i,0), pyramid.getEdgeNodeId(i,1), ne[i], dIter->originalData, dIter->refinedData );
 			}
 		}
 		else if( refinedBody && dIter->originalData->getBindingMode() == kmb::DataBindings::FaceGroup ){
@@ -3285,8 +3285,8 @@ kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, const kmb::Eleme
 	kmb::nodeIdType n8_12 = kmb::nullNodeId;
 	if( secondFitting ){
 		for(int i=0;i<8;++i){
-			ne0[i] = middleMan->getDividedNode3( pyramid2.getEdgeCellId(i,0), pyramid2.getEdgeCellId(i,2), pyramid2.getEdgeCellId(i,1) );
-			ne1[i] = middleMan->getDividedNode3( pyramid2.getEdgeCellId(i,1), pyramid2.getEdgeCellId(i,2), pyramid2.getEdgeCellId(i,0) );
+			ne0[i] = middleMan->getDividedNode3( pyramid2.getEdgeNodeId(i,0), pyramid2.getEdgeNodeId(i,2), pyramid2.getEdgeNodeId(i,1) );
+			ne1[i] = middleMan->getDividedNode3( pyramid2.getEdgeNodeId(i,1), pyramid2.getEdgeNodeId(i,2), pyramid2.getEdgeNodeId(i,0) );
 		}
 		nf4 = middleMan->getCenterNode2( pyramid2, 4, elementId );
 
@@ -3319,8 +3319,8 @@ kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, const kmb::Eleme
 		n8_12 = middleMan->getDividedNode5( pyramid2[8], pyramid2[12], pyramid2[0], pyramid2[1], pyramid2[5] );
 	}else{
 		for(int i=0;i<8;++i){
-			ne0[i] = middleMan->getDividedNode( pyramid2.getEdgeCellId(i,0), pyramid2.getEdgeCellId(i,2) );
-			ne1[i] = middleMan->getDividedNode( pyramid2.getEdgeCellId(i,2), pyramid2.getEdgeCellId(i,1) );
+			ne0[i] = middleMan->getDividedNode( pyramid2.getEdgeNodeId(i,0), pyramid2.getEdgeNodeId(i,2) );
+			ne1[i] = middleMan->getDividedNode( pyramid2.getEdgeNodeId(i,2), pyramid2.getEdgeNodeId(i,1) );
 		}
 		nf4 = middleMan->getCenterNode( pyramid2, 4, elementId );
 		nf4_5 = middleMan->getDividedNode( nf4, pyramid2[5] );
@@ -3351,11 +3351,11 @@ kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, const kmb::Eleme
 
 	if( refinedBody ){
 // => [ n0,  n5,  n6,  n7,  n8,  ne00,  ne01,  ne02,  ne03,  n5_6,   n6_7,   n7_8,   n5_8  ]
-		nodeTable[0] = pyramid2.getCellId(0);
-		nodeTable[1] = pyramid2.getCellId(5);
-		nodeTable[2] = pyramid2.getCellId(6);
-		nodeTable[3] = pyramid2.getCellId(7);
-		nodeTable[4] = pyramid2.getCellId(8);
+		nodeTable[0] = pyramid2.getNodeId(0);
+		nodeTable[1] = pyramid2.getNodeId(5);
+		nodeTable[2] = pyramid2.getNodeId(6);
+		nodeTable[3] = pyramid2.getNodeId(7);
+		nodeTable[4] = pyramid2.getNodeId(8);
 		nodeTable[5] = ne0[0];
 		nodeTable[6] = ne0[1];
 		nodeTable[7] = ne0[2];
@@ -3367,11 +3367,11 @@ kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, const kmb::Eleme
 		e[0] = refinedBody->addElement( kmb::PYRAMID2, nodeTable );
 
 // => [ n5,  n1,  n9,  nf4, n12, ne10,  n5_9,  nf4_5, n5_12, ne04,   nf4_9,  nf4_12, ne07  ]
-		nodeTable[0] = pyramid2.getCellId(5);
-		nodeTable[1] = pyramid2.getCellId(1);
-		nodeTable[2] = pyramid2.getCellId(9);
+		nodeTable[0] = pyramid2.getNodeId(5);
+		nodeTable[1] = pyramid2.getNodeId(1);
+		nodeTable[2] = pyramid2.getNodeId(9);
 		nodeTable[3] = nf4;
-		nodeTable[4] = pyramid2.getCellId(12);
+		nodeTable[4] = pyramid2.getNodeId(12);
 		nodeTable[5] = ne1[0];
 		nodeTable[6] = n5_9;
 		nodeTable[7] = nf4_5;
@@ -3383,10 +3383,10 @@ kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, const kmb::Eleme
 		e[1] = refinedBody->addElement( kmb::PYRAMID2, nodeTable );
 
 // => [ n6,  n9,  n2,  n10, nf4, n6_9,  ne11,  n6_10, nf4_6, ne14,   ne05,   nf4_10, nf4_9 ]
-		nodeTable[0] = pyramid2.getCellId(6);
-		nodeTable[1] = pyramid2.getCellId(9);
-		nodeTable[2] = pyramid2.getCellId(2);
-		nodeTable[3] = pyramid2.getCellId(10);
+		nodeTable[0] = pyramid2.getNodeId(6);
+		nodeTable[1] = pyramid2.getNodeId(9);
+		nodeTable[2] = pyramid2.getNodeId(2);
+		nodeTable[3] = pyramid2.getNodeId(10);
 		nodeTable[4] = nf4;
 		nodeTable[5] = n6_9;
 		nodeTable[6] = ne1[1];
@@ -3399,11 +3399,11 @@ kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, const kmb::Eleme
 		e[2] = refinedBody->addElement( kmb::PYRAMID2, nodeTable );
 
 // => [ n7,  nf4, n10, n3,  n11, nf4_7, n7_10, ne12,  n7_11, nf4_10, ne15,   ne06,   nf4_11]
-		nodeTable[0] = pyramid2.getCellId(7);
+		nodeTable[0] = pyramid2.getNodeId(7);
 		nodeTable[1] = nf4;
-		nodeTable[2] = pyramid2.getCellId(10);
-		nodeTable[3] = pyramid2.getCellId(3);
-		nodeTable[4] = pyramid2.getCellId(11);
+		nodeTable[2] = pyramid2.getNodeId(10);
+		nodeTable[3] = pyramid2.getNodeId(3);
+		nodeTable[4] = pyramid2.getNodeId(11);
 		nodeTable[5] = nf4_7;
 		nodeTable[6] = n7_10;
 		nodeTable[7] = ne1[2];
@@ -3415,11 +3415,11 @@ kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, const kmb::Eleme
 		e[3] = refinedBody->addElement( kmb::PYRAMID2, nodeTable );
 
 // => [ n8,  n12, nf4, n11, n4,  n8_12, nf4_8, n8_11, ne13 , nf4_12, nf4_11, ne16,   ne17 ]
-		nodeTable[0] = pyramid2.getCellId(8);
-		nodeTable[1] = pyramid2.getCellId(12);
+		nodeTable[0] = pyramid2.getNodeId(8);
+		nodeTable[1] = pyramid2.getNodeId(12);
 		nodeTable[2] = nf4;
-		nodeTable[3] = pyramid2.getCellId(11);
-		nodeTable[4] = pyramid2.getCellId(4);
+		nodeTable[3] = pyramid2.getNodeId(11);
+		nodeTable[4] = pyramid2.getNodeId(4);
 		nodeTable[5] = n8_12;
 		nodeTable[6] = nf4_8;
 		nodeTable[7] = n8_11;
@@ -3432,9 +3432,9 @@ kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, const kmb::Eleme
 
 // => [ nf4, n5 , n9,  n6,  n5_9,   nf4_9, nf4_5, nf4_6, n5_6,   n6_9   ] => [n5,n9,n6] が0番目の面
 		nodeTable[0] = nf4;
-		nodeTable[1] = pyramid2.getCellId(5);
-		nodeTable[2] = pyramid2.getCellId(9);
-		nodeTable[3] = pyramid2.getCellId(6);
+		nodeTable[1] = pyramid2.getNodeId(5);
+		nodeTable[2] = pyramid2.getNodeId(9);
+		nodeTable[3] = pyramid2.getNodeId(6);
 		nodeTable[4] = n5_9;
 		nodeTable[5] = nf4_9;
 		nodeTable[6] = nf4_5;
@@ -3444,10 +3444,10 @@ kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, const kmb::Eleme
 		e[5] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
 // => [ n6,  nf4, n7,  n10, nf4_7,  n6_7,  nf4_6, n6_10, nf4_10, n7_10  ] => [n6,n10,n7] が1番目の面
-		nodeTable[0] = pyramid2.getCellId(6);
+		nodeTable[0] = pyramid2.getNodeId(6);
 		nodeTable[1] = nf4;
-		nodeTable[2] = pyramid2.getCellId(7);
-		nodeTable[3] = pyramid2.getCellId(10);
+		nodeTable[2] = pyramid2.getNodeId(7);
+		nodeTable[3] = pyramid2.getNodeId(10);
 		nodeTable[4] = nf4_7;
 		nodeTable[5] = n6_7;
 		nodeTable[6] = nf4_6;
@@ -3457,10 +3457,10 @@ kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, const kmb::Eleme
 		e[6] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
 // => [ n7,  n11, nf4, n8,  nf4_11, nf4_7, n7_11, n7_8,  n8_11,  nf4_8  ] => [n7,n11,n8] が2番目の面
-		nodeTable[0] = pyramid2.getCellId(7);
-		nodeTable[1] = pyramid2.getCellId(11);
+		nodeTable[0] = pyramid2.getNodeId(7);
+		nodeTable[1] = pyramid2.getNodeId(11);
 		nodeTable[2] = nf4;
-		nodeTable[3] = pyramid2.getCellId(8);
+		nodeTable[3] = pyramid2.getNodeId(8);
 		nodeTable[4] = nf4_11;
 		nodeTable[5] = nf4_7;
 		nodeTable[6] = n7_11;
@@ -3470,9 +3470,9 @@ kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, const kmb::Eleme
 		e[7] = refinedBody->addElement( kmb::TETRAHEDRON2, nodeTable );
 
 // => [ n8,  n5,  n12, nf4, n5_12,  n8_12, n5_8,  nf4_8, nf4_5,  nf4_12 ] => [n8,n12,n5] が3番目の面
-		nodeTable[0] = pyramid2.getCellId(8);
-		nodeTable[1] = pyramid2.getCellId(5);
-		nodeTable[2] = pyramid2.getCellId(12);
+		nodeTable[0] = pyramid2.getNodeId(8);
+		nodeTable[1] = pyramid2.getNodeId(5);
+		nodeTable[2] = pyramid2.getNodeId(12);
 		nodeTable[3] = nf4;
 		nodeTable[4] = n5_12;
 		nodeTable[5] = n8_12;
@@ -3484,10 +3484,10 @@ kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, const kmb::Eleme
 
 // => [ nf4, n8,  n7,  n6, n5, nf4_8, nf4_7, nf4_6, nf4_5, n7_8, n6_7, n5_6, n5_8 ] => 外側を向いている面はない
 		nodeTable[0] = nf4;
-		nodeTable[1] = pyramid2.getCellId(8);
-		nodeTable[2] = pyramid2.getCellId(7);
-		nodeTable[3] = pyramid2.getCellId(6);
-		nodeTable[4] = pyramid2.getCellId(5);
+		nodeTable[1] = pyramid2.getNodeId(8);
+		nodeTable[2] = pyramid2.getNodeId(7);
+		nodeTable[3] = pyramid2.getNodeId(6);
+		nodeTable[4] = pyramid2.getNodeId(5);
 		nodeTable[5] = nf4_8;
 		nodeTable[6] = nf4_7;
 		nodeTable[7] = nf4_6;
@@ -3503,71 +3503,71 @@ kmb::MeshRefiner::refinePyramid2( kmb::elementIdType elementId, const kmb::Eleme
 	while( dIter != dataPairs.end() ){
 		if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeGroup ){
 			for(int i=0;i<8;++i){
-				nodeGroupUpdate( pyramid2.getEdgeCellId(i,0), pyramid2.getEdgeCellId(i,2), ne0[i], dIter->originalData, dIter->refinedData );
-				nodeGroupUpdate( pyramid2.getEdgeCellId(i,2), pyramid2.getEdgeCellId(i,1), ne1[i], dIter->originalData, dIter->refinedData );
+				nodeGroupUpdate( pyramid2.getEdgeNodeId(i,0), pyramid2.getEdgeNodeId(i,2), ne0[i], dIter->originalData, dIter->refinedData );
+				nodeGroupUpdate( pyramid2.getEdgeNodeId(i,2), pyramid2.getEdgeNodeId(i,1), ne1[i], dIter->originalData, dIter->refinedData );
 			}
 
 			nodeGroupUpdate( pyramid2, 4, nf4, dIter->originalData, dIter->refinedData );
 
-			nodeGroupUpdate( nf4, pyramid2.getCellId(5),  nf4_5, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf4, pyramid2.getCellId(6),  nf4_6, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf4, pyramid2.getCellId(7),  nf4_7, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf4, pyramid2.getCellId(8),  nf4_8, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf4, pyramid2.getCellId(9),  nf4_9, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf4, pyramid2.getCellId(10), nf4_10, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf4, pyramid2.getCellId(11), nf4_11, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( nf4, pyramid2.getCellId(12), nf4_12, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf4, pyramid2.getNodeId(5),  nf4_5, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf4, pyramid2.getNodeId(6),  nf4_6, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf4, pyramid2.getNodeId(7),  nf4_7, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf4, pyramid2.getNodeId(8),  nf4_8, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf4, pyramid2.getNodeId(9),  nf4_9, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf4, pyramid2.getNodeId(10), nf4_10, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf4, pyramid2.getNodeId(11), nf4_11, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( nf4, pyramid2.getNodeId(12), nf4_12, dIter->originalData, dIter->refinedData );
 
-			nodeGroupUpdate( pyramid2.getCellId(5), pyramid2.getCellId(6),  n5_6, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( pyramid2.getCellId(5), pyramid2.getCellId(9),  n5_9, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( pyramid2.getCellId(6), pyramid2.getCellId(9),  n6_9, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( pyramid2.getNodeId(5), pyramid2.getNodeId(6),  n5_6, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( pyramid2.getNodeId(5), pyramid2.getNodeId(9),  n5_9, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( pyramid2.getNodeId(6), pyramid2.getNodeId(9),  n6_9, dIter->originalData, dIter->refinedData );
 
-			nodeGroupUpdate( pyramid2.getCellId(6), pyramid2.getCellId(7),   n6_7, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( pyramid2.getCellId(6), pyramid2.getCellId(10),  n6_10, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( pyramid2.getCellId(7), pyramid2.getCellId(10),  n7_10, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( pyramid2.getNodeId(6), pyramid2.getNodeId(7),   n6_7, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( pyramid2.getNodeId(6), pyramid2.getNodeId(10),  n6_10, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( pyramid2.getNodeId(7), pyramid2.getNodeId(10),  n7_10, dIter->originalData, dIter->refinedData );
 
-			nodeGroupUpdate( pyramid2.getCellId(7), pyramid2.getCellId(8),   n7_8, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( pyramid2.getCellId(7), pyramid2.getCellId(11),  n7_11, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( pyramid2.getCellId(8), pyramid2.getCellId(11),  n8_11, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( pyramid2.getNodeId(7), pyramid2.getNodeId(8),   n7_8, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( pyramid2.getNodeId(7), pyramid2.getNodeId(11),  n7_11, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( pyramid2.getNodeId(8), pyramid2.getNodeId(11),  n8_11, dIter->originalData, dIter->refinedData );
 
-			nodeGroupUpdate( pyramid2.getCellId(5), pyramid2.getCellId(8),   n5_8, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( pyramid2.getCellId(5), pyramid2.getCellId(12),  n5_12, dIter->originalData, dIter->refinedData );
-			nodeGroupUpdate( pyramid2.getCellId(8), pyramid2.getCellId(12),  n8_12, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( pyramid2.getNodeId(5), pyramid2.getNodeId(8),   n5_8, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( pyramid2.getNodeId(5), pyramid2.getNodeId(12),  n5_12, dIter->originalData, dIter->refinedData );
+			nodeGroupUpdate( pyramid2.getNodeId(8), pyramid2.getNodeId(12),  n8_12, dIter->originalData, dIter->refinedData );
 		}
 		else if( dIter->originalData->getBindingMode() == kmb::DataBindings::NodeVariable &&
 			dIter->originalData->getValueType() == kmb::PhysicalValue::Integer )
 		{
 			for(int i=0;i<8;++i){
-				nodeVariableUpdate( pyramid2.getEdgeCellId(i,0), pyramid2.getEdgeCellId(i,2), ne0[i], dIter->originalData, dIter->refinedData );
-				nodeVariableUpdate( pyramid2.getEdgeCellId(i,2), pyramid2.getEdgeCellId(i,1), ne1[i], dIter->originalData, dIter->refinedData );
+				nodeVariableUpdate( pyramid2.getEdgeNodeId(i,0), pyramid2.getEdgeNodeId(i,2), ne0[i], dIter->originalData, dIter->refinedData );
+				nodeVariableUpdate( pyramid2.getEdgeNodeId(i,2), pyramid2.getEdgeNodeId(i,1), ne1[i], dIter->originalData, dIter->refinedData );
 			}
 
 			nodeVariableUpdate( pyramid2, 4, nf4, dIter->originalData, dIter->refinedData );
 
-			nodeVariableUpdate( nf4, pyramid2.getCellId(5),  nf4_5, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf4, pyramid2.getCellId(6),  nf4_6, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf4, pyramid2.getCellId(7),  nf4_7, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf4, pyramid2.getCellId(8),  nf4_8, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf4, pyramid2.getCellId(9),  nf4_9, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf4, pyramid2.getCellId(10), nf4_10, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf4, pyramid2.getCellId(11), nf4_11, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( nf4, pyramid2.getCellId(12), nf4_12, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf4, pyramid2.getNodeId(5),  nf4_5, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf4, pyramid2.getNodeId(6),  nf4_6, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf4, pyramid2.getNodeId(7),  nf4_7, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf4, pyramid2.getNodeId(8),  nf4_8, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf4, pyramid2.getNodeId(9),  nf4_9, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf4, pyramid2.getNodeId(10), nf4_10, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf4, pyramid2.getNodeId(11), nf4_11, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( nf4, pyramid2.getNodeId(12), nf4_12, dIter->originalData, dIter->refinedData );
 
-			nodeVariableUpdate( pyramid2.getCellId(5), pyramid2.getCellId(6),  n5_6, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( pyramid2.getCellId(5), pyramid2.getCellId(9),  n5_9, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( pyramid2.getCellId(6), pyramid2.getCellId(9),  n6_9, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( pyramid2.getNodeId(5), pyramid2.getNodeId(6),  n5_6, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( pyramid2.getNodeId(5), pyramid2.getNodeId(9),  n5_9, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( pyramid2.getNodeId(6), pyramid2.getNodeId(9),  n6_9, dIter->originalData, dIter->refinedData );
 
-			nodeVariableUpdate( pyramid2.getCellId(6), pyramid2.getCellId(7),   n6_7, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( pyramid2.getCellId(6), pyramid2.getCellId(10),  n6_10, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( pyramid2.getCellId(7), pyramid2.getCellId(10),  n7_10, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( pyramid2.getNodeId(6), pyramid2.getNodeId(7),   n6_7, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( pyramid2.getNodeId(6), pyramid2.getNodeId(10),  n6_10, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( pyramid2.getNodeId(7), pyramid2.getNodeId(10),  n7_10, dIter->originalData, dIter->refinedData );
 
-			nodeVariableUpdate( pyramid2.getCellId(7), pyramid2.getCellId(8),   n7_8, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( pyramid2.getCellId(7), pyramid2.getCellId(11),  n7_11, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( pyramid2.getCellId(8), pyramid2.getCellId(11),  n8_11, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( pyramid2.getNodeId(7), pyramid2.getNodeId(8),   n7_8, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( pyramid2.getNodeId(7), pyramid2.getNodeId(11),  n7_11, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( pyramid2.getNodeId(8), pyramid2.getNodeId(11),  n8_11, dIter->originalData, dIter->refinedData );
 
-			nodeVariableUpdate( pyramid2.getCellId(5), pyramid2.getCellId(8),   n5_8, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( pyramid2.getCellId(5), pyramid2.getCellId(12),  n5_12, dIter->originalData, dIter->refinedData );
-			nodeVariableUpdate( pyramid2.getCellId(8), pyramid2.getCellId(12),  n8_12, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( pyramid2.getNodeId(5), pyramid2.getNodeId(8),   n5_8, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( pyramid2.getNodeId(5), pyramid2.getNodeId(12),  n5_12, dIter->originalData, dIter->refinedData );
+			nodeVariableUpdate( pyramid2.getNodeId(8), pyramid2.getNodeId(12),  n8_12, dIter->originalData, dIter->refinedData );
 		}
 		else if( refinedBody && dIter->originalData->getBindingMode() == kmb::DataBindings::FaceGroup ){
 			// faceGroup の更新
@@ -3635,19 +3635,19 @@ kmb::MeshRefiner::getOriginal(kmb::nodeIdType middleNodeId, kmb::nodeIdType* ori
 				if( faceIndex == -1 ){
 					int num = eIter.getNodeCount();
 					for(int i=0;i<num;++i){
-						originalNodes[i] = eIter.getCellId(i);
+						originalNodes[i] = eIter.getNodeId(i);
 					}
 					return eIter.getType();
 				}else if( faceIndex < boundaryCount ){
 					int num = eIter.getBoundaryNodeCount( faceIndex );
 					for(int i=0;i<num;++i){
-						originalNodes[i] = eIter.getBoundaryCellId( faceIndex, i );
+						originalNodes[i] = eIter.getBoundaryNodeId( faceIndex, i );
 					}
 					return eIter.getBoundaryType( faceIndex );
 				}else if( faceIndex < boundaryCount + eIter.getEdgeCount() ){
 					int num = eIter.getEdgeNodeCount( faceIndex - boundaryCount );
 					for(int i=0;i<num;++i){
-						originalNodes[i] = eIter.getEdgeCellId( faceIndex - boundaryCount, i );
+						originalNodes[i] = eIter.getEdgeNodeId( faceIndex - boundaryCount, i );
 					}
 					return eIter.getEdgeType( faceIndex - boundaryCount );
 				}
@@ -3676,7 +3676,7 @@ kmb::MeshRefiner::getMiddle(kmb::ElementBase &element) const
 		case kmb::QUAD2:
 		case kmb::HEXAHEDRON:
 		case kmb::HEXAHEDRON2:
-			middle = middleMan->isDivided( element.getCellId(minIndex), element.getCellId(diagIndex) );
+			middle = middleMan->isDivided( element.getNodeId(minIndex), element.getNodeId(diagIndex) );
 			break;
 		default:
 			break;
@@ -3711,7 +3711,7 @@ kmb::MeshRefiner::nodeGroupUpdate( const kmb::ElementBase &elem, kmb::nodeIdType
 	int len = elem.getNodeCount();
 	bool flag = true;
 	for(int i=0;i<len;++i){
-		kmb::nodeIdType nodeId = elem.getCellId(i);
+		kmb::nodeIdType nodeId = elem.getNodeId(i);
 		bool res = originalData->hasId( nodeId );
 		if( res ){
 			refinedData->addId( nodeId );
@@ -3734,7 +3734,7 @@ kmb::MeshRefiner::nodeGroupUpdate( const kmb::ElementBase &elem, int faceIndex, 
 	int len = elem.getBoundaryNodeCount(faceIndex);
 	bool flag = true;
 	for(int i=0;i<len;++i){
-		kmb::nodeIdType nodeId = elem.getBoundaryCellId(faceIndex,i);
+		kmb::nodeIdType nodeId = elem.getBoundaryNodeId(faceIndex,i);
 		bool res = originalData->hasId( nodeId );
 		if( res ){
 			refinedData->addId( nodeId );
@@ -3799,7 +3799,7 @@ kmb::MeshRefiner::nodeVariableUpdate( const kmb::ElementBase &elem, kmb::nodeIdT
 	bool flag = true;
 	long v = 0L;
 	for(int i=0;i<len;++i){
-		kmb::nodeIdType nodeId = elem.getCellId(i);
+		kmb::nodeIdType nodeId = elem.getNodeId(i);
 		bool res = originalData->getPhysicalValue( nodeId, &v );
 		if( res ){
 			refinedData->setPhysicalValue(nodeId,&v);
@@ -3844,7 +3844,7 @@ kmb::MeshRefiner::nodeVariableUpdate( const kmb::ElementBase &elem, int faceInde
 	bool flag = true;
 	long v = 0L;
 	for(int i=0;i<len;++i){
-		kmb::nodeIdType nodeId = elem.getBoundaryCellId(faceIndex,i);
+		kmb::nodeIdType nodeId = elem.getBoundaryNodeId(faceIndex,i);
 		bool res = originalData->getPhysicalValue( nodeId, &v );
 		if( res ){
 			refinedData->setPhysicalValue(nodeId,&v);

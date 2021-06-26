@@ -3,14 +3,19 @@
 # please edit OPTIONS file for the environmental information and macros.
 
 include OPTIONS
-include MakefileRefiner.in
 include MakefileConfig.in
+include MakefileRuby.in
+include MakefileRefiner.in
 
 export ARCH
 export CXXFLAG
 
 export DATE = $(shell date +%Y%m%d)
 LIBDIR = lib
+
+clib: Common Matrix Geometry MeshDB MeshGen MeshGL RevocapIO Shape
+
+.PHONY: clean Common Geometry MeshDB MeshGen MeshGL RevocapIO Shape clib force arch
 
 
 Common: $(LIBDIR)/$(ARCH) $(LIBDIR)/$(ARCH)/libRcapCommon.a
@@ -53,7 +58,6 @@ Shape: MeshDB $(LIBDIR)/$(ARCH)/libRcapShape.a
 $(LIBDIR)/$(ARCH)/libRcapShape.a: force
 	cd Shape && $(MAKE) static
 
-.PHONY: clean Common Geometry MeshDB MeshGen MeshGL RevocapIO Shape
 clean:
 	cd Common && $(MAKE) clean
 	cd Matrix && $(MAKE) clean
@@ -61,7 +65,7 @@ clean:
 	cd MeshDB && $(MAKE) clean
 	cd MeshGen && $(MAKE) clean
 	@if [ -d MeshGL ]; then cd MeshGL && $(MAKE) clean; fi;
-	@if [ -d Refiner ]; then cd Refiner && $(MAKE) clean; fi;
+	@if [ -d Refiner ]; then $(MAKE) -f Refiner/Makefile clean; fi;
 	cd RevocapIO && $(MAKE) clean
 	cd Shape && $(MAKE) clean
 	@if [ -d test ]; then cd test && $(MAKE) clean; fi;
@@ -70,14 +74,11 @@ $(LIBDIR)/$(ARCH):
 	@if [ ! -d $(LIBDIR) ]; then mkdir $(LIBDIR); fi;
 	@if [ ! -d $(LIBDIR)/$(ARCH) ]; then mkdir $(LIBDIR)/$(ARCH); fi;
 
-cpp2cc:
-	for fname in */*.cpp; do mv $fname ${fname%.cpp}.cc; done
-
 .cpp.o:
-	$(CXX) $(CXXFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) $(CFLAGS) -c $<
 
 .cc.o:
-	$(CXX) $(CXXFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) $(CFLAGS) -c $<
 
 doc: force
 	$(DOXYGEN) Documents/Doxyfile

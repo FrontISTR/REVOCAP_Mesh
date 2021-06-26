@@ -32,6 +32,7 @@ kmb::TriangleBucketArea::TriangleBucketArea(const kmb::BoxRegion &box,int xnum,i
 , points(NULL)
 , elements(NULL)
 , coordMatrix(NULL)
+, elemArea(NULL)
 {
 }
 
@@ -68,9 +69,9 @@ kmb::TriangleBucketArea::append(kmb::elementIdType elementId)
 	if( !eIter.isFinished() && eIter.getType() == kmb::TRIANGLE ){
 		kmb::BoundingBox box;
 		kmb::Point3D a,b,c;
-		if( points->getPoint( eIter.getCellId(0), a ) &&
-			points->getPoint( eIter.getCellId(1), b ) &&
-			points->getPoint( eIter.getCellId(2), c ) )
+		if( points->getPoint( eIter.getNodeId(0), a ) &&
+			points->getPoint( eIter.getNodeId(1), b ) &&
+			points->getPoint( eIter.getNodeId(2), c ) )
 		{
 			if( coordMatrix ){
 				coordMatrix->convert( a );
@@ -117,9 +118,9 @@ kmb::TriangleBucketArea::appendAll(void)
 	kmb::ElementContainer::const_iterator eIter = elements->begin();
 	while( !eIter.isFinished() ){
 		if( eIter.getType() == kmb::TRIANGLE &&
-			points->getPoint( eIter.getCellId(0), a ) &&
-			points->getPoint( eIter.getCellId(1), b ) &&
-			points->getPoint( eIter.getCellId(2), c ) )
+			points->getPoint( eIter.getNodeId(0), a ) &&
+			points->getPoint( eIter.getNodeId(1), b ) &&
+			points->getPoint( eIter.getNodeId(2), c ) )
 		{
 			if( coordMatrix ){
 				coordMatrix->convert( a );

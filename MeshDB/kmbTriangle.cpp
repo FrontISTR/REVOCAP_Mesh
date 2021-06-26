@@ -105,6 +105,16 @@ kmb::Triangle::~Triangle(void)
 {
 }
 
+kmb::nodeIdType kmb::Triangle::operator()(const int index,const int i) const
+{
+	return cell[kmb::Triangle::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Triangle::operator()(const int index,const int i)
+{
+	return cell[kmb::Triangle::faceTable[index][i]];
+}
+
 void
 kmb::Triangle::shapeFunction(double s,double t,double* coeff)
 {
@@ -171,7 +181,7 @@ kmb::Triangle::edgeSwap(kmb::ElementBase &triangle0,kmb::ElementBase &triangle1)
 		int count = 0;
 		int indices[3] ={0,0,0};
 		for(int i=0;i<3;++i){
-			indices[i] = triangle1.indexOf( triangle0.getCellId(i) );
+			indices[i] = triangle1.indexOf( triangle0.getNodeId(i) );
 			if( indices[i] != -1 ){
 				++count;
 			}
@@ -182,33 +192,33 @@ kmb::Triangle::edgeSwap(kmb::ElementBase &triangle0,kmb::ElementBase &triangle1)
 			if( indices[0] == -1 )
 			{
 				int i_next = ( indices[1]+1 == 3) ? 0 : indices[1]+1;
-				nodes[0] = triangle0.getCellId( 0 );
-				nodes[1] = triangle0.getCellId( 1 );
-				nodes[2] = triangle1.getCellId( i_next );
-				nodes[3] = triangle0.getCellId( 2 );
+				nodes[0] = triangle0.getNodeId( 0 );
+				nodes[1] = triangle0.getNodeId( 1 );
+				nodes[2] = triangle1.getNodeId( i_next );
+				nodes[3] = triangle0.getNodeId( 2 );
 			}
 			else if( indices[1] == -1 )
 			{
 				int i_next = ( indices[2]+1 == 3) ? 0 : indices[2]+1;
-				nodes[0] = triangle0.getCellId( 1 );
-				nodes[1] = triangle0.getCellId( 2 );
-				nodes[2] = triangle1.getCellId( i_next );
-				nodes[3] = triangle0.getCellId( 0 );
+				nodes[0] = triangle0.getNodeId( 1 );
+				nodes[1] = triangle0.getNodeId( 2 );
+				nodes[2] = triangle1.getNodeId( i_next );
+				nodes[3] = triangle0.getNodeId( 0 );
 			}
 			else if( indices[2] == -1 )
 			{
 				int i_next = ( indices[0]+1 == 3) ? 0 : indices[0]+1;
-				nodes[0] = triangle0.getCellId( 2 );
-				nodes[1] = triangle0.getCellId( 0 );
-				nodes[2] = triangle1.getCellId( i_next );
-				nodes[3] = triangle0.getCellId( 1 );
+				nodes[0] = triangle0.getNodeId( 2 );
+				nodes[1] = triangle0.getNodeId( 0 );
+				nodes[2] = triangle1.getNodeId( i_next );
+				nodes[3] = triangle0.getNodeId( 1 );
 			}
-			triangle0.setCellId(0, nodes[0]);
-			triangle0.setCellId(1, nodes[1]);
-			triangle0.setCellId(2, nodes[2]);
-			triangle1.setCellId(0, nodes[2]);
-			triangle1.setCellId(1, nodes[3]);
-			triangle1.setCellId(2, nodes[0]);
+			triangle0.setNodeId(0, nodes[0]);
+			triangle0.setNodeId(1, nodes[1]);
+			triangle0.setNodeId(2, nodes[2]);
+			triangle1.setNodeId(0, nodes[2]);
+			triangle1.setNodeId(1, nodes[3]);
+			triangle1.setNodeId(2, nodes[0]);
 			swapped = true;
 		}
 	}

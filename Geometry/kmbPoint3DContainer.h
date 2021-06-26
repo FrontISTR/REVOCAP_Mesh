@@ -58,6 +58,9 @@ public:
 //	virtual kmb::Point3D* getPoint(nodeIdType id) const = 0;
 	virtual bool getXYZ(nodeIdType id,double &x,double &y,double &z) const = 0;
 	virtual bool getPoint(nodeIdType id,kmb::Point3D &point) const = 0;
+	virtual double x(kmb::nodeIdType nodeId) const{ return 0.0; };
+	virtual double y(kmb::nodeIdType nodeId) const{ return 0.0; };
+	virtual double z(kmb::nodeIdType nodeId) const{ return 0.0; };
 	virtual nodeIdType getMaxId(void) const = 0;
 	virtual nodeIdType getMinId(void) const = 0;
 	virtual size_t getCount(void) const = 0;
@@ -125,7 +128,6 @@ public:
 		const_iterator(const iterator& other);
 		~const_iterator(void){ if( _it ) delete _it; }
 		nodeIdType getId(void) const;
-		const kmb::Point3D* getPoint(void) const;
 		bool getXYZ(double &x,double &y,double &z) const;
 		bool getPoint( kmb::Point3D &point ) const;
 		double x() const;

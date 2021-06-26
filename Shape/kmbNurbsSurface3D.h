@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : NurbsSurface3D                                          #
@@ -28,9 +28,6 @@ private:
 	unsigned int uOrder, vOrder;
 	kmb::BSpline uBspline, vBspline;
 	std::vector< kmb::Point4D > ctrlPts;
-#ifdef _DEBUG
-	static int calcCount;
-#endif
 public:
 	NurbsSurface3D(void);
 	virtual ~NurbsSurface3D(void);
@@ -44,7 +41,11 @@ public:
 	// そうでなければ false を返す。この場合は制御点の設定が必要
 	bool setOrder(unsigned int uOrder,unsigned int vOrder);
 	bool getOrder(unsigned int &uOrder,unsigned int &vOrder) const;
+	unsigned int getUOrder(void) const;
+	unsigned int getVOrder(void) const;
 	bool getKnotCount(unsigned int &uCount,unsigned int &vCount) const;
+	unsigned int getUKnotCount(void) const;
+	unsigned int getVKnotCount(void) const;
 	void getDegree(unsigned int &uDegree,unsigned int &vDegree) const;
 	int getCtrlPtCount(void) const;
 	void appendUKnot(double k);

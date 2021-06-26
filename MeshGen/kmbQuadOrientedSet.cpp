@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : QuadOrientedSet                                         #
@@ -102,7 +102,7 @@ kmb::QuadOrientedSet::clear(void)
 		kmb::nodeIdType nodeId = tIter->first;
 		kmb::Quad* quad = tIter->second;
 		// 節点番号の一番大きい時に delete する
-		if( quad && quad->getCellId(0) <= nodeId && quad->getCellId(1) <= nodeId && quad->getCellId(2) <= nodeId && quad->getCellId(3) <= nodeId ){
+		if( quad && quad->getNodeId(0) <= nodeId && quad->getNodeId(1) <= nodeId && quad->getNodeId(2) <= nodeId && quad->getNodeId(3) <= nodeId ){
 			delete quad;
 			quad = NULL;
 		}
@@ -140,7 +140,7 @@ kmb::QuadOrientedSet::appendItem(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::no
 				continue;
 			}
 			switch( kmb::Quad::isCoincident( n0, n1, n2, n3,
-				other->getCellId(0), other->getCellId(1), other->getCellId(2), other->getCellId(3) ) )
+				other->getNodeId(0), other->getNodeId(1), other->getNodeId(2), other->getNodeId(3) ) )
 			{
 			case 1:
 				// 重複して登録はしない
@@ -156,7 +156,7 @@ kmb::QuadOrientedSet::appendItem(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::no
 				{
 					kmb::Quad* other1 = tIter1->second;
 					if( kmb::Quad::isCoincident( n0, n1, n2, n3,
-						other1->getCellId(0), other1->getCellId(1), other1->getCellId(2), other1->getCellId(3) ) == -1 )
+						other1->getNodeId(0), other1->getNodeId(1), other1->getNodeId(2), other1->getNodeId(3) ) == -1 )
 					{
 						quads.erase( tIter1 );
 						break;
@@ -170,7 +170,7 @@ kmb::QuadOrientedSet::appendItem(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::no
 				{
 					kmb::Quad* other2 = tIter2->second;
 					if( kmb::Quad::isCoincident( n0, n1, n2, n3,
-						other2->getCellId(0), other2->getCellId(1), other2->getCellId(2), other2->getCellId(3) ) == -1 )
+						other2->getNodeId(0), other2->getNodeId(1), other2->getNodeId(2), other2->getNodeId(3) ) == -1 )
 					{
 						quads.erase( tIter2 );
 						break;
@@ -184,7 +184,7 @@ kmb::QuadOrientedSet::appendItem(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::no
 				{
 					kmb::Quad* other3 = tIter3->second;
 					if( kmb::Quad::isCoincident( n0, n1, n2, n3,
-						other3->getCellId(0), other3->getCellId(1), other3->getCellId(2), other3->getCellId(3) ) == -1 )
+						other3->getNodeId(0), other3->getNodeId(1), other3->getNodeId(2), other3->getNodeId(3) ) == -1 )
 					{
 						quads.erase( tIter3 );
 						break;
@@ -221,7 +221,7 @@ kmb::QuadOrientedSet::include(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::nodeI
 		while( tIter != endIter ){
 			kmb::Quad* other = tIter->second;
 			switch( kmb::Quad::isCoincident( n0, n1, n2, n3,
-				other->getCellId(0), other->getCellId(1), other->getCellId(2), other->getCellId(3) ) )
+				other->getNodeId(0), other->getNodeId(1), other->getNodeId(2), other->getNodeId(3) ) )
 			{
 			case 1:
 				return other;
@@ -240,10 +240,10 @@ kmb::QuadOrientedSet::removeItem(kmb::Quad* quad)
 	if( quad == NULL ){
 		return false;
 	}
-	kmb::nodeIdType n0 = quad->getCellId(0);
-	kmb::nodeIdType n1 = quad->getCellId(1);
-	kmb::nodeIdType n2 = quad->getCellId(2);
-	kmb::nodeIdType n3 = quad->getCellId(3);
+	kmb::nodeIdType n0 = quad->getNodeId(0);
+	kmb::nodeIdType n1 = quad->getNodeId(1);
+	kmb::nodeIdType n2 = quad->getNodeId(2);
+	kmb::nodeIdType n3 = quad->getNodeId(3);
 	NodeQuadMap::iterator tIter = quads.lower_bound(n0);
 	NodeQuadMap::iterator endIter = quads.upper_bound(n0);
 	while( tIter != endIter ){
@@ -253,7 +253,7 @@ kmb::QuadOrientedSet::removeItem(kmb::Quad* quad)
 			continue;
 		}
 		switch( kmb::Quad::isCoincident( n0, n1, n2, n3,
-			other->getCellId(0), other->getCellId(1), other->getCellId(2), other->getCellId(3) ) )
+			other->getNodeId(0), other->getNodeId(1), other->getNodeId(2), other->getNodeId(3) ) )
 		{
 		case 1:{
 			// 一致するものがあれば削除
@@ -265,7 +265,7 @@ kmb::QuadOrientedSet::removeItem(kmb::Quad* quad)
 			{
 				kmb::Quad* other1 = tIter1->second;
 				if( kmb::Quad::isCoincident( n0, n1, n2, n3,
-					other1->getCellId(0), other1->getCellId(1), other1->getCellId(2), other1->getCellId(3) ) == 1 )
+					other1->getNodeId(0), other1->getNodeId(1), other1->getNodeId(2), other1->getNodeId(3) ) == 1 )
 				{
 					quads.erase( tIter1 );
 					break;
@@ -279,7 +279,7 @@ kmb::QuadOrientedSet::removeItem(kmb::Quad* quad)
 			{
 				kmb::Quad* other2 = tIter2->second;
 				if( kmb::Quad::isCoincident( n0, n1, n2, n3,
-					other2->getCellId(0), other2->getCellId(1), other2->getCellId(2), other2->getCellId(3) ) == 1 )
+					other2->getNodeId(0), other2->getNodeId(1), other2->getNodeId(2), other2->getNodeId(3) ) == 1 )
 				{
 					quads.erase( tIter2 );
 					break;
@@ -293,7 +293,7 @@ kmb::QuadOrientedSet::removeItem(kmb::Quad* quad)
 			{
 				kmb::Quad* other3 = tIter3->second;
 				if( kmb::Quad::isCoincident( n0, n1, n2, n3,
-					other3->getCellId(0), other3->getCellId(1), other3->getCellId(2), other3->getCellId(3) ) == 1 )
+					other3->getNodeId(0), other3->getNodeId(1), other3->getNodeId(2), other3->getNodeId(3) ) == 1 )
 				{
 					quads.erase( tIter3 );
 					break;
@@ -330,7 +330,7 @@ kmb::QuadOrientedSet::getElementNeighbor( const kmb::Quad* quad, kmb::Quad* neig
 	for(int i=0;i<4;++i){
 		neighbors[i] = NULL;
 		// Face の最初の頂点で探す
-		kmb::nodeIdType nodeId = quad->getBoundaryCellId(i,0);
+		kmb::nodeIdType nodeId = quad->getBoundaryNodeId(i,0);
 		// 頂点ごとの周辺要素との関係を調べる
 		std::pair< NodeQuadMap::const_iterator, NodeQuadMap::const_iterator >
 			eIterPair = quads.equal_range( nodeId );
@@ -363,8 +363,8 @@ kmb::QuadOrientedSet::getAdjacent( const kmb::Quad* quad, const int edgeNum, int
 {
 	if( quad == NULL )	return NULL;
 
-	kmb::nodeIdType nodeId0 = quad->getBoundaryCellId(edgeNum,0);
-	kmb::nodeIdType nodeId1 = quad->getBoundaryCellId(edgeNum,1);
+	kmb::nodeIdType nodeId0 = quad->getBoundaryNodeId(edgeNum,0);
+	kmb::nodeIdType nodeId1 = quad->getBoundaryNodeId(edgeNum,1);
 	// nodeId0 と nodeId1 を両方含み quad と異なるものを探す
 	std::pair< NodeQuadMap::const_iterator, NodeQuadMap::const_iterator > eIterPair = quads.equal_range( nodeId0 );
 	NodeQuadMap::const_iterator eIter = eIterPair.first;
@@ -377,7 +377,7 @@ kmb::QuadOrientedSet::getAdjacent( const kmb::Quad* quad, const int edgeNum, int
 			int index0 = other->indexOf( nodeId0 );
 			// ひとつ前の節点
 			int index1 = (index0+3)%4;
-			if( other->getCellId( index1 ) == nodeId1 ){
+			if( other->getNodeId( index1 ) == nodeId1 ){
 				// face の index は節点の index の小さい方
 				adjEdge = index1;
 				return other;
@@ -543,7 +543,7 @@ kmb::QuadOrientedSet::_iterator::getElement(kmb::elementType &etype,kmb::nodeIdT
 	if( quad ){
 		etype = kmb::QUAD;
 		for(int i=0;i<4;++i){
-			nodes[i] = quad->getCellId(i);
+			nodes[i] = quad->getNodeId(i);
 		}
 		return true;
 	}else{
@@ -575,22 +575,22 @@ kmb::QuadOrientedSet::_iterator::getType(void) const
 }
 
 kmb::nodeIdType
-kmb::QuadOrientedSet::_iterator::getCellId(int cellIndex) const
+kmb::QuadOrientedSet::_iterator::getNodeId(int cellIndex) const
 {
 	kmb::Quad* quad = tIter->second;
 	if( quad ){
-		return quad->getCellId(cellIndex);
+		return quad->getNodeId(cellIndex);
 	}else{
 		return kmb::nullNodeId;
 	}
 }
 
 bool
-kmb::QuadOrientedSet::_iterator::setCellId(int cellIndex, kmb::nodeIdType nodeId)
+kmb::QuadOrientedSet::_iterator::setNodeId(int cellIndex, kmb::nodeIdType nodeId)
 {
 	kmb::Quad* quad = tIter->second;
 	if( quad ){
-		return quad->setCellId(cellIndex,nodeId);
+		return quad->setNodeId(cellIndex,nodeId);
 	}else{
 		return false;
 	}
@@ -615,7 +615,7 @@ kmb::QuadOrientedSet::_iterator::operator++(void)
 	while( tIter != endIter ){
 		kmb::nodeIdType nodeId = tIter->first;
 		kmb::Quad* quad = tIter->second;
-		if( quad && quad->getCellId(0) >= nodeId && quad->getCellId(1) >= nodeId && quad->getCellId(2) >= nodeId && quad->getCellId(3) >= nodeId ){
+		if( quad && quad->getNodeId(0) >= nodeId && quad->getNodeId(1) >= nodeId && quad->getNodeId(2) >= nodeId && quad->getNodeId(3) >= nodeId ){
 			break;
 		}
 		tIter++;
@@ -635,7 +635,7 @@ kmb::QuadOrientedSet::_iterator::operator++(int n)
 	while( tIter != endIter ){
 		kmb::nodeIdType nodeId = tIter->first;
 		kmb::Quad* quad = tIter->second;
-		if( quad && quad->getCellId(0) >= nodeId && quad->getCellId(1) >= nodeId && quad->getCellId(2) >= nodeId && quad->getCellId(3) >= nodeId ){
+		if( quad && quad->getNodeId(0) >= nodeId && quad->getNodeId(1) >= nodeId && quad->getNodeId(2) >= nodeId && quad->getNodeId(3) >= nodeId ){
 			break;
 		}
 		++tIter;

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementEvaluator                                        #
@@ -120,10 +120,10 @@ kmb::ElementEvaluator::getStiffMatrix(const kmb::ElementBase &element,kmb::Squar
 				// ガウス積分
 				stiff.zero();
 				for(int si=0;si<2;++si){
-					double s = kmb::Integration::Gauss_Point2[si];
+					double s = kmb::GaussQuadrature<2>::IntegrationPoint[si];
 					for(int ti=0;ti<2;++ti){
-						double t = kmb::Integration::Gauss_Point2[ti];
-						double w = kmb::Integration::Gauss_Weight2[si] * kmb::Integration::Gauss_Weight2[ti];
+						double t = kmb::GaussQuadrature<2>::IntegrationPoint[ti];
+						double w = kmb::GaussQuadrature<2>::Weight[si] * kmb::GaussQuadrature<2>::Weight[ti];
 						// ヤコビアン
 						jacobi.zero();
 						jacobi.set(0,0,

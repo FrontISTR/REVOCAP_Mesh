@@ -22,6 +22,24 @@ namespace kmb{
 class ArrayUtil
 {
 public:
+	// 大きさ n の単調増大列 ary が与えられたとき、
+	// 値 v が ary[i] <= v < ary[i+1] なる i を求める
+	template <typename T> static int arrayIndex(int n, T* ary, T v)
+	{
+		int i0 = 0;     // ary[i0] <= v
+		int i1 = n - 1; // v < ary[i1]
+		if (v < ary[0]) return -1;
+		if (ary[n - 1] < v) return n-1;
+		while (i0 < i1-1) {
+			int i = (i0 + i1) / 2;
+			if (v < ary[i]) {
+				i1 = i;
+			}else {
+				i0 = i;
+			}
+		}
+		return i0;
+	}
 	// ary[i0] から n0 個を ary[i1] から n1 個と入れ替える
 	// n0 と n1 が異なるときは、間を調節する。
 	// i0 < i1 を仮定

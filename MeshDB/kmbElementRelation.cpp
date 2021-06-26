@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementRelation                                         #
@@ -156,7 +156,7 @@ kmb::ElementRelation::getRelation(const kmb::ElementBase &eIter0, int &index0, c
 					int count = 0;
 					const int vertexCount = eIter0.getVertexCount();
 					for(int i=0;i<vertexCount;++i){
-						indices[i] = eIter1.indexOf( eIter0.getCellId(i) );
+						indices[i] = eIter1.indexOf( eIter0.getNodeId(i) );
 						if( indices[i] >= eIter1.getVertexCount() ){
 							indices[i] = -1;
 						}
@@ -259,11 +259,11 @@ kmb::ElementRelation::getRelation(const kmb::ElementBase &eIter0, int &index0, c
 						{
 							int i0 = -1;
 							int i1 = -1;
-							if( eIter0.getCellId(0) == eIter1.getCellId(0) ){
+							if( eIter0.getNodeId(0) == eIter1.getNodeId(0) ){
 								ret =
 									kmb::ElementRelation::getQuadRelation(
-										eIter0.getCellId(1), eIter0.getCellId(2), eIter0.getCellId(3), eIter0.getCellId(4),
-										eIter1.getCellId(1), eIter1.getCellId(2), eIter1.getCellId(3), eIter1.getCellId(4),
+										eIter0.getNodeId(1), eIter0.getNodeId(2), eIter0.getNodeId(3), eIter0.getNodeId(4),
+										eIter1.getNodeId(1), eIter1.getNodeId(2), eIter1.getNodeId(3), eIter1.getNodeId(4),
 										i0,i1);
 							}
 						}
@@ -333,22 +333,22 @@ kmb::ElementRelation::isAdjacent(const kmb::ElementBase &eIter0, int &index0, co
 	bool ret = true;
 	if( eIter0.getType() == kmb::TETRAHEDRON && eIter1.getType() == kmb::TETRAHEDRON ){
 		unsigned int rel = 0;
-		if( eIter0.getCellId(0) == eIter1.getCellId(0) )	rel |= 0x1000;
-		if( eIter0.getCellId(0) == eIter1.getCellId(1) )	rel |= 0x2000;
-		if( eIter0.getCellId(0) == eIter1.getCellId(2) )	rel |= 0x4000;
-		if( eIter0.getCellId(0) == eIter1.getCellId(3) )	rel |= 0x8000;
-		if( eIter0.getCellId(1) == eIter1.getCellId(0) )	rel |= 0x0100;
-		if( eIter0.getCellId(1) == eIter1.getCellId(1) )	rel |= 0x0200;
-		if( eIter0.getCellId(1) == eIter1.getCellId(2) )	rel |= 0x0400;
-		if( eIter0.getCellId(1) == eIter1.getCellId(3) )	rel |= 0x0800;
-		if( eIter0.getCellId(2) == eIter1.getCellId(0) )	rel |= 0x0010;
-		if( eIter0.getCellId(2) == eIter1.getCellId(1) )	rel |= 0x0020;
-		if( eIter0.getCellId(2) == eIter1.getCellId(2) )	rel |= 0x0040;
-		if( eIter0.getCellId(2) == eIter1.getCellId(3) )	rel |= 0x0080;
-		if( eIter0.getCellId(3) == eIter1.getCellId(0) )	rel |= 0x0001;
-		if( eIter0.getCellId(3) == eIter1.getCellId(1) )	rel |= 0x0002;
-		if( eIter0.getCellId(3) == eIter1.getCellId(2) )	rel |= 0x0004;
-		if( eIter0.getCellId(3) == eIter1.getCellId(3) )	rel |= 0x0008;
+		if( eIter0.getNodeId(0) == eIter1.getNodeId(0) )	rel |= 0x1000;
+		if( eIter0.getNodeId(0) == eIter1.getNodeId(1) )	rel |= 0x2000;
+		if( eIter0.getNodeId(0) == eIter1.getNodeId(2) )	rel |= 0x4000;
+		if( eIter0.getNodeId(0) == eIter1.getNodeId(3) )	rel |= 0x8000;
+		if( eIter0.getNodeId(1) == eIter1.getNodeId(0) )	rel |= 0x0100;
+		if( eIter0.getNodeId(1) == eIter1.getNodeId(1) )	rel |= 0x0200;
+		if( eIter0.getNodeId(1) == eIter1.getNodeId(2) )	rel |= 0x0400;
+		if( eIter0.getNodeId(1) == eIter1.getNodeId(3) )	rel |= 0x0800;
+		if( eIter0.getNodeId(2) == eIter1.getNodeId(0) )	rel |= 0x0010;
+		if( eIter0.getNodeId(2) == eIter1.getNodeId(1) )	rel |= 0x0020;
+		if( eIter0.getNodeId(2) == eIter1.getNodeId(2) )	rel |= 0x0040;
+		if( eIter0.getNodeId(2) == eIter1.getNodeId(3) )	rel |= 0x0080;
+		if( eIter0.getNodeId(3) == eIter1.getNodeId(0) )	rel |= 0x0001;
+		if( eIter0.getNodeId(3) == eIter1.getNodeId(1) )	rel |= 0x0002;
+		if( eIter0.getNodeId(3) == eIter1.getNodeId(2) )	rel |= 0x0004;
+		if( eIter0.getNodeId(3) == eIter1.getNodeId(3) )	rel |= 0x0008;
 		switch( rel )
 		{
 			case 0x0248:
@@ -1411,7 +1411,7 @@ kmb::ElementRelation::clone( const kmb::ElementBase &eIter, kmb::nodeIdType *clo
 	}
 	const int len = eIter.getNodeCount();
 	for(int i=0;i<len;++i){
-		clonedCell[i] = eIter.getCellId(i);
+		clonedCell[i] = eIter.getNodeId(i);
 	}
 	return retVal;
 }
@@ -1425,7 +1425,7 @@ kmb::ElementRelation::clone( const kmb::ElementBase &eIter, kmb::nodeIdType *clo
 	}
 	const int len = eIter.getNodeCount();
 	for(int i=0;i<len;++i){
-		kmb::nodeIdType nodeId = eIter.getCellId(i);
+		kmb::nodeIdType nodeId = eIter.getNodeId(i);
 		std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator nIter = nodeMapper.find( nodeId );
 		if( nIter != nodeMapper.end() ){
 			clonedCell[i] = nIter->second;
@@ -1447,161 +1447,161 @@ kmb::ElementRelation::reverse( const kmb::ElementBase &eIter, kmb::nodeIdType *r
 	switch( eIter.getType() )
 	{
 	case kmb::SEGMENT:
-		reversedCell[0] = eIter.getCellId(1);
-		reversedCell[1] = eIter.getCellId(0);
+		reversedCell[0] = eIter.getNodeId(1);
+		reversedCell[1] = eIter.getNodeId(0);
 		retVal = true;
 		break;
 	case kmb::SEGMENT2:
-		reversedCell[0] = eIter.getCellId(1);
-		reversedCell[1] = eIter.getCellId(0);
+		reversedCell[0] = eIter.getNodeId(1);
+		reversedCell[1] = eIter.getNodeId(0);
 
-		reversedCell[2] = eIter.getCellId(2);
+		reversedCell[2] = eIter.getNodeId(2);
 		retVal = true;
 		break;
 	case kmb::TRIANGLE:
-		reversedCell[0] = eIter.getCellId(2);
-		reversedCell[1] = eIter.getCellId(1);
-		reversedCell[2] = eIter.getCellId(0);
+		reversedCell[0] = eIter.getNodeId(2);
+		reversedCell[1] = eIter.getNodeId(1);
+		reversedCell[2] = eIter.getNodeId(0);
 		retVal = true;
 		break;
 	case kmb::TRIANGLE2:
-		reversedCell[0] = eIter.getCellId(2);
-		reversedCell[1] = eIter.getCellId(1);
-		reversedCell[2] = eIter.getCellId(0);
+		reversedCell[0] = eIter.getNodeId(2);
+		reversedCell[1] = eIter.getNodeId(1);
+		reversedCell[2] = eIter.getNodeId(0);
 
-		reversedCell[3] = eIter.getCellId(5);
-		reversedCell[4] = eIter.getCellId(4);
-		reversedCell[5] = eIter.getCellId(3);
+		reversedCell[3] = eIter.getNodeId(5);
+		reversedCell[4] = eIter.getNodeId(4);
+		reversedCell[5] = eIter.getNodeId(3);
 		retVal = true;
 		break;
 	case kmb::QUAD:
-		reversedCell[0] = eIter.getCellId(3);
-		reversedCell[1] = eIter.getCellId(2);
-		reversedCell[2] = eIter.getCellId(1);
-		reversedCell[3] = eIter.getCellId(0);
+		reversedCell[0] = eIter.getNodeId(3);
+		reversedCell[1] = eIter.getNodeId(2);
+		reversedCell[2] = eIter.getNodeId(1);
+		reversedCell[3] = eIter.getNodeId(0);
 		retVal = true;
 		break;
 	case kmb::QUAD2:
-		reversedCell[0] = eIter.getCellId(3);
-		reversedCell[1] = eIter.getCellId(2);
-		reversedCell[2] = eIter.getCellId(1);
-		reversedCell[3] = eIter.getCellId(0);
+		reversedCell[0] = eIter.getNodeId(3);
+		reversedCell[1] = eIter.getNodeId(2);
+		reversedCell[2] = eIter.getNodeId(1);
+		reversedCell[3] = eIter.getNodeId(0);
 
-		reversedCell[4] = eIter.getCellId(6);
-		reversedCell[5] = eIter.getCellId(5);
-		reversedCell[6] = eIter.getCellId(4);
-		reversedCell[7] = eIter.getCellId(7);
+		reversedCell[4] = eIter.getNodeId(6);
+		reversedCell[5] = eIter.getNodeId(5);
+		reversedCell[6] = eIter.getNodeId(4);
+		reversedCell[7] = eIter.getNodeId(7);
 		retVal = true;
 		break;
 	case kmb::TETRAHEDRON:
-		reversedCell[0] = eIter.getCellId(1);
-		reversedCell[1] = eIter.getCellId(0);
-		reversedCell[2] = eIter.getCellId(2);
-		reversedCell[3] = eIter.getCellId(3);
+		reversedCell[0] = eIter.getNodeId(1);
+		reversedCell[1] = eIter.getNodeId(0);
+		reversedCell[2] = eIter.getNodeId(2);
+		reversedCell[3] = eIter.getNodeId(3);
 		retVal = true;
 		break;
 	case kmb::TETRAHEDRON2:
-		reversedCell[0] = eIter.getCellId(1);
-		reversedCell[1] = eIter.getCellId(0);
-		reversedCell[2] = eIter.getCellId(2);
-		reversedCell[3] = eIter.getCellId(3);
+		reversedCell[0] = eIter.getNodeId(1);
+		reversedCell[1] = eIter.getNodeId(0);
+		reversedCell[2] = eIter.getNodeId(2);
+		reversedCell[3] = eIter.getNodeId(3);
 
-		reversedCell[4] = eIter.getCellId(5);
-		reversedCell[5] = eIter.getCellId(4);
-		reversedCell[6] = eIter.getCellId(6);
-		reversedCell[7] = eIter.getCellId(8);
-		reversedCell[8] = eIter.getCellId(7);
-		reversedCell[9] = eIter.getCellId(9);
+		reversedCell[4] = eIter.getNodeId(5);
+		reversedCell[5] = eIter.getNodeId(4);
+		reversedCell[6] = eIter.getNodeId(6);
+		reversedCell[7] = eIter.getNodeId(8);
+		reversedCell[8] = eIter.getNodeId(7);
+		reversedCell[9] = eIter.getNodeId(9);
 		retVal = true;
 		break;
 	case kmb::WEDGE:
-		reversedCell[0] = eIter.getCellId(0);
-		reversedCell[1] = eIter.getCellId(2);
-		reversedCell[2] = eIter.getCellId(1);
-		reversedCell[3] = eIter.getCellId(3);
-		reversedCell[4] = eIter.getCellId(5);
-		reversedCell[5] = eIter.getCellId(4);
+		reversedCell[0] = eIter.getNodeId(0);
+		reversedCell[1] = eIter.getNodeId(2);
+		reversedCell[2] = eIter.getNodeId(1);
+		reversedCell[3] = eIter.getNodeId(3);
+		reversedCell[4] = eIter.getNodeId(5);
+		reversedCell[5] = eIter.getNodeId(4);
 		retVal = true;
 		break;
 	case kmb::WEDGE2:
-		reversedCell[0] = eIter.getCellId(0);
-		reversedCell[1] = eIter.getCellId(2);
-		reversedCell[2] = eIter.getCellId(1);
-		reversedCell[3] = eIter.getCellId(3);
-		reversedCell[4] = eIter.getCellId(5);
-		reversedCell[5] = eIter.getCellId(4);
+		reversedCell[0] = eIter.getNodeId(0);
+		reversedCell[1] = eIter.getNodeId(2);
+		reversedCell[2] = eIter.getNodeId(1);
+		reversedCell[3] = eIter.getNodeId(3);
+		reversedCell[4] = eIter.getNodeId(5);
+		reversedCell[5] = eIter.getNodeId(4);
 
-		reversedCell[6] = eIter.getCellId(6);
-		reversedCell[7] = eIter.getCellId(8);
-		reversedCell[8] = eIter.getCellId(7);
-		reversedCell[9] = eIter.getCellId(9);
-		reversedCell[10] = eIter.getCellId(11);
-		reversedCell[11] = eIter.getCellId(10);
-		reversedCell[12] = eIter.getCellId(12);
-		reversedCell[13] = eIter.getCellId(14);
-		reversedCell[14] = eIter.getCellId(13);
+		reversedCell[6] = eIter.getNodeId(6);
+		reversedCell[7] = eIter.getNodeId(8);
+		reversedCell[8] = eIter.getNodeId(7);
+		reversedCell[9] = eIter.getNodeId(9);
+		reversedCell[10] = eIter.getNodeId(11);
+		reversedCell[11] = eIter.getNodeId(10);
+		reversedCell[12] = eIter.getNodeId(12);
+		reversedCell[13] = eIter.getNodeId(14);
+		reversedCell[14] = eIter.getNodeId(13);
 		retVal = true;
 		break;
 	case kmb::PYRAMID:
-		reversedCell[0] = eIter.getCellId(0);
-		reversedCell[1] = eIter.getCellId(1);
-		reversedCell[2] = eIter.getCellId(4);
-		reversedCell[3] = eIter.getCellId(3);
-		reversedCell[4] = eIter.getCellId(2);
+		reversedCell[0] = eIter.getNodeId(0);
+		reversedCell[1] = eIter.getNodeId(1);
+		reversedCell[2] = eIter.getNodeId(4);
+		reversedCell[3] = eIter.getNodeId(3);
+		reversedCell[4] = eIter.getNodeId(2);
 		retVal = true;
 		break;
 	case kmb::PYRAMID2:
-		reversedCell[0] = eIter.getCellId(0);
-		reversedCell[1] = eIter.getCellId(1);
-		reversedCell[2] = eIter.getCellId(4);
-		reversedCell[3] = eIter.getCellId(3);
-		reversedCell[4] = eIter.getCellId(2);
+		reversedCell[0] = eIter.getNodeId(0);
+		reversedCell[1] = eIter.getNodeId(1);
+		reversedCell[2] = eIter.getNodeId(4);
+		reversedCell[3] = eIter.getNodeId(3);
+		reversedCell[4] = eIter.getNodeId(2);
 
-		reversedCell[5] = eIter.getCellId(5);
-		reversedCell[6] = eIter.getCellId(8);
-		reversedCell[7] = eIter.getCellId(7);
-		reversedCell[8] = eIter.getCellId(6);
-		reversedCell[9] = eIter.getCellId(12);
-		reversedCell[10] = eIter.getCellId(11);
-		reversedCell[11] = eIter.getCellId(10);
-		reversedCell[12] = eIter.getCellId(9);
+		reversedCell[5] = eIter.getNodeId(5);
+		reversedCell[6] = eIter.getNodeId(8);
+		reversedCell[7] = eIter.getNodeId(7);
+		reversedCell[8] = eIter.getNodeId(6);
+		reversedCell[9] = eIter.getNodeId(12);
+		reversedCell[10] = eIter.getNodeId(11);
+		reversedCell[11] = eIter.getNodeId(10);
+		reversedCell[12] = eIter.getNodeId(9);
 		retVal = true;
 		break;
 	case kmb::HEXAHEDRON:
-		reversedCell[0] = eIter.getCellId(0);
-		reversedCell[1] = eIter.getCellId(3);
-		reversedCell[2] = eIter.getCellId(2);
-		reversedCell[3] = eIter.getCellId(1);
-		reversedCell[4] = eIter.getCellId(4);
-		reversedCell[5] = eIter.getCellId(7);
-		reversedCell[6] = eIter.getCellId(6);
-		reversedCell[7] = eIter.getCellId(5);
+		reversedCell[0] = eIter.getNodeId(0);
+		reversedCell[1] = eIter.getNodeId(3);
+		reversedCell[2] = eIter.getNodeId(2);
+		reversedCell[3] = eIter.getNodeId(1);
+		reversedCell[4] = eIter.getNodeId(4);
+		reversedCell[5] = eIter.getNodeId(7);
+		reversedCell[6] = eIter.getNodeId(6);
+		reversedCell[7] = eIter.getNodeId(5);
 		retVal = true;
 		break;
 	case kmb::HEXAHEDRON2:
-		reversedCell[0] = eIter.getCellId(0);
-		reversedCell[1] = eIter.getCellId(3);
-		reversedCell[2] = eIter.getCellId(2);
-		reversedCell[3] = eIter.getCellId(1);
-		reversedCell[4] = eIter.getCellId(4);
-		reversedCell[5] = eIter.getCellId(7);
-		reversedCell[6] = eIter.getCellId(6);
-		reversedCell[7] = eIter.getCellId(5);
+		reversedCell[0] = eIter.getNodeId(0);
+		reversedCell[1] = eIter.getNodeId(3);
+		reversedCell[2] = eIter.getNodeId(2);
+		reversedCell[3] = eIter.getNodeId(1);
+		reversedCell[4] = eIter.getNodeId(4);
+		reversedCell[5] = eIter.getNodeId(7);
+		reversedCell[6] = eIter.getNodeId(6);
+		reversedCell[7] = eIter.getNodeId(5);
 
-		reversedCell[8] = eIter.getCellId(11);
-		reversedCell[9] = eIter.getCellId(10);
-		reversedCell[10] = eIter.getCellId(9);
-		reversedCell[11] = eIter.getCellId(8);
+		reversedCell[8] = eIter.getNodeId(11);
+		reversedCell[9] = eIter.getNodeId(10);
+		reversedCell[10] = eIter.getNodeId(9);
+		reversedCell[11] = eIter.getNodeId(8);
 
-		reversedCell[12] = eIter.getCellId(15);
-		reversedCell[13] = eIter.getCellId(14);
-		reversedCell[14] = eIter.getCellId(13);
-		reversedCell[15] = eIter.getCellId(12);
+		reversedCell[12] = eIter.getNodeId(15);
+		reversedCell[13] = eIter.getNodeId(14);
+		reversedCell[14] = eIter.getNodeId(13);
+		reversedCell[15] = eIter.getNodeId(12);
 
-		reversedCell[16] = eIter.getCellId(16);
-		reversedCell[17] = eIter.getCellId(19);
-		reversedCell[18] = eIter.getCellId(18);
-		reversedCell[19] = eIter.getCellId(17);
+		reversedCell[16] = eIter.getNodeId(16);
+		reversedCell[17] = eIter.getNodeId(19);
+		reversedCell[18] = eIter.getNodeId(18);
+		reversedCell[19] = eIter.getNodeId(17);
 		retVal = true;
 		break;
 	default:
@@ -1645,7 +1645,7 @@ kmb::ElementRelation::common( const kmb::ElementBase &eIter0, const kmb::Element
 				const int len1 = eIter1.getVertexCount();
 				for(int i=0;i<len0;++i){
 					for(int j=0;j<len1;++j){
-						if( eIter0.getCellId(i) == eIter1.getCellId(j) ){
+						if( eIter0.getNodeId(i) == eIter1.getNodeId(j) ){
 							common[i] = j;
 							++counter;
 						}
@@ -1657,8 +1657,8 @@ kmb::ElementRelation::common( const kmb::ElementBase &eIter0, const kmb::Element
 						if( common[i0] != -1 && common[i1] != -1 &&
 							( common[i0] - common[i1] + len1 ) % len1 == 1 )
 						{
-							commonCell[0] = eIter0.getCellId(i0);
-							commonCell[1] = eIter0.getCellId(i1);
+							commonCell[0] = eIter0.getNodeId(i0);
+							commonCell[1] = eIter0.getNodeId(i1);
 							etype = kmb::SEGMENT;
 							break;
 						}
@@ -1693,7 +1693,7 @@ kmb::ElementRelation::common( kmb::Face f0, kmb::Face f1, const kmb::ElementCont
 				const int len1 = eIter1.getBoundaryVertexCount( f1.getLocalFaceId() );
 				for(int i=0;i<len0;++i){
 					for(int j=0;j<len1;++j){
-						if( eIter0.getBoundaryCellId( f0.getLocalFaceId(), i ) == eIter1.getBoundaryCellId( f1.getLocalFaceId(), j ) ){
+						if( eIter0.getBoundaryNodeId( f0.getLocalFaceId(), i ) == eIter1.getBoundaryNodeId( f1.getLocalFaceId(), j ) ){
 							common[i] = j;
 							++counter;
 						}
@@ -1705,8 +1705,8 @@ kmb::ElementRelation::common( kmb::Face f0, kmb::Face f1, const kmb::ElementCont
 						if( common[i0] != -1 && common[i1] != -1 &&
 							( common[i0] - common[i1] + len1 ) % len1 == 1 )
 						{
-							commonCell[0] = eIter0.getBoundaryCellId( f0.getLocalFaceId(), i0 );
-							commonCell[1] = eIter0.getBoundaryCellId( f0.getLocalFaceId(), i1 );
+							commonCell[0] = eIter0.getBoundaryNodeId( f0.getLocalFaceId(), i0 );
+							commonCell[1] = eIter0.getBoundaryNodeId( f0.getLocalFaceId(), i1 );
 							etype = kmb::SEGMENT;
 							break;
 						}
@@ -1732,14 +1732,14 @@ kmb::ElementRelation::getRelationForSegment
 	}
 	if( eIter1.getDimension() == 1 ){
 		ret = kmb::ElementRelation::getSegmentRelation(
-			eIter0.getCellId(0), eIter0.getCellId(1),
-			eIter1.getCellId(0), eIter1.getCellId(1),
+			eIter0.getNodeId(0), eIter0.getNodeId(1),
+			eIter1.getNodeId(0), eIter1.getNodeId(1),
 			index0, index1);
 	}else{
 		int indices[2];
 		int count = 0;
 		for(int i=0;i<2;++i){
-			indices[i] = eIter1.indexOf( eIter0.getCellId(i) );
+			indices[i] = eIter1.indexOf( eIter0.getNodeId(i) );
 			if( indices[i] >= eIter1.getVertexCount() ){
 				indices[i] = -1;
 			}
@@ -1824,16 +1824,16 @@ kmb::ElementRelation::getRelationForTriangle
 	case TRIANGLE:
 	case TRIANGLE2:
 		ret = kmb::ElementRelation::getTriangleRelation(
-				eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2),
-				eIter1.getCellId(0), eIter1.getCellId(1), eIter1.getCellId(2),
+				eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2),
+				eIter1.getNodeId(0), eIter1.getNodeId(1), eIter1.getNodeId(2),
 				index0, index1 );
 		break;
 	case TETRAHEDRON:
 	case TETRAHEDRON2:
 
 		ret = kmb::ElementRelation::getTriangleTetrahedronRelation(
-				eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2),
-				eIter1.getCellId(0), eIter1.getCellId(1), eIter1.getCellId(2), eIter1.getCellId(3),
+				eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2),
+				eIter1.getNodeId(0), eIter1.getNodeId(1), eIter1.getNodeId(2), eIter1.getNodeId(3),
 				index0, index1 );
 		break;
 	default:
@@ -1842,7 +1842,7 @@ kmb::ElementRelation::getRelationForTriangle
 			int indices[3];
 			int count = 0;
 			for(int i=0;i<3;++i){
-				indices[i] = eIter1.indexOf( eIter0.getCellId(i) );
+				indices[i] = eIter1.indexOf( eIter0.getNodeId(i) );
 				if( indices[i] >= eIter1.getVertexCount() ){
 					indices[i] = -1;
 				}
@@ -1954,10 +1954,10 @@ kmb::ElementRelation::getRelationForTriangle
 							for(int i=0;i<2;++i){
 								kmb::ElementRelation::relationType r =
 									kmb::ElementRelation::getTriangleRelation(
-										eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2),
-										eIter1.getCellId(kmb::Wedge::faceTable[i][0]),
-										eIter1.getCellId(kmb::Wedge::faceTable[i][1]),
-										eIter1.getCellId(kmb::Wedge::faceTable[i][2]),
+										eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2),
+										eIter1.getNodeId(kmb::Wedge::faceTable[i][0]),
+										eIter1.getNodeId(kmb::Wedge::faceTable[i][1]),
+										eIter1.getNodeId(kmb::Wedge::faceTable[i][2]),
 										ind0,ind1);
 								if( r == kmb::ElementRelation::EQUAL ){
 									index1 = i;
@@ -1978,10 +1978,10 @@ kmb::ElementRelation::getRelationForTriangle
 							for(int i=0;i<4;++i){
 								kmb::ElementRelation::relationType r =
 									kmb::ElementRelation::getTriangleRelation(
-										eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2),
-										eIter1.getCellId(kmb::Pyramid::faceTable[i][0]),
-										eIter1.getCellId(kmb::Pyramid::faceTable[i][1]),
-										eIter1.getCellId(kmb::Pyramid::faceTable[i][2]),
+										eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2),
+										eIter1.getNodeId(kmb::Pyramid::faceTable[i][0]),
+										eIter1.getNodeId(kmb::Pyramid::faceTable[i][1]),
+										eIter1.getNodeId(kmb::Pyramid::faceTable[i][2]),
 										ind0,ind1);
 								if( r == kmb::ElementRelation::EQUAL ){
 									index1 = i;
@@ -2048,8 +2048,8 @@ kmb::ElementRelation::getRelationForQuad
 	case kmb::QUAD:
 	case kmb::QUAD2:
 		ret = kmb::ElementRelation::getQuadRelation(
-				eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2), eIter0.getCellId(3),
-				eIter1.getCellId(0), eIter1.getCellId(1), eIter1.getCellId(2), eIter1.getCellId(3),
+				eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2), eIter0.getNodeId(3),
+				eIter1.getNodeId(0), eIter1.getNodeId(1), eIter1.getNodeId(2), eIter1.getNodeId(3),
 				index0, index1);
 		break;
 	default:
@@ -2057,7 +2057,7 @@ kmb::ElementRelation::getRelationForQuad
 			int indices[4];
 			int count = 0;
 			for(int i=0;i<4;++i){
-				indices[i] = eIter1.indexOf( eIter0.getCellId(i) );
+				indices[i] = eIter1.indexOf( eIter0.getNodeId(i) );
 				if( indices[i] >= eIter1.getVertexCount() ){
 					indices[i] = -1;
 				}
@@ -2091,11 +2091,11 @@ kmb::ElementRelation::getRelationForQuad
 						// Wedge の4角形の Face は 2,3,4 番目
 						for(int i=2;i<5;++i){
 							kmb::ElementRelation::relationType r = kmb::ElementRelation::getQuadRelation(
-								eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2), eIter0.getCellId(3),
-								eIter1.getCellId(kmb::Wedge::faceTable[i][0]),
-								eIter1.getCellId(kmb::Wedge::faceTable[i][1]),
-								eIter1.getCellId(kmb::Wedge::faceTable[i][2]),
-								eIter1.getCellId(kmb::Wedge::faceTable[i][3]),
+								eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2), eIter0.getNodeId(3),
+								eIter1.getNodeId(kmb::Wedge::faceTable[i][0]),
+								eIter1.getNodeId(kmb::Wedge::faceTable[i][1]),
+								eIter1.getNodeId(kmb::Wedge::faceTable[i][2]),
+								eIter1.getNodeId(kmb::Wedge::faceTable[i][3]),
 								ind0,ind1);
 							if( r == kmb::ElementRelation::EQUAL ){
 								index1 = i;
@@ -2115,11 +2115,11 @@ kmb::ElementRelation::getRelationForQuad
 						// Pyramid の4角形の Face は 4 番目
 						kmb::ElementRelation::relationType r =
 							kmb::ElementRelation::getQuadRelation(
-							eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2), eIter0.getCellId(3),
-							eIter1.getCellId(kmb::Pyramid::faceTable[4][0]),
-							eIter1.getCellId(kmb::Pyramid::faceTable[4][1]),
-							eIter1.getCellId(kmb::Pyramid::faceTable[4][2]),
-							eIter1.getCellId(kmb::Pyramid::faceTable[4][3]),
+							eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2), eIter0.getNodeId(3),
+							eIter1.getNodeId(kmb::Pyramid::faceTable[4][0]),
+							eIter1.getNodeId(kmb::Pyramid::faceTable[4][1]),
+							eIter1.getNodeId(kmb::Pyramid::faceTable[4][2]),
+							eIter1.getNodeId(kmb::Pyramid::faceTable[4][3]),
 							ind0,ind1);
 						if( r == kmb::ElementRelation::EQUAL ){
 							index1 = 4;
@@ -2137,11 +2137,11 @@ kmb::ElementRelation::getRelationForQuad
 						for(int i=0;i<6;++i){
 							kmb::ElementRelation::relationType r =
 								kmb::ElementRelation::getQuadRelation(
-								eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2), eIter0.getCellId(3),
-								eIter1.getCellId(kmb::Hexahedron::faceTable[i][0]),
-								eIter1.getCellId(kmb::Hexahedron::faceTable[i][1]),
-								eIter1.getCellId(kmb::Hexahedron::faceTable[i][2]),
-								eIter1.getCellId(kmb::Hexahedron::faceTable[i][3]),
+								eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2), eIter0.getNodeId(3),
+								eIter1.getNodeId(kmb::Hexahedron::faceTable[i][0]),
+								eIter1.getNodeId(kmb::Hexahedron::faceTable[i][1]),
+								eIter1.getNodeId(kmb::Hexahedron::faceTable[i][2]),
+								eIter1.getNodeId(kmb::Hexahedron::faceTable[i][3]),
 								ind0,ind1);
 							if( r == kmb::ElementRelation::EQUAL ){
 								index1 = i;
@@ -2229,8 +2229,8 @@ kmb::ElementRelation::getRelationForTetrahedron(const kmb::ElementBase &eIter0, 
 	case kmb::TETRAHEDRON:
 	case kmb::TETRAHEDRON2:
 		ret = kmb::ElementRelation::getTetrahedronRelation(
-			eIter0.getCellId(0), eIter0.getCellId(1), eIter0.getCellId(2), eIter0.getCellId(3),
-			eIter1.getCellId(0), eIter1.getCellId(1), eIter1.getCellId(2), eIter1.getCellId(3),
+			eIter0.getNodeId(0), eIter0.getNodeId(1), eIter0.getNodeId(2), eIter0.getNodeId(3),
+			eIter1.getNodeId(0), eIter1.getNodeId(1), eIter1.getNodeId(2), eIter1.getNodeId(3),
 			index0, index1);
 		break;
 	default:

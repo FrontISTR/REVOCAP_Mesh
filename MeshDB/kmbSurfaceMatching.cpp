@@ -372,13 +372,13 @@ kmb::SurfaceMatching::appendDummyElement(kmb::Face f)
 				bfaces[i].getFaceElement( slaveElements, q1 );
 				int i0=-1, i1=-1;
 				if( kmb::ElementRelation::getQuadRelation(
-						q0.getCellId(0), q0.getCellId(1), q0.getCellId(2), q0.getCellId(3),
-						q1.getCellId(0), q1.getCellId(1), q1.getCellId(2), q1.getCellId(3),
+						q0.getNodeId(0), q0.getNodeId(1), q0.getNodeId(2), q0.getNodeId(3),
+						q1.getNodeId(0), q1.getNodeId(1), q1.getNodeId(2), q1.getNodeId(3),
 						i0, i1 ) == kmb::ElementRelation::ADJACENT && i0 == i )
 				{
 					// i 番目の辺は [i,i+1] => 最初の節点は i
-					nodes[i] = elem.getCellId( (i1 + 1 + matchingElements[i].index)%4 );
-					nodes[(i+1)%4] = elem.getCellId( (i1 + matchingElements[i].index)%4 );
+					nodes[i] = elem.getNodeId( (i1 + 1 + matchingElements[i].index)%4 );
+					nodes[(i+1)%4] = elem.getNodeId( (i1 + matchingElements[i].index)%4 );
 				}
 			}
 		}

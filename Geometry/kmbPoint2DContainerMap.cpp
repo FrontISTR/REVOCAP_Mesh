@@ -151,6 +151,16 @@ kmb::Point2DContainerMap::getPoint(kmb::nodeIdType id,kmb::Point2D &point) const
 	}
 }
 
+double kmb::Point2DContainerMap::x(kmb::nodeIdType nodeId) const
+{
+	return points.find(nodeId)->second->x();
+}
+
+double kmb::Point2DContainerMap::y(kmb::nodeIdType nodeId) const
+{
+	return points.find(nodeId)->second->y();
+}
+
 kmb::nodeIdType kmb::Point2DContainerMap::getMaxId(void) const
 {
 	return maxId;

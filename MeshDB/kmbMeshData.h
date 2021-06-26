@@ -93,6 +93,8 @@ public:
 	// each メソッド等はコンテナを取得してから
 	const kmb::Point3DContainer* getNodes(void) const;
 	kmb::Point3DContainer* getNodes(void);
+	const kmb::Point3DContainer* getNodeContainer(void) const { return this->getNodes(); };
+	kmb::Point3DContainer* getNodeContainer(void) { return this->getNodes(); };
 	virtual const kmb::Point2DContainer* getNode2Ds(void) const{ return NULL; };
 	kmb::Point3DContainer* replaceNodes(kmb::Point3DContainer* nodes);
 	// 節点数
@@ -111,6 +113,11 @@ public:
 	// コンテナタイプ
 	const char* getNodeContainerType(void) const;
 	virtual const kmb::BoundingBox getBoundingBox(void) const;
+
+	typedef kmb::Point3DContainer NodeContainer;
+	typedef kmb::Point3DContainer::const_iterator nodeIterator;
+	nodeIterator beginNodeIterator() const;
+	nodeIterator endNodeIterator() const;
 	//-------------- 要素管理 -------------------//
 	// 要素の登録開始
 	// set suitable container type
@@ -133,7 +140,7 @@ public:
 	// 要素グループの個数取得
 	kmb::bodyIdType getBodyCount(void) const;
 	// 要素番号から要素グループ番号の取得
-	bodyIdType getBodyId(elementIdType elementId) const;
+	kmb::bodyIdType getBodyId(elementIdType elementId) const;
 	// 要素グループコンテナの追加・置換
 	// offset フラグは追加するコンテナの offset を自動的に書き換える
 	virtual kmb::bodyIdType appendBody( kmb::Body* body, bool offset=true );
@@ -149,8 +156,11 @@ public:
 	// 要素グループのコンテナ取得
 	kmb::Body* getBodyPtr(bodyIdType bodyId);
 	const kmb::Body* getBodyPtr(bodyIdType bodyId) const;
+	kmb::Body* getElementContainer(bodyIdType bodyId);
+	const kmb::Body* getElementContainer(bodyIdType bodyId) const;
 	// 要素グループに含まれる要素の個数の取得
 	size_t getElementCount(kmb::bodyIdType bodyId) const;
+	size_t getElementCountByType(kmb::bodyIdType bodyId, kmb::elementType etype) const;
 	size_t getElementCount(void) const;
 	size_t getElementCountOfDim(int dim) const;
 	// 要素グループの次元（表面メッシュなら2、体積メッシュなら3）
@@ -166,15 +176,23 @@ public:
 	kmb::ElementContainer::const_iterator findElement(elementIdType elementID,bodyIdType bodyID=kmb::Body::nullBodyId) const;
 	// 要素グループ名
 	virtual const char* getBodyName(bodyIdType bodyId) const;
-	virtual void setBodyName(bodyIdType bodyId,const char* name);
+	virtual void setBodyName(bodyIdType bodyId, const char* name);
+	virtual void setBodyName(bodyIdType bodyId, std::string name);
 	kmb::bodyIdType getBodyIdByName(const char* name) const;
 	// コンテナタイプ
 	const char* getElementContainerType(bodyIdType bodyId) const;
 	// 外部メッシュから要素グループの追加
 	kmb::bodyIdType importBody(const kmb::MeshData& otherMesh,kmb::bodyIdType bodyId);
+
+	typedef kmb::ElementContainer ElementContainer;
+	typedef kmb::ElementContainer::const_iterator elementIterator;
+	elementIterator beginElementIterator(kmb::bodyIdType bodyId) const;
+	elementIterator endElementIterator(kmb::bodyIdType bodyId) const;
 	//---------------------------------------------//
 	//-------------- 物理量管理 -------------------//
 	//---------------------------------------------//
+	typedef kmb::DataBindings DataContainer;
+	typedef kmb::DataBindings::const_iterator dataIterator;
 	virtual const std::multimap< std::string, kmb::DataBindings* >& getDataBindingsMap(void) const;
 	kmb::datamap::iterator beginDataIterator();
 	kmb::datamap::const_iterator beginDataIterator() const;
@@ -190,6 +208,8 @@ public:
 	// 物理量データの取得
 	kmb::DataBindings* getDataBindingsPtr(const char* name,const char* stype=NULL);
 	const kmb::DataBindings* getDataBindingsPtr(const char* name,const char* stype=NULL) const;
+	kmb::DataBindings* getData(std::string name);
+	const kmb::DataBindings* getData(std::string name) const;
 	// 物理量データの設定
 	bool setDataBindingsPtr(const char* name,kmb::DataBindings* data,const char* stype=NULL);
 	// 登録されている物理量の種類の個数
@@ -198,6 +218,7 @@ public:
 	bool renameData(const char* oldname,const char* newname,const char* stype=NULL);
 	bool deleteData(const char* name,const char* stype=NULL);
 	bool clearData(const char* name,const char* stype=NULL);
+	std::vector<std::string> getDataNames(void) const;
 	// name に登録されているデータの置き換え
 	// 使わなくなった olddata はこのメソッドの外で delete すること
 	// olddata は NULL であってはいけないが、newdata は NULL の場合も可
@@ -246,6 +267,14 @@ public:
 	// 登録されているデータに ElementGroup / ElementVariable があれば、
 	// orgElementId のデータを elementId が引き継ぐ
 	void deriveTargetData(kmb::elementIdType elementId,kmb::elementIdType orgElementId);
+	// Global Hash
+	double getValue(std::string name, std::string key) const;
+	bool setValue(std::string name, std::string key, double v);
+	// Global Data
+	double getValue(std::string name) const;
+	bool setValue(std::string name,double v);
+	bool getValue(std::string name, double* v) const;
+	bool setValue(std::string name, double* v);
 
 	// 変換系：データからボディを生成して登録
 	kmb::bodyIdType faceGroupToBody(const char* faceG,const char* stype=NULL);

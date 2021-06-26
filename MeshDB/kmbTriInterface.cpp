@@ -32,16 +32,16 @@
 /********************************************************************************
 =begin
 
-=== 1次三角形インターフェイス要素 (TRIANGLE_INTERFACE)
+=== 1谺｡荳芽ｧ貞ｽ｢繧､繝ｳ繧ｿ繝ｼ繝輔ぉ繧､繧ｹ隕∫ｴ (TRIANGLE_INTERFACE)
 
-接続行列
+謗･邯夊｡悟��
 
 	{ 0, 1, 0,-1},
 	{-1, 0, 1, 0},
 	{ 0,-1, 0, 1},
 	{ 1, 0,-1, 0}
 
-面
+髱｢
 
 	{ 0, 1},
 	{ 1, 2},
@@ -116,3 +116,12 @@ kmb::TriInterface::~TriInterface(void)
 {
 }
 
+kmb::nodeIdType kmb::TriInterface::operator()(const int index,const int i) const
+{
+	return cell[kmb::TriInterface::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::TriInterface::operator()(const int index,const int i)
+{
+	return cell[kmb::TriInterface::faceTable[index][i]];
+}

@@ -515,7 +515,7 @@ kmb::SurfaceOperation::surface2FaceGroup(kmb::bodyIdType bodyId,const char* pare
 	kmb::ElementContainer::iterator eEnd = body->end();
 	while( eIter != eEnd )
 	{
-		kmb::nodeIdType n0 = eIter.getCellId(0);
+		kmb::nodeIdType n0 = eIter.getNodeId(0);
 		kmb::NodeNeighborFace::iterator neiIter = neighborInfo.beginIteratorAt(n0);
 		kmb::NodeNeighborFace::iterator neiEnd = neighborInfo.endIteratorAt(n0);
 		while( neiIter != neiEnd ){

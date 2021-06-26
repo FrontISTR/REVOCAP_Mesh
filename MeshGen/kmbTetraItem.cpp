@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : TetraItem                                               #
@@ -218,7 +218,7 @@ void kmb::TetraItem::generateNeighborRelations( kmb::TetraItem* tetra )
 	kmb::TetraItem* tIter = tetra;
 	while( tIter ){
 		for(int i=0;i<4;++i){
-			int n = tIter->getBoundaryCellId(i,0) + tIter->getBoundaryCellId(i,1) + tIter->getBoundaryCellId(i,2);
+			int n = tIter->getBoundaryNodeId(i,0) + tIter->getBoundaryNodeId(i,1) + tIter->getBoundaryNodeId(i,2);
 			FaceItem f(tIter,i);
 			facemap.insert( std::pair<int, FaceItem>(n,f) );
 		}
@@ -284,17 +284,17 @@ kmb::TetraItem::debugItem( kmb::TetraItem* item, const char* tag  )
 		std::cout << tag << " ";
 	}
 	std::cout << "[ "
-		<< item->getCellId(0) << " "
-		<< item->getCellId(1) << " "
-		<< item->getCellId(2) << " "
-		<< item->getCellId(3) << "] => ";
+		<< item->getNodeId(0) << " "
+		<< item->getNodeId(1) << " "
+		<< item->getNodeId(2) << " "
+		<< item->getNodeId(3) << "] => ";
 	for(int i=0;i<4;++i){
 		if( item->getNeighbor(i) ){
 			std::cout << "[ "
-				<< item->getNeighbor(i)->getCellId(0) << " "
-				<< item->getNeighbor(i)->getCellId(1) << " "
-				<< item->getNeighbor(i)->getCellId(2) << " "
-				<< item->getNeighbor(i)->getCellId(3) << "] ";
+				<< item->getNeighbor(i)->getNodeId(0) << " "
+				<< item->getNeighbor(i)->getNodeId(1) << " "
+				<< item->getNeighbor(i)->getNodeId(2) << " "
+				<< item->getNeighbor(i)->getNodeId(3) << "] ";
 		}else{
 			std::cout << "[NULL] ";
 		}
@@ -338,10 +338,10 @@ kmb::TetraItem::checkVolume( kmb::TetraItem* tetra, kmb::Point3DContainer &point
 	}
 	bool retVal = true;
 	std::cout << "[ "
-		<< tetra->getCellId(0) << " "
-		<< tetra->getCellId(1) << " "
-		<< tetra->getCellId(2) << " "
-		<< tetra->getCellId(3) << "] => ";
+		<< tetra->getNodeId(0) << " "
+		<< tetra->getNodeId(1) << " "
+		<< tetra->getNodeId(2) << " "
+		<< tetra->getNodeId(3) << "] => ";
 	kmb::Point3D p0,p1,p2,p3;
 	if( points.getPoint((*tetra)[0],p0) &&
 		points.getPoint((*tetra)[1],p1) &&
@@ -384,20 +384,20 @@ kmb::TetraItem::checkNeighbor( kmb::TetraItem* tetra )
 	}
 	bool retVal(true);
 	std::cout << "[ "
-		<< tetra->getCellId(0) << " "
-		<< tetra->getCellId(1) << " "
-		<< tetra->getCellId(2) << " "
-		<< tetra->getCellId(3) << "] => ";
+		<< tetra->getNodeId(0) << " "
+		<< tetra->getNodeId(1) << " "
+		<< tetra->getNodeId(2) << " "
+		<< tetra->getNodeId(3) << "] => ";
 	for(int i=0;i<4;++i){
 		// (tetra,i) vs (neighbor,nFace)
 		kmb::TetraItem* neighbor = tetra->getNeighbor(i);
 		int nFace = tetra->getNeighborFace(i);
 		if( neighbor ){
 			std::cout << "[ "
-				<< neighbor->getCellId(0) << " "
-				<< neighbor->getCellId(1) << " "
-				<< neighbor->getCellId(2) << " "
-				<< neighbor->getCellId(3) << "]"
+				<< neighbor->getNodeId(0) << " "
+				<< neighbor->getNodeId(1) << " "
+				<< neighbor->getNodeId(2) << " "
+				<< neighbor->getNodeId(3) << "]"
 				<< "(" << nFace << ") ";
 			int i0=0, i1=0;
 			assert( neighbor->getNeighbor(nFace) == tetra );

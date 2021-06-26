@@ -172,6 +172,16 @@ kmb::Wedge2::~Wedge2(void)
 {
 }
 
+kmb::nodeIdType kmb::Wedge2::operator()(const int index,const int i) const
+{
+	return cell[kmb::Wedge2::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Wedge2::operator()(const int index,const int i)
+{
+	return cell[kmb::Wedge2::faceTable[index][i]];
+}
+
 void
 kmb::Wedge2::shapeFunction(double s,double t,double u,double* coeff)
 {

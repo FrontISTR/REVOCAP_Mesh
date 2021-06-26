@@ -104,8 +104,8 @@ public:
 		virtual const kmb::Element* getElement(void) const{ return NULL; };
 		virtual bool getElement(kmb::elementType &etype,kmb::nodeIdType *nodes) const = 0;
 		virtual kmb::elementType getType(void) const = 0;
-		virtual kmb::nodeIdType getCellId(int index) const = 0;
-		virtual bool setCellId(int cellIndex, kmb::nodeIdType nodeId) = 0;
+		virtual kmb::nodeIdType getNodeId(int index) const = 0;
+		virtual bool setNodeId(int cellIndex, kmb::nodeIdType nodeId) = 0;
 		virtual kmb::nodeIdType operator[](const int i) const = 0;
 		virtual _iterator* operator++(void) = 0;
 		virtual _iterator* operator++(int n) = 0;
@@ -132,8 +132,8 @@ public:
 		bool getElement(kmb::elementType &etype,kmb::nodeIdType *nodes) const;
 		bool getElement(kmb::Element &element) const;
 		kmb::elementType getType(void) const;
-		kmb::nodeIdType getCellId(int cellIndex) const;
-		bool setCellId(int cellIndex, kmb::nodeIdType nodeId);
+		kmb::nodeIdType getNodeId(int cellIndex) const;
+		bool setNodeId(int cellIndex, kmb::nodeIdType nodeId);
 		virtual kmb::nodeIdType operator[](const int i) const;
 		// 代入
 		iterator& operator=(const iterator& other);
@@ -162,8 +162,8 @@ public:
 		bool getElement(kmb::elementType &etype,kmb::nodeIdType *nodes) const;
 		bool getElement(kmb::Element &element) const;
 		kmb::elementType getType(void) const;
-		kmb::nodeIdType getCellId(int cellIndex) const;
-		bool setCellId(int cellIndex, kmb::nodeIdType nodeId);
+		kmb::nodeIdType getNodeId(int cellIndex) const;
+		bool setNodeId(int cellIndex, kmb::nodeIdType nodeId);
 		virtual kmb::nodeIdType operator[](const int i) const;
 		// 代入
 		const_iterator& operator=(const const_iterator& other);
@@ -200,6 +200,8 @@ public:
 public:
 	void setBodyName(const char* name);
 	const char* getBodyName(void) const;
+	void setName(const char* name);
+	const char* getName(void) const;
 public:
 	static const kmb::bodyIdType nullBodyId;
 	static bool copy(const kmb::ElementContainer* org, kmb::ElementContainer* elements);

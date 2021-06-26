@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementContainerNArray                                  #
@@ -351,7 +351,7 @@ kmb::ElementContainerNArray::_iteratorNA::getType(void) const
 }
 
 kmb::nodeIdType
-kmb::ElementContainerNArray::_iteratorNA::getCellId(int cellIndex) const
+kmb::ElementContainerNArray::_iteratorNA::getNodeId(int cellIndex) const
 {
 	if( 0 <= cellIndex && cellIndex < static_cast<int>(elementContainer->ncount) &&
 		elementContainer->nodeTable[ (elementContainer->ncount)*index ] != elementContainer->nodeTable[ (elementContainer->ncount)*index+1 ] ){
@@ -362,7 +362,7 @@ kmb::ElementContainerNArray::_iteratorNA::getCellId(int cellIndex) const
 }
 
 bool
-kmb::ElementContainerNArray::_iteratorNA::setCellId(int cellIndex, kmb::nodeIdType nodeId)
+kmb::ElementContainerNArray::_iteratorNA::setNodeId(int cellIndex, kmb::nodeIdType nodeId)
 {
 	if( 0 <= cellIndex && cellIndex < static_cast<int>(elementContainer->ncount) ){
 		elementContainer->nodeTable[ (elementContainer->ncount)*index+cellIndex ] = nodeId + elementContainer->nodeOffset;

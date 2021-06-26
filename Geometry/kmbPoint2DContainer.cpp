@@ -37,8 +37,7 @@
 #pragma warning(disable:869) // 使わない引数があっても警告を出さない for intel
 #endif
 
-bool
-kmb::Point2DContainer::copy(const kmb::Point2DContainer* org, kmb::Point2DContainer* points)
+bool kmb::Point2DContainer::copy(const kmb::Point2DContainer* org, kmb::Point2DContainer* points)
 {
 	if( org == NULL || points == NULL ){
 		return false;
@@ -57,8 +56,7 @@ kmb::Point2DContainer::copy(const kmb::Point2DContainer* org, kmb::Point2DContai
 	return ret;
 }
 
-kmb::Point2DContainer*
-kmb::Point2DContainer::createContainer( const char* containerType )
+kmb::Point2DContainer* kmb::Point2DContainer::createContainer( const char* containerType )
 {
 	if( containerType == NULL ){
 		return NULL;
@@ -85,8 +83,7 @@ kmb::Point2DContainer::~Point2DContainer(void)
 const kmb::Point2DContainer::iterator kmb::Point2DContainer::endIterator;
 const kmb::Point2DContainer::const_iterator kmb::Point2DContainer::endConstIterator;
 
-void
-kmb::Point2DContainer::copyPreservingId(Point2DContainer& container)
+void kmb::Point2DContainer::copyPreservingId(Point2DContainer& container)
 {
 	this->clear();
 	kmb::Point2D point;
@@ -101,8 +98,7 @@ kmb::Point2DContainer::copyPreservingId(Point2DContainer& container)
 	}
 }
 
-void
-kmb::Point2DContainer::copyWithoutPreservingId(Point2DContainer& container)
+void kmb::Point2DContainer::copyWithoutPreservingId(Point2DContainer& container)
 {
 	this->clear();
 	kmb::Point2D point;
@@ -116,22 +112,17 @@ kmb::Point2DContainer::copyWithoutPreservingId(Point2DContainer& container)
 	}
 }
 
-kmb::nodeIdType
-kmb::Point2DContainer::duplicatePoint(nodeIdType nodeId)
+kmb::nodeIdType kmb::Point2DContainer::duplicatePoint(nodeIdType nodeId)
 {
 	double x,y;
-	if( this->getXY( nodeId, x, y ) )
-	{
+	if( this->getXY( nodeId, x, y ) ){
 		return this->addPoint( x, y );
-	}
-	else
-	{
+	}else{
 		return -1;
 	}
 }
 
-void
-kmb::Point2DContainer::convertAllNodes( kmb::Matrix3x3& mat )
+void kmb::Point2DContainer::convertAllNodes( kmb::Matrix3x3& mat )
 {
 	kmb::Point2DContainer::iterator pIter = this->begin();
 	kmb::Point2DContainer::iterator pEnd = this->end();
@@ -152,8 +143,7 @@ kmb::Point2DContainer::convertAllNodes( kmb::Matrix3x3& mat )
 	boundBox.update( bmin );
 }
 
-void
-kmb::Point2DContainer::translateAllNodes( double x,double y )
+void kmb::Point2DContainer::translateAllNodes( double x,double y )
 {
 	kmb::Point2DContainer::iterator pIter = this->begin();
 	kmb::Point2DContainer::iterator pEnd = this->end();
@@ -174,8 +164,7 @@ kmb::Point2DContainer::translateAllNodes( double x,double y )
 	boundBox.update( bmin );
 }
 
-void
-kmb::Point2DContainer::scaleAllNodes( double r )
+void kmb::Point2DContainer::scaleAllNodes( double r )
 {
 	kmb::Point2DContainer::iterator pIter = this->begin();
 	kmb::Point2DContainer::iterator pEnd = this->end();
@@ -196,8 +185,7 @@ kmb::Point2DContainer::scaleAllNodes( double r )
 	boundBox.update( bmin );
 }
 
-bool
-kmb::Point2DContainer::updateCoordinate( kmb::nodeIdType nodeId, double x, double y )
+bool kmb::Point2DContainer::updateCoordinate( kmb::nodeIdType nodeId, double x, double y )
 {
 	kmb::Point2DContainer::iterator pIter = this->find(nodeId);
 	if( !pIter.isFinished() ){
@@ -596,6 +584,16 @@ kmb::Point2DContainerVect::getPoint(nodeIdType id,kmb::Point2D &point) const
 	}else{
 		return false;
 	}
+}
+
+double kmb::Point2DContainerVect::x(kmb::nodeIdType nodeId) const
+{
+	return points[nodeId]->x();
+}
+
+double kmb::Point2DContainerVect::y(kmb::nodeIdType nodeId) const
+{
+	return points[nodeId]->y();
 }
 
 kmb::nodeIdType

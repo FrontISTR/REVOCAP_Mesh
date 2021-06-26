@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : TriangleOrientedSet                                     #
@@ -112,7 +112,7 @@ kmb::TriangleOrientedSet::clear(void)
 		kmb::nodeIdType nodeId = tIter->first;
 		kmb::Triangle* triangle = tIter->second;
 		// 節点番号の一番大きい時に delete する
-		if( triangle && triangle->getCellId(0) <= nodeId && triangle->getCellId(1) <= nodeId && triangle->getCellId(2) <= nodeId ){
+		if( triangle && triangle->getNodeId(0) <= nodeId && triangle->getNodeId(1) <= nodeId && triangle->getNodeId(2) <= nodeId ){
 			delete triangle;
 			triangle = NULL;
 		}
@@ -147,7 +147,7 @@ kmb::TriangleOrientedSet::appendItem(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb
 				++tIter;
 				continue;
 			}
-			switch( kmb::Triangle::isCoincident( n0, n1, n2, other->getCellId(0), other->getCellId(1), other->getCellId(2) ) )
+			switch( kmb::Triangle::isCoincident( n0, n1, n2, other->getNodeId(0), other->getNodeId(1), other->getNodeId(2) ) )
 			{
 			case 1:
 				// 重複して登録はしない
@@ -162,7 +162,7 @@ kmb::TriangleOrientedSet::appendItem(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb
 				while( tIter1 != endIter1 )
 				{
 					kmb::Triangle* other1 = tIter1->second;
-					if( kmb::Triangle::isCoincident( n0, n1, n2, other1->getCellId(0), other1->getCellId(1), other1->getCellId(2) ) == -1 )
+					if( kmb::Triangle::isCoincident( n0, n1, n2, other1->getNodeId(0), other1->getNodeId(1), other1->getNodeId(2) ) == -1 )
 					{
 						triangles.erase( tIter1 );
 						break;
@@ -175,7 +175,7 @@ kmb::TriangleOrientedSet::appendItem(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb
 				while( tIter2 != endIter2 )
 				{
 					kmb::Triangle* other2 = tIter2->second;
-					if( kmb::Triangle::isCoincident( n0, n1, n2, other2->getCellId(0), other2->getCellId(1), other2->getCellId(2) ) == -1 )
+					if( kmb::Triangle::isCoincident( n0, n1, n2, other2->getNodeId(0), other2->getNodeId(1), other2->getNodeId(2) ) == -1 )
 					{
 						triangles.erase( tIter2 );
 						break;
@@ -210,7 +210,7 @@ kmb::TriangleOrientedSet::include(kmb::nodeIdType n0, kmb::nodeIdType n1, kmb::n
 	}else{
 		while( tIter != endIter ){
 			kmb::Triangle* other = tIter->second;
-			switch( kmb::Triangle::isCoincident( n0, n1, n2, other->getCellId(0), other->getCellId(1), other->getCellId(2) ) )
+			switch( kmb::Triangle::isCoincident( n0, n1, n2, other->getNodeId(0), other->getNodeId(1), other->getNodeId(2) ) )
 			{
 			case 1:
 				return other;
@@ -241,7 +241,7 @@ kmb::TriangleOrientedSet::getElementNeighbor( const kmb::Triangle* tri, kmb::Tri
 	for(int i=0;i<3;++i){
 		neighbors[i] = NULL;
 		// Face の最初の頂点で探す
-		kmb::nodeIdType nodeId = tri->getBoundaryCellId(i,0);
+		kmb::nodeIdType nodeId = tri->getBoundaryNodeId(i,0);
 		// 頂点ごとの周辺要素との関係を調べる
 		std::pair< NodeTriMap::const_iterator, NodeTriMap::const_iterator >
 			eIterPair = triangles.equal_range( nodeId );
@@ -488,7 +488,7 @@ kmb::TriangleOrientedSet::_iterator::getElement(kmb::elementType &etype,kmb::nod
 	if( tri ){
 		etype = kmb::TRIANGLE;
 		for(int i=0;i<3;++i){
-			nodes[i] = tri->getCellId(i);
+			nodes[i] = tri->getNodeId(i);
 		}
 		return true;
 	}else{
@@ -520,22 +520,22 @@ kmb::TriangleOrientedSet::_iterator::getType(void) const
 }
 
 kmb::nodeIdType
-kmb::TriangleOrientedSet::_iterator::getCellId(int cellIndex) const
+kmb::TriangleOrientedSet::_iterator::getNodeId(int cellIndex) const
 {
 	kmb::Triangle* tri = tIter->second;
 	if( tri ){
-		return tri->getCellId(cellIndex);
+		return tri->getNodeId(cellIndex);
 	}else{
 		return kmb::nullNodeId;
 	}
 }
 
 bool
-kmb::TriangleOrientedSet::_iterator::setCellId(int cellIndex, kmb::nodeIdType nodeId)
+kmb::TriangleOrientedSet::_iterator::setNodeId(int cellIndex, kmb::nodeIdType nodeId)
 {
 	kmb::Triangle* tri = tIter->second;
 	if( tri ){
-		return tri->setCellId(cellIndex,nodeId);
+		return tri->setNodeId(cellIndex,nodeId);
 	}else{
 		return false;
 	}
@@ -561,7 +561,7 @@ kmb::TriangleOrientedSet::_iterator::operator++(void)
 	while( tIter != endIter ){
 		kmb::nodeIdType nodeId = tIter->first;
 		kmb::Triangle* tri = tIter->second;
-		if( tri && tri->getCellId(0) >= nodeId && tri->getCellId(1) >= nodeId && tri->getCellId(2) >= nodeId ){
+		if( tri && tri->getNodeId(0) >= nodeId && tri->getNodeId(1) >= nodeId && tri->getNodeId(2) >= nodeId ){
 			break;
 		}
 		tIter++;
@@ -581,7 +581,7 @@ kmb::TriangleOrientedSet::_iterator::operator++(int n)
 	while( tIter != endIter ){
 		kmb::nodeIdType nodeId = tIter->first;
 		kmb::Triangle* tri = tIter->second;
-		if( tri && tri->getCellId(0) >= nodeId && tri->getCellId(1) >= nodeId && tri->getCellId(2) >= nodeId ){
+		if( tri && tri->getNodeId(0) >= nodeId && tri->getNodeId(1) >= nodeId && tri->getNodeId(2) >= nodeId ){
 			break;
 		}
 		++tIter;

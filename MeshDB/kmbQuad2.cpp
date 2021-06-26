@@ -107,6 +107,16 @@ kmb::Quad2::~Quad2(void)
 {
 }
 
+kmb::nodeIdType kmb::Quad2::operator()(const int index,const int i) const
+{
+	return cell[kmb::Quad2::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Quad2::operator()(const int index,const int i)
+{
+	return cell[kmb::Quad2::faceTable[index][i]];
+}
+
 void
 kmb::Quad2::shapeFunction(double s,double t,double* coeff)
 {

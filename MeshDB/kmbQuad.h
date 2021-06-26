@@ -65,6 +65,9 @@ public:
 	static double jacobian(double s, double t,const kmb::Point2D* points);
 	static double jacobian_ds(double s, double t,const kmb::Point2D* points);
 	static double jacobian_dt(double s, double t,const kmb::Point2D* points);
+
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 };
 
 }

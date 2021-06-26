@@ -157,6 +157,16 @@ kmb::Pyramid::~Pyramid(void)
 {
 }
 
+kmb::nodeIdType kmb::Pyramid::operator()(const int index,const int i) const
+{
+	return cell[kmb::Pyramid::faceTable[index][i]];
+}
+
+kmb::nodeIdType& kmb::Pyramid::operator()(const int index,const int i)
+{
+	return cell[kmb::Pyramid::faceTable[index][i]];
+}
+
 void
 kmb::Pyramid::shapeFunction(double s,double t,double u,double* coeff)
 {
@@ -276,26 +286,26 @@ kmb::Pyramid::divideIntoTetrahedrons(const kmb::ElementBase* element,kmb::nodeId
 	if( !n4 )
 	{
 		// [2,4]
-		tetrahedrons[0][0] = element->getCellId(1);
-		tetrahedrons[0][1] = element->getCellId(2);
-		tetrahedrons[0][2] = element->getCellId(4);
-		tetrahedrons[0][3] = element->getCellId(0);
-		tetrahedrons[1][0] = element->getCellId(2);
-		tetrahedrons[1][1] = element->getCellId(3);
-		tetrahedrons[1][2] = element->getCellId(4);
-		tetrahedrons[1][3] = element->getCellId(0);
+		tetrahedrons[0][0] = element->getNodeId(1);
+		tetrahedrons[0][1] = element->getNodeId(2);
+		tetrahedrons[0][2] = element->getNodeId(4);
+		tetrahedrons[0][3] = element->getNodeId(0);
+		tetrahedrons[1][0] = element->getNodeId(2);
+		tetrahedrons[1][1] = element->getNodeId(3);
+		tetrahedrons[1][2] = element->getNodeId(4);
+		tetrahedrons[1][3] = element->getNodeId(0);
 	}
 	else
 	{
 		// [1,3]
-		tetrahedrons[0][0] = element->getCellId(1);
-		tetrahedrons[0][1] = element->getCellId(2);
-		tetrahedrons[0][2] = element->getCellId(3);
-		tetrahedrons[0][3] = element->getCellId(0);
-		tetrahedrons[1][0] = element->getCellId(1);
-		tetrahedrons[1][1] = element->getCellId(3);
-		tetrahedrons[1][2] = element->getCellId(4);
-		tetrahedrons[1][3] = element->getCellId(0);
+		tetrahedrons[0][0] = element->getNodeId(1);
+		tetrahedrons[0][1] = element->getNodeId(2);
+		tetrahedrons[0][2] = element->getNodeId(3);
+		tetrahedrons[0][3] = element->getNodeId(0);
+		tetrahedrons[1][0] = element->getNodeId(1);
+		tetrahedrons[1][1] = element->getNodeId(3);
+		tetrahedrons[1][2] = element->getNodeId(4);
+		tetrahedrons[1][3] = element->getNodeId(0);
 	}
 	return num;
 }

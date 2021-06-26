@@ -85,10 +85,12 @@ kmb::EnvInfo::printSize(void)
 	std::cout << "sizeof(double) = " << sizeof(double) << std::endl;
 }
 
+// Windows の場合
+// 環境変数 TZ=JST-9 の時は正しく動作するが、TZ=Asia/Tokyo では正しく動作しない
 void kmb::EnvInfo::getCurrentTimeString(std::string& str)
 {
 	std::time_t t = std::time(NULL);
-#if defined WIN32 && _MSC_VER >= 1400
+#if defined _WIN32 && _MSC_VER >= 1400
 	std::tm tm;
 	localtime_s(&tm,&t);
 #else

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : PolygonPartitioner                                      #
@@ -230,7 +230,7 @@ kmb::PolygonPartitioner::getNearestSegmentWithSameLevel(kmb::nodeIdType nodeId, 
 		if( !eIter.include(nodeId) )
 		{
 			kmb::Point2D p0,p1;
-			if( points->getPoint( eIter.getCellId(0), p0 ) && points->getPoint( eIter.getCellId(1), p1 ) ){
+			if( points->getPoint( eIter.getNodeId(0), p0 ) && points->getPoint( eIter.getNodeId(1), p1 ) ){
 				if( ( LARGER_Y( p0, point ) && LARGER_Y( point, p1 ) ) ||
 					( LARGER_Y( point, p0 ) && LARGER_Y( p1, point ) ) )
 				{
@@ -275,10 +275,10 @@ kmb::PolygonPartitioner::getHelperNode( kmb::nodeIdType nodeID, kmb::elementIdTy
 		return helperNodeId;
 	}
 	kmb::Point2D l0,l1,r0,r1,point;
-	if( !points->getPoint( leftEdge.getCellId(0), l0 )
-		|| !points->getPoint( leftEdge.getCellId(1), l1 )
-		|| !points->getPoint( rightEdge.getCellId(0), r0 )
-		|| !points->getPoint( rightEdge.getCellId(1), r1 )
+	if( !points->getPoint( leftEdge.getNodeId(0), l0 )
+		|| !points->getPoint( leftEdge.getNodeId(1), l1 )
+		|| !points->getPoint( rightEdge.getNodeId(0), r0 )
+		|| !points->getPoint( rightEdge.getNodeId(1), r1 )
 		|| !points->getPoint( nodeID, point ) )
 	{
 		return helperNodeId;
@@ -291,10 +291,10 @@ kmb::PolygonPartitioner::getHelperNode( kmb::nodeIdType nodeID, kmb::elementIdTy
 		{
 			if( LARGER_Y( l0, r1 ) ){
 				helperNode = r1;
-				helperNodeId = rightEdge.getCellId(1);
+				helperNodeId = rightEdge.getNodeId(1);
 			}else{
 				helperNode = l0;
-				helperNodeId = leftEdge.getCellId(0);
+				helperNodeId = leftEdge.getNodeId(0);
 			}
 		}
 		break;
@@ -302,10 +302,10 @@ kmb::PolygonPartitioner::getHelperNode( kmb::nodeIdType nodeID, kmb::elementIdTy
 		{
 			if( LARGER_Y( l1, r0 ) ){
 				helperNode = r0;
-				helperNodeId = rightEdge.getCellId(0);
+				helperNodeId = rightEdge.getNodeId(0);
 			}else{
 				helperNode = l1;
-				helperNodeId = leftEdge.getCellId(1);
+				helperNodeId = leftEdge.getNodeId(1);
 			}
 		}
 		break;

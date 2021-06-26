@@ -57,6 +57,7 @@ public:
 	double& operator[](const int i){ return v[i]; }
 	double operator[](const int i) const { return v[i]; }
 	Tuple2D& operator=(const Tuple2D& other);
+	bool operator<(const Tuple2D& other)const;
 protected:
 	double v[2];
 };
@@ -76,6 +77,7 @@ public:
 	Point2D& operator+=(const Vector2D& other);
 	Point2D& operator-=(const Vector2D& other);
 	bool operator==(const Point2D& other) const;
+	bool operator!=(const Point2D& other) const;
 	double distance(const Point2D& other) const;
 	double distance(double x,double y) const;
 	double distanceSq(const Point2D& other) const;
@@ -91,16 +93,14 @@ public:
 
 	// static 関数群
 	// 距離
-#ifndef REVOCAP_SUPPORT_RUBY
 	static double distance(const Point2D& a,const Point2D& b);
 	static double distanceSq(const Point2D& a,const Point2D& b);
-#endif
 	// 三角形の面積
 	// a,b,c が半時計回りの時に正
 	static double area(const Point2D& a,const Point2D& b,const Point2D &c);
 	static Point2D getCenter(const Point2D& a,const Point2D& b);
 	static Point2D getCenter(const Point2D& a,const Point2D& b,const Point2D &c);
-	// 角度（ラジアン）
+	// 角度（ラジアン）∠BAC
 	// -PI < theta <= PI
 	static double angle(const Point2D &a,const Point2D &b,const Point2D &c);
 	// 0 <= theta < 2*PI
@@ -156,7 +156,9 @@ public:
 ///// static
 	static double cos(const Vector2D &v0,const Vector2D &v1);
 	static double sin(const Vector2D &v0,const Vector2D &v1);
+	// -PI から PI まで
 	static double angle(const Vector2D &v0,const Vector2D &v1);
+	// 0 から 2PI まで
 	static double angle2(const Vector2D &v0,const Vector2D &v1);
 	static double abs(const double v[2]);
 };
@@ -192,6 +194,12 @@ public:
 	double get(int i,int j) const;
 	bool set(int i,int j,double val);
 	bool add(int i,int j,double val);
+	double operator()(int i,int j) const{
+		return m[i+j*2];
+	}
+	double& operator()(int i,int j){
+		return m[i+j*2];
+	}
 
 	bool identity(void);
 	bool zero(void);
@@ -211,7 +219,6 @@ public:
 	// get inverse matrix
 	Matrix2x2* getInverse(void) const;
 	/// this * x = b なる方程式の解の x を返す
-	Vector2D* solve(const Vector2D& b) const;
 	bool solve(const Vector2D& b,Vector2D& x) const;
 	bool solveSafely(const Vector2D& b,Vector2D& x,double thresh=1.0e-6) const;
 	/// 行列の掛け算

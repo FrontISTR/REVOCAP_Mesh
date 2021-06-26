@@ -1,21 +1,26 @@
-# This is the file describing options for REVOCAP_Refiner makefile.
+#
+# This is the file describing options for REVOCAP_PrePost makefile.
+#
 
-export ARCH
+#
+# export variables
+#
+export EXTENSIONLIB =
+export DEBUGFLAG =
+export OPENCASCADEFLAG =
+export MPIFLAG =
 
 #
 # for debug
 # 
-#export DEBUGFLAG = -D_DEBUG=3 # debug message enable even if in loop
-#export DEBUGFLAG = -D_DEBUG
-export DEBUGFLAG = -DNDEBUG
+#DEBUGFLAG = -D_DEBUG=3 # debug message enable even if in loop
+#DEBUGFLAG = -D_DEBUG -g
+DEBUGFLAG = -DNDEBUG
 
-ARCH = $(shell ruby -e 'puts RUBY_PLATFORM')
-#ARCH = i386-cygwin
-#ARCH = i486-linux
-#ARCH = x86_64-linux
+### for OpenCASCADE
 
-LIBDIR = lib
-RM = rm -f
-DOXYGEN = doxygen
-TAR = tar
-export DATE = $(shell date +%Y%m%d)
+#OPENCASCADEFLAG = -DOPENCASCADE -DHAVE_CONFIG_H -DHAVE_FSTREAM -DHAVE_IOSTREAM -DHAVE_LIMITS_H
+
+### for OpenGLEW
+
+#EXTENSIONLIB += -DREVOCAP_SUPPORT_GLEW

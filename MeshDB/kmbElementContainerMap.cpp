@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : ElementContainerMap                                     #
@@ -171,7 +171,7 @@ kmb::ElementContainerMap::getElement(kmb::elementIdType id,kmb::elementType &ety
 		etype = element->getType();
 		const int len = element->getNodeCount();
 		for(int i=0;i<len;++i){
-			nodes[i] = element->getCellId(i);
+			nodes[i] = element->getNodeId(i);
 		}
 		return true;
 	}
@@ -354,7 +354,7 @@ kmb::ElementContainerMap::_iteratorMap::getElement(kmb::elementType &etype,kmb::
 	etype = this->elementIter->second->getType();
 	int nodeCount = this->elementIter->second->getNodeCount();
 	for(int i=0;i<nodeCount;++i){
-		nodes[i] = this->elementIter->second->getCellId(i);
+		nodes[i] = this->elementIter->second->getNodeId(i);
 	}
 	return true;
 }
@@ -370,22 +370,22 @@ kmb::ElementContainerMap::_iteratorMap::getType(void) const
 }
 
 kmb::nodeIdType
-kmb::ElementContainerMap::_iteratorMap::getCellId(int cellIndex) const
+kmb::ElementContainerMap::_iteratorMap::getNodeId(int cellIndex) const
 {
 	if( this->elementIter->second != NULL ){
-		return this->elementIter->second->getCellId(cellIndex);
+		return this->elementIter->second->getNodeId(cellIndex);
 	}else{
 		return kmb::nullNodeId;
 	}
 }
 
 bool
-kmb::ElementContainerMap::_iteratorMap::setCellId(int cellIndex, kmb::nodeIdType nodeId)
+kmb::ElementContainerMap::_iteratorMap::setNodeId(int cellIndex, kmb::nodeIdType nodeId)
 {
 	if( this->elementIter->second != NULL ){
 		const int nodeCount = this->elementIter->second->getNodeCount();
 		if( 0 <= cellIndex && cellIndex < nodeCount ){
-			return this->elementIter->second->setCellId(cellIndex,nodeId);
+			return this->elementIter->second->setNodeId(cellIndex,nodeId);
 		}
 	}
 	return kmb::nullNodeId;
@@ -395,7 +395,7 @@ kmb::nodeIdType
 kmb::ElementContainerMap::_iteratorMap::operator[](int cellIndex) const
 {
 	if( this->elementIter->second != NULL ){
-		return this->elementIter->second->getCellId(cellIndex);
+		return this->elementIter->second->getNodeId(cellIndex);
 	}else{
 		return kmb::nullNodeId;
 	}

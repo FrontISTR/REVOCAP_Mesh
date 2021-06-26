@@ -66,7 +66,7 @@
 #include <cmath>
 #include <cfloat>
 #include <cstdlib>
-#ifdef WIN32
+#ifdef _WIN32
  #define tempnam _tempnam
 #else
 #endif
@@ -750,19 +750,19 @@ kmb::MeshDB::getAreaVectorOfFaceGroup(const char* faceGroup) const
 				{
 				case kmb::TRIANGLE:
 				case kmb::TRIANGLE2:
-					if( getNode( eIter.getBoundaryCellId(i,0), p0 ) &&
-						getNode( eIter.getBoundaryCellId(i,1), p1 ) &&
-						getNode( eIter.getBoundaryCellId(i,2), p2 ) )
+					if( getNode( eIter.getBoundaryNodeId(i,0), p0 ) &&
+						getNode( eIter.getBoundaryNodeId(i,1), p1 ) &&
+						getNode( eIter.getBoundaryNodeId(i,2), p2 ) )
 					{
 						area += kmb::Point3D::areaVector( p0, p1, p2 );
 					}
 					break;
 				case kmb::QUAD:
 				case kmb::QUAD2:
-					if( getNode( eIter.getBoundaryCellId(i,0), p0 ) &&
-						getNode( eIter.getBoundaryCellId(i,1), p1 ) &&
-						getNode( eIter.getBoundaryCellId(i,2), p2 ) &&
-						getNode( eIter.getBoundaryCellId(i,3), p3 ) )
+					if( getNode( eIter.getBoundaryNodeId(i,0), p0 ) &&
+						getNode( eIter.getBoundaryNodeId(i,1), p1 ) &&
+						getNode( eIter.getBoundaryNodeId(i,2), p2 ) &&
+						getNode( eIter.getBoundaryNodeId(i,3), p3 ) )
 					{
 						area += kmb::Point3D::areaVector( p0, p1, p2 );
 						area += kmb::Point3D::areaVector( p0, p2, p3 );

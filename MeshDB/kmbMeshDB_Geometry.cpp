@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshDB                                                  #
@@ -694,18 +694,18 @@ kmb::MeshDB::getCornerNodeIdOfFaceGroup(const char* faceGroup,kmb::Vector3D dir)
 				case kmb::TRIANGLE:
 				case kmb::TRIANGLE2:
 					for(int j=0;j<3;++j){
-						if( getNode( eIter.getBoundaryCellId(i,j), point ) &&
+						if( getNode( eIter.getBoundaryNodeId(i,j), point ) &&
 							minimizer.update( dir.x()*point.x() + dir.y()*point.y() + dir.z()*point.z() ) ){
-							nodeId = eIter.getBoundaryCellId(i,j);
+							nodeId = eIter.getBoundaryNodeId(i,j);
 						}
 					}
 					break;
 				case kmb::QUAD:
 				case kmb::QUAD2:
 					for(int j=0;j<4;++j){
-						if( getNode( eIter.getBoundaryCellId(i,j), point ) &&
+						if( getNode( eIter.getBoundaryNodeId(i,j), point ) &&
 							minimizer.update( dir.x()*point.x() + dir.y()*point.y() + dir.z()*point.z() ) ){
-							nodeId = eIter.getBoundaryCellId(i,j);
+							nodeId = eIter.getBoundaryNodeId(i,j);
 						}
 					}
 					break;

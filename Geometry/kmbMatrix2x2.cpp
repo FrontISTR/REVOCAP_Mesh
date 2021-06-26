@@ -247,18 +247,6 @@ kmb::Matrix2x2::operator-(const kmb::Matrix2x2& other)
 	return kmb::Matrix2x2(mat);
 }
 
-kmb::Vector2D*
-kmb::Matrix2x2::solve(const Vector2D& b) const
-{
-	kmb::Vector2D* x = new kmb::Vector2D();
-	if( solve(b,*x) ){
-		return x;
-	}else{
-		delete x;
-		return NULL;
-	}
-}
-
 bool
 kmb::Matrix2x2::solve(const Vector2D& b,Vector2D& x) const
 {

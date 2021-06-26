@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MeshDB                                                  #
@@ -75,9 +75,9 @@ kmb::MeshDB::nodeIdDefragmentation(nodeIdType initId)
 			while( eIter != body->end() ){
 				int len = eIter.getNodeCount();
 				for(int i=0;i<len;++i){
-					nodeIdType oldId = eIter.getCellId(i);
+					nodeIdType oldId = eIter.getNodeId(i);
 					if( idmap.find(oldId) != idmap.end() ){
-						eIter.setCellId(i,idmap[oldId]);
+						eIter.setNodeId(i,idmap[oldId]);
 					}
 				}
 				++eIter;
@@ -244,7 +244,7 @@ kmb::MeshDB::replaceNodeIdOfBody(kmb::bodyIdType bodyId,const char* coupleName)
 				orgNodeId = eIter[i];
 				if( data->hasId( orgNodeId ) && data->getPhysicalValue( orgNodeId, &l ) ){
 					newNodeId = static_cast<kmb::nodeIdType>(l);
-					eIter.setCellId(i,newNodeId);
+					eIter.setNodeId(i,newNodeId);
 				}
 			}
 			++eIter;

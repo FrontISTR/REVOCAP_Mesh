@@ -38,6 +38,10 @@ public:
 	Tetrahedron(kmb::nodeIdType *ary);
 	virtual ~Tetrahedron(void);
 
+public:
+	static const int connectionTable[4][4];
+	static const int faceTable[4][4];
+	static const int edgeTable[6][2];
 	// 向きを無視して節点番号順が同じ図形をあらわすか
 	// index は 0 から 3 までの整数の置換
 	static bool isEquivalent(int index[4]);
@@ -48,9 +52,9 @@ public:
 
 	static double checkShapeFunctionDomain(double s,double t,double u);
 
-	static const int connectionTable[4][4];
-	static const int faceTable[4][4];
-	static const int edgeTable[6][2];
+
+	virtual kmb::nodeIdType operator()(const int index,const int i) const;
+	virtual kmb::nodeIdType& operator()(const int index,const int i);
 };
 
 }

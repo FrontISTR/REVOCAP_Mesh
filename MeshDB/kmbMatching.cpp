@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : Matching                                                #
@@ -77,7 +77,7 @@ kmb::Matching::getDistanceEdgeToEdge( kmb::MeshDB* mesh, kmb::bodyIdType edgeId0
 		while( eIter0 != edges0->end() )
 		{
 			// 1次元要素の始点との距離の平均をとる
-			ave0.add( getDistanceEdgeToNode( mesh, edgeId1 , eIter0.getCellId(0) ) );
+			ave0.add( getDistanceEdgeToNode( mesh, edgeId1 , eIter0.getNodeId(0) ) );
 			++eIter0;
 		}
 		// edge1 の節点と edge0 の要素の間の距離
@@ -85,7 +85,7 @@ kmb::Matching::getDistanceEdgeToEdge( kmb::MeshDB* mesh, kmb::bodyIdType edgeId0
 		while( eIter1 != edges1->end() )
 		{
 			// 1次元要素の始点との距離の平均をとる
-			ave1.add( getDistanceEdgeToNode( mesh, edgeId0, eIter1.getCellId(0) ) );
+			ave1.add( getDistanceEdgeToNode( mesh, edgeId0, eIter1.getNodeId(0) ) );
 			++eIter1;
 		}
 	}
@@ -112,7 +112,7 @@ kmb::Matching::getDistanceEdgeToEdge( kmb::MeshDB* mesh0, kmb::bodyIdType edgeId
 		kmb::ElementContainer::iterator eIter0 = edges0->begin();
 		while( !eIter0.isFinished() )
 		{
-			if( mesh0->getNode(eIter0.getCellId(0),node) )
+			if( mesh0->getNode(eIter0.getNodeId(0),node) )
 			{
 				// 1次元要素の始点との距離の平均をとる
 				ave0.add( getDistanceEdgeToNodeWithParam( mesh1->getNodes(),edges1,&node,nearestId,param) );
@@ -123,7 +123,7 @@ kmb::Matching::getDistanceEdgeToEdge( kmb::MeshDB* mesh0, kmb::bodyIdType edgeId
 		kmb::ElementContainer::iterator eIter1 = edges1->begin();
 		while( !eIter1.isFinished() )
 		{
-			if( mesh1->getNode(eIter1.getCellId(0),node) )
+			if( mesh1->getNode(eIter1.getNodeId(0),node) )
 			{
 				// 1次元要素の始点との距離の平均をとる
 				ave1.add( getDistanceEdgeToNodeWithParam( mesh0->getNodes(),edges0,&node,nearestId,param) );
@@ -196,7 +196,7 @@ kmb::Matching::getSurfaceRelation
 	{
 		bool findFlag = false;
 		// 最初の頂点だけで見れば十分
-		kmb::nodeIdType nodeID = eIter.getCellId(0);
+		kmb::nodeIdType nodeID = eIter.getNodeId(0);
 		// 頂点の周辺要素との関係を調べる
 		kmb::NodeNeighbor::iterator iter = neighborInfo.beginIteratorAt(nodeID);
 		while( iter != neighborInfo.endIteratorAt(nodeID) )
@@ -291,7 +291,7 @@ kmb::Matching::getFaceRelation
 		kmb::Element* element = f.createElement(mesh);
 		if( element != NULL ){
 			// 最初の頂点だけで見れば十分
-			kmb::nodeIdType nodeID = element->getCellId(0);
+			kmb::nodeIdType nodeID = element->getNodeId(0);
 			// 頂点の周辺との関係を調べる
 			kmb::NodeNeighborFace::iterator iter = coboundary.beginIteratorAt(nodeID);
 			kmb::NodeNeighborFace::iterator iEnd = coboundary.endIteratorAt(nodeID);
@@ -363,8 +363,8 @@ kmb::Matching::getDistanceEdgeToNodeWithParam
 		kmb::ElementContainer::iterator eIter = edge0->begin();
 		while( eIter != edge0->end() )
 		{
-			if( points0->getPoint( eIter.getCellId(0), n0 ) &&
-				points0->getPoint( eIter.getCellId(1), n1 ) ){
+			if( points0->getPoint( eIter.getNodeId(0), n0 ) &&
+				points0->getPoint( eIter.getNodeId(1), n1 ) ){
 				// t は node0 と node1 の線分を [0,1] に対応させたときの
 				// 垂線の足のパラメータの値
 				double temp;
@@ -563,7 +563,7 @@ kmb::Matching::nodeMatchingBetweenBodies(kmb::MeshDB* mesh0, kmb::bodyIdType bod
 	while( !eIter.isFinished() ){
 		const int len = eIter.getNodeCount();
 		for(int i=0;i<len;++i){
-			kmb::nodeIdType myId = eIter.getCellId(i);
+			kmb::nodeIdType myId = eIter.getNodeId(i);
 			if( !coupleData->hasId( myId ) && mesh0->getNode( myId, node ) ){
 				kmb::nodeIdType matchId = kmb::nullNodeId;
 				double dist = mesh1->getNearestNodeInBody( node, bodyId1, matchId );
@@ -619,7 +619,7 @@ kmb::Matching::nodeMatchingOnBody(kmb::MeshDB* mesh0, kmb::bodyIdType bodyId0, k
 	while( !eIter.isFinished() ){
 		const int len = eIter.getNodeCount();
 		for(int i=0;i<len;++i){
-			kmb::nodeIdType myId = eIter.getCellId(i);
+			kmb::nodeIdType myId = eIter.getNodeId(i);
 			if( !coupleData->hasId( myId ) && mesh0->getNode( myId, node ) ){
 				kmb::nodeIdType matchId = kmb::nullNodeId;
 				double dist = mesh1->getNearestNode( node.x(), node.y(), node.z(), matchId );

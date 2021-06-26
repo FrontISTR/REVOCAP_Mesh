@@ -51,7 +51,7 @@ class MeshDB;
 class DataBindings
 {
 public:
-	enum bindingMode{
+	enum bindingMode {
 		NodeGroup,
 		ElementGroup,
 		FaceGroup,
@@ -62,7 +62,18 @@ public:
 		BodyVariable,
 		Global,
 		Undefined,
-		Unknown
+		Unknown,
+		kNodeGroup = NodeGroup,
+		kElementGroup = ElementGroup,
+		kFaceGroup = FaceGroup,
+		kBodyGroup = BodyGroup,
+		kNodeVariable = NodeVariable,
+		kElementVariable = ElementVariable,
+		kFaceVariable = FaceVariable,
+		kBodyVariable = BodyVariable,
+		kGlobal = Global,
+		kUndefined = Undefined,
+		kUnknown = Unknown,
 	};
 	static bindingMode string2bindingMode(std::string str){
 		if( str == "NODEGROUP" )			return DataBindings::NodeGroup;
@@ -125,6 +136,7 @@ protected:
 	std::string specType;
 public:
 	std::string getSpecType(void) const { return specType; };
+	std::string getTag(void) const { return specType; };
 	void setSpecType(std::string sname){ specType = sname; };
 //----------------- 対象となる BodyId (要素コンテナのId) ----------
 protected:
@@ -176,6 +188,10 @@ public:
 	virtual bool getPhysicalValue(kmb::Face f, double *value) const;
 	virtual bool getPhysicalValue(kmb::idType id, long *value) const;
 	virtual bool getPhysicalValue(kmb::Face f, long *value) const;
+
+	// グローバルデータ
+	virtual bool setValue(std::string key, double* v) { return false; };
+	virtual bool getValue(std::string key, double* v) const { return false; };
 //------------------ イテレータ -------------------
 public:
 	// 実態
@@ -287,9 +303,11 @@ public:
 protected:
 	// 定数値を与える
 	kmb::PhysicalValue* value;
+	std::map<std::string, double> values;
 public:
 	virtual bool setPhysicalValue(kmb::PhysicalValue* val){
 		if(val->getType() == type){
+			if (value != NULL) delete value;
 			this->value = val;
 			return true;
 		}else{
@@ -311,6 +329,17 @@ public:
 		}else{
 			return 0;
 		}
+	};
+	virtual bool setValue(std::string key, double* v) {
+		double val = *v;
+		values.insert(std::make_pair(key, val));
+		return true;
+	};
+	virtual bool getValue(std::string key, double* v) const {
+		std::map<std::string, double>::const_iterator iter = values.find(key);
+		if (iter == values.end()) { return false; }
+		*v = iter->second;
+		return true;
 	};
 public:
 	virtual iterator begin(void){

@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : FortranIO                                               #
@@ -43,7 +43,7 @@ public:
 	}
 protected:
 	bool unformatFlag;
-	bool endianFlag;
+	bool endianFlag; // endian を反転するかどうか
 	template<typename T> int readArray(std::ifstream &input, std::vector<T> &val){
 		val.clear();
 		int size = 0;

@@ -278,6 +278,75 @@ public:
 	}
 };
 
+class Index2R{
+public:
+	static orderType getOrderType(void){
+		return kReverseOrder;
+	}
+	int i;
+	int j;
+	Index2R(int _i,int _j) : i(_i), j(_j){}
+	bool operator<(const Index2R &other)const{
+		return
+			(j < other.j) ||
+			(j == other.j && i < other.i);
+	}
+	// i j の順に増やしていく
+	// operator < の順序と同じ
+	// ループは外から j i
+	bool next(int nx,int ny){
+		if( i < nx-1 ){
+			++i;
+			return true;
+		}else if( j < ny-1 ){
+			i = 0;
+			++j;
+			return true;
+		}else{
+			i = nx;
+			j = ny;
+			return false;
+		}
+	}
+	bool next(Index3R &end){
+		if( i < end.i-1 ){
+			++i;
+			return true;
+		}else if( j < end.j-1 ){
+			i = 0;
+			++j;
+			return true;
+		}else{
+			i = end.i;
+			j = end.j;
+			return false;
+		}
+	}
+	int operator()(int nx,int ny) const{
+		return j*nx + i;
+	}
+	void init(void){
+		i = 0;
+		j = 0;
+	}
+	bool set(int n,int nx,int ny){
+		if( n < 0 || n >= nx*ny ){
+			i = -1;
+			j = -1;
+			return false;;
+		}
+		j = n / nx;
+		i = n - j * nx;
+		return true;
+	}
+	bool valid(int nx,int ny) const{
+		return (0 <= i) && (i < nx) && (0 <= j) && (j < ny);
+	}
+	bool valid(Index2R &end) const{
+		return (0 <= i) && (i < end.i) && (0 <= j) && (j < end.j);
+	}
+};
+
 template<typename T,orderType o=kNormalOrder>
 class Array3{
 protected:
