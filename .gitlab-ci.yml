@@ -23,6 +23,25 @@ build_revocap:
     paths:
       - build
 
+build_refiner_cmake:
+  stage: build
+  script:
+    - mkdir build_refiner_cmake
+    - cd build_refiner_cmake
+    - cmake -DWITH_EXTENSION=OFF -DWITH_OPENCASCADE=OFF ..
+    - make RcapRefiner
+  artifacts:
+    paths:
+      - build_refiner_cmake
+
+build_refiner:
+  stage: build
+  script:
+    - make Refiner
+  artifacts:
+    paths:
+      - lib
+
 test_revocap:
   stage: test
   script:
