@@ -76,13 +76,13 @@ int main(void)
 	int32_t i;
 
 	/* 節点番号のオフセット値を与える */
-	rcapInitRefiner( &nodeOffset, &elementOffset );
+	rcapInitRefiner( nodeOffset, elementOffset );
 
 	printf("REVOCAP_Refiner sample program : Hexa Refine\n");
 	printf("----- Original Model -----\n");
 	printf("---\n");
 	/* 座標値を Refiner に与える */
-	rcapSetNode64( &nodeCount, coords, NULL, NULL );
+	rcapSetNode64( nodeCount, coords, NULL, NULL );
 	/* 細分前の節点数 */
 	nodeCount = rcapGetNodeCount();
 	assert( nodeCount == 12 );
@@ -104,7 +104,7 @@ int main(void)
 	}
 
 	/* 節点グループの登録 */
-	rcapAppendNodeGroup("ng0",&ng0Count,ng0);
+	rcapAppendNodeGroup("ng0",ng0Count,ng0);
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	assert( ng0Count == 4 );
 	printf("data:\n");
@@ -117,7 +117,7 @@ int main(void)
 		printf("    - %d\n", ng0[i]);
 	}
 
-	rcapAppendBNodeGroup("bng0",&bng0Count,bng0);
+	rcapAppendBNodeGroup("bng0",bng0Count,bng0);
 	bng0Count = rcapGetBNodeGroupCount("bng0");
 	assert( bng0Count == 3 );
 	printf("  - name: bng0\n");
@@ -133,15 +133,15 @@ int main(void)
 	printf("---\n");
 
 	/* 要素の細分 */
-	refineElementCount = rcapGetRefineElementCount( &elementCount, &etype );
+	refineElementCount = rcapGetRefineElementCount( elementCount, etype );
 	refineHexas = (int32_t*)calloc( 8*refineElementCount, sizeof(int32_t) );
-	elementCount = rcapRefineElement( &elementCount, &etype, hexas, refineHexas );
+	elementCount = rcapRefineElement( elementCount, etype, hexas, refineHexas );
 	rcapCommit();
 
 	/* 細分後の節点 */
 	refineNodeCount = rcapGetNodeCount();
 	resultCoords = (float64_t*)calloc( 3*refineNodeCount, sizeof(float64_t) );
-	rcapGetNodeSeq64( &refineNodeCount, &nodeOffset, resultCoords );
+	rcapGetNodeSeq64( refineNodeCount, nodeOffset, resultCoords );
 	printf("node:\n");
 	printf("  size: %d\n", refineNodeCount );
 	printf("  coordinate:\n");
@@ -163,7 +163,7 @@ int main(void)
 	/* 細分後の節点グループの更新 */
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	result_ng0 = (int32_t*)calloc( ng0Count, sizeof(int32_t) );
-	rcapGetNodeGroup("ng0",&ng0Count,result_ng0);
+	rcapGetNodeGroup("ng0",ng0Count,result_ng0);
 	printf("Refined Node Group : Count = %d\n", ng0Count );
 	printf("data:\n");
 	printf("  - name: ng0\n");
@@ -178,7 +178,7 @@ int main(void)
 
 	bng0Count = rcapGetBNodeGroupCount("bng0");
 	result_bng0 = (int32_t*)calloc( bng0Count, sizeof(int32_t) );
-	rcapGetBNodeGroup("bng0",&bng0Count,result_bng0);
+	rcapGetBNodeGroup("bng0",bng0Count,result_bng0);
 	printf("  - name: bng0\n");
 	printf("    mode: NODEGROUP\n");
 	printf("    vtype: NONE\n");

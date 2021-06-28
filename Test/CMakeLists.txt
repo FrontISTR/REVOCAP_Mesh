@@ -15,7 +15,7 @@ add_definitions(-DBOOST_TEST_NO_LIB)
 add_executable(HelloWorld HelloWorld.cpp)
 add_test(
   NAME HelloWorld_Test
-  COMMAND HelloWorld
+  COMMAND $<TARGET_FILE:HelloWorld>
   WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
 )
 

@@ -95,7 +95,7 @@ int main(void)
 	int32_t flag;
 	char mode[32];
 	/* 節点番号のオフセット値を与える */
-	rcapInitRefiner( &nodeOffset, &elementOffset );
+	rcapInitRefiner( nodeOffset, elementOffset );
 	/* 中点の Variable は小さい方を与える */
 	rcapSetInterpolateMode( "MIN" );
 	rcapGetInterpolateMode( mode );
@@ -105,7 +105,7 @@ int main(void)
 	printf("----- Original Model -----\n");
 	printf("---\n");
 	/* 座標値を Refiner に教える */
-	rcapSetNode64( &nodeCount, coords, NULL, NULL );
+	rcapSetNode64( nodeCount, coords, NULL, NULL );
 	/* 細分前の節点数 */
 	nodeCount = rcapGetNodeCount();
 	assert( nodeCount == 12 );
@@ -127,7 +127,7 @@ int main(void)
 	}
 
 	/* 節点グループの登録 */
-	rcapAppendNodeGroup("ng0",&ng0Count,ng0);
+	rcapAppendNodeGroup("ng0",ng0Count,ng0);
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	assert( ng0Count == 4 );
 	printf("data:\n");
@@ -141,7 +141,7 @@ int main(void)
 	}
 
 	/* 境界節点グループの登録 */
-	rcapAppendBNodeGroup("bng0",&bng0Count,bng0);
+	rcapAppendBNodeGroup("bng0",bng0Count,bng0);
 	bng0Count = rcapGetBNodeGroupCount("bng0");
 	assert( bng0Count == 3 );
 	printf("  - name: bng0\n");
@@ -154,7 +154,7 @@ int main(void)
 	}
 
 	/* 境界節点変数の登録 */
-	rcapAppendBNodeVarInt("bnv0",&bnv0Count,bnv0,bnv1);
+	rcapAppendBNodeVarInt("bnv0",bnv0Count,bnv0,bnv1);
 	bnv0Count = rcapGetBNodeVarIntCount("bnv0");
 	assert( bnv0Count == 3 );
 	printf("  - name: bnv0\n");
@@ -169,9 +169,9 @@ int main(void)
 	/*---------------------- REFINE -----------------------------------------*/
 
 	/* 要素の細分 */
-	refineElementCount = rcapGetRefineElementCount( &elementCount, &etype );
+	refineElementCount = rcapGetRefineElementCount( elementCount, etype );
 	refineTetras = (int32_t*)calloc( 4*refineElementCount, sizeof(int32_t) );
-	elementCount = rcapRefineElement( &elementCount, &etype, tetras, refineTetras );
+	elementCount = rcapRefineElement( elementCount, etype, tetras, refineTetras );
 	rcapCommit();
 
 	printf("----- Refined Model -----\n");
@@ -180,7 +180,7 @@ int main(void)
 	/* 細分後の節点 */
 	refineNodeCount = rcapGetNodeCount();
 	resultCoords = (float64_t*)calloc( 3*refineNodeCount, sizeof(float64_t) );
-	rcapGetNodeSeq64( &refineNodeCount, &nodeOffset, resultCoords );
+	rcapGetNodeSeq64( refineNodeCount, nodeOffset, resultCoords );
 	printf("node:\n");
 	printf("  size: %d\n", refineNodeCount );
 	printf("  coordinate:\n");
@@ -202,7 +202,7 @@ int main(void)
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	assert( ng0Count > 0 );
 	result_ng0 = (int32_t*)calloc( ng0Count, sizeof(int32_t) );
-	rcapGetNodeGroup("ng0",&ng0Count,result_ng0);
+	rcapGetNodeGroup("ng0",ng0Count,result_ng0);
 	printf("data:\n");
 	printf("  - name: ng0\n");
 	printf("    mode: NODEGROUP\n");
@@ -218,7 +218,7 @@ int main(void)
 	/* 境界節点グループの登録 */
 	bng0Count = rcapGetBNodeGroupCount("bng0");
 	result_bng0 = (int32_t*)calloc( bng0Count, sizeof(int32_t) );
-	rcapGetBNodeGroup("bng0",&bng0Count,result_bng0);
+	rcapGetBNodeGroup("bng0",bng0Count,result_bng0);
 	printf("  - name: bng0\n");
 	printf("    mode: NODEGROUP\n");
 	printf("    vtype: NONE\n");
@@ -233,7 +233,7 @@ int main(void)
 	bnv0Count = rcapGetBNodeVarIntCount("bnv0");
 	result_bnv0 = (int32_t*)calloc( bnv0Count, sizeof(int32_t) );
 	result_bnv1 = (int32_t*)calloc( bnv0Count, sizeof(int32_t) );
-	rcapGetBNodeVarInt("bnv0",&bnv0Count,result_bnv0,result_bnv1);
+	rcapGetBNodeVarInt("bnv0",bnv0Count,result_bnv0,result_bnv1);
 	printf("  - name: bnv0\n");
 	printf("    mode: NODEVARIABLE\n");
 	printf("    vtype: INTEGER\n");

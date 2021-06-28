@@ -42,3 +42,47 @@ target_link_libraries(sampleMultiF RcapRefiner)
 add_executable(test.rcap test.rcap.f)
 target_link_libraries(test.rcap RcapRefiner)
 
+if(WITH_TEST)
+add_test(
+  NAME sampleC
+  COMMAND $<TARGET_FILE:sampleC>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+)
+
+add_test(
+  NAME sampleMultiStage
+  COMMAND $<TARGET_FILE:sampleMultiStage>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+)
+
+add_test(
+  NAME sampleNodeVariable
+  COMMAND $<TARGET_FILE:sampleNodeVariable>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+)
+
+add_test(
+  NAME sampleMultiType
+  COMMAND $<TARGET_FILE:sampleMultiType>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+)
+
+add_test(
+  NAME sampleMultiByType
+  COMMAND $<TARGET_FILE:sampleMultiByType>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+)
+
+add_test(
+  NAME sampleF
+  COMMAND $<TARGET_FILE:sampleF>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+)
+
+add_test(
+  NAME sampleMultiF
+  COMMAND $<TARGET_FILE:sampleMultiF>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+)
+
+endif()

@@ -13,9 +13,10 @@ RUN set -x \
  && apt-get -y install libglew-dev \
  && apt-get -y install libocct-modeling-algorithms-dev \
  && apt-get -y install libboost-dev \
+ && apt-get -y install libmetis-dev \
+ && apt-get -y install libopenmpi-dev \
+ && apt-get -y install git \
  && apt-get -y install cmake
-
-
 
 WORKDIR /workspace
 

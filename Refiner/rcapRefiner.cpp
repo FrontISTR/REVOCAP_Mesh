@@ -77,7 +77,7 @@ void rcapGetVersion( void )
 	puts("REVOCAP_Refiner Version 1.2.01 (2016/09/30)");
 }
 
-void rcapInitRefiner(const int32_t* node_Offset,const int32_t* element_Offset)
+void rcapInitRefiner(const int32_t node_Offset,const int32_t element_Offset)
 {
 	REVOCAP_Debug("rcapInitRefiner start\n");
 	rcapRefinerDoc.mesh = NULL;
@@ -85,8 +85,8 @@ void rcapInitRefiner(const int32_t* node_Offset,const int32_t* element_Offset)
 	rcapRefinerDoc.boundaryRefiner = NULL;
 	rcapRefinerDoc.middleMan = NULL;
 	rcapRefinerDoc.smoother = NULL;
-	rcapRefinerDoc.nodeOffset = *node_Offset;
-	rcapRefinerDoc.elementOffset = *element_Offset;
+	rcapRefinerDoc.nodeOffset = node_Offset;
+	rcapRefinerDoc.elementOffset = element_Offset;
 	// Refiner で offset 値の差分は吸収しているため
 	// 内部のメッシュはすべて 0 始まりとしてよい
 	// maxElementId は offset 後の値
@@ -164,13 +164,12 @@ void rcapTermRefiner( void )
 	REVOCAP_Debug("rcapTermRefiner finish\n");
 }
 
-void rcapSetNode64( const int32_t* _num, float64_t* coords, int32_t* globalIds, int32_t* localIds )
+void rcapSetNode64( const int32_t num, float64_t* coords, int32_t* globalIds, int32_t* localIds )
 {
 	REVOCAP_Debug("rcapSetNode64 start\n");
-	if(rcapRefinerDoc.mesh == NULL || _num==NULL){
+	if( rcapRefinerDoc.mesh == NULL ){
 		return;
 	}
-	int32_t num = *_num;
 	kmb::MiddleNodeManagerWithShape* middleNodeManagerWithShape
 		= dynamic_cast<kmb::MiddleNodeManagerWithShape*>( rcapRefinerDoc.middleMan );
 	if( localIds==NULL || localIds[0] < rcapRefinerDoc.nodeOffset ){
@@ -230,13 +229,12 @@ void rcapSetNode64( const int32_t* _num, float64_t* coords, int32_t* globalIds, 
 	REVOCAP_Debug("rcapSetNode64 finish\n");
 }
 
-void rcapSetNode32( const int32_t* _num, float32_t* coords, int32_t* globalIds, int32_t* localIds )
+void rcapSetNode32( const int32_t num, float32_t* coords, int32_t* globalIds, int32_t* localIds )
 {
 	REVOCAP_Debug("rcapSetNode32 start\n");
-	if(rcapRefinerDoc.mesh == NULL||_num==NULL){
+	if( rcapRefinerDoc.mesh == NULL ){
 		return;
 	}
-	int32_t num = *_num;
 	kmb::MiddleNodeManagerWithShape* middleNodeManagerWithShape
 		= dynamic_cast<kmb::MiddleNodeManagerWithShape*>( rcapRefinerDoc.middleMan );
 	if( localIds==NULL || localIds[0] < rcapRefinerDoc.nodeOffset ){
@@ -307,13 +305,12 @@ int32_t rcapGetNodeCount( void )
 	}
 }
 
-void rcapGetNode64( const int32_t* _num, int32_t* localIds, float64_t* coords )
+void rcapGetNode64( const int32_t num, int32_t* localIds, float64_t* coords )
 {
 	REVOCAP_Debug("rcapGetNode64 start\n");
-	if( rcapRefinerDoc.mesh == NULL || _num == NULL ){
+	if( rcapRefinerDoc.mesh == NULL ){
 		return;
 	}
-	int32_t num = *_num;
 	kmb::Point3D point;
 	for(int32_t i=0;i<num;++i){
 		rcapRefinerDoc.mesh->getNode(static_cast<kmb::nodeIdType>(localIds[i]-rcapRefinerDoc.nodeOffset),point);
@@ -324,13 +321,12 @@ void rcapGetNode64( const int32_t* _num, int32_t* localIds, float64_t* coords )
 	REVOCAP_Debug("rcapGetNode64 finish\n");
 }
 
-void rcapGetNode32( const int32_t* _num, int32_t* localIds, float32_t* coords )
+void rcapGetNode32( const int32_t num, int32_t* localIds, float32_t* coords )
 {
 	REVOCAP_Debug("rcapGetNode32 start\n");
-	if( rcapRefinerDoc.mesh == NULL || _num == NULL ){
+	if( rcapRefinerDoc.mesh == NULL ){
 		return;
 	}
-	int32_t num = *_num;
 	kmb::Point3D point;
 	for(int32_t i=0;i<num;++i){
 		rcapRefinerDoc.mesh->getNode(static_cast<kmb::nodeIdType>(localIds[i]-rcapRefinerDoc.nodeOffset),point);
@@ -341,13 +337,11 @@ void rcapGetNode32( const int32_t* _num, int32_t* localIds, float32_t* coords )
 	REVOCAP_Debug("rcapGetNode32 finish\n");
 }
 
-void rcapGetNodeSeq64( const int32_t* _num, const int32_t* _initId, float64_t* coords )
+void rcapGetNodeSeq64( const int32_t num, const int32_t initId, float64_t* coords )
 {
-	if( rcapRefinerDoc.mesh == NULL || _num == NULL || _initId == NULL ){
+	if( rcapRefinerDoc.mesh == NULL ){
 		return;
 	}
-	int32_t num = *_num;
-	int32_t initId = *_initId;
 	REVOCAP_Debug("rcapGetNodeSeq64 start num = %d initId = %d\n", num, initId);
 	int32_t ini = initId - rcapRefinerDoc.nodeOffset;
 	kmb::Point3D point;
@@ -360,13 +354,11 @@ void rcapGetNodeSeq64( const int32_t* _num, const int32_t* _initId, float64_t* c
 	REVOCAP_Debug("rcapGetNodeSeq64 finish\n");
 }
 
-void rcapGetNodeSeq32( const int32_t* _num, const int32_t* _initId, float32_t* coords )
+void rcapGetNodeSeq32( const int32_t num, const int32_t initId, float32_t* coords )
 {
-	if( rcapRefinerDoc.mesh == NULL || _num == NULL || _initId == NULL ){
+	if( rcapRefinerDoc.mesh == NULL ){
 		return;
 	}
-	int32_t num = *_num;
-	int32_t initId = *_initId;
 	REVOCAP_Debug("rcapGetNodeSeq32 start num = %d initId = %d\n", num, initId);
 	int32_t ini = initId - rcapRefinerDoc.nodeOffset;
 	kmb::Point3D point;
@@ -442,9 +434,9 @@ void rcapWriteFittingFile( const char* filename )
 	rnfIO.appendDataToRNFFile( filename, rcapRefinerDoc.mesh, "fitting" );
 }
 
-void rcapSetSecondFitting( const int32_t* flag )
+void rcapSetSecondFitting( const int32_t flag )
 {
-	if( *flag != 0 ){
+	if( flag != 0 ){
 		rcapRefinerDoc.refiner->setSecondFitting(true);
 		rcapRefinerDoc.boundaryRefiner->setSecondFitting(true);
 	}else{
@@ -453,9 +445,9 @@ void rcapSetSecondFitting( const int32_t* flag )
 	}
 }
 
-void rcapSetSmoothing( const int32_t* flag )
+void rcapSetSmoothing( const int32_t flag )
 {
-	if( *flag != 0 ){
+	if( flag != 0 ){
 		rcapRefinerDoc.smoother = new kmb::MeshSmoother( rcapRefinerDoc.mesh );
 	}else{
 		if( rcapRefinerDoc.smoother ){
@@ -479,15 +471,10 @@ void rcapSetPartitionFilename( const char* filename )
 	}
 }
 
-int32_t rcapRefineElement( const int32_t* _num, const int8_t* _etype, int32_t* nodeArray, int32_t* resultNodeArray )
+int32_t rcapRefineElement( const int32_t num, const int8_t etype, int32_t* nodeArray, int32_t* resultNodeArray )
 {
-	if( _num == NULL || _etype == NULL ){
-		return -1;
-	}
-	int32_t num = *_num;
-	int8_t etype = *_etype;
 	REVOCAP_Debug("rcapRefineElement start\n");
-	int32_t refinedNum = rcapGetRefineElementCount(_num,_etype);
+	int32_t refinedNum = rcapGetRefineElementCount(num,etype);
 	// NULL 値を入れた時は個数だけを返す
 	if( resultNodeArray == NULL || resultNodeArray[0] < 0 ||
 		nodeArray == NULL || nodeArray[0] < 0 )
@@ -533,10 +520,8 @@ int32_t rcapRefineElement( const int32_t* _num, const int8_t* _etype, int32_t* n
 	return count;
 }
 
-int32_t rcapGetRefineElementCount( const int32_t* _num, const int8_t* _etype )
+int32_t rcapGetRefineElementCount( const int32_t num, const int8_t etype )
 {
-	int32_t num = *_num;
-	int8_t etype = *_etype;
 	int32_t refinedNum = 0;
 	switch( etype ){
 		case kmb::SEGMENT:		refinedNum = 2*num;	break;
@@ -558,9 +543,8 @@ int32_t rcapGetRefineElementCount( const int32_t* _num, const int8_t* _etype )
 	return refinedNum;
 }
 
-int32_t rcapRefineElementMulti( const int32_t* _num, int8_t* etypeArray, int32_t* nodeArray, int32_t* refinedNum, int8_t* resultEtypeArray, int32_t* resultNodeArray )
+int32_t rcapRefineElementMulti( const int32_t num, int8_t* etypeArray, int32_t* nodeArray, int32_t* refinedNum, int8_t* resultEtypeArray, int32_t* resultNodeArray )
 {
-	int32_t num = *_num;
 	REVOCAP_Debug("rcapRefineElementMulti start\n");
 	if( num <= 0 || etypeArray == NULL || etypeArray[0] < 0 ){
 		return 0;
@@ -569,7 +553,7 @@ int32_t rcapRefineElementMulti( const int32_t* _num, int8_t* etypeArray, int32_t
 	REVOCAP_Debug("rcapRefineElementMulti argument refinedNum = %d\n", *refinedNum);
 
 	// 細分した節点配列の個数と細分した要素の個数を計算する
-	refinedNodeArraySize = rcapGetRefineElementMultiCount(_num,etypeArray,refinedNum);
+	refinedNodeArraySize = rcapGetRefineElementMultiCount(num,etypeArray,refinedNum);
 	// 初期化されているときに refinedElementSize = 0 とは限らないことに注意
 	if( resultNodeArray == NULL || resultNodeArray[0] < 0 || nodeArray == NULL || nodeArray[0] < 0 ){
 		return refinedNodeArraySize;
@@ -634,9 +618,8 @@ int32_t rcapRefineElementMulti( const int32_t* _num, int8_t* etypeArray, int32_t
 	return refinedNodeArraySize;
 }
 
-int32_t rcapGetRefineElementMultiCount( const int32_t* _num, int8_t* etypeArray, int32_t* refinedNum )
+int32_t rcapGetRefineElementMultiCount( const int32_t num, int8_t* etypeArray, int32_t* refinedNum )
 {
-	int32_t num = *_num;
 	if( num <= 0 || etypeArray == NULL || etypeArray[0] < 0 ){
 		return 0;
 	}
@@ -762,12 +745,12 @@ int32_t rcapGetMiddle( int8_t etype, int32_t* originalNodeArray )
 	}
 }
 
-void rcapAppendNodeGroup( const char dataname[80], const int32_t* num, const int32_t* nodeArray )
+void rcapAppendNodeGroup( const char dataname[80], const int32_t num, const int32_t* nodeArray )
 {
-	REVOCAP_Debug("Append Node Group [%s] %d\n",dataname,*num);
+	REVOCAP_Debug("Append Node Group [%s] %d\n",dataname,num);
 	kmb::DataBindings* data = rcapRefinerDoc.mesh->createDataBindings( dataname, kmb::DataBindings::NodeGroup, kmb::PhysicalValue::None, "NG" );
 	if( data ){
-		for(int i=0;i<*num;++i){
+		for(int i=0;i<num;++i){
 			data->addId( static_cast<kmb::nodeIdType>(nodeArray[i]) - rcapRefinerDoc.nodeOffset );
 		}
 		rcapRefinerDoc.refiner->appendData( dataname, "NG" );
@@ -779,7 +762,7 @@ int32_t rcapGetNodeGroupCount( const char dataname[80] )
 	return static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( dataname, "NG" ));
 }
 
-void rcapGetNodeGroup( const char dataname[80], const int32_t* num, int32_t* nodeArray )
+void rcapGetNodeGroup( const char dataname[80], const int32_t num, int32_t* nodeArray )
 {
 	REVOCAP_Debug("Get Node Group [%s]\n",dataname);
 	const kmb::DataBindings* data = rcapRefinerDoc.mesh->getDataBindingsPtr( dataname, "NG" );
@@ -787,7 +770,7 @@ void rcapGetNodeGroup( const char dataname[80], const int32_t* num, int32_t* nod
 		kmb::DataBindings::const_iterator dIter = data->begin();
 		int32_t i = 0;
 		while( !dIter.isFinished() ){
-			if( i > *num ){
+			if( i > num ){
 				break;
 			}
 			nodeArray[i] = dIter.getId() + rcapRefinerDoc.nodeOffset;
@@ -797,12 +780,12 @@ void rcapGetNodeGroup( const char dataname[80], const int32_t* num, int32_t* nod
 	}
 }
 
-void rcapAppendBNodeGroup( const char dataname[80], const int32_t* num, int32_t* nodeArray )
+void rcapAppendBNodeGroup( const char dataname[80], const int32_t num, int32_t* nodeArray )
 {
 	REVOCAP_Debug("Append Boundary Node Group [%s]\n",dataname);
 	kmb::DataBindings* data = rcapRefinerDoc.mesh->createDataBindings( dataname, kmb::DataBindings::NodeGroup, kmb::PhysicalValue::None, "BNG" );
 	if( data ){
-		for(int32_t i=0;i<*num;++i){
+		for(int32_t i=0;i<num;++i){
 			data->addId( static_cast<kmb::nodeIdType>(nodeArray[i]) - rcapRefinerDoc.nodeOffset );
 		}
 		rcapRefinerDoc.boundaryRefiner->appendData( dataname, "BNG" );
@@ -814,7 +797,7 @@ int32_t rcapGetBNodeGroupCount( const char dataname[80] )
 	return static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( dataname, "BNG" ));
 }
 
-void rcapGetBNodeGroup( const char dataname[80], const int32_t* num, int32_t* nodeArray )
+void rcapGetBNodeGroup( const char dataname[80], const int32_t num, int32_t* nodeArray )
 {
 	REVOCAP_Debug("Get Boundary Node Group [%s]\n",dataname);
 	const kmb::DataBindings* data = rcapRefinerDoc.mesh->getDataBindingsPtr( dataname, "BNG" );
@@ -822,7 +805,7 @@ void rcapGetBNodeGroup( const char dataname[80], const int32_t* num, int32_t* no
 		kmb::DataBindings::const_iterator dIter = data->begin();
 		int32_t i = 0;
 		while( !dIter.isFinished() ){
-			if( i > *num ){
+			if( i > num ){
 				break;
 			}
 			nodeArray[i] = dIter.getId() + rcapRefinerDoc.nodeOffset;
@@ -832,13 +815,13 @@ void rcapGetBNodeGroup( const char dataname[80], const int32_t* num, int32_t* no
 	}
 }
 
-void rcapAppendBNodeVarInt( const char dataname[80], const int32_t* num, int32_t* nodeArray, int32_t* nodeVars )
+void rcapAppendBNodeVarInt( const char dataname[80], const int32_t num, int32_t* nodeArray, int32_t* nodeVars )
 {
 	REVOCAP_Debug("Append Boundary Node Variable Int [%s]\n",dataname);
 	kmb::DataBindings* data = new kmb::IntegerMapBindings();
 	if( data ){
 		rcapRefinerDoc.mesh->setDataBindingsPtr( dataname, data, "BNVI" );
-		for(int32_t i=0;i<*num;++i){
+		for(int32_t i=0;i<num;++i){
 			long l = static_cast<long>(nodeVars[i]);
 			data->setPhysicalValue( static_cast<kmb::nodeIdType>(nodeArray[i]) - rcapRefinerDoc.nodeOffset, &l );
 		}
@@ -851,7 +834,7 @@ int32_t rcapGetBNodeVarIntCount( const char dataname[80] )
 	return static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( dataname, "BNVI" ));
 }
 
-void rcapGetBNodeVarInt( const char dataname[80], const int32_t* num, int32_t* nodeArray, int32_t* nodeVars  )
+void rcapGetBNodeVarInt( const char dataname[80], const int32_t num, int32_t* nodeArray, int32_t* nodeVars  )
 {
 	REVOCAP_Debug("Get Boundary Node Variable Int [%s]\n",dataname);
 	const kmb::DataBindings* data = rcapRefinerDoc.mesh->getDataBindingsPtr( dataname, "BNVI" );
@@ -861,7 +844,7 @@ void rcapGetBNodeVarInt( const char dataname[80], const int32_t* num, int32_t* n
 		kmb::DataBindings::const_iterator dIter = data->begin();
 		int32_t i = 0;
 		while( !dIter.isFinished() ){
-			if( i > *num ){
+			if( i > num ){
 				break;
 			}
 			long l = 0;
@@ -874,12 +857,12 @@ void rcapGetBNodeVarInt( const char dataname[80], const int32_t* num, int32_t* n
 	}
 }
 
-void rcapAppendElementGroup( const char dataname[80], const int32_t* num, int32_t* elementArray )
+void rcapAppendElementGroup( const char dataname[80], const int32_t num, int32_t* elementArray )
 {
 	REVOCAP_Debug("Append Element Group [%s]\n",dataname);
 	kmb::DataBindings* data = rcapRefinerDoc.mesh->createDataBindings( dataname, kmb::DataBindings::ElementGroup, kmb::PhysicalValue::None, "EG" );
 	if( data ){
-		for(int32_t i=0;i<*num;++i){
+		for(int32_t i=0;i<num;++i){
 			data->addId( static_cast<kmb::elementIdType>(elementArray[i]-rcapRefinerDoc.elementOffset) );
 		}
 		rcapRefinerDoc.refiner->appendData( dataname, "EG" );
@@ -891,14 +874,14 @@ int32_t rcapGetElementGroupCount( const char dataname[80] )
 	return static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( dataname, "EG" ));
 }
 
-void rcapGetElementGroup( const char dataname[80], const int32_t* num, int32_t* elementArray )
+void rcapGetElementGroup( const char dataname[80], const int32_t num, int32_t* elementArray )
 {
 	const kmb::DataBindings* data = rcapRefinerDoc.mesh->getDataBindingsPtr( dataname, "EG" );
 	if( data && data->getBindingMode() == kmb::DataBindings::ElementGroup){
 		kmb::DataBindings::const_iterator dIter = data->begin();
 		int32_t i = 0;
 		while( !dIter.isFinished() ){
-			if( i > *num ){
+			if( i > num ){
 				break;
 			}
 			elementArray[i] = dIter.getId() + rcapRefinerDoc.elementOffset;
@@ -908,12 +891,12 @@ void rcapGetElementGroup( const char dataname[80], const int32_t* num, int32_t* 
 	}
 }
 
-void rcapAppendFaceGroup( const char dataname[80], const int32_t* num, int32_t* faceArray )
+void rcapAppendFaceGroup( const char dataname[80], const int32_t num, int32_t* faceArray )
 {
 	REVOCAP_Debug("Append Face Group [%s]\n",dataname);
 	kmb::DataBindings* data = rcapRefinerDoc.mesh->createDataBindings( dataname, kmb::DataBindings::FaceGroup, kmb::PhysicalValue::None, "FG" );
 	if( data ){
-		for(int32_t i=0;i<*num;++i){
+		for(int32_t i=0;i<num;++i){
 			kmb::Face f( static_cast<kmb::elementIdType>(faceArray[2*i]-rcapRefinerDoc.elementOffset), faceArray[2*i+1] );
 			data->addId( f );
 		}
@@ -926,7 +909,7 @@ int32_t rcapGetFaceGroupCount( const char dataname[80] )
 	return static_cast<int32_t>(rcapRefinerDoc.mesh->getIdCount( dataname, "FG" ));
 }
 
-void rcapGetFaceGroup( const char dataname[80], const int32_t* num, int32_t* faceArray )
+void rcapGetFaceGroup( const char dataname[80], const int32_t num, int32_t* faceArray )
 {
 	const kmb::DataBindings* data = rcapRefinerDoc.mesh->getDataBindingsPtr( dataname, "FG" );
 	if( data && data->getBindingMode() == kmb::DataBindings::FaceGroup ){
@@ -934,7 +917,7 @@ void rcapGetFaceGroup( const char dataname[80], const int32_t* num, int32_t* fac
 		int32_t i = 0;
 		kmb::Face f;
 		while( !dIter.isFinished() ){
-			if( i > *num ){
+			if( i > num ){
 				break;
 			}
 			dIter.getFace( f );
@@ -1002,119 +985,113 @@ void rcapQualityReport( const char mode[80], const char* filename )
 
 /* rcapxxx_  すべて小文字 */
 #if defined FORTRAN90 || defined FORTRAN_CALL_C_DOWNCASE_
-//void rcapgetversion_( void ){ rcapGetVersion(); }
-//void rcapinitrefiner_( int32_t* nodeOffset, int32_t* elementOffset ){ rcapInitRefiner(*nodeOffset,*elementOffset); }
-//void rcapclearrefiner_( void ){ rcapClearRefiner(); }
-//void rcaptermrefiner_( void ){ rcapTermRefiner(); }
+void rcapgetversion_( void ){ rcapGetVersion(); }
+void rcapinitrefiner_( int32_t* nodeOffset, int32_t* elementOffset ){ rcapInitRefiner(*nodeOffset,*elementOffset); }
+void rcapclearrefiner_( void ){ rcapClearRefiner(); }
+void rcaptermrefiner_( void ){ rcapTermRefiner(); }
 
-//void rcapsetcadfilename_( const char* filename ){ rcapSetCADFilename( filename ); }
-//void rcapsetsecondfitting_( int32_t* flag ){ rcapSetSecondFitting( *flag ); }
-//void rcapsetsmoothing_( int32_t* flag ){ rcapSetSmoothing( *flag ); }
-//void rcapsetpartitionfilename_( const char* filename ){ rcapSetPartitionFilename( filename ); }
+void rcapsetcadfilename_( const char* filename ){ rcapSetCADFilename( filename ); }
+void rcapsetsecondfitting_( int32_t* flag ){ rcapSetSecondFitting( *flag ); }
+void rcapsetsmoothing_( int32_t* flag ){ rcapSetSmoothing( *flag ); }
+void rcapsetpartitionfilename_( const char* filename ){ rcapSetPartitionFilename( filename ); }
 
-//void rcapsetnode64_( const int32_t &num, float64_t* coords, int32_t* globalIds, int32_t* localIds ){
-//	rcapSetNode64(num,coords,globalIds,localIds);
-//}
-//void rcapsetnode32_( const int32_t &num, float32_t* coords, int32_t* globalIds, int32_t* localIds ){
-//	rcapSetNode32(num,coords,globalIds,localIds);
-//}
-//int32_t rcapgetnodecount_( void ){ return static_cast<int32_t>(rcapGetNodeCount()); }
-//void rcapgetnode64_( int32_t* num, int32_t* localIds, float64_t* coords ){
-//	rcapGetNode64(static_cast<size_t>(*num),localIds,coords);
-//}
-//void rcapgetnode32_( int32_t* num, int32_t* localIds, float32_t* coords ){
-//	rcapGetNode32(static_cast<size_t>(*num),localIds,coords);
-//}
-//void rcapgetnodeseq64_( int32_t* num, int32_t* initId, float64_t* coords ){
-//	rcapGetNodeSeq64(static_cast<size_t>(*num),static_cast<size_t>(*initId),coords);
-//}
-//void rcapgetnodeseq32_( int32_t* num, int32_t* initId, float32_t* coords ){
-//	rcapGetNodeSeq32(static_cast<size_t>(*num),static_cast<size_t>(*initId),coords);
-//}
+void rcapsetnode64_( const int32_t* num, float64_t* coords, int32_t* globalIds, int32_t* localIds ){
+	rcapSetNode64(*num,coords,globalIds,localIds);
+}
+void rcapsetnode32_( const int32_t* num, float32_t* coords, int32_t* globalIds, int32_t* localIds ){
+	rcapSetNode32(*num,coords,globalIds,localIds);
+}
+int32_t rcapgetnodecount_( void ){ return static_cast<int32_t>(rcapGetNodeCount()); }
+void rcapgetnode64_( int32_t* num, int32_t* localIds, float64_t* coords ){
+	rcapGetNode64(static_cast<size_t>(*num),localIds,coords);
+}
+void rcapgetnode32_( int32_t* num, int32_t* localIds, float32_t* coords ){
+	rcapGetNode32(static_cast<size_t>(*num),localIds,coords);
+}
+void rcapgetnodeseq64_( int32_t* num, int32_t* initId, float64_t* coords ){
+	rcapGetNodeSeq64(static_cast<size_t>(*num),static_cast<size_t>(*initId),coords);
+}
+void rcapgetnodeseq32_( int32_t* num, int32_t* initId, float32_t* coords ){
+	rcapGetNodeSeq32(static_cast<size_t>(*num),static_cast<size_t>(*initId),coords);
+}
 
-//int32_t rcapgetrefineelementcount_( int32_t* num, int8_t* etype ){
-//	return static_cast<int32_t>(rcapGetRefineElementCount(static_cast<size_t>(*num),*etype));
-//}
+int32_t rcapgetrefineelementcount_( int32_t* num, int8_t* etype ){
+	return static_cast<int32_t>(rcapGetRefineElementCount(static_cast<size_t>(*num),*etype));
+}
 
-//int32_t rcaprefineelement_( int32_t* num, int8_t* etype, int32_t* nodeArray, int32_t* resultNodeArray ){
-//	return rcapRefineElement(*num,*etype,nodeArray,resultNodeArray);
-//}
+int32_t rcaprefineelement_( int32_t* num, int8_t* etype, int32_t* nodeArray, int32_t* resultNodeArray ){
+	return rcapRefineElement(*num,*etype,nodeArray,resultNodeArray);
+}
 
-//int32_t rcapgetrefineelementmulticount_( int32_t* num, int8_t* etypeArray, int32_t* refinedNum ){
-//	size_t s = static_cast<size_t>(*refinedNum);
-//	int32_t res = static_cast<int32_t>(rcapGetRefineElementMultiCount(static_cast<size_t>(*num),etypeArray,&s));
-//	*refinedNum = static_cast<int32_t>(s);
-//	return res;
-//}
+int32_t rcapgetrefineelementmulticount_( int32_t* num, int8_t* etypeArray, int32_t* refinedNum ){
+	int32_t res = static_cast<int32_t>(rcapGetRefineElementMultiCount(*num,etypeArray,refinedNum));
+	return res;
+}
 
-//int32_t rcaprefineelementmulti_( int32_t* num, int8_t* etypeArray, int32_t* nodeArray, int32_t* refinedNum, int8_t* resultEtypeArray, int32_t* resultNodeArray ){
-//	size_t s = static_cast<size_t>(*refinedNum);
-//	int32_t res = static_cast<int32_t>(rcapRefineElementMulti(static_cast<size_t>(*num),etypeArray,nodeArray,&s,resultEtypeArray,resultNodeArray));
-//	*refinedNum = static_cast<int32_t>(s);
-//	return res;
-//}
+int32_t rcaprefineelementmulti_( int32_t* num, int8_t* etypeArray, int32_t* nodeArray, int32_t* refinedNum, int8_t* resultEtypeArray, int32_t* resultNodeArray ){
+	int32_t res = static_cast<int32_t>(rcapRefineElementMulti(*num,etypeArray,nodeArray,refinedNum,resultEtypeArray,resultNodeArray));
+	return res;
+}
 
-//void rcapcommit_( void ){
-//	rcapCommit();
-//}
+void rcapcommit_( void ){ rcapCommit(); }
 
-//void rcapappendnodegroup_( const char dataname[80], const int32_t &num, const int32_t* nodeArray ){
-//	rcapAppendNodeGroup(dataname,num,nodeArray);
-//}
-//int32_t rcapgetnodegroupcount_( const char dataname[80] ){
-//	return static_cast<int32_t>(rcapGetNodeGroupCount(dataname));
-//}
-//void rcapgetnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray ){
-//	rcapGetNodeGroup( dataname, static_cast<size_t>(*num), nodeArray );
-//}
+void rcapappendnodegroup_( const char dataname[80], const int32_t* num, const int32_t* nodeArray ){
+	rcapAppendNodeGroup(dataname,*num,nodeArray);
+}
+int32_t rcapgetnodegroupcount_( const char dataname[80] ){
+	return static_cast<int32_t>(rcapGetNodeGroupCount(dataname));
+}
+void rcapgetnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray ){
+	rcapGetNodeGroup(dataname,*num,nodeArray);
+}
 
-//void rcapappendbnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray ){
-//	rcapAppendBNodeGroup( dataname, static_cast<size_t>(*num), nodeArray );
-//}
+void rcapappendbnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray ){
+	rcapAppendBNodeGroup( dataname, *num, nodeArray );
+}
 
-//int32_t rcapgetbnodegroupcount_( const char dataname[80] ){
-//	return static_cast< int32_t >(rcapGetBNodeGroupCount( dataname ));
-//}
+int32_t rcapgetbnodegroupcount_( const char dataname[80] ){
+	return rcapGetBNodeGroupCount( dataname );
+}
 
-//void rcapgetbnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray ){
-//	rcapGetBNodeGroup( dataname, static_cast<size_t>(*num), nodeArray );
-//}
+void rcapgetbnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray ){
+	rcapGetBNodeGroup( dataname, *num, nodeArray );
+}
 
-//void rcapappendbnodevarint_( const char dataname[80], int32_t* num, int32_t* nodeArray, int32_t* nodeVars ){
-//	rcapAppendBNodeVarInt( dataname, static_cast<size_t>(*num), nodeArray, nodeVars );
-//}
+void rcapappendbnodevarint_( const char dataname[80], int32_t* num, int32_t* nodeArray, int32_t* nodeVars ){
+	rcapAppendBNodeVarInt( dataname, *num, nodeArray, nodeVars );
+}
 
-//int32_t rcapgetbnodevarintcount_( const char dataname[80] ){
-//	return static_cast< int32_t >(rcapGetBNodeVarIntCount( dataname ));
-//}
+int32_t rcapgetbnodevarintcount_( const char dataname[80] ){
+	return static_cast< int32_t >(rcapGetBNodeVarIntCount( dataname ));
+}
 
-//void rcapgetbnodevarint_( const char dataname[80], int32_t* num, int32_t* nodeArray, int32_t* nodeVars  ){
-//	rcapGetBNodeVarInt( dataname, static_cast<size_t>(*num), nodeArray, nodeVars  );
-//}
+void rcapgetbnodevarint_( const char dataname[80], int32_t* num, int32_t* nodeArray, int32_t* nodeVars  ){
+	rcapGetBNodeVarInt( dataname, *num, nodeArray, nodeVars  );
+}
 
-//void rcapappendelementgroup_( const char dataname[80], int32_t* num, int32_t* elementArray ){
-//	rcapAppendElementGroup(dataname,static_cast<size_t>(*num),elementArray);
-//}
+void rcapappendelementgroup_( const char dataname[80], int32_t* num, int32_t* elementArray ){
+	rcapAppendElementGroup(dataname,static_cast<size_t>(*num),elementArray);
+}
 
-//int32_t rcapgetelementgroupcount_( const char dataname[80] ){
-//	return static_cast<int32_t>(rcapGetElementGroupCount(dataname));
-//}
+int32_t rcapgetelementgroupcount_( const char dataname[80] ){
+	return static_cast<int32_t>(rcapGetElementGroupCount(dataname));
+}
 
-//void rcapgetelementgroup_( const char dataname[80], int32_t* num, int32_t* elementArray ){
-//	rcapGetElementGroup( dataname, static_cast<size_t>(*num), elementArray );
-//}
+void rcapgetelementgroup_( const char dataname[80], int32_t* num, int32_t* elementArray ){
+	rcapGetElementGroup( dataname, *num, elementArray );
+}
 
-//void rcapappendfacegroup_( const char dataname[80], int32_t* num, int32_t* faceArray ){
-//	rcapAppendFaceGroup(dataname,static_cast<size_t>(*num),faceArray);
-//}
+void rcapappendfacegroup_( const char dataname[80], int32_t* num, int32_t* faceArray ){
+	rcapAppendFaceGroup(dataname,*num,faceArray);
+}
 
-//int32_t rcapgetfacegroupcount_( const char dataname[80] ){
-//	return static_cast<int32_t>(rcapGetFaceGroupCount(dataname));
-//}
+int32_t rcapgetfacegroupcount_( const char dataname[80] ){
+	return rcapGetFaceGroupCount(dataname);
+}
 
-//void rcapgetfacegroup_( const char dataname[80], int32_t* num, int32_t* faceArray ){
-//	rcapGetElementGroup( dataname, static_cast<size_t>(*num), faceArray );
-//}
+void rcapgetfacegroup_( const char dataname[80], int32_t* num, int32_t* faceArray ){
+	rcapGetElementGroup( dataname, *num, faceArray );
+}
 
 //void rcapsetinterpolatemode_( const char mode[32] ){
 //	rcapSetInterpolateMode(mode);
