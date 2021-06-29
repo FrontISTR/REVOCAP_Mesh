@@ -985,131 +985,124 @@ void rcapQualityReport( const char mode[80], const char* filename )
 
 /* rcapxxx_  すべて小文字 */
 #if defined FORTRAN90 || defined FORTRAN_CALL_C_DOWNCASE_
-void rcapgetversion_( void ){ rcapGetVersion(); }
-void rcapinitrefiner_( int32_t* nodeOffset, int32_t* elementOffset ){ rcapInitRefiner(*nodeOffset,*elementOffset); }
-void rcapclearrefiner_( void ){ rcapClearRefiner(); }
-void rcaptermrefiner_( void ){ rcapTermRefiner(); }
-
-void rcapsetcadfilename_( const char* filename ){ rcapSetCADFilename( filename ); }
-void rcapsetsecondfitting_( int32_t* flag ){ rcapSetSecondFitting( *flag ); }
-void rcapsetsmoothing_( int32_t* flag ){ rcapSetSmoothing( *flag ); }
-void rcapsetpartitionfilename_( const char* filename ){ rcapSetPartitionFilename( filename ); }
-
+void rcapgetversion_( void ){
+	rcapGetVersion();
+}
+void rcapinitrefiner_( int32_t* nodeOffset, int32_t* elementOffset ){
+	rcapInitRefiner(*nodeOffset,*elementOffset);
+}
+void rcapclearrefiner_( void ){
+	rcapClearRefiner();
+}
+void rcaptermrefiner_( void ){
+	rcapTermRefiner();
+}
+void rcapsetcadfilename_( const char* filename ){
+	rcapSetCADFilename( filename );
+}
+void rcapsetsecondfitting_( int32_t* flag ){
+	rcapSetSecondFitting( *flag );
+}
+void rcapsetsmoothing_( int32_t* flag ){
+	rcapSetSmoothing( *flag );
+}
+void rcapsetpartitionfilename_( const char* filename ){
+	rcapSetPartitionFilename( filename );
+}
 void rcapsetnode64_( const int32_t* num, float64_t* coords, int32_t* globalIds, int32_t* localIds ){
 	rcapSetNode64(*num,coords,globalIds,localIds);
 }
 void rcapsetnode32_( const int32_t* num, float32_t* coords, int32_t* globalIds, int32_t* localIds ){
 	rcapSetNode32(*num,coords,globalIds,localIds);
 }
-int32_t rcapgetnodecount_( void ){ return static_cast<int32_t>(rcapGetNodeCount()); }
+int32_t rcapgetnodecount_( void ){
+	return rcapGetNodeCount();
+}
 void rcapgetnode64_( int32_t* num, int32_t* localIds, float64_t* coords ){
-	rcapGetNode64(static_cast<size_t>(*num),localIds,coords);
+	rcapGetNode64(*num,localIds,coords);
 }
 void rcapgetnode32_( int32_t* num, int32_t* localIds, float32_t* coords ){
-	rcapGetNode32(static_cast<size_t>(*num),localIds,coords);
+	rcapGetNode32(*num,localIds,coords);
 }
 void rcapgetnodeseq64_( int32_t* num, int32_t* initId, float64_t* coords ){
-	rcapGetNodeSeq64(static_cast<size_t>(*num),static_cast<size_t>(*initId),coords);
+	rcapGetNodeSeq64(*num,*initId,coords);
 }
 void rcapgetnodeseq32_( int32_t* num, int32_t* initId, float32_t* coords ){
-	rcapGetNodeSeq32(static_cast<size_t>(*num),static_cast<size_t>(*initId),coords);
+	rcapGetNodeSeq32(*num,*initId,coords);
 }
-
 int32_t rcapgetrefineelementcount_( int32_t* num, int8_t* etype ){
-	return static_cast<int32_t>(rcapGetRefineElementCount(static_cast<size_t>(*num),*etype));
+	return rcapGetRefineElementCount(*num,*etype);
 }
-
 int32_t rcaprefineelement_( int32_t* num, int8_t* etype, int32_t* nodeArray, int32_t* resultNodeArray ){
 	return rcapRefineElement(*num,*etype,nodeArray,resultNodeArray);
 }
-
 int32_t rcapgetrefineelementmulticount_( int32_t* num, int8_t* etypeArray, int32_t* refinedNum ){
-	int32_t res = static_cast<int32_t>(rcapGetRefineElementMultiCount(*num,etypeArray,refinedNum));
-	return res;
+	return rcapGetRefineElementMultiCount(*num,etypeArray,refinedNum);
 }
-
 int32_t rcaprefineelementmulti_( int32_t* num, int8_t* etypeArray, int32_t* nodeArray, int32_t* refinedNum, int8_t* resultEtypeArray, int32_t* resultNodeArray ){
-	int32_t res = static_cast<int32_t>(rcapRefineElementMulti(*num,etypeArray,nodeArray,refinedNum,resultEtypeArray,resultNodeArray));
-	return res;
+	return rcapRefineElementMulti(*num,etypeArray,nodeArray,refinedNum,resultEtypeArray,resultNodeArray);
 }
-
-void rcapcommit_( void ){ rcapCommit(); }
-
+void rcapcommit_( void ){
+	rcapCommit();
+}
 void rcapappendnodegroup_( const char dataname[80], const int32_t* num, const int32_t* nodeArray ){
 	rcapAppendNodeGroup(dataname,*num,nodeArray);
 }
 int32_t rcapgetnodegroupcount_( const char dataname[80] ){
-	return static_cast<int32_t>(rcapGetNodeGroupCount(dataname));
+	return rcapGetNodeGroupCount(dataname);
 }
 void rcapgetnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray ){
 	rcapGetNodeGroup(dataname,*num,nodeArray);
 }
-
 void rcapappendbnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray ){
 	rcapAppendBNodeGroup( dataname, *num, nodeArray );
 }
-
 int32_t rcapgetbnodegroupcount_( const char dataname[80] ){
 	return rcapGetBNodeGroupCount( dataname );
 }
-
 void rcapgetbnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray ){
 	rcapGetBNodeGroup( dataname, *num, nodeArray );
 }
-
 void rcapappendbnodevarint_( const char dataname[80], int32_t* num, int32_t* nodeArray, int32_t* nodeVars ){
 	rcapAppendBNodeVarInt( dataname, *num, nodeArray, nodeVars );
 }
-
 int32_t rcapgetbnodevarintcount_( const char dataname[80] ){
-	return static_cast< int32_t >(rcapGetBNodeVarIntCount( dataname ));
+	return rcapGetBNodeVarIntCount( dataname );
 }
-
 void rcapgetbnodevarint_( const char dataname[80], int32_t* num, int32_t* nodeArray, int32_t* nodeVars  ){
 	rcapGetBNodeVarInt( dataname, *num, nodeArray, nodeVars  );
 }
-
 void rcapappendelementgroup_( const char dataname[80], int32_t* num, int32_t* elementArray ){
-	rcapAppendElementGroup(dataname,static_cast<size_t>(*num),elementArray);
+	rcapAppendElementGroup(dataname, *num, elementArray);
 }
-
 int32_t rcapgetelementgroupcount_( const char dataname[80] ){
-	return static_cast<int32_t>(rcapGetElementGroupCount(dataname));
+	return rcapGetElementGroupCount(dataname);
 }
-
 void rcapgetelementgroup_( const char dataname[80], int32_t* num, int32_t* elementArray ){
 	rcapGetElementGroup( dataname, *num, elementArray );
 }
-
 void rcapappendfacegroup_( const char dataname[80], int32_t* num, int32_t* faceArray ){
 	rcapAppendFaceGroup(dataname,*num,faceArray);
 }
-
 int32_t rcapgetfacegroupcount_( const char dataname[80] ){
 	return rcapGetFaceGroupCount(dataname);
 }
-
 void rcapgetfacegroup_( const char dataname[80], int32_t* num, int32_t* faceArray ){
 	rcapGetElementGroup( dataname, *num, faceArray );
 }
-
-//void rcapsetinterpolatemode_( const char mode[32] ){
-//	rcapSetInterpolateMode(mode);
-//}
-//void rcapgetinterpolatemode_( char mode[32] ){
-//	rcapGetInterpolateMode(mode);
-//}
-
-//int8_t rcapgetoriginal_( int32_t* localNodeId, int32_t* originalNodeArray ){
-//	return rcapGetOriginal(*localNodeId,originalNodeArray);
-//}
-
-//int32_t rcapgetmiddle_( int8_t *etype, int32_t* originalNodeArray ){
-//	return rcapGetMiddle(*etype,originalNodeArray);
-//}
-
-//void rcapqualityreport_( const char mode[80], const char* filename ){
-//	rcapQualityReport(mode,filename);
-//}
-
+void rcapsetinterpolatemode_( const char mode[32] ){
+	rcapSetInterpolateMode(mode);
+}
+void rcapgetinterpolatemode_( char mode[32] ){
+	rcapGetInterpolateMode(mode);
+}
+int8_t rcapgetoriginal_( int32_t* localNodeId, int32_t* originalNodeArray ){
+	return rcapGetOriginal(*localNodeId,originalNodeArray);
+}
+int32_t rcapgetmiddle_( int8_t *etype, int32_t* originalNodeArray ){
+	return rcapGetMiddle(*etype,originalNodeArray);
+}
+void rcapqualityreport_( const char mode[80], const char* filename ){
+	rcapQualityReport(mode,filename);
+}
 #endif

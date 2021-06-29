@@ -140,6 +140,7 @@ int main(void)
 
 	/* 細分後の節点 */
 	refineNodeCount = rcapGetNodeCount();
+	assert( refineNodeCount == 45 );
 	resultCoords = (float64_t*)calloc( 3*refineNodeCount, sizeof(float64_t) );
 	rcapGetNodeSeq64( refineNodeCount, nodeOffset, resultCoords );
 	printf("node:\n");
@@ -151,6 +152,7 @@ int main(void)
 	free( resultCoords );
 
 	/* 細分後の要素 */
+	assert( refineElementCount == 16 );
 	printf("element:\n");
 	printf("  - size: %d\n", refineElementCount );
 	printf("    connectivity:\n");
@@ -162,6 +164,7 @@ int main(void)
 
 	/* 細分後の節点グループの更新 */
 	ng0Count = rcapGetNodeGroupCount("ng0");
+	assert( ng0Count == 9 );
 	result_ng0 = (int32_t*)calloc( ng0Count, sizeof(int32_t) );
 	rcapGetNodeGroup("ng0",ng0Count,result_ng0);
 	printf("Refined Node Group : Count = %d\n", ng0Count );
@@ -177,6 +180,7 @@ int main(void)
 	free( result_ng0 );
 
 	bng0Count = rcapGetBNodeGroupCount("bng0");
+	assert( bng0Count == 5 );
 	result_bng0 = (int32_t*)calloc( bng0Count, sizeof(int32_t) );
 	rcapGetBNodeGroup("bng0",bng0Count,result_bng0);
 	printf("  - name: bng0\n");

@@ -180,6 +180,7 @@ int main(void)
 
 	/* 細分後の節点 */
 	refineNodeCount = rcapGetNodeCount();
+	assert( refineNodeCount == 14 );
 	resultCoords = (float64_t*)calloc( 3*refineNodeCount, sizeof(float64_t) );
 	rcapGetNodeSeq64( refineNodeCount, nodeOffset, resultCoords );
 	printf("node:\n");
@@ -204,6 +205,7 @@ int main(void)
 			if (middle != refineTetras[j]) {
 				printf("middle node error\n");
 			}
+			assert(middle == refineTetras[j]);
 		}else{
 			/* 中間節点ではない => 元からある節点 */
 			assert( refineTetras[j] <= (int32_t)nodeCount );
@@ -221,7 +223,7 @@ int main(void)
 
 	/* 細分後の節点グループの更新 */
 	ngCount = rcapGetNodeGroupCount("innovate");
-	assert( ngCount > 0 );
+	assert( ngCount==6 );
 	result_ng0 = (int32_t*)calloc( ngCount, sizeof(int32_t) );
 	rcapGetNodeGroup("innovate",ngCount,result_ng0);
 	printf("data:\n");
@@ -243,6 +245,7 @@ int main(void)
 		if (flag != 1) {
 			printf("node group error");
 		}
+		assert(flag==1);
 	}
 	/* 細分後の節点グループの確認 */
 	for(j=0;j<ngCount;++j){
@@ -259,6 +262,7 @@ int main(void)
 			if (flag != 1) {
 				printf("node group middle node error\n");
 			}
+			assert(flag==1);
 			flag = 0;
 			for(i=0;i<3;++i){
 				if( seg[1] == ng0[i] ){
@@ -268,6 +272,7 @@ int main(void)
 			if (flag != 1) {
 				printf("node group middle node error\n");
 			}
+			assert(flag==1);
 		}else{
 			/* 中間節点ではない */
 			flag = 0;
@@ -279,6 +284,7 @@ int main(void)
 			if (flag != 1) {
 				printf("node group error\n");
 			}
+			assert(flag==1);
 		}
 	}
 	free( result_ng0 );
@@ -290,15 +296,13 @@ int main(void)
 	printf("    vtype: NONE\n");
 	printf("    size: %d\n",fgCount);
 	printf("    id:\n");
-	if( fgCount > 0 ){
-		result_fg0 = (int32_t*)calloc( fgCount*2, sizeof(int32_t) );
-		rcapGetFaceGroup("revolute",fgCount,result_fg0);
-		assert( fgCount == 8 );
-		for(i=0;i<fgCount;++i){
-			printf("    - [%d, %d]\n", result_fg0[2*i], result_fg0[2*i+1]);
-		}
-		free( result_fg0 );
+	assert( fgCount == 8 );
+	result_fg0 = (int32_t*)calloc( fgCount*2, sizeof(int32_t) );
+	rcapGetFaceGroup("revolute",fgCount,result_fg0);
+	for(i=0;i<fgCount;++i){
+		printf("    - [%d, %d]\n", result_fg0[2*i], result_fg0[2*i+1]);
 	}
+	free( result_fg0 );
 
 	/* 細分後の要素グループの更新 */
 	egCount = rcapGetElementGroupCount("eg");
@@ -307,22 +311,21 @@ int main(void)
 	printf("    vtype: NONE\n");
 	printf("    size: %d\n",egCount);
 	printf("    id:\n");
-	if( egCount > 0 ){
-		result_eg0 = (int32_t*)calloc( egCount, sizeof(int32_t) );
-		rcapGetElementGroup("eg",egCount,result_eg0);
-		assert( egCount == 8 );
-		flag = 1;
-		for(i=0;i<egCount;++i){
-			printf("    - %d\n", result_eg0[i]);
-			if( result_eg0[i] != 9+i ){
-				flag = 0;
-			}
+	assert( egCount == 8 );
+	result_eg0 = (int32_t*)calloc( egCount, sizeof(int32_t) );
+	rcapGetElementGroup("eg",egCount,result_eg0);
+	flag = 1;
+	for(i=0;i<egCount;++i){
+		printf("    - %d\n", result_eg0[i]);
+		if( result_eg0[i] != 9+i ){
+			flag = 0;
 		}
-		if (flag != 1) {
-			printf("element group error");
-		}
-		free( result_eg0 );
 	}
+	if (flag != 1) {
+		printf("element group error");
+	}
+	assert(flag==1);
+	free( result_eg0 );
 
 	free( resultCoords );
 	free( refineTetras );

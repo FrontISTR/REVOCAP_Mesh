@@ -802,13 +802,13 @@ void rcapappendfacegroup_( const char dataname[80], int32_t* num, int32_t* faceA
 int32_t rcapgetfacegroupcount_( const char dataname[80] );
 void rcapgetfacegroup_( const char dataname[80], int32_t* num, int32_t* faceArray );
 
-//int8_t rcapgetoriginal_( int32_t* localNodeId, int32_t* originalNodeArray );
-//int32_t rcapgetmiddle_( int8_t *etype, int32_t* originalNodeArray );
+int8_t rcapgetoriginal_( int32_t* localNodeId, int32_t* originalNodeArray );
+int32_t rcapgetmiddle_( int8_t *etype, int32_t* originalNodeArray );
 
-//void rcapsetinterpolatemode_( const char mode[32] );
-//void rcapgetinterpolatemode_( char mode[32] );
+void rcapsetinterpolatemode_( const char mode[32] );
+void rcapgetinterpolatemode_( char mode[32] );
 
-//void rcapqualityreport_( const char mode[80], const char* filename );
+void rcapqualityreport_( const char mode[80], const char* filename );
 
 int32_t rcaploadgffile_( const char* gffile, const char* bounfile );
 int32_t rcaploadhecfile_( const char* hecfile );

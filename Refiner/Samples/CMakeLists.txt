@@ -7,6 +7,7 @@ include_directories("${PROJECT_BINARY_DIR}/..")
 set(CMAKE_C_FLAGS_RELEASE "-Wall -O2")
 set(CMAKE_C_FLAGS_DEBUG "-Wall -g")
 
+remove_definitions(-DNDEBUG)
 add_definitions(-D_CONSOLE)
 # C Samples
 add_executable(sampleC main.c)
@@ -37,52 +38,57 @@ target_link_libraries(sampleSmoothing RcapRefiner)
 # Fortran Samples
 add_executable(sampleF main.F90)
 target_link_libraries(sampleF RcapRefiner)
+add_executable(sampleIncF main_inc.F90)
+target_link_libraries(sampleIncF RcapRefiner)
 add_executable(sampleMultiF mainMulti.F90)
 target_link_libraries(sampleMultiF RcapRefiner)
 add_executable(test.rcap test.rcap.f)
 target_link_libraries(test.rcap RcapRefiner)
 
 if(WITH_TEST)
-add_test(
-  NAME sampleC
-  COMMAND $<TARGET_FILE:sampleC>
-  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-)
-
-add_test(
-  NAME sampleMultiStage
-  COMMAND $<TARGET_FILE:sampleMultiStage>
-  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-)
-
-add_test(
-  NAME sampleNodeVariable
-  COMMAND $<TARGET_FILE:sampleNodeVariable>
-  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-)
-
-add_test(
-  NAME sampleMultiType
-  COMMAND $<TARGET_FILE:sampleMultiType>
-  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-)
-
-add_test(
-  NAME sampleMultiByType
-  COMMAND $<TARGET_FILE:sampleMultiByType>
-  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-)
-
-add_test(
-  NAME sampleF
-  COMMAND $<TARGET_FILE:sampleF>
-  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-)
-
-add_test(
-  NAME sampleMultiF
-  COMMAND $<TARGET_FILE:sampleMultiF>
-  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-)
-
+  add_test(
+    NAME sampleC
+    COMMAND $<TARGET_FILE:sampleC>
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  )
+  add_test(
+    NAME sampleHexa
+    COMMAND $<TARGET_FILE:sampleHexa>
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  )
+  add_test(
+    NAME sampleMultiStage
+    COMMAND $<TARGET_FILE:sampleMultiStage>
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  )
+  add_test(
+    NAME sampleNodeVariable
+    COMMAND $<TARGET_FILE:sampleNodeVariable>
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  )
+  add_test(
+    NAME sampleMultiType
+    COMMAND $<TARGET_FILE:sampleMultiType>
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  )
+  add_test(
+    NAME sampleMultiByType
+    COMMAND $<TARGET_FILE:sampleMultiByType>
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  )
+  add_test(
+    NAME sampleF
+    COMMAND $<TARGET_FILE:sampleF>
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  )
+  add_test(
+    NAME sampleIncF
+    COMMAND $<TARGET_FILE:sampleIncF>
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  )
+  add_test(
+    NAME sampleMultiF
+    COMMAND $<TARGET_FILE:sampleMultiF>
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  )
 endif()

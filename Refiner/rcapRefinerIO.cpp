@@ -244,30 +244,24 @@ int32_t rcapSaveRNFFile( const char* rnffile )
 	rnfIO.saveToRNFFile( rnffile, rcapRefinerDoc.mesh );
 	return static_cast<int32_t>(rcapRefinerDoc.mesh->getElementCount());
 }
-//int32_t rcaploadgffile_( const char* gffile, const char* bounfile ){
-//	return rcapLoadGFFile( gffile, bounfile );
-//}
-
-//int32_t rcaploadhecfile_( const char* hecfile ){
-//	return rcapLoadHECFile( hecfile );
-//}
-
-//int32_t rcapsavegffile_( const char* gffile, const char* bounfile ){
-//	return rcapSaveGFFile( gffile, bounfile );
-//}
-
-//int32_t rcapsavehecfile_( const char* hecfile ){
-//	return rcapSaveHECFile( hecfile );
-//}
-
-//int32_t rcapsavernffile_( const char* hecfile ){
-//	return rcapSaveRNFFile( hecfile );
-//}
-
-//void rcaprefineffbmodel_(void){
-//	rcapRefineFFbModel();
-//}
-
 /* rcapxxx_  すべて小文字 */
 #ifdef FORTRAN90
+int32_t rcaploadgffile_( const char* gffile, const char* bounfile ){
+	return rcapLoadGFFile( gffile, bounfile );
+}
+int32_t rcaploadhecfile_( const char* hecfile ){
+	return rcapLoadHECFile( hecfile );
+}
+int32_t rcapsavegffile_( const char* gffile, const char* bounfile ){
+	return rcapSaveGFFile( gffile, bounfile );
+}
+int32_t rcapsavehecfile_( const char* hecfile ){
+	return rcapSaveHECFile( hecfile );
+}
+int32_t rcapsavernffile_( const char* hecfile ){
+	return rcapSaveRNFFile( hecfile );
+}
+void rcaprefineffbmodel_(void){
+	rcapRefineFFbModel();
+}
 #endif
