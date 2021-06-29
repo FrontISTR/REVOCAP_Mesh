@@ -52,6 +52,11 @@ if(WITH_TEST)
     WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
   )
   add_test(
+    NAME sampleTetra
+    COMMAND $<TARGET_FILE:sampleTetra>
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  )
+  add_test(
     NAME sampleHexa
     COMMAND $<TARGET_FILE:sampleHexa>
     WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
