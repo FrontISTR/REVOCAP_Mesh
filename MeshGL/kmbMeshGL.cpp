@@ -130,6 +130,7 @@ void
 kmb::MeshGL::setMesh(const kmb::MeshData* mesh)
 {
 	this->mesh = mesh;
+	this->markSize = 0.01 * mesh->getBoundingBox().diameter();
 }
 
 void
@@ -1461,54 +1462,60 @@ kmb::MeshGL::drawMarking(const char* condName,const char* mode)
 			}
 			else if( strcmp(mode,"CIRCLE") == 0 ){
 				kmb::DataBindings::const_iterator nIter = data->begin();
+				kmb::Node pt;
 				while( !nIter.isFinished() ){
-					if( mesh->getNodeXYZ( nIter.getId(), x, y, z ) ){
-						drawCircleMark( x, y, z );
+					if( mesh->getNode(nIter.getId(), pt) ){
+						drawCircleMark( pt.x(), pt.y(), pt.z() );
 					}
 					++nIter;
 				}
 			}
 			else if( strcmp(mode,"CROSS") == 0 ){
 				kmb::DataBindings::const_iterator nIter = data->begin();
+				kmb::Node pt;
 				while( !nIter.isFinished() ){
-					if( mesh->getNodeXYZ( nIter.getId(), x, y, z ) ){
-						drawCrossMark( x, y, z );
+					if (mesh->getNode(nIter.getId(), pt)) {
+						drawCrossMark( pt.x(), pt.y(), pt.z() );
 					}
 					++nIter;
 				}
 			}
 			else if( strcmp(mode,"DELTA") == 0 ){
 				kmb::DataBindings::const_iterator nIter = data->begin();
+				kmb::Node pt;
 				while( !nIter.isFinished() ){
-					if( mesh->getNodeXYZ( nIter.getId(), x, y, z ) ){
-						drawDeltaMark( x, y, z );
+					if (mesh->getNode(nIter.getId(), pt)) {
+						drawDeltaMark(pt.x(), pt.y(), pt.z());
 					}
 					++nIter;
 				}
 			}
 			else if( strcmp(mode,"SQUARE") == 0 ){
 				kmb::DataBindings::const_iterator nIter = data->begin();
+				kmb::Node pt;
 				while( !nIter.isFinished() ){
-					if( mesh->getNodeXYZ( nIter.getId(), x, y, z ) ){
-						drawSquareMark( x, y, z );
+					if (mesh->getNode(nIter.getId(), pt)) {
+						drawSquareMark(pt.x(), pt.y(), pt.z());
 					}
 					++nIter;
 				}
 			}
 			else if( strcmp(mode,"LEFT") == 0 ){
 				kmb::DataBindings::const_iterator nIter = data->begin();
+				kmb::Node pt;
 				while( !nIter.isFinished() ){
-					if( mesh->getNodeXYZ( nIter.getId(), x, y, z ) ){
-						drawLeftMark( x, y, z );
+					if (mesh->getNode(nIter.getId(), pt)) {
+						drawLeftMark(pt.x(), pt.y(), pt.z());
 					}
 					++nIter;
 				}
 			}
 			else if( strcmp(mode,"RIGHT") == 0 ){
 				kmb::DataBindings::const_iterator nIter = data->begin();
+				kmb::Node pt;
 				while( !nIter.isFinished() ){
-					if( mesh->getNodeXYZ( nIter.getId(), x, y, z ) ){
-						drawRightMark( x, y, z );
+					if (mesh->getNode(nIter.getId(), pt)) {
+						drawRightMark(pt.x(), pt.y(), pt.z());
 					}
 					++nIter;
 				}
@@ -1521,11 +1528,12 @@ kmb::MeshGL::drawMarking(const char* condName,const char* mode)
 				case kmb::PhysicalValue::ElementId:
 					{
 						kmb::DataBindings::const_iterator nIter = data->begin();
+						kmb::Node pt;
 						while( !nIter.isFinished() ){
 							long l = 0;
 							nIter.getValue(&l);
-							if( mesh->getNodeXYZ( nIter.getId(), x, y, z ) ){
-								drawNumericMark( x, y, z, l );
+							if (mesh->getNode(nIter.getId(), pt)) {
+								drawNumericMark(pt.x(), pt.y(), pt.z(), l );
 							}
 							++nIter;
 						}
@@ -1537,10 +1545,11 @@ kmb::MeshGL::drawMarking(const char* condName,const char* mode)
 			}
 			else if( strcmp(mode,"ID") == 0 ){
 				kmb::DataBindings::const_iterator nIter = data->begin();
+				kmb::Node pt;
 				while( !nIter.isFinished() ){
 					long l = nIter.getId() + this->nodeOffset;
-					if( mesh->getNodeXYZ( nIter.getId(), x, y, z ) ){
-						drawNumericMark( x, y, z, l );
+					if (mesh->getNode(nIter.getId(), pt)) {
+						drawNumericMark(pt.x(), pt.y(), pt.z(), l );
 					}
 					++nIter;
 				}
