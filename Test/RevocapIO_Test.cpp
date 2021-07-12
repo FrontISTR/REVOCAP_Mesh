@@ -10,6 +10,7 @@
 #include "MeshDB/kmbMeshData.h"
 #include "RevocapIO/kmbHecmwIO.h"
 #include "RevocapIO/kmbFrontISTRIO.h"
+#include "RevocapIO/kmbRevocapIOUtils.h"
 
 BOOST_AUTO_TEST_SUITE(RevocapIO)
 
@@ -39,16 +40,19 @@ BOOST_AUTO_TEST_CASE(FrontISTRIO)
 	hecmw.appendFooterToFile("TestResults/FrontISTRTest_hecIO.msh");
 	mesh->clearModel();
 
-//	kmb::MeshObject<kmb::Point3DCollectionMap, kmb::ElementCollectionMap, kmb::DataCollectionMap> meshObj;
-//	meshObj.createData("BND0", kmb::DataBindings::kNodeGroup, kmb::PhysicalValue::Vector3, "BOUNDARY");
 	kmb::FrontISTRIO fistr;
-//	fistr.loadMesh("TestResults/FrontISTRTest_hecIO.msh", &meshObj);
-//	fistr.saveMesh("TestResults/FrontISTRTest_meshobj.msh", &meshObj);
 	mesh->createDataBindings("BND0", kmb::DataBindings::kNodeGroup, kmb::PhysicalValue::Vector3, "BOUNDARY");
 	fistr.loadMesh("TestResults/FrontISTRTest_hecIO.msh", mesh);
 	fistr.saveMesh("TestResults/FrontISTRTest_meshdata.msh", mesh);
 
 	delete mesh;
+}
+
+BOOST_AUTO_TEST_CASE(RevocapIOUtilsTest)
+{
+	std::string line = "!SGROUP, SGRP = master";
+	std::string val = kmb::RevocapIOUtils::getValue(line, "SGRP");
+	std::cout << "[" << val << "]" << std::endl;
 }
 
 BOOST_AUTO_TEST_SUITE_END()

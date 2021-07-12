@@ -16,6 +16,7 @@
 #pragma once
 #include "MeshDB/kmbTypes.h"
 #include <fstream>
+#include <string>
 
 namespace kmb{
 
@@ -28,6 +29,7 @@ protected:
 public:
 	enum gmshFormat{
 		k2_2,
+		k2_2_Binary,
 		kUndefined
 	};
 	enum gmshElementType{
@@ -67,11 +69,14 @@ public:
 		kUndefinedElement=-1
 	};
 	GmshIO();
-	int loadMeshFromFile(const char* filename,kmb::MeshData* mesh);
+	int loadMesh(const char* filename,kmb::MeshData* mesh);
+	int saveGeo(std::string filename, const kmb::MeshData* mesh);
 protected:
-	gmshFormat getVersion(std::ifstream &input) const;
+	gmshFormat getVersion(const char* filename) const;
 	int readNodes_2_2(std::ifstream &input,kmb::MeshData* mesh);
+	int readNodes_2_2_Binary(std::ifstream &input, kmb::MeshData* mesh);
 	int readElements_2_2(std::ifstream &input,kmb::MeshData* mesh);
+	int readElements_2_2_Binary(std::ifstream &input, kmb::MeshData* mesh);
 };
 
 }

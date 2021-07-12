@@ -5,7 +5,7 @@
 
 namespace kmb{
 
-class PatchBrep;
+template<typename MContainer> class PatchBrep;
 
 class TripatchIO
 {
@@ -20,7 +20,8 @@ public:
 	template<typename MContainer>
 	int savePatchPacked(std::string filename, const MContainer* patch);
 	// Brep 構造の Surface をまとめて Shell ごとの出力
-	int savePatchBrep(std::string filename,kmb::PatchBrep &brep);
+	template<typename MContainer>
+	int savePatchBrep(std::string filename,kmb::PatchBrep<MContainer> &brep);
 };
 
 }
