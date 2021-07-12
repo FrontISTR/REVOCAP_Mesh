@@ -249,7 +249,7 @@ void rcapSetPartitionFilename( const char* filename );
  * @li setNode64( num, coords, NULL, localIds ) => global と local は同じで local は与える
  * @li setNode64( num, coords, globalIds, localIds ) => global と local をそれぞれ与える
  *
- * @note CADファイルを与えずに形状補正をしない場合は、局所節点番号と大域節点番号の対応は必要ない。
+ * @note CADファイルを与えて形状補正をしない場合は、局所節点番号と大域節点番号の対応は必要ない。
  * @note Fortran から呼ぶ場合には NULL アドレスの代わりに最初の値が nodeOffset よりも小さい配列を与える。
  */
 void rcapSetNode64( const int32_t* num, float64_t* coords, int32_t* globalIds, int32_t* localIds );

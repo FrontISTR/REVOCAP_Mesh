@@ -83,7 +83,7 @@ kmb::CADFileIO::~CADFileIO(void)
 }
 
 void
-kmb::CADFileIO::readIGES(char* filename,kmb::ShapeData* shapeData)
+kmb::CADFileIO::readIGES(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
 		return;
@@ -108,7 +108,7 @@ kmb::CADFileIO::readIGES(char* filename,kmb::ShapeData* shapeData)
 }
 
 void
-kmb::CADFileIO::readSTEP(char* filename,kmb::ShapeData* shapeData)
+kmb::CADFileIO::readSTEP(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
 		return;
@@ -132,7 +132,7 @@ kmb::CADFileIO::readSTEP(char* filename,kmb::ShapeData* shapeData)
 }
 
 void
-kmb::CADFileIO::readSTL(char* filename,kmb::ShapeData* shapeData)
+kmb::CADFileIO::readSTL(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
 		return;
@@ -142,7 +142,7 @@ kmb::CADFileIO::readSTL(char* filename,kmb::ShapeData* shapeData)
 }
 
 void
-kmb::CADFileIO::readOCC(char* filename,kmb::ShapeData* shapeData)
+kmb::CADFileIO::readOCC(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
 		return;
@@ -152,7 +152,7 @@ kmb::CADFileIO::readOCC(char* filename,kmb::ShapeData* shapeData)
 }
 
 void
-kmb::CADFileIO::writeIGES(char* filename,kmb::ShapeData* shapeData)
+kmb::CADFileIO::writeIGES(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
 		return;
@@ -165,7 +165,7 @@ kmb::CADFileIO::writeIGES(char* filename,kmb::ShapeData* shapeData)
 }
 
 void
-kmb::CADFileIO::writeSTEP(char* filename,kmb::ShapeData* shapeData)
+kmb::CADFileIO::writeSTEP(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
 		return;
@@ -180,7 +180,7 @@ kmb::CADFileIO::writeSTEP(char* filename,kmb::ShapeData* shapeData)
 }
 
 void
-kmb::CADFileIO::writeSTL(char* filename,kmb::ShapeData* shapeData)
+kmb::CADFileIO::writeSTL(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
 		return;
@@ -194,7 +194,7 @@ kmb::CADFileIO::writeSTL(char* filename,kmb::ShapeData* shapeData)
 }
 
 void
-kmb::CADFileIO::writeOCC(char* filename,kmb::ShapeData* shapeData)
+kmb::CADFileIO::writeOCC(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
 		return;

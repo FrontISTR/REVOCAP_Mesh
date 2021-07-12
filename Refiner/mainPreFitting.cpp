@@ -310,7 +310,7 @@ int main(int argc, char* argv[])
 			if( surf ){
 				kmb::Point3D pt2;
 				surf->getPoint(uv[0],uv[1],pt2);
-				printf("%d %d %f\n", nodeId, surfaceId, pt.distance(pt2));
+				printf("%d %ld %f\n", nodeId, surfaceId, pt.distance(pt2));
 			}
 			++dIter;
 		}
@@ -335,14 +335,14 @@ int main(int argc, char* argv[])
 		kmb::nodeIdType nodeId = dIter.getId();
 		size_t s = fittingData->countId(nodeId);
 		if( fittingData->countId(nodeId) != 1 ){
-			printf("nodeId %d => number of fitting surface = %u\n", nodeId, s);
+			printf("nodeId %d => number of fitting surface = %lu\n", nodeId, s);
 		}
 		++dIter;
 	}
 
 	printf("pre-fitting status report\n");
-	printf("boundary node count = %d\n", nodeGroup->getIdCount());
-	printf("fitting node count = %d\n", fittingData->getIdCount());
+	printf("boundary node count = %lu\n", nodeGroup->getIdCount());
+	printf("fitting node count = %lu\n", fittingData->getIdCount());
 
 	return 0;
 }

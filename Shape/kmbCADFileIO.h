@@ -27,14 +27,14 @@ class CADFileIO
 public:
 	CADFileIO(void);
 	virtual ~CADFileIO(void);
-	void readIGES(char* filename,kmb::ShapeData* shapeData);
-	void readSTEP(char* filename,kmb::ShapeData* shapeData);
-	void readSTL(char* filename,kmb::ShapeData* shapeData);
-	void readOCC(char* filename,kmb::ShapeData* shapeData);
-	void writeIGES(char* filename,kmb::ShapeData* shapeData);
-	void writeSTEP(char* filename,kmb::ShapeData* shapeData);
-	void writeSTL(char* filename,kmb::ShapeData* shapeData);
-	void writeOCC(char* filename,kmb::ShapeData* shapeData);
+	void readIGES(const char* filename,kmb::ShapeData* shapeData);
+	void readSTEP(const char* filename,kmb::ShapeData* shapeData);
+	void readSTL(const char* filename,kmb::ShapeData* shapeData);
+	void readOCC(const char* filename,kmb::ShapeData* shapeData);
+	void writeIGES(const char* filename,kmb::ShapeData* shapeData);
+	void writeSTEP(const char* filename,kmb::ShapeData* shapeData);
+	void writeSTL(const char* filename,kmb::ShapeData* shapeData);
+	void writeOCC(const char* filename,kmb::ShapeData* shapeData);
 
 	int saveToBrepRNF(const char* filename,const kmb::ShapeData* shapeData) const;
 	int writeShapeHeader(std::ofstream &output) const;

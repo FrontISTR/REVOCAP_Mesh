@@ -14,7 +14,7 @@ kmb::PatchBrep<MContainer>::~PatchBrep(void)
 template<typename MContainer>
 int kmb::PatchBrep<MContainer>::getShellCount(void) const
 {
-	std::multimap<int, std::pair<const MContainer*, int> >::const_iterator bIter = brep.begin();
+	typename std::multimap<int, std::pair<const MContainer*, int> >::const_iterator bIter = brep.begin();
 	int i = 0;
 	while (bIter != brep.end()) {
 		i++;
@@ -26,7 +26,7 @@ int kmb::PatchBrep<MContainer>::getShellCount(void) const
 template<typename MContainer>
 int kmb::PatchBrep<MContainer>::getShell(int index) const
 {
-	std::multimap<int, std::pair<const MContainer*, int> >::const_iterator bIter = brep.begin();
+	typename std::multimap<int, std::pair<const MContainer*, int> >::const_iterator bIter = brep.begin();
 	int i = 0;
 	int b = -1;
 	while (bIter != brep.end()) {
@@ -49,10 +49,11 @@ int kmb::PatchBrep<MContainer>::getSufraceCount(int shell) const
 template<typename MContainer>
 int kmb::PatchBrep<MContainer>::getSurface(int shell, int index) const
 {
-	std::pair< std::multimap<int, std::pair<const MContainer*, int> >::const_iterator, std::multimap<int, std::pair<const MContainer*, int> >::const_iterator > range = brep.equal_range(shell);
+//	typename std::pair< std::multimap<int, std::pair<const MContainer*, int> >::const_iterator, std::multimap<int, std::pair<const MContainer*, int> >::const_iterator> range = brep.equal_range(shell);
+	auto range = brep.equal_range(shell);
 	int i = 0;
 	int b = -1;
-	std::multimap<int, std::pair<const MContainer*, int> >::const_iterator bIter = range.first;
+	typename std::multimap<int, std::pair<const MContainer*, int> >::const_iterator bIter = range.first;
 	while (bIter != range.second) {
 		if (index == i) {
 			b = bIter->second.second;
@@ -67,10 +68,11 @@ int kmb::PatchBrep<MContainer>::getSurface(int shell, int index) const
 template<typename MContainer>
 const MContainer* kmb::PatchBrep<MContainer>::getMesh(int shell, int index) const
 {
-	std::pair< std::multimap<int, std::pair<const MContainer*, int> >::const_iterator, std::multimap<int, std::pair<const MContainer*, int> >::const_iterator > range = brep.equal_range(shell);
+//	typename std::pair< std::multimap<int, std::pair<const MContainer*, int> >::const_iterator, std::multimap<int, std::pair<const MContainer*, int> >::const_iterator> range = brep.equal_range(shell);
+	auto range = brep.equal_range(shell);
 	int i = 0;
 	const MContainer* mesh = NULL;
-	std::multimap<int, std::pair<const MContainer*, int> >::const_iterator bIter = range.first;
+	typename std::multimap<int, std::pair<const MContainer*, int> >::const_iterator bIter = range.first;
 	while (bIter != range.second) {
 		if (index == i) {
 			mesh = bIter->second.first;
