@@ -19,13 +19,13 @@ set(refiner_headers
 add_library(Refiner OBJECT ${refiner_sources})
 add_library(RcapRefiner STATIC
   $<TARGET_OBJECTS:Refiner>
-  $<TARGET_OBJECTS:Common>
-  $<TARGET_OBJECTS:Matrix>
-  $<TARGET_OBJECTS:Geometry>
-  $<TARGET_OBJECTS:MeshDB>
-  $<TARGET_OBJECTS:MeshGen>
+  $<TARGET_OBJECTS:Common_OBJS>
+  $<TARGET_OBJECTS:Matrix_OBJS>
+  $<TARGET_OBJECTS:Geometry_OBJS>
+  $<TARGET_OBJECTS:MeshDB_OBJS>
+  $<TARGET_OBJECTS:MeshGen_OBJS>
   $<TARGET_OBJECTS:RevocapIO_OBJS>
-  $<TARGET_OBJECTS:Shape>
+  $<TARGET_OBJECTS:Shape_OBJS>
 )
 
 # Refiner Utils

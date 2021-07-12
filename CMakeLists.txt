@@ -4,6 +4,8 @@ set(REVOCAP_Mesh_VERSION_MAJOR 1 CACHE STRING "Major version number of REVOCAP_M
 set(REVOCAP_Mesh_VERSION_MINOR 7 CACHE STRING "Minor version number of REVOCAP_Mesh")
 set(REVOCAP_Mesh_VERSION_PATCH 1 CACHE STRING "Patch version number of REVOCAP_Mesh")
 
+set(CMAKE_CXX_STANDARD 11)
+
 option(WITH_EXTENSION "Build with ruby extension libraries" ON)
 option(WITH_OPENCASCADE "Build with OpenCASCADE feature" ON)
 option(WITH_OPENMP "Enable OpenMP feature" ON)
@@ -51,6 +53,8 @@ endif()
 include_directories(
   ${CMAKE_SOURCE_DIR}
 )
+
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
 set(CMAKE_BUILD_TYPE "RELEASE")
 set(CMAKE_C_FLAGS_RELEASE "-Wall -O2")
