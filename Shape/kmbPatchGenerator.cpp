@@ -98,6 +98,7 @@ bool kmb::PatchGenerator::getRelative(void) const
 	return this->relative;
 }
 
+template <>
 bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 {
 	if( shape.getShape().IsNull() ){
@@ -122,6 +123,24 @@ bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 	kmb::OctreePoint3D octree;
 	octree.setContainer( mesh.getNodes() );
 	
+/*
+BRepMesh_IncrementalMesh::BRepMesh_IncrementalMesh	(
+const TopoDS_Shape & 	theShape,
+const Standard_Real 	theLinDeflection,
+const Standard_Boolean 	isRelative = Standard_False,
+const Standard_Real 	theAngDeflection = 0.5,
+const Standard_Boolean 	isInParallel = Standard_False,
+const Standard_Boolean 	adaptiveMin = Standard_False
+)
+Constructor. Automatically calls method Perform.
+
+Parameters
+theShape	shape to be meshed.
+theLinDeflection	linear deflection.
+isRelative	if TRUE deflection used for discretization of each edge will be <theLinDeflection> * <size of="" edge>="">. Deflection used for the faces will be the maximum deflection of their edges.
+theAngDeflection	angular deflection.
+isInParallel	if TRUE shape will be meshed in parallel.
+*/
 	BRepMesh_IncrementalMesh imesh(
 		shape.getShape(), 
 		static_cast<Standard_Real>( incremental*modelDiameter ),

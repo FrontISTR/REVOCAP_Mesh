@@ -35,7 +35,8 @@ public:
 	/*
 	 * mesh には生成した CAD 面の HashCode を BodyVariable の Data 名 FaceHashCode で与える
 	 */
-	bool execute(kmb::ShapeData& shape,kmb::MeshData& mesh);
+	template <typename MContainer>
+	bool execute(kmb::ShapeData& shape, MContainer& mesh);
 	/*
 	 * 三角形化する時の辺の長さの最小値を与える
 	 * BRepTools::Triangulation
@@ -58,6 +59,7 @@ public:
 
 	void setRelative(bool f);
 	bool getRelative(void) const;
+
 };
 
 }
