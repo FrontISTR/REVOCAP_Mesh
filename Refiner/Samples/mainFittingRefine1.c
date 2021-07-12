@@ -84,13 +84,13 @@ int main(void)
 
 	/* 節点番号のオフセット値を与える */
 	printf("REVOCAP_Refiner sample program : Fitting Refine1\n");
-	rcapInitRefiner( &nodeOffset, &elementOffset );
+	rcapInitRefiner( nodeOffset, elementOffset );
 	rcapSetCADFilename( "data/column/column.rnf" );
 	printf("----- Original Model -----\n");
 	printf("---\n");
 	/* 座標値を Refiner に与える */
 	/* 節点配列で与える局所節点番号と、CAD ファイルに記述してある大域節点番号との対応も与える */
-	rcapSetNode64( &nodeCount, coords, globalIds, localIds );
+	rcapSetNode64( nodeCount, coords, globalIds, localIds );
 	/* 細分前の節点数 */
 	nodeCount = rcapGetNodeCount();
 	assert( nodeCount == 12 );
@@ -111,7 +111,7 @@ int main(void)
 			hexas[8*i+4], hexas[8*i+5], hexas[8*i+6], hexas[8*i+7]);
 	}
 	/* 節点グループの登録 */
-	rcapAppendNodeGroup("ng0",&ng0Count,ng0);
+	rcapAppendNodeGroup("ng0",ng0Count,ng0);
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	assert( ng0Count == 4 );
 	printf("data:\n");
@@ -128,9 +128,9 @@ int main(void)
 	printf("---\n");
 
 	/* 要素の細分 */
-	refineElementCount = rcapGetRefineElementCount( &elementCount, &etype );
+	refineElementCount = rcapGetRefineElementCount( elementCount, etype );
 	refineHexas = (int32_t*)calloc( 8*refineElementCount, sizeof(int32_t) );
-	elementCount = rcapRefineElement( &elementCount, &etype, hexas, refineHexas);
+	elementCount = rcapRefineElement( elementCount, etype, hexas, refineHexas);
 	rcapCommit();
 
 	/* 細分後の節点 */
@@ -139,7 +139,7 @@ int main(void)
 	printf("  size: %d\n", refineNodeCount );
 	printf("  coordinate:\n");
 	resultCoords = (float64_t*)calloc( 3*refineNodeCount, sizeof(float64_t) );
-	rcapGetNodeSeq64( &refineNodeCount, &nodeOffset, resultCoords );
+	rcapGetNodeSeq64( refineNodeCount, nodeOffset, resultCoords );
 	for(j=0;j<refineNodeCount;++j){
 		printf("  - [%d, %f, %f, %f]\n", j+nodeOffset, resultCoords[3*j], resultCoords[3*j+1], resultCoords[3*j+2] );
 	}
@@ -158,7 +158,7 @@ int main(void)
 	/* 細分後の節点グループの更新 */
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	result_ng0 = (int32_t*)calloc( ng0Count, sizeof(int32_t) );
-	rcapGetNodeGroup("ng0",&ng0Count,result_ng0);
+	rcapGetNodeGroup("ng0",ng0Count,result_ng0);
 	printf("data:\n");
 	printf("  - name: ng0\n");
 	printf("    mode: NODEGROUP\n");

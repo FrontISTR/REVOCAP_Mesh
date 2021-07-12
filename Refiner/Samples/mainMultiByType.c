@@ -75,9 +75,9 @@ int main(void)
 	int32_t i,j;
 
 	/* 節点番号のオフセット値を与える */
-	rcapInitRefiner( &nodeOffset, &elementOffset );
+	rcapInitRefiner( nodeOffset, elementOffset );
 	/* 座標値を Refiner に与える */
-	rcapSetNode64( &nodeCount, coords, NULL, NULL );
+	rcapSetNode64( nodeCount, coords, NULL, NULL );
 
 	printf("REVOCAP_Refiner sample program : Multi-Type Refine\n");
 	printf("----- Original Model -----\n");
@@ -115,7 +115,7 @@ int main(void)
 	}
 
 	/* 節点グループの登録 */
-	rcapAppendNodeGroup("ng0",&ng0Count,ng0);
+	rcapAppendNodeGroup("ng0",ng0Count,ng0);
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	printf("Node Group : Count = %d\n", ng0Count );
 	assert( ng0Count == 5 );
@@ -135,27 +135,27 @@ int main(void)
 	/* 要素の細分 */
 	etype = RCAP_HEXAHEDRON;
 	elementCount = 1;
-	refineHexaCount = rcapGetRefineElementCount( &elementCount, &etype );
+	refineHexaCount = rcapGetRefineElementCount( elementCount, etype );
 	refineHexas = (int32_t*)calloc( 8*refineHexaCount, sizeof(int32_t) );
 	etype = RCAP_WEDGE;
 	elementCount = 1;
-	refineWedgeCount = rcapGetRefineElementCount( &elementCount, &etype );
+	refineWedgeCount = rcapGetRefineElementCount( elementCount, etype );
 	refineWedges = (int32_t*)calloc( 6*refineWedgeCount, sizeof(int32_t) );
 	refineElementCount = 0;
 	etype = RCAP_HEXAHEDRON;
 	elementCount = 1;
-	refineHexaCount = rcapRefineElement( &elementCount, &etype, hexas, refineHexas );
+	refineHexaCount = rcapRefineElement( elementCount, etype, hexas, refineHexas );
 	refineElementCount += refineHexaCount;
 	etype = RCAP_WEDGE;
 	elementCount = 1;
-	refineWedgeCount = rcapRefineElement( &elementCount, &etype, wedges, refineWedges );
+	refineWedgeCount = rcapRefineElement( elementCount, etype, wedges, refineWedges );
 	refineElementCount += refineWedgeCount;
 	rcapCommit();
 
 	/* 細分後の節点 */
 	refineNodeCount = rcapGetNodeCount();
 	resultCoords = (float64_t*)calloc( 3*refineNodeCount, sizeof(float64_t) );
-	rcapGetNodeSeq64( &refineNodeCount, &nodeOffset, resultCoords );
+	rcapGetNodeSeq64( refineNodeCount, nodeOffset, resultCoords );
 	printf("node:\n");
 	printf("  size: %d\n", refineNodeCount );
 	printf("  coordinate:\n");
@@ -187,7 +187,7 @@ int main(void)
 	/* 細分後の節点グループ */
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	result_ng0 = (int32_t*)calloc( ng0Count, sizeof(int32_t) );
-	rcapGetNodeGroup("ng0",&ng0Count,result_ng0);
+	rcapGetNodeGroup("ng0",ng0Count,result_ng0);
 	printf("Refined Node Group : Count = %d\n", ng0Count );
 	printf("data:\n");
 	printf("  - name: ng0\n");

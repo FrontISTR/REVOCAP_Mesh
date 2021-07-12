@@ -75,7 +75,7 @@ int main(void)
 	int32_t i;
 
 	/* 節点番号のオフセット値を与える */
-	rcapInitRefiner( &nodeOffset, &elementOffset );
+	rcapInitRefiner( nodeOffset, elementOffset );
 	rcapSetCADFilename( "data/column2/column2.rnf" );
 
 	printf("REVOCAP_Refiner sample program : Fitting Refine2\n");
@@ -83,7 +83,7 @@ int main(void)
 	printf("---\n");
 	/* 座標値を Refiner に与える */
 	/* 節点配列で与える局所節点番号と、CAD ファイルに記述してある大域節点番号との対応も与える */
-	rcapSetNode64( &nodeCount, coords, NULL, NULL );
+	rcapSetNode64( nodeCount, coords, NULL, NULL );
 	/* 細分前の節点数 */
 	nodeCount = rcapGetNodeCount();
 	assert( nodeCount == 12 );
@@ -106,7 +106,7 @@ int main(void)
 	}
 
 	/* 節点グループの登録 */
-	rcapAppendNodeGroup("ng0",&ng0Count,ng0);
+	rcapAppendNodeGroup("ng0",ng0Count,ng0);
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	assert( ng0Count == 4 );
 	printf("data:\n");
@@ -123,15 +123,15 @@ int main(void)
 	printf("---\n");
 
 	/* 要素の細分 */
-	refineElementCount = rcapGetRefineElementCount( &elementCount, &etype );
+	refineElementCount = rcapGetRefineElementCount( elementCount, etype );
 	refineHexas = (int32_t*)calloc( 8*refineElementCount, sizeof(int32_t) );
-	elementCount = rcapRefineElement( &elementCount, &etype, hexas, refineHexas);
+	elementCount = rcapRefineElement( elementCount, etype, hexas, refineHexas);
 	rcapCommit();
 
 	/* 細分後の節点 */
 	refineNodeCount = rcapGetNodeCount();
 	resultCoords = (float64_t*)calloc( 3*refineNodeCount, sizeof(float64_t) );
-	rcapGetNodeSeq64( &refineNodeCount, &nodeOffset, resultCoords );
+	rcapGetNodeSeq64( refineNodeCount, nodeOffset, resultCoords );
 	printf("node:\n");
 	printf("  size: %u\n", refineNodeCount );
 	printf("  coordinate:\n");
@@ -153,7 +153,7 @@ int main(void)
 	/* 細分後の節点グループの更新 */
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	result_ng0 = (int32_t*)calloc( ng0Count, sizeof(int32_t) );
-	rcapGetNodeGroup("ng0",&ng0Count,result_ng0);
+	rcapGetNodeGroup("ng0",ng0Count,result_ng0);
 	printf("data:\n");
 	printf("  - name: ng0\n");
 	printf("    mode: NODEGROUP\n");
@@ -168,9 +168,9 @@ int main(void)
 	/*---------------------- REFINE STEP 2 -----------------------------------------*/
 
 	/* 要素の細分 */
-	refine2ElementCount = rcapGetRefineElementCount( &refineElementCount, &etype );
+	refine2ElementCount = rcapGetRefineElementCount( refineElementCount, etype );
 	refine2Hexas = (int32_t*)calloc( 8*refine2ElementCount, sizeof(int32_t) );
-	refineElementCount = rcapRefineElement( &elementCount, &etype, refineHexas, refine2Hexas );
+	refineElementCount = rcapRefineElement( elementCount, etype, refineHexas, refine2Hexas );
 	rcapCommit();
 	rcapWriteFittingFile( "output/column2_updated.rnf" );
 
@@ -180,7 +180,7 @@ int main(void)
 	/* 細分後の節点 */
 	refineNodeCount = rcapGetNodeCount();
 	resultCoords = (float64_t*)calloc( 3*refineNodeCount, sizeof(float64_t) );
-	rcapGetNodeSeq64( &refineNodeCount, &nodeOffset, resultCoords );
+	rcapGetNodeSeq64( refineNodeCount, nodeOffset, resultCoords );
 	printf("node:\n");
 	printf("  size: %u\n", refineNodeCount );
 	printf("  coordinate:\n");
@@ -202,7 +202,7 @@ int main(void)
 	/* 細分後の節点グループの更新 */
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	result_ng0 = (int32_t*)calloc( ng0Count, sizeof(int32_t) );
-	rcapGetNodeGroup("ng0",&ng0Count,result_ng0);
+	rcapGetNodeGroup("ng0",ng0Count,result_ng0);
 	printf("data:\n");
 	printf("  - name: ng0\n");
 	printf("    mode: NODEGROUP\n");

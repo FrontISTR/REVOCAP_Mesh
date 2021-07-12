@@ -109,7 +109,7 @@ void rcapRefineFFbModel( void )
 		++dIterFree;
 		++i;
 	}
-	rcapAppendBNodeVarInt( "BC", &dataNum, nodeArray, nodeVars );
+	rcapAppendBNodeVarInt( "BC", dataNum, nodeArray, nodeVars );
 	delete[] nodeArray;
 	delete[] nodeVars;
 	REVOCAP_Debug("data size = %d\n", rcapGetBNodeVarIntCount("BC") );
@@ -136,13 +136,13 @@ void rcapRefineFFbModel( void )
 	// count refined node table
 	int32_t refineNum = 0;
 	int32_t refineNodeCount = 0;
-	refineNodeCount = static_cast<int32_t>(rcapRefineElementMulti( &elementCount, typeTable, nodeTable, &refineNum, NULL, NULL ));
+	refineNodeCount = static_cast<int32_t>(rcapRefineElementMulti( elementCount, typeTable, nodeTable, &refineNum, NULL, NULL ));
 	REVOCAP_Debug("refineElementCount = %d, refineNodeTableSize = %d\n", refineNum, refineNodeCount);
 	int32_t* refineNodeTable = new int32_t[refineNodeCount];
 	int8_t* refineTypeTable = new int8_t[refineNum];
 	refineNodeTable[0] = 0;
 	REVOCAP_Debug("RefineElement\n");
-	rcapRefineElementMulti( &elementCount, typeTable, nodeTable, &refineNum, refineTypeTable, refineNodeTable );
+	rcapRefineElementMulti( elementCount, typeTable, nodeTable, &refineNum, refineTypeTable, refineNodeTable );
 	REVOCAP_Debug("Commit\n");
 	rcapCommit();
 
@@ -244,30 +244,24 @@ int32_t rcapSaveRNFFile( const char* rnffile )
 	rnfIO.saveToRNFFile( rnffile, rcapRefinerDoc.mesh );
 	return static_cast<int32_t>(rcapRefinerDoc.mesh->getElementCount());
 }
-//int32_t rcaploadgffile_( const char* gffile, const char* bounfile ){
-//	return rcapLoadGFFile( gffile, bounfile );
-//}
-
-//int32_t rcaploadhecfile_( const char* hecfile ){
-//	return rcapLoadHECFile( hecfile );
-//}
-
-//int32_t rcapsavegffile_( const char* gffile, const char* bounfile ){
-//	return rcapSaveGFFile( gffile, bounfile );
-//}
-
-//int32_t rcapsavehecfile_( const char* hecfile ){
-//	return rcapSaveHECFile( hecfile );
-//}
-
-//int32_t rcapsavernffile_( const char* hecfile ){
-//	return rcapSaveRNFFile( hecfile );
-//}
-
-//void rcaprefineffbmodel_(void){
-//	rcapRefineFFbModel();
-//}
-
 /* rcapxxx_  すべて小文字 */
 #ifdef FORTRAN90
+int32_t rcaploadgffile_( const char* gffile, const char* bounfile ){
+	return rcapLoadGFFile( gffile, bounfile );
+}
+int32_t rcaploadhecfile_( const char* hecfile ){
+	return rcapLoadHECFile( hecfile );
+}
+int32_t rcapsavegffile_( const char* gffile, const char* bounfile ){
+	return rcapSaveGFFile( gffile, bounfile );
+}
+int32_t rcapsavehecfile_( const char* hecfile ){
+	return rcapSaveHECFile( hecfile );
+}
+int32_t rcapsavernffile_( const char* hecfile ){
+	return rcapSaveRNFFile( hecfile );
+}
+void rcaprefineffbmodel_(void){
+	rcapRefineFFbModel();
+}
 #endif

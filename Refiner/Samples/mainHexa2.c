@@ -101,14 +101,14 @@ int main(void)
 	int32_t n = 0;
 
 	/* 節点番号のオフセット値を与える */
-	rcapInitRefiner( &nodeOffset, &elementOffset );
+	rcapInitRefiner( nodeOffset, elementOffset );
 
 	printf("REVOCAP_Refiner sample program : Fitting Hexahedron Second\n");
 	printf("----- Original Model -----\n");
 	printf("---\n");
 
 	/* 座標値を Refiner に与える */
-	rcapSetNode64( &nodeCount, coords, NULL, NULL );
+	rcapSetNode64( nodeCount, coords, NULL, NULL );
 	/* 細分前の節点数 */
 	nodeCount = rcapGetNodeCount();
 	assert( nodeCount == 32 );
@@ -134,7 +134,7 @@ int main(void)
 	}
 
 	/* 節点グループの登録 */
-	rcapAppendNodeGroup("ng0",&ng0Count,ng0);
+	rcapAppendNodeGroup("ng0",ng0Count,ng0);
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	assert( ng0Count == 13 );
 	printf("data:\n");
@@ -151,10 +151,10 @@ int main(void)
 	printf("---\n");
 
 	/* 要素の細分 */
-	refineElementCount = rcapGetRefineElementCount( &elementCount, &etype );
+	refineElementCount = rcapGetRefineElementCount( elementCount, etype );
 	assert( refineElementCount == 16 );
 	refineHexas = (int32_t*)calloc( 20*refineElementCount, sizeof(int32_t) );
-	elementCount = rcapRefineElement( &elementCount, &etype, hexas, refineHexas );
+	elementCount = rcapRefineElement( elementCount, etype, hexas, refineHexas );
 	assert( elementCount == 16 );
 
 	rcapCommit();
@@ -163,7 +163,7 @@ int main(void)
 	refineNodeCount = rcapGetNodeCount();
 	assert( refineNodeCount == 141 );
 	resultCoords = (float64_t*)calloc( 3*refineNodeCount, sizeof(float64_t) );
-	rcapGetNodeSeq64( &refineNodeCount, &nodeOffset, resultCoords );
+	rcapGetNodeSeq64( refineNodeCount, nodeOffset, resultCoords );
 	printf("node:\n");
 	printf("  size: %d\n", refineNodeCount );
 	printf("  coordinate:\n");
@@ -239,7 +239,7 @@ int main(void)
 	/* 細分後の節点グループの更新 */
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	result_ng0 = (int32_t*)calloc( ng0Count, sizeof(int32_t) );
-	rcapGetNodeGroup("ng0",&ng0Count,result_ng0);
+	rcapGetNodeGroup("ng0",ng0Count,result_ng0);
 	assert( ng0Count == 37 );
 	printf("data:\n");
 	printf("  - name: ng0\n");

@@ -57,7 +57,7 @@ module RcapRefiner
 interface
   subroutine rcapGetVersion() BIND(C,Name='rcapGetVersion')
   end subroutine
-  subroutine rcapInitRefiner(nodeOffset,elementOffset) BIND(C,Name='rcapInitRefiner')
+  subroutine rcapInitRefiner(nodeOffset,elementOffset) BIND(C,Name='rcapinitrefiner_')
     implicit none
     integer(kind=4), intent(in) :: nodeOffset
     integer(kind=4), intent(in) :: elementOffset
@@ -70,11 +70,11 @@ interface
     implicit none
     character(len=1), intent(in) :: filename
   end subroutine
-  subroutine rcapSetSecondFitting(flag) BIND(C,Name='rcapSetSecondFitting')
+  subroutine rcapSetSecondFitting(flag) BIND(C,Name='rcapsetsecondfitting_')
     implicit none
     integer(kind=4), intent(in) :: flag
   end subroutine
-  subroutine rcapSetSmoothing(flag) BIND(C,Name='rcapSetSmoothing')
+  subroutine rcapSetSmoothing(flag) BIND(C,Name='rcapsetsmoothing_')
     implicit none
     integer(kind=4), intent(in) :: flag
   end subroutine
@@ -82,45 +82,45 @@ interface
     implicit none
     character(len=1), intent(in) :: filename
   end subroutine
-  subroutine rcapSetNode64(num,coords,globalIds,localIds) BIND(C,Name='rcapSetNode64')
+  subroutine rcapSetNode64(num,coords,globalIds,localIds) BIND(C,Name='rcapsetnode64_')
     implicit none
     integer(kind=4), intent(in) :: num
     real(kind=8), dimension(3*num), intent(in) :: coords
     integer(kind=4), dimension(num), intent(in) :: globalIds
     integer(kind=4), dimension(num), intent(in) :: localIds
   end subroutine
-  subroutine rcapSetNode32(num,coords,globalIds,localIds) BIND(C,Name='rcapSetNode32')
+  subroutine rcapSetNode32(num,coords,globalIds,localIds) BIND(C,Name='rcapsetnode32_')
     implicit none
     integer(kind=4), intent(in) :: num
     real(kind=4), dimension(3*num), intent(in) :: coords
     integer(kind=4), dimension(num), intent(in) :: globalIds
     integer(kind=4), dimension(num), intent(in) :: localIds
   end subroutine
-  subroutine rcapGetNode64(num,localIds,coords) BIND(C,Name='rcapGetNode64')
+  subroutine rcapGetNode64(num,localIds,coords) BIND(C,Name='rcapgetnode64_')
     implicit none
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(in) :: localIds
     real(kind=8), dimension(3*num), intent(out) :: coords
   end subroutine
-  subroutine rcapGetNode32(num,localIds,coords) BIND(C,Name='rcapGetNode32')
+  subroutine rcapGetNode32(num,localIds,coords) BIND(C,Name='rcapgetnode32_')
     implicit none
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(in) :: localIds
     real(kind=4), dimension(3*num), intent(out) :: coords
   end subroutine
-  subroutine rcapGetNodeSeq64(num,initId,coords) BIND(C,Name='rcapGetNodeSeq64')
+  subroutine rcapGetNodeSeq64(num,initId,coords) BIND(C,Name='rcapgetnodeseq64_')
     implicit none
     integer(kind=4), intent(in) :: num
     integer(kind=4), intent(in) :: initId
     real(kind=8), dimension(3*num), intent(out) :: coords
   end subroutine
-  subroutine rcapGetNodeSeq32(num,initId,coords) BIND(C,Name='rcapGetNodeSeq32')
+  subroutine rcapGetNodeSeq32(num,initId,coords) BIND(C,Name='rcapgetnodeseq32_')
     implicit none
     integer(kind=4), intent(in) :: num
     integer(kind=4), intent(in) :: initId
     real(kind=4), dimension(3*num), intent(out) :: coords
   end subroutine
-  function rcapRefineElement(num,etype,nodeArray,resultNodeArray) BIND(C,Name='rcapRefineElement')
+  function rcapRefineElement(num,etype,nodeArray,resultNodeArray) BIND(C,Name='rcaprefineelement_')
     implicit none
     integer(kind=4) rcapRefineElement
     integer(kind=4), intent(in) :: num
@@ -128,14 +128,14 @@ interface
     integer(kind=4), dimension(*), intent(in) :: nodeArray
     integer(kind=4), dimension(*), intent(out) :: resultNodeArray
   end function
-  function rcapGetRefineElementCount(num,etype) BIND(C,Name='rcapGetRefineElementCount')
+  function rcapGetRefineElementCount(num,etype) BIND(C,Name='rcapgetrefineelementcount_')
     implicit none
     integer(kind=4) rcapGetRefineElementCount
     integer(kind=4), intent(in) :: num
     integer(kind=1), intent(in) :: etype
   end function
-  function rcapRefineElementMulti(num,etypeArray,nodeArray,refinedNum, &
-    resultEtypeArray,resultNodeArray) BIND(C,Name='rcapRefineElementMulti')
+  function rcapRefineElementMulti(num,etypeArray,nodeArray,refinedNum,resultEtypeArray,resultNodeArray)&
+    BIND(C,Name='rcaprefineelementmulti_')
     implicit none
     integer(kind=4) rcapRefineElementMulti
     integer(kind=4), intent(in) :: num
@@ -145,7 +145,8 @@ interface
     integer(kind=1), dimension(*), intent(out) :: resultEtypeArray
     integer(kind=4), dimension(*), intent(out) :: resultNodeArray
   end function
-  function rcapGetRefineElementMultiCount(num,etypeArray,refinedNum) BIND(C,Name='rcapGetRefineElementMultiCount')
+  function rcapGetRefineElementMultiCount(num,etypeArray,refinedNum)&
+    BIND(C,Name='rcapgetrefineelementmulticount_')
     implicit none
     integer(kind=4) rcapGetRefineElementMultiCount
     integer(kind=4), intent(in) :: num
@@ -158,7 +159,8 @@ interface
   end function
   subroutine rcapCommit() BIND(C,Name='rcapCommit')
   end subroutine
-  subroutine rcapAppendNodeGroup_C(dataname,num,nodeArray) BIND(C,Name='rcapAppendNodeGroup')
+  subroutine rcapAppendNodeGroup_C(dataname,num,nodeArray)&
+    BIND(C,Name='rcapappendnodegroup_')
     implicit none
     character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
@@ -169,13 +171,14 @@ interface
     integer(kind=4) rcapGetNodeGroupCount_C
     character(len=1), intent(in) :: dataname
   end function
-  subroutine rcapGetNodeGroup_C(dataname,num,nodeArray) BIND(C,Name='rcapGetNodeGroup')
+  subroutine rcapGetNodeGroup_C(dataname,num,nodeArray) BIND(C,Name='rcapgetnodegroup_')
     implicit none
     character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(out) :: nodeArray
   end subroutine
-  subroutine rcapAppendBNodeGroup_C(dataname,num,nodeArray) BIND(C,Name='rcapAppendBNodeGroup')
+  subroutine rcapAppendBNodeGroup_C(dataname,num,nodeArray)&
+    BIND(C,Name='rcapappendbnodegroup_')
     implicit none
     character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
@@ -186,13 +189,13 @@ interface
     integer(kind=4) rcapGetBNodeGroupCount_C
     character(len=1), intent(in) :: dataname
   end function
-  subroutine rcapGetBNodeGroup_C(dataname,num,nodeArray) BIND(C,Name='rcapGetBNodeGroup')
+  subroutine rcapGetBNodeGroup_C(dataname,num,nodeArray) BIND(C,Name='rcapgetbnodegroup_')
     implicit none
     character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(out) :: nodeArray
   end subroutine
-  subroutine rcapAppendBNodeVarInt_C(dataname,num,nodeArray,nodeVars) BIND(C,Name='rcapAppendBNodeVarInt')
+  subroutine rcapAppendBNodeVarInt_C(dataname,num,nodeArray,nodeVars) BIND(C,Name='rcapappendbnodevarint_')
     implicit none
     character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
@@ -204,14 +207,15 @@ interface
     integer(kind=4) rcapGetBNodeVarIntCount_C
     character(len=1), intent(in) :: dataname
   end function
-  subroutine rcapGetBNodeVarInt_C(dataname,num,nodeArray,nodeVars) BIND(C,Name='rcapGetBNodeVarInt')
+  subroutine rcapGetBNodeVarInt_C(dataname,num,nodeArray,nodeVars) BIND(C,Name='rcapgetbnodevarint_')
     implicit none
     character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(out) :: nodeArray
     integer(kind=4), dimension(num), intent(in) :: nodeVars
   end subroutine
-  subroutine rcapAppendElementGroup_C(dataname,num,elementArray) BIND(C,Name='rcapAppendElementGroup')
+  subroutine rcapAppendElementGroup_C(dataname,num,elementArray)&
+    BIND(C,Name='rcapappendelementgroup_')
     implicit none
     character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
@@ -222,13 +226,15 @@ interface
     integer(kind=4) rcapGetElementGroupCount_C
     character(len=1), intent(in) :: dataname
   end function
-  subroutine rcapGetElementGroup_C(dataname,num,elementArray) BIND(C,Name='rcapGetElementGroup')
+  subroutine rcapGetElementGroup_C(dataname,num,elementArray)&
+    BIND(C,Name='rcapgetelementgroup_')
     implicit none
     character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
     integer(kind=4), dimension(num), intent(out) :: elementArray
   end subroutine
-  subroutine rcapAppendFaceGroup_C(dataname,num,faceArray) BIND(C,Name='rcapAppendFaceGroup')
+  subroutine rcapAppendFaceGroup_C(dataname,num,faceArray)&
+    BIND(C,Name='rcapappendfacegroup_')
     implicit none
     character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num
@@ -239,7 +245,8 @@ interface
     integer(kind=4) rcapGetFaceGroupCount_C
     character(len=1), intent(in) :: dataname
   end function
-  subroutine rcapGetFaceGroup_C(dataname,num,faceArray) BIND(C,Name='rcapGetFaceGroup')
+  subroutine rcapGetFaceGroup_C(dataname,num,faceArray)&
+    BIND(C,Name='rcapgetfacegroup_')
     implicit none
     character(len=1), intent(in) :: dataname
     integer(kind=4), intent(in) :: num

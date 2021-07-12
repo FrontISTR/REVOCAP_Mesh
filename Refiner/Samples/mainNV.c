@@ -89,13 +89,14 @@ int main(void)
 	int32_t* result_bnv0 = NULL;
 	int32_t* result_bnv1 = NULL;
 	int32_t bnv0Count = 3;
+	int32_t result_bnv0Count = 3; /* 細分後の個数 */
 	int32_t i = 0;
 	int32_t j = 0;
 	int32_t middle;
 	int32_t flag;
 	char mode[32];
 	/* 節点番号のオフセット値を与える */
-	rcapInitRefiner( &nodeOffset, &elementOffset );
+	rcapInitRefiner( nodeOffset, elementOffset );
 	/* 中点の Variable は小さい方を与える */
 	rcapSetInterpolateMode( "MIN" );
 	rcapGetInterpolateMode( mode );
@@ -105,7 +106,7 @@ int main(void)
 	printf("----- Original Model -----\n");
 	printf("---\n");
 	/* 座標値を Refiner に教える */
-	rcapSetNode64( &nodeCount, coords, NULL, NULL );
+	rcapSetNode64( nodeCount, coords, NULL, NULL );
 	/* 細分前の節点数 */
 	nodeCount = rcapGetNodeCount();
 	assert( nodeCount == 12 );
@@ -127,7 +128,7 @@ int main(void)
 	}
 
 	/* 節点グループの登録 */
-	rcapAppendNodeGroup("ng0",&ng0Count,ng0);
+	rcapAppendNodeGroup("ng0",ng0Count,ng0);
 	ng0Count = rcapGetNodeGroupCount("ng0");
 	assert( ng0Count == 4 );
 	printf("data:\n");
@@ -141,7 +142,7 @@ int main(void)
 	}
 
 	/* 境界節点グループの登録 */
-	rcapAppendBNodeGroup("bng0",&bng0Count,bng0);
+	rcapAppendBNodeGroup("bng0",bng0Count,bng0);
 	bng0Count = rcapGetBNodeGroupCount("bng0");
 	assert( bng0Count == 3 );
 	printf("  - name: bng0\n");
@@ -149,12 +150,12 @@ int main(void)
 	printf("    vtype: NONE\n");
 	printf("    size: %d\n",bng0Count);
 	printf("    id:\n");
-	for(i=0;i<ng0Count;++i){
+	for(i=0;i<bng0Count;++i){
 		printf("    - %d\n", bng0[i]);
 	}
 
 	/* 境界節点変数の登録 */
-	rcapAppendBNodeVarInt("bnv0",&bnv0Count,bnv0,bnv1);
+	rcapAppendBNodeVarInt("bnv0",bnv0Count,bnv0,bnv1);
 	bnv0Count = rcapGetBNodeVarIntCount("bnv0");
 	assert( bnv0Count == 3 );
 	printf("  - name: bnv0\n");
@@ -169,9 +170,10 @@ int main(void)
 	/*---------------------- REFINE -----------------------------------------*/
 
 	/* 要素の細分 */
-	refineElementCount = rcapGetRefineElementCount( &elementCount, &etype );
+	refineElementCount = rcapGetRefineElementCount( elementCount, etype );
+	assert( refineElementCount==80 );
 	refineTetras = (int32_t*)calloc( 4*refineElementCount, sizeof(int32_t) );
-	elementCount = rcapRefineElement( &elementCount, &etype, tetras, refineTetras );
+	elementCount = rcapRefineElement( elementCount, etype, tetras, refineTetras );
 	rcapCommit();
 
 	printf("----- Refined Model -----\n");
@@ -179,8 +181,9 @@ int main(void)
 
 	/* 細分後の節点 */
 	refineNodeCount = rcapGetNodeCount();
+	assert( refineNodeCount==43 );
 	resultCoords = (float64_t*)calloc( 3*refineNodeCount, sizeof(float64_t) );
-	rcapGetNodeSeq64( &refineNodeCount, &nodeOffset, resultCoords );
+	rcapGetNodeSeq64( refineNodeCount, nodeOffset, resultCoords );
 	printf("node:\n");
 	printf("  size: %d\n", refineNodeCount );
 	printf("  coordinate:\n");
@@ -200,9 +203,9 @@ int main(void)
 
 	/* 細分後の節点グループの更新 */
 	ng0Count = rcapGetNodeGroupCount("ng0");
-	assert( ng0Count > 0 );
+	assert( ng0Count==9 );
 	result_ng0 = (int32_t*)calloc( ng0Count, sizeof(int32_t) );
-	rcapGetNodeGroup("ng0",&ng0Count,result_ng0);
+	rcapGetNodeGroup("ng0",ng0Count,result_ng0);
 	printf("data:\n");
 	printf("  - name: ng0\n");
 	printf("    mode: NODEGROUP\n");
@@ -217,8 +220,9 @@ int main(void)
 
 	/* 境界節点グループの登録 */
 	bng0Count = rcapGetBNodeGroupCount("bng0");
+	assert( bng0Count==5 );
 	result_bng0 = (int32_t*)calloc( bng0Count, sizeof(int32_t) );
-	rcapGetBNodeGroup("bng0",&bng0Count,result_bng0);
+	rcapGetBNodeGroup("bng0",bng0Count,result_bng0);
 	printf("  - name: bng0\n");
 	printf("    mode: NODEGROUP\n");
 	printf("    vtype: NONE\n");
@@ -230,48 +234,92 @@ int main(void)
 	free( result_bng0 );
 
 	/* 境界節点変数の登録 */
-	bnv0Count = rcapGetBNodeVarIntCount("bnv0");
-	result_bnv0 = (int32_t*)calloc( bnv0Count, sizeof(int32_t) );
-	result_bnv1 = (int32_t*)calloc( bnv0Count, sizeof(int32_t) );
-	rcapGetBNodeVarInt("bnv0",&bnv0Count,result_bnv0,result_bnv1);
+	result_bnv0Count = rcapGetBNodeVarIntCount("bnv0");
+	assert( result_bnv0Count==5 );
+	result_bnv0 = (int32_t*)calloc( result_bnv0Count, sizeof(int32_t) );
+	result_bnv1 = (int32_t*)calloc( result_bnv0Count, sizeof(int32_t) );
+	rcapGetBNodeVarInt("bnv0",result_bnv0Count,result_bnv0,result_bnv1);
 	printf("  - name: bnv0\n");
 	printf("    mode: NODEVARIABLE\n");
 	printf("    vtype: INTEGER\n");
-	printf("    size: %d\n",bnv0Count);
+	printf("    size: %d\n",result_bnv0Count);
 	printf("    value:\n");
-	for(i=0;i<bnv0Count;++i){
+	for(i=0;i<result_bnv0Count;++i){
 		printf("    - [%d, %d]\n", result_bnv0[i], result_bnv1[i]);
 	}
 
+	printf("result_bnv0count %d\n", result_bnv0Count);
+
 	/* ここでチェック！ */
-	for(i=0;i<bnv0Count;++i){
+	for(i=0;i<result_bnv0Count;++i){
 		orgtype = rcapGetOriginal( result_bnv0[i], seg );
 		if( orgtype == RCAP_SEGMENT ){
+			// result_bnv0[i] の両端の点が seg に格納されている
+			// seg から中点を求める
 			middle = rcapGetMiddle( orgtype, seg );
+			assert(middle==result_bnv0[i]);
 			if (middle != result_bnv0[i]) {
 				printf("middle node error\n");
 			}
-			/* 小さい方になっていることを確かめる */
+			// 小さい方になっていることを確かめる
 			flag = 0;
 			for(j=0;j<bnv0Count;++j){
 				if( bnv0[j] == seg[0] ){
+					// seg[0] が細分前の節点
+					// 細分で得られる値は元の値以下
 					assert( bnv1[j] >= result_bnv1[i] );
+					// 一致している場合に 1
 					if( bnv1[j] == result_bnv1[i] ){
 						flag = 1;
 					}
 				}
 				if( bnv0[j] == seg[1] ){
+					// seg[1] が細分前の節点
+					// 細分で得られる値は元の値以下
 					assert( bnv1[j] >= result_bnv1[i] );
+					// 一致している場合に 1
 					if( bnv1[j] == result_bnv1[i] ){
 						flag = 1;
 					}
 				}
 			}
+			// どちらかに一致している
+			assert(flag==1);
 			if (flag != 1) {
 				printf("node variable error\n");
 			}
 		}
 	}
+/*
+		if( orgtype == RCAP_SEGMENT ){
+			middle = rcapGetMiddle( orgtype, seg );
+//			assert(middle==result_bnv0[i]);
+			if (middle != result_bnv0[i]) {
+				printf("middle node error\n");
+			}
+			// 小さい方になっていることを確かめる
+			flag = 0;
+			for(j=0;j<bnv0Count;++j){
+				if( bnv0[j] == seg[0] ){
+//					assert( bnv1[j] >= result_bnv1[i] );
+					if( bnv1[j] == result_bnv1[i] ){
+						flag = 1;
+					}
+				}
+				if( bnv0[j] == seg[1] ){
+//					assert( bnv1[j] >= result_bnv1[i] );
+					if( bnv1[j] == result_bnv1[i] ){
+						flag = 1;
+					}
+				}
+			}
+//			assert(flag==1);
+			if (flag != 1) {
+				printf("node variable error\n");
+			}
+		}
+	}
+*/
 	free( result_bnv0 );
 	free( result_bnv1 );
 	free( refineTetras );
