@@ -6,7 +6,7 @@ set(REVOCAP_MESH_VERSION "1.7.01")
 
 find_package(Boost
   REQUIRED
-  COMPONENTS unit_test_framework
+#  COMPONENTS unit_test_framework
 )
 
 include_directories("${PROJECT_SOURCE_DIR}")
