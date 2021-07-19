@@ -26,7 +26,7 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopExp_Explorer.hxx>
-#include <BRepMesh.hxx>
+//#include <BRepMesh.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepTools.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
@@ -170,7 +170,7 @@ isInParallel	if TRUE shape will be meshed in parallel.
 			}
 
 			if( !BRepTools::Triangulation(face, static_cast<Standard_Real>( relative ? deflection*modelDiameter : deflection ) ) ){
-				std::cout << "BRepTools false!" << endl;
+				std::cout << "BRepTools false!" << std::endl;
 				continue;
 			}
 

@@ -23,12 +23,13 @@
 #pragma comment(lib,"glew32.lib")
 #endif
 
-#include <GL/glew.h>
 
 #ifdef __APPLE__
-#include <OpenGL/gl.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
 #else
 #include <GL/gl.h>
+#include <GL/glew.h>
 #endif
 
 namespace kmb{
