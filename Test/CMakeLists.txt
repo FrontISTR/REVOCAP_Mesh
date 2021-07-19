@@ -23,9 +23,9 @@ add_executable(Common_Test Common_Test.cpp)
 target_link_libraries(Common_Test RcapCommon)
 target_compile_definitions(Common_Test PRIVATE "BOOST_TEST_NO_LIB=1")
 add_test(
- NAME Common_Test
- COMMAND $<TARGET_FILE:Common_Test>
- WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  NAME Common_Test
+  COMMAND $<TARGET_FILE:Common_Test>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
 )
 
 add_executable(Array_Test Array_Test.cpp)
@@ -43,9 +43,9 @@ target_link_libraries(Geometry_Test RcapMatrix)
 target_link_libraries(Geometry_Test RcapCommon)
 target_compile_definitions(Geometry_Test PRIVATE "BOOST_TEST_NO_LIB=1")
 add_test(
- NAME Geometry_Test
- COMMAND $<TARGET_FILE:Geometry_Test>
- WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  NAME Geometry_Test
+  COMMAND $<TARGET_FILE:Geometry_Test>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
 )
 
 add_executable(Matrix_Test Matrix_Test.cpp)
@@ -53,9 +53,9 @@ target_link_libraries(Matrix_Test RcapMatrix)
 target_link_libraries(Matrix_Test RcapCommon)
 target_compile_definitions(Matrix_Test PRIVATE "BOOST_TEST_NO_LIB=1")
 add_test(
- NAME Matrix_Test
- COMMAND $<TARGET_FILE:Matrix_Test>
- WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  NAME Matrix_Test
+  COMMAND $<TARGET_FILE:Matrix_Test>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
 )
 
 add_executable(RevocapIO_Test RevocapIO_Test.cpp)
@@ -66,7 +66,7 @@ target_link_libraries(RevocapIO_Test RcapMatrix)
 target_link_libraries(RevocapIO_Test RcapCommon)
 target_compile_definitions(RevocapIO_Test PRIVATE "BOOST_TEST_NO_LIB=1")
 add_test(
- NAME RevocapIO_Test
- COMMAND $<TARGET_FILE:RevocapIO_Test>
- WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+  NAME RevocapIO_Test
+  COMMAND $<TARGET_FILE:RevocapIO_Test>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
 )
