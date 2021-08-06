@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : PatchGenerator                                          #
@@ -26,7 +26,7 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopExp_Explorer.hxx>
-#include <BRepMesh.hxx>
+//#include <BRepMesh.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepTools.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
@@ -98,6 +98,7 @@ bool kmb::PatchGenerator::getRelative(void) const
 	return this->relative;
 }
 
+template <>
 bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 {
 	if( shape.getShape().IsNull() ){
@@ -122,6 +123,24 @@ bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 	kmb::OctreePoint3D octree;
 	octree.setContainer( mesh.getNodes() );
 	
+/*
+BRepMesh_IncrementalMesh::BRepMesh_IncrementalMesh	(
+const TopoDS_Shape & 	theShape,
+const Standard_Real 	theLinDeflection,
+const Standard_Boolean 	isRelative = Standard_False,
+const Standard_Real 	theAngDeflection = 0.5,
+const Standard_Boolean 	isInParallel = Standard_False,
+const Standard_Boolean 	adaptiveMin = Standard_False
+)
+Constructor. Automatically calls method Perform.
+
+Parameters
+theShape	shape to be meshed.
+theLinDeflection	linear deflection.
+isRelative	if TRUE deflection used for discretization of each edge will be <theLinDeflection> * <size of="" edge>="">. Deflection used for the faces will be the maximum deflection of their edges.
+theAngDeflection	angular deflection.
+isInParallel	if TRUE shape will be meshed in parallel.
+*/
 	BRepMesh_IncrementalMesh imesh(
 		shape.getShape(), 
 		static_cast<Standard_Real>( incremental*modelDiameter ),
@@ -151,7 +170,7 @@ bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 			}
 
 			if( !BRepTools::Triangulation(face, static_cast<Standard_Real>( relative ? deflection*modelDiameter : deflection ) ) ){
-				std::cout << "BRepTools false!" << endl;
+				std::cout << "BRepTools false!" << std::endl;
 				continue;
 			}
 
@@ -160,6 +179,9 @@ bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 			Handle(Poly_Triangulation) triangulation = BRep_Tool::Triangulation(face, location);
 			for(Standard_Integer i = 0; i < triangulation->NbNodes(); ++i ){
 				gp_Pnt point = triangulation->Nodes().Value(i+1);
+				if(!location.IsIdentity()){
+					point.Transform(location.Transformation());
+				}
 				kmb::nodeIdType nearestId = kmb::nullNodeId;
 				double dist = octree.getNearest( point.Coord(1), point.Coord(2), point.Coord(3), nearestId );
 				if( dist < tolerance ){
