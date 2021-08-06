@@ -179,6 +179,9 @@ isInParallel	if TRUE shape will be meshed in parallel.
 			Handle(Poly_Triangulation) triangulation = BRep_Tool::Triangulation(face, location);
 			for(Standard_Integer i = 0; i < triangulation->NbNodes(); ++i ){
 				gp_Pnt point = triangulation->Nodes().Value(i+1);
+				if(!location.IsIdentity()){
+					point.Transform(location.Transformation());
+				}
 				kmb::nodeIdType nearestId = kmb::nullNodeId;
 				double dist = octree.getNearest( point.Coord(1), point.Coord(2), point.Coord(3), nearestId );
 				if( dist < tolerance ){
