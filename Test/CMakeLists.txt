@@ -10,7 +10,7 @@ find_package(Boost
 )
 
 include_directories("${PROJECT_SOURCE_DIR}")
-include_directories("${Boost_INCLUDE_DIR}")
+include_directories("${Boost_INCLUDE_DIRS}")
 
 add_executable(HelloWorld HelloWorld.cpp)
 add_test(
