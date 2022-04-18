@@ -11,7 +11,7 @@ kmb::StereolithographyIO::fileType kmb::StereolithographyIO::checkFormat(std::st
 	input.seekg(0,std::ios::beg);
 	char buf[80];
  	input.read(buf,80);
-	// Å‰‚Ì 5 •¶š‚ª "solid" ‚Å 80 •¶š‚Ü‚Å‚ÌŠÔ‚É‰üs‚ª‚ ‚é
+	// æœ€åˆã® 5 æ–‡å­—ãŒ "solid" ã§ 80 æ–‡å­—ã¾ã§ã®é–“ã«æ”¹è¡ŒãŒã‚ã‚‹
 	if (strncmp(buf, "solid", 5)==0) {
 		for (int i = 0; i < 80; ++i) {
 			if (buf[i] == '\n' || buf[i] == '\r') {
