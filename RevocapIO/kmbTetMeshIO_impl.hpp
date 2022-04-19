@@ -173,11 +173,11 @@ int kmb::TetMeshIO::saveMesh(std::string filename, const MContainer* mesh)
 
 	kmb::bodyIdType bodyCount = static_cast<kmb::bodyIdType>(mesh->getBodyCount());
 	for (kmb::bodyIdType bodyId = 0; bodyId < bodyCount; bodyId++) {
-		int tetCount = mesh->getElementCountByType(bodyId, kmb::TETRAHEDRON);
-		int tet2Count = mesh->getElementCountByType(bodyId, kmb::TETRAHEDRON2);
-		int hexCount = mesh->getElementCountByType(bodyId, kmb::HEXAHEDRON);
-		int hex2Count = mesh->getElementCountByType(bodyId, kmb::HEXAHEDRON2);
-		int wedCount = mesh->getElementCountByType(bodyId, kmb::WEDGE);
+		int tetCount = static_cast<int>(mesh->getElementCountByType(bodyId, kmb::TETRAHEDRON));
+		int tet2Count = static_cast<int>(mesh->getElementCountByType(bodyId, kmb::TETRAHEDRON2));
+		int hexCount = static_cast<int>(mesh->getElementCountByType(bodyId, kmb::HEXAHEDRON));
+		int hex2Count = static_cast<int>(mesh->getElementCountByType(bodyId, kmb::HEXAHEDRON2));
+		int wedCount = static_cast<int>(mesh->getElementCountByType(bodyId, kmb::WEDGE));
 		int eCount = tetCount + tet2Count + hexCount + hex2Count + wedCount;
 		if (eCount > 0) {
 			volumeCount++;
@@ -280,11 +280,11 @@ int kmb::TetMeshIO::saveMesh(std::string filename, const MContainer* mesh)
 	// メッシュが保持する id ではなく、ファイルに出力した順番を出力する
 	kmb::elementIdType elementId = 0;
 	for (kmb::bodyIdType bodyId = 0; bodyId < bodyCount; ++bodyId) {
-		int tetCount = mesh->getElementCountByType(bodyId, kmb::TETRAHEDRON);
-		int tet2Count = mesh->getElementCountByType(bodyId, kmb::TETRAHEDRON2);
-		int hexCount = mesh->getElementCountByType(bodyId, kmb::HEXAHEDRON);
-		int hex2Count = mesh->getElementCountByType(bodyId, kmb::HEXAHEDRON2);
-		int wedCount = mesh->getElementCountByType(bodyId, kmb::WEDGE);
+		int tetCount = static_cast<int>(mesh->getElementCountByType(bodyId, kmb::TETRAHEDRON));
+		int tet2Count = static_cast<int>(mesh->getElementCountByType(bodyId, kmb::TETRAHEDRON2));
+		int hexCount = static_cast<int>(mesh->getElementCountByType(bodyId, kmb::HEXAHEDRON));
+		int hex2Count = static_cast<int>(mesh->getElementCountByType(bodyId, kmb::HEXAHEDRON2));
+		int wedCount = static_cast<int>(mesh->getElementCountByType(bodyId, kmb::WEDGE));
 		int eCount = tetCount + tet2Count + hexCount + hex2Count + wedCount;
 		const typename MContainer::ElementContainer* body = mesh->getElementContainer(bodyId);
 		if (body && eCount > 0) {

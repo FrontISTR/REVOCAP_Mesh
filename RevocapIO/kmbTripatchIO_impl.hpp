@@ -64,7 +64,7 @@ int kmb::TripatchIO::savePatch(std::string filename, const MContainer* mesh)
 		return -1;
 	}
 	int patchCount = 0;
-	kmb::bodyIdType bodyCount = mesh->getBodyCount();
+	kmb::bodyIdType bodyCount = static_cast<kmb::bodyIdType>(mesh->getBodyCount());
 	for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 		size_t elemCount = mesh->getElementCount(bodyId);
 		size_t triCount = mesh->getElementCountByType(bodyId,kmb::kTriangle);
@@ -110,7 +110,7 @@ int kmb::TripatchIO::savePatchPacked(std::string filename, const MContainer* mes
 		return -1;
 	}
 	int patchCount = 0;
-	kmb::bodyIdType bodyCount = mesh->getBodyCount();
+	kmb::bodyIdType bodyCount = static_cast<kmb::bodyIdType>(mesh->getBodyCount());
 	for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
 		size_t elemCount = mesh->getElementCount(bodyId);
 		size_t triCount = mesh->getElementCountByType(bodyId,kmb::kTriangle);
@@ -176,7 +176,7 @@ int kmb::TripatchIO::savePatchBrep(std::string filename, kmb::PatchBrep<MContain
 			if (mesh != NULL && mesh_offset.find(mesh) == mesh_offset.end()) {
 				mesh_offset.insert(std::make_pair(mesh, nodeCount));
 				mesh_order.push_back(mesh);
-				nodeCount += mesh->getNodeCount();
+				nodeCount += static_cast<int>(mesh->getNodeCount());
 			}
 		}
 	}
@@ -204,7 +204,7 @@ int kmb::TripatchIO::savePatchBrep(std::string filename, kmb::PatchBrep<MContain
 		for (int j = 0; j < surfaceCount; ++j) {
 			int surface = brep.getSurface(shell, j);
 			const MContainer* mesh = brep.getMesh(shell, j);
-			triCount += mesh->getElementCount(static_cast<kmb::bodyIdType>(surface));
+			triCount += static_cast<int>(mesh->getElementCount(static_cast<kmb::bodyIdType>(surface)));
 		}
 		output << triCount << " " << 0 << " " << 0 << std::endl;
 		for (int j = 0; j < surfaceCount; ++j) {

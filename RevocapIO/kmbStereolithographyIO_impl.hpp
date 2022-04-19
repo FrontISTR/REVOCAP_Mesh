@@ -8,6 +8,12 @@
 #include <sstream>
 #include <iostream>
 
+#ifdef _WIN32
+#if _MSC_VER >= 1400
+#define sprintf sprintf_s
+#endif
+#endif
+
 template<typename MContainer>
 int kmb::StereolithographyIO::loadPatch(std::string filename, MContainer* patch)
 {
@@ -87,7 +93,7 @@ int kmb::StereolithographyIO::loadAsciiPatch(std::string filename, MContainer* p
 	std::string str,tag,name;
 	int index = 0;
 	int region_index = 0;
-	double x,y,z,dist;
+	double x,y,z;
 	kmb::bodyIdType bodyId;
 	kmb::nodeIdType nodes[3] = {kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId};
 	patch->beginNode(3*size);
@@ -134,7 +140,7 @@ int kmb::StereolithographyIO::savePatch(std::string filename, const MContainer* 
 	sprintf(buf,"%-80s", title.c_str());
 	output.write(buf, 80);
 	kmb::nodeIdType nodes[3] = { kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId };
-	int size = patch->getElementCountByType(bodyId,kmb::kTriangle);
+	int size = static_cast<int>(patch->getElementCountByType(bodyId,kmb::kTriangle));
 	output.write(reinterpret_cast<char*>(&size), sizeof(int));
 
 	buf[0] = static_cast<char>(0);
@@ -189,7 +195,7 @@ int kmb::StereolithographyIO::saveAsciiPatch(std::string filename, const MContai
 		std::cout << "Save Error : Can't Open File " << filename << "." << std::endl;
 		return -1;
 	}
-	kmb::bodyIdType bodyCount = patch->getBodyCount();
+	kmb::bodyIdType bodyCount = static_cast<kmb::bodyIdType>(patch->getBodyCount());
 	kmb::nodeIdType nodes[3] = { kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId };
 	kmb::Point3D p0, p1, p2;
 	kmb::Vector3D normal;
@@ -248,13 +254,13 @@ int kmb::StereolithographyIO::savePatchBrep(std::string filename, kmb::PatchBrep
 
 	int shellCount = brep.getShellCount();
 	for (int i = 0; i < shellCount; ++i) {
-		int shell = brep.getShell(i);
+		int shell = static_cast<int>(brep.getShell(i));
 		int surfaceCount = brep.getSufraceCount(shell);
 		int triangleCount = 0;
 		for (int j = 0; j < surfaceCount; ++j) {
 			int surface = brep.getSurface(shell, j);
 			const MContainer* mesh = brep.getMesh(shell, j);
-			triangleCount += mesh->getElementCount(static_cast<kmb::bodyIdType>(surface));
+			triangleCount += static_cast<int>(mesh->getElementCount(static_cast<kmb::bodyIdType>(surface)));
 		}
 		output.write(reinterpret_cast<char*>(&triangleCount), sizeof(int));
 		for (int j = 0; j < surfaceCount; ++j) {
