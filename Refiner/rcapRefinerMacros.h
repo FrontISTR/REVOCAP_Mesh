@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------
 #                                                                      #
-# Software Name : REVOCAP_PrePost version 1.6                          #
-# Class Name : FBORendering                                            #
+# Software Name : REVOCAP_Refiner version 1.1                          #
+# Program Name : rcapRefinerMacros                                     #
 #                                                                      #
 #                                Written by                            #
 #                                           K. Tokunaga 2012/03/23     #
@@ -12,44 +12,8 @@
 #                                     Multi Dynamics Simulator"        #
 #                                                                      #
 ----------------------------------------------------------------------*/
-#ifdef REVOCAP_SUPPORT_GLEW
 
-#pragma once
+/*
+ * テストプログラム用のマクロ集
+ */
 
-#ifdef _WIN32
-#include <windows.h>
-#pragma comment(lib,"opengl32.lib")
-#pragma comment(lib,"glu32.lib")
-#pragma comment(lib,"glew32.lib")
-#endif
-
-#include <GL/glew.h>
-
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#else
-#include <GL/gl.h>
-#endif
-
-namespace kmb{
-
-class FBORendering
-{
-private:
-	GLuint framebuffer_name;
-	GLuint texture_name;
-	GLuint renderbuffer_name;
-public:
-	FBORendering(void);
-	virtual ~FBORendering(void);
-	virtual bool init(int width,int height);
-	virtual bool saveBMPFile(const char* szFilename );
-	virtual void setContext(void) const;
-	virtual void releaseContext(void);
-	virtual void getSize(int size[2]) const;
-	void clear(void);
-};
-
-}
-
-#endif
