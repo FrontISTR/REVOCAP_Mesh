@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.7                          #
 # Class Name : OffIO                                                   #
@@ -22,8 +22,10 @@ class OffIO
 public:
 	OffIO(void){};
 	~OffIO(void){};
-	int loadFile(const char* filename,kmb::MeshData* mesh);
-	int saveFile(const char* filename,const kmb::MeshData* mesh);
+	template<typename MeshT>
+	int loadFile(const char* filename,MeshT* mesh);
+	template<typename MeshT>
+	int saveFile(const char* filename,const MeshT* mesh);
 };
 
 }
