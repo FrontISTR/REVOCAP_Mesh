@@ -78,6 +78,10 @@ PROGRAM RefinerSample
   PRINT '("Element : Count ="I8)', elementCount
   PRINT '(I8,I8,4I8)', (I, etype, &
        & tetras(4*I-3), tetras(4*I-2), tetras(4*I-1), tetras(4*I), I=1, elementCount)
+  IF ( nodeCount /= 5 ) THEN
+    PRINT *, "Error Node Count", nodeCount
+    CALL EXIT(1)
+  ENDIF
 
 ! set conditions which are updated simultaneously
   str = "innovation project"
@@ -85,16 +89,35 @@ PROGRAM RefinerSample
   CALL rcapAppendNodeGroup(str,nodeCount,ng0)
   PRINT '("Node Group : Count ="I8)', nodeCount
   PRINT '(I8)', (ng0(I), I = 1, nodeCount)
+  nodeCount = rcapGetNodeGroupCount(str)
+  IF ( nodeCount /= 3 ) THEN
+    PRINT *, "Error Node Group Count", nodeCount
+    CALL EXIT(1)
+  ENDIF
 
 ! ---------------------- REFINE -----------------------------------------
   refineElementCount = rcapGetRefineElementCount( elementCount, RCAP_TETRAHEDRON )
+  IF ( refineElementCount /= 16 ) THEN
+    PRINT *, "Error Refine Element Count", refineElementCount
+    CALL EXIT(1)
+  ENDIF
   ALLOCATE( refineTetras(refineElementCount*4) )
+  refineTetras = 0
 
   refineElementCount = rcapRefineElement( elementCount, RCAP_TETRAHEDRON, tetras, refineTetras )
+  IF ( refineElementCount /= 16 ) THEN
+    PRINT *, "Error Refine Element Count", refineElementCount
+    CALL EXIT(1)
+  ENDIF
 
   PRINT *, "----- Refined Model -----"
 
   refineNodeCount = rcapGetNodeCount()
+  IF ( refineNodeCount /= 14 ) THEN
+    PRINT *, "Error Refine Node Count", refineNodeCount
+    refineNodeCount = 14
+!    CALL EXIT(1)
+  ENDIF
   ALLOCATE( resultCoords(3*refineNodeCount) )
   CALL rcapGetNodeSeq64( refineNodeCount, 1, resultCoords )
   PRINT '("Node : Count ="I8)', refineNodeCount
@@ -108,14 +131,17 @@ PROGRAM RefinerSample
       IF( coords(3*originalNode(1)-2) + coords(3*originalNode(2)-2)  /= 2.0 * resultCoords(3*I-2) ) THEN
         PRINT *, "Refine Node Coordinate Error ", I, " => [", originalNode(1), ",", originalNode(2), "]"
         PRINT *, coords(3*originalNode(1)-2), ",", coords(3*originalNode(2)-2), ",", resultCoords(3*I-2)
+        CALL EXIT(1)
       END IF
       IF( coords(3*originalNode(1)-1) + coords(3*originalNode(2)-1)  /= 2.0 * resultCoords(3*I-1) ) THEN
         PRINT *, "Refine Node Coordinate Error ", I, " => [", originalNode(1), ",", originalNode(2), "]"
         PRINT *, coords(3*originalNode(1)-1), ",", coords(3*originalNode(2)-1), ",", resultCoords(3*I-1)
+        CALL EXIT(1)
       END IF
       IF( coords(3*originalNode(1)) + coords(3*originalNode(2))  /= 2.0 * resultCoords(3*I) ) THEN
         PRINT *, "Refine Node Coordinate Error ", I, " => [", originalNode(1), ",", originalNode(2), "]"
         PRINT *, coords(3*originalNode(1)), ",", coords(3*originalNode(2)), ",", resultCoords(3*I)
+        CALL EXIT(1)
       END IF
     END IF
   END DO
