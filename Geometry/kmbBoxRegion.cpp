@@ -943,20 +943,20 @@ kmb::BoxRegion::intersectArea_minx(const kmb::Point3D &p0,const kmb::Point3D &p1
 	kmb::Point3D p3, p4;
 	switch( kmb::PlaneYZ::getIntersectionTriangle( minX(), p0, p1, p2, p3, p4 ) )
 	{
-	case -2: return 0.0;
-	case -1: return kmb::BoxRegion::intersectArea_maxx(p0,p1,p2);
-	case 0: return kmb::BoxRegion::intersectArea_maxx(p0,p3,p4);
-	case 1: return kmb::BoxRegion::intersectArea_maxx(p1,p3,p4);
-	case 2: return kmb::BoxRegion::intersectArea_maxx(p2,p3,p4);
-	case 3: return kmb::BoxRegion::intersectArea_maxx(p1,p2,p4) + kmb::BoxRegion::intersectArea_maxx(p1,p4,p3);
-	case 4: return kmb::BoxRegion::intersectArea_maxx(p2,p0,p4) + kmb::BoxRegion::intersectArea_maxx(p2,p4,p3);
-	case 5: return kmb::BoxRegion::intersectArea_maxx(p0,p1,p4) + kmb::BoxRegion::intersectArea_maxx(p0,p4,p3);
-	case 6: return kmb::BoxRegion::intersectArea_maxx(p0,p1,p3);
-	case 7: return kmb::BoxRegion::intersectArea_maxx(p1,p2,p3);
-	case 8: return kmb::BoxRegion::intersectArea_maxx(p2,p0,p3);
-	case 9: return kmb::BoxRegion::intersectArea_maxx(p0,p3,p2);
-	case 10: return kmb::BoxRegion::intersectArea_maxx(p1,p3,p0);
-	case 11: return kmb::BoxRegion::intersectArea_maxx(p2,p3,p1);
+	case kmb::Plane::kALL_NEGATIVE: return 0.0;
+	case kmb::Plane::kALL_POSITIVE: return kmb::BoxRegion::intersectArea_maxx(p0,p1,p2);
+	case kmb::Plane::k034_1243: return kmb::BoxRegion::intersectArea_maxx(p0,p3,p4);
+	case kmb::Plane::k134_2043: return kmb::BoxRegion::intersectArea_maxx(p1,p3,p4);
+	case kmb::Plane::k234_0143: return kmb::BoxRegion::intersectArea_maxx(p2,p3,p4);
+	case kmb::Plane::k1243_034: return kmb::BoxRegion::intersectArea_maxx(p1,p2,p4) + kmb::BoxRegion::intersectArea_maxx(p1,p4,p3);
+	case kmb::Plane::k2043_134: return kmb::BoxRegion::intersectArea_maxx(p2,p0,p4) + kmb::BoxRegion::intersectArea_maxx(p2,p4,p3);
+	case kmb::Plane::k0143_234: return kmb::BoxRegion::intersectArea_maxx(p0,p1,p4) + kmb::BoxRegion::intersectArea_maxx(p0,p4,p3);
+	case kmb::Plane::k0_013_032: return kmb::BoxRegion::intersectArea_maxx(p0,p1,p3);
+	case kmb::Plane::k1_123_130: return kmb::BoxRegion::intersectArea_maxx(p1,p2,p3);
+	case kmb::Plane::k2_203_231: return kmb::BoxRegion::intersectArea_maxx(p2,p0,p3);
+	case kmb::Plane::k0_032_013: return kmb::BoxRegion::intersectArea_maxx(p0,p3,p2);
+	case kmb::Plane::k1_130_123: return kmb::BoxRegion::intersectArea_maxx(p1,p3,p0);
+	case kmb::Plane::k2_231_203: return kmb::BoxRegion::intersectArea_maxx(p2,p3,p1);
 	default: return 0.0;
 	}
 }
@@ -967,20 +967,20 @@ kmb::BoxRegion::intersectArea_maxx(const kmb::Point3D &p0,const kmb::Point3D &p1
 	kmb::Point3D p3, p4;
 	switch( kmb::PlaneYZ::getIntersectionTriangle( maxX(), p0, p1, p2, p3, p4 ) )
 	{
-	case -1: return 0.0;
-	case -2: return kmb::BoxRegion::intersectArea_miny(p0,p1,p2);
-	case 3: return kmb::BoxRegion::intersectArea_miny(p0,p3,p4);
-	case 4: return kmb::BoxRegion::intersectArea_miny(p1,p3,p4);
-	case 5: return kmb::BoxRegion::intersectArea_miny(p2,p3,p4);
-	case 0: return kmb::BoxRegion::intersectArea_miny(p1,p2,p4) + kmb::BoxRegion::intersectArea_miny(p1,p4,p3);
-	case 1: return kmb::BoxRegion::intersectArea_miny(p2,p0,p4) + kmb::BoxRegion::intersectArea_miny(p2,p4,p3);
-	case 2: return kmb::BoxRegion::intersectArea_miny(p0,p1,p4) + kmb::BoxRegion::intersectArea_miny(p0,p4,p3);
-	case 9: return kmb::BoxRegion::intersectArea_miny(p0,p1,p3);
-	case 10: return kmb::BoxRegion::intersectArea_miny(p1,p2,p3);
-	case 11: return kmb::BoxRegion::intersectArea_miny(p2,p0,p3);
-	case 6: return kmb::BoxRegion::intersectArea_miny(p0,p3,p2);
-	case 7: return kmb::BoxRegion::intersectArea_miny(p1,p3,p0);
-	case 8: return kmb::BoxRegion::intersectArea_miny(p2,p3,p1);
+	case kmb::Plane::kALL_POSITIVE: return 0.0;
+	case kmb::Plane::kALL_NEGATIVE: return kmb::BoxRegion::intersectArea_miny(p0,p1,p2);
+	case kmb::Plane::k1243_034: return kmb::BoxRegion::intersectArea_miny(p0,p3,p4);
+	case kmb::Plane::k2043_134: return kmb::BoxRegion::intersectArea_miny(p1,p3,p4);
+	case kmb::Plane::k0143_234: return kmb::BoxRegion::intersectArea_miny(p2,p3,p4);
+	case kmb::Plane::k034_1243: return kmb::BoxRegion::intersectArea_miny(p1,p2,p4) + kmb::BoxRegion::intersectArea_miny(p1,p4,p3);
+	case kmb::Plane::k134_2043: return kmb::BoxRegion::intersectArea_miny(p2,p0,p4) + kmb::BoxRegion::intersectArea_miny(p2,p4,p3);
+	case kmb::Plane::k234_0143: return kmb::BoxRegion::intersectArea_miny(p0,p1,p4) + kmb::BoxRegion::intersectArea_miny(p0,p4,p3);
+	case kmb::Plane::k0_032_013: return kmb::BoxRegion::intersectArea_miny(p0,p1,p3);
+	case kmb::Plane::k1_130_123: return kmb::BoxRegion::intersectArea_miny(p1,p2,p3);
+	case kmb::Plane::k2_231_203: return kmb::BoxRegion::intersectArea_miny(p2,p0,p3);
+	case kmb::Plane::k0_013_032: return kmb::BoxRegion::intersectArea_miny(p0,p3,p2);
+	case kmb::Plane::k1_123_130: return kmb::BoxRegion::intersectArea_miny(p1,p3,p0);
+	case kmb::Plane::k2_203_231: return kmb::BoxRegion::intersectArea_miny(p2,p3,p1);
 	default: return 0.0;
 	}
 }
@@ -991,20 +991,20 @@ kmb::BoxRegion::intersectArea_miny(const kmb::Point3D &p0,const kmb::Point3D &p1
 	kmb::Point3D p3, p4;
 	switch( kmb::PlaneZX::getIntersectionTriangle( minY(), p0, p1, p2, p3, p4 ) )
 	{
-	case -2: return 0.0;
-	case -1: return kmb::BoxRegion::intersectArea_maxy(p0,p1,p2);
-	case 0: return kmb::BoxRegion::intersectArea_maxy(p0,p3,p4);
-	case 1: return kmb::BoxRegion::intersectArea_maxy(p1,p3,p4);
-	case 2: return kmb::BoxRegion::intersectArea_maxy(p2,p3,p4);
-	case 3: return kmb::BoxRegion::intersectArea_maxy(p1,p2,p4) + kmb::BoxRegion::intersectArea_maxy(p1,p4,p3);
-	case 4: return kmb::BoxRegion::intersectArea_maxy(p2,p0,p4) + kmb::BoxRegion::intersectArea_maxy(p2,p4,p3);
-	case 5: return kmb::BoxRegion::intersectArea_maxy(p0,p1,p4) + kmb::BoxRegion::intersectArea_maxy(p0,p4,p3);
-	case 6: return kmb::BoxRegion::intersectArea_maxy(p0,p1,p3);
-	case 7: return kmb::BoxRegion::intersectArea_maxy(p1,p2,p3);
-	case 8: return kmb::BoxRegion::intersectArea_maxy(p2,p0,p3);
-	case 9: return kmb::BoxRegion::intersectArea_maxy(p0,p3,p2);
-	case 10: return kmb::BoxRegion::intersectArea_maxy(p1,p3,p0);
-	case 11: return kmb::BoxRegion::intersectArea_maxy(p2,p3,p1);
+	case kmb::Plane::kALL_NEGATIVE: return 0.0;
+	case kmb::Plane::kALL_POSITIVE: return kmb::BoxRegion::intersectArea_maxy(p0,p1,p2);
+	case kmb::Plane::k034_1243: return kmb::BoxRegion::intersectArea_maxy(p0,p3,p4);
+	case kmb::Plane::k134_2043: return kmb::BoxRegion::intersectArea_maxy(p1,p3,p4);
+	case kmb::Plane::k234_0143: return kmb::BoxRegion::intersectArea_maxy(p2,p3,p4);
+	case kmb::Plane::k1243_034: return kmb::BoxRegion::intersectArea_maxy(p1,p2,p4) + kmb::BoxRegion::intersectArea_maxy(p1,p4,p3);
+	case kmb::Plane::k2043_134: return kmb::BoxRegion::intersectArea_maxy(p2,p0,p4) + kmb::BoxRegion::intersectArea_maxy(p2,p4,p3);
+	case kmb::Plane::k0143_234: return kmb::BoxRegion::intersectArea_maxy(p0,p1,p4) + kmb::BoxRegion::intersectArea_maxy(p0,p4,p3);
+	case kmb::Plane::k0_013_032: return kmb::BoxRegion::intersectArea_maxy(p0,p1,p3);
+	case kmb::Plane::k1_123_130: return kmb::BoxRegion::intersectArea_maxy(p1,p2,p3);
+	case kmb::Plane::k2_203_231: return kmb::BoxRegion::intersectArea_maxy(p2,p0,p3);
+	case kmb::Plane::k0_032_013: return kmb::BoxRegion::intersectArea_maxy(p0,p3,p2);
+	case kmb::Plane::k1_130_123: return kmb::BoxRegion::intersectArea_maxy(p1,p3,p0);
+	case kmb::Plane::k2_231_203: return kmb::BoxRegion::intersectArea_maxy(p2,p3,p1);
 	default: return 0.0;
 	}
 }
@@ -1015,20 +1015,20 @@ kmb::BoxRegion::intersectArea_maxy(const kmb::Point3D &p0,const kmb::Point3D &p1
 	kmb::Point3D p3, p4;
 	switch( kmb::PlaneZX::getIntersectionTriangle( maxY(), p0, p1, p2, p3, p4 ) )
 	{
-	case -1: return 0.0;
-	case -2: return kmb::BoxRegion::intersectArea_minz(p0,p1,p2);
-	case 3: return kmb::BoxRegion::intersectArea_minz(p0,p3,p4);
-	case 4: return kmb::BoxRegion::intersectArea_minz(p1,p3,p4);
-	case 5: return kmb::BoxRegion::intersectArea_minz(p2,p3,p4);
-	case 0: return kmb::BoxRegion::intersectArea_minz(p1,p2,p4) + kmb::BoxRegion::intersectArea_minz(p1,p4,p3);
-	case 1: return kmb::BoxRegion::intersectArea_minz(p2,p0,p4) + kmb::BoxRegion::intersectArea_minz(p2,p4,p3);
-	case 2: return kmb::BoxRegion::intersectArea_minz(p0,p1,p4) + kmb::BoxRegion::intersectArea_minz(p0,p4,p3);
-	case 9: return kmb::BoxRegion::intersectArea_minz(p0,p1,p3);
-	case 10: return kmb::BoxRegion::intersectArea_minz(p1,p2,p3);
-	case 11: return kmb::BoxRegion::intersectArea_minz(p2,p0,p3);
-	case 6: return kmb::BoxRegion::intersectArea_minz(p0,p3,p2);
-	case 7: return kmb::BoxRegion::intersectArea_minz(p1,p3,p0);
-	case 8: return kmb::BoxRegion::intersectArea_minz(p2,p3,p1);
+	case kmb::Plane::kALL_POSITIVE: return 0.0;
+	case kmb::Plane::kALL_NEGATIVE: return kmb::BoxRegion::intersectArea_minz(p0,p1,p2);
+	case kmb::Plane::k1243_034: return kmb::BoxRegion::intersectArea_minz(p0,p3,p4);
+	case kmb::Plane::k2043_134: return kmb::BoxRegion::intersectArea_minz(p1,p3,p4);
+	case kmb::Plane::k0143_234: return kmb::BoxRegion::intersectArea_minz(p2,p3,p4);
+	case kmb::Plane::k034_1243: return kmb::BoxRegion::intersectArea_minz(p1,p2,p4) + kmb::BoxRegion::intersectArea_minz(p1,p4,p3);
+	case kmb::Plane::k134_2043: return kmb::BoxRegion::intersectArea_minz(p2,p0,p4) + kmb::BoxRegion::intersectArea_minz(p2,p4,p3);
+	case kmb::Plane::k234_0143: return kmb::BoxRegion::intersectArea_minz(p0,p1,p4) + kmb::BoxRegion::intersectArea_minz(p0,p4,p3);
+	case kmb::Plane::k0_032_013: return kmb::BoxRegion::intersectArea_minz(p0,p1,p3);
+	case kmb::Plane::k1_130_123: return kmb::BoxRegion::intersectArea_minz(p1,p2,p3);
+	case kmb::Plane::k2_231_203: return kmb::BoxRegion::intersectArea_minz(p2,p0,p3);
+	case kmb::Plane::k0_013_032: return kmb::BoxRegion::intersectArea_minz(p0,p3,p2);
+	case kmb::Plane::k1_123_130: return kmb::BoxRegion::intersectArea_minz(p1,p3,p0);
+	case kmb::Plane::k2_203_231: return kmb::BoxRegion::intersectArea_minz(p2,p3,p1);
 	default: return 0.0;
 	}
 }
@@ -1039,20 +1039,20 @@ kmb::BoxRegion::intersectArea_minz(const kmb::Point3D &p0,const kmb::Point3D &p1
 	kmb::Point3D p3, p4;
 	switch( kmb::PlaneXY::getIntersectionTriangle( minZ(), p0, p1, p2, p3, p4 ) )
 	{
-	case -2: return 0.0;
-	case -1: return kmb::BoxRegion::intersectArea_maxz(p0,p1,p2);
-	case 0: return kmb::BoxRegion::intersectArea_maxz(p0,p3,p4);
-	case 1: return kmb::BoxRegion::intersectArea_maxz(p1,p3,p4);
-	case 2: return kmb::BoxRegion::intersectArea_maxz(p2,p3,p4);
-	case 3: return kmb::BoxRegion::intersectArea_maxz(p1,p2,p4) + kmb::BoxRegion::intersectArea_maxz(p1,p4,p3);
-	case 4: return kmb::BoxRegion::intersectArea_maxz(p2,p0,p4) + kmb::BoxRegion::intersectArea_maxz(p2,p4,p3);
-	case 5: return kmb::BoxRegion::intersectArea_maxz(p0,p1,p4) + kmb::BoxRegion::intersectArea_maxz(p0,p4,p3);
-	case 6: return kmb::BoxRegion::intersectArea_maxz(p0,p1,p3);
-	case 7: return kmb::BoxRegion::intersectArea_maxz(p1,p2,p3);
-	case 8: return kmb::BoxRegion::intersectArea_maxz(p2,p0,p3);
-	case 9: return kmb::BoxRegion::intersectArea_maxz(p0,p3,p2);
-	case 10: return kmb::BoxRegion::intersectArea_maxz(p1,p3,p0);
-	case 11: return kmb::BoxRegion::intersectArea_maxz(p2,p3,p1);
+	case kmb::Plane::kALL_NEGATIVE: return 0.0;
+	case kmb::Plane::kALL_POSITIVE: return kmb::BoxRegion::intersectArea_maxz(p0,p1,p2);
+	case kmb::Plane::k034_1243: return kmb::BoxRegion::intersectArea_maxz(p0,p3,p4);
+	case kmb::Plane::k134_2043: return kmb::BoxRegion::intersectArea_maxz(p1,p3,p4);
+	case kmb::Plane::k234_0143: return kmb::BoxRegion::intersectArea_maxz(p2,p3,p4);
+	case kmb::Plane::k1243_034: return kmb::BoxRegion::intersectArea_maxz(p1,p2,p4) + kmb::BoxRegion::intersectArea_maxz(p1,p4,p3);
+	case kmb::Plane::k2043_134: return kmb::BoxRegion::intersectArea_maxz(p2,p0,p4) + kmb::BoxRegion::intersectArea_maxz(p2,p4,p3);
+	case kmb::Plane::k0143_234: return kmb::BoxRegion::intersectArea_maxz(p0,p1,p4) + kmb::BoxRegion::intersectArea_maxz(p0,p4,p3);
+	case kmb::Plane::k0_013_032: return kmb::BoxRegion::intersectArea_maxz(p0,p1,p3);
+	case kmb::Plane::k1_123_130: return kmb::BoxRegion::intersectArea_maxz(p1,p2,p3);
+	case kmb::Plane::k2_203_231: return kmb::BoxRegion::intersectArea_maxz(p2,p0,p3);
+	case kmb::Plane::k0_032_013: return kmb::BoxRegion::intersectArea_maxz(p0,p3,p2);
+	case kmb::Plane::k1_130_123: return kmb::BoxRegion::intersectArea_maxz(p1,p3,p0);
+	case kmb::Plane::k2_231_203: return kmb::BoxRegion::intersectArea_maxz(p2,p3,p1);
 	default: return 0.0;
 	}
 }
@@ -1063,20 +1063,20 @@ kmb::BoxRegion::intersectArea_maxz(const kmb::Point3D &p0,const kmb::Point3D &p1
 	kmb::Point3D p3, p4;
 	switch( kmb::PlaneXY::getIntersectionTriangle( maxZ(), p0, p1, p2, p3, p4 ) )
 	{
-	case -1: return 0.0;
-	case -2: return kmb::Point3D::area(p0,p1,p2);
-	case 3: return kmb::Point3D::area(p0,p3,p4);
-	case 4: return kmb::Point3D::area(p1,p3,p4);
-	case 5: return kmb::Point3D::area(p2,p3,p4);
-	case 0: return kmb::Point3D::area(p1,p2,p4) + kmb::Point3D::area(p1,p4,p3);
-	case 1: return kmb::Point3D::area(p2,p0,p4) + kmb::Point3D::area(p2,p4,p3);
-	case 2: return kmb::Point3D::area(p0,p1,p4) + kmb::Point3D::area(p0,p4,p3);
-	case 9: return kmb::Point3D::area(p0,p1,p3);
-	case 10: return kmb::Point3D::area(p1,p2,p3);
-	case 11: return kmb::Point3D::area(p2,p0,p3);
-	case 6: return kmb::Point3D::area(p0,p3,p2);
-	case 7: return kmb::Point3D::area(p1,p3,p0);
-	case 8: return kmb::Point3D::area(p2,p3,p1);
+	case kmb::Plane::kALL_POSITIVE: return 0.0;
+	case kmb::Plane::kALL_NEGATIVE: return kmb::Point3D::area(p0,p1,p2);
+	case kmb::Plane::k1243_034: return kmb::Point3D::area(p0,p3,p4);
+	case kmb::Plane::k2043_134: return kmb::Point3D::area(p1,p3,p4);
+	case kmb::Plane::k0143_234: return kmb::Point3D::area(p2,p3,p4);
+	case kmb::Plane::k034_1243: return kmb::Point3D::area(p1,p2,p4) + kmb::Point3D::area(p1,p4,p3);
+	case kmb::Plane::k134_2043: return kmb::Point3D::area(p2,p0,p4) + kmb::Point3D::area(p2,p4,p3);
+	case kmb::Plane::k234_0143: return kmb::Point3D::area(p0,p1,p4) + kmb::Point3D::area(p0,p4,p3);
+	case kmb::Plane::k0_032_013: return kmb::Point3D::area(p0,p1,p3);
+	case kmb::Plane::k1_130_123: return kmb::Point3D::area(p1,p2,p3);
+	case kmb::Plane::k2_231_203: return kmb::Point3D::area(p2,p0,p3);
+	case kmb::Plane::k0_013_032: return kmb::Point3D::area(p0,p3,p2);
+	case kmb::Plane::k1_123_130: return kmb::Point3D::area(p1,p3,p0);
+	case kmb::Plane::k2_203_231: return kmb::Point3D::area(p2,p3,p1);
 	default: return 0.0;
 	}
 }
@@ -1087,20 +1087,20 @@ kmb::BoxRegion::intersect_minx(const kmb::Point3D &p0,const kmb::Point3D &p1,con
 	kmb::Point3D p3, p4;
 	switch( kmb::PlaneYZ::getIntersectionTriangle( minX(), p0, p1, p2, p3, p4 ) )
 	{
-	case -2: return false;
-	case -1: return kmb::BoxRegion::intersect_maxx(p0,p1,p2);
-	case 0: return kmb::BoxRegion::intersect_maxx(p0,p3,p4);
-	case 1: return kmb::BoxRegion::intersect_maxx(p1,p3,p4);
-	case 2: return kmb::BoxRegion::intersect_maxx(p2,p3,p4);
-	case 3: return kmb::BoxRegion::intersect_maxx(p1,p2,p4) || kmb::BoxRegion::intersect_maxx(p1,p4,p3);
-	case 4: return kmb::BoxRegion::intersect_maxx(p2,p0,p4) || kmb::BoxRegion::intersect_maxx(p2,p4,p3);
-	case 5: return kmb::BoxRegion::intersect_maxx(p0,p1,p4) || kmb::BoxRegion::intersect_maxx(p0,p4,p3);
-	case 6: return kmb::BoxRegion::intersect_maxx(p0,p1,p3);
-	case 7: return kmb::BoxRegion::intersect_maxx(p1,p2,p3);
-	case 8: return kmb::BoxRegion::intersect_maxx(p2,p0,p3);
-	case 9: return kmb::BoxRegion::intersect_maxx(p0,p3,p2);
-	case 10: return kmb::BoxRegion::intersect_maxx(p1,p3,p0);
-	case 11: return kmb::BoxRegion::intersect_maxx(p2,p3,p1);
+	case kmb::Plane::kALL_NEGATIVE: return false;
+	case kmb::Plane::kALL_POSITIVE: return kmb::BoxRegion::intersect_maxx(p0,p1,p2);
+	case kmb::Plane::k034_1243: return kmb::BoxRegion::intersect_maxx(p0,p3,p4);
+	case kmb::Plane::k134_2043: return kmb::BoxRegion::intersect_maxx(p1,p3,p4);
+	case kmb::Plane::k234_0143: return kmb::BoxRegion::intersect_maxx(p2,p3,p4);
+	case kmb::Plane::k1243_034: return kmb::BoxRegion::intersect_maxx(p1,p2,p4) || kmb::BoxRegion::intersect_maxx(p1,p4,p3);
+	case kmb::Plane::k2043_134: return kmb::BoxRegion::intersect_maxx(p2,p0,p4) || kmb::BoxRegion::intersect_maxx(p2,p4,p3);
+	case kmb::Plane::k0143_234: return kmb::BoxRegion::intersect_maxx(p0,p1,p4) || kmb::BoxRegion::intersect_maxx(p0,p4,p3);
+	case kmb::Plane::k0_013_032: return kmb::BoxRegion::intersect_maxx(p0,p1,p3);
+	case kmb::Plane::k1_123_130: return kmb::BoxRegion::intersect_maxx(p1,p2,p3);
+	case kmb::Plane::k2_203_231: return kmb::BoxRegion::intersect_maxx(p2,p0,p3);
+	case kmb::Plane::k0_032_013: return kmb::BoxRegion::intersect_maxx(p0,p3,p2);
+	case kmb::Plane::k1_130_123: return kmb::BoxRegion::intersect_maxx(p1,p3,p0);
+	case kmb::Plane::k2_231_203: return kmb::BoxRegion::intersect_maxx(p2,p3,p1);
 	default: return false;
 	}
 }
@@ -1111,20 +1111,20 @@ kmb::BoxRegion::intersect_maxx(const kmb::Point3D &p0,const kmb::Point3D &p1,con
 	kmb::Point3D p3, p4;
 	switch( kmb::PlaneYZ::getIntersectionTriangle( maxX(), p0, p1, p2, p3, p4 ) )
 	{
-	case -1: return false;
-	case -2: return kmb::BoxRegion::intersect_miny(p0,p1,p2);
-	case 3: return kmb::BoxRegion::intersect_miny(p0,p3,p4);
-	case 4: return kmb::BoxRegion::intersect_miny(p1,p3,p4);
-	case 5: return kmb::BoxRegion::intersect_miny(p2,p3,p4);
-	case 0: return kmb::BoxRegion::intersect_miny(p1,p2,p4) || kmb::BoxRegion::intersectArea_miny(p1,p4,p3);
-	case 1: return kmb::BoxRegion::intersect_miny(p2,p0,p4) || kmb::BoxRegion::intersectArea_miny(p2,p4,p3);
-	case 2: return kmb::BoxRegion::intersect_miny(p0,p1,p4) || kmb::BoxRegion::intersectArea_miny(p0,p4,p3);
-	case 9: return kmb::BoxRegion::intersect_miny(p0,p1,p3);
-	case 10: return kmb::BoxRegion::intersect_miny(p1,p2,p3);
-	case 11: return kmb::BoxRegion::intersect_miny(p2,p0,p3);
-	case 6: return kmb::BoxRegion::intersect_miny(p0,p3,p2);
-	case 7: return kmb::BoxRegion::intersect_miny(p1,p3,p0);
-	case 8: return kmb::BoxRegion::intersect_miny(p2,p3,p1);
+	case kmb::Plane::kALL_POSITIVE: return false;
+	case kmb::Plane::kALL_NEGATIVE: return kmb::BoxRegion::intersect_miny(p0,p1,p2);
+	case kmb::Plane::k1243_034: return kmb::BoxRegion::intersect_miny(p0,p3,p4);
+	case kmb::Plane::k2043_134: return kmb::BoxRegion::intersect_miny(p1,p3,p4);
+	case kmb::Plane::k0143_234: return kmb::BoxRegion::intersect_miny(p2,p3,p4);
+	case kmb::Plane::k034_1243: return kmb::BoxRegion::intersect_miny(p1,p2,p4) || kmb::BoxRegion::intersectArea_miny(p1,p4,p3);
+	case kmb::Plane::k134_2043: return kmb::BoxRegion::intersect_miny(p2,p0,p4) || kmb::BoxRegion::intersectArea_miny(p2,p4,p3);
+	case kmb::Plane::k234_0143: return kmb::BoxRegion::intersect_miny(p0,p1,p4) || kmb::BoxRegion::intersectArea_miny(p0,p4,p3);
+	case kmb::Plane::k0_032_013: return kmb::BoxRegion::intersect_miny(p0,p1,p3);
+	case kmb::Plane::k1_130_123: return kmb::BoxRegion::intersect_miny(p1,p2,p3);
+	case kmb::Plane::k2_231_203: return kmb::BoxRegion::intersect_miny(p2,p0,p3);
+	case kmb::Plane::k0_013_032: return kmb::BoxRegion::intersect_miny(p0,p3,p2);
+	case kmb::Plane::k1_123_130: return kmb::BoxRegion::intersect_miny(p1,p3,p0);
+	case kmb::Plane::k2_203_231: return kmb::BoxRegion::intersect_miny(p2,p3,p1);
 	default: return false;
 	}
 }
@@ -1135,20 +1135,20 @@ kmb::BoxRegion::intersect_miny(const kmb::Point3D &p0,const kmb::Point3D &p1,con
 	kmb::Point3D p3, p4;
 	switch( kmb::PlaneZX::getIntersectionTriangle( minY(), p0, p1, p2, p3, p4 ) )
 	{
-	case -2: return false;
-	case -1: return kmb::BoxRegion::intersect_maxy(p0,p1,p2);
-	case 0: return kmb::BoxRegion::intersect_maxy(p0,p3,p4);
-	case 1: return kmb::BoxRegion::intersect_maxy(p1,p3,p4);
-	case 2: return kmb::BoxRegion::intersect_maxy(p2,p3,p4);
-	case 3: return kmb::BoxRegion::intersect_maxy(p1,p2,p4) || kmb::BoxRegion::intersectArea_maxy(p1,p4,p3);
-	case 4: return kmb::BoxRegion::intersect_maxy(p2,p0,p4) || kmb::BoxRegion::intersectArea_maxy(p2,p4,p3);
-	case 5: return kmb::BoxRegion::intersect_maxy(p0,p1,p4) || kmb::BoxRegion::intersectArea_maxy(p0,p4,p3);
-	case 6: return kmb::BoxRegion::intersect_maxy(p0,p1,p3);
-	case 7: return kmb::BoxRegion::intersect_maxy(p1,p2,p3);
-	case 8: return kmb::BoxRegion::intersect_maxy(p2,p0,p3);
-	case 9: return kmb::BoxRegion::intersect_maxy(p0,p3,p2);
-	case 10: return kmb::BoxRegion::intersect_maxy(p1,p3,p0);
-	case 11: return kmb::BoxRegion::intersect_maxy(p2,p3,p1);
+	case kmb::Plane::kALL_NEGATIVE: return false;
+	case kmb::Plane::kALL_POSITIVE: return kmb::BoxRegion::intersect_maxy(p0,p1,p2);
+	case kmb::Plane::k034_1243: return kmb::BoxRegion::intersect_maxy(p0,p3,p4);
+	case kmb::Plane::k134_2043: return kmb::BoxRegion::intersect_maxy(p1,p3,p4);
+	case kmb::Plane::k234_0143: return kmb::BoxRegion::intersect_maxy(p2,p3,p4);
+	case kmb::Plane::k1243_034: return kmb::BoxRegion::intersect_maxy(p1,p2,p4) || kmb::BoxRegion::intersectArea_maxy(p1,p4,p3);
+	case kmb::Plane::k2043_134: return kmb::BoxRegion::intersect_maxy(p2,p0,p4) || kmb::BoxRegion::intersectArea_maxy(p2,p4,p3);
+	case kmb::Plane::k0143_234: return kmb::BoxRegion::intersect_maxy(p0,p1,p4) || kmb::BoxRegion::intersectArea_maxy(p0,p4,p3);
+	case kmb::Plane::k0_013_032: return kmb::BoxRegion::intersect_maxy(p0,p1,p3);
+	case kmb::Plane::k1_123_130: return kmb::BoxRegion::intersect_maxy(p1,p2,p3);
+	case kmb::Plane::k2_203_231: return kmb::BoxRegion::intersect_maxy(p2,p0,p3);
+	case kmb::Plane::k0_032_013: return kmb::BoxRegion::intersect_maxy(p0,p3,p2);
+	case kmb::Plane::k1_130_123: return kmb::BoxRegion::intersect_maxy(p1,p3,p0);
+	case kmb::Plane::k2_231_203: return kmb::BoxRegion::intersect_maxy(p2,p3,p1);
 	default: return false;
 	}
 }
@@ -1159,20 +1159,20 @@ kmb::BoxRegion::intersect_maxy(const kmb::Point3D &p0,const kmb::Point3D &p1,con
 	kmb::Point3D p3, p4;
 	switch( kmb::PlaneZX::getIntersectionTriangle( maxY(), p0, p1, p2, p3, p4 ) )
 	{
-	case -1: return false;
-	case -2: return kmb::BoxRegion::intersect_minz(p0,p1,p2);
-	case 3: return kmb::BoxRegion::intersect_minz(p0,p3,p4);
-	case 4: return kmb::BoxRegion::intersect_minz(p1,p3,p4);
-	case 5: return kmb::BoxRegion::intersect_minz(p2,p3,p4);
-	case 0: return kmb::BoxRegion::intersect_minz(p1,p2,p4) || kmb::BoxRegion::intersect_minz(p1,p4,p3);
-	case 1: return kmb::BoxRegion::intersect_minz(p2,p0,p4) || kmb::BoxRegion::intersect_minz(p2,p4,p3);
-	case 2: return kmb::BoxRegion::intersect_minz(p0,p1,p4) || kmb::BoxRegion::intersect_minz(p0,p4,p3);
-	case 9: return kmb::BoxRegion::intersect_minz(p0,p1,p3);
-	case 10: return kmb::BoxRegion::intersect_minz(p1,p2,p3);
-	case 11: return kmb::BoxRegion::intersect_minz(p2,p0,p3);
-	case 6: return kmb::BoxRegion::intersect_minz(p0,p3,p2);
-	case 7: return kmb::BoxRegion::intersect_minz(p1,p3,p0);
-	case 8: return kmb::BoxRegion::intersect_minz(p2,p3,p1);
+	case kmb::Plane::kALL_POSITIVE: return false;
+	case kmb::Plane::kALL_NEGATIVE: return kmb::BoxRegion::intersect_minz(p0,p1,p2);
+	case kmb::Plane::k1243_034: return kmb::BoxRegion::intersect_minz(p0,p3,p4);
+	case kmb::Plane::k2043_134: return kmb::BoxRegion::intersect_minz(p1,p3,p4);
+	case kmb::Plane::k0143_234: return kmb::BoxRegion::intersect_minz(p2,p3,p4);
+	case kmb::Plane::k034_1243: return kmb::BoxRegion::intersect_minz(p1,p2,p4) || kmb::BoxRegion::intersect_minz(p1,p4,p3);
+	case kmb::Plane::k134_2043: return kmb::BoxRegion::intersect_minz(p2,p0,p4) || kmb::BoxRegion::intersect_minz(p2,p4,p3);
+	case kmb::Plane::k234_0143: return kmb::BoxRegion::intersect_minz(p0,p1,p4) || kmb::BoxRegion::intersect_minz(p0,p4,p3);
+	case kmb::Plane::k0_032_013: return kmb::BoxRegion::intersect_minz(p0,p1,p3);
+	case kmb::Plane::k1_130_123: return kmb::BoxRegion::intersect_minz(p1,p2,p3);
+	case kmb::Plane::k2_231_203: return kmb::BoxRegion::intersect_minz(p2,p0,p3);
+	case kmb::Plane::k0_013_032: return kmb::BoxRegion::intersect_minz(p0,p3,p2);
+	case kmb::Plane::k1_123_130: return kmb::BoxRegion::intersect_minz(p1,p3,p0);
+	case kmb::Plane::k2_203_231: return kmb::BoxRegion::intersect_minz(p2,p3,p1);
 	default: return false;
 	}
 }
@@ -1183,20 +1183,20 @@ kmb::BoxRegion::intersect_minz(const kmb::Point3D &p0,const kmb::Point3D &p1,con
 	kmb::Point3D p3, p4;
 	switch( kmb::PlaneXY::getIntersectionTriangle( minZ(), p0, p1, p2, p3, p4 ) )
 	{
-	case -2: return false;
-	case -1: return kmb::BoxRegion::intersect_maxz(p0,p1,p2);
-	case 0: return kmb::BoxRegion::intersect_maxz(p0,p3,p4);
-	case 1: return kmb::BoxRegion::intersect_maxz(p1,p3,p4);
-	case 2: return kmb::BoxRegion::intersect_maxz(p2,p3,p4);
-	case 3: return kmb::BoxRegion::intersect_maxz(p1,p2,p4) || kmb::BoxRegion::intersect_maxz(p1,p4,p3);
-	case 4: return kmb::BoxRegion::intersect_maxz(p2,p0,p4) || kmb::BoxRegion::intersect_maxz(p2,p4,p3);
-	case 5: return kmb::BoxRegion::intersect_maxz(p0,p1,p4) || kmb::BoxRegion::intersect_maxz(p0,p4,p3);
-	case 6: return kmb::BoxRegion::intersect_maxz(p0,p1,p3);
-	case 7: return kmb::BoxRegion::intersect_maxz(p1,p2,p3);
-	case 8: return kmb::BoxRegion::intersect_maxz(p2,p0,p3);
-	case 9: return kmb::BoxRegion::intersect_maxz(p0,p3,p2);
-	case 10: return kmb::BoxRegion::intersect_maxz(p1,p3,p0);
-	case 11: return kmb::BoxRegion::intersect_maxz(p2,p3,p1);
+	case kmb::Plane::kALL_NEGATIVE: return false;
+	case kmb::Plane::kALL_POSITIVE: return kmb::BoxRegion::intersect_maxz(p0,p1,p2);
+	case kmb::Plane::k034_1243: return kmb::BoxRegion::intersect_maxz(p0,p3,p4);
+	case kmb::Plane::k134_2043: return kmb::BoxRegion::intersect_maxz(p1,p3,p4);
+	case kmb::Plane::k234_0143: return kmb::BoxRegion::intersect_maxz(p2,p3,p4);
+	case kmb::Plane::k1243_034: return kmb::BoxRegion::intersect_maxz(p1,p2,p4) || kmb::BoxRegion::intersect_maxz(p1,p4,p3);
+	case kmb::Plane::k2043_134: return kmb::BoxRegion::intersect_maxz(p2,p0,p4) || kmb::BoxRegion::intersect_maxz(p2,p4,p3);
+	case kmb::Plane::k0143_234: return kmb::BoxRegion::intersect_maxz(p0,p1,p4) || kmb::BoxRegion::intersect_maxz(p0,p4,p3);
+	case kmb::Plane::k0_013_032: return kmb::BoxRegion::intersect_maxz(p0,p1,p3);
+	case kmb::Plane::k1_123_130: return kmb::BoxRegion::intersect_maxz(p1,p2,p3);
+	case kmb::Plane::k2_203_231: return kmb::BoxRegion::intersect_maxz(p2,p0,p3);
+	case kmb::Plane::k0_032_013: return kmb::BoxRegion::intersect_maxz(p0,p3,p2);
+	case kmb::Plane::k1_130_123: return kmb::BoxRegion::intersect_maxz(p1,p3,p0);
+	case kmb::Plane::k2_231_203: return kmb::BoxRegion::intersect_maxz(p2,p3,p1);
 	default: return false;
 	}
 }
@@ -1207,21 +1207,21 @@ kmb::BoxRegion::intersect_maxz(const kmb::Point3D &p0,const kmb::Point3D &p1,con
 	kmb::Point3D p3, p4;
 	switch( kmb::PlaneXY::getIntersectionTriangle( maxZ(), p0, p1, p2, p3, p4 ) )
 	{
-	case -1:
+	case kmb::Plane::kALL_POSITIVE:
 		return false;
-	case -2:
-	case 3:
-	case 4:
-	case 5:
-	case 0:
-	case 1:
-	case 2:
-	case 9:
-	case 10:
-	case 11:
-	case 6:
-	case 7:
-	case 8:
+	case kmb::Plane::kALL_NEGATIVE:
+	case kmb::Plane::k1243_034:
+	case kmb::Plane::k2043_134:
+	case kmb::Plane::k0143_234:
+	case kmb::Plane::k034_1243:
+	case kmb::Plane::k134_2043:
+	case kmb::Plane::k234_0143:
+	case kmb::Plane::k0_032_013:
+	case kmb::Plane::k1_130_123:
+	case kmb::Plane::k2_231_203:
+	case kmb::Plane::k0_013_032:
+	case kmb::Plane::k1_123_130:
+	case kmb::Plane::k2_203_231:
 		return true;
 	default:
 		return false;

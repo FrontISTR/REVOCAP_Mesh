@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 2.8)
-project(REVOCAP_Refiner_Test)
-set(REVOCAP_REFINER_VERSION "1.2.0")
+project(REVOCAP_Mesh_Test)
+set(REVOCAP_MESH_VERSION "1.7.1")
 
 include_directories(${PROJECT_SOURCE_DIR})
 
@@ -15,12 +15,11 @@ add_definitions(-DBOOST_TEST_NO_LIB)
 add_executable(HelloWorld HelloWorld.cpp)
 add_test(
   NAME HelloWorld_Test
-  COMMAND HelloWorld
+  COMMAND $<TARGET_FILE:HelloWorld>
   WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
 )
 
 set(RCAP_LIBRARIES
-  RcapRefiner
   RcapIO
   RcapShape
   RcapMeshGen

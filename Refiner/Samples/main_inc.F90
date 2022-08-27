@@ -17,8 +17,8 @@
 !
 
 PROGRAM RefinerSample
-  USE RcapRefiner
   IMPLICIT NONE
+  INCLUDE "rcapRefiner.inc"
   INTEGER*4 :: I,J,K
 
 ! 節点配列
@@ -115,8 +115,7 @@ PROGRAM RefinerSample
   refineNodeCount = rcapGetNodeCount()
   IF ( refineNodeCount /= 14 ) THEN
     PRINT *, "Error Refine Node Count", refineNodeCount
-    refineNodeCount = 14
-!    CALL EXIT(1)
+    CALL EXIT(1)
   ENDIF
   ALLOCATE( resultCoords(3*refineNodeCount) )
   CALL rcapGetNodeSeq64( refineNodeCount, 1, resultCoords )
