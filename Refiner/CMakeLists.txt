@@ -16,6 +16,9 @@ set(refiner_fortran_sources
   rcapRefinerInterface.F90
 )
 
+#set(CMAKE_CXX_FLAGS "-O2 -Wall -DFORTRAN90")
+add_definitions(-DFORTRAN90)
+
 add_library(RefinerC OBJECT ${refiner_cxx_sources})
 add_library(RefinerFortran OBJECT ${refiner_fortran_sources})
 add_library(RcapRefiner STATIC

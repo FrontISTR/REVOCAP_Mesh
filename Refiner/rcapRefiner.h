@@ -155,7 +155,7 @@ void rcapGetVersion( void );
  * @param[in] elementOffset 呼び出し側の節点番号の初期値（C言語なら0、Fortran言語なら1など）
  * @note これらのオフセット値よりも小さい値を節点番号や要素番号で与えた場合は無効となる。
  */
-void rcapInitRefiner( const int32_t* nodeOffset, const int32_t* elementOffset );
+void rcapInitRefiner( const int32_t nodeOffset, const int32_t elementOffset );
 
 /**
  * @brief Refiner が内部で保持している中間節点データのキャッシュをクリアする。
@@ -213,14 +213,14 @@ void rcapWriteFittingFile( const char* filename );
  * @param[in] flag 非零の時に有効にし、零の時に無効にします
  *
  */
-void rcapSetSecondFitting( const int32_t* flag );
+void rcapSetSecondFitting( const int32_t flag );
 
 /**
  * @brief 中間節点を Laplacian Smoothing するかどうかを設定する。
  * @param[in] flag 非零の時に有効にし、零の時に無効にします
  *
  */
-void rcapSetSmoothing( const int32_t* flag );
+void rcapSetSmoothing( const int32_t flag );
 
 /**
  * @brief 節点の globalID と localID の対応関係を記述したファイルを指定する。\n
@@ -252,7 +252,7 @@ void rcapSetPartitionFilename( const char* filename );
  * @note CADファイルを与えて形状補正をしない場合は、局所節点番号と大域節点番号の対応は必要ない。
  * @note Fortran から呼ぶ場合には NULL アドレスの代わりに最初の値が nodeOffset よりも小さい配列を与える。
  */
-void rcapSetNode64( const int32_t* num, float64_t* coords, int32_t* globalIds, int32_t* localIds );
+void rcapSetNode64( const int32_t num, float64_t* coords, int32_t* globalIds, int32_t* localIds );
 
 /**
  * @brief 節点座標を Refiner に与える
@@ -263,7 +263,7 @@ void rcapSetNode64( const int32_t* num, float64_t* coords, int32_t* globalIds, i
  *
  * @note 詳細は rcapSetNode64 に準ずる
  */
-void rcapSetNode32( const int32_t* num, float32_t* coords, int32_t* globalIds, int32_t* localIds );
+void rcapSetNode32( const int32_t num, float32_t* coords, int32_t* globalIds, int32_t* localIds );
 
 /**
  * @brief 現在 Refiner が保持している節点の個数を返す。細分したら増える。
@@ -283,7 +283,7 @@ int32_t rcapGetNodeCount( void );
  * coords = {x1,y1,z1,x5,y5,z5,x8,y8,z8} となる。\n
  * localIds の節点番号は自動的に nodeOffset でずらして Refiner に問い合わせる
  */
-void rcapGetNode64( const int32_t* num, int32_t* localIds, float64_t* coords );
+void rcapGetNode64( const int32_t num, int32_t* localIds, float64_t* coords );
 /**
  * @brief Refiner が管理している節点座標を取得する
  * @param[in] num 節点の個数
@@ -292,7 +292,7 @@ void rcapGetNode64( const int32_t* num, int32_t* localIds, float64_t* coords );
  *
  * @note rcapGetNode64 の 32bit 版
  */
-void rcapGetNode32( const int32_t* num, int32_t* localIds, float32_t* coords );
+void rcapGetNode32( const int32_t num, int32_t* localIds, float32_t* coords );
 
 /**
  * @brief initId から連続して num 個の節点座標を取得する
@@ -301,11 +301,11 @@ void rcapGetNode32( const int32_t* num, int32_t* localIds, float32_t* coords );
  * @param[out] coords 節点の座標、(x,y,z) の順番に 3*num 個並べたもの
  * @note coords の initId 番目から代入する
  */
-void rcapGetNodeSeq64( const int32_t* num, const int32_t* initId, float64_t* coords );
+void rcapGetNodeSeq64( const int32_t num, const int32_t initId, float64_t* coords );
 /**
  * @brief rcapGetNodeSeq64 の 32bit 版
  */
-void rcapGetNodeSeq32( const int32_t* num, const int32_t* initId, float32_t* coords );
+void rcapGetNodeSeq32( const int32_t num, const int32_t initId, float32_t* coords );
 
 /**
  * @brief 要素をそれぞれ辺の２分割して細分する
@@ -410,14 +410,14 @@ void rcapGetNodeSeq32( const int32_t* num, const int32_t* initId, float32_t* coo
  * 次の4個の面番号は細分前の四角錐の面番号と、四面体要素の外に向いている面番号が一致する向き
  * 最後の1個は全ての面が埋め込まれている
  */
-int32_t rcapRefineElement( const int32_t* num, const int8_t* etype, int32_t* nodeArray, int32_t* resultNodeArray );
+int32_t rcapRefineElement( const int32_t num, const int8_t etype, int32_t* nodeArray, int32_t* resultNodeArray );
 /**
  * @brief 細分した要素の個数を計算する（実際には細分はしない）
  * @param[in] num 要素の個数
  * @param[in] etype 入力要素の型
  * @return 細分した結果の要素の個数
  */
-int32_t rcapGetRefineElementCount( const int32_t* num, const int8_t* etype );
+int32_t rcapGetRefineElementCount( const int32_t num, const int8_t etype );
 
 /**
  * @brief 複数の種類の型が混在しているモデルを一度に細分する
@@ -467,7 +467,7 @@ int32_t rcapGetRefineElementCount( const int32_t* num, const int8_t* etype );
  *
  * @remark *** 戻り値の仕様が 2010/2/9 バージョンから変更しています ***
  */
-int32_t rcapRefineElementMulti( const int32_t* num, int8_t* etypeArray, int32_t* nodeArray, int32_t* refinedNum, int8_t* resultEtypeArray, int32_t* resultNodeArray );
+int32_t rcapRefineElementMulti( const int32_t num, int8_t* etypeArray, int32_t* nodeArray, int32_t* refinedNum, int8_t* resultEtypeArray, int32_t* resultNodeArray );
 /**
  * @brief 複数の種類の型が混在しているモデルを細分したときの要素の個数を計算する（実際には細分しない）
  * @param[in] num 要素の個数
@@ -475,7 +475,7 @@ int32_t rcapRefineElementMulti( const int32_t* num, int8_t* etypeArray, int32_t*
  * @param[out] refinedNum 細分結果の要素の個数
  * @return 細分した結果を格納するのに必要な節点配列の大きさ
  */
-int32_t rcapGetRefineElementMultiCount( const int32_t* num, int8_t* etypeArray, int32_t* refinedNum );
+int32_t rcapGetRefineElementMultiCount( const int32_t num, int8_t* etypeArray, int32_t* refinedNum );
 
 /**
  * @brief
@@ -515,7 +515,7 @@ void rcapCommit(void);
  * getNodeGroup("CL",s,resultcl);
  * @endcode
  */
-void rcapAppendNodeGroup( const char dataname[80], const int32_t* num, const int32_t* nodeArray );
+void rcapAppendNodeGroup( const char dataname[80], const int32_t num, const int32_t* nodeArray );
 
 /**
  * @brief Refiner に登録されている節点グループの節点の個数を返す
@@ -533,7 +533,7 @@ int32_t rcapGetNodeGroupCount( const char dataname[80] );
  * @note 引数 num は getNodeGroupCount で取得した値を与えて、nodeArray はあらかじめ num 個の
  * 大きさの配列であらかじめ allocate しているものとする。
  */
-void rcapGetNodeGroup( const char dataname[80], const int32_t* num, int32_t* nodeArray );
+void rcapGetNodeGroup( const char dataname[80], const int32_t num, int32_t* nodeArray );
 
 /**
  * @brief BoundaryNodeGroup とは、境界面上にのみある節点グループのこと。この関数で登録する。
@@ -544,7 +544,7 @@ void rcapGetNodeGroup( const char dataname[80], const int32_t* num, int32_t* nod
  * @note refineElement をするときに、このタイプの境界条件がある時は、表面抽出を行い、表面の三角形または四角形を
  * 使って境界条件を更新する。
  */
-void rcapAppendBNodeGroup( const char dataname[80], const int32_t* num, int32_t* nodeArray );
+void rcapAppendBNodeGroup( const char dataname[80], const int32_t num, int32_t* nodeArray );
 
 /**
  * @brief Refiner に登録されている境界節点グループの節点の個数を返す
@@ -562,7 +562,7 @@ void rcapAppendBNodeGroup( const char dataname[80], const int32_t* num, int32_t*
  * @note 引数 num は getBNodeGroupCount で取得した値を与えて、nodeArray はあらかじめ num 個の
  * 大きさの配列であらかじめ allocate しているものとする。
  */
-void rcapGetBNodeGroup( const char dataname[80], const int32_t* num, int32_t* nodeArray );
+void rcapGetBNodeGroup( const char dataname[80], const int32_t num, int32_t* nodeArray );
 
 /**
  * @brief BoundaryNodeVariableInt とは、境界面上にのみある節点上の整数値変数のこと
@@ -578,7 +578,7 @@ void rcapGetBNodeGroup( const char dataname[80], const int32_t* num, int32_t* no
  * もとの節点に変数が与えられていて、変数の値がすべて等しい時は、中間節点にその等しい値を与える。
  * もとの節点に変数が与えられていて、変数の値が異なる時は、中間節点に最も小さい値を与える。
  */
-void rcapAppendBNodeVarInt( const char dataname[80], const int32_t* num, int32_t* nodeArray, int32_t* nodeVars );
+void rcapAppendBNodeVarInt( const char dataname[80], const int32_t num, int32_t* nodeArray, int32_t* nodeVars );
 
 /**
  * @brief Refiner に登録されている整数値境界節点変数の節点の個数を返す
@@ -597,7 +597,7 @@ int32_t rcapGetBNodeVarIntCount( const char dataname[80] );
  * @note 引数 num は getBNodeVarIntCount で取得した値を与えて、nodeArray, nodeVars はあらかじめ num 個の
  * 大きさの配列であらかじめ allocate しているものとする。
  */
-void rcapGetBNodeVarInt( const char dataname[80], const int32_t* num, int32_t* nodeArray, int32_t* nodeVars );
+void rcapGetBNodeVarInt( const char dataname[80], const int32_t num, int32_t* nodeArray, int32_t* nodeVars );
 
 /**
  * @brief ElementGroup とは、要素番号の集合のこと。
@@ -606,7 +606,7 @@ void rcapGetBNodeVarInt( const char dataname[80], const int32_t* num, int32_t* n
  * @param[out] elementArray 要素グループの配列
  * @note rcapGetElementGroup するときは、あらかじめ elementArray を allocate しておくこと。
  */
-void rcapAppendElementGroup( const char dataname[80], const int32_t* num, int32_t* elementArray );
+void rcapAppendElementGroup( const char dataname[80], const int32_t num, int32_t* elementArray );
 
 /**
  * @brief Refiner に登録されている要素グループの要素の個数を返す
@@ -624,7 +624,7 @@ int32_t rcapGetElementGroupCount( const char dataname[80] );
  * @note 引数 num は getElementGroupCount で取得した値を与えて、elementArray はあらかじめ num 個の
  * 大きさの配列であらかじめ allocate しているものとする。
  */
-void rcapGetElementGroup( const char dataname[80], const int32_t* num, int32_t* elementArray );
+void rcapGetElementGroup( const char dataname[80], const int32_t num, int32_t* elementArray );
 
 /**
  * @brief FaceGroup とは、要素番号、要素内面番号の組のこと。連成面を細分する場合などに用いる。
@@ -633,7 +633,7 @@ void rcapGetElementGroup( const char dataname[80], const int32_t* num, int32_t* 
  * @param[out] faceArray 面グループの要素番号、面番号の組の配列。
  * @note faceArray は要素番号と面番号を交互に並べた 2*num 個の配列になる。
  */
-void rcapAppendFaceGroup( const char dataname[80], const int32_t* num, int32_t* faceArray );
+void rcapAppendFaceGroup( const char dataname[80], const int32_t num, int32_t* faceArray );
 
 /**
  * @brief Refiner に登録されている面グループの個数を返す
@@ -651,7 +651,7 @@ void rcapAppendFaceGroup( const char dataname[80], const int32_t* num, int32_t* 
  * @note 引数 num は getFaceGroupCount で取得した値を与えて、faceArray はあらかじめ num 個の
  * 大きさの配列であらかじめ allocate しているものとする。
  */
-void rcapGetFaceGroup( const char dataname[80], const int32_t* num, int32_t* faceArray );
+void rcapGetFaceGroup( const char dataname[80], const int32_t num, int32_t* faceArray );
 
 /**
  * @brief NodeVariable を登録したときに、中間節点に与える値の決め方を選択します。
@@ -716,12 +716,6 @@ int32_t rcapGetMiddle( int8_t etype, int32_t* originalNodeArray );
 void rcapQualityReport( const char name[80], const char* filename );
 
 /**
- * @brief 細分後の自然座標の変換
- * 未実装
- */
-//int32_t rcapGetRefinedNaturalCoord( int32_t* elementId, float32_t* coords, int32_t* refinedElementId, float32_t* refinedCoords );
-
-/**
  * @brief デバッグ用ファイル入出力ルーチン
  * @return 読み込んだ、または書き込んだ要素の個数
  *
@@ -765,56 +759,56 @@ int32_t rcapSaveRNFFile( const char* rnffile );
 /* rcapxxx_  すべて小文字 */
 /* gfortran, intel fortran, pgi fortran はこれでよい */
 #if defined FORTRAN90 || defined FORTRAN_CALL_C_DOWNCASE_
-//void rcapgetversion_( void );
-//void rcapinitrefiner_( int32_t* nodeOffset, int32_t* elementOffset );
-//void rcapclearrefiner_( void );
-//void rcaptermrefiner_( void );
-//void rcapsetcadfilename_( const char* filename );
-//void rcapsetsecondfitting_( int32_t* flag );
-//void rcapsetsmoothing_( int32_t* flag );
-//void rcapsetpartitionfilename_( const char* filename );
+void rcapgetversion_( void );
+void rcapinitrefiner_( int32_t* nodeOffset, int32_t* elementOffset );
+void rcapclearrefiner_( void );
+void rcaptermrefiner_( void );
+void rcapsetcadfilename_( const char* filename );
+void rcapsetsecondfitting_( int32_t* flag );
+void rcapsetsmoothing_( int32_t* flag );
+void rcapsetpartitionfilename_( const char* filename );
 
-//void rcapsetnode64_( const int32_t &num, float64_t* coords, int32_t* globalIds, int32_t* localIds );
-//void rcapsetnode32_( const int32_t &num, float32_t* coords, int32_t* globalIds, int32_t* localIds );
-//int32_t rcapgetnodecount_( void );
-//void rcapgetnode64_( int32_t* num, int32_t* localIds, float64_t* coords );
-//void rcapgetnode32_( int32_t* num, int32_t* localIds, float32_t* coords );
-//void rcapgetnodeseq64_( int32_t* num, int32_t* initId, float64_t* coords );
-//void rcapgetnodeseq32_( int32_t* num, int32_t* initId, float32_t* coords );
+void rcapsetnode64_( const int32_t* num, float64_t* coords, int32_t* globalIds, int32_t* localIds );
+void rcapsetnode32_( const int32_t* num, float32_t* coords, int32_t* globalIds, int32_t* localIds );
+int32_t rcapgetnodecount_( void );
+void rcapgetnode64_( int32_t* num, int32_t* localIds, float64_t* coords );
+void rcapgetnode32_( int32_t* num, int32_t* localIds, float32_t* coords );
+void rcapgetnodeseq64_( int32_t* num, int32_t* initId, float64_t* coords );
+void rcapgetnodeseq32_( int32_t* num, int32_t* initId, float32_t* coords );
 
-//int32_t rcapgetrefineelementcount_( int32_t* num, int8_t* etype );
+int32_t rcapgetrefineelementcount_( int32_t* num, int8_t* etype );
 int32_t rcaprefineelement_( int32_t* num, int8_t* etype, int32_t* nodeArray, int32_t* resultNodeArray );
-//int32_t rcapgetrefineelementmulticount_( int32_t* num, int8_t* etypeArray, int32_t* refinedNum );
-//int32_t rcaprefineelementmulti_( int32_t* num, int8_t* etypeArray, int32_t* nodeArray, int32_t* refinedNum, int8_t* resultEtypeArray, int32_t* resultNodeArray );
-//void rcapcommit_( void );
+int32_t rcapgetrefineelementmulticount_( int32_t* num, int8_t* etypeArray, int32_t* refinedNum );
+int32_t rcaprefineelementmulti_( int32_t* num, int8_t* etypeArray, int32_t* nodeArray, int32_t* refinedNum, int8_t* resultEtypeArray, int32_t* resultNodeArray );
+void rcapcommit_( void );
 
-//void rcapappendnodegroup_( const char dataname[80], const int32_t &num, const int32_t* nodeArray );
-//int32_t rcapgetnodegroupcount_( const char dataname[80] );
-//void rcapgetnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray );
+void rcapappendnodegroup_( const char dataname[80], const int32_t* num, const int32_t* nodeArray );
+int32_t rcapgetnodegroupcount_( const char dataname[80] );
+void rcapgetnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray );
 
-//void rcapappendbnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray );
-//int32_t rcapgetbnodegroupcount_( const char dataname[80] );
-//void rcapgetbnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray );
+void rcapappendbnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray );
+int32_t rcapgetbnodegroupcount_( const char dataname[80] );
+void rcapgetbnodegroup_( const char dataname[80], int32_t* num, int32_t* nodeArray );
 
-//void rcapappendbnodevarint_( const char dataname[80], int32_t* num, int32_t* nodeArray, int32_t* nodeVars );
-//int32_t rcapgetbnodevarintcount_( const char dataname[80] );
-//void rcapgetbnodevarint_( const char dataname[80], int32_t* num, int32_t* nodeArray, int32_t* nodeVars  );
+void rcapappendbnodevarint_( const char dataname[80], int32_t* num, int32_t* nodeArray, int32_t* nodeVars );
+int32_t rcapgetbnodevarintcount_( const char dataname[80] );
+void rcapgetbnodevarint_( const char dataname[80], int32_t* num, int32_t* nodeArray, int32_t* nodeVars  );
 
-//void rcapappendelementgroup_( const char dataname[80], int32_t* num, int32_t* elementArray );
-//int32_t rcapgetelementgroupcount_( const char dataname[80] );
-//void rcapgetelementgroup_( const char dataname[80], int32_t* num, int32_t* elementArray );
+void rcapappendelementgroup_( const char dataname[80], int32_t* num, int32_t* elementArray );
+int32_t rcapgetelementgroupcount_( const char dataname[80] );
+void rcapgetelementgroup_( const char dataname[80], int32_t* num, int32_t* elementArray );
 
-//void rcapappendfacegroup_( const char dataname[80], int32_t* num, int32_t* faceArray );
-//int32_t rcapgetfacegroupcount_( const char dataname[80] );
-//void rcapgetfacegroup_( const char dataname[80], int32_t* num, int32_t* faceArray );
+void rcapappendfacegroup_( const char dataname[80], int32_t* num, int32_t* faceArray );
+int32_t rcapgetfacegroupcount_( const char dataname[80] );
+void rcapgetfacegroup_( const char dataname[80], int32_t* num, int32_t* faceArray );
 
-//int8_t rcapgetoriginal_( int32_t* localNodeId, int32_t* originalNodeArray );
-//int32_t rcapgetmiddle_( int8_t *etype, int32_t* originalNodeArray );
+int8_t rcapgetoriginal_( int32_t* localNodeId, int32_t* originalNodeArray );
+int32_t rcapgetmiddle_( int8_t *etype, int32_t* originalNodeArray );
 
-//void rcapsetinterpolatemode_( const char mode[32] );
-//void rcapgetinterpolatemode_( char mode[32] );
+void rcapsetinterpolatemode_( const char mode[32] );
+void rcapgetinterpolatemode_( char mode[32] );
 
-//void rcapqualityreport_( const char mode[80], const char* filename );
+void rcapqualityreport_( const char mode[80], const char* filename );
 
 int32_t rcaploadgffile_( const char* gffile, const char* bounfile );
 int32_t rcaploadhecfile_( const char* hecfile );

@@ -4,11 +4,11 @@ set(REVOCAP_Mesh_VERSION "1.7.01")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
-option(WITH_EXTENSION "Build with ruby extension libraries" ON)
-option(WITH_OPENCASCADE "Build with OpenCASCADE feature" ON)
+option(WITH_EXTENSION "Build with ruby extension libraries" OFF)
+option(WITH_OPENCASCADE "Build with OpenCASCADE feature" OFF)
 option(WITH_OPENMP "Enable OpenMP feature" ON)
 option(WITH_TEST "Enable tests" ON)
-option(BUILD_DOC "Generate API documents." ON)
+option(BUILD_DOC "Generate API documents." OFF)
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
 if(WITH_EXTENSION)
@@ -76,7 +76,6 @@ add_subdirectory(RevocapIO) # RcapIO target,static library
 add_subdirectory(MeshGL)    # RcapMeshGL target, static library
 add_subdirectory(MeshGen)   # RcapMeshGen target, static library
 add_subdirectory(Shape)     # RcapShape target, static library
-add_subdirectory(Refiner)
 
 # Build swig modules
 if(WITH_EXTENSION)
@@ -104,6 +103,9 @@ if(WITH_TEST)
   enable_testing()
   add_subdirectory(Test)
 endif()
+
+# Refiner (afer setting test)
+add_subdirectory(Refiner)
 
 # -DBUILD_DOC
 if(BUILD_DOC)
