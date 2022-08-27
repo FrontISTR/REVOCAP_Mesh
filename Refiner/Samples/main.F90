@@ -45,6 +45,7 @@ PROGRAM RefinerSample
   INTEGER*4 :: elementOffset = 1
 
 ! initialize : set initial node id and element id
+  PRINT *, "Initialize Refiner"
   CALL rcapInitRefiner(nodeOffset,elementOffset)
 
   coords = (/&
@@ -65,6 +66,7 @@ PROGRAM RefinerSample
   ng0 = (/ 1, 2, 3 /)
 
 ! set global node id and coordinates
+  PRINT *, "Set Original Coordinates"
   CALL rcapSetNode64( nodeCount, coords, globalIds, nullIds )
 
   PRINT *, "----- Original Model -----"
