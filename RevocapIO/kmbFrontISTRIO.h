@@ -42,22 +42,22 @@ protected:
 	static int pyrRmap[];
 public:
 	FrontISTRIO();
-	template<typename MContainer>
-	int loadMesh(std::string filename, MContainer* mesh);
-	template<typename MContainer>
-	int saveMesh(std::string filename, const MContainer* mesh);
-	template<typename MContainer>
-	int loadResult(std::string filename, MContainer* mesh);
+	template<typename MeshT>
+	int loadMesh(std::string filename, MeshT* mesh);
+	template<typename MeshT>
+	int saveMesh(std::string filename, const MeshT* mesh);
+	template<typename MeshT>
+	int loadResult(std::string filename, MeshT* mesh);
 	kmb::elementIdType getOffsetElementId(void) const;
 	void setOffsetElementId(kmb::elementIdType offset);
 protected:
 	// 内部の変数に個数を代入する
 	void count(std::string filename);
 	static kmb::elementType getRevocapType(int etypeHec);
-	template<typename MContainer>
-	int loadResultBinary(std::string filename, MContainer* mesh);
-	template<typename MContainer>
-	int loadResultAscii(std::string filename, MContainer* mesh);
+	template<typename MeshT>
+	int loadResultBinary(std::string filename, MeshT* mesh);
+	template<typename MeshT>
+	int loadResultAscii(std::string filename, MeshT* mesh);
 };
 
 }
