@@ -57,33 +57,34 @@ PROGRAM RefinerSampleMulti
   INTEGER*4 :: elementOffset = 1
 
 ! 初期化：節点番号と要素番号の開始番号を指定する
+  PRINT *, "Initialize Refiner"
   CALL rcapInitRefiner(nodeOffset,elementOffset)
 
   coords = (/&
-        -1.0, 0.0, 0.0, &
-         0.0, 0.0, 0.0, &
-         0.0, 1.0, 0.0, &
-        -1.0, 0.0, 1.0, &
-         0.0, 0.0, 1.0, &
-         0.0, 1.0, 1.0, &
-        -1.0, 0.0, 2.0, &
-         0.0, 0.0, 2.0, &
-         0.0, 1.0, 2.0, &
-         1.0, 0.0, 0.0, &
-         1.0, 1.0, 0.0, &
-         1.0, 0.0, 1.0, &
-         1.0, 1.0, 1.0 /)
+       & -1.0, 0.0, 0.0, &
+       &  0.0, 0.0, 0.0, &
+       &  0.0, 1.0, 0.0, &
+       & -1.0, 0.0, 1.0, &
+       &  0.0, 0.0, 1.0, &
+       &  0.0, 1.0, 1.0, &
+       & -1.0, 0.0, 2.0, &
+       &  0.0, 0.0, 2.0, &
+       &  0.0, 1.0, 2.0, &
+       &  1.0, 0.0, 0.0, &
+       &  1.0, 1.0, 0.0, &
+       &  1.0, 0.0, 1.0, &
+       &  1.0, 1.0, 1.0  /)
   nodeCount = 13
 
   globalIds = (/&
-        100, 101, 102, 103, 104, &
-        105, 106, 107, 108, 109, &
-        110, 111, 112 /)
+       & 100, 101, 102, 103, 104, &
+       & 105, 106, 107, 108, 109, &
+       & 110, 111, 112 /)
   nullIds = (/ 0 /)
   elements = (/&
-        1,  2,  3,  4,  5,  6, &
-        4,  5,  6,  7,  8,  9, &
-        2, 10, 11,  3,  5, 12, 13,  6 /)
+       & 1,  2,  3,  4,  5,  6, &
+       & 4,  5,  6,  7,  8,  9, &
+       & 2, 10, 11,  3,  5, 12, 13,  6 /)
   elementTypes = (/ RCAP_WEDGE, RCAP_WEDGE, RCAP_HEXAHEDRON /)
   elementCount = 3
 
@@ -91,7 +92,9 @@ PROGRAM RefinerSampleMulti
   nv0 = (/ 1, 1, 2, 1, 2, 2 /)
 
 ! global Id と座標値を Refiner に教える
+  PRINT *, "Set Coordinates"
   CALL rcapSetNode64( nodeCount, coords, globalIds, nullIds )
+
   PRINT *, "----- Original Model -----"
 
   nodeCount = rcapGetNodeCount()
@@ -103,16 +106,20 @@ PROGRAM RefinerSampleMulti
   DO I = 1, elementCount
     IF ( elementTypes(I) == RCAP_WEDGE ) THEN
       PRINT '(I8,I8,6I8)', I, elementTypes(I), &
-	elements(J), elements(J+1), elements(J+2), &
-	elements(J+3), elements(J+4), elements(J+5)
+        elements(J), elements(J+1), elements(J+2), &
+        elements(J+3), elements(J+4), elements(J+5)
       J = J + 6
     ELSE IF ( elementTypes(I) == RCAP_HEXAHEDRON ) THEN
       PRINT '(I8,I8,8I8)', I, elementTypes(I), &
-	elements(J), elements(J+1), elements(J+2), elements(J+3), &
-	elements(J+4), elements(J+5), elements(J+6), elements(J+7)
+        elements(J), elements(J+1), elements(J+2), elements(J+3), &
+        elements(J+4), elements(J+5), elements(J+6), elements(J+7)
       J = J + 8
     END IF
   END DO
+  IF ( nodeCount /= 13 ) THEN
+    PRINT *, "Error Node Count", nodeCount
+    CALL EXIT(1)
+  ENDIF
 
 ! CHAR(0) を concat しておく
   str = "BND"//CHAR(0)
