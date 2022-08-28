@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : CADFileIO                                               #
@@ -27,14 +27,14 @@ class CADFileIO
 public:
 	CADFileIO(void);
 	virtual ~CADFileIO(void);
-	void readIGES(char* filename,kmb::ShapeData* shapeData);
-	void readSTEP(char* filename,kmb::ShapeData* shapeData);
-	void readSTL(char* filename,kmb::ShapeData* shapeData);
-	void readOCC(char* filename,kmb::ShapeData* shapeData);
-	void writeIGES(char* filename,kmb::ShapeData* shapeData);
-	void writeSTEP(char* filename,kmb::ShapeData* shapeData);
-	void writeSTL(char* filename,kmb::ShapeData* shapeData);
-	void writeOCC(char* filename,kmb::ShapeData* shapeData);
+	int readIGES(const char* filename,kmb::ShapeData* shapeData);
+	int readSTEP(const char* filename,kmb::ShapeData* shapeData);
+	int readSTL(const char* filename,kmb::ShapeData* shapeData);
+	int readOCC(const char* filename,kmb::ShapeData* shapeData);
+	int writeIGES(const char* filename,kmb::ShapeData* shapeData);
+	int writeSTEP(const char* filename,kmb::ShapeData* shapeData);
+	int writeSTL(const char* filename,kmb::ShapeData* shapeData);
+	int writeOCC(const char* filename,kmb::ShapeData* shapeData);
 
 	int saveToBrepRNF(const char* filename,const kmb::ShapeData* shapeData) const;
 	int writeShapeHeader(std::ofstream &output) const;

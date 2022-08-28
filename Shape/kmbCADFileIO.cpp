@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : CADFileIO                                               #
@@ -82,11 +82,10 @@ kmb::CADFileIO::~CADFileIO(void)
 {
 }
 
-void
-kmb::CADFileIO::readIGES(char* filename,kmb::ShapeData* shapeData)
+int kmb::CADFileIO::readIGES(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
-		return;
+		return 1;
 	}
 	IGESCAFControl_Reader igesReader;
 
@@ -96,22 +95,27 @@ kmb::CADFileIO::readIGES(char* filename,kmb::ShapeData* shapeData)
 
 	IFSelect_ReturnStatus res = igesReader.ReadFile( reinterpret_cast<Standard_CString>(filename) );
 	if( res != IFSelect_RetDone ){
-		return;
+		return 1;
 	}
 
-	Handle(TColStd_HSequenceOfTransient) list = igesReader.GiveList();
-	std::cout << "entity num : " << list->Length() << std::endl;
+//	Handle(TColStd_HSequenceOfTransient) list = igesReader.GiveList();
+//	std::cout << "entity num : " << list->Length() << std::endl;
+//	igesReader.TransferList(list);
 
-	igesReader.TransferList(list);
+	Standard_Integer NbRoots = igesReader.NbRootsForTransfer();
+	std::cout << "Number of roots in IGES file: "<< NbRoots << std::endl;
+	Standard_Integer NbTrans = igesReader.TransferRoots();
+	std::cout << "IGES roots transferred: " << NbTrans << std::endl;
+	std::cout << "Number of resulting shapes is: "<< igesReader.NbShapes() << std::endl;
 
 	shapeData->getShape() = igesReader.OneShape();
+	return 0;
 }
 
-void
-kmb::CADFileIO::readSTEP(char* filename,kmb::ShapeData* shapeData)
+int kmb::CADFileIO::readSTEP(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
-		return;
+		return 1;
 	}
 	STEPControl_Reader stepReader;
 
@@ -121,7 +125,7 @@ kmb::CADFileIO::readSTEP(char* filename,kmb::ShapeData* shapeData)
 
 	IFSelect_ReturnStatus res = stepReader.ReadFile( reinterpret_cast<Standard_CString>(filename) );
 	if( res != IFSelect_RetDone ){
-		return;
+		return 1;
 	}
 	Standard_Integer NbRoots = stepReader.NbRootsForTransfer();
 	std::cout << "Number of roots in STEP file: "<< NbRoots << std::endl;
@@ -129,61 +133,61 @@ kmb::CADFileIO::readSTEP(char* filename,kmb::ShapeData* shapeData)
 	std::cout << "STEP roots transferred: " << NbTrans << std::endl;
 	std::cout << "Number of resulting shapes is: "<< stepReader.NbShapes() << std::endl;
 	shapeData->getShape() = stepReader.OneShape();
+	return 0;
 }
 
-void
-kmb::CADFileIO::readSTL(char* filename,kmb::ShapeData* shapeData)
+int kmb::CADFileIO::readSTL(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
-		return;
+		return 1;
 	}
 	StlAPI_Reader stlReader;
 	stlReader.Read( shapeData->getShape(), reinterpret_cast<Standard_CString>(filename) );
+	return 0;
 }
 
-void
-kmb::CADFileIO::readOCC(char* filename,kmb::ShapeData* shapeData)
+int kmb::CADFileIO::readOCC(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
-		return;
+		return 1;
 	}
 	BRep_Builder aBuilder;
 	BRepTools::Read( shapeData->getShape(), reinterpret_cast<Standard_CString>(filename), aBuilder );
+	return 0;
 }
 
-void
-kmb::CADFileIO::writeIGES(char* filename,kmb::ShapeData* shapeData)
+int kmb::CADFileIO::writeIGES(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
-		return;
+		return 1;
 	}
 	IGESControl_Controller::Init();
 	IGESControl_Writer igesWriter(Interface_Static::CVal("XSTEP.iges.unit"),Interface_Static::IVal("XSTEP.iges.writebrep.mode"));
 	igesWriter.AddShape( shapeData->getShape() );
 	igesWriter.ComputeModel();
 	igesWriter.Write( reinterpret_cast<Standard_CString>(filename) );
+	return 0;
 }
 
-void
-kmb::CADFileIO::writeSTEP(char* filename,kmb::ShapeData* shapeData)
+int kmb::CADFileIO::writeSTEP(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
-		return;
+		return 1;
 	}
 	STEPControl_Writer stepWriter;
 	STEPControl_StepModelType aValue = STEPControl_ManifoldSolidBrep;
 	IFSelect_ReturnStatus status = stepWriter.Transfer( shapeData->getShape(), aValue );
 	if ( status != IFSelect_RetDone ){
-		return;
+		return 1;
 	}
 	stepWriter.Write( reinterpret_cast<Standard_CString>(filename) );
+	return 0;
 }
 
-void
-kmb::CADFileIO::writeSTL(char* filename,kmb::ShapeData* shapeData)
+int kmb::CADFileIO::writeSTL(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
-		return;
+		return 1;
 	}
 	TopoDS_Compound RES;
 	BRep_Builder MKCP;
@@ -191,19 +195,19 @@ kmb::CADFileIO::writeSTL(char* filename,kmb::ShapeData* shapeData)
 	MKCP.Add(RES, shapeData->getShape() );
 	StlAPI_Writer myStlWriter;
 	myStlWriter.Write(RES, reinterpret_cast<Standard_CString>(filename) );
+	return 0;
 }
 
-void
-kmb::CADFileIO::writeOCC(char* filename,kmb::ShapeData* shapeData)
+int kmb::CADFileIO::writeOCC(const char* filename,kmb::ShapeData* shapeData)
 {
 	if( filename==NULL || shapeData==NULL ){
-		return;
+		return 1;
 	}
 	BRepTools::Write(shapeData->getShape(),reinterpret_cast<Standard_CString>(filename));
+	return 0;
 }
 
-int
-kmb::CADFileIO::saveToBrepRNF(const char* filename,const kmb::ShapeData* shapeData) const
+int kmb::CADFileIO::saveToBrepRNF(const char* filename,const kmb::ShapeData* shapeData) const
 {
 	if( shapeData == NULL || shapeData->getShape().IsNull() ){
 		std::cerr << "RevocapShape : shape data is null" << std::endl;
@@ -221,16 +225,14 @@ kmb::CADFileIO::saveToBrepRNF(const char* filename,const kmb::ShapeData* shapeDa
 	return res;
 }
 
-int
-kmb::CADFileIO::writeShapeHeader(std::ofstream &output) const
+int kmb::CADFileIO::writeShapeHeader(std::ofstream &output) const
 {
 	output << "# REVOCAP Brep Yaml Format ver 1.5" << std::endl;
 	output << "---" << std::endl;
 	return 0;
 }
 
-int
-kmb::CADFileIO::writeShape(std::ofstream &output,const TopoDS_Shape &shape,int layer) const
+int kmb::CADFileIO::writeShape(std::ofstream &output,const TopoDS_Shape &shape,int layer) const
 {
 	std::string margin = "";
 	for(int i=0;i<layer;++i){
