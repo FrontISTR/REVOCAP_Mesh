@@ -1,24 +1,29 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.0)
 project(REVOCAP_Refiner C CXX Fortran)
-set(REVOCAP_REFINER_VERSION "1.2.0")
+set(REVOCAP_Refiner_VERSION "1.2.0")
 
-include_directories("${PROJECT_SOURCE_DIR}/..")
-include_directories("${PROJECT_SOURCE_DIR}")
+include_directories(
+  ${PROJECT_SOURCE_DIR}/..
+  ${PROJECT_SOURCE_DIR}
+)
 
-set(refiner_sources
+set(refiner_cxx_sources
   rcapRefiner.cpp
   rcapRefinerIO.cpp
+)
+
+set(refiner_fortran_sources
   rcapRefinerInterface.F90
 )
 
-set(refiner_headers
-  rcapRefiner.h
-  rcapRefinerIO.h
-)
+#set(CMAKE_CXX_FLAGS "-O2 -Wall -DFORTRAN90")
+add_definitions(-DFORTRAN90)
 
-add_library(Refiner OBJECT ${refiner_sources})
+add_library(RefinerC OBJECT ${refiner_cxx_sources})
+add_library(RefinerFortran OBJECT ${refiner_fortran_sources})
 add_library(RcapRefiner STATIC
-  $<TARGET_OBJECTS:Refiner>
+  $<TARGET_OBJECTS:RefinerC>
+  $<TARGET_OBJECTS:RefinerFortran>
   $<TARGET_OBJECTS:Common_OBJS>
   $<TARGET_OBJECTS:Matrix_OBJS>
   $<TARGET_OBJECTS:Geometry_OBJS>
@@ -31,27 +36,19 @@ add_library(RcapRefiner STATIC
 # Refiner Utils
 add_definitions(-D_CONSOLE)
 add_executable(rcapPreFitting mainPreFitting.cpp)
-target_link_libraries(rcapPreFitting RcapRefiner)
+target_link_libraries(rcapPreFitting
+  RcapRefiner
+)
 
 add_subdirectory(Samples)
 
 install(TARGETS RcapRefiner
-  EXPORT RcapRefinerConfig
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
-  INCLUDES DESTINATION include
   COMPONENT DESTINATION lib
 )
-
-install(FILES ${refiner_headers}
-  DESTINATION include
-)
-
-install(EXPORT RcapRefinerConfig
-  DESTINATION ${CMAKE_INSTALL_PREFIX}/share/
-  EXPORT_LINK_INTERFACE_LIBRARIES
-)
-
+install(FILES rcapRefiner.h DESTINATION include)
+install(FILES rcapRefinerIO.h DESTINATION include)
 
 # -DBUILD_DOC
 #if(BUILD_DOC)

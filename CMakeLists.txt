@@ -1,16 +1,15 @@
-cmake_minimum_required(VERSION 3.8)
-project(REVOCAP_MESH CXX C Fortran)
-set(REVOCAP_Mesh_VERSION_MAJOR 1 CACHE STRING "Major version number of REVOCAP_Mesh")
-set(REVOCAP_Mesh_VERSION_MINOR 7 CACHE STRING "Minor version number of REVOCAP_Mesh")
-set(REVOCAP_Mesh_VERSION_PATCH 1 CACHE STRING "Patch version number of REVOCAP_Mesh")
+cmake_minimum_required(VERSION 3.0)
+project(REVOCAP_Mesh CXX C Fortran)
+set(REVOCAP_Mesh_VERSION "1.7.01")
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
-option(WITH_EXTENSION "Build with ruby extension libraries" ON)
-option(WITH_OPENCASCADE "Build with OpenCASCADE feature" ON)
+option(WITH_EXTENSION "Build with ruby extension libraries" OFF)
+option(WITH_OPENCASCADE "Build with OpenCASCADE feature" OFF)
 option(WITH_OPENMP "Enable OpenMP feature" ON)
 option(WITH_TEST "Enable tests" ON)
-option(WITH_DOC "Generate API documents." ON)
+option(BUILD_DOC "Generate API documents." OFF)
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
 if(WITH_EXTENSION)
   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -54,8 +53,6 @@ include_directories(
   ${CMAKE_SOURCE_DIR}
 )
 
-add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
-
 set(CMAKE_BUILD_TYPE "RELEASE")
 set(CMAKE_C_FLAGS_RELEASE "-Wall -O2")
 set(CMAKE_C_FLAGS_DEBUG "-Wall -g")
@@ -79,7 +76,6 @@ add_subdirectory(RevocapIO) # RcapIO target,static library
 add_subdirectory(MeshGL)    # RcapMeshGL target, static library
 add_subdirectory(MeshGen)   # RcapMeshGen target, static library
 add_subdirectory(Shape)     # RcapShape target, static library
-add_subdirectory(Refiner)
 
 # Build swig modules
 if(WITH_EXTENSION)
@@ -106,22 +102,22 @@ if(WITH_TEST)
   message(STATUS "WITH_TEST=ON")
   enable_testing()
   add_subdirectory(Test)
-  if(WITH_EXTENSION)
-    add_subdirectory(TestRuby)
-  endif()
 endif()
 
-# -DWITH_DOC
-if(WITH_DOC)
+# Refiner (afer setting test)
+add_subdirectory(Refiner)
+
+# -DBUILD_DOC
+if(BUILD_DOC)
   find_package(Doxygen)
   if(DOXYGEN_FOUND)
-    message(STATUS "Generate API documents. Please type \"make Documents\"")
+    message(STATUS "Generate API documents. Please type \"make doc\"")
     set(doxy_main_page "${CMAKE_SOURCE_DIR}/INSTALL.md")
-    set(doxyfile_in ${CMAKE_SOURCE_DIR}/Documents/Doxyfile.in)
-    set(doxyfile ${CMAKE_BINARY_DIR}/Documents/Doxyfile)
+    set(doxyfile_in ${CMAKE_SOURCE_DIR}/doc/Doxyfile.in)
+    set(doxyfile ${CMAKE_BINARY_DIR}/doc/Doxyfile)
     configure_file(${doxyfile_in} ${doxyfile} @ONLY)
 
-    add_custom_target(Documents
+    add_custom_target(doc
       COMMAND ${DOXYGEN_EXECUTABLE} ${doxyfile}
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
       COMMENT "Generate API documents."
@@ -131,3 +127,4 @@ if(WITH_DOC)
     message(WARNING "doxygen not found.")
   endif()
 endif()
+
