@@ -121,7 +121,7 @@ int main(int argc, char* argv[])
 		printf( "ADVENTURE_TetMesh file is loading...\n");
 		kmb::TetMeshMIO tetmesh;
 		mesh.beginModel();
-		tetmesh.loadFromFile( meshfile, &mesh );
+		tetmesh.loadFromFile<kmb::MeshData>( meshfile, &mesh );
 		mesh.endModel();
 		std::cout << "node count = " << mesh.getNodeCount() << std::endl;
 

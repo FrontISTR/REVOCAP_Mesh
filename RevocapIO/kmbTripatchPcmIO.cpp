@@ -26,26 +26,32 @@
 #include "RevocapIO/kmbTripatchPcmIO.h"
 #include "RevocapIO/kmbTripatchIO.h"
 
-int kmb::TripatchPcmIO::loadFromFile(const char* filename,MeshData* mesh)
-{
-	kmb::TripatchIO tripatch;
-	return tripatch.loadPatch(filename,mesh);
-}
+namespace kmb {
 
-// packOption = 0 : そのまま出力
-// packOption = 1 : すべてを一つにまとめて出力
-// 空の body は出力しない
-int
-kmb::TripatchPcmIO::saveToFile(const char* filename,const kmb::MeshData* mesh,int packOption)
-{
-	if( packOption == 0 ){
+	template <>
+	int TripatchPcmIO::loadFromFile(const char* filename, kmb::MeshData* mesh)
+	{
 		kmb::TripatchIO tripatch;
-		return tripatch.savePatch(filename,mesh);
-	}else if( packOption == 1 ){
-		kmb::TripatchIO tripatch;
-		return tripatch.savePatchPacked(filename,mesh);
-	}else{
-		return -1;
+		return tripatch.loadPatch(filename, mesh);
 	}
-}
 
+	// packOption = 0 : そのまま出力
+	// packOption = 1 : すべてを一つにまとめて出力
+	// 空の body は出力しない
+	template <>
+	int TripatchPcmIO::saveToFile(const char* filename, const kmb::MeshData* mesh, int packOption)
+	{
+		if (packOption == 0) {
+			kmb::TripatchIO tripatch;
+			return tripatch.savePatch(filename, mesh);
+		}
+		else if (packOption == 1) {
+			kmb::TripatchIO tripatch;
+			return tripatch.savePatchPacked(filename, mesh);
+		}
+		else {
+			return -1;
+		}
+	}
+
+}

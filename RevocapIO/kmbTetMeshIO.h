@@ -8,9 +8,9 @@ namespace kmb {
 	public:
 		TetMeshIO(void) {};
 		~TetMeshIO(void) {};
-		template<typename MContainer>
-		int loadMesh(std::string filename, MContainer* patch);
-		template<typename MContainer>
-		int saveMesh(std::string filename, const MContainer* patch);
+		template<typename MeshT>
+		int loadMesh(std::string filename, MeshT* patch);
+		template<typename MeshT>
+		int saveMesh(std::string filename, const MeshT* patch);
 	};
 }
