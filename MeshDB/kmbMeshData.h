@@ -289,7 +289,7 @@ public:
 	// あらかじめデータは作っておくこと
 	int convertData(const char* org, const char* conv, const char* orgstype=NULL,const char* convstype=NULL);
 	int convertData(const kmb::DataBindings* orgData, kmb::DataBindings* convData);
-	// 引き算 subtrahend に含まれる Id を　minuend からのぞく
+	// 引き算 subt に含まれる Id を　minu からのぞく
 	// FaceGroup NodeGroup ElementGroup に対応
 	int subtractData(const char* subt, const char* minu, const char* subtstype=NULL,const char* minustype=NULL);
 	// Body に含まれる節点をすべて節点グループにする
@@ -310,9 +310,6 @@ public:
 	// solid 要素の時 tolerance = 0.0 とすると、(x,y,z) を含む点を探す
 	virtual kmb::elementIdType searchElement(kmb::bodyIdType bodyId,double x,double y,double z,double tolerance=0.0) const{ return kmb::Element::nullElementId; };
 
-	// 0次補間：最も近い節点での値を取り出す
-	// NodeVariable のみ対応
-	virtual int getValueOnNearestNode(const char* name,double x,double y,double z,double *values,const char* stype=NULL) const { return -1; };
 	// 補間値を計算する
 	virtual int getInterpolatedValueInBody(const char* name,kmb::bodyIdType bodyId,double x,double y,double z,double *values,double tolerance=0.0,const char* stype=NULL) const { return -1; };
 	virtual int getInterpolatedValue(const char* name,double x,double y,double z,double *values,double tolerance=0.0,const char* stype=NULL) const { return -1; };

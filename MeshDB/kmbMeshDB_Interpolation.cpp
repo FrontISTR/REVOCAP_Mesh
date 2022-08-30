@@ -155,26 +155,6 @@ kmb::MeshDB::getInterpolatedValue(const char* name,double x,double y,double z,do
 }
 
 int
-kmb::MeshDB::getValueOnNearestNode(const char* name,double x,double y,double z,double *values,const char* stype) const
-{
-	int dim = -1;
-	const kmb::DataBindings* data = this->getDataBindingsPtr(name,stype);
-	if( data == NULL ||
-		data->getBindingMode() != kmb::DataBindings::NodeVariable ||
-		(dim=data->getDimension()) <= 0 )
-	{
-		return -1;
-	}
-	for(int j=0;j<dim;++j){
-		values[j] = 0.0;
-	}
-	kmb::nodeIdType nodeId = kmb::nullNodeId;
-	this->getNearestNode(x,y,z,nodeId);
-	data->getPhysicalValue( nodeId, values );
-	return 0;
-}
-
-int
 kmb::MeshDB::getInterpolatedValuesInBody(kmb::bodyIdType bodyId,double x,double y,double z,double *values,double tolerance) const
 {
 	int dim = this->getTargetDataDim();

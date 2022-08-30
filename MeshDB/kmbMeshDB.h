@@ -293,8 +293,6 @@ public:
 	bool getMinMaxValueWithId(const kmb::DataBindings* data,kmb::MinMaxWithId<kmb::idType>& minmax,int comp=-1) const;
 	bool calcRanking(const char* key,const char* stype=NULL);
 
-	// 0th degree interpolation for NodeVariable
-	virtual int getValueOnNearestNode(const char* name,double x,double y,double z,double *values,const char* stype=NULL) const;
 	// interpolate physical value
 	int getInterpolatedValue(const char* name,double x,double y,double z,double *values,double tolerance=0.0,const char* stype=NULL) const;
 	int getInterpolatedValueInBody(const char* name,kmb::bodyIdType bodyId,double x,double y,double z,double *values,double tolerance=0.0,const char* stype=NULL) const;

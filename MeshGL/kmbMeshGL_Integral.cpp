@@ -26,6 +26,7 @@
 #include "MeshGL/kmbMeshGL.h"
 
 #include "MeshDB/kmbMeshData.h"
+#include "MeshDB/kmbMeshFunction.h"
 #include "MeshDB/kmbDataBindings.h"
 #include "MeshGL/kmbColorMap.h"
 #include "MeshDB/kmbTetrahedron.h"
@@ -51,23 +52,25 @@ kmb::MeshGL::drawTrajectory(const char* vectorVal,double x,double y,double z,dou
 	kmb::BoundingBox bbox = mesh->getBoundingBox();
 	bbox.expand(1.1);
 	if( prefMode == kmb::MeshGL::SPEED ){
+		const kmb::DataBindings* data = mesh->getDataBindingsPtr(vectorVal);
+		if (data == NULL || data->getBindingMode() != kmb::DataBindings::NodeVariable )
+		{
+			return -1;
+		}
+		kmb::nodeIdType nearestId = kmb::nullNodeId;
 		for(count=0;count<step;++count){
 			if( bbox.intersect(x,y,z) == kmb::Region::OUTSIDE ){
 				break;
 			}
-			// node cache を作っておく必要がある
-			int res = mesh->getValueOnNearestNode(vectorVal,x,y,z,v);
-			if( res != -1 ){
-				if( colorMap ){
-					colorMap->setGLColor( kmb::Vector3D::abs(v) );
-				}
-				::glVertex3d(x,y,z);
-				x += delta*v[0];
-				y += delta*v[1];
-				z += delta*v[2];
-			}else{
-				break;
+			nearestId = kmb::MeshFunction::findNode(mesh,x,y,z);
+			data->getPhysicalValue(nearestId, v);
+			if( colorMap ){
+				colorMap->setGLColor( kmb::Vector3D::abs(v) );
 			}
+			::glVertex3d(x,y,z);
+			x += delta*v[0];
+			y += delta*v[1];
+			z += delta*v[2];
 		}
 	}else{
 		for(count=0;count<step;++count){
