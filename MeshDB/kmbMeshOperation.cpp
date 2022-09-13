@@ -359,3 +359,44 @@ findFace:
 	}
 	return count;
 }
+
+size_t kmb::MeshOperation::mergeMesh(const kmb::MeshData* other)
+{
+	if (mesh->getNodes() == NULL || other->getNodes() == NULL) {
+		return 0;
+	}
+	// 節点の追加
+	kmb::nodeIdType offsetNodeId = mesh->getMaxNodeId() + 1;
+	kmb::Point3D pt;
+	kmb::Point3DContainer::const_iterator pIter = other->getNodes()->begin();
+	while (!pIter.isFinished()) {
+		if (pIter.getPoint(pt)) {
+			mesh->addNodeWithId(pt.x(), pt.y(), pt.z(), pIter.getId() + offsetNodeId);
+		}
+		++pIter;
+	}
+	size_t appendElementCount = 0;
+	// 要素の追加
+	kmb::bodyIdType bCount = other->getBodyCount();
+	kmb::nodeIdType nodeTable[20];
+	for (kmb::bodyIdType i = 0; i < bCount; ++i) {
+		const kmb::ElementContainer* body = other->getBodyPtr(i);
+		if (body) {
+			appendElementCount += body->getCount();
+			kmb::bodyIdType bodyId = mesh->beginElement(body->getCount());
+			kmb::ElementContainer::const_iterator eIter = body->begin();
+			while (!eIter.isFinished()) {
+				int len = eIter.getNodeCount();
+				for (int j = 0; j < len; ++j) {
+					nodeTable[j] = eIter[j] + offsetNodeId;
+				}
+				mesh->addElement(eIter.getType(), nodeTable);
+				++eIter;
+			}
+			mesh->endElement();
+			mesh->setBodyName(bodyId, body->getBodyName());
+		}
+	}
+	return appendElementCount;
+}
+

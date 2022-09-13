@@ -31,5 +31,12 @@ namespace kmb {
 		// tolerance = 0.0 の時は、点が要素に含まれている場合
 		template<typename MeshT>
 		static kmb::elementIdType searchElement(const MeshT* mesh, kmb::bodyIdType bodyId, double x, double y, double z, double tolerance = 0.0);
+
+		// target に含まれるデータの頂点を mat で変換した時に
+		// (range[0],range[1]) < (x,y) < (range[2],range[3])
+		// を満たすものを result に格納する
+		template<typename MeshT>
+		static int filter_2d(MeshT* mesh, std::string target, std::string result, float mat[16], float range[4]);
+
 	};
 }

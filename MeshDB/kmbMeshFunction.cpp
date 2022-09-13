@@ -124,8 +124,8 @@ namespace kmb {
 			kmb::ElementEvaluator* evaluator = new kmb::ElementEvaluator(mesh->getNodes());
 			kmb::ElementContainer::const_iterator eIter = body->begin();
 			while (!eIter.isFinished()) {
-				// ������ (x,y,z) ���܂ނ��ǂ����𔻒肷��
-				// �܂ޏꍇ�͋��� 0 �Ƃ���
+				// ここで (x,y,z) を含むかどうかを判定する
+				// 含む場合は距離 0 とする
 				double dist = 0.0;
 				if (evaluator->getMinInnerVolume(eIter, x, y, z) >= 0.0) {
 					dist = 0.0;
@@ -149,6 +149,80 @@ namespace kmb {
 		else {
 			return kmb::Element::nullElementId;
 		}
+	}
+
+	// 射影行列 mat
+	// 画面上の範囲 range
+	// 範囲の中に含まれるデータを result に格納する
+	template<>
+	int MeshFunction::filter_2d(kmb::MeshData* mesh, std::string target, std::string result, float mat[16], float range[4]) {
+		int count = 0;
+		kmb::DataBindings* target_data = mesh->getData(target);
+		kmb::DataBindings* result_data = mesh->getData(result);
+		if (target_data == nullptr || result_data == nullptr) {
+			return count;
+		}
+		if (target_data->getBindingMode() == kmb::DataBindings::kFaceGroup) {
+			if (result_data->getBindingMode() == kmb::DataBindings::kNodeGroup) {
+				// FaceGroup 上の点で範囲内になるものを NodeGroup に格納する
+				for (kmb::DataBindings::const_iterator iter = target_data->begin(); !iter.isFinished(); iter++) {
+					kmb::Point3D pt;
+					kmb::Face f;
+					iter.getFace(f);
+					kmb::ElementContainer::const_iterator element = mesh->findElement(f.getElementId());
+					kmb::idType localId = f.getLocalFaceId();
+					int num_node = element.getBoundaryNodeCount(localId);
+					for (int i = 0; i < num_node; i++) {
+						kmb::nodeIdType nodeId = element.getBoundaryNodeId(localId, i);
+						if (!result_data->hasId(nodeId)) {
+							mesh->getNode(nodeId, pt);
+							double px = mat[0] * pt.x() + mat[4] * pt.y() + mat[8] * pt.z() + mat[12];
+							double py = mat[1] * pt.x() + mat[5] * pt.y() + mat[9] * pt.z() + mat[13];
+							double pz = mat[2] * pt.x() + mat[6] * pt.y() + mat[10] * pt.z() + mat[14];
+							double pw = mat[3] * pt.x() + mat[7] * pt.y() + mat[11] * pt.z() + mat[15];
+							double rx = px / pw;
+							double ry = py / pw;
+							if (range[0] <= rx && range[1] <= ry && rx <= range[2] && ry <= range[3]) {
+								result_data->addId(nodeId);
+								count++;
+							}
+						}
+					}
+				}
+			}
+			else if (result_data->getBindingMode() == kmb::DataBindings::kFaceGroup) {
+				// FaceGroup 上の点で範囲内になるものを FaceGroup に格納する
+				for (kmb::DataBindings::const_iterator iter = target_data->begin(); !iter.isFinished(); iter++) {
+					kmb::Point3D pt;
+					kmb::Face f;
+					iter.getFace(f);
+					kmb::ElementContainer::const_iterator element = mesh->findElement(f.getElementId());
+					kmb::idType localId = f.getLocalFaceId();
+					int num_node = element.getBoundaryNodeCount(localId);
+					bool flag = true;
+					for (int i = 0; i < num_node; i++) {
+						kmb::nodeIdType nodeId = element.getBoundaryNodeId(localId, i);
+						if (!result_data->hasId(nodeId)) {
+							mesh->getNode(nodeId, pt);
+							double px = mat[0] * pt.x() + mat[4] * pt.y() + mat[8] * pt.z() + mat[12];
+							double py = mat[1] * pt.x() + mat[5] * pt.y() + mat[9] * pt.z() + mat[13];
+							double pz = mat[2] * pt.x() + mat[6] * pt.y() + mat[10] * pt.z() + mat[14];
+							double pw = mat[3] * pt.x() + mat[7] * pt.y() + mat[11] * pt.z() + mat[15];
+							double rx = px / pw;
+							double ry = py / pw;
+							if ((range[0] <= rx && range[1] <= ry && rx <= range[2] && ry <= range[3]) == false) {
+								flag = false;
+								break;
+							}
+						}
+					}
+					if (flag) {
+						result_data->addId(f);
+					}
+				}
+			}
+		}
+		return count;
 	}
 
 }

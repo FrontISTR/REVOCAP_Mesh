@@ -28,7 +28,7 @@ namespace kmb {
 			std::getline(input, line);
 			std::istringstream tokenizer(line);
 			tokenizer >> allElementCount;
-			// —v‘f“–‚½‚è‚Ìß“_”‚ÌÅ‘å = 20
+			// è¦ç´ å½“ãŸã‚Šã®ç¯€ç‚¹æ•°ã®æœ€å¤§ = 20
 			allElements = new kmb::nodeIdType[20 * allElementCount];
 			std::fill_n(allElements, 20 * allElementCount, kmb::nullNodeId);
 			for (unsigned int i = 0; i < allElementCount; ++i) {
@@ -277,7 +277,7 @@ namespace kmb {
 			++nIter;
 		}
 		output << volumeCount << std::endl;
-		// ƒƒbƒVƒ…‚ª•Û‚·‚é id ‚Å‚Í‚È‚­Aƒtƒ@ƒCƒ‹‚Éo—Í‚µ‚½‡”Ô‚ğo—Í‚·‚é
+		// ãƒ¡ãƒƒã‚·ãƒ¥ãŒä¿æŒã™ã‚‹ id ã§ã¯ãªãã€ãƒ•ã‚¡ã‚¤ãƒ«ã«å‡ºåŠ›ã—ãŸé †ç•ªã‚’å‡ºåŠ›ã™ã‚‹
 		kmb::elementIdType elementId = 0;
 		for (kmb::bodyIdType bodyId = 0; bodyId < bodyCount; ++bodyId) {
 			int tetCount = static_cast<int>(mesh->getElementCountByType(bodyId, kmb::TETRAHEDRON));

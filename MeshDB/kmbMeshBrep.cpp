@@ -140,3 +140,74 @@ kmb::MeshBrep* kmb::MeshBrep::createPatchModel(kmb::MeshData *mesh, double angle
 	}
 	return brep;
 }
+
+void kmb::MeshBrep::update3DFaceModel(kmb::MeshData *mesh, double angle)
+{
+	kmb::bodyIdType bodyCount = mesh->getBodyCount();
+	kmb::BoundaryExtractor bext;
+	kmb::SurfaceOperation surfOp;
+	for (kmb::bodyIdType bodyId = 0; bodyId < bodyCount; bodyId++) {
+		if (mesh->getDimension(bodyId) == 3 && this->getFaceCount(bodyId) == 0 ){
+			this->volumes.push_back(bodyId);
+			bext.clear();
+			bext.setMesh(mesh);
+			bext.appendBody(bodyId);
+			if (angle > 0.0) {
+				std::stringstream ss;
+				ss << "Face" << bodyId << "_";
+				bext.getBoundaryFace(bodyId, ss.str().c_str());
+				surfOp.setMesh(mesh);
+				std::vector< std::string > subfaces;
+				surfOp.divideFaceGroup(ss.str(), angle, subfaces);
+				this->faces.insert(std::make_pair(bodyId, subfaces));
+				for (std::string face : subfaces) {
+					this->parents.insert(std::make_pair(face, bodyId));
+				}
+				mesh->deleteData(ss.str().c_str());
+			}
+			else {
+				std::stringstream ss;
+				ss << "Face" << bodyId;
+				bext.getBoundaryFace(bodyId, ss.str().c_str());
+				std::vector< std::string > subfaces;
+				subfaces.push_back(ss.str());
+				this->parents.insert(std::make_pair(ss.str(), bodyId));
+				this->faces.insert(std::make_pair(bodyId, subfaces));
+			}
+		}
+	}
+}
+
+kmb::MeshBrep* kmb::MeshBrep::create3DSourfaceModelFromBoundary(kmb::MeshData *mesh, bool reverse)
+{
+	kmb::MeshBrep* brep = new kmb::MeshBrep();
+	kmb::bodyIdType bodyCount = mesh->getBodyCount();
+	for (kmb::bodyIdType bodyId = 0; bodyId < bodyCount; bodyId++) {
+		if (mesh->getDimension(bodyId) == 3) {
+			brep->volumes.push_back(bodyId);
+		}
+		if (mesh->getDimension(bodyId) == 2) {
+			brep->patches.push_back(bodyId);
+		}
+	}
+	if (brep->parents.size() > 0) {
+		for (kmb::bodyIdType bodyId : brep->volumes) {
+			kmb::BoundaryExtractor bext;
+			bext.setReverseMode(reverse);
+			bext.setMesh(mesh);
+			bext.appendBody(bodyId);
+			kmb::Face f;
+			for (kmb::bodyIdType surfaceId : brep->patches) {
+				kmb::ElementContainer* body = mesh->getBodyPtr(surfaceId);
+				if (body != NULL) {
+					// 最初の要素だけで判定する
+					kmb::ElementContainer::const_iterator eIter = body->begin();
+					if (!eIter.isFinished() && bext.getBoundaryFace(eIter, f)) {
+						brep->surfaces.insert(std::make_pair<>(bodyId,surfaceId));
+					}
+				}
+			}
+		}
+	}
+	return brep;
+}

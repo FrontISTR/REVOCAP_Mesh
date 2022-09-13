@@ -45,6 +45,9 @@ public:
 	size_t uniteNodes(double thresh);
 	// 三角形分割
 	int triangulation(kmb::bodyIdType bodyId);
+	// メッシュの結合
+	// mesh += other;
+	size_t mergeMesh(const kmb::MeshData* other);
 
 	// static 関数
 	// 親子関係
