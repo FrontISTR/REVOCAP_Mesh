@@ -190,21 +190,19 @@ kmb::MeshBrep* kmb::MeshBrep::create3DSourfaceModelFromBoundary(kmb::MeshData *m
 			brep->patches.push_back(bodyId);
 		}
 	}
-	if (brep->parents.size() > 0) {
-		for (kmb::bodyIdType bodyId : brep->volumes) {
-			kmb::BoundaryExtractor bext;
-			bext.setReverseMode(reverse);
-			bext.setMesh(mesh);
-			bext.appendBody(bodyId);
-			kmb::Face f;
-			for (kmb::bodyIdType surfaceId : brep->patches) {
-				kmb::ElementContainer* body = mesh->getBodyPtr(surfaceId);
-				if (body != NULL) {
-					// 最初の要素だけで判定する
-					kmb::ElementContainer::const_iterator eIter = body->begin();
-					if (!eIter.isFinished() && bext.getBoundaryFace(eIter, f)) {
-						brep->surfaces.insert(std::make_pair<>(bodyId,surfaceId));
-					}
+	for (kmb::bodyIdType bodyId : brep->volumes) {
+		kmb::BoundaryExtractor bext;
+		bext.setReverseMode(reverse);
+		bext.setMesh(mesh);
+		bext.appendBody(bodyId);
+		kmb::Face f;
+		for (kmb::bodyIdType surfaceId : brep->patches) {
+			kmb::ElementContainer* body = mesh->getBodyPtr(surfaceId);
+			if (body != NULL) {
+				// 最初の要素だけで判定する
+				kmb::ElementContainer::const_iterator eIter = body->begin();
+				if (!eIter.isFinished() && bext.getBoundaryFace(eIter, f)) {
+					brep->surfaces.insert(std::make_pair<>(bodyId,surfaceId));
 				}
 			}
 		}
