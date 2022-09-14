@@ -7,7 +7,7 @@
 #include <boost/test/unit_test.hpp>
 #endif
 
-#include "Test/testCommon.h"
+#include "Test/Test_Common.h"
 #include "Common/kmbBLArray.h"
 
 BOOST_AUTO_TEST_SUITE( BLArray )

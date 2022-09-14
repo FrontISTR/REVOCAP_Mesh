@@ -6,11 +6,9 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 find_package(Boost
   REQUIRED
-#  COMPONENTS unit_test_framework
 )
 
 include_directories(${Boost_INCLUDE_DIRS})
-add_definitions(-DBOOST_TEST_NO_LIB)
 
 add_executable(HelloWorld HelloWorld.cpp)
 add_test(
@@ -30,7 +28,8 @@ set(RCAP_LIBRARIES
 )
 
 add_executable(Common_Test Common_Test.cpp)
-target_link_libraries(Common_Test ${RCAP_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(Common_Test ${RCAP_LIBRARIES})
+target_compile_definitions(Common_Test PRIVATE "BOOST_TEST_NO_LIB=1")
 add_test(
   NAME Common_Test
   COMMAND $<TARGET_FILE:Common_Test>
@@ -38,16 +37,26 @@ add_test(
 )
 
 add_executable(Array_Test Array_Test.cpp)
-target_link_libraries(Array_Test RcapRefiner)
-target_link_libraries(Array_Test ${Boost_LIBRARIES})
+target_link_libraries(Array_Test ${RCAP_LIBRARIES})
+target_compile_definitions(Array_Test PRIVATE "BOOST_TEST_NO_LIB=1")
 add_test(
   NAME Array_Test
   COMMAND $<TARGET_FILE:Array_Test>
   WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
 )
 
+add_executable(BLArray_Test BLArray_Test.cpp)
+target_link_libraries(BLArray_Test ${RCAP_LIBRARIES})
+target_compile_definitions(BLArray_Test PRIVATE "BOOST_TEST_NO_LIB=1")
+add_test(
+  NAME BLArray_Test
+  COMMAND $<TARGET_FILE:BLArray_Test>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+)
+
 add_executable(Geometry_Test Geometry_Test.cpp)
-target_link_libraries(Geometry_Test ${RCAP_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(Geometry_Test ${RCAP_LIBRARIES})
+target_compile_definitions(Geometry_Test PRIVATE "BOOST_TEST_NO_LIB=1")
 add_test(
   NAME Geometry_Test
   COMMAND $<TARGET_FILE:Geometry_Test>
@@ -55,7 +64,8 @@ add_test(
 )
 
 add_executable(Matrix_Test Matrix_Test.cpp)
-target_link_libraries(Matrix_Test ${RCAP_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(Matrix_Test ${RCAP_LIBRARIES})
+target_compile_definitions(Matrix_Test PRIVATE "BOOST_TEST_NO_LIB=1")
 add_test(
   NAME Matrix_Test
   COMMAND $<TARGET_FILE:Matrix_Test>
@@ -63,7 +73,8 @@ add_test(
 )
 
 add_executable(RevocapIO_Test RevocapIO_Test.cpp)
-target_link_libraries(RevocapIO_Test ${RCAP_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(RevocapIO_Test ${RCAP_LIBRARIES})
+target_compile_definitions(RevocapIO_Test PRIVATE "BOOST_TEST_NO_LIB=1")
 add_test(
   NAME RevocapIO_Test
   COMMAND $<TARGET_FILE:RevocapIO_Test>
