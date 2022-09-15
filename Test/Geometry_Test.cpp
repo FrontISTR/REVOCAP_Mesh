@@ -28,6 +28,26 @@ public:
 
 BOOST_GLOBAL_FIXTURE( Fixture );
 
+BOOST_AUTO_TEST_CASE( Point3D )
+{
+	kmb::Point3D a0(drand(),drand(),drand());
+	kmb::Point3D a1(drand(),drand(),drand());
+	kmb::Point3D a2(drand(),drand(),drand());
+	kmb::Point3D x(drand(),drand(),drand());
+	double distSq = x.distanceSqToTriangle(a0,a1,a2);
+	BOOST_CHECK( distSq >= 0.0 );
+}
+
+BOOST_AUTO_TEST_CASE( BOXREGION )
+{
+	kmb::Point3D l(1.0,2.0,3.0);
+	kmb::Point3D u(4.0,5.0,6.0);
+	kmb::BoxRegion box(l,u);
+	BOOST_CHECK_EQUAL( box.minX(), l.x() ); 
+	BOOST_CHECK_EQUAL( box.minY(), l.y() ); 
+	BOOST_CHECK_EQUAL( box.minZ(), l.z() ); 
+}
+
 BOOST_AUTO_TEST_CASE(Volume_Simplex)
 {
 	kmb::Point3D a(0.0,0.0,0.0);
@@ -211,6 +231,86 @@ BOOST_AUTO_TEST_CASE(SolidAngle)
 		double solidAngle243 = kmb::Vector3D::solidAngle(kmb::Vector3D(a2, a0), kmb::Vector3D(a4, a0), kmb::Vector3D(a3, a0));
 		BOOST_CHECK_CLOSE(4.0*PI, std::fabs(solidAngle123 + solidAngle142 + solidAngle134 + solidAngle243), 1.0e-10);
 	}
+}
+
+// 直方体と直線の干渉のチェック
+BOOST_AUTO_TEST_CASE( CrossOnLine )
+{
+	for(int count = 0;count<1000;++count){
+		kmb::BoundingBox2D bbox;
+		kmb::Point2D pt(drand(),drand());
+		kmb::Vector2D dir(drand(),drand());
+		bbox.update( drand()+1.0, drand()+1.0 );
+		bbox.update( drand()-1.0, drand()+1.0 );
+		bbox.update( drand()+1.0, drand()-1.0 );
+		bbox.update( drand()-1.0, drand()-1.0 );
+		double min_t, max_t;
+		bbox.crossOnLine(pt,dir,min_t,max_t);
+		if( min_t == max_t ){
+			continue;
+		}
+		kmb::Point2D min_q = pt + min_t * dir;
+		kmb::Point2D max_q = pt + max_t * dir;
+		for(int i=1;i<100;++i){
+			double t = min_t + 0.01 * i * (max_t-min_t);
+			kmb::Point2D q = pt + t * dir;
+			BOOST_CHECK( kmb::Region2D::OUTSIDE != bbox.intersect( q ) );
+			t = min_t + 0.01 * (100+i) * (max_t-min_t);
+			q = pt + t * dir;
+			BOOST_CHECK( kmb::Region2D::OUTSIDE == bbox.intersect( q ) );
+			t = min_t - 0.01 * i * (max_t-min_t);
+			q = pt + t * dir;
+			BOOST_CHECK( kmb::Region2D::OUTSIDE == bbox.intersect( q ) );
+		}
+	}
+}
+
+// 4x4 行列の行列式を求める
+BOOST_AUTO_TEST_CASE( Matrix4x4 )
+{
+	for(int count = 0;count<1000;++count){
+		kmb::Matrix4x4 mtx;
+		for(int i=0;i<4;++i){
+			for(int j=0;j<4;++j){
+				mtx.set(i,j, drand(10.0,-10.0));
+			}
+		}
+		double d = kmb::Matrix4x4::determinant(
+			mtx.get(0,0), mtx.get(0,1), mtx.get(0,2), mtx.get(0,3),
+			mtx.get(1,0), mtx.get(1,1), mtx.get(1,2), mtx.get(1,3),
+			mtx.get(2,0), mtx.get(2,1), mtx.get(2,2), mtx.get(2,3),
+			mtx.get(3,0), mtx.get(3,1), mtx.get(3,2), mtx.get(3,3));
+		BOOST_CHECK_CLOSE( mtx.determinant(), d, 1.0e-10 );
+	}
+}
+
+BOOST_AUTO_TEST_CASE(Determinant)
+{
+	irand();
+	kmb::Matrix2x2 mat2;
+	kmb::Matrix3x3 mat3;
+	kmb::Matrix4x4 mat4;
+	for(int i=0;i<2;++i){
+		for(int j=0;j<2;++j){
+			mat2.set(i,j,drand());
+		}
+	}
+	for(int i=0;i<3;++i){
+		for(int j=0;j<3;++j){
+			mat3.set(i,j,drand());
+		}
+	}
+	for(int i=0;i<4;++i){
+		for(int j=0;j<4;++j){
+			mat4.set(i,j,drand());
+		}
+	}
+	kmb::SquareMatrix_DoubleArray sq2(mat2);
+	kmb::SquareMatrix_DoubleArray sq3(mat3);
+	kmb::SquareMatrix_DoubleArray sq4(mat4);
+	BOOST_CHECK_CLOSE( mat2.determinant(), sq2.determinant(), 1.0e-10 );
+	BOOST_CHECK_CLOSE( mat3.determinant(), sq3.determinant(), 1.0e-10 );
+	BOOST_CHECK_CLOSE( mat4.determinant(), sq4.determinant(), 1.0e-10 );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
