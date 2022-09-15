@@ -8,6 +8,7 @@
 #endif
 
 #include "Geometry/kmbGeometry3D.h"
+#include "Geometry/kmbGeometry4D.h"
 #include "Geometry/kmbLine.h"
 #include "Geometry/kmbBucket.h"
 #include "Geometry/kmbBoxRegion.h"
