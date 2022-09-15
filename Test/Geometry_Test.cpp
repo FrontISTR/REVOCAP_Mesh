@@ -13,6 +13,7 @@
 #include "Geometry/kmbBucket.h"
 #include "Geometry/kmbBoxRegion.h"
 #include "Geometry/kmbPoint3DContainerMArray.h"
+#include "Matrix/kmbMatrix_DoubleArray.h"
 #include "Common/kmbCommon.h"
 #include "Test/Test_Common.h"
 
