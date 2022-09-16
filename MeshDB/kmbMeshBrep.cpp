@@ -202,7 +202,14 @@ kmb::MeshBrep* kmb::MeshBrep::create3DSourfaceModelFromBoundary(kmb::MeshData *m
 				// 最初の要素だけで判定する
 				kmb::ElementContainer::const_iterator eIter = body->begin();
 				if (!eIter.isFinished() && bext.getBoundaryFace(eIter, f)) {
-					brep->surfaces.insert(std::make_pair<>(bodyId,surfaceId));
+					auto pair = brep->surfaces.find(bodyId);
+					if (pair == brep->surfaces.end()) {
+						std::vector<kmb::bodyIdType> surfaces = { surfaceId };
+						brep->surfaces.insert(std::make_pair<>(bodyId, surfaces));
+					}
+					else {
+						pair->second.push_back(surfaceId);
+					}
 				}
 			}
 		}

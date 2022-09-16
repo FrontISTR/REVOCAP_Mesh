@@ -14,7 +14,7 @@
 ----------------------------------------------------------------------*/
 #include "MeshDB/kmbMeshOperation.h"
 #include "MeshDB/kmbMeshData.h"
-#include "MeshDB/kmbMeshBrepInfo.h"
+#include "MeshDB/kmbMeshBrep.h"
 #include "MeshDB/kmbNodeMapperBindings.h"
 #include "MeshDB/kmbNodeNeighborInfo.h"
 #include "MeshDB/kmbElementRelation.h"
@@ -53,51 +53,49 @@ size_t kmb::MeshOperation::nodeSplitByVolumes(void)
 		return 0;
 	}
 	// 節点番号を2重化する必要がある場合の対応
-	kmb::MeshBrepInfo* brep = kmb::MeshBrepInfo::create3DModelWithBoundary(mesh,true);
+	kmb::MeshBrep* mesh_brep = kmb::MeshBrep::create3DSourfaceModelFromBoundary(mesh);
 	kmb::Point3DContainer* nodes = new kmb::Point3DContainerMArray();
 	nodes->initialize( mesh->getNodeCount() );
-	std::vector< kmb::bodyIdType > volumes;
-	brep->getVolumes(volumes);
 	kmb::Point3D pt;
-	for( std::vector< kmb::bodyIdType >::iterator vIter = volumes.begin(); vIter < volumes.end(); ++vIter)
-	{
+	size_t num_volume = mesh_brep->getVolumeCount();
+	for (size_t vol_index = 0; vol_index < num_volume; vol_index++) {
 		// 旧番号 => 新番号
 		std::map< kmb::nodeIdType, kmb::nodeIdType > nodeMapperLocal;
-		kmb::bodyIdType volumeId = *vIter;
+		kmb::bodyIdType volumeId = mesh_brep->getVolume(vol_index);
 		kmb::ElementContainer* body = mesh->getBodyPtr(volumeId);
-		if( body ){
+		if (body) {
 			kmb::ElementContainer::iterator eIter = body->begin();
-			while( !eIter.isFinished() ){
+			while (!eIter.isFinished()) {
 				int nCount = eIter.getNodeCount();
-				for(int i=0;i<nCount;++i){
+				for (int i = 0; i < nCount; ++i) {
 					// Local で最初に出てきた節点かどうか
 					std::map< kmb::nodeIdType, kmb::nodeIdType >::iterator n2Iter = nodeMapperLocal.find(eIter[i]);
-					if( n2Iter == nodeMapperLocal.end() ){
-						mesh->getNode(eIter[i],pt);
-						kmb::nodeIdType dnodeId = nodes->addPoint(pt.x(),pt.y(),pt.z());
-						nodeMapperLocal.insert( std::pair<kmb::nodeIdType,kmb::nodeIdType>(eIter[i],dnodeId) );
+					if (n2Iter == nodeMapperLocal.end()) {
+						mesh->getNode(eIter[i], pt);
+						kmb::nodeIdType dnodeId = nodes->addPoint(pt.x(), pt.y(), pt.z());
+						nodeMapperLocal.insert(std::pair<kmb::nodeIdType, kmb::nodeIdType>(eIter[i], dnodeId));
 					}
 				}
 				++eIter;
 			}
 		}
 		kmb::ElementContainer* vol = mesh->getBodyPtr(volumeId);
-		if( vol ){
-			vol->replaceNodeId( nodeMapperLocal );
+		if (vol) {
+			vol->replaceNodeId(nodeMapperLocal);
 		}
-		std::vector< kmb::bodyIdType > surfaces;
-		brep->getChildren(volumeId,surfaces);
-		for( std::vector< kmb::bodyIdType >::iterator sIter = surfaces.begin(); sIter < surfaces.end(); ++sIter){
-			kmb::bodyIdType surfaceId = *sIter;
+		size_t num_surface = mesh_brep->getSurfaceCount(volumeId);
+		for (size_t surf_index = 0; surf_index < num_surface; surf_index++) {
+			kmb::bodyIdType surfaceId = mesh_brep->getSurface(volumeId, surf_index);
+			std::cout << "volume : surface " << volumeId << " : " << surfaceId << std::endl;
 			kmb::ElementContainer* surf = mesh->getBodyPtr(surfaceId);
-			if( surf ){
-				surf->replaceNodeId( nodeMapperLocal );
+			if (surf) {
+				surf->replaceNodeId(nodeMapperLocal);
 			}
 		}
 	}
 	// node container を入れ替え
 	mesh->replaceNodes( nodes );
-	delete brep;
+	delete mesh_brep;
 	return 0;
 }
 
@@ -133,7 +131,6 @@ size_t kmb::MeshOperation::uniteNodes(double thresh)
 		}
 		if( nodeId != nearId ){
 			idmap.insert( std::pair<kmb::nodeIdType,kmb::nodeIdType>(nodeId,nearId) );
-			std::cout << nodeId << " => " << nearId << std::endl;
 		}
 		++pIter;
 	}
