@@ -46,6 +46,30 @@ add_test(
   WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
 )
 
+add_executable(BLArray_Test BLArray_Test.cpp)
+target_link_libraries(BLArray_Test ${RCAP_LIBRARIES} ${Boost_LIBRARIES})
+add_test(
+  NAME BLArray_Test
+  COMMAND $<TARGET_FILE:BLArray_Test>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+)
+
+add_executable(Bucket_Test Bucket_Test.cpp)
+target_link_libraries(Bucket_Test ${RCAP_LIBRARIES} ${Boost_LIBRARIES})
+add_test(
+  NAME Bucket_Test
+  COMMAND $<TARGET_FILE:Bucket_Test>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+)
+
+add_executable(Element_Test Element_Test.cpp)
+target_link_libraries(Element_Test ${RCAP_LIBRARIES} ${Boost_LIBRARIES})
+add_test(
+  NAME Element_Test
+  COMMAND $<TARGET_FILE:Element_Test>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+)
+
 add_executable(Geometry_Test Geometry_Test.cpp)
 target_link_libraries(Geometry_Test ${RCAP_LIBRARIES} ${Boost_LIBRARIES})
 add_test(
@@ -59,6 +83,14 @@ target_link_libraries(Matrix_Test ${RCAP_LIBRARIES} ${Boost_LIBRARIES})
 add_test(
   NAME Matrix_Test
   COMMAND $<TARGET_FILE:Matrix_Test>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+)
+
+add_executable(MeshData_Test MeshData_Test.cpp)
+target_link_libraries(MeshData_Test ${RCAP_LIBRARIES} ${Boost_LIBRARIES})
+add_test(
+  NAME MeshData_Test
+  COMMAND $<TARGET_FILE:MeshData_Test>
   WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
 )
 
