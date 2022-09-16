@@ -18,10 +18,6 @@
 #include "MeshDB/kmbElementContainerMArray.h"
 #include "MeshDB/kmbTriangle.h"
 #include "MeshDB/kmbMeshDB.h"
-#include "RevocapIO/kmbTripatchPcmIO.h"
-#include "RevocapIO/kmbRevocapNeutralIO.h"
-#include "RevocapIO/kmbTetMeshMIO.h"
-#include "RevocapIO/kmbFrontSTRIO.h"
 
 BOOST_AUTO_TEST_SUITE( Bucket )
 
