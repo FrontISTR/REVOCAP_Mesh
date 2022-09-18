@@ -125,6 +125,31 @@ BOOST_AUTO_TEST_CASE( CircumCenter4 )
 	}
 }
 
+BOOST_AUTO_TEST_CASE( Point_Bucket_Index )
+{
+	kmb::Point3DContainerMArray points;
+	points.initialize(2000);
+	for(int i=0;i<1000;i++){
+		points.addPoint( drand(), drand(), drand() );
+	}
+	// 同じ座標に格納する
+	for(int i=0;i<1000;i++){
+		kmb::Point3D pt;
+		points.getPoint(i,pt);
+		points.addPoint( pt.x(), pt.y(), pt.z() );
+	}
+	kmb::Bucket3DGrid bucket;
+	kmb::BoundingBox bbox = points.getBoundingBox();
+	bucket.setRegionGrid( bbox, 100 );
+	bucket.setContainer( &points );
+	bucket.appendAll();
+	for(kmb::nodeIdType i=0;i<1000;i++){
+		kmb::Point3D pt;
+		points.getPoint(i,pt);
+		int index = bucket.getIndex( pt.x(), pt.y(), pt.z() );
+		BOOST_CHECK( index >= 0 );
+	}
+}
 
 BOOST_AUTO_TEST_CASE( PointToLine )
 {
