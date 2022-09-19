@@ -39,13 +39,13 @@ build_refiner_cmake:
 build_extension:
   stage: build
   script:
-    - mkdir build
-    - cd build
+    - mkdir build_ext
+    - cd build_ext
     - cmake -DWITH_EXTENSION=ON -DWITH_OPENCASCADE=OFF ..
     - make
   artifacts:
     paths:
-      - build
+      - build_ext
 
 build_refiner:
   stage: build
@@ -60,3 +60,15 @@ test_revocap:
   script:
     - cd build
     - make test
+  artifacts:
+    paths:
+      - build/Testing/Temporary
+
+test_revocap_ext:
+  stage: test
+  script:
+    - cd build_ext
+    - make test
+  artifacts:
+    paths:
+      - build_ext/Testing/Temporary
