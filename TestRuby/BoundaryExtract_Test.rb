@@ -75,7 +75,7 @@ class TestBoundaryExtract < Test::Unit::TestCase
 		yamlIO = RevocapIO::RevocapNeutralIO.new
 		mesh = MeshDB.new
 		mesh.beginModel
-		yamlIO.loadFromRNFFile(File.join(File.dirname($0),'..','TestData','boxMesh.rnf'),mesh)
+		yamlIO.loadFromRNFFile(File.join(File.dirname($0),'boxMesh.rnf'),mesh)
 		mesh.createData("EG","ELEMENTGROUP","NONE","",0)
 		mesh.addId("EG",2)
 		mesh.addId("EG",4)
@@ -99,7 +99,7 @@ class TestBoundaryExtract < Test::Unit::TestCase
 		yamlIO = RevocapIO::RevocapNeutralIO.new
 		mesh = MeshDB.new
 		mesh.beginModel
-		yamlIO.loadFromRNFFile(File.join(File.dirname($0),'..','TestData','boxMesh.rnf'),mesh)
+		yamlIO.loadFromRNFFile(File.join(File.dirname($0),'boxMesh.rnf'),mesh)
 		mesh.endModel
 		bext = BoundaryExtractor.new
 		bext.setMesh(mesh)
@@ -142,7 +142,7 @@ class TestBoundaryExtract < Test::Unit::TestCase
 		tripatchIO = RevocapIO::TripatchPcmIO.new
 		mesh = MeshDB.new
 		mesh.beginModel
-		tripatchIO.loadFromFile( File.join(File.dirname($0),'..','TestData','bridge.pcm'), mesh )
+		tripatchIO.loadFromFile( File.join(File.dirname($0),'bridge.pcm'), mesh )
 		mesh.endModel
 		bext = BoundaryExtractor.new
 		bext.setMesh(mesh)
@@ -270,7 +270,7 @@ class TestBoundaryExtract < Test::Unit::TestCase
 		mesh.setDefaultContainerType("Pre")
 		tetmesh = RevocapIO::TetMeshMIO.new
 		mesh.beginModel
-		tetmesh.loadFromFile( File.join(File.dirname($0),'..','TestData','Box27Tetra.msh'), mesh )
+		tetmesh.loadFromFile( File.join(File.dirname($0),'Box27Tetra.msh'), mesh )
 		mesh.endModel
 
 		assert_equal( mesh.getElementCount(0), 162 )

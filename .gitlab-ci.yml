@@ -67,7 +67,7 @@ test_revocap:
 test_revocap_ext:
   stage: test
   script:
-    - cd build_ext
+    - cd build_ext/TestRuby
     - make test
   artifacts:
     paths:
