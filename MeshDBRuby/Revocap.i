@@ -99,10 +99,10 @@ namespace kmb{
 // 順番は重要！
 %include "Geometry.i"
 %include "BoundingBox.i"
+%include "Plane.i"
 %include "MeshData.i"
 %include "MeshDB.i"
 %include "Collision.i"
-%include "Plane.i"
 %include "Boundary.i"
 %include "Matching.i"
 %include "SurfaceOperation.i"

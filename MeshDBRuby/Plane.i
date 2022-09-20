@@ -29,8 +29,10 @@
 
 =end
 ---------------------------------------------------------------*/
+%{
 #include "Geometry/kmbPlane.h"
 #include "Geometry/kmbFramedPlane.h"
+%}
 
 namespace kmb{
 
