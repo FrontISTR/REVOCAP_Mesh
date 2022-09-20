@@ -44,8 +44,8 @@ protected:
 	kmb::ElementContainer* currentBody;
 	std::multimap< std::string, kmb::DataBindings* > bindings;
 	// 一時的なデータ保存用
-	std::vector< kmb::DataBindings* > bindingsStack;
-	int bindingsStackDim;
+	mutable std::vector< kmb::DataBindings* > bindingsStack;
+	mutable int bindingsStackDim;
 	std::string defaultSpecType;
 	// the element ids are not duplicated even if they are not contained in different bodies
 	elementIdType maxElementId;

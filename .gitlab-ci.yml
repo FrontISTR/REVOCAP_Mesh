@@ -10,6 +10,8 @@ before_script:
   - apt-get -y install libglew-dev
   - apt-get -y install libocct-modeling-algorithms-dev
   - apt-get -y install libboost-dev
+  - apt-get -y install ruby-dev
+  - apt-get -y install swig
   - apt-get -y install cmake
 
 build_revocap:
@@ -34,6 +36,17 @@ build_refiner_cmake:
     paths:
       - build_refiner_cmake
 
+build_extension:
+  stage: build
+  script:
+    - mkdir build_ext
+    - cd build_ext
+    - cmake -DWITH_EXTENSION=ON -DWITH_OPENCASCADE=OFF ..
+    - make
+  artifacts:
+    paths:
+      - build_ext
+
 build_refiner:
   stage: build
   script:
@@ -47,3 +60,15 @@ test_revocap:
   script:
     - cd build
     - make test
+  artifacts:
+    paths:
+      - build/Testing/Temporary
+
+test_revocap_ext:
+  stage: test
+  script:
+    - cd build_ext/TestRuby
+    - make test
+  artifacts:
+    paths:
+      - build_ext/Testing/Temporary

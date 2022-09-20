@@ -1,6 +1,5 @@
 ﻿cmake_minimum_required(VERSION 3.0)
 project(REVOCAP_MESH_TestRuby)
-set(REVOCAP_MESH_VERSION "1.7.01")
 
 add_test(
  NAME HelloWorld_TestRuby

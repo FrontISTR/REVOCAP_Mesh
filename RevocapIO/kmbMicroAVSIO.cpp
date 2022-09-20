@@ -1189,8 +1189,62 @@ kmb::MicroAVSIO::loadPostFromFile(const char* filename,kmb::MeshData* mesh)
 	}
 }
 
-int
-kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
+void getValues(std::vector< const kmb::DataBindings* > &dataStack,kmb::idType id, double* values)
+{
+	std::vector< const kmb::DataBindings* >::const_iterator dIter = dataStack.begin();
+	int i=0;
+	while( dIter != dataStack.end() )
+	{
+		const kmb::DataBindings* data = *dIter;
+		if( data ){
+			switch( data->getValueType() ){
+				case kmb::PhysicalValue::Scalar:
+					{
+						data->getPhysicalValue(id,&values[i]);
+						++i;
+						break;
+					}
+				case kmb::PhysicalValue::Vector2:
+					{
+						data->getPhysicalValue(id,&values[i]);
+						i += 2;
+						break;
+					}
+				case kmb::PhysicalValue::Vector3:
+					{
+						data->getPhysicalValue(id,&values[i]);
+						i += 3;
+						break;
+					}
+				case kmb::PhysicalValue::Vector4:
+					{
+						data->getPhysicalValue(id,&values[i]);
+						i += 4;
+						break;
+					}
+				case kmb::PhysicalValue::Tensor6:
+					{
+						data->getPhysicalValue(id,&values[i]);
+						i += 6;
+						break;
+					}
+				case kmb::PhysicalValue::Point3Vector3:
+					{
+						data->getPhysicalValue(id,&values[i]);
+						i += 6;
+						break;
+					}
+				default:
+					break;
+			}
+		}
+		++dIter;
+	}
+}
+
+namespace kmb{
+template <>
+int MicroAVSIO::saveToFile(const char* filename,const kmb::MeshData* mesh)
 {
 	if( mesh == NULL ){
 		return -1;
@@ -1230,7 +1284,7 @@ kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
 			elemCount += body->getCount();
 		}
 	}
-	if( elementCount == 0 ){
+	if( elemCount == 0 ){
 		std::cout << "element count == 0" << std::endl;
 		return -1;
 	}
@@ -1380,6 +1434,7 @@ kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
 		}
 		++ngIter;
 	}
+	std::vector< const kmb::DataBindings* > dataStack;
 	output << " " << nodeDataDim << " " << elementDataDim << std::endl;
 	if( nodeDataDim > 0 ){
 		output << " " << nodeDataDim;
@@ -1387,7 +1442,7 @@ kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
 			output << " 1";
 		}
 		output << std::endl;
-		mesh->clearTargetData();
+		dataStack.clear();
 		std::multimap< std::string, kmb::DataBindings*>::const_iterator ngIter = dataBindings.begin();
 		std::multimap< std::string, kmb::DataBindings*>::const_iterator ngEnd = dataBindings.end();
 		while( ngIter != ngEnd ){
@@ -1400,13 +1455,13 @@ kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
 					{
 					case kmb::PhysicalValue::Scalar:
 						output << " " << ngIter->first << ", unknown" << std::endl;
-						mesh->appendTargetDataPtr( data );
+						dataStack.push_back( data );
 						break;
 					case kmb::PhysicalValue::Vector3:
 						output << " " << ngIter->first << "_u;" << ngIter->first << ", unknown" << std::endl;
 						output << " " << ngIter->first << "_v, unknown" << std::endl;
 						output << " " << ngIter->first << "_w, unknown" << std::endl;
-						mesh->appendTargetDataPtr( data );
+						dataStack.push_back( data );
 						break;
 					case kmb::PhysicalValue::Tensor6:
 						output << " " << ngIter->first << "_0, unknown" << std::endl;
@@ -1415,7 +1470,7 @@ kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
 						output << " " << ngIter->first << "_3, unknown" << std::endl;
 						output << " " << ngIter->first << "_4, unknown" << std::endl;
 						output << " " << ngIter->first << "_5, unknown" << std::endl;
-						mesh->appendTargetDataPtr( data );
+						dataStack.push_back( data );
 						break;
 					default:
 						break;
@@ -1432,7 +1487,7 @@ kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
 		kmb::nodeIdType nodeId = 0;
 		kmb::nodeIdType nodeCount = static_cast<kmb::nodeIdType>(mesh->getNodeCount());
 		for(nodeId=0;nodeId<nodeCount;++nodeId){
-			mesh->getMultiPhysicalValues(nodeId,values);
+			getValues(dataStack,nodeId,values);
 			output << " " << nodeId+this->nodeOffset;
 			for(int i=0;i<nodeDataDim;++i){
 				output << " " << std::setw(15) << values[i];
@@ -1447,7 +1502,7 @@ kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
 			output << " 1";
 		}
 		output << std::endl;
-		mesh->clearTargetData();
+		dataStack.clear();
 		std::multimap< std::string, kmb::DataBindings*>::const_iterator ngIter = dataBindings.begin();
 		std::multimap< std::string, kmb::DataBindings*>::const_iterator ngEnd = dataBindings.end();
 		while( ngIter != ngEnd ){
@@ -1460,13 +1515,13 @@ kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
 					{
 					case kmb::PhysicalValue::Scalar:
 						output << " " << ngIter->first << ", unknown" << std::endl;
-						mesh->appendTargetDataPtr( data );
+						dataStack.push_back( data );
 						break;
 					case kmb::PhysicalValue::Vector3:
 						output << " " << ngIter->first << "_u;" << ngIter->first << ", unknown" << std::endl;
 						output << " " << ngIter->first << "_v, unknown" << std::endl;
 						output << " " << ngIter->first << "_w, unknown" << std::endl;
-						mesh->appendTargetDataPtr( data );
+						dataStack.push_back( data );
 						break;
 					case kmb::PhysicalValue::Tensor6:
 						output << " " << ngIter->first << "_0, unknown" << std::endl;
@@ -1475,7 +1530,7 @@ kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
 						output << " " << ngIter->first << "_3, unknown" << std::endl;
 						output << " " << ngIter->first << "_4, unknown" << std::endl;
 						output << " " << ngIter->first << "_5, unknown" << std::endl;
-						mesh->appendTargetDataPtr( data );
+						dataStack.push_back( data );
 						break;
 					default:
 						break;
@@ -1492,7 +1547,7 @@ kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
 		kmb::elementIdType elementId = 0;
 		kmb::elementIdType elementCount = static_cast<kmb::elementIdType>( mesh->getElementCount() );
 		for(elementId=0;elementId<elementCount;++elementId){
-			mesh->getMultiPhysicalValues(elementId,values);
+			getValues(dataStack,elementId,values);
 			output << " " << elementId+this->elementOffset;
 			for(int i=0;i<elementDataDim;++i){
 				output << " " << std::setw(15) << values[i];
@@ -1504,6 +1559,8 @@ kmb::MicroAVSIO::saveToFile(const char* filename,kmb::MeshData* mesh)
 
 	output.close();
 	return 0;
+}
+
 }
 
 int kmb::MicroAVSIO::saveToFile_V8(const char* filename,kmb::MeshData* mesh)

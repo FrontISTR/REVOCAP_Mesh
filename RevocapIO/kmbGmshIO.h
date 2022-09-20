@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 2.0                          #
 # Class Name : GmshIO                                                  #
@@ -29,7 +29,6 @@ protected:
 public:
 	enum gmshFormat{
 		k2_2,
-		k2_2_Binary,
 		kUndefined
 	};
 	enum gmshElementType{
@@ -69,14 +68,11 @@ public:
 		kUndefinedElement=-1
 	};
 	GmshIO();
-	int loadMesh(const char* filename,kmb::MeshData* mesh);
-	int saveGeo(std::string filename, const kmb::MeshData* mesh);
+	int loadMeshFromFile(const char* filename,kmb::MeshData* mesh);
 protected:
-	gmshFormat getVersion(const char* filename) const;
+	gmshFormat getVersion(std::ifstream &input) const;
 	int readNodes_2_2(std::ifstream &input,kmb::MeshData* mesh);
-	int readNodes_2_2_Binary(std::ifstream &input, kmb::MeshData* mesh);
 	int readElements_2_2(std::ifstream &input,kmb::MeshData* mesh);
-	int readElements_2_2_Binary(std::ifstream &input, kmb::MeshData* mesh);
 };
 
 }

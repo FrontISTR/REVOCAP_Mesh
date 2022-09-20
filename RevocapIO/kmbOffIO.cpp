@@ -11,19 +11,20 @@
 #      "Innovative General-Purpose Coupled Analysis System"            #
 #                                                                      #
 ----------------------------------------------------------------------*/
-#pragma once
 #include "RevocapIO/kmbOffIO.h"
-#include "Geometry/kmbIdTypes.h"
-#include "MeshDB/kmbElement.h"
-#include "MeshDB/kmbElementContainer.h"
+
+#include "MeshDB/kmbTriangle.h"
+#include "MeshDB/kmbMeshData.h"
 
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <iomanip>
 
-template<typename MContainer>
-int kmb::OffIO::loadPatch(const char* filename, MContainer* mesh)
+namespace kmb{
+
+template<>
+int OffIO::loadFile(const char* filename,kmb::MeshData* mesh)
 {
 	if( mesh == NULL ){
 		return -1;
@@ -32,27 +33,17 @@ int kmb::OffIO::loadPatch(const char* filename, MContainer* mesh)
 	if( input.fail() ){
 		return -1;
 	}
-	unsigned int nodeCount = 0;
-	unsigned int polygonCount = 0;
-	unsigned int edgeCount = 0;
 	std::string line;
-	std::istringstream tokenizer;
 	std::getline( input, line );
 	if( line.find("OFF") != 0 ){
 		return -1;
 	}
-	else if (line.size() > 3) {
-		line.erase(0, 3);
-		tokenizer.str(line);
-		tokenizer.clear();
-		tokenizer >> nodeCount >> polygonCount >> edgeCount;
-	}
-	else {
-		do { std::getline(input, line); } while (line.size() == 0 || line[0] == '#');
-		tokenizer.str(line);
-		tokenizer.clear();
-		tokenizer >> nodeCount >> polygonCount >> edgeCount;
-	}
+	unsigned int nodeCount = 0;
+	unsigned int polygonCount = 0;
+	unsigned int edgeCount = 0;
+	do{ std::getline( input, line ); }while(line.size()==0 || line[0]=='#');
+	std::istringstream tokenizer(line);
+	tokenizer >> nodeCount >> polygonCount >> edgeCount;
 	double x=0.0,y=0.0,z=0.0;
 	mesh->beginNode( nodeCount );
 	for(unsigned int i = 0;i<nodeCount;++i){
@@ -73,10 +64,10 @@ int kmb::OffIO::loadPatch(const char* filename, MContainer* mesh)
 		tokenizer >> vertexCount;
 		if( vertexCount == 3 ){
 			tokenizer >> nodes[0] >> nodes[1] >> nodes[2];
-			mesh->addElement( kmb::kTriangle, nodes );
+			mesh->addElement( kmb::TRIANGLE, nodes );
 		}else if( vertexCount == 4 ){
 			tokenizer >> nodes[0] >> nodes[1] >> nodes[2] >> nodes[3];
-			mesh->addElement( kmb::kQuadrilateral, nodes );
+			mesh->addElement( kmb::QUAD, nodes );
 		}
 	}
 	mesh->endElement();
@@ -84,10 +75,10 @@ int kmb::OffIO::loadPatch(const char* filename, MContainer* mesh)
 	return 0;
 }
 
-template<typename MContainer>
-int kmb::OffIO::savePatch(const char* filename,const MContainer* mesh)
+template<>
+int OffIO::saveFile(const char* filename,const kmb::MeshData* mesh)
 {
-	if( mesh == NULL || mesh->getNodeCount() == 0 ){
+	if( mesh == NULL || mesh->getNodes() == NULL ){
 		return -1;
 	}
 	std::ofstream output( filename, std::ios_base::out );
@@ -98,19 +89,20 @@ int kmb::OffIO::savePatch(const char* filename,const MContainer* mesh)
 	size_t polygonCount = 0;
 	kmb::bodyIdType bodyCount = mesh->getBodyCount();
 	for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
-		const typename MContainer::ElementContainer* body = mesh->getElementContainer(bodyId);
+		const kmb::Body* body = mesh->getBodyPtr(bodyId);
 		polygonCount += body->getCountByType(kmb::TRIANGLE) + body->getCountByType(kmb::QUAD);
 	}
 	output << mesh->getNodeCount() << " " << polygonCount << " " << 0 << std::endl;
-	typename MContainer::nodeIterator nIter = mesh->beginNodeIterator();
-	typename MContainer::nodeIterator nIterEnd = mesh->endNodeIterator();
+	output << std::endl;
+	kmb::Point3DContainer::const_iterator nIter = mesh->getNodes()->begin();
+	kmb::Point3DContainer::const_iterator nIterEnd = mesh->getNodes()->end();
 	while( nIter != nIterEnd ){
 		output << std::setprecision(8) << nIter.x() << " " << nIter.y() << " " << nIter.z() << std::endl;
 		++nIter;
 	}
 	for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
-		const typename MContainer::ElementContainer* body = mesh->getElementContainer(bodyId);
-		typename MContainer::elementIterator eIter = body->begin();
+		const kmb::Body* body = mesh->getBodyPtr(bodyId);
+		kmb::ElementContainer::const_iterator eIter = body->begin();
 		while( eIter != body->end() ){
 			if( eIter.getType() == kmb::TRIANGLE ){
 				output << eIter[0] << " " << eIter[1] << " " << eIter[2] << std::endl;
@@ -121,4 +113,6 @@ int kmb::OffIO::savePatch(const char* filename,const MContainer* mesh)
 		}
 	}
 	return 0;
+}
+
 }

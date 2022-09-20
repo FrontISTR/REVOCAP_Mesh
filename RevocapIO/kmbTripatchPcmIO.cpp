@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------
+﻿/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : TripatchPcmIO                                           #
@@ -24,34 +24,130 @@
 #                                                                      #
 ----------------------------------------------------------------------*/
 #include "RevocapIO/kmbTripatchPcmIO.h"
-#include "RevocapIO/kmbTripatchIO.h"
 
-namespace kmb {
+#include "MeshDB/kmbTriangle.h"
+#include "MeshDB/kmbMeshData.h"
 
-	template <>
-	int TripatchPcmIO::loadFromFile(const char* filename, kmb::MeshData* mesh)
-	{
-		kmb::TripatchIO tripatch;
-		return tripatch.loadPatch(filename, mesh);
-	}
+#include <fstream>
+#include <sstream>
+#include <string>
 
-	// packOption = 0 : そのまま出力
-	// packOption = 1 : すべてを一つにまとめて出力
-	// 空の body は出力しない
-	template <>
-	int TripatchPcmIO::saveToFile(const char* filename, const kmb::MeshData* mesh, int packOption)
-	{
-		if (packOption == 0) {
-			kmb::TripatchIO tripatch;
-			return tripatch.savePatch(filename, mesh);
-		}
-		else if (packOption == 1) {
-			kmb::TripatchIO tripatch;
-			return tripatch.savePatchPacked(filename, mesh);
-		}
-		else {
+namespace kmb{
+
+template <>
+int TripatchPcmIO::loadFromFile(const char* filename,kmb::MeshData* mesh)
+{
+	if( mesh == NULL ){
+		return -1;
+	}else{
+		std::ifstream input( filename, std::ios_base::in );
+		if( input.fail() ){
 			return -1;
 		}
+		std::string line;
+		unsigned int nodeCount = 0;
+		unsigned int dummy;
+		unsigned int bodyCount = 0;
+		{
+			std::getline( input, line );
+			std::istringstream tokenizer(line);
+			tokenizer >> nodeCount >> dummy >> bodyCount;
+		}
+		size_t i;
+		double x=0.0,y=0.0,z=0.0;
+		mesh->beginNode( nodeCount );
+		for(i = 0;i<nodeCount;++i){
+			std::getline( input, line );
+			std::istringstream tokenizer(line);
+			tokenizer >> x >> y >> z;
+			mesh->addNode(x,y,z);
+		}
+		mesh->endNode();
+		unsigned int elementCount = 0;
+		kmb::nodeIdType nodes[3] = {kmb::nullNodeId,kmb::nullNodeId,kmb::nullNodeId};
+		for(unsigned int j=0;j<bodyCount;++j){
+			std::getline( input, line );
+			std::istringstream tokenizer(line);
+			tokenizer >> elementCount >> dummy >> dummy;
+			mesh->beginElement( elementCount );
+			for(i = 0;i<elementCount;++i){
+				std::getline( input, line );
+				tokenizer.str(line);
+				tokenizer.clear();
+				tokenizer >> nodes[0] >> nodes[1] >> nodes[2];
+				mesh->addElement( kmb::TRIANGLE, nodes );
+			}
+			mesh->endElement();
+		}
+		input.close();
+		return 0;
 	}
+}
+
+// packOption = 0 : そのまま出力
+// packOption = 1 : すべてを一つにまとめて出力
+// 空の body は出力しない
+template <>
+int kmb::TripatchPcmIO::saveToFile(const char* filename,const kmb::MeshData* mesh,int packOption)
+{
+	if( mesh == NULL || !mesh->getNodes() ){
+		return -1;
+	}else{
+		int patchCount = 0;
+		kmb::bodyIdType bodyCount = mesh->getBodyCount();
+		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
+			const kmb::Body* body = mesh->getBodyPtr(bodyId);
+			if( !body || !body->isUniqueType( kmb::TRIANGLE ) )
+			{
+				return -1;
+			}
+			if( body->getCount() > 0 ){
+				++patchCount;
+			}
+		}
+		std::ofstream output( filename, std::ios_base::out );
+		if( output.fail() ){
+			return -1;
+		}
+		if( packOption == 0 ){
+			output << mesh->getNodeCount() << " " << 0 << " " << patchCount << std::endl;
+		}else if( packOption == 1 ){
+			output << mesh->getNodeCount() << " " << 0 << " " << 1 << std::endl;
+		}
+		kmb::Point3DContainer::const_iterator nIter = mesh->getNodes()->begin();
+		kmb::Point3DContainer::const_iterator nIterEnd = mesh->getNodes()->end();
+		double x,y,z;
+		while( nIter != nIterEnd ){
+			if( nIter.getXYZ(x,y,z) ){
+				output << x << " " << y << " " << z << std::endl;
+			}
+			++nIter;
+		}
+		size_t allElementCount = mesh->getElementCount();
+		if( packOption == 1 ){
+			output << allElementCount << " " << 0 << " " << 0 << std::endl;
+		}
+		size_t elementCount = 0;
+		for(kmb::bodyIdType bodyId = 0;bodyId<bodyCount;++bodyId){
+			const kmb::Body* body = mesh->getBodyPtr(bodyId);
+			if( body && body->isUniqueType( kmb::TRIANGLE ) && body->getCount() > 0 )
+			{
+				if( packOption == 0 ){
+					elementCount = body->getCount();
+					output << elementCount << " " << 0 << " " << 0 << std::endl;
+				}
+				kmb::ElementContainer::const_iterator eIter = body->begin();
+				while( eIter != body->end() ){
+					output <<
+						eIter.getNodeId(0) << " " <<
+						eIter.getNodeId(1) << " " <<
+						eIter.getNodeId(2) << std::endl;
+					++eIter;
+				}
+			}
+		}
+	}
+	return 0;
+}
 
 }

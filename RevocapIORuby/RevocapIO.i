@@ -84,8 +84,18 @@ ADVENTURE_Tripatch の pcm 形式ファイルの読み書きをする
      * packOption = 1 : すべてを一つにまとめて出力
 =end
 ---------------------------------------------------------------------*/
-%include "../RevocapIO/kmbTripatchPcmIO.h"
-
+namespace kmb{
+class TripatchPcmIO
+{
+public:
+	int loadFromFile(const char* filename,kmb::MeshData* mesh){
+		return loadPatch<kmb::MeshData>(filename,mesh);
+	}
+	int saveToFile(const char* filename,const kmb::MeshData* mesh,int packOption=0){
+		return savePatch<kmb::MeshData>(filename,mesh);
+	}
+};
+}
 /**-----------------------------------------------------------------
 =begin
 = RevocapIO::TetMeshMIO
@@ -101,8 +111,18 @@ ADVENTURE_TetMesh の msh 形式ファイルの読み書きをする
     mesh の内容を filename に msh 形式で出力する
 =end
 ---------------------------------------------------------------------*/
-%include "../RevocapIO/kmbTetMeshMIO.h"
-
+namespace kmb{
+class TetMeshMIO
+{
+public:
+	int loadFromFile(const char* filename,kmb::MeshData* mesh){
+		return loadFromFile<kmb::MeshData>(filename,mesh);
+	}
+	int saveToFile(const char* filename,const kmb::MeshData* mesh){
+		return saveToFile<kmb::MeshData>(filename,mesh);
+	}
+};
+}
 /**-----------------------------------------------------------------
 =begin
 = RevocapIO::HecmwIO
