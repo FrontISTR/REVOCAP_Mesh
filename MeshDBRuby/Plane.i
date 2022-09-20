@@ -29,10 +29,39 @@
 
 =end
 ---------------------------------------------------------------*/
+%{
 #include "Geometry/kmbPlane.h"
 #include "Geometry/kmbFramedPlane.h"
+%}
 
 namespace kmb{
+
+class Plane
+{
+public:
+	Plane(const double a,const double b,const double c,const double d);
+	Plane(const kmb::Point3D &base,const kmb::Vector3D &normal);
+	virtual ~Plane(void);
+	static Plane* createFromPoints(const Point3D &p,const Point3D &q,const Point3D &r);
+	static Plane* createFromBaseNormal(const Point3D &base,const Vector3D &normal);
+	static Vector3D calcNormal(const Point3D &a,const Point3D &b,const Point3D &c);
+	double distance(const Point3D &pt) const;
+	double distance(const double x,const double y,const double z) const;
+	double evaluate(const double x,const double y,const double z) const;
+	double evaluate(const Point3D &pt) const;
+	Vector3D getNormal(void) const;
+	double getConstant(void) const;
+	// 法線の変更
+	bool setNormal(double a,double b,double c);
+	void setOrigin(double x,double y,double z);
+	// 空集合かもしれないからポインタで返す
+	Point3D* createIntersectPoint(const Point3D &p0,const Point3D &p1) const;
+	// p0 と p1 を結ぶ直線との交点
+	// p0 を t=0、p1 を t=1 としてパラメータを与えたときの t も計算する
+	bool getIntersection(const Point3D &p0,const Point3D &p1, Point3D &pt, double &t) const;
+	// get foot of perpendicular
+	Point3D projectOnPlane(const Point3D& p) const;
+};
 
 class FramedPlane : public Plane
 {

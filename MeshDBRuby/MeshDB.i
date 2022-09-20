@@ -246,7 +246,6 @@ generateXXX : すでにコンテナに入っているデータから別のデー
 // typedef は %include しないと int 型のエイリアスが基本型にならない
 %include "../Geometry/kmbCircle.h"
 %include "../Geometry/kmbLine.h"
-%include "../Geometry/kmbPlane.h"
 %include "../Geometry/kmbSphere.h"
 
 namespace kmb{
