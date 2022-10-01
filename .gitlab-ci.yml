@@ -8,9 +8,12 @@ before_script:
   - apt-get -y install libgl-dev
   - apt-get -y install libglu-dev
   - apt-get -y install libglew-dev
-  - apt-get -y install libocct-modeling-algorithms-dev
-  - apt-get -y install libocct-modeling-data-dev
-  - apt-get -y install libocct-ocaf-dev
+#  - apt-get -y install libocct-modeling-algorithms-dev
+#  - apt-get -y install libocct-modeling-data-dev
+#  - apt-get -y install libocct-ocaf-dev
+  - apt-get -y install liboce-modeling-algorithms-dev
+  - apt-get -y install liboce-modeling-data-dev
+  - apt-get -y install liboce-ocaf-dev
   - apt-get -y install libboost-dev
   - apt-get -y install ruby-dev
   - apt-get -y install swig
@@ -38,17 +41,18 @@ build_refiner_cmake:
     paths:
       - build_refiner_cmake
 
-build_opencascade_ext:
+build_oce_ext:
   stage: build
   script:
+    - dpkg -L liboce-foundation-dev
     - ls /usr/lib/x86_64-linux-gnu/
-    - mkdir build_occ
-    - cd build_occ
+    - mkdir build_oce
+    - cd build_oce
     - cmake -DWITH_EXTENSION=ON -DWITH_OCE=ON -DWITH_TEST=ON .. -LA
     - make
   artifacts:
     paths:
-      - build_occ
+      - build_oce
 
 build_extension:
   stage: build
@@ -87,11 +91,11 @@ test_revocap_ext:
     paths:
       - build_ext/Testing/Temporary
 
-test_revocap_occ:
+test_revocap_oce:
   stage: test
   script:
-    - cd build_occ/TestRuby
+    - cd build_oce
     - make test
   artifacts:
     paths:
-      - build_occ/Testing/Temporary
+      - build_oce/Testing/Temporary
