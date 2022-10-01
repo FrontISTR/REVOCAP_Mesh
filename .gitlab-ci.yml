@@ -11,8 +11,7 @@ before_script:
 #  - apt-get -y install libocct-modeling-algorithms-dev
 #  - apt-get -y install libocct-modeling-data-dev
 #  - apt-get -y install libocct-ocaf-dev
-  - apt-get -y install liboce-modeling-algorithms-dev
-  - apt-get -y install liboce-modeling-data-dev
+  - apt-get -y install liboce-modeling-dev
   - apt-get -y install liboce-ocaf-dev
   - apt-get -y install libboost-dev
   - apt-get -y install ruby-dev
