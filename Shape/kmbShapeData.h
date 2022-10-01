@@ -19,6 +19,8 @@
 #include <vector>
 
 #include "Geometry/kmbBoundingBox.h"
+
+#include <Standard_Version.hxx>
 #include <Geom_Surface.hxx>
 
 class TopoDS_Shape;
@@ -51,11 +53,19 @@ public:
 	int saveToRNF(const char* filename, bool append=false ) const;
 private:
 	// OpenCASCADE から REVOCAP への変換
+#if defined(OCC_VERSION) && OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 3
 	int getBSplineSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const;
 	int getBezierSurface(TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const;
 	int getCylindricalSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const;
 	int getSphericalSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const;
 	int getPlane( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const;
+#elif
+	int getBSplineSurface(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const;
+	int getBezierSurface(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const;
+	int getCylindricalSurface(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const;
+	int getSphericalSurface(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const;
+	int getPlane(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const;
+#endif
 };
 
 }

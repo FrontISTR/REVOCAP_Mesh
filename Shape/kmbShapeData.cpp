@@ -202,8 +202,11 @@ kmb::ShapeData::isClosed(void) const
 }
 
 // OpenCASCADE の表現形式から REVOCAP の形式への変換
-int
-kmb::ShapeData::getBezierSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#if defined(OCC_VERSION) && OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 3
+int kmb::ShapeData::getBezierSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#else
+int kmb::ShapeData::getBezierSurface(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#endif
 {
 	Handle(Geom_BezierSurface) bsf = Handle(Geom_BezierSurface)::DownCast(surf);
 	kmb::BezierSurface3D* bezier = new kmb::BezierSurface3D();
@@ -222,8 +225,11 @@ kmb::ShapeData::getBezierSurface( TopoDS_Face &face, opencascade::handle<Geom_Su
 	return 1;
 }
 
-int
-kmb::ShapeData::getBSplineSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#if defined(OCC_VERSION) && OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 3
+int kmb::ShapeData::getBSplineSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#elif
+int kmb::ShapeData::getBSplineSurface(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#endif
 {
 	Handle(Geom_BSplineSurface) bsp = Handle(Geom_BSplineSurface)::DownCast(surf);
 	kmb::NurbsSurface3D* nurbs = new kmb::NurbsSurface3D();
@@ -256,8 +262,11 @@ kmb::ShapeData::getBSplineSurface( TopoDS_Face &face, opencascade::handle<Geom_S
 	return 1;
 }
 
-int
-kmb::ShapeData::getCylindricalSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#if defined(OCC_VERSION) && OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 3
+int kmb::ShapeData::getCylindricalSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#elif
+int kmb::ShapeData::getCylindricalSurface(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#endif
 {
 	Handle(Geom_CylindricalSurface) cylinder = Handle(Geom_CylindricalSurface)::DownCast(surf);
 	Standard_Real u0(0.0),u1(0.0),v0(0.0),v1(0.0);
@@ -497,8 +506,11 @@ kmb::ShapeData::getCylindricalSurface( TopoDS_Face &face, opencascade::handle<Ge
 	}
 }
 
-int
-kmb::ShapeData::getSphericalSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#if defined(OCC_VERSION) && OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 3
+int kmb::ShapeData::getSphericalSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#elif
+int kmb::ShapeData::getSphericalSurface(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#endif
 {
 	Handle(Geom_SphericalSurface) sphere = Handle(Geom_SphericalSurface)::DownCast(surf);
 	Standard_Real u0(0.0),u1(0.0),v0(0.0),v1(0.0);
@@ -614,8 +626,11 @@ kmb::ShapeData::getSphericalSurface( TopoDS_Face &face, opencascade::handle<Geom
 	return 4;
 }
 
-int
-kmb::ShapeData::getPlane( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#if defined(OCC_VERSION) && OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 3
+int kmb::ShapeData::getPlane( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#elif
+int kmb::ShapeData::getPlane(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const
+#endif
 {
 	Handle(Geom_Plane) plane = Handle(Geom_Plane)::DownCast(surf);
 	kmb::PlaneSurface3D* p3d = new kmb::PlaneSurface3D();
