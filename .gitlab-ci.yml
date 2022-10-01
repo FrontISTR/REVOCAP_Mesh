@@ -36,6 +36,17 @@ build_refiner_cmake:
     paths:
       - build_refiner_cmake
 
+build_opencascade_ext:
+  stage: build
+  script:
+    - mkdir build_occ
+    - cd build_occ
+    - cmake -DWITH_EXTENSION=ON -DWITH_OPENCASCADE=ON -DWITH_TEST=ON ..
+    - make
+  artifacts:
+    paths:
+      - build_occ
+
 build_extension:
   stage: build
   script:
