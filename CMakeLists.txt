@@ -23,6 +23,9 @@ if(WITH_OCE)
   find_package(OCE REQUIRED)
   if(OCE_ALL_FOUND)
     message(STATUS "Found OpenCASCADE Community Edition: ${OCE_DIR}")
+    include_directories(
+      /usr/include/oce
+    )
     add_definitions(
       -DOPENCASCADE
       -DHAVE_CONFIG_H

@@ -36,6 +36,7 @@
 #include <ShapeAnalysis_ShapeContents.hxx>
 #include <Poly_Triangulation.hxx>
 #include <Geom_Surface.hxx>
+#include <Standard_Version.hxx>
 
 #include <vector>
 
@@ -177,7 +178,11 @@ isInParallel	if TRUE shape will be meshed in parallel.
 			TopLoc_Location location;
 			Handle(Poly_Triangulation) triangulation = BRep_Tool::Triangulation(face, location);
 			for(Standard_Integer i = 0; i < triangulation->NbNodes(); ++i ){
+#if defined(OCC_VERSION) && (OCC_VERSION_MAJOR <=6)
+				gp_Pnt point = triangulation->Nodes().Value(i+1);
+#else
 				gp_Pnt point = triangulation->Node(i+1);
+#endif
 				if(!location.IsIdentity()){
 					point.Transform(location.Transformation());
 				}
