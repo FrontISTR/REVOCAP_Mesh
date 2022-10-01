@@ -15,9 +15,10 @@ set_property(SOURCE ${RevocapIORuby_INTERFACE}
   PROPERTY CPLUSPLUS ON
 )
 
-swig_add_module(RevocapIO
-  ruby
-  ${RevocapIORuby_INTERFACE}
+swig_add_library(RevocapIO
+  TYPE SHARED
+  LANGUAGE ruby
+  SOURCES ${RevocapIORuby_INTERFACE}
 )
 swig_link_libraries(RevocapIO
   ${RUBY_LIBRARY}

@@ -19,7 +19,7 @@ build_revocap:
   script:
     - mkdir build
     - cd build
-    - cmake -DWITH_EXTENSION=OFF -DWITH_OPENCASCADE=OFF ..
+    - cmake -DWITH_EXTENSION=OFF -DWITH_OPENCASCADE=OFF -DWITH_TEST=ON ..
     - make
   artifacts:
     paths:
@@ -41,7 +41,7 @@ build_extension:
   script:
     - mkdir build_ext
     - cd build_ext
-    - cmake -DWITH_EXTENSION=ON -DWITH_OPENCASCADE=OFF ..
+    - cmake -DWITH_EXTENSION=ON -DWITH_OPENCASCADE=OFF -DWITH_TEST=ON ..
     - make
   artifacts:
     paths:

@@ -4,8 +4,9 @@
 
 - cmake-3.0 以上
 - swig (ruby/C++インターフェース生成が有効なもの)
-- OpenCASCADE Community Edition
+- OpenCASCADE or OpenCASCADE Community Edition
 - OpenGL, GLU
+- OpenMP
 - GLEW (Ver.2.0.0 で動作確認済み)
 - ruby (Ver.2.3 で動作確認済み)
 - boost (Ver.1.61.0 で動作確認済み）
@@ -58,31 +59,43 @@ cmake -G "MinGW Makefiles" ..
 mingw32-make
 ```
 
-### OpenCASCADE を利用しない場合
+### Mac でインストールする場合
 
-```txt
-cmake -DWITH_OPENCASCADE=OFF ..
+Homebrew で環境構築します。
+
+```sh
+brew install fortran
+brew install ruby
+brew install opencascade
+brew install swig
+brew install boost
 ```
 
-### OpenCASCADE(oce)のインストール先
+### OpenCASCADE を利用する場合
 
-OpenCASCADE(oce)をインストールする際、パスが通っているディレクトリの親ディレクトリを `CMAKE_INSTALL_PREFIX` に指定すると、自動でパスを見つけてくれます。
+```txt
+cmake -DWITH_OPENCASCADE=ON ..
+```
 
-#### 例)
+### OCE を利用する場合
 
+OCE をインストールする際、パスが通っているディレクトリの親ディレク
+トリを `CMAKE_INSTALL_PREFIX` に指定すると、自動でパスを見つけてくれます。
 `$HOME/local/bin`にパスが通っている場合、OpenCASCADEのインストール先の指定は
 
-```txt
+ ```txt
 cmake -DCMAKE_INSTALL_PREFIX=$HOME/local ..
-```
-
+ ```
+ 
 とすると`REVOCAP_Mesh`の`cmake`スクリプトがライブラリ・ヘッダファイルを自動的に探してくれます。
-見つからない場合、`OCEConfig.cmake`ファイルがある場所を探し、そのディレクトリを環境変数`OCE_DIR`に設定してください。
+
+または、`OCEConfig.cmake`ファイルがある場所を探し、そのディレクトリを環境変数`OCE_DIR`に設定してください。
 
 ```txt
 find /usr -name OCEConfig.cmake
 ./lib/x86_64-linux-gnu/OCEConfig.cmake
 export OCE_DIR="/usr/lib/x86_64-linux-gnu"
+cmake -DWITH_OCE=ON ..
 ```
 
 ### Doxygen

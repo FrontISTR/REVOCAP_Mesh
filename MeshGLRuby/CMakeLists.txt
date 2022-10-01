@@ -14,6 +14,8 @@ set(RevocapGL_INTERFACE
   RevocapGL.i
 )
 
+add_definitions(-DGL_SILENCE_DEPRECATION)
+
 #add_definitions(
 #  -DREVOCAP_SUPPORT_RUBY
 #)
@@ -27,9 +29,10 @@ set_property(SOURCE ${RevocapGL_INTERFACE}
   "-DREVOCAP_SUPPORT_RUBY"
 )
 
-swig_add_module(RevocapGL
-  ruby
-  ${RevocapGL_INTERFACE}
+swig_add_library(RevocapGL
+  TYPE SHARED
+  LANGUAGE ruby
+  SOURCES ${RevocapGL_INTERFACE}
 )
 swig_link_libraries(RevocapGL
   ${RUBY_LIBRARY}

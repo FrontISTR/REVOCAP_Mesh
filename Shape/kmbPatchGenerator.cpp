@@ -98,7 +98,6 @@ bool kmb::PatchGenerator::getRelative(void) const
 	return this->relative;
 }
 
-template <>
 bool kmb::PatchGenerator::execute(kmb::ShapeData& shape,kmb::MeshData& mesh)
 {
 	if( shape.getShape().IsNull() ){
@@ -178,7 +177,7 @@ isInParallel	if TRUE shape will be meshed in parallel.
 			TopLoc_Location location;
 			Handle(Poly_Triangulation) triangulation = BRep_Tool::Triangulation(face, location);
 			for(Standard_Integer i = 0; i < triangulation->NbNodes(); ++i ){
-				gp_Pnt point = triangulation->Nodes().Value(i+1);
+				gp_Pnt point = triangulation->Node(i+1);
 				if(!location.IsIdentity()){
 					point.Transform(location.Transformation());
 				}

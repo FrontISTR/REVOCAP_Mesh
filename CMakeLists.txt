@@ -6,8 +6,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
 option(WITH_EXTENSION "Build with ruby extension libraries" OFF)
 option(WITH_OPENCASCADE "Build with OpenCASCADE feature" OFF)
+option(WITH_OCE "Build with OpenCASCADE Community Edition feature" OFF)
 option(WITH_OPENMP "Enable OpenMP feature" ON)
-option(WITH_TEST "Enable tests" ON)
+option(WITH_TEST "Enable tests" OFF)
 option(BUILD_DOC "Generate API documents." OFF)
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
@@ -17,7 +18,7 @@ if(WITH_EXTENSION)
   message(STATUS "CMAKE_POSITION_INDEPENDENT_CODE=ON")
 endif()
 
-if(WITH_OPENCASCADE)
+if(WITH_OCE)
   set(CMAKE_MODULE_PATH $ENV{OCE_DIR})
   find_package(OCE REQUIRED)
   if(OCE_ALL_FOUND)
@@ -28,7 +29,6 @@ if(WITH_OPENCASCADE)
       -DHAVE_FSTREAM
       -DHAVE_IOSTREAM
       -DHAVE_LIMITS_H
-      -DREVOCAP_SUPPORT_GLEW
     )
   else()
     message(WARNING "OpenCASCADE Community Edition not Found!!\n"
@@ -37,6 +37,30 @@ if(WITH_OPENCASCADE)
       "ex.) % find /usr -name OCEConfig.cmake\n"
       "       ./lib/x86_64-linux-gnu/oce-0.17/OCEConfig.cmake\n"
       "     % export OCE_DIR=/usr/lib/x86_64-linux-gnu/oce-0.7\n")
+  endif()
+endif()
+
+if(WITH_OPENCASCADE)
+  set(CMAKE_MODULE_PATH $ENV{OPENCASCADE_DIR})
+  find_package(OPENCASCADE REQUIRED)
+  message(STATUS "OpenCASCADE Dir: ${OPENCASCADE_DIR}")
+  if(OPENCASCADE_FOUND)
+    message(STATUS "Found OpenCASCADE")
+    message(STATUS "OpenCASCADE Version ${OpenCASCADE_MAJOR_VERSION}.${OpenCASCADE_MINOR_VERSION}.${OpenCASCADE_MAINTENANCE_VERSION}")
+    message(STATUS "OpenCASCADE Include ${OpenCASCADE_INCLUDE_DIR}")
+    include_directories(
+      ${OpenCASCADE_INCLUDE_DIRS}
+      ${OpenCASCADE_INCLUDE_DIR}
+    )
+    add_definitions(
+      -DOPENCASCADE
+      -DHAVE_CONFIG_H
+      -DHAVE_FSTREAM
+      -DHAVE_IOSTREAM
+      -DHAVE_LIMITS_H
+    )
+  else()
+    message(WARNING "OpenCASCADE not Found!!")
   endif()
 endif()
 
