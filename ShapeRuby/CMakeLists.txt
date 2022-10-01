@@ -1,12 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
-
-# msys2 の場合、上の行を下の行に修正する必要がある
-# similar https://github.com/Alexpux/MINGW-packages/issues/1870
-# /mingw64/lib/oce/OCE-libraries-release.cmake:  IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE "TKernel;TKService;TKV3d;glu32;opengl32;C:/building/msys64/mingw64/lib/libfreetype.dll.a;vfw32"
-# /mingw64/lib/oce/OCE-libraries-release.cmake:  IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE "TKernel;TKService;TKV3d;glu32;opengl32;libfreetype.dll.a;vfw32"
-
-find_package(SWIG REQUIRED)
-find_package(Ruby REQUIRED)
+cmake_minimum_required(VERSION 3.0)
 
 include(${SWIG_USE_FILE})
 
@@ -14,11 +6,15 @@ set(Shape_INTERFACE
   RevocapShape.i
 )
 
+#add_definitions(
+#  -DREVOCAP_SUPPORT_RUBY
+#)
+
 set_property(SOURCE ${Shape_INTERFACE}
   PROPERTY CPLUSPLUS ON
 )
 
-if(WITH_OPENCASCADE)
+if(OPENCASCADE_FOUND)
   set_property(SOURCE ${Shape_INTERFACE}
     PROPERTY SWIG_FLAGS
     "-DOPENCASCADE -DHAVE_CONFIG_H -DHAVE_FSTREAM -DHAVE_IOSTREAM -DHAVE_LIMITS_H -DREVOCAP_RUBY_SUPPORT"
@@ -26,10 +22,9 @@ if(WITH_OPENCASCADE)
 endif()
 
 swig_add_library(RevocapShape
-  TYPE MODULE
+  TYPE SHARED
   LANGUAGE ruby
-  SOURCES
-    ${Shape_INTERFACE}
+  SOURCES ${Shape_INTERFACE}
 )
 
 if(APPLE)
@@ -44,30 +39,31 @@ include_directories(
   ${RUBY_INCLUDE_DIRS}
 )
 
-include_directories(
-  ${FREETYPE_INCLUDE_DIRS}
-)
-
-if(WITH_OPENCASCADE)
-  find_package(Freetype REQUIRED)
-  link_directories($ENV{OCE_DIR})
-  list(REMOVE_ITEM OCE_LIBRARIES "DRAWEXE")
-  list(REMOVE_ITEM OCE_LIBRARIES "TKDraw")
-  list(REMOVE_ITEM OCE_LIBRARIES "TKTopTest")
-  list(REMOVE_ITEM OCE_LIBRARIES "TKViewerTest")
-  list(REMOVE_ITEM OCE_LIBRARIES "TKXSDRAW")
-  list(REMOVE_ITEM OCE_LIBRARIES "TKDCAF")
-  list(REMOVE_ITEM OCE_LIBRARIES "TKXDEDRAW")
-  list(REMOVE_ITEM OCE_LIBRARIES "TKTObjDRAW")
-  list(REMOVE_ITEM OCE_LIBRARIES "TKQADraw")
-  list(REMOVE_ITEM OCE_LIBRARIES "TKOpenGl")
-  list(REMOVE_ITEM OCE_LIBRARIES "FWOSPlugin")
+if(OPENCASCADE_FOUND OR OCE_ALL_FOUND)
+  link_directories($ENV{OPENCASCADE_DIR})
+  list(REMOVE_ITEM OpenCASCADE_LIBRARIES "DRAWEXE")
+  list(REMOVE_ITEM OpenCASCADE_LIBRARIES "TKDraw")
+  list(REMOVE_ITEM OpenCASCADE_LIBRARIES "TKTopTest")
+  list(REMOVE_ITEM OpenCASCADE_LIBRARIES "TKViewerTest")
+  list(REMOVE_ITEM OpenCASCADE_LIBRARIES "TKXSDRAW")
+  list(REMOVE_ITEM OpenCASCADE_LIBRARIES "TKDCAF")
+  list(REMOVE_ITEM OpenCASCADE_LIBRARIES "TKXDEDRAW")
+  list(REMOVE_ITEM OpenCASCADE_LIBRARIES "TKTObjDRAW")
+  list(REMOVE_ITEM OpenCASCADE_LIBRARIES "TKQADraw")
 
   include_directories(
-    ${OCE_INCLUDE_DIRS}
+    ${OPENCASCADE_INCLUDE_DIRS}
+    ${OpenCASCADE_INCLUDE_DIR}
   )
-#MESSAGE(STATUS "oce library = ${OCE_LIBRARIES}")
-#MESSAGE(STATUS "freetype library = ${FREETYPE_LIBRARIES} INC = ${FREETYPE_INCLUDE_DIRS}")
+  set(EXTRA_LIBS
+    ${OpenCASCADE_LIBRARIES}
+    ${GLEW_LIBRARIES}
+    ${GLU_LIBRARY}
+    ${OPENGL_LIBRARIES}
+  )
+#  swig_link_libraries(RevocapShape
+#    ${OCE_LIBRARIES}
+#  )
 endif()
 
 swig_link_libraries(RevocapShape
@@ -78,8 +74,7 @@ swig_link_libraries(RevocapShape
   RcapGeometry
   RcapMatrix
   RcapCommon
-  ${OCE_LIBRARIES}
-  ${FREETYPE_LIBRARIES}
+  ${EXTRA_LIBS}
 )
 
 install(TARGETS RevocapShape

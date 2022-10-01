@@ -18,8 +18,8 @@
 
 #include <vector>
 
-#include "Geom_Surface.hxx"
 #include "Geometry/kmbBoundingBox.h"
+#include <Geom_Surface.hxx>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -49,7 +49,6 @@ public:
 	// surfaceId には元の CAD 面の HashCode を入れておく
 	int getSurfaces( std::vector<kmb::Surface3D*> &surfaces) const;
 	int saveToRNF(const char* filename, bool append=false ) const;
-
 private:
 	// OpenCASCADE から REVOCAP への変換
 	int getBSplineSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const;

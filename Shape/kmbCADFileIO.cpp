@@ -73,6 +73,7 @@
 #include "Shape/kmbCADFileIO.h"
 #include "Shape/kmbShapeData.h"
 #include <iostream>
+#include <fstream>
 
 kmb::CADFileIO::CADFileIO(void)
 {
