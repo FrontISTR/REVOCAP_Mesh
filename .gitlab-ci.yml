@@ -9,6 +9,8 @@ before_script:
   - apt-get -y install libglu-dev
   - apt-get -y install libglew-dev
   - apt-get -y install libocct-modeling-algorithms-dev
+  - apt-get -y install libocct-modeling-data-dev
+  - apt-get -y install libocct-ocaf-dev
   - apt-get -y install libboost-dev
   - apt-get -y install ruby-dev
   - apt-get -y install swig
@@ -19,7 +21,7 @@ build_revocap:
   script:
     - mkdir build
     - cd build
-    - cmake -DWITH_EXTENSION=OFF -DWITH_OPENCASCADE=OFF -DWITH_TEST=ON ..
+    - cmake -DWITH_TEST=ON ..
     - make
   artifacts:
     paths:
@@ -30,7 +32,7 @@ build_refiner_cmake:
   script:
     - mkdir build_refiner_cmake
     - cd build_refiner_cmake
-    - cmake -DWITH_EXTENSION=OFF -DWITH_OPENCASCADE=OFF ..
+    - cmake ..
     - make RcapRefiner
   artifacts:
     paths:
@@ -41,7 +43,7 @@ build_opencascade_ext:
   script:
     - mkdir build_occ
     - cd build_occ
-    - cmake -DWITH_EXTENSION=ON -DWITH_OPENCASCADE=ON -DWITH_TEST=ON ..
+    - cmake -DWITH_EXTENSION=ON -DWITH_OCE=ON -DWITH_TEST=ON ..
     - make
   artifacts:
     paths:
@@ -52,7 +54,7 @@ build_extension:
   script:
     - mkdir build_ext
     - cd build_ext
-    - cmake -DWITH_EXTENSION=ON -DWITH_OPENCASCADE=OFF -DWITH_TEST=ON ..
+    - cmake -DWITH_EXTENSION=ON -DWITH_TEST=ON ..
     - make
   artifacts:
     paths:
@@ -83,3 +85,12 @@ test_revocap_ext:
   artifacts:
     paths:
       - build_ext/Testing/Temporary
+
+test_revocap_occ:
+  stage: test
+  script:
+    - cd build_occ/TestRuby
+    - make test
+  artifacts:
+    paths:
+      - build_occ/Testing/Temporary
