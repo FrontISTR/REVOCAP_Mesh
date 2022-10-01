@@ -41,9 +41,10 @@ build_refiner_cmake:
 build_opencascade_ext:
   stage: build
   script:
+    - ls /usr/lib/x86_64-linux-gnu/
     - mkdir build_occ
     - cd build_occ
-    - cmake -DWITH_EXTENSION=ON -DWITH_OCE=ON -DWITH_TEST=ON ..
+    - cmake -DWITH_EXTENSION=ON -DWITH_OCE=ON -DWITH_TEST=ON .. -LA
     - make
   artifacts:
     paths:
