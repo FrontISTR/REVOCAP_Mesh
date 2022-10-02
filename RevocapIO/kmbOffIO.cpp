@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : OffIO                                                   #
@@ -21,7 +21,10 @@
 #include <string>
 #include <iomanip>
 
-int kmb::OffIO::loadFile(const char* filename,kmb::MeshData* mesh)
+namespace kmb{
+
+template<>
+int OffIO::loadFile(const char* filename,kmb::MeshData* mesh)
 {
 	if( mesh == NULL ){
 		return -1;
@@ -72,7 +75,8 @@ int kmb::OffIO::loadFile(const char* filename,kmb::MeshData* mesh)
 	return 0;
 }
 
-int kmb::OffIO::saveFile(const char* filename,const kmb::MeshData* mesh)
+template<>
+int OffIO::saveFile(const char* filename,const kmb::MeshData* mesh)
 {
 	if( mesh == NULL || mesh->getNodes() == NULL ){
 		return -1;
@@ -109,4 +113,6 @@ int kmb::OffIO::saveFile(const char* filename,const kmb::MeshData* mesh)
 		}
 	}
 	return 0;
+}
+
 }

@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : TetMeshMIO                                              #
@@ -34,8 +34,10 @@ class TetMeshMIO
 public:
 	TetMeshMIO(void){};
 	~TetMeshMIO(void){};
-	int loadFromFile(const char* filename,kmb::MeshData* mesh);
-	int saveToFile(const char* filename,const kmb::MeshData* mesh);
+	template <typename MeshT>
+	int loadFromFile(const char* filename,MeshT* mesh);
+	template <typename MeshT>
+	int saveToFile(const char* filename,const MeshT* mesh);
 };
 
 }
