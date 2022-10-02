@@ -59,7 +59,7 @@ private:
 	int getCylindricalSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const;
 	int getSphericalSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const;
 	int getPlane( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const;
-#elif
+#else
 	int getBSplineSurface(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const;
 	int getBezierSurface(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const;
 	int getCylindricalSurface(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const;

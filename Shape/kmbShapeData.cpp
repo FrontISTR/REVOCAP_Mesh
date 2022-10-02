@@ -227,7 +227,7 @@ int kmb::ShapeData::getBezierSurface(TopoDS_Face &face, Handle_Geom_Surface &sur
 
 #if defined(OCC_VERSION) && OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 3
 int kmb::ShapeData::getBSplineSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const
-#elif
+#else
 int kmb::ShapeData::getBSplineSurface(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const
 #endif
 {
@@ -264,7 +264,7 @@ int kmb::ShapeData::getBSplineSurface(TopoDS_Face &face, Handle_Geom_Surface &su
 
 #if defined(OCC_VERSION) && OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 3
 int kmb::ShapeData::getCylindricalSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const
-#elif
+#else
 int kmb::ShapeData::getCylindricalSurface(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const
 #endif
 {
@@ -508,7 +508,7 @@ int kmb::ShapeData::getCylindricalSurface(TopoDS_Face &face, Handle_Geom_Surface
 
 #if defined(OCC_VERSION) && OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 3
 int kmb::ShapeData::getSphericalSurface( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const
-#elif
+#else
 int kmb::ShapeData::getSphericalSurface(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const
 #endif
 {
@@ -628,7 +628,7 @@ int kmb::ShapeData::getSphericalSurface(TopoDS_Face &face, Handle_Geom_Surface &
 
 #if defined(OCC_VERSION) && OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 3
 int kmb::ShapeData::getPlane( TopoDS_Face &face, opencascade::handle<Geom_Surface> &surf, std::vector<kmb::Surface3D*> &surfaces) const
-#elif
+#else
 int kmb::ShapeData::getPlane(TopoDS_Face &face, Handle_Geom_Surface &surf, std::vector<kmb::Surface3D*> &surfaces) const
 #endif
 {
