@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : MicroAVSIO                                              #
@@ -64,10 +64,12 @@ protected:
 public:
 	MicroAVSIO(void);
 	virtual ~MicroAVSIO(void);
-	int loadFromFile(const char* filename,kmb::MeshData* mesh);
+	template<typename MeshT>
+	int loadFromFile(const char* filename,MeshT* mesh);
 	// grid は読まずに data だけ読む
 	int loadPostFromFile(const char* filename,kmb::MeshData* mesh);
-	int saveToFile(const char* filename,kmb::MeshData* mesh);
+	template<typename MeshT>
+	int saveToFile(const char* filename,const MeshT* mesh);
 	int saveToFile_V8(const char* filename,kmb::MeshData* mesh);
 	// 格納されているデータが 3 つしかない時に自動的にベクトル値にする
 	void setReadAsVector3( bool flag );

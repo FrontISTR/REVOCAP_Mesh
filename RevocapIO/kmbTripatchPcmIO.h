@@ -1,4 +1,4 @@
-﻿/*----------------------------------------------------------------------
+/*----------------------------------------------------------------------
 #                                                                      #
 # Software Name : REVOCAP_PrePost version 1.6                          #
 # Class Name : TripatchPcmIO                                           #
@@ -34,10 +34,12 @@ class TripatchPcmIO
 public:
 	TripatchPcmIO(void){};
 	~TripatchPcmIO(void){};
-	int loadFromFile(const char* filename,kmb::MeshData* mesh);
+	template <typename MeshT>
+	int loadFromFile(const char* filename,MeshT* mesh);
 	// packOption = 0 : そのまま出力
 	// packOption = 1 : すべてを一つにまとめて出力
-	int saveToFile(const char* filename,const kmb::MeshData* mesh,int packOption=0);
+	template <typename MeshT>
+	int saveToFile(const char* filename,const MeshT* mesh,int packOption=0);
 };
 
 }
