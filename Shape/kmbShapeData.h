@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "Geometry/kmbBoundingBox.h"
+#include <Geom_Surface.hxx>
 
 #include <Standard_Version.hxx>
 #include <Geom_Surface.hxx>
