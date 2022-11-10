@@ -99,6 +99,15 @@ add_test(
   WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
 )
 
+add_executable(MeshBrep_Test MeshBrep_Test.cpp)
+target_link_libraries(MeshBrep_Test ${RCAP_LIBRARIES})
+target_compile_definitions(MeshBrep_Test PRIVATE "BOOST_TEST_NO_LIB=1")
+add_test(
+  NAME MeshBrep_Test
+  COMMAND $<TARGET_FILE:MeshBrep_Test>
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+)
+
 add_executable(RevocapIO_Test RevocapIO_Test.cpp)
 target_link_libraries(RevocapIO_Test ${RCAP_LIBRARIES})
 target_compile_definitions(RevocapIO_Test PRIVATE "BOOST_TEST_NO_LIB=1")
