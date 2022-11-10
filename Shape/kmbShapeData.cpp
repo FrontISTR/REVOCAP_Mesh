@@ -27,7 +27,7 @@
 #include <TopoDS_Vertex.hxx>
 #include <Standard_PrimitiveTypes.hxx>
 #include <BRep_Tool.hxx>
-#include <BRepMesh.hxx>
+//#include <BRepMesh.hxx>
 #include <BRepAlgo.hxx>
 #include <BRepTools.hxx>
 #include <gp_Pnt.hxx>

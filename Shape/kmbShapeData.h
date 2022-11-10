@@ -19,10 +19,10 @@
 #include <vector>
 
 #include "Geometry/kmbBoundingBox.h"
+#include <Geom_Surface.hxx>
 
 class TopoDS_Shape;
 class TopoDS_Face;
-class Handle_Geom_Surface;
 
 namespace kmb{
 

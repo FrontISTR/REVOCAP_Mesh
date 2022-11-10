@@ -16,6 +16,8 @@
 
 #ifdef OPENCASCADE
 
+#include <fstream>
+
 class TopoDS_Shape;
 
 namespace kmb{

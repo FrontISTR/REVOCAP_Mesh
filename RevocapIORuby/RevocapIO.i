@@ -84,8 +84,18 @@ ADVENTURE_Tripatch の pcm 形式ファイルの読み書きをする
      * packOption = 1 : すべてを一つにまとめて出力
 =end
 ---------------------------------------------------------------------*/
-%include "../RevocapIO/kmbTripatchPcmIO.h"
-
+namespace kmb{
+class TripatchPcmIO
+{
+public:
+	int loadFromFile(const char* filename,kmb::MeshData* mesh){
+		return loadPatch<kmb::MeshData>(filename,mesh);
+	}
+	int saveToFile(const char* filename,const kmb::MeshData* mesh,int packOption=0){
+		return savePatch<kmb::MeshData>(filename,mesh);
+	}
+};
+}
 /**-----------------------------------------------------------------
 =begin
 = RevocapIO::TetMeshMIO
@@ -101,8 +111,18 @@ ADVENTURE_TetMesh の msh 形式ファイルの読み書きをする
     mesh の内容を filename に msh 形式で出力する
 =end
 ---------------------------------------------------------------------*/
-%include "../RevocapIO/kmbTetMeshMIO.h"
-
+namespace kmb{
+class TetMeshMIO
+{
+public:
+	int loadFromFile(const char* filename,kmb::MeshData* mesh){
+		return loadFromFile<kmb::MeshData>(filename,mesh);
+	}
+	int saveToFile(const char* filename,const kmb::MeshData* mesh){
+		return saveToFile<kmb::MeshData>(filename,mesh);
+	}
+};
+}
 /**-----------------------------------------------------------------
 =begin
 = RevocapIO::HecmwIO
@@ -162,8 +182,27 @@ FrontFlow/blue GF 形式の mesh boun flow ファイルの読み書きをする
     Acoustic 用
 =end
 ---------------------------------------------------------------------*/
-%include "../RevocapIO/kmbFFbIO.h"
-
+namespace kmb{
+class FFbIO
+{
+public:
+	FFbIO(void);
+	virtual ~FFbIO(void);
+	int loadFromMeshFile(const char* filename,kmb::MeshData* mesh);
+	int loadFromBoundaryFile(const char* filename,kmb::MeshData* mesh);
+	// 特定のステップのものを読む step = -1 の時は必ず読む
+	int loadPostStep(const char* filename,kmb::MeshData* mesh,int step=-1);
+	const char* loadHeader(const char* filename);
+	// 戻り値は四面体モデルだったら 4、六面体モデルだったら 6
+	// 混合の場合は 8
+	int saveToMeshFile(const char* filename,const kmb::MeshData* mesh);
+	int saveToMeshFileVer6(const char* filename,const kmb::MeshData* mesh);
+	// REVOCAP 独自拡張
+	// stype = "CUSTOM" の NodeGroup を BoundaryFile に出力する
+	int saveToBoundaryFile(const char* filename,const kmb::MeshData* mesh);
+	int saveToBoundaryFileAcoustic(const char* filename,const kmb::MeshData* mesh);
+};
+}
 /**-----------------------------------------------------------------
 =begin
 = RevocapIO::RevocapCouplerIO
@@ -203,7 +242,21 @@ MicroAVS の UCD 形式の読み書き
     ファイルを読み込むときに3つしか計算結果がない時に自動的にベクトル値で格納する
 =end
 ---------------------------------------------------------------------*/
-%include "../RevocapIO/kmbMicroAVSIO.h"
+namespace kmb{
+class MicroAVSIO
+{
+public:
+	MicroAVSIO(void);
+	virtual ~MicroAVSIO(void);
+	int loadFromFile(const char* filename,kmb::MeshData* mesh);
+	// grid は読まずに data だけ読む
+	int loadPostFromFile(const char* filename,kmb::MeshData* mesh);
+	int saveToFile(const char* filename,kmb::MeshData* mesh);
+	int saveToFile_V8(const char* filename,kmb::MeshData* mesh);
+	// 格納されているデータが 3 つしかない時に自動的にベクトル値にする
+	void setReadAsVector3( bool flag );
+};
+}
 
 /**-----------------------------------------------------------------
 =begin
@@ -222,5 +275,11 @@ REVOCAP_PrePost の YAML 形式ニュートラルファイルの読み書き
 %include "../RevocapIO/kmbRevocapNeutralIO.h"
 %include "../RevocapIO/kmbSTLIO.h"
 %include "../RevocapIO/kmbNetgenIO.h"
-%include "../RevocapIO/kmbGmshIO.h"
 %include "../RevocapIO/kmbOffIO.h"
+namespace kmb{
+class GmshIO{
+public:
+	GmshIO();
+	int loadMeshFromFile(const char* filename,kmb::MeshData* mesh);
+};
+}

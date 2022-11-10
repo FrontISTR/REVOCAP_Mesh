@@ -8,8 +8,14 @@ before_script:
   - apt-get -y install libgl-dev
   - apt-get -y install libglu-dev
   - apt-get -y install libglew-dev
-  - apt-get -y install libocct-modeling-algorithms-dev
+#  - apt-get -y install libocct-modeling-algorithms-dev
+#  - apt-get -y install libocct-modeling-data-dev
+#  - apt-get -y install libocct-ocaf-dev
+  - apt-get -y install liboce-modeling-dev
+  - apt-get -y install liboce-ocaf-dev
   - apt-get -y install libboost-dev
+  - apt-get -y install ruby-dev
+  - apt-get -y install swig
   - apt-get -y install cmake
 
 build_revocap:
@@ -17,7 +23,7 @@ build_revocap:
   script:
     - mkdir build
     - cd build
-    - cmake -DWITH_EXTENSION=OFF -DWITH_OPENCASCADE=OFF ..
+    - cmake -DWITH_TEST=ON ..
     - make
   artifacts:
     paths:
@@ -28,11 +34,35 @@ build_refiner_cmake:
   script:
     - mkdir build_refiner_cmake
     - cd build_refiner_cmake
-    - cmake -DWITH_EXTENSION=OFF -DWITH_OPENCASCADE=OFF ..
+    - cmake ..
     - make RcapRefiner
   artifacts:
     paths:
       - build_refiner_cmake
+
+build_oce_ext:
+  stage: build
+  script:
+    - dpkg -L liboce-foundation-dev
+    - ls /usr/lib/x86_64-linux-gnu/
+    - mkdir build_oce
+    - cd build_oce
+    - cmake -DWITH_EXTENSION=ON -DWITH_OCE=ON -DWITH_TEST=ON .. -LA
+    - make
+  artifacts:
+    paths:
+      - build_oce
+
+build_extension:
+  stage: build
+  script:
+    - mkdir build_ext
+    - cd build_ext
+    - cmake -DWITH_EXTENSION=ON -DWITH_TEST=ON ..
+    - make
+  artifacts:
+    paths:
+      - build_ext
 
 build_refiner:
   stage: build
@@ -47,3 +77,24 @@ test_revocap:
   script:
     - cd build
     - make test
+  artifacts:
+    paths:
+      - build/Testing/Temporary
+
+test_revocap_ext:
+  stage: test
+  script:
+    - cd build_ext/TestRuby
+    - make test
+  artifacts:
+    paths:
+      - build_ext/Testing/Temporary
+
+test_revocap_oce:
+  stage: test
+  script:
+    - cd build_oce
+    - make test
+  artifacts:
+    paths:
+      - build_oce/Testing/Temporary

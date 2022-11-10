@@ -13,6 +13,14 @@
 
 BOOST_AUTO_TEST_SUITE(Matrix)
 
+BOOST_AUTO_TEST_CASE(ColumnVectorSize)
+{
+	kmb::ColumnVector_DoubleArray vec(57820);
+	BOOST_CHECK_EQUAL( 57820, vec.getSize() );
+	BOOST_CHECK_EQUAL( 1, vec.getColSize() );
+	BOOST_CHECK_EQUAL( 57820, vec.getRowSize() );
+}
+
 BOOST_AUTO_TEST_CASE(Determinant)
 {
 	kmb::SquareMatrix_DoubleArray mtx(3);

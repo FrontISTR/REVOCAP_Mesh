@@ -67,11 +67,6 @@ REVOCAP_PrePost の FXRuby で実装された GUI 部から利用される。
 %include "../MeshDB/kmbTypes.h"
 %include "../Common/kmbCommon.h"
 %include "../Geometry/kmbIdTypes.h"
-%include "../Geometry/kmbGeometry4D.h"
-%include "../Geometry/kmbGeometry3D.h"
-%include "../Geometry/kmbGeometry2D.h"
-%include "../Geometry/kmbRegion.h"
-%include "../Geometry/kmbBoxRegion.h"
 
 /**--------------------------------------------------------------------
 =begin
@@ -102,11 +97,12 @@ namespace kmb{
 }
 
 // 順番は重要！
+%include "Geometry.i"
 %include "BoundingBox.i"
+%include "Plane.i"
 %include "MeshData.i"
 %include "MeshDB.i"
 %include "Collision.i"
-%include "Plane.i"
 %include "Boundary.i"
 %include "Matching.i"
 %include "SurfaceOperation.i"
