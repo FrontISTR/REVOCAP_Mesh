@@ -9,10 +9,17 @@
 #include <iomanip>
 #include <cstring>
 
+#ifdef _WIN32
+#include "RevocapIO/kmbCharacterCode.h"
+#endif
+
 namespace kmb{
 template<>
 int FrontISTRIO::loadMesh(std::string filename, kmb::MeshData* mesh)
 {
+#ifdef _WIN32
+	filename = kmb::CharacterCode::utf8_to_multi(filename);
+#endif
 	if (mesh == NULL) {
 		return -1;
 	}
@@ -296,6 +303,9 @@ int FrontISTRIO::loadMesh(std::string filename, kmb::MeshData* mesh)
 template<>
 int FrontISTRIO::saveMesh(std::string filename, const kmb::MeshData* mesh)
 {
+#ifdef _WIN32
+	filename = kmb::CharacterCode::utf8_to_multi(filename);
+#endif
 	if (mesh == NULL) {
 		return -1;
 	}
@@ -1025,6 +1035,9 @@ int FrontISTRIO::loadResultBinary(std::string filename, kmb::MeshData* mesh)
 template<>
 int FrontISTRIO::loadResult(std::string filename, kmb::MeshData* mesh)
 {
+#ifdef _WIN32
+	filename = kmb::CharacterCode::utf8_to_multi(filename);
+#endif
 	if (mesh == NULL) {
 		return -1;
 	}
