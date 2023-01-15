@@ -23,9 +23,9 @@ public:
 	OffIO(void){};
 	~OffIO(void){};
 	template<typename MeshT>
-	int loadFile(const char* filename,MeshT* mesh);
+	int loadPatch(const char* filename,MeshT* mesh);
 	template<typename MeshT>
-	int saveFile(const char* filename,const MeshT* mesh);
+	int savePatch(const char* filename,const MeshT* mesh);
 };
 
 }

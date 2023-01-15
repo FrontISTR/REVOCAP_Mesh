@@ -24,7 +24,7 @@
 namespace kmb{
 
 template<>
-int OffIO::loadFile(const char* filename,kmb::MeshData* mesh)
+int OffIO::loadPatch(const char* filename,kmb::MeshData* mesh)
 {
 	if( mesh == NULL ){
 		return -1;
@@ -76,7 +76,7 @@ int OffIO::loadFile(const char* filename,kmb::MeshData* mesh)
 }
 
 template<>
-int OffIO::saveFile(const char* filename,const kmb::MeshData* mesh)
+int OffIO::savePatch(const char* filename,const kmb::MeshData* mesh)
 {
 	if( mesh == NULL || mesh->getNodes() == NULL ){
 		return -1;
