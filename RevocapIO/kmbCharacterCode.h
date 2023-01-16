@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <codecvt>
+#include <cstdlib>
 
 namespace kmb {
 	class CharacterCode {
@@ -14,6 +15,7 @@ namespace kmb {
 		}
 		static std::string wide_to_multi(std::wstring const& src)
 		{
+#ifdef _WIN32
 			std::size_t converted{};
 			std::vector<char> dest(src.size() * sizeof(wchar_t) + 1, '\0');
 			if (::_wcstombs_s_l(&converted, dest.data(), dest.size(), src.data(), _TRUNCATE, ::_create_locale(LC_ALL, "jpn")) != 0) {
@@ -22,6 +24,11 @@ namespace kmb {
 			dest.resize(std::char_traits<char>::length(dest.data()));
 			dest.shrink_to_fit();
 			return std::string(dest.begin(), dest.end());
+#else
+			std::vector<char> dest(src.size() * sizeof(wchar_t) + 1, '\0');
+			wcstombs(dest.data(), src.data(), src.length());
+			return std::string(dest.begin(), dest.end());
+#endif
 		}
 	public:
 		static std::string utf8_to_multi(std::string const& src)
