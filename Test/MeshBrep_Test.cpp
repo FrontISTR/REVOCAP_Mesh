@@ -8,6 +8,7 @@
 #endif
 
 #include "Test/Test_Common.h"
+#include "Test/Test_Primitive.h"
 #include "MeshDB/kmbMeshData.h"
 #include "MeshDB/kmbMeshBrep.h"
 #include "MeshDB/kmbMeshOperation.h"
