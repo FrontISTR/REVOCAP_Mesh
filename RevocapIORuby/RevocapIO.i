@@ -280,6 +280,6 @@ namespace kmb{
 class GmshIO{
 public:
 	GmshIO();
-	int loadMeshFromFile(const char* filename,kmb::MeshData* mesh);
+	int loadMesh(const char* filename,kmb::MeshData* mesh);
 };
 }
