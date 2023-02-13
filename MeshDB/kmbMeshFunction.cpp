@@ -226,15 +226,15 @@ namespace kmb {
 	}
 
 	template<>
-	bool MeshFunction::calcRanking(MeshT* mesh, std::string target, std::string ranking)
+	bool MeshFunction::calcRanking(kmb::MeshData* mesh, std::string target, std::string ranking)
 	{
-		kmb::DataBindings* data = this->getDataBindingsPtr(target.c_str());
-		kmb::DataBindings* rdata = this->getDataBindingsPtr(ranking.c_str());
+		kmb::DataBindings* data = mesh->getDataBindingsPtr(target.c_str());
+		kmb::DataBindings* rdata = mesh->getDataBindingsPtr(ranking.c_str());
 		if( data->getBindingMode() == kmb::DataBindings::NodeVariable &&
 			data->getValueType() == kmb::PhysicalValue::Scalar &&
 			rdata->getBindingMode() == kmb::DataBindings::NodeVariable &&
-			rdata->getValueType() == kmb::PhysicalValue::Integer &&
-			strcmp( kmb::ScalarValueBindings::CONTAINER_TYPE,data->getContainerType()) == 0 )
+			rdata->getValueType() == kmb::PhysicalValue::Integer
+			)
 		{
 			size_t size = data->getIdCount();
 			std::multimap<double,int> sorted_index;
@@ -246,7 +246,7 @@ namespace kmb {
 			long rank=0;
 			std::multimap<double,int>::iterator iter = sorted_index.begin();
 			while( iter != sorted_index.end() ){
-				rdata->setValue(iter->second,&rank);
+				rdata->setPhysicalValue(iter->second,&rank);
 				++iter;
 				++rank;
 			}
