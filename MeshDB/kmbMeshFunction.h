@@ -38,5 +38,9 @@ namespace kmb {
 		template<typename MeshT>
 		static int filter_2d(MeshT* mesh, std::string target, std::string result, float mat[16], float range[4]);
 
+		// target に含まれるデータを昇順に並べた順序を rank に格納する
+		template<typename MeshT>
+		static bool calcRanking(MeshT* mesh, std::string target, std::string ranking);
+
 	};
 }

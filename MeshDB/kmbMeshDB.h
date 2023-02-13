@@ -291,7 +291,6 @@ public:
 	bool getMinMaxValue(const kmb::DataBindings* data,kmb::BoundingBox1D &bbox) const;
 	bool getMinMaxValue(const kmb::DataBindings* data,kmb::BoundingBox &bbox) const;
 	bool getMinMaxValueWithId(const kmb::DataBindings* data,kmb::MinMaxWithId<kmb::idType>& minmax,int comp=-1) const;
-	bool calcRanking(const char* key,const char* stype=NULL);
 
 	// interpolate physical value
 	int getInterpolatedValue(const char* name,double x,double y,double z,double *values,double tolerance=0.0,const char* stype=NULL) const;
