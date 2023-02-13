@@ -34,7 +34,6 @@ kmb::ScalarValueBindings::ScalarValueBindings(size_t count,kmb::DataBindings::bi
 , size(0)
 , values(NULL)
 , deletable(true)
-, ranking(NULL)
 , minValue(DBL_MAX)
 , maxValue(-DBL_MAX)
 {
@@ -50,7 +49,6 @@ kmb::ScalarValueBindings::ScalarValueBindings(size_t count,double* values,kmb::D
 , size(0)
 , values(NULL)
 , deletable(false)
-, ranking(NULL)
 {
 	this->type = kmb::PhysicalValue::Scalar;
 	this->bMode = bmode;
@@ -64,10 +62,6 @@ kmb::ScalarValueBindings::~ScalarValueBindings(void)
 		delete[] values;
 		values = NULL;
 	}
-	if( ranking ){
-		delete[] ranking;
-		ranking = NULL;
-	}
 }
 
 void
@@ -79,10 +73,6 @@ kmb::ScalarValueBindings::clear(void)
 void kmb::ScalarValueBindings::clear(double v)
 {
 	std::fill(values,values+size,v);
-	if( ranking ){
-		delete[] ranking;
-		ranking = NULL;
-	}
 }
 
 bool
@@ -187,16 +177,6 @@ kmb::ScalarValueBindings::getDoubleArray(void) const
 	return this->values;
 }
 
-const int* kmb::ScalarValueBindings::getRankArray(void) const
-{
-	return this->ranking;
-}
-
-int* kmb::ScalarValueBindings::getRankArray(void)
-{
-	return this->ranking;
-}
-
 double kmb::ScalarValueBindings::getMaxValue(void) const
 {
 	return maxValue;
@@ -205,29 +185,6 @@ double kmb::ScalarValueBindings::getMaxValue(void) const
 double kmb::ScalarValueBindings::getMinValue(void) const
 {
 	return minValue;
-}
-
-void kmb::ScalarValueBindings::createRanking(void)
-{
-	if( ranking ){
-		delete[] ranking;
-		ranking = NULL;
-	}
-	ranking = new int[size];
-	std::multimap<double,int> sorted_index;
-	for(int i=0;i<size;i++){
-		sorted_index.insert( std::pair<double,int>(values[i],i));
-	}
-	int i=0;
-	std::multimap<double,int>::iterator iter = sorted_index.begin();
-	while( iter != sorted_index.end() ){
-		ranking[iter->second] = i;
-		++iter;
-		++i;
-	}
-	minValue = sorted_index.begin()->first;
-	maxValue = sorted_index.rbegin()->first;
-	std::cout << sorted_index.size() << " " << getMinValue() << " " << getMaxValue() << std::endl;
 }
 
 kmb::DataBindings::iterator

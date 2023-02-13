@@ -225,4 +225,33 @@ namespace kmb {
 		return count;
 	}
 
+	template<>
+	bool MeshFunction::calcRanking(kmb::MeshData* mesh, std::string target, std::string ranking)
+	{
+		kmb::DataBindings* data = mesh->getDataBindingsPtr(target.c_str());
+		kmb::DataBindings* rdata = mesh->getDataBindingsPtr(ranking.c_str());
+		if( data->getBindingMode() == kmb::DataBindings::NodeVariable &&
+			data->getValueType() == kmb::PhysicalValue::Scalar &&
+			rdata->getBindingMode() == kmb::DataBindings::NodeVariable &&
+			rdata->getValueType() == kmb::PhysicalValue::Integer
+			)
+		{
+			size_t size = data->getIdCount();
+			std::multimap<double,int> sorted_index;
+			double d;
+			for(size_t i=0;i<size;i++){
+				data->getPhysicalValue(i,&d);
+				sorted_index.insert( std::pair<double,int>(d,i));
+			}
+			long rank=0;
+			std::multimap<double,int>::iterator iter = sorted_index.begin();
+			while( iter != sorted_index.end() ){
+				rdata->setPhysicalValue(iter->second,&rank);
+				++iter;
+				++rank;
+			}
+			return true;
+		}
+		return false;
+	}
 }
