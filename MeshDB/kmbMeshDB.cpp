@@ -1113,17 +1113,3 @@ kmb::MeshDB::getMinMaxValueWithId(const kmb::DataBindings* data, kmb::MinMaxWith
 	}
 	return false;
 }
-
-bool kmb::MeshDB::calcRanking(const char* key,const char* stype)
-{
-	kmb::DataBindings* data = this->getDataBindingsPtr(key,stype);
-	if( data->getBindingMode() == kmb::DataBindings::NodeVariable &&
-		data->getValueType() == kmb::PhysicalValue::Scalar &&
-		strcmp( kmb::ScalarValueBindings::CONTAINER_TYPE,data->getContainerType()) == 0 )
-	{
-		kmb::ScalarValueBindings* sdata = reinterpret_cast<kmb::ScalarValueBindings*>(data);
-		sdata->createRanking();
-		return true;
-	}
-	return false;
-}
