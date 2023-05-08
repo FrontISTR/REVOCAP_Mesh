@@ -228,6 +228,7 @@ generateXXX : すでにコンテナに入っているデータから別のデー
 #include "MeshDB/kmbDataBindings.h"
 #include "MeshDB/kmbPhysicalValue.h"
 #include "MeshDB/kmbMatching.h"
+#include "MeshDB/kmbMeshFunction.h"
 #include "Geometry/kmbGeometry3D.h"
 #include "Geometry/kmbRegion.h"
 #include "Geometry/kmbGeometry2D.h"
@@ -2053,7 +2054,13 @@ MeshDBの近傍処理では
 	スカラーデータについて値の順位を計算して記録する。
 =end
 ----------------------------------------------------------------------------*/
-bool calcRanking(const char* key,const char* stype=NULL);
+%extend{
+	VALUE calcRanking(const char* key,const char* stype=NULL){
+		bool res = kmb::MeshFunction::calcRanking(self,key,"Rank");
+		if(res) return Qtrue;
+		else return Qfalse;
+	}
+}
 
 /**--------------------------------------------------------------------------
 =begin
