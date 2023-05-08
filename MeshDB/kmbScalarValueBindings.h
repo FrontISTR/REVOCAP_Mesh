@@ -61,16 +61,12 @@ public:
 	virtual const_iterator begin(void) const;
 	const double* getDoubleArray(void) const;
 	double* getDoubleArray(void);
-	const int* getRankArray(void) const;
-	int* getRankArray(void);
-	void createRanking(void);
 	double getMaxValue(void) const;
 	double getMinValue(void) const;
 private:
 	int size;
 	double* values;
 	bool deletable;
-	int* ranking;
 	double minValue;
 	double maxValue;
 };
