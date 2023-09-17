@@ -52,7 +52,7 @@ build_oce_ext:
   artifacts:
     paths:
       - build_oce
-  when: never
+  when: manual
 
 build_extension:
   stage: build
@@ -64,7 +64,7 @@ build_extension:
   artifacts:
     paths:
       - build_ext
-  when: never
+  when: manual
 
 build_refiner:
   stage: build
@@ -91,7 +91,7 @@ test_revocap_ext:
   artifacts:
     paths:
       - build_ext/Testing/Temporary
-  when: never
+  when: manual
 
 test_revocap_oce:
   stage: test
@@ -101,5 +101,5 @@ test_revocap_oce:
   artifacts:
     paths:
       - build_oce/Testing/Temporary
-  when: never
+  when: manual
 
