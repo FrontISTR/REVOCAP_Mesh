@@ -100,7 +100,7 @@ add_subdirectory(Matrix)    # RcapMatrix target, static library
 add_subdirectory(Geometry)  # RcapGeometry target, static library
 add_subdirectory(MeshDB)    # RcapMeshDB target, static library
 add_subdirectory(RevocapIO) # RcapIO target,static library
-add_subdirectory(MeshGL)    # RcapMeshGL target, static library
+#add_subdirectory(MeshGL)    # RcapMeshGL target, static library
 add_subdirectory(MeshGen)   # RcapMeshGen target, static library
 add_subdirectory(Shape)     # RcapShape target, static library
 
