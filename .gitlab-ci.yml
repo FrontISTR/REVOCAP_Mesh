@@ -5,17 +5,17 @@ before_script:
   - apt-get -y install gcc
   - apt-get -y install g++
   - apt-get -y install gfortran
-  - apt-get -y install libgl-dev
-  - apt-get -y install libglu-dev
-  - apt-get -y install libglew-dev
+#  - apt-get -y install libgl-dev
+#  - apt-get -y install libglu-dev
+#  - apt-get -y install libglew-dev
 #  - apt-get -y install libocct-modeling-algorithms-dev
 #  - apt-get -y install libocct-modeling-data-dev
 #  - apt-get -y install libocct-ocaf-dev
-  - apt-get -y install liboce-modeling-dev
-  - apt-get -y install liboce-ocaf-dev
+#  - apt-get -y install liboce-modeling-dev
+#  - apt-get -y install liboce-ocaf-dev
   - apt-get -y install libboost-dev
-  - apt-get -y install ruby-dev
-  - apt-get -y install swig
+#  - apt-get -y install ruby-dev
+#  - apt-get -y install swig
   - apt-get -y install cmake
 
 build_revocap:
@@ -52,6 +52,7 @@ build_oce_ext:
   artifacts:
     paths:
       - build_oce
+  when: never
 
 build_extension:
   stage: build
@@ -63,6 +64,7 @@ build_extension:
   artifacts:
     paths:
       - build_ext
+  when: never
 
 build_refiner:
   stage: build
@@ -89,6 +91,7 @@ test_revocap_ext:
   artifacts:
     paths:
       - build_ext/Testing/Temporary
+  when: never
 
 test_revocap_oce:
   stage: test
@@ -98,3 +101,5 @@ test_revocap_oce:
   artifacts:
     paths:
       - build_oce/Testing/Temporary
+  when: never
+
