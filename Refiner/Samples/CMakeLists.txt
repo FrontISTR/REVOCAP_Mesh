@@ -38,12 +38,16 @@ target_link_libraries(sampleSmoothing RcapRefiner)
 # Fortran Samples
 add_executable(sampleF main.F90)
 target_link_libraries(sampleF RcapRefiner)
+set_target_properties(sampleF PROPERTIES LINKER_LANGUAGE Fortran)
 add_executable(sampleIncF main_inc.F90)
 target_link_libraries(sampleIncF RcapRefiner)
+set_target_properties(sampleIncF PROPERTIES LINKER_LANGUAGE Fortran)
 add_executable(sampleMultiF mainMulti.F90)
 target_link_libraries(sampleMultiF RcapRefiner)
+set_target_properties(sampleMultiF PROPERTIES LINKER_LANGUAGE Fortran)
 add_executable(test.rcap test.rcap.f)
 target_link_libraries(test.rcap RcapRefiner)
+set_target_properties(test.rcap PROPERTIES LINKER_LANGUAGE Fortran)
 
 if(WITH_TEST)
   add_test(
